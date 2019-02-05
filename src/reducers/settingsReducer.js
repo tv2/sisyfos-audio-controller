@@ -4,6 +4,7 @@ const defaultSettingsReducerState = [{
     mixer: {
         numberOfChannels: 8,
         numberOfSnaps: 8,
+        showSnaps: false,
         fader: {
             min: 0,
             max: 1,
@@ -24,6 +25,9 @@ export const settings = ((state = defaultSettingsReducerState, action) => {
 
     switch(action.type) {
         case 'UPDATE_SETTINGS':
+            return nextState;
+        case 'TOGGLE_SHOW_SNAPS':
+            nextState[0].showSnaps = !nextState[0].showSnaps;
             return nextState;
         default:
             return nextState;

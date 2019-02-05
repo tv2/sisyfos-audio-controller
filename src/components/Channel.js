@@ -55,21 +55,25 @@ class Channel extends PureComponent {
 
 
     snapButton(snapIndex) {
-        return (
-            <div key={snapIndex} className="channel-snap-line">
-                <button
-                    className="channel-snap-button"
-                    style={this.props.store.channels[0].channel[this.channelIndex].snapOn[snapIndex]
-                        ? {backgroundColor: "rgb(183, 182, 20)"}
-                        : {backgroundColor: "rgb(89, 83, 10)"}
-                    }
-                    onClick={event => {
-                        this.handleSnap(snapIndex);
-                    }}
-                >{snapIndex + 1 }</button>
-                <br/>
-            </div>
-        )
+        if (this.props.store.settings[0].showSnaps) {
+            return (
+                <div key={snapIndex} className="channel-snap-line">
+                    <button
+                        className="channel-snap-button"
+                        style={this.props.store.channels[0].channel[this.channelIndex].snapOn[snapIndex]
+                            ? {backgroundColor: "rgb(183, 182, 20)"}
+                            : {backgroundColor: "rgb(89, 83, 10)"}
+                        }
+                        onClick={event => {
+                            this.handleSnap(snapIndex);
+                        }}
+                    >{snapIndex + 1 }</button>
+                    <br/>
+                </div>
+            )
+        } else {
+            return("")
+        }
     }
 
     renderLabel() {

@@ -15,6 +15,7 @@ class Channels extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            showSnap: false
         };
     }
 
@@ -37,18 +38,28 @@ class Channels extends PureComponent {
         this.props.oscServer.updateOscLevels();
     }
 
+    handleShowSnaps() {
+        this.props.dispatch({
+            type:'TOGGLE_SHOW_SNAPS',
+        });
+    }
+
     snapMixButton(snapIndex) {
-        return (
-            <div key={snapIndex} className="channels-snap-mix-line">
-                <button
-                    className="channels-snap-mix-button"
-                    onClick={event => {
-                        this.handleSnapMix(snapIndex);
-                    }}
-                >SNAP {snapIndex + 1 }</button>
-                <br/>
-            </div>
-        )
+        if (this.props.store.settings[0].showSnaps) {
+            return (
+                <div key={snapIndex} className="channels-snap-mix-line">
+                    <button
+                        className="channels-snap-mix-button"
+                        onClick={event => {
+                            this.handleSnapMix(snapIndex);
+                        }}
+                    >SNAP {snapIndex + 1 }</button>
+                    <br/>
+                </div>
+            )
+        } else {
+            return ("")
+        }
     }
 
     render() {
@@ -64,6 +75,12 @@ class Channels extends PureComponent {
             }
             <br/>
             <div className="channels-mix-body">
+                <button
+                    className="channels-show-snaps-button"
+                    onClick={() => {
+                        this.handleShowSnaps();
+                    }}
+                >SNAPS</button>
                 <button
                     className="channels-mix-button"
                     style = {{backgroundColor: "green"}}

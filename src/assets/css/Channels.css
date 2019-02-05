@@ -13,6 +13,19 @@
     border-radius: 10px;
 }
 
+.channels-show-snaps-button {
+    outline : none;
+    -moz-outline : none;
+    color: white;
+    height: 30px;
+    width: 90px;
+    border-color: rgb(71, 71, 71);
+    background-color: rgb(53, 53, 53);
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 10px;
+    border-radius: 7px;
+}
 
 .channels-mix-button {
     outline : none;
@@ -24,7 +37,7 @@
     background-color: rgb(6, 70, 6);
     margin-left: 4px;
     margin-right: 4px;
-    margin-top: 280px;
+    margin-top: 240px;
     border-radius: 7px;
 }
 
