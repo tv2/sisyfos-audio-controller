@@ -44,7 +44,7 @@ export class OscServer {
                     channel: ch - 1,
                     level: message.args[0]
                 });
-                if (this.store.channelsReducer[0].channel[ch - 1].pgmOn) {
+                if (this.store.channels[0].channel[ch - 1].pgmOn) {
                     this.updateOscLevel(ch-1);
                 }
             }
@@ -59,6 +59,15 @@ export class OscServer {
                     channel: ch - 1,
                     level: message.args[0]
                 });
+            }
+            if (message.address.substr(-4) ==="name") {
+                    let ch = message.address.split("/")[2];
+                    window.storeRedux.dispatch({
+                        type:'SET_CHANNEL_LABEL',
+                        channel: ch - 1,
+                        label: message.args[0]
+                    });
+                console.log("OSC message: ", message.address);
             }
 
         })
@@ -87,7 +96,7 @@ export class OscServer {
     }
 
     updateOscLevels() {
-        this.store.channelsReducer[0].channel.map((channel, index) => {
+        this.store.channels[0].channel.map((channel, index) => {
             this.fadeInOut(index);
             this.sendOscMessage("/track/" + (index +1 ) + "/fx/1/fxparam/1/value",
             channel.outputLevel,
@@ -104,19 +113,19 @@ export class OscServer {
         this.fadeInOut(channelIndex);
         this.sendOscMessage(
             "/track/" + (channelIndex + 1 ) + "/volume",
-            this.store.channelsReducer[0].channel[channelIndex].faderLevel,
+            this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
         );
     }
 
     fadeInOut (channelIndex){
-        if (this.store.channelsReducer[0].channel[channelIndex].pgmOn) {
-            let val = this.store.channelsReducer[0].channel[channelIndex].outputLevel;
+        if (this.store.channels[0].channel[channelIndex].pgmOn) {
+            let val = this.store.channels[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
                 if ( val >= DEFAULTS.ZERO_FADER){
                     clearInterval(timer);
                 } else {
-                    val = val + 2*DEFAULTS.STEP_FADER;
+                    val = val + 3*DEFAULTS.STEP_FADER;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
@@ -124,18 +133,18 @@ export class OscServer {
                     });
                     this.sendOscMessage(
                         "/track/" + (channelIndex + 1 ) + "/fx/1/fxparam/1/value",
-                        this.store.channelsReducer[0].channel[channelIndex].outputLevel,
+                        this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"
                     );
                 }
             }, 1);
         } else {
-            let val = this.store.channelsReducer[0].channel[channelIndex].outputLevel;
+            let val = this.store.channels[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
                 if ( val <= DEFAULTS.MIN_FADER){
                     clearInterval(timer);
                 } else {
-                    val = val - 2*DEFAULTS.STEP_FADER;
+                    val = val - 3*DEFAULTS.STEP_FADER;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
@@ -143,7 +152,7 @@ export class OscServer {
                     });
                     this.sendOscMessage(
                         "/track/" + (channelIndex + 1 ) + "/fx/1/fxparam/1/value",
-                        this.store.channelsReducer[0].channel[channelIndex].outputLevel,
+                        this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"
                     );
                 }

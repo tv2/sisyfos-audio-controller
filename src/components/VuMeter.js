@@ -22,7 +22,7 @@ class VuMeter extends PureComponent {
     }
 
     calcLower() {
-        let val = this.props.store.channelsReducer[0].channel[this.channelIndex].vuVal;
+        let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
         if (val >= DEFAULTS.TEST_METER) {
             val = DEFAULTS.TEST_METER;
         }
@@ -30,7 +30,7 @@ class VuMeter extends PureComponent {
     }
 
     calcMiddle() {
-        let val = this.props.store.channelsReducer[0].channel[this.channelIndex].vuVal;
+        let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
         if (val < DEFAULTS.TEST_METER) {
             val = DEFAULTS.TEST_METER;
         } else if (val >= DEFAULTS.ZERO_METER) {
@@ -40,7 +40,7 @@ class VuMeter extends PureComponent {
     }
 
     calcUpper() {
-        let val = this.props.store.channelsReducer[0].channel[this.channelIndex].vuVal;
+        let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
         if (val < DEFAULTS.ZERO_METER) {
             val = DEFAULTS.ZERO_METER;
         }

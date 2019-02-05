@@ -17,10 +17,7 @@ class Channel extends PureComponent {
         };
 
         this.snapButton = this.snapButton.bind(this);
-    }
-
-    componentDidMount() {
-
+        this.renderLabel = this.renderLabel.bind(this);
     }
 
     handlePgm() {
@@ -62,7 +59,7 @@ class Channel extends PureComponent {
             <div key={snapIndex} className="channel-snap-line">
                 <button
                     className="channel-snap-button"
-                    style={this.props.store.channelsReducer[0].channel[this.channelIndex].snapOn[snapIndex]
+                    style={this.props.store.channels[0].channel[this.channelIndex].snapOn[snapIndex]
                         ? {backgroundColor: "rgb(183, 182, 20)"}
                         : {backgroundColor: "rgb(89, 83, 10)"}
                     }
@@ -75,6 +72,21 @@ class Channel extends PureComponent {
         )
     }
 
+    renderLabel() {
+        if (this.props.store.channels[0].channel[this.channelIndex].label === "") {
+            return (
+                <div className="channel-name">
+            CH {this.channelIndex + 1}
+        </div>
+            )
+        }
+        return (
+        <div className="channel-name">
+            {this.props.store.channels[0].channel[this.channelIndex].label}
+        </div>
+        )
+    }
+
     render() {
         return (
         <div className="channel-body">
@@ -84,7 +96,7 @@ class Channel extends PureComponent {
             min={DEFAULTS.MIN_FADER}
             max={DEFAULTS.MAX_FADER}
             step={DEFAULTS.STEP_FADER}
-            value= {this.props.store.channelsReducer[0].channel[this.channelIndex].faderLevel}
+            value= {this.props.store.channels[0].channel[this.channelIndex].faderLevel}
             onChange={event => {
                 event.preventDefault();
                 this.handleLevel(event);
@@ -94,7 +106,7 @@ class Channel extends PureComponent {
         <br/>
         <button
             className="channel-pgm-button"
-            style={this.props.store.channelsReducer[0].channel[this.channelIndex].pgmOn
+            style={this.props.store.channels[0].channel[this.channelIndex].pgmOn
                 ? {backgroundColor: "green"}
                 : {backgroundColor: "rgb(59, 73, 59)"}
             }
@@ -105,7 +117,7 @@ class Channel extends PureComponent {
         <br/>
         <button
             className="channel-pst-button"
-            style={this.props.store.channelsReducer[0].channel[this.channelIndex].pstOn
+            style={this.props.store.channels[0].channel[this.channelIndex].pstOn
                 ? {backgroundColor: "red"}
                 : {backgroundColor: "rgb(66, 27, 27)"}
             }
@@ -114,18 +126,16 @@ class Channel extends PureComponent {
             }}
         >PST</button>
         <br/>
-        <div className="channel-name">
-            CH {this.channelIndex + 1}
-        </div>
+        {this.renderLabel()}
         <div className="channel-snap-body">
-            {this.props.store.channelsReducer[0].channel[this.channelIndex].snapOn
+            {this.props.store.channels[0].channel[this.channelIndex].snapOn
                 .map((none, index) => {
                     return this.snapButton(index)
                 })
             }
         </div>
         <br/>
-        {parseInt(this.props.store.channelsReducer[0].channel[this.channelIndex].outputLevel*100)/100}
+        {parseInt(this.props.store.channels[0].channel[this.channelIndex].outputLevel*100)/100}
         </div>
         )
     }

@@ -7,6 +7,7 @@ const defaultChannelsReducerState = () => {
     for (let i=0; i < DEFAULTS.NUMBER_OF_CHANNELS; i++) {
         defaultObj[0].channel.push({
                 faderLevel: DEFAULTS.ZERO_FADER,
+                label: "",
                 outputLevel: 0.0,
                 pgmOn: false,
                 pstOn: false,
@@ -20,7 +21,7 @@ const defaultChannelsReducerState = () => {
     return defaultObj;
 };
 
-export const channelsReducer = ((state = defaultChannelsReducerState(), action) => {
+export const channels = ((state = defaultChannelsReducerState(), action) => {
 
     let { ...nextState } = state;
 
@@ -34,6 +35,9 @@ export const channelsReducer = ((state = defaultChannelsReducerState(), action) 
         case 'SET_VU_LEVEL': //channel:  level:
             nextState[0].channel[action.channel].vuVal = action.level;
             return nextState;
+        case 'SET_CHANNEL_LABEL': //channel:  label:
+            nextState[0].channel[action.channel].label = action.label;
+            return nextState;
         case 'FADE_IN': //channel:
             nextState[0].channel[action.channel].outputLevel = nextState[0].channel[action.channel].faderLevel;
             return nextState;
@@ -46,7 +50,7 @@ export const channelsReducer = ((state = defaultChannelsReducerState(), action) 
         case 'SET_PST': //channel
             nextState[0].channel[action.channel].pstOn = !nextState[0].channel[action.channel].pstOn;
             return nextState;
-        case 'SET_SNAP': //channel
+        case 'SET_SNAP': //channel //snapIndex
             nextState[0].channel[action.channel].snapOn[action.snapIndex] = !nextState[0].channel[action.channel].snapOn[action.snapIndex];
             return nextState;
         case 'X_MIX': //none
@@ -56,11 +60,9 @@ export const channelsReducer = ((state = defaultChannelsReducerState(), action) 
                 nextState[0].channel[index].pgmOn = nextPgmOn;
             });
             return nextState;
-        case 'SNAP_MIX': //none
+        case 'SNAP_MIX': //snapIndex
             nextState[0].channel.map((item, index) => {
-                let nextPgmOn = state[0].channel[index].snapOn[action.snapIndex];
-//                nextState[0].channel[index].pstOn = state[0].channel[index].pgmOn;
-                nextState[0].channel[index].pstOn = nextPgmOn;
+                nextState[0].channel[index].pstOn = state[0].channel[index].snapOn[action.snapIndex];
             });
             return nextState;
         default:

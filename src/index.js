@@ -7,10 +7,19 @@ import { createStore } from 'redux';
 import { Provider as ReduxProvider} from 'react-redux';
 import indexReducer from './reducers/indexReducer';
 
+
+//Utils:
+import { loadSettings } from './utils/SettingsStorage';
+
 const storeRedux = createStore(
     indexReducer
 );
 window.storeRedux = storeRedux;
+
+storeRedux.dispatch({
+    type:'UPDATE_SETTINGS',
+    data: loadSettings(storeRedux.getState())
+});
 
 // Since we are using HtmlWebpackPlugin WITHOUT a template, we should create our own root node in the body element before rendering into it
 let root = document.createElement('div');

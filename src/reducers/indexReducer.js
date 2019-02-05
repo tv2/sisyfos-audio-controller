@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import { channelsReducer } from './channelsReducer';
+import { channels} from './channelsReducer';
+import { settings } from './settingsReducer';
 
 const indexReducer = combineReducers({
-    channelsReducer
+    settings,
+    channels
 });
 
 export default indexReducer;

@@ -54,7 +54,7 @@ class Channels extends PureComponent {
     render() {
         return (
         <div className="channels-body">
-            {this.props.store.channelsReducer[0].channel.map((none, index) => {
+            {this.props.store.channels[0].channel.map((none, index) => {
                 return <Channel
                             channelIndex = {index}
                             key={index}

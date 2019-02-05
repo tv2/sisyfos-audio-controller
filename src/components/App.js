@@ -8,6 +8,7 @@ import { OscServer } from '../utils/OscServer';
 
 class App extends Component {
     componentWillMount() {
+
         this.oscServer = new OscServer();
     }
     render() {
