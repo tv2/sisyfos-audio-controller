@@ -36,9 +36,6 @@ class VuMeter extends PureComponent {
         } else if (val >= DEFAULTS.ZERO_METER) {
             val = DEFAULTS.ZERO_METER;
         }
-        if (this.channelIndex===0) {
-            console.log(val);
-        }
         return TOTALHEIGHT*(val-DEFAULTS.TEST_METER)+1;
     }
 

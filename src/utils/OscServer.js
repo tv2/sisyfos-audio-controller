@@ -53,7 +53,6 @@ export class OscServer {
                 message.address.substr(0, 6) === "/track" &&
                 message.address.length > 9
             ) {
-                console.log(message.address);
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
                     type:'SET_VU_LEVEL',
@@ -117,7 +116,7 @@ export class OscServer {
                 if ( val >= DEFAULTS.ZERO_FADER){
                     clearInterval(timer);
                 } else {
-                    val = val + DEFAULTS.STEP_FADER;
+                    val = val + 2*DEFAULTS.STEP_FADER;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
@@ -129,14 +128,14 @@ export class OscServer {
                         "f"
                     );
                 }
-            }, 2);
+            }, 1);
         } else {
             let val = this.store.channelsReducer[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
                 if ( val <= DEFAULTS.MIN_FADER){
                     clearInterval(timer);
                 } else {
-                    val = val - DEFAULTS.STEP_FADER;
+                    val = val - 2*DEFAULTS.STEP_FADER;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
@@ -148,7 +147,7 @@ export class OscServer {
                         "f"
                     );
                 }
-            }, 2);
+            }, 1);
         }
     }
 
