@@ -1,0 +1,31 @@
+.vumeter-body {
+    position: absolute;
+    top: 30px;
+    width: 30px;
+    height: 220px;
+    margin-top: 10px;
+    margin-left: 14px;
+    background-color: black;
+    border-radius: 7px;
+    transform:  rotate(180deg) ;
+    -moz-transform: rotate(180deg) ;
+}
+
+.vumeter-lower-part {
+    position: absolute;
+    width: 10px;
+    margin-left: 10px;
+    background-color: rgb(0, 122, 37);
+}
+.vumeter-middle-part {
+    position: absolute;
+    width: 10px;
+    margin-left: 10px;
+    background-color: rgb(53, 167, 0);
+}
+.vumeter-upper-part {
+    position: absolute;
+    width: 10px;
+    margin-left: 10px;
+    background-color: rgb(206, 0, 0);
+}

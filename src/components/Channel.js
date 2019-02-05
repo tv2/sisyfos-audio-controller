@@ -1,0 +1,140 @@
+import React, { PureComponent } from 'react';
+import { connect } from "react-redux";
+
+import VuMeter from './VuMeter';
+//assets:
+import '../assets/css/Channel.css';
+//Utils:
+import * as DEFAULTS from '../utils/DEFAULTS';
+
+
+class Channel extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.channelIndex = this.props.channelIndex;
+        this.oscServer = this.props.oscServer;
+        this.state = {
+        };
+
+        this.snapButton = this.snapButton.bind(this);
+    }
+
+    componentDidMount() {
+
+    }
+
+    handlePgm() {
+        this.props.dispatch({
+            type:'SET_PGM',
+            channel: this.channelIndex
+        });
+        this.oscServer.updateOscLevel(this.channelIndex);
+    }
+
+    handlePst() {
+        this.props.dispatch({
+            type:'SET_PST',
+            channel: this.channelIndex
+        });
+    }
+
+    handleLevel(event) {
+        this.props.dispatch({
+            type:'SET_FADER_LEVEL',
+            channel: this.channelIndex,
+            level: event.target.value
+        });
+        this.oscServer.updateOscLevel(this.channelIndex);
+    }
+
+
+    handleSnap(snapIndex) {
+        this.props.dispatch({
+            type:'SET_SNAP',
+            channel: this.channelIndex,
+            snapIndex: snapIndex
+        });
+    }
+
+
+    snapButton(snapIndex) {
+        return (
+            <div key={snapIndex} className="channel-snap-line">
+                <button
+                    className="channel-snap-button"
+                    style={this.props.store.channelsReducer[0].channel[this.channelIndex].snapOn[snapIndex]
+                        ? {backgroundColor: "rgb(183, 182, 20)"}
+                        : {backgroundColor: "rgb(89, 83, 10)"}
+                    }
+                    onClick={event => {
+                        this.handleSnap(snapIndex);
+                    }}
+                >{snapIndex + 1 }</button>
+                <br/>
+            </div>
+        )
+    }
+
+    render() {
+        return (
+        <div className="channel-body">
+        <input className="channel-volume-slider"
+            id="typeinp"
+            type="range"
+            min={DEFAULTS.MIN_FADER}
+            max={DEFAULTS.MAX_FADER}
+            step={DEFAULTS.STEP_FADER}
+            value= {this.props.store.channelsReducer[0].channel[this.channelIndex].faderLevel}
+            onChange={event => {
+                event.preventDefault();
+                this.handleLevel(event);
+            }}
+        />
+        <VuMeter channelIndex = {this.channelIndex}/>
+        <br/>
+        <button
+            className="channel-pgm-button"
+            style={this.props.store.channelsReducer[0].channel[this.channelIndex].pgmOn
+                ? {backgroundColor: "green"}
+                : {backgroundColor: "rgb(59, 73, 59)"}
+            }
+            onClick={event => {
+                this.handlePgm(event);
+            }}
+        >PGM</button>
+        <br/>
+        <button
+            className="channel-pst-button"
+            style={this.props.store.channelsReducer[0].channel[this.channelIndex].pstOn
+                ? {backgroundColor: "red"}
+                : {backgroundColor: "rgb(66, 27, 27)"}
+            }
+            onClick={event => {
+                this.handlePst(event);
+            }}
+        >PST</button>
+        <br/>
+        <div className="channel-name">
+            CH {this.channelIndex + 1}
+        </div>
+        <div className="channel-snap-body">
+            {this.props.store.channelsReducer[0].channel[this.channelIndex].snapOn
+                .map((none, index) => {
+                    return this.snapButton(index)
+                })
+            }
+        </div>
+        <br/>
+        {parseInt(this.props.store.channelsReducer[0].channel[this.channelIndex].outputLevel*100)/100}
+        </div>
+        )
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        store: state
+    }
+}
+
+export default connect(mapStateToProps)(Channel);

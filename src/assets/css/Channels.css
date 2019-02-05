@@ -1,0 +1,54 @@
+.channels-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: black;
+}
+
+.channels-mix-body {
+    background-color: #414040;
+    color: white;
+    min-height: 150px;
+    background-color: #2f2f2f;
+    margin: 4px;
+    border-radius: 10px;
+}
+
+
+.channels-mix-button {
+    outline : none;
+    -moz-outline : none;
+    color: white;
+    height: 90px;
+    width: 90px;
+    border-color: rgb(18, 70, 11);
+    background-color: rgb(6, 70, 6);
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 280px;
+    border-radius: 7px;
+}
+
+.channels-snap-mix-body {
+    margin-top: 38px;
+}
+
+.channels-snap-mix-line {
+    margin-top: 4px;
+    background-color: #2b2b2b;
+}
+
+.channels-snap-mix-button {
+    outline : none;
+    -moz-outline : none;
+    background-color: rgb(199, 202, 0);
+    color: rgb(44, 44, 44);
+    margin-left: 20px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    height: 25px;
+    width: 60px;
+    border-radius: 7px;
+    border-color: rgb(99, 99, 99);
+}
+
