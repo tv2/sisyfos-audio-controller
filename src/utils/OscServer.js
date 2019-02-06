@@ -28,14 +28,6 @@ export class OscServer {
         });
     }
 
-    extractOscData(data) {
-        return data.split("{channel}");
-    }
-
-    oscString(command, channel) {
-        return command.replace("{channel}", channel);
-    }
-
     setupOscServer() {
         this.oscConnection
         .on("ready", () => {
@@ -47,7 +39,9 @@ export class OscServer {
             });
         })
         .on('message', (message) => {
-            if (message.address.substr(-6) === 'volume') {
+            if (
+                this.checkOscCommand(message.address, oscPreset.fromMixer.CHANNEL_FADER_LEVEL)
+            ) {
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
@@ -59,9 +53,7 @@ export class OscServer {
                 }
             }
             if (
-                message.address.substr(-2) === 'vu' &&
-                message.address.substr(0, 6) === "/track" &&
-                message.address.length > 9
+                this.checkOscCommand(message.address, oscPreset.fromMixer.CHANNEL_VU)
             ) {
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
@@ -70,7 +62,9 @@ export class OscServer {
                     level: message.args[0]
                 });
             }
-            if (message.address.substr(-4) ==="name") {
+            if (
+                this.checkOscCommand(message.address, oscPreset.fromMixer.CHANNEL_NAME)
+            ) {
                     let ch = message.address.split("/")[2];
                     window.storeRedux.dispatch({
                         type:'SET_CHANNEL_LABEL',
@@ -87,6 +81,20 @@ export class OscServer {
 
         this.oscConnection.open();
         console.log(`OSC listening on port ` + DEFAULTS.DEFAULT_OSC_PORT );
+    }
+
+
+    checkOscCommand(message, command) {
+        let cmdArray = command.split("{channel}");
+        if (
+            message.substr(0, cmdArray[0].length) === cmdArray[0] &&
+            message.substr(-cmdArray[1].length) === cmdArray[1] &&
+            message.length >= command.replace("{channel}", "").length
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     sendOscMessage(oscAddress, value, type) {
