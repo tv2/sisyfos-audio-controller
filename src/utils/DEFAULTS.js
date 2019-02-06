@@ -1,6 +1,7 @@
 //System Config:
 export const DEFAULT_OSC_PORT = 8000;
-export const DEFAULT_MACHINE_OSC_PORT = 8001;
+export const DEFAULT_REMOTE_OSC_IP = "0.0.0.0";
+export const DEFAULT_REMOTE_OSC_PORT = 8001;
 
 //Mixer Config:
 export const NUMBER_OF_CHANNELS = 8;

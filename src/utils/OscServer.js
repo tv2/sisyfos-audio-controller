@@ -18,8 +18,8 @@ export class OscServer {
         this.oscConnection = new osc.UDPPort({
             localAddress: "0.0.0.0",
             localPort: DEFAULTS.DEFAULT_OSC_PORT,
-            remoteAddress: "0.0.0.0",
-            remotePort: DEFAULTS.DEFAULT_MACHINE_OSC_PORT
+            remoteAddress: DEFAULTS.DEFAULT_REMOTE_OSC_IP,
+            remotePort: DEFAULTS.DEFAULT_REMOTE_OSC_PORT
         });
         this.setupOscServer();
 
