@@ -61,14 +61,16 @@ class Channel extends PureComponent {
                 style= {
                     Object.assign(
                         this.props.store.settings[0].showSnaps
-                        ?   {width: "220px"}
-                        :   {width: "460px"},
-                        this.props.store.settings[0].showSnaps
-                        ?   {marginTop: "140px"}
-                        :   {marginTop: "260px"},
-                        this.props.store.settings[0].showSnaps
-                        ?   {transform: "translate(-40px, 0) rotate(270deg) "}
-                        :   {transform: "translate(-160px, 0) rotate(270deg) "}
+                        ?   {
+                                width: "220px",
+                                marginTop: "140px",
+                                transform: "translate(-40px, 0) rotate(270deg) "
+                            }
+                        :   {
+                                width: "460px",
+                                marginTop: "260px",
+                                transform: "translate(-160px, 0) rotate(270deg) "
+                            }
                     )
                 }
                 id="typeinp"
@@ -92,14 +94,17 @@ class Channel extends PureComponent {
                 style={
                     Object.assign(
                         this.props.store.channels[0].channel[this.channelIndex].pgmOn
-                        ? {backgroundColor: "green"}
-                        : {backgroundColor: "rgb(59, 73, 59)"},
+                        ? {backgroundColor: "red"}
+                        : {backgroundColor: "rgb(66, 27, 27)"},
                         this.props.store.settings[0].showSnaps
-                        ?   {height: "40px"}
-                        :   {height: "90px"},
-                        this.props.store.settings[0].showSnaps
-                        ?   {marginTop: "130px"}
-                        :   {marginTop: "260px"}
+                        ?   {
+                                height: "40px",
+                                marginTop: "130px"
+                            }
+                        :   {
+                                height: "90px",
+                                marginTop: "260px"
+                            }
                     )
                 }
                 onClick={event => {
@@ -116,8 +121,8 @@ class Channel extends PureComponent {
                 style={
                     Object.assign(
                         this.props.store.channels[0].channel[this.channelIndex].pstOn
-                        ? {backgroundColor: "red"}
-                        : {backgroundColor: "rgb(66, 27, 27)"},
+                        ? {backgroundColor: "green"}
+                        : {backgroundColor: "rgb(59, 73, 59)"},
                         this.props.store.settings[0].showSnaps
                         ?   {height: "40px"}
                         :   {height: "90px"}

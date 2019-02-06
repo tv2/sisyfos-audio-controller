@@ -15,18 +15,3 @@ export const MIN_METER = 0;
 export const MAX_METER = 1;
 export const ZERO_METER = 0.75;
 export const TEST_METER = 0.6;
-
-
-//OSC data from mixer:
-//FaderLevel:
-
-//Gain:
-
-//VU
-
-//TrackName
-
-//OSC data to mixer:
-//Faderlevel:
-
-//Gain:

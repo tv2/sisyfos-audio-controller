@@ -24,4 +24,29 @@ export const saveSettings = (settings) => {
 }
 
 
+export const loadSnapshotState = (stateSnapshot) => {
+    try {
+        const stateFromFile = JSON.parse(fs.readFileSync(folder + "/state.json"));
+        window.storeRedux.dispatch({
+            type:'SET_COMPLETE_STATE',
+            allState: stateFromFile
+        });
+    }
+    catch (error) {
+        saveSnapshotState(stateSnapshot);
+        window.storeRedux.dispatch({
+            type:'SET_COMPLETE_STATE',
+            allState: stateSnapshot
+        });
+    }
+};
+
+export const saveSnapshotState = (stateSnapshot) => {
+    let json = JSON.stringify(stateSnapshot);
+    fs.writeFile(folder + "/state.json", json, 'utf8', (error)=>{
+        console.log(error);
+    });
+    console.log("StateStorage updated");
+}
+
 

@@ -4,6 +4,10 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 
 //Utils:
 import * as DEFAULTS from '../utils/DEFAULTS';
+import { OscPresets } from '../utils/OSCPRESETS';
+
+
+const oscPreset = OscPresets.reaper;
 
 export class OscServer {
     constructor() {
@@ -22,6 +26,14 @@ export class OscServer {
         const unsubscribe = window.storeRedux.subscribe(() => {
             this.store = window.storeRedux.getState();
         });
+    }
+
+    extractOscData(data) {
+        return data.split("{channel}");
+    }
+
+    oscString(command, channel) {
+        return command.replace("{channel}", channel);
     }
 
     setupOscServer() {
@@ -96,11 +108,13 @@ export class OscServer {
     updateOscLevels() {
         this.store.channels[0].channel.map((channel, index) => {
             this.fadeInOut(index);
-            this.sendOscMessage("/track/" + (index +1 ) + "/fx/1/fxparam/1/value",
-            channel.outputLevel,
-            "f"
+            this.sendOscMessage(
+                oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", index+1),
+                channel.outputLevel,
+                "f"
             );
-            this.sendOscMessage("/track/" + (index +1 ) + "/volume",
+            this.sendOscMessage(
+                oscPreset.toMixer.CHANNEL_FADER_LEVEL.replace("{channel}", index+1),
             channel.faderLevel,
             "f"
             );
@@ -110,7 +124,7 @@ export class OscServer {
     updateOscLevel(channelIndex) {
         this.fadeInOut(channelIndex);
         this.sendOscMessage(
-            "/track/" + (channelIndex + 1 ) + "/volume",
+            oscPreset.toMixer.CHANNEL_FADER_LEVEL.replace("{channel}", channelIndex+1),
             this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
         );
@@ -130,7 +144,7 @@ export class OscServer {
                         level: val
                     });
                     this.sendOscMessage(
-                        "/track/" + (channelIndex + 1 ) + "/fx/1/fxparam/1/value",
+                        oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", channelIndex+1),
                         this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"
                     );
@@ -149,7 +163,7 @@ export class OscServer {
                         level: val
                     });
                     this.sendOscMessage(
-                        "/track/" + (channelIndex + 1 ) + "/fx/1/fxparam/1/value",
+                        oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", channelIndex+1),
                         this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"
                     );

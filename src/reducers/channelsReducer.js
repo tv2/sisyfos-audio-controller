@@ -26,6 +26,9 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
     let { ...nextState } = state;
 
     switch(action.type) {
+        case 'SET_COMPLETE_STATE':
+            nextState[0] = action.allState;
+            return nextState;
         case 'SET_FADER_LEVEL': //channel:  level:
             nextState[0].channel[action.channel].faderLevel = action.level;
             return nextState;
