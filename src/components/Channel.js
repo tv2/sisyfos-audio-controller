@@ -16,6 +16,8 @@ class Channel extends PureComponent {
         this.state = {
         };
 
+        this.pgmButton = this.pgmButton.bind(this);
+        this.pstButton = this.pstButton.bind(this);
         this.snapButton = this.snapButton.bind(this);
         this.renderLabel = this.renderLabel.bind(this);
     }
@@ -53,6 +55,80 @@ class Channel extends PureComponent {
         });
     }
 
+    fader() {
+        return (
+            <input className="channel-volume-slider"
+                style= {
+                    Object.assign(
+                        this.props.store.settings[0].showSnaps
+                        ?   {width: "220px"}
+                        :   {width: "460px"},
+                        this.props.store.settings[0].showSnaps
+                        ?   {marginTop: "140px"}
+                        :   {marginTop: "260px"},
+                        this.props.store.settings[0].showSnaps
+                        ?   {transform: "translate(-40px, 0) rotate(270deg) "}
+                        :   {transform: "translate(-160px, 0) rotate(270deg) "}
+                    )
+                }
+                id="typeinp"
+                type="range"
+                min={DEFAULTS.MIN_FADER}
+                max={DEFAULTS.MAX_FADER}
+                step={DEFAULTS.STEP_FADER}
+                value= {this.props.store.channels[0].channel[this.channelIndex].faderLevel}
+                onChange={event => {
+                    event.preventDefault();
+                    this.handleLevel(event);
+                }}
+            />
+        )
+    }
+
+    pgmButton() {
+        return (
+            <button
+                className="channel-pgm-button"
+                style={
+                    Object.assign(
+                        this.props.store.channels[0].channel[this.channelIndex].pgmOn
+                        ? {backgroundColor: "green"}
+                        : {backgroundColor: "rgb(59, 73, 59)"},
+                        this.props.store.settings[0].showSnaps
+                        ?   {height: "40px"}
+                        :   {height: "90px"},
+                        this.props.store.settings[0].showSnaps
+                        ?   {marginTop: "130px"}
+                        :   {marginTop: "260px"}
+                    )
+                }
+                onClick={event => {
+                    this.handlePgm(event);
+                }}
+            >PGM</button>
+        )
+    }
+
+    pstButton() {
+        return (
+            <button
+                className="channel-pst-button"
+                style={
+                    Object.assign(
+                        this.props.store.channels[0].channel[this.channelIndex].pstOn
+                        ? {backgroundColor: "red"}
+                        : {backgroundColor: "rgb(66, 27, 27)"},
+                        this.props.store.settings[0].showSnaps
+                        ?   {height: "40px"}
+                        :   {height: "90px"}
+                    )
+                }
+                onClick={event => {
+                    this.handlePst(event);
+                }}
+            >PST</button>
+        )
+    }
 
     snapButton(snapIndex) {
         if (this.props.store.settings[0].showSnaps) {
@@ -94,52 +170,24 @@ class Channel extends PureComponent {
     render() {
         return (
         <div className="channel-body">
-        <input className="channel-volume-slider"
-            id="typeinp"
-            type="range"
-            min={DEFAULTS.MIN_FADER}
-            max={DEFAULTS.MAX_FADER}
-            step={DEFAULTS.STEP_FADER}
-            value= {this.props.store.channels[0].channel[this.channelIndex].faderLevel}
-            onChange={event => {
-                event.preventDefault();
-                this.handleLevel(event);
-            }}
-        />
-        <VuMeter channelIndex = {this.channelIndex}/>
-        <br/>
-        <button
-            className="channel-pgm-button"
-            style={this.props.store.channels[0].channel[this.channelIndex].pgmOn
-                ? {backgroundColor: "green"}
-                : {backgroundColor: "rgb(59, 73, 59)"}
-            }
-            onClick={event => {
-                this.handlePgm(event);
-            }}
-        >PGM</button>
-        <br/>
-        <button
-            className="channel-pst-button"
-            style={this.props.store.channels[0].channel[this.channelIndex].pstOn
-                ? {backgroundColor: "red"}
-                : {backgroundColor: "rgb(66, 27, 27)"}
-            }
-            onClick={event => {
-                this.handlePst(event);
-            }}
-        >PST</button>
-        <br/>
-        {this.renderLabel()}
-        <div className="channel-snap-body">
-            {this.props.store.channels[0].channel[this.channelIndex].snapOn
-                .map((none, index) => {
-                    return this.snapButton(index)
-                })
-            }
-        </div>
-        <br/>
-        {parseInt(this.props.store.channels[0].channel[this.channelIndex].outputLevel*100)/100}
+            {this.fader()}
+            <VuMeter channelIndex = {this.channelIndex}/>
+            <br/>
+            {this.pgmButton()}
+            <br/>
+            {this.pstButton()}
+            <br/>
+            {this.renderLabel()}
+            <div className="channel-gain-label">
+                GAIN: {parseInt(this.props.store.channels[0].channel[this.channelIndex].outputLevel*100)/100}
+            </div>
+            <div className="channel-snap-body">
+                {this.props.store.channels[0].channel[this.channelIndex].snapOn
+                    .map((none, index) => {
+                        return this.snapButton(index)
+                    })
+                }
+            </div>
         </div>
         )
     }

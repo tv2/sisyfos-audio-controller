@@ -2,12 +2,14 @@
     display: flex;
     flex-direction: row;
     background-color: black;
+    min-height: 760px;
 }
 
 .channels-mix-body {
+    max-width: 100px;
+    min-height: 800px;
     background-color: #414040;
     color: white;
-    min-height: 150px;
     background-color: #2f2f2f;
     margin: 4px;
     border-radius: 10px;
@@ -17,11 +19,11 @@
     outline : none;
     -moz-outline : none;
     color: white;
-    height: 30px;
+    height: 60px;
     width: 90px;
     border-color: rgb(71, 71, 71);
     background-color: rgb(53, 53, 53);
-    margin-left: 4px;
+    margin-left: 5px;
     margin-right: 4px;
     margin-top: 10px;
     border-radius: 7px;
@@ -37,12 +39,12 @@
     background-color: rgb(6, 70, 6);
     margin-left: 4px;
     margin-right: 4px;
-    margin-top: 240px;
+    margin-top: 212px;
     border-radius: 7px;
 }
 
 .channels-snap-mix-body {
-    margin-top: 38px;
+    margin-top: 58px;
 }
 
 .channels-snap-mix-line {

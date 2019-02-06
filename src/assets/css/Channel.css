@@ -1,7 +1,6 @@
 .channel-body {
     background-color: #414040;
     color: white;
-    min-height: 150px;
     background-color: #2f2f2f;
     margin: 4px;
     border-radius: 10px;
@@ -9,6 +8,12 @@
 }
 
 .channel-name {
+    margin-top: 10px;
+    text-align: center;
+}
+.channel-gain-label {
+    color: #777777;
+    font-size: 0.8em;
     margin-top: 10px;
     text-align: center;
 }
@@ -63,16 +68,16 @@
 
 
 .channel-volume-slider {
+
     transform: translate(-40px, 0) rotate(270deg) ;
     -moz-transform: translate(-40px, 0) rotate(270deg) ;
+
     /*do same for other browsers if required*/
     background-color: rgb(39, 39, 39);
 }
 
 input[type=range] {
     -webkit-appearance: none;
-    width: 220px;
-    margin-top: 140px;
 }
 
 input[type=range]:focus {

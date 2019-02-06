@@ -45,21 +45,17 @@ class Channels extends PureComponent {
     }
 
     snapMixButton(snapIndex) {
-        if (this.props.store.settings[0].showSnaps) {
-            return (
-                <div key={snapIndex} className="channels-snap-mix-line">
-                    <button
-                        className="channels-snap-mix-button"
-                        onClick={event => {
-                            this.handleSnapMix(snapIndex);
-                        }}
-                    >SNAP {snapIndex + 1 }</button>
-                    <br/>
-                </div>
-            )
-        } else {
-            return ("")
-        }
+        return (
+            <div key={snapIndex} className="channels-snap-mix-line">
+                <button
+                    className="channels-snap-mix-button"
+                    onClick={event => {
+                        this.handleSnapMix(snapIndex);
+                    }}
+                >SNAP {snapIndex + 1 }</button>
+                <br/>
+            </div>
+        )
     }
 
     render() {
