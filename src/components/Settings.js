@@ -14,10 +14,6 @@ class Channels extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount() {
-
-    }
-
     handleChange() {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy[event.target.name] = event.target.value;
@@ -116,23 +112,6 @@ class Channels extends PureComponent {
         )
     }
 }
-
-/*
-        numberOfChannels: 8,
-        numberOfSnaps: 8,
-        fader: {
-            min: 0,
-            max: 1,
-            zero: 0.75,
-            step: 0.01,
-        },
-        meter: {
-            min: 0,
-            max: 1,
-            zero: 0.75,
-            test: 0.6,
-        },
-*/
 
 const mapStateToProps = (state) => {
     return {

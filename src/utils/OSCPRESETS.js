@@ -1,6 +1,7 @@
 export const OscPresets =
     {
         reaper: {
+            initializeCommand: [], // oscMessage, value, type
             fromMixer: {
                 CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
                 CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
@@ -13,6 +14,13 @@ export const OscPresets =
             },
         },
         behringer: {
+            initializeCommand: [
+                {
+                    oscMessage: "/mixer",
+                    value: 1,
+                    type: "f"
+                }
+            ],
             fromMixer: {
                 CHANNEL_FADER_LEVEL: '/ch/{channel}/volume',
                 CHANNEL_OUT_GAIN: '/ch/{channel}/fx/1/fxparam/1/value',

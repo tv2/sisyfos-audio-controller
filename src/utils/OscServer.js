@@ -3,7 +3,6 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
-import * as DEFAULTS from '../utils/DEFAULTS';
 import { OscPresets } from '../utils/OSCPRESETS';
 
 
@@ -33,11 +32,9 @@ export class OscServer {
     setupOscServer() {
         this.oscConnection
         .on("ready", () => {
-            let ipAddresses = this.getThisMachineIpAddresses();
-
-            console.log("Listening for OSC over UDP.");
-            ipAddresses.forEach((address) => {
-                console.log("OSC Host:", address + ", Port:", this.oscConnection.options.localPort);
+            oscPreset.initializeCommand.map((item) => {
+                this.sendOscMessage(item.oscMessage, item.value, item.type);
+                console.log("Listening for OSC over UDP.");
             });
         })
         .on('message', (message) => {
@@ -99,14 +96,10 @@ export class OscServer {
         }
     }
 
-    sendOscMessage(oscAddress, value, type) {
+    sendOscMessage(oscMessage, value, type) {
         this.oscConnection.send({
-            address: oscAddress,
+            address: oscMessage,
             args: [
-                {
-                    type: type,
-                    value: value
-                },
                 {
                     type: type,
                     value: value
@@ -181,21 +174,5 @@ export class OscServer {
             }, 1);
         }
     }
-
-    getThisMachineIpAddresses() {
-        let interfaces = os.networkInterfaces();
-        let ipAddresses = [];
-        for (let deviceName in interfaces) {
-            let addresses = interfaces[deviceName];
-            for (let i = 0; i < addresses.length; i++) {
-                let addressInfo = addresses[i];
-                if (addressInfo.family === "IPv4" && !addressInfo.internal) {
-                    ipAddresses.push(addressInfo.address);
-                }
-            }
-        }
-        return ipAddresses;
-    }
-
 }
 
