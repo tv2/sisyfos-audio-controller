@@ -3,7 +3,6 @@
     top: 100px;
     left: 150px;
     width: 700px;
-    height: 300px;
     background-color: rgb(31, 31, 31);
     border-color: rgb(124, 124, 124);
     border-style: solid;
@@ -12,8 +11,49 @@
 }
 
 .settings-header{
+    margin-top: 10px;
+    margin-bottom: 20px;
     color: white;
-    font-size: 110%;
+    font-size: 140%;
 }
 
+
+.settings-items-body {
+    margin-top: 10px;
+    font-size: 1.1em;
+    background-color: rgb(31, 31, 31);
+}
+
+.settings-input-field {
+    white-space: nowrap;
+    margin: 5px;
+    color: rgb(255, 255, 255);
+}
+
+input[type=text] {
+    text-align: right;
+    margin: 5px;
+    font-size: 1.1em;
+    border: 1px solid rgb(104, 104, 104);
+    background-color: rgb(87, 86, 86);
+    color: white;
+    border-radius: 0;
+    -webkit-appearance: none;
+}
+
+
+.settings-save-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    left: calc(50% - 90px);
+    font-size: 1.1em;
+    width: 180px;
+    line-height: 300%;
+    background: rgb(43, 4, 4);
+    color: white;
+    font-family: 'Roboto Condensed', sans-serif;
+    border-radius: 16px;
+    border-width: 0;
+    outline: 0;
+}
 
