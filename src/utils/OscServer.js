@@ -147,7 +147,7 @@ export class OscServer {
                 if ( val >= this.store.settings[0].fader.zero){
                     clearInterval(timer);
                 } else {
-                    val = val + 3*this.store.settings[0].fader.zero;
+                    val = val + 3*this.store.settings[0].fader.step;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
