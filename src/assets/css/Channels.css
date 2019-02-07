@@ -29,6 +29,22 @@
     border-radius: 7px;
 }
 
+
+.channels-show-settings-button {
+    outline : none;
+    -moz-outline : none;
+    color: white;
+    height: 60px;
+    width: 90px;
+    border-color: rgb(71, 71, 71);
+    background-color: rgb(53, 53, 53);
+    margin-left: 5px;
+    margin-right: 4px;
+    margin-top: 10px;
+    border-radius: 7px;
+}
+
+
 .channels-mix-button {
     outline : none;
     -moz-outline : none;
@@ -39,7 +55,7 @@
     background-color: rgb(6, 70, 6);
     margin-left: 4px;
     margin-right: 4px;
-    margin-top: 212px;
+    margin-top: 146px;
     border-radius: 7px;
 }
 

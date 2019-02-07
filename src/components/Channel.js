@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import VuMeter from './VuMeter';
 //assets:
 import '../assets/css/Channel.css';
-//Utils:
-import * as DEFAULTS from '../utils/DEFAULTS';
+
 
 
 class Channel extends PureComponent {
@@ -75,9 +74,9 @@ class Channel extends PureComponent {
                 }
                 id="typeinp"
                 type="range"
-                min={DEFAULTS.MIN_FADER}
-                max={DEFAULTS.MAX_FADER}
-                step={DEFAULTS.STEP_FADER}
+                min={this.props.store.settings[0].fader.min}
+                max={this.props.store.settings[0].fader.max}
+                step={this.props.store.settings[0].fader.step}
                 value= {this.props.store.channels[0].channel[this.channelIndex].faderLevel}
                 onChange={event => {
                     event.preventDefault();

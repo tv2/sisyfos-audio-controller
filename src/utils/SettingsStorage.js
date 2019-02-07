@@ -7,6 +7,7 @@ const folder = electron.remote.app.getPath('userData');
 export const loadSettings = (storeRedux) => {
     let settingsInterface = storeRedux.settings[0];
     try {
+
         const settingsFromFile = JSON.parse(fs.readFileSync(folder + "/settings.json"));
         return (settingsFromFile);
     }

@@ -4,16 +4,16 @@ import { connect } from "react-redux";
 
 import '../assets/css/App.css';
 import Channels from './Channels';
+import Settings from './Settings';
 
 //Utils:
 import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
-import * as DEFAULTS from '../utils/DEFAULTS';
 import { OscServer } from '../utils/OscServer';
 
 
 class App extends Component {
     componentWillMount() {
-        this.oscServer = new OscServer();
+        this.oscServer = new OscServer(this.props.store);
         this.snapShopStoreTimer();
         loadSnapshotState(this.props.store.channels[0]);
     }
@@ -29,6 +29,7 @@ class App extends Component {
         return (
         <div>
             <Channels oscServer = {this.oscServer} />
+            {this.props.store.settings[0].showSettings ? <Settings/> : <div></div>}
         </div>
         )
     }

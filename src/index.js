@@ -16,9 +16,10 @@ const storeRedux = createStore(
 );
 window.storeRedux = storeRedux;
 
+
 storeRedux.dispatch({
     type:'UPDATE_SETTINGS',
-    data: loadSettings(storeRedux.getState())
+    settings: loadSettings(storeRedux.getState())
 });
 
 // Since we are using HtmlWebpackPlugin WITHOUT a template, we should create our own root node in the body element before rendering into it

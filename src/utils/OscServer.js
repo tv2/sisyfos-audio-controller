@@ -10,22 +10,24 @@ import { OscPresets } from '../utils/OSCPRESETS';
 const oscPreset = OscPresets.reaper;
 
 export class OscServer {
-    constructor() {
+    constructor(initialStore) {
         this.sendOscMessage = this.sendOscMessage.bind(this);
         this.updateOscLevels = this.updateOscLevels.bind(this);
         this.fadeInOut = this.fadeInOut.bind(this);
 
-        this.oscConnection = new osc.UDPPort({
-            localAddress: "0.0.0.0",
-            localPort: DEFAULTS.DEFAULT_OSC_PORT,
-            remoteAddress: DEFAULTS.DEFAULT_REMOTE_OSC_IP,
-            remotePort: DEFAULTS.DEFAULT_REMOTE_OSC_PORT
-        });
-        this.setupOscServer();
-
+        this.store = initialStore;
         const unsubscribe = window.storeRedux.subscribe(() => {
             this.store = window.storeRedux.getState();
         });
+
+        this.oscConnection = new osc.UDPPort({
+            localAddress: "0.0.0.0",
+            localPort: this.store.settings[0].oscPort,
+            remoteAddress: this.store.settings[0].machineOscIp,
+            remotePort: this.store.settings[0].machineOscPort
+        });
+        this.setupOscServer();
+
     }
 
     setupOscServer() {
@@ -80,7 +82,7 @@ export class OscServer {
         });
 
         this.oscConnection.open();
-        console.log(`OSC listening on port ` + DEFAULTS.DEFAULT_OSC_PORT );
+        console.log(`OSC listening on port ` + this.store.settings[0].oscPort );
     }
 
 
@@ -142,10 +144,10 @@ export class OscServer {
         if (this.store.channels[0].channel[channelIndex].pgmOn) {
             let val = this.store.channels[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
-                if ( val >= DEFAULTS.ZERO_FADER){
+                if ( val >= this.store.settings[0].fader.zero){
                     clearInterval(timer);
                 } else {
-                    val = val + 3*DEFAULTS.STEP_FADER;
+                    val = val + 3*this.store.settings[0].fader.zero;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
@@ -161,10 +163,10 @@ export class OscServer {
         } else {
             let val = this.store.channels[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
-                if ( val <= DEFAULTS.MIN_FADER){
+                if ( val <= this.store.settings[0].fader.min){
                     clearInterval(timer);
                 } else {
-                    val = val - 3*DEFAULTS.STEP_FADER;
+                    val = val - 3*this.store.settings[0].fader.step;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,

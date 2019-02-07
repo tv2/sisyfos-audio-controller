@@ -6,7 +6,7 @@ const defaultChannelsReducerState = () => {
     }];
     for (let i=0; i < DEFAULTS.NUMBER_OF_CHANNELS; i++) {
         defaultObj[0].channel.push({
-                faderLevel: DEFAULTS.ZERO_FADER,
+                faderLevel: 0,
                 label: "",
                 outputLevel: 0.0,
                 pgmOn: false,
@@ -40,12 +40,6 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
             return nextState;
         case 'SET_CHANNEL_LABEL': //channel:  label:
             nextState[0].channel[action.channel].label = action.label;
-            return nextState;
-        case 'FADE_IN': //channel:
-            nextState[0].channel[action.channel].outputLevel = nextState[0].channel[action.channel].faderLevel;
-            return nextState;
-        case 'FADE_OUT': //channel
-            nextState[0].channel[action.channel].outputLevel = DEFAULTS.MIN_FADER;
             return nextState;
         case 'SET_PGM': //channel
             nextState[0].channel[action.channel].pgmOn = !nextState[0].channel[action.channel].pgmOn;

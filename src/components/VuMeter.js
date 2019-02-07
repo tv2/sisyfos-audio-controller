@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 
 //assets:
 import '../assets/css/VuMeter.css';
-//Utils:
-import * as DEFAULTS from '../utils/DEFAULTS';
 
 class VuMeter extends PureComponent {
     constructor(props) {
@@ -21,33 +19,33 @@ class VuMeter extends PureComponent {
     }
 
     totalHeight() {
-        return (this.props.store.settings[0].showSnaps ? 1 : 2) * 200 / (DEFAULTS.MAX_METER - DEFAULTS.MIN_METER);
+        return (this.props.store.settings[0].showSnaps ? 1 : 2) * 200 / (this.props.store.settings[0].meter.max - this.props.store.settings[0].meter.min);
     }
 
     calcLower() {
         let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
-        if (val >= DEFAULTS.TEST_METER) {
-            val = DEFAULTS.TEST_METER;
+        if (val >= this.props.store.settings[0].meter.test) {
+            val = this.props.store.settings[0].meter.test;
         }
         return this.totalHeight()*val;
     }
 
     calcMiddle() {
         let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
-        if (val < DEFAULTS.TEST_METER) {
-            val = DEFAULTS.TEST_METER;
-        } else if (val >= DEFAULTS.ZERO_METER) {
-            val = DEFAULTS.ZERO_METER;
+        if (val < this.props.store.settings[0].meter.test) {
+            val = this.props.store.settings[0].meter.test;
+        } else if (val >= this.props.store.settings[0].meter.zero) {
+            val = this.props.store.settings[0].meter.zero;
         }
-        return this.totalHeight()*(val-DEFAULTS.TEST_METER)+1;
+        return this.totalHeight()*(val-this.props.store.settings[0].meter.test)+1;
     }
 
     calcUpper() {
         let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
-        if (val < DEFAULTS.ZERO_METER) {
-            val = DEFAULTS.ZERO_METER;
+        if (val < this.props.store.settings[0].meter.zero) {
+            val = this.props.store.settings[0].meter.zero;
         }
-        return this.totalHeight()*(val-DEFAULTS.ZERO_METER)+1;
+        return this.totalHeight()*(val-this.props.store.settings[0].meter.zero)+1;
     }
 
     render() {
@@ -72,7 +70,7 @@ class VuMeter extends PureComponent {
                     style={
                         {
                             "height": this.calcMiddle(),
-                            "top": this.totalHeight()*DEFAULTS.TEST_METER+5
+                            "top": this.totalHeight()*this.props.store.settings[0].meter.test+5
                         }
                     }
                 ></canvas>
@@ -81,7 +79,7 @@ class VuMeter extends PureComponent {
                     style={
                         {
                             "height": this.calcUpper(),
-                            "top": this.totalHeight()*DEFAULTS.ZERO_METER+5
+                            "top": this.totalHeight()*this.props.store.settings[0].meter.zero+5
                         }
                     }></canvas>
 

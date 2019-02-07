@@ -2,14 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 
 import Channel from './Channel';
-
-//Utils:
-import * as DEFAULTS from '../utils/DEFAULTS';
 import '../assets/css/Channels.css';
-
-
-
-
 
 class Channels extends PureComponent {
     constructor(props) {
@@ -41,6 +34,13 @@ class Channels extends PureComponent {
     handleShowSnaps() {
         this.props.dispatch({
             type:'TOGGLE_SHOW_SNAPS',
+        });
+    }
+
+
+    handleShowSettings() {
+        this.props.dispatch({
+            type:'TOGGLE_SHOW_SETTINGS',
         });
     }
 
@@ -77,6 +77,12 @@ class Channels extends PureComponent {
                         this.handleShowSnaps();
                     }}
                 >SNAPS</button>
+                <button
+                    className="channels-show-settings-button"
+                    onClick={() => {
+                        this.handleShowSettings();
+                    }}
+                >SETTINGS</button>
                 <button
                     className="channels-mix-button"
                     style = {{backgroundColor: "green"}}
