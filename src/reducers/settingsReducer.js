@@ -32,6 +32,10 @@ export const settings = (state = defaultSettingsReducerState, action) => {
         case 'TOGGLE_SHOW_SNAPS':
             nextState[0].showSnaps = !nextState[0].showSnaps;
             return nextState;
+            case 'UPDATE_SETTINGS':
+            nextState[0] = action.settings;
+            return nextState;
+
         default:
         return nextState;
     }
