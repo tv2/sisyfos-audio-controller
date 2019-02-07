@@ -2,14 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 
 import Channel from './Channel';
-
-//Utils:
-import * as DEFAULTS from '../utils/DEFAULTS';
 import '../assets/css/Channels.css';
-
-
-
-
 
 class Channels extends PureComponent {
     constructor(props) {

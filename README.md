@@ -21,5 +21,4 @@ cd producers-audio-mixer
 yarn
 yarn start
 ```
-Settings for ports number of channels etc. are in ./src/utils/DEFAULTS.js
 Settings for OSCprotol are in ./src/utils/OSCPRESETS.js
