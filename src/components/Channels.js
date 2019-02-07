@@ -37,6 +37,13 @@ class Channels extends PureComponent {
         });
     }
 
+
+    handleShowSettings() {
+        this.props.dispatch({
+            type:'TOGGLE_SHOW_SETTINGS',
+        });
+    }
+
     snapMixButton(snapIndex) {
         return (
             <div key={snapIndex} className="channels-snap-mix-line">
@@ -70,6 +77,12 @@ class Channels extends PureComponent {
                         this.handleShowSnaps();
                     }}
                 >SNAPS</button>
+                <button
+                    className="channels-show-settings-button"
+                    onClick={() => {
+                        this.handleShowSettings();
+                    }}
+                >SETTINGS</button>
                 <button
                     className="channels-mix-button"
                     style = {{backgroundColor: "green"}}

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import '../assets/css/App.css';
 import Channels from './Channels';
+import Settings from './Settings';
 
 //Utils:
 import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
@@ -28,6 +29,7 @@ class App extends Component {
         return (
         <div>
             <Channels oscServer = {this.oscServer} />
+            {this.props.store.settings[0].showSettings ? <Settings/> : <div></div>}
         </div>
         )
     }

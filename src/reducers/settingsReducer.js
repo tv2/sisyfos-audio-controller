@@ -1,7 +1,7 @@
 const defaultSettingsReducerState = [
     {
         showSnaps: false,
-        showSettingsPage: false,
+        showSettings: false,
         oscPort: 8000,
         machineOscIp: "0.0.0.0",
         machineOscPort: 8001,
@@ -27,10 +27,11 @@ export const settings = (state = defaultSettingsReducerState, action) => {
 
     switch (action.type) {
         case 'TOGGLE_SHOW_SETTINGS':
-        return nextState;
+            nextState[0].showSettings = !nextState[0].showSettings;
+            return nextState;
         case 'TOGGLE_SHOW_SNAPS':
-        nextState[0].showSnaps = !nextState[0].showSnaps;
-        return nextState;
+            nextState[0].showSnaps = !nextState[0].showSnaps;
+            return nextState;
         default:
         return nextState;
     }
