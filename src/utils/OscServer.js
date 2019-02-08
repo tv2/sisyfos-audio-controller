@@ -104,14 +104,14 @@ export class OscServer {
     }
 
     sendOscMessage(oscMessage, channel, value, type) {
-        let channelString = oscPreset.leadingZeros ? ("0"+channel).slice(-2) : parseString(channel);
+        let channelString = this.oscPreset.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
-                "{number}",
+                "{channel}",
                 channelString
             );
-        if (oscMessage != '') {
+        if (message != '') {
             this.oscConnection.send({
-                address: oscMessage,
+                address: message,
                 args: [
                     {
                         type: type,
