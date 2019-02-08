@@ -80,9 +80,10 @@ export class OscServer {
         this.oscConnection.open();
         console.log(`OSC listening on port ` + this.store.settings[0].oscPort );
 
+        //Ping OSC mixer if OSCpreset needs it.
         if (this.oscPreset.pingTime > 0) {
             let oscTimer = setInterval(
-                () => sendOscMessage(this.oscPreset.pingCommand, "", "f"),
+                () => this.sendOscMessage(this.oscPreset.pingCommand, "", "f"),
                 this.oscPreset.pingTime
             );
         }

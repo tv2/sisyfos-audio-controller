@@ -4,7 +4,7 @@ export const OscPresets =
             mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
             pingCommand: "/not_in_use",
-            pingTime: 0,
+            pingTime: 0,  //Bypass ping when pingTime is zero
             initializeCommand: [], // oscMessage, value, type
             fromMixer: {
                 CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
