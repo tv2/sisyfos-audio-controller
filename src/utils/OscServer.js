@@ -145,7 +145,7 @@ export class OscServer {
         this.sendOscMessage(
             this.oscPreset.toMixer.CHANNEL_OUT_GAIN,
             index+1,
-            channel.outputLevel,
+            this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
         this.sendOscMessage(
