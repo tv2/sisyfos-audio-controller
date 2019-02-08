@@ -2,7 +2,9 @@ const defaultSettingsReducerState = [
     {
         showSnaps: false,
         showSettings: false,
-        oscPort: 8000,
+        oscPreset: "reaper",
+        localOscIp: "0.0.0.0",
+        localOscPort: 8000,
         machineOscIp: "0.0.0.0",
         machineOscPort: 8001,
         numberOfChannels: 8,

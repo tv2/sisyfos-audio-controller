@@ -5,9 +5,6 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 //Utils:
 import { OscPresets } from '../utils/OSCPRESETS';
 
-
-const oscPreset = OscPresets.reaper;
-
 export class OscServer {
     constructor(initialStore) {
         this.sendOscMessage = this.sendOscMessage.bind(this);
@@ -19,11 +16,13 @@ export class OscServer {
             this.store = window.storeRedux.getState();
         });
 
+        this.oscPreset = OscPresets[this.store.settings[0].oscPreset];
+
         this.oscConnection = new osc.UDPPort({
-            localAddress: "0.0.0.0",
-            localPort: this.store.settings[0].oscPort,
+            localAddress: this.store.settings[0].localOscIp,
+            localPort: parseInt(this.store.settings[0].localOscPort),
             remoteAddress: this.store.settings[0].machineOscIp,
-            remotePort: this.store.settings[0].machineOscPort
+            remotePort: parseInt(this.store.settings[0].machineOscPort)
         });
         this.setupOscServer();
 
@@ -32,14 +31,14 @@ export class OscServer {
     setupOscServer() {
         this.oscConnection
         .on("ready", () => {
-            oscPreset.initializeCommand.map((item) => {
+            this.oscPreset.initializeCommand.map((item) => {
                 this.sendOscMessage(item.oscMessage, item.value, item.type);
                 console.log("Listening for OSC over UDP.");
             });
         })
         .on('message', (message) => {
             if (
-                this.checkOscCommand(message.address, oscPreset.fromMixer.CHANNEL_FADER_LEVEL)
+                this.checkOscCommand(message.address, this.oscPreset.fromMixer.CHANNEL_FADER_LEVEL)
             ) {
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
@@ -52,7 +51,7 @@ export class OscServer {
                 }
             }
             if (
-                this.checkOscCommand(message.address, oscPreset.fromMixer.CHANNEL_VU)
+                this.checkOscCommand(message.address, this.oscPreset.fromMixer.CHANNEL_VU)
             ) {
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
@@ -62,7 +61,7 @@ export class OscServer {
                 });
             }
             if (
-                this.checkOscCommand(message.address, oscPreset.fromMixer.CHANNEL_NAME)
+                this.checkOscCommand(message.address, this.oscPreset.fromMixer.CHANNEL_NAME)
             ) {
                     let ch = message.address.split("/")[2];
                     window.storeRedux.dispatch({
@@ -74,7 +73,8 @@ export class OscServer {
             }
 
         })
-        .on('error', () => {
+        .on('error', (error) => {
+            console.log("Error : ", error);
             console.log("Lost OSC connection");
         });
 
@@ -112,12 +112,12 @@ export class OscServer {
         this.store.channels[0].channel.map((channel, index) => {
             this.fadeInOut(index);
             this.sendOscMessage(
-                oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", index+1),
+                this.oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", index+1),
                 channel.outputLevel,
                 "f"
             );
             this.sendOscMessage(
-                oscPreset.toMixer.CHANNEL_FADER_LEVEL.replace("{channel}", index+1),
+                this.oscPreset.toMixer.CHANNEL_FADER_LEVEL.replace("{channel}", index+1),
             channel.faderLevel,
             "f"
             );
@@ -127,7 +127,7 @@ export class OscServer {
     updateOscLevel(channelIndex) {
         this.fadeInOut(channelIndex);
         this.sendOscMessage(
-            oscPreset.toMixer.CHANNEL_FADER_LEVEL.replace("{channel}", channelIndex+1),
+            this.oscPreset.toMixer.CHANNEL_FADER_LEVEL.replace("{channel}", channelIndex+1),
             this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
         );
@@ -147,7 +147,7 @@ export class OscServer {
                         level: val
                     });
                     this.sendOscMessage(
-                        oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", channelIndex+1),
+                        this.oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", channelIndex+1),
                         this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"
                     );
@@ -166,7 +166,7 @@ export class OscServer {
                         level: val
                     });
                     this.sendOscMessage(
-                        oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", channelIndex+1),
+                        this.oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", channelIndex+1),
                         this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"
                     );

@@ -37,8 +37,18 @@ class Channels extends PureComponent {
                     SETTINGS:
                 </div>
                 <label className="settings-input-field">
+                    OSC PRESET :
+                    <input name="oscPreset" type="text" value={this.state.settings.oscPreset} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    LOCAL OSC IP :
+                    <input name="localOscIp" type="text" value={this.state.settings.localOscIp} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
                     LOCAL OSC PORT :
-                    <input name="oscPort" type="text" value={this.state.settings.oscPort} onChange={this.handleChange} />
+                    <input name="localOscPort" type="text" value={this.state.settings.localOscPort} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
