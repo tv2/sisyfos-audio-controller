@@ -80,7 +80,6 @@ export class OscServer {
         this.oscConnection.open();
         console.log(`OSC listening on port ` + this.store.settings[0].oscPort );
 
-        let oscTimer
         if (this.oscPreset.pingTime > 0) {
             let oscTimer = setInterval(
                 () => sendOscMessage(this.oscPreset.pingCommand, "", "f"),
@@ -143,8 +142,14 @@ export class OscServer {
     fadeInOut (channelIndex){
         if (this.store.channels[0].channel[channelIndex].pgmOn) {
             let val = this.store.channels[0].channel[channelIndex].outputLevel;
+
+            let targetVal = this.store.settings[0].fader.zero;
+            if (this.oscPreset.mode === "master") {
+                targetVal = this.store.channels[0].channel[channelIndex].faderLevel;
+            }
+
             let timer = setInterval(() => {
-                if ( val >= this.store.settings[0].fader.zero){
+                if ( val >= targetVal){
                     clearInterval(timer);
                 } else {
                     val = val + 3*this.store.settings[0].fader.step;
