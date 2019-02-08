@@ -3,6 +3,7 @@ export const OscPresets =
         reaper: {
             mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
+            leadingZeros: false,
             pingCommand: "/not_in_use",
             pingTime: 0,  //Bypass ping when pingTime is zero
             initializeCommand: [], // oscMessage, value, type
@@ -20,6 +21,7 @@ export const OscPresets =
         behringer: {
             mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
+            leadingZeros: true,
             pingCommand: "/xremote",
             pingTime: 9500,
             initializeCommand: [

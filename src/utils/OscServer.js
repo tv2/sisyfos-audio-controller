@@ -31,7 +31,7 @@ export class OscServer {
         this.oscConnection
         .on("ready", () => {
             this.oscPreset.initializeCommand.map((item) => {
-                this.sendOscMessage(item.oscMessage, item.value, item.type);
+                this.sendOscMessage(item.oscMessage, 1, item.value, item.type);
                 console.log("Listening for OSC over UDP.");
             });
         })
@@ -83,7 +83,7 @@ export class OscServer {
         //Ping OSC mixer if OSCpreset needs it.
         if (this.oscPreset.pingTime > 0) {
             let oscTimer = setInterval(
-                () => this.sendOscMessage(this.oscPreset.pingCommand, "", "f"),
+                () => this.sendOscMessage(this.oscPreset.pingCommand, 1, "", "f"),
                 this.oscPreset.pingTime
             );
         }
@@ -103,7 +103,12 @@ export class OscServer {
         }
     }
 
-    sendOscMessage(oscMessage, value, type) {
+    sendOscMessage(oscMessage, channel, value, type) {
+        let channelString = oscPreset.leadingZeros ? ("0"+channel).slice(-2) : parseString(channel);
+        let message = oscMessage.replace(
+                "{number}",
+                channelString
+            );
         if (oscMessage != '') {
             this.oscConnection.send({
                 address: oscMessage,
@@ -121,14 +126,16 @@ export class OscServer {
         this.store.channels[0].channel.map((channel, index) => {
             this.fadeInOut(index);
             this.sendOscMessage(
-                this.oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", index+1),
+                this.oscPreset.toMixer.CHANNEL_OUT_GAIN,
+                index+1,
                 channel.outputLevel,
                 "f"
             );
             this.sendOscMessage(
-                this.oscPreset.toMixer.CHANNEL_FADER_LEVEL.replace("{channel}", index+1),
-            channel.faderLevel,
-            "f"
+                this.oscPreset.toMixer.CHANNEL_FADER_LEVEL,
+                index+1,
+                channel.faderLevel,
+                "f"
             );
         });
     }
@@ -136,7 +143,8 @@ export class OscServer {
     updateOscLevel(channelIndex) {
         this.fadeInOut(channelIndex);
         this.sendOscMessage(
-            this.oscPreset.toMixer.CHANNEL_FADER_LEVEL.replace("{channel}", channelIndex+1),
+            this.oscPreset.toMixer.CHANNEL_FADER_LEVEL,
+            channelIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
         );
@@ -162,7 +170,8 @@ export class OscServer {
                         level: val
                     });
                     this.sendOscMessage(
-                        this.oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", channelIndex+1),
+                        this.oscPreset.toMixer.CHANNEL_OUT_GAIN,
+                        channelIndex+1,
                         this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"
                     );
@@ -181,7 +190,8 @@ export class OscServer {
                         level: val
                     });
                     this.sendOscMessage(
-                        this.oscPreset.toMixer.CHANNEL_OUT_GAIN.replace("{channel}", channelIndex+1),
+                        this.oscPreset.toMixer.CHANNEL_OUT_GAIN,
+                        channelIndex+1,
                         this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"
                     );
