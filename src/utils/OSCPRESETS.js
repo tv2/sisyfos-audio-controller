@@ -20,7 +20,7 @@ export const OscPresets =
         behringer: {
             mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
-            pingCommand: "/xremotenfb",
+            pingCommand: "/xremote",
             pingTime: 9500,
             initializeCommand: [
                 {
