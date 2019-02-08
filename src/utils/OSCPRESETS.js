@@ -24,19 +24,19 @@ export const OscPresets =
             pingTime: 9500,
             initializeCommand: [
                 {
-                    oscMessage: "/mixer",
-                    value: 1,
+                    oscMessage: "/info",
+                    value: 0,
                     type: "f"
                 }
             ],
             fromMixer: {
-                CHANNEL_FADER_LEVEL: '/not_in_use/',
+                CHANNEL_FADER_LEVEL: '',
                 CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
                 CHANNEL_VU: '/ch/{channel}/vu',
                 CHANNEL_NAME: '/ch/{channel}/config/name',
             },
             toMixer: {
-                CHANNEL_FADER_LEVEL: '/not_in_use/',
+                CHANNEL_FADER_LEVEL: '',
                 CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
             },
         },

@@ -104,15 +104,17 @@ export class OscServer {
     }
 
     sendOscMessage(oscMessage, value, type) {
-        this.oscConnection.send({
-            address: oscMessage,
-            args: [
-                {
-                    type: type,
-                    value: value
-                }
-            ]
-        });
+        if (oscMessage != '') {
+            this.oscConnection.send({
+                address: oscMessage,
+                args: [
+                    {
+                        type: type,
+                        value: value
+                    }
+                ]
+            });
+        }
     }
 
     updateOscLevels() {
