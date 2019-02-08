@@ -25,7 +25,6 @@ export class OscServer {
             remotePort: parseInt(this.store.settings[0].machineOscPort)
         });
         this.setupOscServer();
-
     }
 
     setupOscServer() {
@@ -80,6 +79,14 @@ export class OscServer {
 
         this.oscConnection.open();
         console.log(`OSC listening on port ` + this.store.settings[0].oscPort );
+
+        let oscTimer
+        if (this.oscPreset.pingTime > 0) {
+            let oscTimer = setInterval(
+                () => sendOscMessage(this.oscPreset.pingCommand, "", "f"),
+                this.oscPreset.pingTime
+            );
+        }
     }
 
 
