@@ -1,6 +1,8 @@
 export const OscPresets =
     {
         reaper: {
+            mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
+                            //client (use feedback from mixers fader level)
             initializeCommand: [], // oscMessage, value, type
             fromMixer: {
                 CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
@@ -14,6 +16,8 @@ export const OscPresets =
             },
         },
         behringer: {
+            mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
+                            //client (use feedback from mixers fader level)
             initializeCommand: [
                 {
                     oscMessage: "/mixer",
@@ -22,14 +26,14 @@ export const OscPresets =
                 }
             ],
             fromMixer: {
-                CHANNEL_FADER_LEVEL: '/ch/{channel}/volume',
-                CHANNEL_OUT_GAIN: '/ch/{channel}/fx/1/fxparam/1/value',
+                CHANNEL_FADER_LEVEL: '/not_in_use/',
+                CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
                 CHANNEL_VU: '/ch/{channel}/vu',
-                CHANNEL_NAME: '/ch/{channel}/name',
+                CHANNEL_NAME: '/ch/{channel}/config/name',
             },
             toMixer: {
-                CHANNEL_FADER_LEVEL: '/ch/{channel}/volume',
-                CHANNEL_OUT_GAIN: '/ch/{channel}/fx/1/fxparam/1/value',
+                CHANNEL_FADER_LEVEL: '/not_in_use/',
+                CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
             },
         },
     }
