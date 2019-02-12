@@ -4,7 +4,13 @@ export const OscPresets =
             mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
             leadingZeros: false,
-            pingCommand: "/not_in_use",
+            pingCommand: [
+                {
+                    oscMessage: "/note_in_use",
+                    value: 0,
+                    type: "f"
+                }
+            ],
             pingTime: 0,  //Bypass ping when pingTime is zero
             initializeCommand: [], // oscMessage, value, type
             fromMixer: {
@@ -22,7 +28,13 @@ export const OscPresets =
             mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
             leadingZeros: true,
-            pingCommand: "/xremote",
+            pingCommand: [
+                {
+                    oscMessage: "/xremote",
+                    value: "",
+                    type: "f"
+                }
+            ],
             pingTime: 9500,
             initializeCommand: [
                 {

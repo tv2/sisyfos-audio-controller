@@ -83,7 +83,12 @@ export class OscServer {
         //Ping OSC mixer if OSCpreset needs it.
         if (this.oscPreset.pingTime > 0) {
             let oscTimer = setInterval(
-                () => this.sendOscMessage(this.oscPreset.pingCommand, 1, "", "f"),
+                () => this.sendOscMessage(
+                    this.oscPreset.pingCommand[0].oscMessage,
+                    0,
+                    this.oscPreset.pingCommand[0].value,
+                    this.oscPreset.pingCommand[0].type
+                    ),
                 this.oscPreset.pingTime
             );
         }
@@ -165,11 +170,11 @@ export class OscServer {
 
     fadeInOut (channelIndex){
         if (this.store.channels[0].channel[channelIndex].pgmOn) {
-            let val = this.store.channels[0].channel[channelIndex].outputLevel;
+            let val = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
 
             let targetVal = this.store.settings[0].fader.zero;
             if (this.oscPreset.mode === "master") {
-                targetVal = this.store.channels[0].channel[channelIndex].faderLevel;
+                targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
             }
 
             let timer = setInterval(() => {
