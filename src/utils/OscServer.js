@@ -142,9 +142,16 @@ export class OscServer {
 
     updateOscLevel(channelIndex) {
         this.fadeInOut(channelIndex);
+        if (this.oscPreset.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
+            window.storeRedux.dispatch({
+                type:'SET_OUTPUT_LEVEL',
+                channel: channelIndex,
+                level: this.store.channels[0].channel[channelIndex].faderLevel
+            });
+        }
         this.sendOscMessage(
             this.oscPreset.toMixer.CHANNEL_OUT_GAIN,
-            index+1,
+            channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
