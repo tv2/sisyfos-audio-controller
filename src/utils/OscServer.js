@@ -4,12 +4,14 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 
 //Utils:
 import { OscPresets } from '../utils/OSCPRESETS';
+import { behringerMeter } from '../utils/productSpecific/behringer';
 
 export class OscServer {
     constructor(initialStore) {
         this.sendOscMessage = this.sendOscMessage.bind(this);
         this.updateOscLevels = this.updateOscLevels.bind(this);
         this.fadeInOut = this.fadeInOut.bind(this);
+        this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
         this.store = initialStore;
         const unsubscribe = window.storeRedux.subscribe(() => {
@@ -52,12 +54,16 @@ export class OscServer {
             if (
                 this.checkOscCommand(message.address, this.oscPreset.fromMixer.CHANNEL_VU)
             ) {
-                let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SET_VU_LEVEL',
-                    channel: ch - 1,
-                    level: message.args[0]
-                });
+                if (this.oscPreset.type === 'behringer') {
+                    behringerMeter(message.args);
+                } else {
+                    let ch = message.address.split("/")[2];
+                    window.storeRedux.dispatch({
+                        type:'SET_VU_LEVEL',
+                        channel: ch - 1,
+                        level: message.args[0]
+                    });
+                }
             }
             if (
                 this.checkOscCommand(message.address, this.oscPreset.fromMixer.CHANNEL_NAME)
@@ -83,19 +89,28 @@ export class OscServer {
         //Ping OSC mixer if OSCpreset needs it.
         if (this.oscPreset.pingTime > 0) {
             let oscTimer = setInterval(
-                () => this.sendOscMessage(
-                    this.oscPreset.pingCommand[0].oscMessage,
-                    0,
-                    this.oscPreset.pingCommand[0].value,
-                    this.oscPreset.pingCommand[0].type
-                    ),
+                this.pingMixerCommand(),
                 this.oscPreset.pingTime
             );
         }
     }
 
+    pingMixerCommand() {
+        //Ping OSC mixer if OSCpreset needs it.
+        this.oscPreset.pingCommand.map((command) => {
+            this.sendOscMessage(
+                command.oscMessage,
+                0,
+                command.value,
+                command.type
+            );
+        });
+    }
+
 
     checkOscCommand(message, command) {
+        if (message === command) return true;
+
         let cmdArray = command.split("{channel}");
         if (
             message.substr(0, cmdArray[0].length) === cmdArray[0] &&

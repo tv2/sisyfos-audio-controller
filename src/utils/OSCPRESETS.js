@@ -33,6 +33,11 @@ export const OscPresets =
                     oscMessage: "/xremote",
                     value: "",
                     type: "f"
+                },
+                {
+                    oscMessage: "/meters",
+                    value: "/meters/1",
+                    type: "s"
                 }
             ],
             pingTime: 9500,
@@ -46,7 +51,7 @@ export const OscPresets =
             fromMixer: {
                 CHANNEL_FADER_LEVEL: '',
                 CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
-                CHANNEL_VU: '/ch/{channel}/vu',
+                CHANNEL_VU: '/meters/1',
                 CHANNEL_NAME: '/ch/{channel}/config/name',
             },
             toMixer: {
