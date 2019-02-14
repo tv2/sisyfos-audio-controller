@@ -129,7 +129,7 @@ export class OscServer {
                 "{channel}",
                 channelString
             );
-        if (message != '') {
+        if (message != 'none') {
             this.oscConnection.send({
                 address: message,
                 args: [
