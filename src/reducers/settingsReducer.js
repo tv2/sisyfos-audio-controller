@@ -1,3 +1,5 @@
+import * as DEFAULTS from '../utils/DEFAULTS';
+
 const defaultSettingsReducerState = [
     {
         showSnaps: false,
@@ -7,8 +9,8 @@ const defaultSettingsReducerState = [
         localOscPort: 8000,
         machineOscIp: "0.0.0.0",
         machineOscPort: 8001,
-        numberOfChannels: 8,
-        numberOfSnaps: 8,
+        numberOfChannels: DEFAULTS.NUMBER_OF_CHANNELS,
+        numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         fader: {
             min: 0,
             max: 1,
