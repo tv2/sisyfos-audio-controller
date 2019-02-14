@@ -14,10 +14,6 @@ class Channels extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount() {
-
-    }
-
     handleChange() {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy[event.target.name] = event.target.value;
@@ -41,8 +37,18 @@ class Channels extends PureComponent {
                     SETTINGS:
                 </div>
                 <label className="settings-input-field">
+                    OSC PRESET :
+                    <input name="oscPreset" type="text" value={this.state.settings.oscPreset} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    LOCAL OSC IP :
+                    <input name="localOscIp" type="text" value={this.state.settings.localOscIp} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
                     LOCAL OSC PORT :
-                    <input name="oscPort" type="text" value={this.state.settings.oscPort} onChange={this.handleChange} />
+                    <input name="localOscPort" type="text" value={this.state.settings.localOscPort} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
@@ -53,16 +59,6 @@ class Channels extends PureComponent {
                 <label className="settings-input-field">
                     MIXER OSC PORT :
                     <input name="machineOscPort" type="text" value={this.state.settings.machineOscPort} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    MIXER CHANNELS :
-                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannels} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    MIXER SNAPS :
-                    <input name="numberOfSnaps" type="text" value={this.state.settings.numberOfSnaps} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
@@ -116,23 +112,6 @@ class Channels extends PureComponent {
         )
     }
 }
-
-/*
-        numberOfChannels: 8,
-        numberOfSnaps: 8,
-        fader: {
-            min: 0,
-            max: 1,
-            zero: 0.75,
-            step: 0.01,
-        },
-        meter: {
-            min: 0,
-            max: 1,
-            zero: 0.75,
-            test: 0.6,
-        },
-*/
 
 const mapStateToProps = (state) => {
     return {

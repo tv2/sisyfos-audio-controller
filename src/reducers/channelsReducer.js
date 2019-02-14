@@ -27,7 +27,11 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
 
     switch(action.type) {
         case 'SET_COMPLETE_STATE':
-            nextState[0] = action.allState;
+            action.allState.channel.map((channel, index) => {
+                if (index < DEFAULTS.NUMBER_OF_CHANNELS) {
+                    nextState[0].channel[index] = channel;
+                }
+            });
             return nextState;
         case 'SET_FADER_LEVEL': //channel:  level:
             nextState[0].channel[action.channel].faderLevel = action.level;

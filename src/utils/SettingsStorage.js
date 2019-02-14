@@ -22,7 +22,7 @@ export const saveSettings = (settings) => {
     fs.writeFile(folder + "/settings.json", json, 'utf8', (error)=>{
         console.log(error);
     });
-}
+};
 
 
 export const loadSnapshotState = (stateSnapshot) => {

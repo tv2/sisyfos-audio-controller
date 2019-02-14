@@ -20,7 +20,7 @@ class App extends Component {
 
     snapShopStoreTimer() {
         const saveTimer = setInterval(() => {
-                saveSnapshotState(this.props.store.channels[0])
+                saveSnapshotState(this.props.store.channels[0]);
             },
             2000);
     }
