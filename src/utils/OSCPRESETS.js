@@ -3,7 +3,7 @@ export const OscPresets =
         reaper: {
             mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
-            leadingZeros: false,
+            leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
             pingCommand: [
                 {
                     oscMessage: "/note_in_use",

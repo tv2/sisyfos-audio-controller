@@ -62,16 +62,6 @@ class Channels extends PureComponent {
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    MIXER CHANNELS :
-                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannels} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    MIXER SNAPS :
-                    <input name="numberOfSnaps" type="text" value={this.state.settings.numberOfSnaps} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
                     FADER OSC MIN :
                     <input name="fader.min" type="text" value={this.state.settings.fader.min} onChange={this.handleChange} />
                 </label>
