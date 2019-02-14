@@ -144,19 +144,7 @@ export class OscServer {
 
     updateOscLevels() {
         this.store.channels[0].channel.map((channel, index) => {
-            this.fadeInOut(index);
-            this.sendOscMessage(
-                this.oscPreset.toMixer.CHANNEL_OUT_GAIN,
-                index+1,
-                channel.outputLevel,
-                "f"
-            );
-            this.sendOscMessage(
-                this.oscPreset.toMixer.CHANNEL_FADER_LEVEL,
-                index+1,
-                channel.faderLevel,
-                "f"
-            );
+            this.updateOscLevel(index);
         });
     }
 
