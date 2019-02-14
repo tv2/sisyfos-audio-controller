@@ -54,7 +54,7 @@ export class OscServer {
             if (
                 this.checkOscCommand(message.address, this.oscPreset.fromMixer.CHANNEL_VU)
             ) {
-                if (this.oscPreset.type === 'behringer') {
+                if (this.store.settings[0].oscPreset === 'behringer') {
                     behringerMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];
