@@ -89,7 +89,9 @@ export class OscServer {
         //Ping OSC mixer if OSCpreset needs it.
         if (this.oscPreset.pingTime > 0) {
             let oscTimer = setInterval(
-                this.pingMixerCommand(),
+                () => {
+                    this.pingMixerCommand();
+                },
                 this.oscPreset.pingTime
             );
         }
