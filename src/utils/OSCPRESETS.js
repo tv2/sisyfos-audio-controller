@@ -5,6 +5,7 @@
 export const OscPresets =
     {
         reaper: {
+            protocol: 'OSC',
             mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
             leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
@@ -41,6 +42,7 @@ export const OscPresets =
             },
         },
         behringer: {
+            protocol: 'OSC',
             mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
             leadingZeros: true,

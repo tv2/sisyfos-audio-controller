@@ -3,17 +3,17 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
-import { OscPresets } from '../utils/OSCPRESETS';
-import { behringerMeter } from '../utils/productSpecific/behringer';
+import { OscPresets } from './OSCPRESETS';
+import { behringerMeter } from './productSpecific/behringer';
 
-export class OscServer {
+export class EmberMixerConnection {
     constructor(initialStore) {
         this.sendOscMessage = this.sendOscMessage.bind(this);
         this.updateOscLevels = this.updateOscLevels.bind(this);
         this.fadeInOut = this.fadeInOut.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = initialStore;
+        this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
             this.store = window.storeRedux.getState();
         });
@@ -26,10 +26,10 @@ export class OscServer {
             remoteAddress: this.store.settings[0].machineOscIp,
             remotePort: parseInt(this.store.settings[0].machineOscPort)
         });
-        this.setupOscServer();
+        this.setupMixerConnection();
     }
 
-    setupOscServer() {
+    setupMixerConnection() {
         this.oscConnection
         .on("ready", () => {
             this.oscPreset.initializeCommand.map((item) => {

@@ -10,7 +10,7 @@ class Channel extends PureComponent {
     constructor(props) {
         super(props);
         this.channelIndex = this.props.channelIndex;
-        this.oscServer = this.props.oscServer;
+        this.mixerConnection = this.props.mixerConnection;
         this.state = {
         };
         this.oscPreset = OscPresets[this.props.store.settings[0].oscPreset];
@@ -26,7 +26,7 @@ class Channel extends PureComponent {
             type:'SET_PGM',
             channel: this.channelIndex
         });
-        this.oscServer.updateOscLevel(this.channelIndex);
+        this.mixerConnection.updateOscLevel(this.channelIndex);
     }
 
     handlePst() {
@@ -42,7 +42,7 @@ class Channel extends PureComponent {
             channel: this.channelIndex,
             level: event.target.value
         });
-        this.oscServer.updateOscLevel(this.channelIndex);
+        this.mixerConnection.updateOscLevel(this.channelIndex);
     }
 
 
