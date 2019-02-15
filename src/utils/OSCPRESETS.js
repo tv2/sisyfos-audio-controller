@@ -81,10 +81,10 @@ export const OscPresets =
                 step: 0.01,
             },
             meter: {
-                min: -8000,
-                max: 0,
-                zero: -2000,
-                test: -3000,
+                min: 0,
+                max: 1,
+                zero: 0.75,
+                test: 0.6,
             },
         },
     }
