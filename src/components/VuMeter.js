@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 //assets:
 import '../assets/css/VuMeter.css';
 //Utils:
-import { OscPresets } from '../utils/OSCPRESETS';
+import { MixerProtocolPresets } from '../utils/MixerProtocolPresets';
 
 class VuMeter extends PureComponent {
     constructor(props) {
@@ -14,7 +14,7 @@ class VuMeter extends PureComponent {
 
         this.state = {
         };
-        this.oscPreset = OscPresets[this.props.store.settings[0].oscPreset];
+        this.mixerProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
 
         this.totalHeight = this.totalHeight.bind(this);
         this.calcLower = this.calcLower.bind(this);
@@ -23,33 +23,33 @@ class VuMeter extends PureComponent {
     }
 
     totalHeight() {
-        return (this.props.store.settings[0].showSnaps ? 1 : 2) * 200 / (this.oscPreset.meter.max - this.oscPreset.meter.min);
+        return (this.props.store.settings[0].showSnaps ? 1 : 2) * 200 / (this.mixerProtocol.meter.max - this.mixerProtocol.meter.min);
     }
 
     calcLower() {
         let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
-        if (val >= this.oscPreset.meter.test) {
-            val = this.oscPreset.meter.test;
+        if (val >= this.mixerProtocol.meter.test) {
+            val = this.mixerProtocol.meter.test;
         }
         return this.totalHeight()*val;
     }
 
     calcMiddle() {
         let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
-        if (val < this.oscPreset.meter.test) {
-            val = this.oscPreset.meter.test;
-        } else if (val >= this.oscPreset.meter.zero) {
-            val = this.oscPreset.meter.zero;
+        if (val < this.mixerProtocol.meter.test) {
+            val = this.mixerProtocol.meter.test;
+        } else if (val >= this.mixerProtocol.meter.zero) {
+            val = this.mixerProtocol.meter.zero;
         }
-        return this.totalHeight()*(val-this.oscPreset.meter.test)+1;
+        return this.totalHeight()*(val-this.mixerProtocol.meter.test)+1;
     }
 
     calcUpper() {
         let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
-        if (val < this.oscPreset.meter.zero) {
-            val = this.oscPreset.meter.zero;
+        if (val < this.mixerProtocol.meter.zero) {
+            val = this.mixerProtocol.meter.zero;
         }
-        return this.totalHeight()*(val-this.oscPreset.meter.zero)+1;
+        return this.totalHeight()*(val-this.mixerProtocol.meter.zero)+1;
     }
 
     render() {
@@ -74,7 +74,7 @@ class VuMeter extends PureComponent {
                     style={
                         {
                             "height": this.calcMiddle(),
-                            "top": this.totalHeight()*this.oscPreset.meter.test+5
+                            "top": this.totalHeight()*this.mixerProtocol.meter.test+5
                         }
                     }
                 ></canvas>
@@ -83,7 +83,7 @@ class VuMeter extends PureComponent {
                     style={
                         {
                             "height": this.calcUpper(),
-                            "top": this.totalHeight()*this.oscPreset.meter.zero+5
+                            "top": this.totalHeight()*this.mixerProtocol.meter.zero+5
                         }
                     }></canvas>
 

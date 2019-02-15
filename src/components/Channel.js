@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import VuMeter from './VuMeter';
 //assets:
 import '../assets/css/Channel.css';
-import { OscPresets } from '../utils/OSCPRESETS';
+import { MixerProtocolPresets } from '../utils/MixerProtocolPresets';
 
 class Channel extends PureComponent {
     constructor(props) {
@@ -13,7 +13,7 @@ class Channel extends PureComponent {
         this.mixerConnection = this.props.mixerConnection;
         this.state = {
         };
-        this.oscPreset = OscPresets[this.props.store.settings[0].oscPreset];
+        this.mixerProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
 
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);
@@ -74,9 +74,9 @@ class Channel extends PureComponent {
                 }
                 id="typeinp"
                 type="range"
-                min={this.oscPreset.fader.min}
-                max={this.oscPreset.fader.max}
-                step={this.oscPreset.fader.step}
+                min={this.mixerProtocol.fader.min}
+                max={this.mixerProtocol.fader.max}
+                step={this.mixerProtocol.fader.step}
                 value= {this.props.store.channels[0].channel[this.channelIndex].faderLevel}
                 onChange={event => {
                     event.preventDefault();

@@ -3,7 +3,7 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
-import { OscPresets } from './OSCPRESETS';
+import { MixerProtocolPresets } from './MixerProtocolPresets';
 import { behringerMeter } from './productSpecific/behringer';
 
 export class EmberMixerConnection {
@@ -18,7 +18,7 @@ export class EmberMixerConnection {
             this.store = window.storeRedux.getState();
         });
 
-        this.oscPreset = OscPresets[this.store.settings[0].oscPreset];
+        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
 
         this.oscConnection = new osc.UDPPort({
             localAddress: this.store.settings[0].localOscIp,
@@ -32,14 +32,14 @@ export class EmberMixerConnection {
     setupMixerConnection() {
         this.oscConnection
         .on("ready", () => {
-            this.oscPreset.initializeCommand.map((item) => {
+            this.mixerProtocol.initializeCommand.map((item) => {
                 this.sendOscMessage(item.oscMessage, 1, item.value, item.type);
                 console.log("Listening for OSC over UDP.");
             });
         })
         .on('message', (message) => {
             if (
-                this.checkOscCommand(message.address, this.oscPreset.fromMixer.CHANNEL_FADER_LEVEL)
+                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_FADER_LEVEL)
             ) {
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
@@ -52,9 +52,9 @@ export class EmberMixerConnection {
                 }
             }
             if (
-                this.checkOscCommand(message.address, this.oscPreset.fromMixer.CHANNEL_VU)
+                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_VU)
             ) {
-                if (this.store.settings[0].oscPreset === 'behringer') {
+                if (this.store.settings[0].mixerProtocol === 'behringer') {
                     behringerMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];
@@ -66,7 +66,7 @@ export class EmberMixerConnection {
                 }
             }
             if (
-                this.checkOscCommand(message.address, this.oscPreset.fromMixer.CHANNEL_NAME)
+                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_NAME)
             ) {
                     let ch = message.address.split("/")[2];
                     window.storeRedux.dispatch({
@@ -86,20 +86,20 @@ export class EmberMixerConnection {
         this.oscConnection.open();
         console.log(`OSC listening on port ` + this.store.settings[0].oscPort );
 
-        //Ping OSC mixer if OSCpreset needs it.
-        if (this.oscPreset.pingTime > 0) {
+        //Ping OSC mixer if mixerProtocol needs it.
+        if (this.mixerProtocol.pingTime > 0) {
             let oscTimer = setInterval(
                 () => {
                     this.pingMixerCommand();
                 },
-                this.oscPreset.pingTime
+                this.mixerProtocol.pingTime
             );
         }
     }
 
     pingMixerCommand() {
-        //Ping OSC mixer if OSCpreset needs it.
-        this.oscPreset.pingCommand.map((command) => {
+        //Ping OSC mixer if mixerProtocol needs it.
+        this.mixerProtocol.pingCommand.map((command) => {
             this.sendOscMessage(
                 command.oscMessage,
                 0,
@@ -126,7 +126,7 @@ export class EmberMixerConnection {
     }
 
     sendOscMessage(oscMessage, channel, value, type) {
-        let channelString = this.oscPreset.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
+        let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{channel}",
                 channelString
@@ -152,7 +152,7 @@ export class EmberMixerConnection {
 
     updateOscLevel(channelIndex) {
         this.fadeInOut(channelIndex);
-        if (this.oscPreset.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
+        if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
             window.storeRedux.dispatch({
                 type:'SET_OUTPUT_LEVEL',
                 channel: channelIndex,
@@ -160,13 +160,13 @@ export class EmberMixerConnection {
             });
         }
         this.sendOscMessage(
-            this.oscPreset.toMixer.CHANNEL_OUT_GAIN,
+            this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
         this.sendOscMessage(
-            this.oscPreset.toMixer.CHANNEL_FADER_LEVEL,
+            this.mixerProtocol.toMixer.CHANNEL_FADER_LEVEL,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
@@ -177,8 +177,8 @@ export class EmberMixerConnection {
         if (this.store.channels[0].channel[channelIndex].pgmOn) {
             let val = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
 
-            let targetVal = this.oscPreset.fader.zero;
-            if (this.oscPreset.mode === "master") {
+            let targetVal = this.mixerProtocol.fader.zero;
+            if (this.mixerProtocol.mode === "master") {
                 targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
             }
 
@@ -186,14 +186,14 @@ export class EmberMixerConnection {
                 if ( val >= targetVal){
                     clearInterval(timer);
                 } else {
-                    val = val + 3*this.oscPreset.fader.step;
+                    val = val + 3*this.mixerProtocol.fader.step;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
                         level: val
                     });
                     this.sendOscMessage(
-                        this.oscPreset.toMixer.CHANNEL_OUT_GAIN,
+                        this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
                         channelIndex+1,
                         this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"
@@ -203,17 +203,17 @@ export class EmberMixerConnection {
         } else {
             let val = this.store.channels[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
-                if ( val <= this.oscPreset.fader.min){
+                if ( val <= this.mixerProtocol.fader.min){
                     clearInterval(timer);
                 } else {
-                    val = val - 3*this.oscPreset.fader.step;
+                    val = val - 3*this.mixerProtocol.fader.step;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
                         level: val
                     });
                     this.sendOscMessage(
-                        this.oscPreset.toMixer.CHANNEL_OUT_GAIN,
+                        this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
                         channelIndex+1,
                         this.store.channels[0].channel[channelIndex].outputLevel,
                         "f"

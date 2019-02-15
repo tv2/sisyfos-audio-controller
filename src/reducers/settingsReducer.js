@@ -4,11 +4,11 @@ const defaultSettingsReducerState = [
     {
         showSnaps: false,
         showSettings: false,
-        oscPreset: "reaper",
+        mixerProtol: "behringer",
         localOscIp: "0.0.0.0",
         localOscPort: 8000,
         machineOscIp: "0.0.0.0",
-        machineOscPort: 8001,
+        machineOscPort: 10024,
         numberOfChannels: DEFAULTS.NUMBER_OF_CHANNELS,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS
     },

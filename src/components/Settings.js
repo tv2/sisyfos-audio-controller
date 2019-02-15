@@ -38,7 +38,7 @@ class Channels extends PureComponent {
                 </div>
                 <label className="settings-input-field">
                     OSC PRESET :
-                    <input name="oscPreset" type="text" value={this.state.settings.oscPreset} onChange={this.handleChange} />
+                    <input name="mixerProtocol" type="text" value={this.state.settings.mixerProtocol} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">

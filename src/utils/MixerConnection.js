@@ -1,5 +1,5 @@
 //Utils:
-import { OscPresets } from './OSCPRESETS';
+import { MixerProtocolPresets } from './MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import {EmberMixerConnection } from '../utils/EmberMixerConnection';
 
@@ -13,10 +13,10 @@ export class MixerConnection {
             this.store = window.storeRedux.getState();
         });
 
-        this.oscPreset = OscPresets[this.store.settings[0].oscPreset];
-        if (this.oscPreset.protocol === 'OSC') {
+        this.mixerProtocolPreset = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
+        if (this.mixerProtocolPreset.protocol === 'OSC') {
             this.mixerConnection = new OscMixerConnection();
-        } else if (this.oscPreset.protocol === 'EMBER') {
+        } else if (this.mixerProtocolPreset.protocol === 'EMBER') {
             this.mixerConnection = new EmberMixerConnection();
         }
     }
