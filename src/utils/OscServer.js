@@ -177,7 +177,7 @@ export class OscServer {
         if (this.store.channels[0].channel[channelIndex].pgmOn) {
             let val = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
 
-            let targetVal = this.store.settings[0].fader.zero;
+            let targetVal = this.oscPreset.fader.zero;
             if (this.oscPreset.mode === "master") {
                 targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
             }
@@ -186,7 +186,7 @@ export class OscServer {
                 if ( val >= targetVal){
                     clearInterval(timer);
                 } else {
-                    val = val + 3*this.store.settings[0].fader.step;
+                    val = val + 3*this.oscPreset.fader.step;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
@@ -203,10 +203,10 @@ export class OscServer {
         } else {
             let val = this.store.channels[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
-                if ( val <= this.store.settings[0].fader.min){
+                if ( val <= this.oscPreset.fader.min){
                     clearInterval(timer);
                 } else {
-                    val = val - 3*this.store.settings[0].fader.step;
+                    val = val - 3*this.oscPreset.fader.step;
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,

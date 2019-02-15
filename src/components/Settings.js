@@ -61,46 +61,6 @@ class Channels extends PureComponent {
                     <input name="machineOscPort" type="text" value={this.state.settings.machineOscPort} onChange={this.handleChange} />
                 </label>
                 <br/>
-                <label className="settings-input-field">
-                    FADER OSC MIN :
-                    <input name="fader.min" type="text" value={this.state.settings.fader.min} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    FADER OSC MAX :
-                    <input name="fader.max" type="text" value={this.state.settings.fader.max} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    FADER OSC ZERO :
-                    <input name="fader.zero" type="text" value={this.state.settings.fader.zero} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    FADER OSC STEP :
-                    <input name="fader.step" type="text" value={this.state.settings.fader.step} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    METER OSC MIN :
-                    <input name="meter.min" type="text" value={this.state.settings.meter.min} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    METER OSC MAX :
-                    <input name="meter.max" type="text" value={this.state.settings.meter.max} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    METER OSC ZERO :
-                    <input name="meter.zero" type="text" value={this.state.settings.meter.zero} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    METER OSC TEST :
-                    <input name="meter.test" type="text" value={this.state.settings.meter.test} onChange={this.handleChange} />
-                </label>
-                <br/>
                 <input
                 className="settings-save-button"
                 onClick=

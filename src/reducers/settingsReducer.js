@@ -10,19 +10,7 @@ const defaultSettingsReducerState = [
         machineOscIp: "0.0.0.0",
         machineOscPort: 8001,
         numberOfChannels: DEFAULTS.NUMBER_OF_CHANNELS,
-        numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
-        fader: {
-            min: 0,
-            max: 1,
-            zero: 0.75,
-            step: 0.01,
-        },
-        meter: {
-            min: 0,
-            max: 1,
-            zero: 0.75,
-            test: 0.6,
-        },
+        numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS
     },
 ];
 

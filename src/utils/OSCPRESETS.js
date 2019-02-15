@@ -1,3 +1,7 @@
+//While developing mixer specific settings will be in one file.
+//At first release these will be in seperate files
+//So it´s easy to add new equipment.
+
 export const OscPresets =
     {
         reaper: {
@@ -22,6 +26,18 @@ export const OscPresets =
             toMixer: {
                 CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
                 CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
+            },
+            fader: {
+                min: 0,
+                max: 1,
+                zero: 0.75,
+                step: 0.01,
+            },
+            meter: {
+                min: 0,
+                max: 1,
+                zero: 0.75,
+                test: 0.6,
             },
         },
         behringer: {
@@ -57,6 +73,18 @@ export const OscPresets =
             toMixer: {
                 CHANNEL_FADER_LEVEL: 'none',
                 CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+            },
+            fader: {
+                min: 0,
+                max: 1,
+                zero: 0.75,
+                step: 0.01,
+            },
+            meter: {
+                min: -8000,
+                max: 0,
+                zero: -2000,
+                test: -3000,
             },
         },
     }

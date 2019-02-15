@@ -11,7 +11,7 @@ export const behringerMeter = (message) => {
         window.storeRedux.dispatch({
             type:'SET_VU_LEVEL',
             channel: i,
-            level: (dataview.getInt16(2*(i+2) , true) + 8000)/8000
+            level: dataview.getInt16(2*(i+2) , true)
         });
     }
 };
