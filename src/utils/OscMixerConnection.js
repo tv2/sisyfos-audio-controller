@@ -7,10 +7,8 @@ import { MixerProtocolPresets } from './MixerProtocolPresets';
 import { behringerMeter } from './productSpecific/behringer';
 
 export class OscMixerConnection {
-    constructor(initialStore) {
-        this.sendOscMessage = this.sendOscMessage.bind(this);
-        this.updateOutLevels = this.updateOutLevels.bind(this);
-        this.fadeInOut = this.fadeInOut.bind(this);
+    constructor() {
+        this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
         this.store = window.storeRedux.getState();
@@ -33,7 +31,7 @@ export class OscMixerConnection {
         this.oscConnection
         .on("ready", () => {
             this.mixerProtocol.initializeCommand.map((item) => {
-                this.sendOscMessage(item.oscMessage, 1, item.value, item.type);
+                this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
                 console.log("Listening for OSC over UDP.");
             });
         })
@@ -100,7 +98,7 @@ export class OscMixerConnection {
     pingMixerCommand() {
         //Ping OSC mixer if mixerProtocol needs it.
         this.mixerProtocol.pingCommand.map((command) => {
-            this.sendOscMessage(
+            this.sendOutMessage(
                 command.oscMessage,
                 0,
                 command.value,
@@ -108,7 +106,6 @@ export class OscMixerConnection {
             );
         });
     }
-
 
     checkOscCommand(message, command) {
         if (message === command) return true;
@@ -125,7 +122,7 @@ export class OscMixerConnection {
         }
     }
 
-    sendOscMessage(oscMessage, channel, value, type) {
+    sendOutMessage(oscMessage, channel, value, type) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{channel}",
@@ -144,14 +141,7 @@ export class OscMixerConnection {
         }
     }
 
-    updateOutLevels() {
-        this.store.channels[0].channel.map((channel, index) => {
-            this.updateOutLevel(index);
-        });
-    }
-
     updateOutLevel(channelIndex) {
-        this.fadeInOut(channelIndex);
         if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
             window.storeRedux.dispatch({
                 type:'SET_OUTPUT_LEVEL',
@@ -159,13 +149,13 @@ export class OscMixerConnection {
                 level: this.store.channels[0].channel[channelIndex].faderLevel
             });
         }
-        this.sendOscMessage(
+        this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
-        this.sendOscMessage(
+        this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_FADER_LEVEL,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel,
@@ -173,54 +163,5 @@ export class OscMixerConnection {
         );
     }
 
-    fadeInOut (channelIndex){
-        if (this.store.channels[0].channel[channelIndex].pgmOn) {
-            let val = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
-
-            let targetVal = this.mixerProtocol.fader.zero;
-            if (this.mixerProtocol.mode === "master") {
-                targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
-            }
-
-            let timer = setInterval(() => {
-                if ( val >= targetVal){
-                    clearInterval(timer);
-                } else {
-                    val = val + 3*this.mixerProtocol.fader.step;
-                    window.storeRedux.dispatch({
-                        type:'SET_OUTPUT_LEVEL',
-                        channel: channelIndex,
-                        level: val
-                    });
-                    this.sendOscMessage(
-                        this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
-                        channelIndex+1,
-                        this.store.channels[0].channel[channelIndex].outputLevel,
-                        "f"
-                    );
-                }
-            }, 1);
-        } else {
-            let val = this.store.channels[0].channel[channelIndex].outputLevel;
-            let timer = setInterval(() => {
-                if ( val <= this.mixerProtocol.fader.min){
-                    clearInterval(timer);
-                } else {
-                    val = val - 3*this.mixerProtocol.fader.step;
-                    window.storeRedux.dispatch({
-                        type:'SET_OUTPUT_LEVEL',
-                        channel: channelIndex,
-                        level: val
-                    });
-                    this.sendOscMessage(
-                        this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
-                        channelIndex+1,
-                        this.store.channels[0].channel[channelIndex].outputLevel,
-                        "f"
-                    );
-                }
-            }, 1);
-        }
-    }
 }
 

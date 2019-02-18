@@ -26,7 +26,7 @@ class Channel extends PureComponent {
             type:'SET_PGM',
             channel: this.channelIndex
         });
-        this.mixerConnection.updateOscLevel(this.channelIndex);
+        this.mixerConnection.updateOutLevel(this.channelIndex);
     }
 
     handlePst() {
@@ -42,7 +42,7 @@ class Channel extends PureComponent {
             channel: this.channelIndex,
             level: event.target.value
         });
-        this.mixerConnection.updateOscLevel(this.channelIndex);
+        this.mixerConnection.updateOutLevel(this.channelIndex);
     }
 
 
