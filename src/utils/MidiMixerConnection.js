@@ -1,15 +1,14 @@
 //Node Modules:
 import os from 'os'; // Used to display (log) network addresses on local machine
-import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
+//import { midi } from 'midi';
 
 //Utils:
 import { MixerProtocolPresets } from './MixerProtocolPresets';
-import { behringerMeter } from './productSpecific/behringer';
 
-export class EmberMixerConnection {
+export class MidiMixerConnection {
     constructor(initialStore) {
-        this.sendOscMessage = this.sendOscMessage.bind(this);
-        this.updateOscLevels = this.updateOscLevels.bind(this);
+        this.sendMidiMessage = this.sendMidiMessage.bind(this);
+        this.updateMidiLevels = this.updateMidiLevels.bind(this);
         this.fadeInOut = this.fadeInOut.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
@@ -33,7 +32,7 @@ export class EmberMixerConnection {
         this.oscConnection
         .on("ready", () => {
             this.mixerProtocol.initializeCommand.map((item) => {
-                this.sendOscMessage(item.oscMessage, 1, item.value, item.type);
+                this.sendMidiMessage(item.oscMessage, 1, item.value, item.type);
                 console.log("Listening for OSC over UDP.");
             });
         })
@@ -48,7 +47,7 @@ export class EmberMixerConnection {
                     level: message.args[0]
                 });
                 if (this.store.channels[0].channel[ch - 1].pgmOn) {
-                    this.updateOscLevel(ch-1);
+                    this.updateMidiLevel(ch-1);
                 }
             }
             if (
@@ -100,7 +99,7 @@ export class EmberMixerConnection {
     pingMixerCommand() {
         //Ping OSC mixer if mixerProtocol needs it.
         this.mixerProtocol.pingCommand.map((command) => {
-            this.sendOscMessage(
+            this.sendMidiMessage(
                 command.oscMessage,
                 0,
                 command.value,
@@ -125,7 +124,7 @@ export class EmberMixerConnection {
         }
     }
 
-    sendOscMessage(oscMessage, channel, value, type) {
+    sendMidiMessage(oscMessage, channel, value, type) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{channel}",
@@ -144,13 +143,13 @@ export class EmberMixerConnection {
         }
     }
 
-    updateOscLevels() {
+    updateMidiLevels() {
         this.store.channels[0].channel.map((channel, index) => {
-            this.updateOscLevel(index);
+            this.updateMidiLevel(index);
         });
     }
 
-    updateOscLevel(channelIndex) {
+    updateMidiLevel(channelIndex) {
         this.fadeInOut(channelIndex);
         if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
             window.storeRedux.dispatch({
@@ -159,13 +158,13 @@ export class EmberMixerConnection {
                 level: this.store.channels[0].channel[channelIndex].faderLevel
             });
         }
-        this.sendOscMessage(
+        this.sendMidiMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
-        this.sendOscMessage(
+        this.sendMidiMessage(
             this.mixerProtocol.toMixer.CHANNEL_FADER_LEVEL,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel,
@@ -192,7 +191,7 @@ export class EmberMixerConnection {
                         channel: channelIndex,
                         level: val
                     });
-                    this.sendOscMessage(
+                    this.sendMidiMessage(
                         this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
                         channelIndex+1,
                         this.store.channels[0].channel[channelIndex].outputLevel,
@@ -212,7 +211,7 @@ export class EmberMixerConnection {
                         channel: channelIndex,
                         level: val
                     });
-                    this.sendOscMessage(
+                    this.sendMidiMessage(
                         this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
                         channelIndex+1,
                         this.store.channels[0].channel[channelIndex].outputLevel,

@@ -9,7 +9,7 @@ import { behringerMeter } from './productSpecific/behringer';
 export class OscMixerConnection {
     constructor(initialStore) {
         this.sendOscMessage = this.sendOscMessage.bind(this);
-        this.updateOscLevels = this.updateOscLevels.bind(this);
+        this.updateOutLevels = this.updateOutLevels.bind(this);
         this.fadeInOut = this.fadeInOut.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
@@ -48,7 +48,7 @@ export class OscMixerConnection {
                     level: message.args[0]
                 });
                 if (this.store.channels[0].channel[ch - 1].pgmOn) {
-                    this.updateOscLevel(ch-1);
+                    this.updateOutLevel(ch-1);
                 }
             }
             if (
@@ -144,13 +144,13 @@ export class OscMixerConnection {
         }
     }
 
-    updateOscLevels() {
+    updateOutLevels() {
         this.store.channels[0].channel.map((channel, index) => {
-            this.updateOscLevel(index);
+            this.updateOutLevel(index);
         });
     }
 
-    updateOscLevel(channelIndex) {
+    updateOutLevel(channelIndex) {
         this.fadeInOut(channelIndex);
         if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
             window.storeRedux.dispatch({

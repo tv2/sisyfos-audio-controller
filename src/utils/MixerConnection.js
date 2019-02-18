@@ -1,12 +1,12 @@
 //Utils:
 import { MixerProtocolPresets } from './MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
-import {EmberMixerConnection } from '../utils/EmberMixerConnection';
+import {MidiMixerConnection } from '../utils/MidiMixerConnection';
 
 export class MixerConnection {
     constructor(initialStore) {
-        this.updateOscLevels = this.updateOscLevels.bind(this);
-        this.updateOscLevel = this.updateOscLevel.bind(this);
+        this.updateOutLevels = this.updateOutLevels.bind(this);
+        this.updateOutLevel = this.updateOutLevel.bind(this);
 
         this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
@@ -16,16 +16,16 @@ export class MixerConnection {
         this.mixerProtocolPreset = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
         if (this.mixerProtocolPreset.protocol === 'OSC') {
             this.mixerConnection = new OscMixerConnection();
-        } else if (this.mixerProtocolPreset.protocol === 'EMBER') {
-            this.mixerConnection = new EmberMixerConnection();
+        } else if (this.mixerProtocolPreset.protocol === 'MIDI') {
+            this.mixerConnection = new MidiMixerConnection();
         }
     }
 
-    updateOscLevels() {
-        this.mixerConnection.updateOscLevels();
+    updateOutLevels() {
+        this.mixerConnection.updateOutLevels();
     }
 
-    updateOscLevel(channelIndex) {
-        this.mixerConnection.updateOscLevel(channelIndex);
+    updateOutLevel(channelIndex) {
+        this.mixerConnection.updateOutLevel(channelIndex);
     }
 }

@@ -4,7 +4,7 @@ const defaultSettingsReducerState = [
     {
         showSnaps: false,
         showSettings: false,
-        mixerProtol: "behringer",
+        mixerProtocol: "behringer",
         localOscIp: "0.0.0.0",
         localOscPort: 8000,
         machineOscIp: "0.0.0.0",

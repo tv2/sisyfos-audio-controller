@@ -37,27 +37,27 @@ class Channels extends PureComponent {
                     SETTINGS:
                 </div>
                 <label className="settings-input-field">
-                    OSC PRESET :
+                    PRESET :
                     <input name="mixerProtocol" type="text" value={this.state.settings.mixerProtocol} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    LOCAL OSC IP :
+                    LOCAL IP :
                     <input name="localOscIp" type="text" value={this.state.settings.localOscIp} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    LOCAL OSC PORT :
+                    LOCAL PORT :
                     <input name="localOscPort" type="text" value={this.state.settings.localOscPort} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    MIXER OSC IP :
+                    MIXER IP :
                     <input name="machineOscIp" type="text" value={this.state.settings.machineOscIp} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    MIXER OSC PORT :
+                    MIXER PORT :
                     <input name="machineOscPort" type="text" value={this.state.settings.machineOscPort} onChange={this.handleChange} />
                 </label>
                 <br/>

@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "electron": "^4.0.0",
+        "midi": "Cycling74/node-midi",
         "osc": "https://github.com/PieceMeta/osc.js/tarball/master",
         "react": "^16.7.0",
         "react-dom": "^16.7.0",
