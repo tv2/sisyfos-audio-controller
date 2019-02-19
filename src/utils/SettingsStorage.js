@@ -45,9 +45,8 @@ export const loadSnapshotState = (stateSnapshot) => {
 export const saveSnapshotState = (stateSnapshot) => {
     let json = JSON.stringify(stateSnapshot);
     fs.writeFile(folder + "/state.json", json, 'utf8', (error)=>{
-        console.log(error);
+        //console.log(error);
     });
-    console.log("StateStorage updated");
 }
 
 
