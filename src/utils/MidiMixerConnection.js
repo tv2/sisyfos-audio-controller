@@ -39,24 +39,23 @@ export class MidiMixerConnection {
     }
 
     setupMixerConnection() {
-        this.midiInput.addListener('controlchange', "all",
+        this.midiInput.addListener('controlchange', this.mixerProtocol.CHANNEL_FADER_LEVEL,
             (e) => {
                 console.log("Received 'controlchange' message (" + e.data + ").");
-                if (e.data[0] === 39) {
-                    window.storeRedux.dispatch({
-                        type:'SET_FADER_LEVEL',
-                        channel: e.channel - 1,
-                        level: e.data[1]
-                    });
-                    if (this.store.channels[0].channel[e.channel - 1].pgmOn) {
-                        this.updateOutLevel(e.channel-1);
-                    }
+                window.storeRedux.dispatch({
+                    type:'SET_FADER_LEVEL',
+                    channel: e.channel - 1,
+                    level: e.data[2]
+                });
+                if (this.store.channels[0].channel[e.channel - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                {
+                    this.updateOutLevel(e.channel-1);
                 }
             }
         );
         this.midiInput.addListener('noteon', "all",
             (e) => {
-                console.log("Received 'controlchange' message (" + e.note.name + e.note.octave + ").");
+                console.log("Received 'noteon' message (" + e.note.name + e.note.octave + ").");
             }
         );
 /*
@@ -110,10 +109,8 @@ return true;
         });
     }
 
-    sendOutMessage(CtrlMessage, channel, value, type) {
-
-        this.midiOutput.playNote("C3");
-
+    sendOutMessage(CtrlMessage, channel, value) {
+        this.midiOutput.sendControlChange(CtrlMessage, value, channel);
     }
 
     updateOutLevel(channelIndex) {
@@ -127,14 +124,12 @@ return true;
         this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
             channelIndex+1,
-            this.store.channels[0].channel[channelIndex].outputLevel,
-            "f"
+            this.store.channels[0].channel[channelIndex].outputLevel
         );
         this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_FADER_LEVEL,
             channelIndex+1,
-            this.store.channels[0].channel[channelIndex].faderLevel,
-            "f"
+            this.store.channels[0].channel[channelIndex].faderLevel
         );
     }
 

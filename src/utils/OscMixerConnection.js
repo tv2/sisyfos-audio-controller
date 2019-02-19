@@ -45,7 +45,8 @@ export class OscMixerConnection {
                     channel: ch - 1,
                     level: message.args[0]
                 });
-                if (this.store.channels[0].channel[ch - 1].pgmOn) {
+                if (this.store.channels[0].channel[ch - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                {
                     this.updateOutLevel(ch-1);
                 }
             }

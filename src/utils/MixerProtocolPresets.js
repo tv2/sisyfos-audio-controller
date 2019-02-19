@@ -97,47 +97,44 @@ export const MixerProtocolPresets =
                             //client (use feedback from mixers fader level)
             leadingZeros: false,
             pingCommand: [
+                /*
                 {
-                    oscMessage: "/xremote",
-                    value: "",
-                    type: "f"
-                },
-                {
-                    oscMessage: "/meters",
-                    value: "/meters/1",
-                    type: "s"
-                }
-            ],
-            pingTime: 9500,
-            initializeCommand: [
-                {
-                    oscMessage: "/info",
+                    midiMessage: 0,
                     value: 0,
-                    type: "f"
                 }
+                */
+            ],
+            pingTime: 0,
+            initializeCommand: [
+                /*
+                {
+                    midiMessage: 0,
+                    value: 0,
+                }
+                */
             ],
             fromMixer: {
-                CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
-                CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
-                CHANNEL_VU: '/meters/1',
-                CHANNEL_NAME: '/ch/{channel}/config/name',
+                CHANNEL_FADER_LEVEL: 39,        //PgmChange 0 - ignores this command
+                CHANNEL_OUT_GAIN: 0,            //PgmChange 0 - ignores this command
+                CHANNEL_VU: 0,                   //PgmChange 0 - ignores this command
+                CHANNEL_NAME: 'some sysex not yet build',
             },
             toMixer: {
-                CHANNEL_FADER_LEVEL: 'none',
-                CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+                CHANNEL_FADER_LEVEL: 39,
+                CHANNEL_OUT_GAIN: 38,
             },
             fader: {
                 min: 0,
-                max: 1,
-                zero: 0.75,
-                step: 0.01,
+                max: 127,
+                zero: 100,
+                step: 1,
                 fadeTime: 40,
             },
             meter: {
                 min: 0,
-                max: 1,
-                zero: 0.75,
-                test: 0.6,
+                max: 127,
+                zero: 100,
+                test: 80,
             },
         },
     }
