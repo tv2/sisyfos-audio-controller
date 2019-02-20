@@ -3,7 +3,7 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
-import { MixerProtocolPresets } from './MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { behringerMeter } from './productSpecific/behringer';
 
 export class OscMixerConnection {
@@ -16,7 +16,7 @@ export class OscMixerConnection {
             this.store = window.storeRedux.getState();
         });
 
-        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
+        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
         this.oscConnection = new osc.UDPPort({
             localAddress: this.store.settings[0].localOscIp,

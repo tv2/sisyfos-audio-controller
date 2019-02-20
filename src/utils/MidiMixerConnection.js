@@ -3,7 +3,7 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 
 //Utils:
-import { MixerProtocolPresets } from './MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 export class MidiMixerConnection {
     constructor() {
@@ -15,7 +15,7 @@ export class MidiMixerConnection {
             this.store = window.storeRedux.getState();
         });
 
-        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
+        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
 
         WebMidi.enable((err) => {
@@ -31,8 +31,8 @@ export class MidiMixerConnection {
             // Display the current time
             console.log("Midi time : ", WebMidi.time);
 
-            this.midiInput = WebMidi.getInputByName("IAC-driver IAC-bus 1");
-            this.midiOutput = WebMidi.getOutputByName("IAC-driver IAC-bus 1");
+            this.midiInput = WebMidi.getInputByName("IAC-driver ProducersMixer");
+            this.midiOutput = WebMidi.getOutputByName("IAC-driver ProducersMixer");
 
             this.setupMixerConnection();
         });

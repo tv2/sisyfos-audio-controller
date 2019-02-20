@@ -1,4 +1,4 @@
-import * as DEFAULTS from '../utils/DEFAULTS';
+import * as DEFAULTS from '../constants/DEFAULTS';
 
 const defaultChannelsReducerState = () => {
     let defaultObj = [{

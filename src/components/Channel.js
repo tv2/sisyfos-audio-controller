@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import VuMeter from './VuMeter';
 //assets:
 import '../assets/css/Channel.css';
-import { MixerProtocolPresets } from '../utils/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 class Channel extends PureComponent {
     constructor(props) {
@@ -13,7 +13,7 @@ class Channel extends PureComponent {
         this.mixerConnection = this.props.mixerConnection;
         this.state = {
         };
-        this.mixerProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
+        this.mixerProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
 
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);

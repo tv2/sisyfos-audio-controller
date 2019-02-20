@@ -91,7 +91,7 @@ export const MixerProtocolPresets =
                 test: 0.6,
             },
         },
-        yamahacl1: {
+        genericMidi: {
             protocol: 'MIDI',
             mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)

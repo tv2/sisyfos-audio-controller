@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 //assets:
 import '../assets/css/VuMeter.css';
 //Utils:
-import { MixerProtocolPresets } from '../utils/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 class VuMeter extends PureComponent {
     constructor(props) {
@@ -14,7 +14,7 @@ class VuMeter extends PureComponent {
 
         this.state = {
         };
-        this.mixerProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
+        this.mixerProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
         this.totalHeight = this.totalHeight.bind(this);
         this.calcLower = this.calcLower.bind(this);

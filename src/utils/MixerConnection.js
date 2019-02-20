@@ -1,7 +1,7 @@
 //Utils:
-import { MixerProtocolPresets } from './MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
-import {MidiMixerConnection } from '../utils/MidiMixerConnection';
+import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 
 export class MixerConnection {
     constructor(initialStore) {
@@ -14,7 +14,7 @@ export class MixerConnection {
             this.store = window.storeRedux.getState();
         });
 
-        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
+        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
         if (this.mixerProtocol.protocol === 'OSC') {
             this.mixerConnection = new OscMixerConnection(this.fadeInOut);
         } else if (this.mixerProtocol.protocol === 'MIDI') {
@@ -45,32 +45,34 @@ export class MixerConnection {
             }
 
             let timer = setInterval(() => {
+                val = val + 3*this.mixerProtocol.fader.step;
                 if ( val >= targetVal){
+                    val = targetVal;
                     clearInterval(timer);
-                } else {
-                    val = val + 3*this.mixerProtocol.fader.step;
-                    window.storeRedux.dispatch({
-                        type:'SET_OUTPUT_LEVEL',
-                        channel: channelIndex,
-                        level: val
-                    });
-                    this.mixerConnection.updateOutLevel(channelIndex);
+                    return true;
                 }
+                window.storeRedux.dispatch({
+                    type:'SET_OUTPUT_LEVEL',
+                    channel: channelIndex,
+                    level: val
+                });
+                this.mixerConnection.updateOutLevel(channelIndex);
             }, 1);
         } else {
             let val = this.store.channels[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
+                val = val - 3*this.mixerProtocol.fader.step;
                 if ( val <= this.mixerProtocol.fader.min){
+                    val = this.mixerProtocol.fader.min;
                     clearInterval(timer);
-                } else {
-                    val = val - 3*this.mixerProtocol.fader.step;
-                    window.storeRedux.dispatch({
-                        type:'SET_OUTPUT_LEVEL',
-                        channel: channelIndex,
-                        level: val
-                    });
-                    this.mixerConnection.updateOutLevel(channelIndex);
+                    return true;
                 }
+                window.storeRedux.dispatch({
+                    type:'SET_OUTPUT_LEVEL',
+                    channel: channelIndex,
+                    level: val
+                });
+                this.mixerConnection.updateOutLevel(channelIndex);
             }, 1);
         }
     }
