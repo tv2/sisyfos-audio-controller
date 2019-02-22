@@ -34,7 +34,6 @@ export class MixerConnection {
         this.mixerConnection.updateOutLevel(channelIndex);
     }
 
-
     fadeInOut (channelIndex){
         if (this.store.channels[0].channel[channelIndex].pgmOn) {
             let val = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
