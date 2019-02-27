@@ -143,13 +143,6 @@ export class OscMixerConnection {
     }
 
     updateOutLevel(channelIndex) {
-        if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
-            window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
-                channel: channelIndex,
-                level: this.store.channels[0].channel[channelIndex].faderLevel
-            });
-        }
         this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
             channelIndex+1,
