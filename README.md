@@ -21,4 +21,4 @@ cd producers-audio-mixer
 yarn
 yarn start
 ```
-Settings for OSCprotol are in ./src/utils/OSCPRESETS.js
+Settings for Mixer protol are in ./src/utils/MixerProtocolPresets.js

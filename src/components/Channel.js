@@ -4,16 +4,16 @@ import { connect } from "react-redux";
 import VuMeter from './VuMeter';
 //assets:
 import '../assets/css/Channel.css';
-
-
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 class Channel extends PureComponent {
     constructor(props) {
         super(props);
         this.channelIndex = this.props.channelIndex;
-        this.oscServer = this.props.oscServer;
+        this.mixerConnection = this.props.mixerConnection;
         this.state = {
         };
+        this.mixerProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
 
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);
@@ -26,7 +26,7 @@ class Channel extends PureComponent {
             type:'SET_PGM',
             channel: this.channelIndex
         });
-        this.oscServer.updateOscLevel(this.channelIndex);
+        this.mixerConnection.updateOutLevel(this.channelIndex);
     }
 
     handlePst() {
@@ -42,7 +42,7 @@ class Channel extends PureComponent {
             channel: this.channelIndex,
             level: event.target.value
         });
-        this.oscServer.updateOscLevel(this.channelIndex);
+        this.mixerConnection.updateOutLevel(this.channelIndex);
     }
 
 
@@ -74,9 +74,9 @@ class Channel extends PureComponent {
                 }
                 id="typeinp"
                 type="range"
-                min={this.props.store.settings[0].fader.min}
-                max={this.props.store.settings[0].fader.max}
-                step={this.props.store.settings[0].fader.step}
+                min={this.mixerProtocol.fader.min}
+                max={this.mixerProtocol.fader.max}
+                step={this.mixerProtocol.fader.step}
                 value= {this.props.store.channels[0].channel[this.channelIndex].faderLevel}
                 onChange={event => {
                     event.preventDefault();

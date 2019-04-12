@@ -1,28 +1,16 @@
-import * as DEFAULTS from '../utils/DEFAULTS';
+import * as DEFAULTS from '../constants/DEFAULTS';
 
 const defaultSettingsReducerState = [
     {
         showSnaps: false,
         showSettings: false,
-        oscPreset: "reaper",
+        mixerProtocol: "behringer",
         localOscIp: "0.0.0.0",
         localOscPort: 8000,
         machineOscIp: "0.0.0.0",
-        machineOscPort: 8001,
+        machineOscPort: 10024,
         numberOfChannels: DEFAULTS.NUMBER_OF_CHANNELS,
-        numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
-        fader: {
-            min: 0,
-            max: 1,
-            zero: 0.75,
-            step: 0.01,
-        },
-        meter: {
-            min: 0,
-            max: 1,
-            zero: 0.75,
-            test: 0.6,
-        },
+        numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS
     },
 ];
 

@@ -20,7 +20,7 @@ class Channels extends PureComponent {
         this.props.dispatch({
             type:'X_MIX'
         });
-        this.props.oscServer.updateOscLevels();
+        this.props.mixerConnection.updateOutLevels();
     }
 
     handleSnapMix(snapIndex) {
@@ -28,7 +28,7 @@ class Channels extends PureComponent {
             type:'SNAP_MIX',
             snapIndex: snapIndex
         });
-        this.props.oscServer.updateOscLevels();
+        this.props.mixerConnection.updateOutLevels();
     }
 
     handleShowSnaps() {
@@ -65,7 +65,7 @@ class Channels extends PureComponent {
                 return <Channel
                             channelIndex = {index}
                             key={index}
-                            oscServer = { this.props.oscServer}
+                            mixerConnection = { this.props.mixerConnection}
                         />
                 })
             }
