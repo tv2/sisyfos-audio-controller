@@ -8,6 +8,7 @@ builds/
 dist/
 node_modules/
 *.compiled.*
+yarn.lock
 
 # Folder config file #
 ######################
