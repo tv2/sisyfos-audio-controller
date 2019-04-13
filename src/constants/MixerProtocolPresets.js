@@ -42,6 +42,7 @@ export const MixerProtocolPresets =
                 test: 0.6,
             },
         },
+// ---------------------------------------------------------
         behringerxr: {
             protocol: 'OSC',
             mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
@@ -91,9 +92,10 @@ export const MixerProtocolPresets =
                 test: 0.6,
             },
         },
+// ---------------------------------------------------------
         midas: {
             protocol: 'OSC',
-            mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
+            mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                             //client (use feedback from mixers fader level)
             leadingZeros: true,
             pingCommand: [
@@ -117,14 +119,14 @@ export const MixerProtocolPresets =
                 }
             ],
             fromMixer: {
-                CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
-                CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+                CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',        //'none' ignores this command
+                CHANNEL_OUT_GAIN: '/bus/{channel}/mix/fader',
                 CHANNEL_VU: '/meters/1',
                 CHANNEL_NAME: '/ch/{channel}/config/name',
             },
             toMixer: {
-                CHANNEL_FADER_LEVEL: 'none',
-                CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+                CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',
+                CHANNEL_OUT_GAIN: '/bus/{channel}/mix/fader',
             },
             fader: {
                 min: 0,
@@ -140,6 +142,7 @@ export const MixerProtocolPresets =
                 test: 0.6,
             },
         },
+// ---------------------------------------------------------
         genericMidi: {
             protocol: 'MIDI',
             mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),

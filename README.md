@@ -21,4 +21,19 @@ cd producers-audio-mixer
 yarn
 yarn start
 ```
-Settings for Mixer protol are in ./src/utils/MixerProtocolPresets.js
+
+## Settings:
+(Mixer presets are stored in MixerProtocolPresets.js)
+### Following preset name are possible:
+* reaper
+  * OSC protocol for control Reaper (reaper.fm)
+* midas
+  * OSC protocol for Midas M32
+  * Port should be 10023
+  * Channel 1-16 should be routed to bus 1-16
+  * Bus 1-16 is then used for Fadi In-Out
+* behringerrx
+  * OSC protocol for Behringer XR18
+  * Port should be 10024
+* midi
+  * Generic MIDI - still preminilary
