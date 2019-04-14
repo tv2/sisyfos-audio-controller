@@ -42,25 +42,37 @@ export class MixerConnection {
                 targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
             }
 
-            let fadeDirection = 1;
             if (targetVal<outputLevel) {
-                fadeDirection = -1;
+                let timer = setInterval(() => {
+                    outputLevel = outputLevel - 3*this.mixerProtocol.fader.step;
+                    if ( outputLevel <= targetVal){
+                        outputLevel = targetVal;
+                        clearInterval(timer);
+                        return true;
+                    }
+                    window.storeRedux.dispatch({
+                        type:'SET_OUTPUT_LEVEL',
+                        channel: channelIndex,
+                        level: outputLevel
+                    });
+                    this.mixerConnection.updateOutLevel(channelIndex);
+                }, 1);
+            } else {
+                let timer = setInterval(() => {
+                    outputLevel = outputLevel + 3*this.mixerProtocol.fader.step;
+                    if ( outputLevel >= targetVal){
+                        outputLevel = targetVal;
+                        clearInterval(timer);
+                        return true;
+                    }
+                    window.storeRedux.dispatch({
+                        type:'SET_OUTPUT_LEVEL',
+                        channel: channelIndex,
+                        level: outputLevel
+                    });
+                    this.mixerConnection.updateOutLevel(channelIndex);
+                }, 1);
             }
-
-            let timer = setInterval(() => {
-                outputLevel = outputLevel + fadeDirection*3*this.mixerProtocol.fader.step;
-                if ( outputLevel >= targetVal){
-                    outputLevel = targetVal;
-                    clearInterval(timer);
-                    return true;
-                }
-                window.storeRedux.dispatch({
-                    type:'SET_OUTPUT_LEVEL',
-                    channel: channelIndex,
-                    level: outputLevel
-                });
-                this.mixerConnection.updateOutLevel(channelIndex);
-            }, 1);
         } else {
             let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
