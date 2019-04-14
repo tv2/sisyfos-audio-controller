@@ -5,6 +5,7 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { behringerMeter } from './productSpecific/behringer';
+import { midasMeter } from './productSpecific/midas';
 
 export class OscMixerConnection {
     constructor() {
@@ -53,8 +54,10 @@ export class OscMixerConnection {
             if (
                 this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_VU)
             ) {
-                if (this.store.settings[0].mixerProtocol === 'behringer') {
+                if (this.store.settings[0].mixerProtocol === 'behringerxr') {
                     behringerMeter(message.args);
+                } else if (this.store.settings[0].mixerProtocol === 'midas') {
+                    midasMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];
                     window.storeRedux.dispatch({
