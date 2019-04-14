@@ -120,13 +120,13 @@ export const MixerProtocolPresets =
             ],
             fromMixer: {
                 CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',        //'none' ignores this command
-                CHANNEL_OUT_GAIN: '/bus/{channel}/mix/fader',
+                CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
                 CHANNEL_VU: '/meters/1',
                 CHANNEL_NAME: '/ch/{channel}/config/name',
             },
             toMixer: {
                 CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',
-                CHANNEL_OUT_GAIN: '/bus/{channel}/mix/fader',
+                CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
             },
             fader: {
                 min: 0,

@@ -30,9 +30,11 @@ yarn start
 * midas
   * OSC protocol for Midas M32
   * Port should be 10023
-  * Channel 1-16 should be routed to bus 1-16
-  * Bus 1-16 is then used for Fadi In-Out
-* behringerrx
+  * Route ch 1-16 to bus 1-2 and in main turn off main stereo
+  * Set send to Bus 1-2 to Post Fader on all channels
+  * Link Bus 1-2 to stereo and in main turn on main stereo
+  * Send to Bus 1-2 is then used for Fade In-Out
+* behringerxr
   * OSC protocol for Behringer XR18
   * Port should be 10024
 * midi
