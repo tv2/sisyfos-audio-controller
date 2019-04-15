@@ -23,6 +23,12 @@ export class MixerConnection {
         } else if (this.mixerProtocol.protocol === 'MIDI') {
             this.mixerConnection = new MidiMixerConnection(this.fadeInOut);
         }
+
+        this.timer = [];
+        this.store.channels[0].channel.map((channel, index) => {
+            this.timer.push(0);
+        });
+
     }
 
     updateOutLevels() {
@@ -39,7 +45,7 @@ export class MixerConnection {
 
     fadeInOut (channelIndex){
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
-            clearInterval(this.timer);
+            clearInterval(this.timer[channelIndex]);
         }
         window.storeRedux.dispatch({
             type:'FADE_ACTIVE',
@@ -55,11 +61,11 @@ export class MixerConnection {
             }
 
             if (targetVal<outputLevel) {
-                this.timer = setInterval(() => {
+                this.timer[channelIndex] = setInterval(() => {
                     outputLevel = outputLevel - FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
                     if ( outputLevel <= targetVal){
                         outputLevel = targetVal;
-                        clearInterval(this.timer);
+                        clearInterval(this.timer[channelIndex]);
                         window.storeRedux.dispatch({
                             type:'FADE_ACTIVE',
                             channel: channelIndex,
@@ -75,11 +81,11 @@ export class MixerConnection {
                     this.mixerConnection.updateOutLevel(channelIndex);
                 }, FADE_INOUT_SPEED);
             } else {
-                this.timer = setInterval(() => {
+                this.timer[channelIndex] = setInterval(() => {
                     outputLevel = outputLevel + FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
                     if ( outputLevel >= targetVal){
                         outputLevel = targetVal;
-                        clearInterval(this.timer);
+                        clearInterval(this.timer[channelIndex]);
                         window.storeRedux.dispatch({
                             type:'FADE_ACTIVE',
                             channel: channelIndex,
@@ -97,11 +103,11 @@ export class MixerConnection {
             }
         } else {
             let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
-            this.timer = setInterval(() => {
+            this.timer[channelIndex] = setInterval(() => {
                 outputLevel = outputLevel - FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
                 if ( outputLevel <= this.mixerProtocol.fader.min){
                     outputLevel = this.mixerProtocol.fader.min;
-                    clearInterval(this.timer);
+                    clearInterval(this.timer[channelIndex]);
                     window.storeRedux.dispatch({
                         type:'FADE_ACTIVE',
                         channel: channelIndex,
