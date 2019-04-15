@@ -3,6 +3,9 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 
+const FADE_INOUT_STEPS = 3;
+const FADE_INOUT_SPEED = 1;
+
 export class MixerConnection {
     constructor(initialStore) {
         this.updateOutLevels = this.updateOutLevels.bind(this);
@@ -44,7 +47,7 @@ export class MixerConnection {
 
             if (targetVal<outputLevel) {
                 let timer = setInterval(() => {
-                    outputLevel = outputLevel - 3*this.mixerProtocol.fader.step;
+                    outputLevel = outputLevel - FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
                     if ( outputLevel <= targetVal){
                         outputLevel = targetVal;
                         clearInterval(timer);
@@ -56,10 +59,10 @@ export class MixerConnection {
                         level: outputLevel
                     });
                     this.mixerConnection.updateOutLevel(channelIndex);
-                }, 1);
+                }, FADE_INOUT_SPEED);
             } else {
                 let timer = setInterval(() => {
-                    outputLevel = outputLevel + 3*this.mixerProtocol.fader.step;
+                    outputLevel = outputLevel + FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
                     if ( outputLevel >= targetVal){
                         outputLevel = targetVal;
                         clearInterval(timer);
@@ -71,12 +74,12 @@ export class MixerConnection {
                         level: outputLevel
                     });
                     this.mixerConnection.updateOutLevel(channelIndex);
-                }, 1);
+                }, FADE_INOUT_SPEED);
             }
         } else {
             let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
             let timer = setInterval(() => {
-                outputLevel = outputLevel - 3*this.mixerProtocol.fader.step;
+                outputLevel = outputLevel - FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
                 if ( outputLevel <= this.mixerProtocol.fader.min){
                     outputLevel = this.mixerProtocol.fader.min;
                     clearInterval(timer);
@@ -88,7 +91,7 @@ export class MixerConnection {
                     level: outputLevel
                 });
                 this.mixerConnection.updateOutLevel(channelIndex);
-            }, 1);
+            }, FADE_INOUT_SPEED);
         }
     }
 }
