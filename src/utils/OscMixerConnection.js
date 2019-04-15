@@ -37,9 +37,8 @@ export class OscMixerConnection {
             });
         })
         .on('message', (message) => {
-            if (
-                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_FADER_LEVEL)
-            ) {
+            if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+                .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
@@ -50,10 +49,18 @@ export class OscMixerConnection {
                 {
                     this.updateOutLevel(ch-1);
                 }
-            }
-            if (
-                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_VU)
-            ) {
+            } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+                .CHANNEL_OUT_GAIN)){
+                    let ch = message.address.split("/")[2];
+                    if (this.store.channels[0].channel[ch - 1].pgmOn && this.mixerProtocol.mode === 'master') {
+                        window.storeRedux.dispatch({
+                            type:'SET_FADER_LEVEL',
+                            channel: ch - 1,
+                            level: message.args[0]
+                    });
+                }
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+                .CHANNEL_VU)){
                 if (this.store.settings[0].mixerProtocol === 'behringerxr') {
                     behringerMeter(message.args);
                 } else if (this.store.settings[0].mixerProtocol === 'midas') {
@@ -66,10 +73,8 @@ export class OscMixerConnection {
                         level: message.args[0]
                     });
                 }
-            }
-            if (
-                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_NAME)
-            ) {
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+                .CHANNEL_NAME)) {
                     let ch = message.address.split("/")[2];
                     window.storeRedux.dispatch({
                         type:'SET_CHANNEL_LABEL',
@@ -78,7 +83,6 @@ export class OscMixerConnection {
                     });
                 console.log("OSC message: ", message.address);
             }
-
         })
         .on('error', (error) => {
             console.log("Error : ", error);
