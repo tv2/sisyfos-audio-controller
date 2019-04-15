@@ -24,10 +24,8 @@ export class MixerConnection {
             this.mixerConnection = new MidiMixerConnection(this.fadeInOut);
         }
 
-        this.timer = [];
-        this.store.channels[0].channel.map((channel, index) => {
-            this.timer.push(0);
-        });
+        this.timer = new Array(this.store.channels[0].channel.length);
+
 
     }
 
