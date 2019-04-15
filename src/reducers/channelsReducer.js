@@ -6,6 +6,7 @@ const defaultChannelsReducerState = () => {
     }];
     for (let i=0; i < DEFAULTS.NUMBER_OF_CHANNELS; i++) {
         defaultObj[0].channel.push({
+                fadeActive: false,
                 faderLevel: 0,
                 label: "",
                 outputLevel: 0.0,
@@ -32,6 +33,9 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
                     nextState[0].channel[index] = channel;
                 }
             });
+            return nextState;
+        case 'FADE_ACTIVE':
+            nextState[0].channel[action.channel].fadeActive = action.active;
             return nextState;
         case 'SET_FADER_LEVEL': //channel:  level:
             nextState[0].channel[action.channel].faderLevel = action.level;

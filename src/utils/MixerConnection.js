@@ -3,6 +3,9 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 
+const FADE_INOUT_STEPS = 3;
+const FADE_INOUT_SPEED = 1;
+
 export class MixerConnection {
     constructor(initialStore) {
         this.updateOutLevels = this.updateOutLevels.bind(this);
@@ -20,6 +23,9 @@ export class MixerConnection {
         } else if (this.mixerProtocol.protocol === 'MIDI') {
             this.mixerConnection = new MidiMixerConnection(this.fadeInOut);
         }
+
+        this.timer = new Array(this.store.channels[0].channel.length);
+
     }
 
     updateOutLevels() {
@@ -35,6 +41,15 @@ export class MixerConnection {
     }
 
     fadeInOut (channelIndex){
+        if (this.store.channels[0].channel[channelIndex].fadeActive) {
+            clearInterval(this.timer[channelIndex]);
+        }
+        window.storeRedux.dispatch({
+            type:'FADE_ACTIVE',
+            channel: channelIndex,
+            active: true
+        });
+
         if (this.store.channels[0].channel[channelIndex].pgmOn) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
             let targetVal = this.mixerProtocol.fader.zero;
@@ -43,12 +58,10 @@ export class MixerConnection {
             }
 
             if (targetVal<outputLevel) {
-                let timer = setInterval(() => {
-                    outputLevel = outputLevel - 3*this.mixerProtocol.fader.step;
-                    if ( outputLevel <= targetVal){
-                        outputLevel = targetVal;
-                        clearInterval(timer);
-                        return true;
+                this.timer[channelIndex] = setInterval(() => {
+                    outputLevel = outputLevel - FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
+                    if (outputLevel<targetVal) {
+                        outputLevel=targetVal;
                     }
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
@@ -56,14 +69,22 @@ export class MixerConnection {
                         level: outputLevel
                     });
                     this.mixerConnection.updateOutLevel(channelIndex);
-                }, 1);
+
+                    if ( outputLevel === targetVal){
+                        clearInterval(this.timer[channelIndex]);
+                        window.storeRedux.dispatch({
+                            type:'FADE_ACTIVE',
+                            channel: channelIndex,
+                            active: false
+                        });
+                        return true;
+                    }
+                }, FADE_INOUT_SPEED);
             } else {
-                let timer = setInterval(() => {
-                    outputLevel = outputLevel + 3*this.mixerProtocol.fader.step;
-                    if ( outputLevel >= targetVal){
-                        outputLevel = targetVal;
-                        clearInterval(timer);
-                        return true;
+                this.timer[channelIndex] = setInterval(() => {
+                    outputLevel = outputLevel + FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
+                    if (outputLevel>targetVal) {
+                        outputLevel=targetVal;
                     }
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
@@ -71,16 +92,26 @@ export class MixerConnection {
                         level: outputLevel
                     });
                     this.mixerConnection.updateOutLevel(channelIndex);
-                }, 1);
+
+                    if ( outputLevel === targetVal){
+                        outputLevel = targetVal;
+                        clearInterval(this.timer[channelIndex]);
+                        window.storeRedux.dispatch({
+                            type:'FADE_ACTIVE',
+                            channel: channelIndex,
+                            active: false
+                        });
+                        return true;
+                    }
+
+                }, FADE_INOUT_SPEED);
             }
         } else {
             let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
-            let timer = setInterval(() => {
-                outputLevel = outputLevel - 3*this.mixerProtocol.fader.step;
-                if ( outputLevel <= this.mixerProtocol.fader.min){
-                    outputLevel = this.mixerProtocol.fader.min;
-                    clearInterval(timer);
-                    return true;
+            this.timer[channelIndex] = setInterval(() => {
+                outputLevel = outputLevel - FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
+                if (outputLevel<this.mixerProtocol.fader.min) {
+                    outputLevel=this.mixerProtocol.fader.min;
                 }
                 window.storeRedux.dispatch({
                     type:'SET_OUTPUT_LEVEL',
@@ -88,7 +119,18 @@ export class MixerConnection {
                     level: outputLevel
                 });
                 this.mixerConnection.updateOutLevel(channelIndex);
-            }, 1);
+
+                if ( outputLevel === this.mixerProtocol.fader.min){
+                    clearInterval(this.timer[channelIndex]);
+                    window.storeRedux.dispatch({
+                        type:'FADE_ACTIVE',
+                        channel: channelIndex,
+                        active: false
+                    });
+                    return true;
+                }
+
+            }, FADE_INOUT_SPEED);
         }
     }
 }
