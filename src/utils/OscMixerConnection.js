@@ -52,7 +52,9 @@ export class OscMixerConnection {
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_OUT_GAIN)){
                     let ch = message.address.split("/")[2];
-                    if (this.store.channels[0].channel[ch - 1].pgmOn && this.mixerProtocol.mode === 'master') {
+                    if (this.store.channels[0].channel[ch - 1].pgmOn
+                        && this.mixerProtocol.mode === 'master'
+                        && !this.store.channels[0].channel[ch - 1].fadeActive) {
                         window.storeRedux.dispatch({
                             type:'SET_FADER_LEVEL',
                             channel: ch - 1,
