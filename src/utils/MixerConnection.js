@@ -67,10 +67,10 @@ export class MixerConnection {
     fadeUp(channelIndex) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
 
+
+        let targetVal = this.mixerProtocol.fader.zero;
         if (this.mixerProtocol.mode === "master") {
-            let targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
-        } else {
-            let targetVal = this.mixerProtocol.fader.zero;
+            targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
         }
 
         if (targetVal<outputLevel) {
