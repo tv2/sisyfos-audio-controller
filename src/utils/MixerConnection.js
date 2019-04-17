@@ -58,7 +58,7 @@ export class MixerConnection {
         }
 
         if (this.store.channels[0].channel[channelIndex].pgmOn) {
-            this.fadeUp(channelIndex)
+            this.fadeUp(channelIndex);
         } else {
             this.fadeDown(channelIndex);
         }
@@ -66,8 +66,7 @@ export class MixerConnection {
 
     fadeUp(channelIndex) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
-
-
+        let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step
         let targetVal = this.mixerProtocol.fader.zero;
         if (this.mixerProtocol.mode === "master") {
             targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
@@ -75,19 +74,19 @@ export class MixerConnection {
 
         if (targetVal<outputLevel) {
             this.timer[channelIndex] = setInterval(() => {
-                outputLevel = outputLevel - FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
-                if (outputLevel<targetVal) {
-                    outputLevel=targetVal;
-                }
-                window.storeRedux.dispatch({
-                    type:'SET_OUTPUT_LEVEL',
-                    channel: channelIndex,
-                    level: outputLevel
-                });
-                this.mixerConnection.updateOutLevel(channelIndex);
+                outputLevel -= step;
+                this.mixerConnection.updateFadeIOLevel(channelIndex);
 
-                if ( outputLevel === targetVal){
+                if ( outputLevel <= targetVal){
+                    outputLevel = targetVal;
+                    this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
                     clearInterval(this.timer[channelIndex]);
+
+                    window.storeRedux.dispatch({
+                        type:'SET_OUTPUT_LEVEL',
+                        channel: channelIndex,
+                        level: outputLevel
+                    });
                     window.storeRedux.dispatch({
                         type:'FADE_ACTIVE',
                         channel: channelIndex,
@@ -98,20 +97,18 @@ export class MixerConnection {
             }, FADE_INOUT_SPEED);
         } else {
             this.timer[channelIndex] = setInterval(() => {
-                outputLevel = outputLevel + FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
-                if (outputLevel>targetVal) {
-                    outputLevel=targetVal;
-                }
-                window.storeRedux.dispatch({
-                    type:'SET_OUTPUT_LEVEL',
-                    channel: channelIndex,
-                    level: outputLevel
-                });
-                this.mixerConnection.updateOutLevel(channelIndex);
+                outputLevel += step;
+                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
 
-                if ( outputLevel === targetVal){
+                if ( outputLevel >= targetVal ) {
                     outputLevel = targetVal;
+                    this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
                     clearInterval(this.timer[channelIndex]);
+                    window.storeRedux.dispatch({
+                        type:'SET_OUTPUT_LEVEL',
+                        channel: channelIndex,
+                        level: outputLevel
+                    });
                     window.storeRedux.dispatch({
                         type:'FADE_ACTIVE',
                         channel: channelIndex,
@@ -126,20 +123,23 @@ export class MixerConnection {
 
     fadeDown(channelIndex) {
         let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
-        this.timer[channelIndex] = setInterval(() => {
-            outputLevel = outputLevel - FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
-            if (outputLevel<this.mixerProtocol.fader.min) {
-                outputLevel=this.mixerProtocol.fader.min;
-            }
-            window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
-                channel: channelIndex,
-                level: outputLevel
-            });
-            this.mixerConnection.updateOutLevel(channelIndex);
+        let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step
+        let min = this.mixerProtocol.fader.min;
 
-            if ( outputLevel === this.mixerProtocol.fader.min){
+        this.timer[channelIndex] = setInterval(() => {
+
+            outputLevel -= step;
+            this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+
+            if ( outputLevel < min ){
+                outputLevel=min;
+                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
                 clearInterval(this.timer[channelIndex]);
+                window.storeRedux.dispatch({
+                    type:'SET_OUTPUT_LEVEL',
+                    channel: channelIndex,
+                    level: outputLevel
+                });
                 window.storeRedux.dispatch({
                     type:'FADE_ACTIVE',
                     channel: channelIndex,

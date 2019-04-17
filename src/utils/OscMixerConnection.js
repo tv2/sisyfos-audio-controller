@@ -166,5 +166,15 @@ export class OscMixerConnection {
         );
     }
 
+
+    updateFadeIOLevel(channelIndex, outputLevel) {
+        this.sendOutMessage(
+            this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
+            channelIndex+1,
+            outputLevel,
+            "f"
+        );
+    }
+
 }
 
