@@ -75,7 +75,7 @@ export class MixerConnection {
         if (targetVal<outputLevel) {
             this.timer[channelIndex] = setInterval(() => {
                 outputLevel -= step;
-                this.mixerConnection.updateFadeIOLevel(channelIndex);
+                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
 
                 if ( outputLevel <= targetVal){
                     outputLevel = targetVal;
