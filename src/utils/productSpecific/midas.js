@@ -10,11 +10,6 @@ export const midasMeter = (message) => {
     //console.log(dataview);
 
     for (let i=0; i < store.settings[0].numberOfChannels; i++) {
-/*
-        if (i===1) {
-            console.log(dataview.getFloat32(4*(i)+headerData , true))
-        }
-*/
         window.storeRedux.dispatch({
             type:'SET_VU_LEVEL',
             channel: i,
