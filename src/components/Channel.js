@@ -13,7 +13,7 @@ class Channel extends PureComponent {
         this.mixerConnection = this.props.mixerConnection;
         this.state = {
         };
-        this.mixerProtocol = MixerProtocolPresets[this.props.settings.mixerProtocol] || MixerProtocolPresets.genericMidi;
+        this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi;
 
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);
@@ -59,7 +59,7 @@ class Channel extends PureComponent {
             <input className="channel-volume-slider"
                 style= {
                     Object.assign(
-                        this.props.settings.showSnaps
+                        this.props.showSnaps
                         ?   {
                                 width: "220px",
                                 marginTop: "140px",
@@ -95,7 +95,7 @@ class Channel extends PureComponent {
                         this.props.pgmOn
                         ? {backgroundColor: "red"}
                         : {backgroundColor: "rgb(66, 27, 27)"},
-                        this.props.settings.showSnaps
+                        this.props.showSnaps
                         ?   {
                                 height: "40px",
                                 marginTop: "130px"
@@ -122,7 +122,7 @@ class Channel extends PureComponent {
                         this.props.pstOn
                         ? {backgroundColor: "green"}
                         : {backgroundColor: "rgb(59, 73, 59)"},
-                        this.props.settings.showSnaps
+                        this.props.showSnaps
                         ?   {height: "40px"}
                         :   {height: "90px"}
                     )
@@ -135,7 +135,7 @@ class Channel extends PureComponent {
     }
 
     snapButton(snapIndex) {
-        if (this.props.settings.showSnaps) {
+        if (this.props.showSnaps) {
             return (
                 <div key={snapIndex} className="channel-snap-line">
                     <button
@@ -206,7 +206,8 @@ const mapStateToProps = (state, props) => {
         label: state.channels[0].channel[props.channelIndex].label,
         snapOn: state.channels[0].channel[props.channelIndex].snapOn,
         channel: state.channels[0].channel[props.channelIndex],
-        settings: state.settings[0]
+        mixerProtocol: state.settings[0].mixerProtocol,
+        showSnaps: state.settings[0].showSnaps
     }
 }
 

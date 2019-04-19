@@ -14,7 +14,7 @@ class VuMeter extends PureComponent {
 
         this.state = {
         };
-        this.mixerProtocol = MixerProtocolPresets[this.props.settings.mixerProtocol]  || MixerProtocolPresets.genericMidi;
+        this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
         this.totalHeight = this.totalHeight.bind(this);
         this.calcLower = this.calcLower.bind(this);
@@ -23,7 +23,7 @@ class VuMeter extends PureComponent {
     }
 
     totalHeight() {
-        return (this.props.settings.showSnaps ? 1 : 2) * 200 / (this.mixerProtocol.meter.max - this.mixerProtocol.meter.min);
+        return (this.props.showSnaps ? 1 : 2) * 200 / (this.mixerProtocol.meter.max - this.mixerProtocol.meter.min);
     }
 
     calcLower() {
@@ -95,7 +95,8 @@ class VuMeter extends PureComponent {
 const mapStateToProps = (state, props) => {
     return {
         vuVal: state.channels[0].vuMeters[props.channelIndex].vuVal,
-        settings: state.settings[0]
+        mixerProtocol: state.settings[0].mixerProtocol,
+        showSnaps: state.settings[0].showSnaps
     }
 }
 

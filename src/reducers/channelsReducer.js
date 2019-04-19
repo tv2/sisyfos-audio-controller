@@ -1,5 +1,4 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
-import update from 'immutability-helper';
 
 const defaultChannelsReducerState = () => {
     let defaultObj = [{
