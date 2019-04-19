@@ -13,7 +13,7 @@ class Channel extends PureComponent {
         this.mixerConnection = this.props.mixerConnection;
         this.state = {
         };
-        this.mixerProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
+        this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi;
 
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);
@@ -59,7 +59,7 @@ class Channel extends PureComponent {
             <input className="channel-volume-slider"
                 style= {
                     Object.assign(
-                        this.props.store.settings[0].showSnaps
+                        this.props.showSnaps
                         ?   {
                                 width: "220px",
                                 marginTop: "140px",
@@ -77,7 +77,7 @@ class Channel extends PureComponent {
                 min={this.mixerProtocol.fader.min}
                 max={this.mixerProtocol.fader.max}
                 step={this.mixerProtocol.fader.step}
-                value= {this.props.store.channels[0].channel[this.channelIndex].faderLevel}
+                value= {this.props.faderLevel}
                 onChange={event => {
                     event.preventDefault();
                     this.handleLevel(event);
@@ -92,10 +92,10 @@ class Channel extends PureComponent {
                 className="channel-pgm-button"
                 style={
                     Object.assign(
-                        this.props.store.channels[0].channel[this.channelIndex].pgmOn
+                        this.props.pgmOn
                         ? {backgroundColor: "red"}
                         : {backgroundColor: "rgb(66, 27, 27)"},
-                        this.props.store.settings[0].showSnaps
+                        this.props.showSnaps
                         ?   {
                                 height: "40px",
                                 marginTop: "130px"
@@ -119,10 +119,10 @@ class Channel extends PureComponent {
                 className="channel-pst-button"
                 style={
                     Object.assign(
-                        this.props.store.channels[0].channel[this.channelIndex].pstOn
+                        this.props.pstOn
                         ? {backgroundColor: "green"}
                         : {backgroundColor: "rgb(59, 73, 59)"},
-                        this.props.store.settings[0].showSnaps
+                        this.props.showSnaps
                         ?   {height: "40px"}
                         :   {height: "90px"}
                     )
@@ -135,12 +135,12 @@ class Channel extends PureComponent {
     }
 
     snapButton(snapIndex) {
-        if (this.props.store.settings[0].showSnaps) {
+        if (this.props.showSnaps) {
             return (
                 <div key={snapIndex} className="channel-snap-line">
                     <button
                         className="channel-snap-button"
-                        style={this.props.store.channels[0].channel[this.channelIndex].snapOn[snapIndex]
+                        style={this.props.snapOn[snapIndex]
                             ? {backgroundColor: "rgb(183, 182, 20)"}
                             : {backgroundColor: "rgb(89, 83, 10)"}
                         }
@@ -157,7 +157,7 @@ class Channel extends PureComponent {
     }
 
     renderLabel() {
-        if (this.props.store.channels[0].channel[this.channelIndex].label === "") {
+        if (this.props.label === "") {
             return (
                 <div className="channel-name">
             CH {this.channelIndex + 1}
@@ -166,7 +166,7 @@ class Channel extends PureComponent {
         }
         return (
         <div className="channel-name">
-            {this.props.store.channels[0].channel[this.channelIndex].label}
+            {this.props.label}
         </div>
         )
     }
@@ -183,10 +183,10 @@ class Channel extends PureComponent {
             <br/>
             {this.renderLabel()}
             <div className="channel-gain-label">
-                GAIN: {parseInt(this.props.store.channels[0].channel[this.channelIndex].outputLevel*100)/100}
+                GAIN: {parseInt(this.props.outputLevel*100)/100}
             </div>
             <div className="channel-snap-body">
-                {this.props.store.channels[0].channel[this.channelIndex].snapOn
+                {this.props.snapOn
                     .map((none, index) => {
                         return this.snapButton(index)
                     })
@@ -197,9 +197,16 @@ class Channel extends PureComponent {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
     return {
-        store: state
+        pgmOn: state.channels[0].channel[props.channelIndex].pgmOn,
+        pstOn: state.channels[0].channel[props.channelIndex].pstOn,
+        faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
+        outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
+        label: state.channels[0].channel[props.channelIndex].label,
+        snapOn: state.channels[0].channel[props.channelIndex].snapOn,
+        mixerProtocol: state.settings[0].mixerProtocol,
+        showSnaps: state.settings[0].showSnaps
     }
 }
 

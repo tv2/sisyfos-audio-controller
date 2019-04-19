@@ -2,7 +2,8 @@ import * as DEFAULTS from '../constants/DEFAULTS';
 
 const defaultChannelsReducerState = () => {
     let defaultObj = [{
-        channel: []
+        channel: [],
+        vuMeters: []
     }];
     for (let i=0; i < DEFAULTS.NUMBER_OF_CHANNELS; i++) {
         defaultObj[0].channel.push({
@@ -13,8 +14,11 @@ const defaultChannelsReducerState = () => {
                 pgmOn: false,
                 pstOn: false,
                 snapOn: [],
-                vuVal: 0.0,
         });
+        defaultObj[0].vuMeters.push({
+            vuVal: 0.0
+        });
+
         for (let y=0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
             defaultObj[0].channel[i].snapOn.push(0.0);
         }
@@ -24,7 +28,10 @@ const defaultChannelsReducerState = () => {
 
 export const channels = ((state = defaultChannelsReducerState(), action) => {
 
-    let { ...nextState } = state;
+    let nextState = [{
+        vuMeters: [...state[0].vuMeters],
+        channel: [...state[0].channel]
+    }];
 
     switch(action.type) {
         case 'SET_COMPLETE_STATE':
@@ -44,7 +51,7 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
             nextState[0].channel[action.channel].outputLevel = action.level;
             return nextState;
         case 'SET_VU_LEVEL': //channel:  level:
-            nextState[0].channel[action.channel].vuVal = action.level;
+            nextState[0].vuMeters[action.channel].vuVal = action.level;
             return nextState;
         case 'SET_CHANNEL_LABEL': //channel:  label:
             nextState[0].channel[action.channel].label = action.label;
