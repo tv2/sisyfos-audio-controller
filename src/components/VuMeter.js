@@ -14,7 +14,7 @@ class VuMeter extends PureComponent {
 
         this.state = {
         };
-        this.mixerProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
+        this.mixerProtocol = MixerProtocolPresets[this.props.settings.mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
         this.totalHeight = this.totalHeight.bind(this);
         this.calcLower = this.calcLower.bind(this);
@@ -23,11 +23,11 @@ class VuMeter extends PureComponent {
     }
 
     totalHeight() {
-        return (this.props.store.settings[0].showSnaps ? 1 : 2) * 200 / (this.mixerProtocol.meter.max - this.mixerProtocol.meter.min);
+        return (this.props.settings.showSnaps ? 1 : 2) * 200 / (this.mixerProtocol.meter.max - this.mixerProtocol.meter.min);
     }
 
     calcLower() {
-        let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
+        let val = this.props.vuVal;
         if (val >= this.mixerProtocol.meter.test) {
             val = this.mixerProtocol.meter.test;
         }
@@ -35,7 +35,7 @@ class VuMeter extends PureComponent {
     }
 
     calcMiddle() {
-        let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
+        let val = this.props.vuVal;
         if (val < this.mixerProtocol.meter.test) {
             val = this.mixerProtocol.meter.test;
         } else if (val >= this.mixerProtocol.meter.zero) {
@@ -45,7 +45,7 @@ class VuMeter extends PureComponent {
     }
 
     calcUpper() {
-        let val = this.props.store.channels[0].channel[this.channelIndex].vuVal;
+        let val = this.props.vuVal;
         if (val < this.mixerProtocol.meter.zero) {
             val = this.mixerProtocol.meter.zero;
         }
@@ -92,9 +92,10 @@ class VuMeter extends PureComponent {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
     return {
-        store: state
+        vuVal: state.channels[0].vuMeters[props.channelIndex].vuVal,
+        settings: state.settings[0]
     }
 }
 
