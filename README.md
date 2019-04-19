@@ -28,14 +28,22 @@ yarn start
 * reaper
   * OSC protocol for control Reaper (reaper.fm)
 * midas
-  * OSC protocol for Midas M32
-  * Port should be 10023
+  * OSC protocol for Midas M32 and Behringer X32
+  * Port 10023
   * Route ch 1-16 to bus 1-2 and in main turn off main stereo
   * Set send to Bus 1-2 to Post Fader on all channels
   * Link Bus 1-2 to stereo and in main turn on main stereo
   * Send to Bus 1-2 is then used for Fade In-Out
-* behringerxr
-  * OSC protocol for Behringer XR18
-  * Port should be 10024
+* behringerxrclient (same protocoltype as the midas M32)
+  * OSC protocol for Behringer XR12-16-18
+  * Port 10024
+  * Route ch 1-16 to bus 1-2 and in main turn off main stereo
+  * Set send to Bus 1-2 to Post Fader on all channels
+  * Link Bus 1-2 to stereo and in main turn on main stereo
+  * Send to Bus 1-2 is then used for Fade In-Out
+* behringerxrmaster
+  * OSC protocol for Behringer XR12,16,18
+  * Port 10024
+  * In this version the Behringer is slave of Producers-Audio-mixer, so faders on the behringer is turned down when channel is of.
 * midi
   * Generic MIDI - still preminilary
