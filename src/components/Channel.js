@@ -205,7 +205,6 @@ const mapStateToProps = (state, props) => {
         outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
         label: state.channels[0].channel[props.channelIndex].label,
         snapOn: state.channels[0].channel[props.channelIndex].snapOn,
-        channel: state.channels[0].channel[props.channelIndex],
         mixerProtocol: state.settings[0].mixerProtocol,
         showSnaps: state.settings[0].showSnaps
     }
