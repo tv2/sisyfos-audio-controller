@@ -32,6 +32,7 @@
         "react": "^16.7.0",
         "react-dom": "^16.7.0",
         "react-redux": "^6.0.0",
+        "react-select": "^2.4.3",
         "redux": "^4.0.1",
         "webmidi": "^2.3.2"
     },
