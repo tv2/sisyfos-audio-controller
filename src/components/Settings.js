@@ -1,22 +1,37 @@
 import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
+import Select from 'react-select';
 
 //Utils:
 import { saveSettings } from '../utils/SettingsStorage';
 import '../assets/css/Settings.css';
+import { MixerProtocolPresets, MixerProtocolList } from '../constants/MixerProtocolPresets';
+
 
 class Channels extends PureComponent {
     constructor(props) {
         super(props);
+        this.templateOptions = MixerProtocolList;
+        this.mixerProtocolPresets = MixerProtocolPresets;
         this.state = {
             settings: this.props.store.settings[0]
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleTemplateChange = this.handleTemplateChange.bind(this);
     }
 
     handleChange() {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy[event.target.name] = event.target.value;
+        this.setState(
+            {settings: settingsCopy}
+        );
+    }
+
+
+    handleTemplateChange(selectedOption ) {
+        var settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.mixerProtocol = selectedOption.value;
         this.setState(
             {settings: settingsCopy}
         );
@@ -36,10 +51,12 @@ class Channels extends PureComponent {
                 <div className="settings-header">
                     SETTINGS:
                 </div>
-                <label className="settings-input-field">
-                    PRESET :
-                    <input name="mixerProtocol" type="text" value={this.state.settings.mixerProtocol} onChange={this.handleChange} />
-                </label>
+
+                <Select
+                    value={{label: this.mixerProtocolPresets[this.state.settings.mixerProtocol].label, value: this.state.settings.mixerProtocol}}
+                    onChange={this.handleTemplateChange}
+                    options={this.templateOptions}
+                />
                 <br/>
                 <label className="settings-input-field">
                     LOCAL IP :
