@@ -27,6 +27,7 @@
         "postpackage": "electron-packager ./ --out=./builds"
     },
     "dependencies": {
+        "@babel/plugin-syntax-object-rest-spread": "^7.2.0",
         "electron": "^4.0.0",
         "osc": "https://github.com/PieceMeta/osc.js/tarball/master",
         "react": "^16.7.0",
