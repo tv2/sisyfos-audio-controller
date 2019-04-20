@@ -246,11 +246,9 @@ export const MixerProtocolPresets = {
 };
 
 
-export const MixerProtocolList = [
-    //ToDo: create MixerProtocolList from MixerProtocolPresets
-        { value: 'midas', label: 'Midas M32 / Behringer X32' },
-        { value: 'behringerxrmaster', label: 'Behringer XR 12,14,16 Mastermode' },
-        { value: 'behringerxrclient', label: 'Behringer XR 12,14,16 Clientmode' },
-        { value: 'reaper', label: 'Reaper (reaper.fm)' },
-        { value: 'genericMidi', label: 'Generic Midi' }
-    ];
+export const MixerProtocolList = Object.getOwnPropertyNames(MixerProtocolPresets).map((preset) => {
+    return {
+        value: preset,
+        label: MixerProtocolPresets[preset].label
+    };
+});
