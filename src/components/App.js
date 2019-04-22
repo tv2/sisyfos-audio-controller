@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 
-
 import '../assets/css/App.css';
 import Channels from './Channels';
 import Settings from './Settings';
