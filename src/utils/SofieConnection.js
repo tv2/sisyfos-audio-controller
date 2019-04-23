@@ -20,7 +20,7 @@ export class SofieConnection {
             // Set device status:
             return this.core.setStatus({
                 statusCode: PeripheralDeviceAPI.StatusCode.GOOD,
-                messages: ['Everything is awesome!']
+                messages: ['Producers Audio Mixer is connected']
             });
         })
         .catch((err) => {
@@ -29,7 +29,7 @@ export class SofieConnection {
     }
 
     listenCommands() {
-        this.core.subscribe('peripheralDevices', {
+        this.core.subscribe('getPeripheralDevice', {
             _id: this.core.deviceId
         })
         .then(() => {
