@@ -4,7 +4,7 @@ import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 
 const FADE_INOUT_STEPS = 3;
-const FADE_INOUT_SPEED = 1;
+const FADE_INOUT_SPEED = 10;
 
 export class MixerConnection {
     constructor(initialStore) {

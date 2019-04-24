@@ -23,7 +23,7 @@ class Channel extends PureComponent {
 
     handlePgm() {
         this.props.dispatch({
-            type:'SET_PGM',
+            type:'TOGGLE_PGM',
             channel: this.channelIndex
         });
         this.mixerConnection.updateOutLevel(this.channelIndex);
@@ -31,7 +31,7 @@ class Channel extends PureComponent {
 
     handlePst() {
         this.props.dispatch({
-            type:'SET_PST',
+            type:'TOGGLE_PST',
             channel: this.channelIndex
         });
     }

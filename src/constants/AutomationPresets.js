@@ -17,14 +17,12 @@ export const AutomationPresets = {
             }
         ],
         fromAutomation: {
-            CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',        //'none' ignores this command
-            CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
-            CHANNEL_VU: '/meters/1',
-            CHANNEL_NAME: '/ch/{channel}/config/name',
+            CHANNEL_PGM_ON_OFF: '/ch/{channel}/mix/pgm',
+            CHANNEL_PST_ON_OFF: '/ch/{channel}/mix/pst',
         },
         toAutomation: {
-            CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',
-            CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
+            CHANNEL_PGM_ON_OFF: '/ch/{channel}/mix/pgm',
+            CHANNEL_PST_ON_OFF: '/ch/{channel}/mix/pst',
         },
         fader: {
             min: 0,
@@ -46,6 +44,6 @@ export const AutomationPresets = {
 export const AutomationProtocolList = Object.getOwnPropertyNames(AutomationPresets).map((preset) => {
     return {
         value: preset,
-        label: MixerProtocolPresets[preset].label
+        label: AutomationPresets[preset].label
     };
 });
