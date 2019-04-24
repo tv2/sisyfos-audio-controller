@@ -17,14 +17,15 @@ export const AutomationPresets = {
             }
         ],
         fromAutomation: {
-            CHANNEL_PGM_ON_OFF: '/ch/{channel}/mix/pgm',
-            CHANNEL_PST_ON_OFF: '/ch/{channel}/mix/pst',
-            CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/faderlevel',
-            X_MIX: '/take'
+            CHANNEL_PGM_ON_OFF: '/ch/{value1}/mix/pgm',
+            CHANNEL_PST_ON_OFF: '/ch/{value1}/mix/pst',
+            CHANNEL_FADER_LEVEL: '/ch/{value1}/mix/faderlevel',
+            X_MIX: '/take',
+            SNAP_MIX: '/snap/{value1}'
         },
-        toAutomation: {
-            CHANNEL_PGM_ON_OFF: '/ch/{channel}/mix/pgm',
-            CHANNEL_PST_ON_OFF: '/ch/{channel}/mix/pst',
+        toAutomation: { // ToDo:
+            CHANNEL_PGM_ON_OFF: '/ch/{value1}/mix/pgm',
+            CHANNEL_PST_ON_OFF: '/ch/{value1}/mix/pst',
         },
         fader: {
             min: 0,
