@@ -66,7 +66,7 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
             nextState[0].channel[action.channel].pstOn = !nextState[0].channel[action.channel].pstOn;
             return nextState;
         case 'SET_PST': //channel
-            nextState[0].channel[action.channel].pgmOn = action.pstOn;
+            nextState[0].channel[action.channel].pstOn = action.pstOn;
             return nextState;
         case 'SET_SNAP': //channel //snapIndex
             nextState[0].channel[action.channel].snapOn[action.snapIndex] = !nextState[0].channel[action.channel].snapOn[action.snapIndex];

@@ -34,7 +34,7 @@ export class AutomationConnection {
             });
         })
         .on('message', (message) => {
-            console.log("RECIEVED MESSAGE :", message.address, message.args[0]);
+            console.log("RECIEVED AUTOMATION MESSAGE :", message.address, message.args[0]);
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -53,6 +53,13 @@ export class AutomationConnection {
                     pstOn: message.args[0]
                 });
                 this.mixerConnection.updateOutLevel(ch-1);
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .X_MIX)) {
+
+                    window.storeRedux.dispatch({
+                    type:'X_MIX'
+                });
+                this.mixerConnection.updateOutLevels();
             }
         })
         .on('error', (error) => {
