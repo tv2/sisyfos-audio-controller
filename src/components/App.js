@@ -8,11 +8,13 @@ import Settings from './Settings';
 //Utils:
 import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
 import { MixerConnection } from '../utils/MixerConnection';
+import { AutomationConnection } from '../utils/AutomationConnection';
 
 
 class App extends Component {
     componentWillMount() {
         this.mixerConnection = new MixerConnection(this.props.store);
+        this.automationConnection = new AutomationConnection(this.props.store);
         this.snapShopStoreTimer();
         loadSnapshotState(this.props.store.channels[0]);
     }
