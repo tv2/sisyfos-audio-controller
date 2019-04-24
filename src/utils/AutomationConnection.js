@@ -63,9 +63,15 @@ export class AutomationConnection {
                 });
                 this.mixerConnection.updateOutLevel(ch-1);
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .SNAP_MIX)) {
+                let snapIndex = message.address.split("/")[2];
+                window.storeRedux.dispatch({
+                    type:'SNAP_MIX',
+                    snapIndex: snapIndex
+                });
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .X_MIX)) {
-
-                    window.storeRedux.dispatch({
+                window.storeRedux.dispatch({
                     type:'X_MIX'
                 });
                 this.mixerConnection.updateOutLevels();
@@ -84,11 +90,12 @@ export class AutomationConnection {
     checkOscCommand(message, command) {
         if (message === command) return true;
 
-        let cmdArray = command.split("{channel}");
+        let cmdArray = command.split("{value1}");
+
         if (
             message.substr(0, cmdArray[0].length) === cmdArray[0] &&
-            message.substr(-cmdArray[1].length) === cmdArray[1] &&
-            message.length >= command.replace("{channel}", "").length
+            (message.substr(-cmdArray[1].length) === cmdArray[1] || cmdArray[1].length === 0 ) &&
+            message.length >= command.replace("{value1}", "").length
         ) {
             return true;
         } else {
@@ -99,7 +106,7 @@ export class AutomationConnection {
     sendOutMessage(oscMessage, channel, value, type) {
         let channelString = this.automationProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
-                "{channel}",
+                "{value1}",
                 channelString
             );
         if (message != 'none') {
