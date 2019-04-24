@@ -35,6 +35,7 @@
         "react-redux": "^6.0.0",
         "react-select": "^2.4.3",
         "redux": "^4.0.1",
+        "tv-automation-server-core-integration": "^0.9.0",
         "webmidi": "^2.3.2"
     },
     "devDependencies": {
