@@ -56,11 +56,17 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
         case 'SET_CHANNEL_LABEL': //channel:  label:
             nextState[0].channel[action.channel].label = action.label;
             return nextState;
-        case 'SET_PGM': //channel
+        case 'TOGGLE_PGM': //channel
             nextState[0].channel[action.channel].pgmOn = !nextState[0].channel[action.channel].pgmOn;
             return nextState;
-        case 'SET_PST': //channel
+        case 'SET_PGM': //channel
+            nextState[0].channel[action.channel].pgmOn = action.pgmOn;
+            return nextState;
+        case 'TOGGLE_PST': //channel
             nextState[0].channel[action.channel].pstOn = !nextState[0].channel[action.channel].pstOn;
+            return nextState;
+        case 'SET_PST': //channel
+            nextState[0].channel[action.channel].pstOn = action.pstOn;
             return nextState;
         case 'SET_SNAP': //channel //snapIndex
             nextState[0].channel[action.channel].snapOn[action.snapIndex] = !nextState[0].channel[action.channel].snapOn[action.snapIndex];

@@ -47,3 +47,19 @@ yarn start
   * In this version the Behringer is slave of Producers-Audio-mixer, so faders on the behringer is turned down when channel is of.
 * midi
   * Generic MIDI - still preminilary
+
+
+## Automation Support:
+It´s possible to control the Producers-Audio-Mixer from an automationsystem, for it to act as middleware.
+
+Just send these OSC commands from you Automation to ProducersAudioMixer Port: 5255:
+#### Set channel to PGM:
+/ch/1/mix/pgm - boolean {true or false}
+#### Set channel to PST:
+/ch/1/mix/pst - boolean {true or false}
+#### Set channel faderlevel:
+/ch/1/mix/faderlevel - float {between 0 and 1}
+#### Crossfade between PGM and PST:
+/take
+#### Set snap 1-xx to PST:
+/snap/1
