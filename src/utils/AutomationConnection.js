@@ -53,6 +53,15 @@ export class AutomationConnection {
                     pstOn: message.args[0]
                 });
                 this.mixerConnection.updateOutLevel(ch-1);
+            } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .CHANNEL_FADER_LEVEL)){
+                let ch = message.address.split("/")[2];
+                window.storeRedux.dispatch({
+                    type:'SET_FADER_LEVEL',
+                    channel: ch - 1,
+                    level: message.args[0]
+                });
+                this.mixerConnection.updateOutLevel(ch-1);
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .X_MIX)) {
 

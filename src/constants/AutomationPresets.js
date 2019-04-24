@@ -19,6 +19,7 @@ export const AutomationPresets = {
         fromAutomation: {
             CHANNEL_PGM_ON_OFF: '/ch/{channel}/mix/pgm',
             CHANNEL_PST_ON_OFF: '/ch/{channel}/mix/pst',
+            CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/faderlevel',
             X_MIX: '/take'
         },
         toAutomation: {
