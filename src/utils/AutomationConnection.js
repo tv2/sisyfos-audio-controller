@@ -30,10 +30,11 @@ export class AutomationConnection {
         .on("ready", () => {
             this.automationProtocol.initializeCommand.map((item) => {
                 this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
-                console.log("Listening for OSC over UDP.");
+                console.log("Listening for Automation via OSC over UDP.");
             });
         })
         .on('message', (message) => {
+            console.log("RECIEVED MESSAGE :", message.address, message.args[0]);
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -42,7 +43,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pgmOn: message.args[0]
                 });
-                this.mixerConnection.updateOutLevel(ch);
+                this.mixerConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PST_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -51,7 +52,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pstOn: message.args[0]
                 });
-                this.mixerConnection.updateOutLevel(ch);
+                this.mixerConnection.updateOutLevel(ch-1);
             }
         })
         .on('error', (error) => {
