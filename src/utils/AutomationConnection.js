@@ -5,6 +5,7 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 //Utils:
 import { AutomationPresets } from '../constants/AutomationPresets';
 
+const AUTOMATION_OSC_PORT = 5255;
 export class AutomationConnection {
     constructor(initialStore, mixerConnection) {
         this.mixerConnection = mixerConnection;
@@ -19,7 +20,7 @@ export class AutomationConnection {
 
         this.oscConnection = new osc.UDPPort({
             localAddress: "127.0.0.1",
-            localPort: 3000
+            localPort: AUTOMATION_OSC_PORT
         });
         this.setupAutomationConnection();
     }
@@ -55,11 +56,11 @@ export class AutomationConnection {
         })
         .on('error', (error) => {
             console.log("Error : ", error);
-            console.log("Lost OSC connection");
+            console.log("Lost OSC Automation connection");
         });
 
         this.oscConnection.open();
-        console.log(`OSC listening on port ` + this.store.settings[0].oscPort );
+        console.log('OSC Automation listening on port ', AUTOMATION_OSC_PORT);
 
     }
 
