@@ -23,7 +23,7 @@ export const AutomationPresets = {
             X_MIX: '/take',
             SNAP_MIX: '/snap/{value1}'
         },
-        toAutomation: {
+        toAutomation: { // ToDo:
             CHANNEL_PGM_ON_OFF: '/ch/{value1}/mix/pgm',
             CHANNEL_PST_ON_OFF: '/ch/{value1}/mix/pst',
         },

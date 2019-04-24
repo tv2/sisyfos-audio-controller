@@ -64,10 +64,10 @@ export class AutomationConnection {
                 this.mixerConnection.updateOutLevel(ch-1);
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_MIX)) {
-                let snapIndex = message.address.split("/")[2];
+                let snapNumber = message.address.split("/")[2];
                 window.storeRedux.dispatch({
                     type:'SNAP_MIX',
-                    snapIndex: snapIndex
+                    snapIndex: snapNumber -1
                 });
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .X_MIX)) {
