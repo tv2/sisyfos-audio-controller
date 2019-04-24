@@ -4,11 +4,10 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 
 //Utils:
 import { AutomationPresets } from '../constants/AutomationPresets';
-import { behringerMeter } from './productSpecific/behringer';
-import { midasMeter } from './productSpecific/midas';
 
 export class AutomationConnection {
-    constructor() {
+    constructor(initialStore, mixerConnection) {
+        this.mixerConnection = mixerConnection;
         this.sendOutMessage = this.sendOutMessage.bind(this);
 
         this.store = window.storeRedux.getState();
@@ -42,10 +41,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pgmOn: message.args[0]
                 });
-                if (this.store.channels[0].channel[ch - 1].pgmOn && this.automationProtocol.mode === 'master')
-                {
-                    this.updateOutLevel(ch-1);
-                }
+                this.mixerConnection.updateOutLevel(ch);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PST_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -54,10 +50,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pstOn: message.args[0]
                 });
-                if (this.store.channels[0].channel[ch - 1].pgmOn && this.automationProtocol.mode === 'master')
-                {
-                    this.updateOutLevel(ch-1);
-                }
+                this.mixerConnection.updateOutLevel(ch);
             }
         })
         .on('error', (error) => {

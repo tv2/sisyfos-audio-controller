@@ -14,7 +14,7 @@ import { AutomationConnection } from '../utils/AutomationConnection';
 class App extends Component {
     componentWillMount() {
         this.mixerConnection = new MixerConnection(this.props.store);
-        this.automationConnection = new AutomationConnection(this.props.store);
+        this.automationConnection = new AutomationConnection(this.props.store, this.mixerConnection);
         this.snapShopStoreTimer();
         loadSnapshotState(this.props.store.channels[0]);
     }
