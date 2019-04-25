@@ -204,7 +204,7 @@ const mapStateToProps = (state, props) => {
         faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
         outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
         label: state.channels[0].channel[props.channelIndex].label,
-        snapOn: state.channels[0].channel[props.channelIndex].snapOn,
+        snapOn: state.channels[0].channel[props.channelIndex].snapOn.map((item) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,
         showSnaps: state.settings[0].showSnaps
     }
