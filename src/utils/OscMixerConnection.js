@@ -35,7 +35,7 @@ export class OscMixerConnection {
             this.mixerProtocol.initializeCommands.map((item) => {
                 if (item.oscMessage.includes("{channel}")) {
                     this.store.channels[0].channel.map((channel, index) => {
-                        this.sendOutMessage(item,(index +1), "", "");
+                        this.sendOutRequest(item.oscMessage,(index +1));
                     });
                 } else {
                     this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
@@ -153,6 +153,19 @@ export class OscMixerConnection {
                         value: value
                     }
                 ]
+            });
+        }
+    }
+
+    sendOutRequest(oscMessage, channel) {
+        let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
+        let message = oscMessage.replace(
+                "{channel}",
+                channelString
+            );
+        if (message != 'none') {
+            this.oscConnection.send({
+                address: message
             });
         }
     }

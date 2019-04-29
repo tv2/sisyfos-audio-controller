@@ -169,6 +169,16 @@ export const MixerProtocolPresets = {
                 oscMessage: '/ch/{channel}/mix/fader',
                 value: "",
                 type: ""
+            },
+            {
+                oscMessage: '/ch/{channel}/mix/01/level',
+                value: "",
+                type: ""
+            },
+            {
+                oscMessage: '/ch/{channel}/config/name',
+                value: "",
+                type: ""
             }
         ],
         fromMixer: {
