@@ -31,9 +31,15 @@ export class OscMixerConnection {
     setupMixerConnection() {
         this.oscConnection
         .on("ready", () => {
-            this.mixerProtocol.initializeCommand.map((item) => {
-                this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
-                console.log("Listening for OSC over UDP.");
+            console.log("Receiving state of desk");
+            this.mixerProtocol.initializeCommands.map((item) => {
+                if (item.oscMessage.includes("{channel}")) {
+                    this.store.channels[0].channel.map((channel, index) => {
+                        this.sendOutMessage(item,(index +1), "", "");
+                    });
+                } else {
+                    this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
+                }
             });
         })
         .on('message', (message) => {

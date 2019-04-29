@@ -9,7 +9,7 @@ export const AutomationPresets = {
         label: 'Sofie Automation',
         mode: "client",
         leadingZeros: true,
-        initializeCommand: [
+        initializeCommands: [
             {
                 oscMessage: "/info",
                 value: 0,

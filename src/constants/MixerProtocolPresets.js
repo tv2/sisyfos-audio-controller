@@ -17,7 +17,7 @@ export const MixerProtocolPresets = {
             }
         ],
         pingTime: 0,  //Bypass ping when pingTime is zero
-        initializeCommand: [], // oscMessage, value, type
+        initializeCommands: [], // oscMessage, value, type
         fromMixer: {
             CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
             CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
@@ -62,7 +62,7 @@ export const MixerProtocolPresets = {
             }
         ],
         pingTime: 9500,
-        initializeCommand: [
+        initializeCommands: [
             {
                 oscMessage: "/info",
                 value: 0,
@@ -113,7 +113,7 @@ export const MixerProtocolPresets = {
             }
         ],
         pingTime: 9500,
-        initializeCommand: [
+        initializeCommands: [
             {
                 oscMessage: "/info",
                 value: 0,
@@ -164,11 +164,11 @@ export const MixerProtocolPresets = {
             }
         ],
         pingTime: 9500,
-        initializeCommand: [
+        initializeCommands: [
             {
-                oscMessage: "/info",
-                value: 0,
-                type: "f"
+                oscMessage: '/ch/{channel}/mix/fader',
+                value: "",
+                type: ""
             }
         ],
         fromMixer: {
@@ -211,7 +211,7 @@ export const MixerProtocolPresets = {
             */
         ],
         pingTime: 0,
-        initializeCommand: [
+        initializeCommands: [
             /*
             {
                 midiMessage: 0,

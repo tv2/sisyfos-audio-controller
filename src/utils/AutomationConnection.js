@@ -28,7 +28,7 @@ export class AutomationConnection {
     setupAutomationConnection() {
         this.oscConnection
         .on("ready", () => {
-            this.automationProtocol.initializeCommand.map((item) => {
+            this.automationProtocol.initializeCommands.map((item) => {
                 this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
                 console.log("Listening for Automation via OSC over UDP.");
             });
