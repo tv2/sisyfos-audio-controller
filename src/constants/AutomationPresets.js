@@ -26,7 +26,7 @@ export const AutomationPresets = {
             STATE_CHANNEL_PST: '/state/ch/{value1}/mix/pst',
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/mix/faderlevel',
         },
-        toAutomation: { // ToDo:
+        toAutomation: {
             STATE_CHANNEL_PGM: '/state/ch/{value1}/mix/pgm',
             STATE_CHANNEL_PST: '/state/ch/{value1}/mix/pst',
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/mix/faderlevel',
