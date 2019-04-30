@@ -75,6 +75,33 @@ export class AutomationConnection {
                     type:'X_MIX'
                 });
                 this.mixerConnection.updateOutLevels();
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .STATE_CHANNEL_PGM)) {
+                let ch = message.address.split("/")[2];
+                this.sendOutMessage(
+                    this.automationProtocol.toMixer.STATE_CHANNEL_PGM,
+                    ch,
+                    this.store.channels[0].channel[ch].pgmOn,
+                    "f"
+                );
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .STATE_CHANNEL_PST)) {
+                let ch = message.address.split("/")[2];
+                this.sendOutMessage(
+                    this.automationProtocol.toMixer.STATE_CHANNEL_PST,
+                    ch,
+                    this.store.channels[0].channel[ch].pstOn,
+                    "f"
+                );
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .STATE_CHANNEL_FADER_LEVEL)) {
+                let ch = message.address.split("/")[2];
+                this.sendOutMessage(
+                    this.automationProtocol.toMixer.STATE_CHANNEL_FADER_LEVEL,
+                    ch,
+                    this.store.channels[0].channel[ch].faderLevel,
+                    "f"
+                );
             }
         })
         .on('error', (error) => {
