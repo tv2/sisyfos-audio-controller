@@ -35,13 +35,14 @@ export class AutomationConnection {
         })
         .on('message', (message) => {
             console.log("RECIEVED AUTOMATION MESSAGE :", message.address, message.args[0]);
+            //Set state of Producers Audio Mixer:
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
                     type:'SET_PGM',
                     channel: ch - 1,
-                    pgmOn: message.args[0]
+                    pgmOn: message.args[0]===1 ? true : false
                 });
                 this.mixerConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -50,7 +51,7 @@ export class AutomationConnection {
                 window.storeRedux.dispatch({
                     type:'SET_PST',
                     channel: ch - 1,
-                    pstOn: message.args[0]
+                    pstOn: message.args[0]===1 ? true : false
                 });
                 this.mixerConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -75,21 +76,25 @@ export class AutomationConnection {
                     type:'X_MIX'
                 });
                 this.mixerConnection.updateOutLevels();
-            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+            }
+            // Get state from Producers Audio Mixer:
+            else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_PGM)) {
                 let ch = message.address.split("/")[3];
-                this.sendOutBoolMessage(
+                this.sendOutMessage(
                     this.automationProtocol.toAutomation.STATE_CHANNEL_PGM,
                     ch,
-                    this.store.channels[0].channel[ch].pgmOn
+                    this.store.channels[0].channel[ch].pgmOn,
+                    "i"
                 );
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_PST)) {
                 let ch = message.address.split("/")[3];
-                this.sendOutBoolMessage(
+                this.sendOutMessage(
                     this.automationProtocol.toAutomation.STATE_CHANNEL_PST,
                     ch,
-                    this.store.channels[0].channel[ch].pstOn
+                    this.store.channels[0].channel[ch].pstOn,
+                    "i"
                 );
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_FADER_LEVEL)) {
@@ -141,25 +146,6 @@ export class AutomationConnection {
                     {
                         type: type,
                         value: value
-                    }
-                ]
-            });
-        }
-    }
-
-    sendOutBoolMessage(oscMessage, channel, value) {
-        let channelString = this.automationProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
-        let message = oscMessage.replace(
-                "{value1}",
-                channelString
-            );
-
-        if (message != 'none') {
-            this.oscConnection.send({
-                address: message,
-                args: [
-                    {
-                        type: (value? "T" : "F")
                     }
                 ]
             });
