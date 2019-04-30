@@ -84,7 +84,7 @@ export class AutomationConnection {
                 this.sendOutMessage(
                     this.automationProtocol.toAutomation.STATE_CHANNEL_PGM,
                     ch,
-                    this.store.channels[0].channel[ch].pgmOn,
+                    this.store.channels[0].channel[ch-1].pgmOn,
                     "i"
                 );
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -93,7 +93,7 @@ export class AutomationConnection {
                 this.sendOutMessage(
                     this.automationProtocol.toAutomation.STATE_CHANNEL_PST,
                     ch,
-                    this.store.channels[0].channel[ch].pstOn,
+                    this.store.channels[0].channel[ch-1].pstOn,
                     "i"
                 );
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -102,7 +102,7 @@ export class AutomationConnection {
                 this.sendOutMessage(
                     this.automationProtocol.toAutomation.STATE_CHANNEL_FADER_LEVEL,
                     ch,
-                    this.store.channels[0].channel[ch].faderLevel,
+                    this.store.channels[0].channel[ch-1].faderLevel,
                     "f"
                 );
             }
