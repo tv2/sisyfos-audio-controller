@@ -77,27 +77,25 @@ export class AutomationConnection {
                 this.mixerConnection.updateOutLevels();
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_PGM)) {
-                let ch = message.address.split("/")[2];
-                this.sendOutMessage(
-                    this.automationProtocol.toMixer.STATE_CHANNEL_PGM,
+                let ch = message.address.split("/")[3];
+                this.sendOutBoolMessage(
+                    this.automationProtocol.toAutomation.STATE_CHANNEL_PGM,
                     ch,
-                    this.store.channels[0].channel[ch].pgmOn,
-                    "f"
+                    this.store.channels[0].channel[ch].pgmOn
                 );
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_PST)) {
-                let ch = message.address.split("/")[2];
-                this.sendOutMessage(
-                    this.automationProtocol.toMixer.STATE_CHANNEL_PST,
+                let ch = message.address.split("/")[3];
+                this.sendOutBoolMessage(
+                    this.automationProtocol.toAutomation.STATE_CHANNEL_PST,
                     ch,
-                    this.store.channels[0].channel[ch].pstOn,
-                    "f"
+                    this.store.channels[0].channel[ch].pstOn
                 );
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_FADER_LEVEL)) {
-                let ch = message.address.split("/")[2];
+                let ch = message.address.split("/")[3];
                 this.sendOutMessage(
-                    this.automationProtocol.toMixer.STATE_CHANNEL_FADER_LEVEL,
+                    this.automationProtocol.toAutomation.STATE_CHANNEL_FADER_LEVEL,
                     ch,
                     this.store.channels[0].channel[ch].faderLevel,
                     "f"
@@ -143,6 +141,25 @@ export class AutomationConnection {
                     {
                         type: type,
                         value: value
+                    }
+                ]
+            });
+        }
+    }
+
+    sendOutBoolMessage(oscMessage, channel, value) {
+        let channelString = this.automationProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
+        let message = oscMessage.replace(
+                "{value1}",
+                channelString
+            );
+
+        if (message != 'none') {
+            this.oscConnection.send({
+                address: message,
+                args: [
+                    {
+                        type: (value? "T" : "F")
                     }
                 ]
             });
