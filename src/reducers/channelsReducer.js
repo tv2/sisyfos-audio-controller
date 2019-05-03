@@ -78,6 +78,11 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
                 nextState[0].channel[index].pgmOn = nextPgmOn;
             });
             return nextState;
+        case 'CLEAR_ALL_CHANNELS': //none
+            nextState[0].channel.map((item, index) => {
+                nextState[0].channel[index].pgmOn = false;
+            });
+            return nextState;
         case 'SNAP_MIX': //snapIndex
             nextState[0].channel.map((item, index) => {
                 nextState[0].channel[index].pstOn = state[0].channel[index].snapOn[action.snapIndex];

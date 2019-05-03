@@ -55,7 +55,22 @@
     background-color: rgb(6, 70, 6);
     margin-left: 4px;
     margin-right: 4px;
-    margin-top: 146px;
+    margin-top: 106px;
+    border-radius: 7px;
+}
+
+
+.channels-clear-button {
+    outline : none;
+    -moz-outline : none;
+    color: white;
+    height: 90px;
+    width: 90px;
+    border-color: rgb(99, 99, 99);
+    background-color: rgb(66, 27, 27);
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 50px;
     border-radius: 7px;
 }
 

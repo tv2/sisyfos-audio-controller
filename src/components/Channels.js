@@ -23,6 +23,13 @@ class Channels extends PureComponent {
         this.props.mixerConnection.updateOutLevels();
     }
 
+    handleClearAllChannels() {
+        this.props.dispatch({
+            type:'CLEAR_ALL_CHANNELS'
+        });
+        this.props.mixerConnection.updateOutLevels();
+    }
+
     handleSnapMix(snapIndex) {
         this.props.dispatch({
             type:'SNAP_MIX',
@@ -85,11 +92,16 @@ class Channels extends PureComponent {
                 >SETTINGS</button>
                 <button
                     className="channels-mix-button"
-                    style = {{backgroundColor: "green"}}
                     onClick={() => {
                         this.handleMix();
                     }}
                 >TAKE</button>
+                <button
+                    className="channels-clear-button"
+                    onClick={() => {
+                        this.handleClearAllChannels();
+                    }}
+                >CLEAR PGM</button>
                 <br/>
                 <div className="channels-snap-mix-body">
                     {this.snapMixButton(0)}
