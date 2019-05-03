@@ -18,7 +18,6 @@ class Channel extends PureComponent {
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);
         this.snapButton = this.snapButton.bind(this);
-        this.renderLabel = this.renderLabel.bind(this);
     }
 
     handlePgm() {
@@ -109,7 +108,9 @@ class Channel extends PureComponent {
                 onClick={event => {
                     this.handlePgm(event);
                 }}
-            >PGM</button>
+            >
+                {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+            </button>
         )
     }
 
@@ -156,21 +157,6 @@ class Channel extends PureComponent {
         }
     }
 
-    renderLabel() {
-        if (this.props.label === "") {
-            return (
-                <div className="channel-name">
-            CH {this.channelIndex + 1}
-        </div>
-            )
-        }
-        return (
-        <div className="channel-name">
-            {this.props.label}
-        </div>
-        )
-    }
-
     render() {
         return (
         <div className="channel-body">
@@ -181,7 +167,9 @@ class Channel extends PureComponent {
             <br/>
             {this.pstButton()}
             <br/>
-            {this.renderLabel()}
+            <div className="channel-name">
+                {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+            </div>
             <div className="channel-gain-label">
                 GAIN: {parseInt(this.props.outputLevel*100)/100}
             </div>
