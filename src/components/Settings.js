@@ -18,6 +18,7 @@ class Channels extends PureComponent {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleTemplateChange = this.handleTemplateChange.bind(this);
+        this.handleShowChannel = this.handleShowChannel.bind(this);
     }
 
     handleChange() {
@@ -37,12 +38,40 @@ class Channels extends PureComponent {
         );
     }
 
+
+    handleShowChannel(index, event) {
+        this.props.dispatch({
+            type:'SHOW_CHANNEL',
+            channel: index,
+            showChannel: event.target.checked
+        });
+    }
+
     handleSave() {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.showSettings = false;
 
         saveSettings(settingsCopy);
         location.reload();
+    }
+
+    renderShowChannelsSelection() {
+        return (
+            <div className="settings-show-channel-selection">
+                {
+                    this.props.store.channels[0].channel.map((channel, index) => {
+                        return <div key={index}>
+                            {channel.label != "" ? channel.label : ("CH " + (index + 1)) }
+                            <input
+                                type="checkbox"
+                                checked={this.props.store.channels[0].channel[index].showChannel }
+                                onChange={(event) => this.handleShowChannel(index, event)}
+                            />
+                        </div>
+                    })
+                }
+            </div>
+        )
     }
 
     render() {
@@ -77,6 +106,8 @@ class Channels extends PureComponent {
                     MIXER PORT :
                     <input name="machineOscPort" type="text" value={this.state.settings.machineOscPort} onChange={this.handleChange} />
                 </label>
+                <br/>
+                {this.renderShowChannelsSelection()}
                 <br/>
                 <input
                 className="settings-save-button"

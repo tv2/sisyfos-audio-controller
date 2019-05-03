@@ -193,7 +193,7 @@ const mapStateToProps = (state, props) => {
     return {
         pgmOn: state.channels[0].channel[props.channelIndex].pgmOn,
         pstOn: state.channels[0].channel[props.channelIndex].pstOn,
-        showFader: state.channels[0].channel[props.channelIndex].showChannel,
+        showChannel: state.channels[0].channel[props.channelIndex].showChannel,
         faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
         outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
         label: state.channels[0].channel[props.channelIndex].label,

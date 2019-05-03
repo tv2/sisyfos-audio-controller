@@ -30,6 +30,13 @@
     color: rgb(255, 255, 255);
 }
 
+
+.settings-show-channel-selection {
+    white-space: nowrap;
+    margin: 5px;
+    color: rgb(255, 255, 255);
+}
+
 input[type=text] {
     text-align: right;
     margin: 5px;
@@ -56,4 +63,6 @@ input[type=text] {
     border-width: 0;
     outline: 0;
 }
+
+
 
