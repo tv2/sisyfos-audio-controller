@@ -87,6 +87,7 @@ class Channel extends PureComponent {
 
     pgmButton() {
         return (
+
             <button
                 className="channel-pgm-button"
                 style={
@@ -159,28 +160,31 @@ class Channel extends PureComponent {
 
     render() {
         return (
-        <div className="channel-body">
-            {this.fader()}
-            <VuMeter channelIndex = {this.channelIndex}/>
-            <br/>
-            {this.pgmButton()}
-            <br/>
-            {this.pstButton()}
-            <br/>
-            <div className="channel-name">
-                {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+        this.props.showChannel === false ?
+            <div></div>
+            :
+            <div className="channel-body">
+                {this.fader()}
+                <VuMeter channelIndex = {this.channelIndex}/>
+                <br/>
+                {this.pgmButton()}
+                <br/>
+                {this.pstButton()}
+                <br/>
+                <div className="channel-name">
+                    {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+                </div>
+                <div className="channel-gain-label">
+                    GAIN: {parseInt(this.props.outputLevel*100)/100}
+                </div>
+                <div className="channel-snap-body">
+                    {this.props.snapOn
+                        .map((none, index) => {
+                            return this.snapButton(index)
+                        })
+                    }
+                </div>
             </div>
-            <div className="channel-gain-label">
-                GAIN: {parseInt(this.props.outputLevel*100)/100}
-            </div>
-            <div className="channel-snap-body">
-                {this.props.snapOn
-                    .map((none, index) => {
-                        return this.snapButton(index)
-                    })
-                }
-            </div>
-        </div>
         )
     }
 }
@@ -189,6 +193,7 @@ const mapStateToProps = (state, props) => {
     return {
         pgmOn: state.channels[0].channel[props.channelIndex].pgmOn,
         pstOn: state.channels[0].channel[props.channelIndex].pstOn,
+        showFader: state.channels[0].channel[props.channelIndex].showChannel,
         faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
         outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
         label: state.channels[0].channel[props.channelIndex].label,

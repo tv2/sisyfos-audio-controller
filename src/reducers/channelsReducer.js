@@ -13,6 +13,7 @@ const defaultChannelsReducerState = () => {
                 outputLevel: 0.0,
                 pgmOn: false,
                 pstOn: false,
+                showChannel: true,
                 snapOn: [],
         });
         defaultObj[0].vuMeters.push({
@@ -67,6 +68,9 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
             return nextState;
         case 'SET_PST': //channel
             nextState[0].channel[action.channel].pstOn = action.pstOn;
+            return nextState;
+        case 'SHOW_CHANNEL': //channel // showChannel
+            nextState[0].channel[action.channel].showChannel = action.showChannel;
             return nextState;
         case 'SET_SNAP': //channel //snapIndex
             nextState[0].channel[action.channel].snapOn[action.snapIndex] = !nextState[0].channel[action.channel].snapOn[action.snapIndex];
