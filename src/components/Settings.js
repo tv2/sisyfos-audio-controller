@@ -19,6 +19,8 @@ class Channels extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
         this.handleTemplateChange = this.handleTemplateChange.bind(this);
         this.handleShowChannel = this.handleShowChannel.bind(this);
+        this.handleShowAllChannels = this.handleShowAllChannels.bind(this);
+        this.handleHideAllChannels = this.handleHideAllChannels.bind(this);
     }
 
     handleChange() {
@@ -47,6 +49,27 @@ class Channels extends PureComponent {
         });
     }
 
+    handleShowAllChannels() {
+        this.props.store.channels[0].channel.map((channel, index) => {
+            this.props.dispatch({
+                type:'SHOW_CHANNEL',
+                channel: index,
+                showChannel: true
+            });
+        });
+    }
+
+
+    handleHideAllChannels() {
+        this.props.store.channels[0].channel.map((channel, index) => {
+            this.props.dispatch({
+                type:'SHOW_CHANNEL',
+                channel: index,
+                showChannel: false
+            });
+        });
+    }
+
     handleSave() {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.showSettings = false;
@@ -58,8 +81,21 @@ class Channels extends PureComponent {
     renderShowChannelsSelection() {
         return (
             <div className="settings-show-channel-selection">
-                {
-                    this.props.store.channels[0].channel.map((channel, index) => {
+                <input className="settings-channels-button"
+                    onClick=
+                        {() => {
+                            this.handleShowAllChannels();
+                        }}
+                    value="ALL CHANNELS"
+                />
+                <input className="settings-channels-button"
+                    onClick=
+                        {() => {
+                            this.handleHideAllChannels();
+                        }}
+                    value="NO CHANNELS"
+                />
+                {this.props.store.channels[0].channel.map((channel, index) => {
                         return <div key={index}>
                             {channel.label != "" ? channel.label : ("CH " + (index + 1)) }
                             <input
@@ -110,12 +146,13 @@ class Channels extends PureComponent {
                 {this.renderShowChannelsSelection()}
                 <br/>
                 <input
-                className="settings-save-button"
-                onClick=
-                    {() => {
-                        this.handleSave();
-                    }}
-                value="SAVE SETTINGS" />
+                    className="settings-save-button"
+                    onClick=
+                        {() => {
+                            this.handleSave();
+                        }}
+                    value="SAVE SETTINGS"
+                />
             </div>
         )
     }
