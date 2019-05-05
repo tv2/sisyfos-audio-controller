@@ -134,6 +134,11 @@ class Channels extends PureComponent {
                 </label>
                 <br/>
                 <label className="settings-input-field">
+                    NUMBER OF CHANNELS :
+                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannels} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
                     MIXER IP :
                     <input name="machineOscIp" type="text" value={this.state.settings.machineOscIp} onChange={this.handleChange} />
                 </label>
