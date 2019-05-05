@@ -51,9 +51,16 @@ export class OscMixerConnection {
                     channel: ch - 1,
                     level: message.args[0]
                 });
-                if (this.store.channels[0].channel[ch - 1].pgmOn && this.mixerProtocol.mode === 'master')
-                {
-                    this.updateOutLevel(ch-1);
+                if (this.mixerProtocol.mode === 'master') {
+                    if (this.store.channels[0].channel[ch - 1].pgmOn)
+                    {
+                        this.updateOutLevel(ch-1);
+                    } else {
+                        this.props.dispatch({
+                            type:'TOGGLE_PGM',
+                            channel: ch - 1
+                        });
+                    }
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_OUT_GAIN)){
