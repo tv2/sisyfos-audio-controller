@@ -139,6 +139,11 @@ class Channels extends PureComponent {
                 </label>
                 <br/>
                 <label className="settings-input-field">
+                    FADE TIME IN ms :
+                    <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
                     MIXER IP :
                     <input name="machineOscIp" type="text" value={this.state.settings.machineOscIp} onChange={this.handleChange} />
                 </label>

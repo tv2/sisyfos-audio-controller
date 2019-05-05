@@ -3,9 +3,9 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 
-const FADE_INOUT_STEPS = 1;
+// FADE_INOUT_SPEED defines the resolution of the fade in ms
+// The lower the more CPU
 let FADE_INOUT_SPEED = 3;
-const FADE_TIME_MS = 1000.0;
 
 export class MixerConnection {
     constructor(initialStore) {
@@ -71,8 +71,7 @@ export class MixerConnection {
         if (this.mixerProtocol.mode === "master") {
             targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
         }
-        //let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
-        const step = (targetVal-outputLevel)/(FADE_TIME_MS/FADE_INOUT_SPEED);
+        const step = (targetVal-outputLevel)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
 
 
         if (targetVal<outputLevel) {
@@ -127,8 +126,7 @@ export class MixerConnection {
     fadeDown(channelIndex) {
         let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
         const min = this.mixerProtocol.fader.min;
-        //let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
-        const step = (outputLevel-min)/(FADE_TIME_MS/FADE_INOUT_SPEED);
+        const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
 
         this.timer[channelIndex] = setInterval(() => {
 

@@ -11,7 +11,8 @@ const defaultSettingsReducerState = [
         machineOscIp: "0.0.0.0",
         machineOscPort: 10024,
         numberOfChannels: DEFAULTS.NUMBER_OF_CHANNELS,
-        numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS
+        numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
+        fadeTime: 100 //Time in ms
     },
 ];
 
@@ -25,7 +26,7 @@ export const settings = (state = defaultSettingsReducerState, action) => {
         case 'TOGGLE_SHOW_SNAPS':
             nextState[0].showSnaps = !nextState[0].showSnaps;
             return nextState;
-            case 'UPDATE_SETTINGS':
+        case 'UPDATE_SETTINGS':
             nextState[0] = action.settings;
             if (typeof MixerProtocolPresets[nextState[0].mixerProtocol] === 'undefined')
                 {
