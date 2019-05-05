@@ -1,10 +1,11 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 const defaultSettingsReducerState = [
     {
         showSnaps: false,
         showSettings: false,
-        mixerProtocol: "behringer",
+        mixerProtocol: "genericMidi",
         localOscIp: "0.0.0.0",
         localOscPort: 8000,
         machineOscIp: "0.0.0.0",
@@ -26,6 +27,10 @@ export const settings = (state = defaultSettingsReducerState, action) => {
             return nextState;
             case 'UPDATE_SETTINGS':
             nextState[0] = action.settings;
+            if (typeof MixerProtocolPresets[nextState[0].mixerProtocol] === 'undefined')
+                {
+                    nextState[0].mixerProtocol = 'genericMidi';
+                }
             return nextState;
 
         default:
