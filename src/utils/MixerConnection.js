@@ -3,8 +3,9 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 
-const FADE_INOUT_STEPS = 3;
-const FADE_INOUT_SPEED = 10;
+const FADE_INOUT_STEPS = 1;
+let FADE_INOUT_SPEED = 3;
+const FADE_TIME_MS = 1000.0;
 
 export class MixerConnection {
     constructor(initialStore) {
@@ -66,15 +67,17 @@ export class MixerConnection {
 
     fadeUp(channelIndex) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
-        let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step
         let targetVal = this.mixerProtocol.fader.zero;
         if (this.mixerProtocol.mode === "master") {
             targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
         }
+        //let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
+        const step = (targetVal-outputLevel)/(FADE_TIME_MS/FADE_INOUT_SPEED);
+
 
         if (targetVal<outputLevel) {
             this.timer[channelIndex] = setInterval(() => {
-                outputLevel -= step;
+                outputLevel += step;
                 this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
 
                 if ( outputLevel <= targetVal){
@@ -123,8 +126,9 @@ export class MixerConnection {
 
     fadeDown(channelIndex) {
         let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
-        let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step
-        let min = this.mixerProtocol.fader.min;
+        const min = this.mixerProtocol.fader.min;
+        //let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step;
+        const step = (outputLevel-min)/(FADE_TIME_MS/FADE_INOUT_SPEED);
 
         this.timer[channelIndex] = setInterval(() => {
 
