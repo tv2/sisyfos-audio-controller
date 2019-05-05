@@ -55,24 +55,25 @@ export class OscMixerConnection {
                     if (this.store.channels[0].channel[ch - 1].pgmOn)
                     {
                         this.updateOutLevel(ch-1);
-                    } else {
+                    }
+                }
+            } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+                .CHANNEL_OUT_GAIN)){
+                let ch = message.address.split("/")[2];
+                if (this.mixerProtocol.mode === 'master'
+                    && !this.store.channels[0].channel[ch - 1].fadeActive)
+                {
+                    window.storeRedux.dispatch({
+                        type:'SET_FADER_LEVEL',
+                        channel: ch - 1,
+                        level: message.args[0]
+                    });
+                    if (!this.store.channels[0].channel[ch - 1].pgmOn) {
                         this.props.dispatch({
                             type:'TOGGLE_PGM',
                             channel: ch - 1
                         });
                     }
-                }
-            } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
-                .CHANNEL_OUT_GAIN)){
-                    let ch = message.address.split("/")[2];
-                    if (this.store.channels[0].channel[ch - 1].pgmOn
-                        && this.mixerProtocol.mode === 'master'
-                        && !this.store.channels[0].channel[ch - 1].fadeActive) {
-                        window.storeRedux.dispatch({
-                            type:'SET_FADER_LEVEL',
-                            channel: ch - 1,
-                            level: message.args[0]
-                    });
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_VU)){
