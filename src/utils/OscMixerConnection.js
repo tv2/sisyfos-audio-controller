@@ -61,15 +61,15 @@ export class OscMixerConnection {
                 .CHANNEL_OUT_GAIN)){
                 let ch = message.address.split("/")[2];
                 if (this.mixerProtocol.mode === 'master'
-                    && !this.store.channels[0].channel[ch - 1].fadeActive)
+                    && !this.store.channels[0].channel[ch - 1].fadeActive
+                    &&  message.args[0] > this.mixerProtocol.fader.min)
                 {
                     window.storeRedux.dispatch({
                         type:'SET_FADER_LEVEL',
                         channel: ch - 1,
                         level: message.args[0]
                     });
-                    if (!this.store.channels[0].channel[ch - 1].pgmOn
-                        &&  message.args[0] > this.mixerProtocol.fader.min) {
+                    if (!this.store.channels[0].channel[ch - 1].pgmOn) {
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PGM',
                             channel: ch - 1
@@ -78,9 +78,9 @@ export class OscMixerConnection {
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_VU)){
-                if (this.store.settings[0].mixerProtocol === 'behringerxr') {
+                if (this.store.settings[0].mixerProtocol.includes('behringer')) {
                     behringerMeter(message.args);
-                } else if (this.store.settings[0].mixerProtocol === 'midas') {
+                } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
                     midasMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];
