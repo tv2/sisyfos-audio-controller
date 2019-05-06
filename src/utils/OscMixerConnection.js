@@ -68,7 +68,8 @@ export class OscMixerConnection {
                         channel: ch - 1,
                         level: message.args[0]
                     });
-                    if (!this.store.channels[0].channel[ch - 1].pgmOn) {
+                    if (!this.store.channels[0].channel[ch - 1].pgmOn
+                        &&  message.args[0] > this.mixerProtocol.fader.min) {
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PGM',
                             channel: ch - 1
