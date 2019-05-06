@@ -8,12 +8,14 @@ export const midasMeter = (message) => {
     let uint8bytes = Uint8Array.from(message[0]);
     let dataview = new DataView(uint8bytes.buffer);
     //console.log(dataview);
+    let vuMeters = [];
 
     for (let i=0; i < store.settings[0].numberOfChannels; i++) {
-        window.storeRedux.dispatch({
-            type:'SET_VU_LEVEL',
-            channel: i,
-            level: (dataview.getFloat32(4*i+headerData , true))
-        });
+        vuMeters.push({vuVal : dataview.getFloat32(4*i+headerData , true)});
     }
+    window.storeRedux.dispatch({
+        type:'SET_ALL_VU_LEVELS',
+        vuMeters: vuMeters
+    });
+
 };

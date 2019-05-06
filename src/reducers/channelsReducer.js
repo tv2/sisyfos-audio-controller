@@ -57,6 +57,9 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
                 nextState[0].vuMeters[action.channel].vuVal = action.level;
             }
             return nextState;
+        case 'SET_ALL_VU_LEVELS': //channel:  level:
+            nextState[0].vuMeters = action.vuMeters;
+            return nextState;
         case 'SET_CHANNEL_LABEL': //channel:  label:
             nextState[0].channel[action.channel].label = action.label;
             return nextState;
