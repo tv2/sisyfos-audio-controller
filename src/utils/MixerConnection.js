@@ -217,7 +217,7 @@ export class MixerConnection {
                 }
             }, FADE_INOUT_SPEED);
         } else {
-            this.timer[channelIndex] = setInterval(() => {
+            this.grpTimer[channelIndex] = setInterval(() => {
                 outputLevel += step;
                 this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
 

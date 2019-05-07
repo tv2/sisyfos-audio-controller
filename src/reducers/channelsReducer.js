@@ -120,6 +120,9 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
             nextState[0].channel.map((item, index) => {
                 nextState[0].channel[index].pgmOn = false;
             });
+            nextState[0].grpFader.map((item, index) => {
+                nextState[0].grpFader[index].pgmOn = false;
+            });
             return nextState;
         case 'SNAP_RECALL': //snapIndex
             nextState[0].channel.map((item, index) => {
