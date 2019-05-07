@@ -9,7 +9,7 @@ export const AutomationPresets = {
         label: 'Sofie Automation',
         mode: "client",
         leadingZeros: true,
-        initializeCommand: [
+        initializeCommands: [
             {
                 oscMessage: "/info",
                 value: 0,
@@ -20,12 +20,18 @@ export const AutomationPresets = {
             CHANNEL_PGM_ON_OFF: '/ch/{value1}/mix/pgm',
             CHANNEL_PST_ON_OFF: '/ch/{value1}/mix/pst',
             CHANNEL_FADER_LEVEL: '/ch/{value1}/mix/faderlevel',
+            CHANNEL_VISIBLE: '/ch/{value1}/visible',
             X_MIX: '/take',
-            SNAP_MIX: '/snap/{value1}'
+            FADE_TO_BLACK: '/fadetoblack',
+            SNAP_MIX: '/snap/{value1}',
+            STATE_CHANNEL_PGM: '/state/ch/{value1}/mix/pgm',
+            STATE_CHANNEL_PST: '/state/ch/{value1}/mix/pst',
+            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/mix/faderlevel',
         },
-        toAutomation: { // ToDo:
-            CHANNEL_PGM_ON_OFF: '/ch/{value1}/mix/pgm',
-            CHANNEL_PST_ON_OFF: '/ch/{value1}/mix/pst',
+        toAutomation: {
+            STATE_CHANNEL_PGM: '/state/ch/{value1}/mix/pgm',
+            STATE_CHANNEL_PST: '/state/ch/{value1}/mix/pst',
+            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/mix/faderlevel',
         },
         fader: {
             min: 0,

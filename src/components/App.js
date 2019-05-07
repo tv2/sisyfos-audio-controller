@@ -16,7 +16,7 @@ class App extends Component {
         this.mixerConnection = new MixerConnection(this.props.store);
         this.automationConnection = new AutomationConnection(this.props.store, this.mixerConnection);
         this.snapShopStoreTimer();
-        loadSnapshotState(this.props.store.channels[0]);
+        loadSnapshotState(this.props.store.channels[0], this.props.store.settings[0].numberOfChannels);
     }
 
     snapShopStoreTimer() {

@@ -18,6 +18,9 @@ class Channels extends PureComponent {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleTemplateChange = this.handleTemplateChange.bind(this);
+        this.handleShowChannel = this.handleShowChannel.bind(this);
+        this.handleShowAllChannels = this.handleShowAllChannels.bind(this);
+        this.handleHideAllChannels = this.handleHideAllChannels.bind(this);
     }
 
     handleChange() {
@@ -37,12 +40,74 @@ class Channels extends PureComponent {
         );
     }
 
+
+    handleShowChannel(index, event) {
+        this.props.dispatch({
+            type:'SHOW_CHANNEL',
+            channel: index,
+            showChannel: event.target.checked
+        });
+    }
+
+    handleShowAllChannels() {
+        this.props.store.channels[0].channel.map((channel, index) => {
+            this.props.dispatch({
+                type:'SHOW_CHANNEL',
+                channel: index,
+                showChannel: true
+            });
+        });
+    }
+
+
+    handleHideAllChannels() {
+        this.props.store.channels[0].channel.map((channel, index) => {
+            this.props.dispatch({
+                type:'SHOW_CHANNEL',
+                channel: index,
+                showChannel: false
+            });
+        });
+    }
+
     handleSave() {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.showSettings = false;
 
         saveSettings(settingsCopy);
         location.reload();
+    }
+
+    renderShowChannelsSelection() {
+        return (
+            <div className="settings-show-channel-selection">
+                <input className="settings-channels-button"
+                    onClick=
+                        {() => {
+                            this.handleShowAllChannels();
+                        }}
+                    value="ALL CHANNELS"
+                />
+                <input className="settings-channels-button"
+                    onClick=
+                        {() => {
+                            this.handleHideAllChannels();
+                        }}
+                    value="NO CHANNELS"
+                />
+                {this.props.store.channels[0].channel.map((channel, index) => {
+                        return <div key={index}>
+                            {channel.label != "" ? channel.label : ("CH " + (index + 1)) }
+                            <input
+                                type="checkbox"
+                                checked={this.props.store.channels[0].channel[index].showChannel }
+                                onChange={(event) => this.handleShowChannel(index, event)}
+                            />
+                        </div>
+                    })
+                }
+            </div>
+        )
     }
 
     render() {
@@ -69,6 +134,16 @@ class Channels extends PureComponent {
                 </label>
                 <br/>
                 <label className="settings-input-field">
+                    NUMBER OF CHANNELS :
+                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannels} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    FADE TIME IN ms :
+                    <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
                     MIXER IP :
                     <input name="machineOscIp" type="text" value={this.state.settings.machineOscIp} onChange={this.handleChange} />
                 </label>
@@ -78,13 +153,16 @@ class Channels extends PureComponent {
                     <input name="machineOscPort" type="text" value={this.state.settings.machineOscPort} onChange={this.handleChange} />
                 </label>
                 <br/>
+                {this.renderShowChannelsSelection()}
+                <br/>
                 <input
-                className="settings-save-button"
-                onClick=
-                    {() => {
-                        this.handleSave();
-                    }}
-                value="SAVE SETTINGS" />
+                    className="settings-save-button"
+                    onClick=
+                        {() => {
+                            this.handleSave();
+                        }}
+                    value="SAVE SETTINGS"
+                />
             </div>
         )
     }

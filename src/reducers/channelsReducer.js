@@ -1,11 +1,11 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
 
-const defaultChannelsReducerState = () => {
+const defaultChannelsReducerState = (numberOfChannels) => {
     let defaultObj = [{
         channel: [],
         vuMeters: []
     }];
-    for (let i=0; i < DEFAULTS.NUMBER_OF_CHANNELS; i++) {
+    for (let i=0; i < numberOfChannels; i++) {
         defaultObj[0].channel.push({
                 fadeActive: false,
                 faderLevel: 0,
@@ -13,6 +13,7 @@ const defaultChannelsReducerState = () => {
                 outputLevel: 0.0,
                 pgmOn: false,
                 pstOn: false,
+                showChannel: true,
                 snapOn: [],
         });
         defaultObj[0].vuMeters.push({
@@ -26,7 +27,7 @@ const defaultChannelsReducerState = () => {
     return defaultObj;
 };
 
-export const channels = ((state = defaultChannelsReducerState(), action) => {
+export const channels = ((state = defaultChannelsReducerState(1), action) => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
@@ -34,9 +35,10 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
     }];
 
     switch(action.type) {
-        case 'SET_COMPLETE_STATE':
+        case 'SET_COMPLETE_STATE': //allState  //numberOfChannels
+            nextState = defaultChannelsReducerState(action.numberOfChannels);
             action.allState.channel.map((channel, index) => {
-                if (index < DEFAULTS.NUMBER_OF_CHANNELS) {
+                if (index < action.numberOfChannels) {
                     nextState[0].channel[index] = channel;
                 }
             });
@@ -51,7 +53,12 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
             nextState[0].channel[action.channel].outputLevel = action.level;
             return nextState;
         case 'SET_VU_LEVEL': //channel:  level:
-            nextState[0].vuMeters[action.channel].vuVal = action.level;
+            if (typeof nextState[0].vuMeters[action.channel] != 'undefined') {
+                nextState[0].vuMeters[action.channel].vuVal = action.level;
+            }
+            return nextState;
+        case 'SET_ALL_VU_LEVELS': //channel:  level:
+            nextState[0].vuMeters = action.vuMeters;
             return nextState;
         case 'SET_CHANNEL_LABEL': //channel:  label:
             nextState[0].channel[action.channel].label = action.label;
@@ -68,6 +75,9 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
         case 'SET_PST': //channel
             nextState[0].channel[action.channel].pstOn = action.pstOn;
             return nextState;
+        case 'SHOW_CHANNEL': //channel // showChannel
+            nextState[0].channel[action.channel].showChannel = action.showChannel;
+            return nextState;
         case 'SET_SNAP': //channel //snapIndex
             nextState[0].channel[action.channel].snapOn[action.snapIndex] = !nextState[0].channel[action.channel].snapOn[action.snapIndex];
             return nextState;
@@ -76,6 +86,11 @@ export const channels = ((state = defaultChannelsReducerState(), action) => {
                 let nextPgmOn = state[0].channel[index].pstOn;
                 nextState[0].channel[index].pstOn = state[0].channel[index].pgmOn;
                 nextState[0].channel[index].pgmOn = nextPgmOn;
+            });
+            return nextState;
+        case 'FADE_TO_BLACK': //none
+            nextState[0].channel.map((item, index) => {
+                nextState[0].channel[index].pgmOn = false;
             });
             return nextState;
         case 'SNAP_MIX': //snapIndex

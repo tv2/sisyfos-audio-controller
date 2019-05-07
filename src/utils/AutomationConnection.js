@@ -28,20 +28,21 @@ export class AutomationConnection {
     setupAutomationConnection() {
         this.oscConnection
         .on("ready", () => {
-            this.automationProtocol.initializeCommand.map((item) => {
+            this.automationProtocol.initializeCommands.map((item) => {
                 this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
                 console.log("Listening for Automation via OSC over UDP.");
             });
         })
         .on('message', (message) => {
             console.log("RECIEVED AUTOMATION MESSAGE :", message.address, message.args[0]);
+            //Set state of Producers Audio Mixer:
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
                     type:'SET_PGM',
                     channel: ch - 1,
-                    pgmOn: message.args[0]
+                    pgmOn: message.args[0]===1 ? true : false
                 });
                 this.mixerConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -50,7 +51,7 @@ export class AutomationConnection {
                 window.storeRedux.dispatch({
                     type:'SET_PST',
                     channel: ch - 1,
-                    pstOn: message.args[0]
+                    pstOn: message.args[0]===1 ? true : false
                 });
                 this.mixerConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -75,6 +76,48 @@ export class AutomationConnection {
                     type:'X_MIX'
                 });
                 this.mixerConnection.updateOutLevels();
+            } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .CHANNEL_VISIBLE)){
+                let ch = message.address.split("/")[2];
+                window.storeRedux.dispatch({
+                    type:'SHOW_CHANNEL',
+                    channel: ch - 1,
+                    showChannel: message.args[0]===1 ? true : false
+                });
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                    .FADE_TO_BLACK)) {
+                    window.storeRedux.dispatch({
+                        type:'FADE_TO_BLACK'
+                    });
+                    this.mixerConnection.updateOutLevels();
+            // Get state from Producers Audio Mixer:
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .STATE_CHANNEL_PGM)) {
+                let ch = message.address.split("/")[3];
+                this.sendOutMessage(
+                    this.automationProtocol.toAutomation.STATE_CHANNEL_PGM,
+                    ch,
+                    this.store.channels[0].channel[ch-1].pgmOn,
+                    "i"
+                );
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .STATE_CHANNEL_PST)) {
+                let ch = message.address.split("/")[3];
+                this.sendOutMessage(
+                    this.automationProtocol.toAutomation.STATE_CHANNEL_PST,
+                    ch,
+                    this.store.channels[0].channel[ch-1].pstOn,
+                    "i"
+                );
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .STATE_CHANNEL_FADER_LEVEL)) {
+                let ch = message.address.split("/")[3];
+                this.sendOutMessage(
+                    this.automationProtocol.toAutomation.STATE_CHANNEL_FADER_LEVEL,
+                    ch,
+                    this.store.channels[0].channel[ch-1].faderLevel,
+                    "f"
+                );
             }
         })
         .on('error', (error) => {

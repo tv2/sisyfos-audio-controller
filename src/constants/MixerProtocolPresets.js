@@ -17,7 +17,7 @@ export const MixerProtocolPresets = {
             }
         ],
         pingTime: 0,  //Bypass ping when pingTime is zero
-        initializeCommand: [], // oscMessage, value, type
+        initializeCommands: [], // oscMessage, value, type
         fromMixer: {
             CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
             CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
@@ -62,7 +62,7 @@ export const MixerProtocolPresets = {
             }
         ],
         pingTime: 9500,
-        initializeCommand: [
+        initializeCommands: [
             {
                 oscMessage: "/info",
                 value: 0,
@@ -113,7 +113,7 @@ export const MixerProtocolPresets = {
             }
         ],
         pingTime: 9500,
-        initializeCommand: [
+        initializeCommands: [
             {
                 oscMessage: "/info",
                 value: 0,
@@ -144,10 +144,66 @@ export const MixerProtocolPresets = {
             test: 0.6,
         },
     },
-// ---------------------------------------------------------
-    midas: {
+    // ---------------------------------------------------------
+    midasMaster: {
         protocol: 'OSC',
-        label: 'Midas M32 / Behringer X32',
+        label: 'Midas M32 / Behringer X32 Master Mode',
+        mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
+                        //client (use feedback from mixers fader level)
+        leadingZeros: true,
+        pingCommand: [
+            {
+                oscMessage: "/xremote",
+                value: "",
+                type: "f"
+            },
+            {
+                oscMessage: "/meters",
+                value: "/meters/1",
+                type: "s"
+            }
+        ],
+        pingTime: 9500,
+        initializeCommands: [
+            {
+                oscMessage: '/ch/{channel}/mix/fader',
+                value: "",
+                type: ""
+            },
+            {
+                oscMessage: '/ch/{channel}/config/name',
+                value: "",
+                type: ""
+            }
+        ],
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
+            CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+            CHANNEL_VU: '/meters/1',
+            CHANNEL_NAME: '/ch/{channel}/config/name',
+        },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: 'none',
+            CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+        },
+        fader: {
+            min: 0,
+            max: 1,
+            zero: 0.75,
+            step: 0.01,
+            fadeTime: 40,
+        },
+        meter: {
+            min: 0,
+            max: 1,
+            zero: 0.75,
+            test: 0.6,
+        },
+    },
+// ---------------------------------------------------------
+    midasClient: {
+        protocol: 'OSC',
+        label: 'Midas M32 / Behringer X32 Client Mode',
         mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                         //client (use feedback from mixers fader level)
         leadingZeros: true,
@@ -164,11 +220,21 @@ export const MixerProtocolPresets = {
             }
         ],
         pingTime: 9500,
-        initializeCommand: [
+        initializeCommands: [
             {
-                oscMessage: "/info",
-                value: 0,
-                type: "f"
+                oscMessage: '/ch/{channel}/mix/fader',
+                value: "",
+                type: ""
+            },
+            {
+                oscMessage: '/ch/{channel}/mix/01/level',
+                value: "",
+                type: ""
+            },
+            {
+                oscMessage: '/ch/{channel}/config/name',
+                value: "",
+                type: ""
             }
         ],
         fromMixer: {
@@ -211,7 +277,7 @@ export const MixerProtocolPresets = {
             */
         ],
         pingTime: 0,
-        initializeCommand: [
+        initializeCommands: [
             /*
             {
                 midiMessage: 0,

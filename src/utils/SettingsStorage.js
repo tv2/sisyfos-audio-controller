@@ -25,19 +25,21 @@ export const saveSettings = (settings) => {
 };
 
 
-export const loadSnapshotState = (stateSnapshot) => {
+export const loadSnapshotState = (stateSnapshot, numberOfChannels) => {
     try {
         const stateFromFile = JSON.parse(fs.readFileSync(folder + "/state.json"));
         window.storeRedux.dispatch({
             type:'SET_COMPLETE_STATE',
-            allState: stateFromFile
+            allState: stateFromFile,
+            numberOfChannels: numberOfChannels
         });
     }
     catch (error) {
         saveSnapshotState(stateSnapshot);
         window.storeRedux.dispatch({
             type:'SET_COMPLETE_STATE',
-            allState: stateSnapshot
+            allState: stateSnapshot,
+            numberOfChannels: numberOfChannels
         });
     }
 };

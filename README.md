@@ -52,14 +52,27 @@ yarn start
 ## Automation Support:
 It´s possible to control the Producers-Audio-Mixer from an automationsystem, for it to act as middleware.
 
-Just send these OSC commands from you Automation to ProducersAudioMixer Port: 5255:
+## Set state:
+To set the state send these OSC commands from you Automation to ProducersAudioMixer Port: 5255:
 #### Set channel to PGM:
-/ch/1/mix/pgm - boolean {true or false}
+/ch/1/mix/pgm - integer: { 0 or 1 }
 #### Set channel to PST:
-/ch/1/mix/pst - boolean {true or false}
+/ch/1/mix/pst - integer: { 0 or 1 }
 #### Set channel faderlevel:
 /ch/1/mix/faderlevel - float {between 0 and 1}
 #### Crossfade between PGM and PST:
 /take
 #### Set snap 1-xx to PST:
 /snap/1
+#### Fade all channels to black (mute)
+/fadetoblack
+#### Hide or show channel strips on GUI: 
+/ch/{value1}/visible - integer { 0 or 1 }
+
+## Get state:
+#### Set channel to PGM:
+/state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
+#### Set channel to PST:
+/state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
+#### Set channel faderlevel:
+/state/ch/1/mix/faderlevel - float {between 0 and 1}

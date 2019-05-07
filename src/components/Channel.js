@@ -18,7 +18,6 @@ class Channel extends PureComponent {
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);
         this.snapButton = this.snapButton.bind(this);
-        this.renderLabel = this.renderLabel.bind(this);
     }
 
     handlePgm() {
@@ -88,6 +87,7 @@ class Channel extends PureComponent {
 
     pgmButton() {
         return (
+
             <button
                 className="channel-pgm-button"
                 style={
@@ -109,7 +109,9 @@ class Channel extends PureComponent {
                 onClick={event => {
                     this.handlePgm(event);
                 }}
-            >PGM</button>
+            >
+                {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+            </button>
         )
     }
 
@@ -156,43 +158,33 @@ class Channel extends PureComponent {
         }
     }
 
-    renderLabel() {
-        if (this.props.label === "") {
-            return (
-                <div className="channel-name">
-            CH {this.channelIndex + 1}
-        </div>
-            )
-        }
-        return (
-        <div className="channel-name">
-            {this.props.label}
-        </div>
-        )
-    }
-
     render() {
         return (
-        <div className="channel-body">
-            {this.fader()}
-            <VuMeter channelIndex = {this.channelIndex}/>
-            <br/>
-            {this.pgmButton()}
-            <br/>
-            {this.pstButton()}
-            <br/>
-            {this.renderLabel()}
-            <div className="channel-gain-label">
-                GAIN: {parseInt(this.props.outputLevel*100)/100}
+        this.props.showChannel === false ?
+            <div></div>
+            :
+            <div className="channel-body">
+                {this.fader()}
+                <VuMeter channelIndex = {this.channelIndex}/>
+                <br/>
+                {this.pgmButton()}
+                <br/>
+                {this.pstButton()}
+                <br/>
+                <div className="channel-name">
+                    {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+                </div>
+                <div className="channel-gain-label">
+                    GAIN: {parseInt(this.props.outputLevel*100)/100}
+                </div>
+                <div className="channel-snap-body">
+                    {this.props.snapOn
+                        .map((none, index) => {
+                            return this.snapButton(index)
+                        })
+                    }
+                </div>
             </div>
-            <div className="channel-snap-body">
-                {this.props.snapOn
-                    .map((none, index) => {
-                        return this.snapButton(index)
-                    })
-                }
-            </div>
-        </div>
         )
     }
 }
@@ -201,6 +193,7 @@ const mapStateToProps = (state, props) => {
     return {
         pgmOn: state.channels[0].channel[props.channelIndex].pgmOn,
         pstOn: state.channels[0].channel[props.channelIndex].pstOn,
+        showChannel: state.channels[0].channel[props.channelIndex].showChannel,
         faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
         outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
         label: state.channels[0].channel[props.channelIndex].label,

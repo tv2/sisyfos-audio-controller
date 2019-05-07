@@ -3,8 +3,9 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 
-const FADE_INOUT_STEPS = 3;
-const FADE_INOUT_SPEED = 10;
+// FADE_INOUT_SPEED defines the resolution of the fade in ms
+// The lower the more CPU
+let FADE_INOUT_SPEED = 3;
 
 export class MixerConnection {
     constructor(initialStore) {
@@ -66,15 +67,16 @@ export class MixerConnection {
 
     fadeUp(channelIndex) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
-        let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step
         let targetVal = this.mixerProtocol.fader.zero;
         if (this.mixerProtocol.mode === "master") {
             targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
         }
+        const step = (targetVal-outputLevel)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
+
 
         if (targetVal<outputLevel) {
             this.timer[channelIndex] = setInterval(() => {
-                outputLevel -= step;
+                outputLevel += step;
                 this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
 
                 if ( outputLevel <= targetVal){
@@ -123,15 +125,15 @@ export class MixerConnection {
 
     fadeDown(channelIndex) {
         let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
-        let step = FADE_INOUT_STEPS*this.mixerProtocol.fader.step
-        let min = this.mixerProtocol.fader.min;
+        const min = this.mixerProtocol.fader.min;
+        const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
 
         this.timer[channelIndex] = setInterval(() => {
 
             outputLevel -= step;
             this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
 
-            if ( outputLevel < min ){
+            if ( outputLevel <= min ){
                 outputLevel=min;
                 this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
                 clearInterval(this.timer[channelIndex]);

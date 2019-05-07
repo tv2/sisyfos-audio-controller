@@ -30,6 +30,13 @@
     color: rgb(255, 255, 255);
 }
 
+
+.settings-show-channel-selection {
+    white-space: nowrap;
+    margin: 5px;
+    color: rgb(255, 255, 255);
+}
+
 input[type=text] {
     text-align: right;
     margin: 5px;
@@ -41,6 +48,21 @@ input[type=text] {
     -webkit-appearance: none;
 }
 
+
+.settings-channels-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    width: 120px;
+    line-height: 100%;
+    background: rgb(13, 77, 18);
+    color: white;
+    font-family: 'Roboto Condensed', sans-serif;
+    border-radius: 4px;
+    border-width: 1;
+    border-color: black;
+    outline: 0;
+}
 
 .settings-save-button {
     margin-top: 10px;
@@ -56,4 +78,6 @@ input[type=text] {
     border-width: 0;
     outline: 0;
 }
+
+
 

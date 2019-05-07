@@ -31,9 +31,15 @@ export class OscMixerConnection {
     setupMixerConnection() {
         this.oscConnection
         .on("ready", () => {
-            this.mixerProtocol.initializeCommand.map((item) => {
-                this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
-                console.log("Listening for OSC over UDP.");
+            console.log("Receiving state of desk");
+            this.mixerProtocol.initializeCommands.map((item) => {
+                if (item.oscMessage.includes("{channel}")) {
+                    this.store.channels[0].channel.map((channel, index) => {
+                        this.sendOutRequest(item.oscMessage,(index +1));
+                    });
+                } else {
+                    this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
+                }
             });
         })
         .on('message', (message) => {
@@ -45,27 +51,36 @@ export class OscMixerConnection {
                     channel: ch - 1,
                     level: message.args[0]
                 });
-                if (this.store.channels[0].channel[ch - 1].pgmOn && this.mixerProtocol.mode === 'master')
-                {
-                    this.updateOutLevel(ch-1);
+                if (this.mixerProtocol.mode === 'master') {
+                    if (this.store.channels[0].channel[ch - 1].pgmOn)
+                    {
+                        this.updateOutLevel(ch-1);
+                    }
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_OUT_GAIN)){
-                    let ch = message.address.split("/")[2];
-                    if (this.store.channels[0].channel[ch - 1].pgmOn
-                        && this.mixerProtocol.mode === 'master'
-                        && !this.store.channels[0].channel[ch - 1].fadeActive) {
-                        window.storeRedux.dispatch({
-                            type:'SET_FADER_LEVEL',
-                            channel: ch - 1,
-                            level: message.args[0]
+                let ch = message.address.split("/")[2];
+                if (this.mixerProtocol.mode === 'master'
+                    && !this.store.channels[0].channel[ch - 1].fadeActive
+                    &&  message.args[0] > this.mixerProtocol.fader.min)
+                {
+                    window.storeRedux.dispatch({
+                        type:'SET_FADER_LEVEL',
+                        channel: ch - 1,
+                        level: message.args[0]
                     });
+                    if (!this.store.channels[0].channel[ch - 1].pgmOn) {
+                        window.storeRedux.dispatch({
+                            type:'TOGGLE_PGM',
+                            channel: ch - 1
+                        });
+                    }
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_VU)){
-                if (this.store.settings[0].mixerProtocol === 'behringerxr') {
+                if (this.store.settings[0].mixerProtocol.includes('behringer')) {
                     behringerMeter(message.args);
-                } else if (this.store.settings[0].mixerProtocol === 'midas') {
+                } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
                     midasMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];
@@ -147,6 +162,19 @@ export class OscMixerConnection {
                         value: value
                     }
                 ]
+            });
+        }
+    }
+
+    sendOutRequest(oscMessage, channel) {
+        let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
+        let message = oscMessage.replace(
+                "{channel}",
+                channelString
+            );
+        if (message != 'none') {
+            this.oscConnection.send({
+                address: message
             });
         }
     }
