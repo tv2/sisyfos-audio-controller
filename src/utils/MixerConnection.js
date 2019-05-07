@@ -29,8 +29,10 @@ export class MixerConnection {
             this.mixerConnection = new MidiMixerConnection(this.fadeInOut);
         }
 
-        //Setup timers for fadi in out
+        //Setup timers for fade in & out
         this.timer = new Array(this.store.channels[0].channel.length);
+        this.grpTimer = new Array(this.store.channels[0].grpFader.length);
+
 
     }
 
@@ -166,7 +168,7 @@ export class MixerConnection {
     fadeGrpInOut (channelIndex){
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].grpFader[channelIndex].fadeActive) {
-            clearInterval(this.timer[channelIndex]);
+            clearInterval(this.grpTimer[channelIndex]);
         } else {
             window.storeRedux.dispatch({
                 type:'FADE_GRP_ACTIVE',
@@ -192,14 +194,14 @@ export class MixerConnection {
 
 
         if (targetVal<outputLevel) {
-            this.timer[channelIndex] = setInterval(() => {
+            this.grpTimer[channelIndex] = setInterval(() => {
                 outputLevel += step;
                 this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
 
                 if ( outputLevel <= targetVal){
                     outputLevel = targetVal;
                     this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
-                    clearInterval(this.timer[channelIndex]);
+                    clearInterval(this.grpTimer[channelIndex]);
 
                     window.storeRedux.dispatch({
                         type:'SET_GRP_OUTPUT_LEVEL',
@@ -222,7 +224,7 @@ export class MixerConnection {
                 if ( outputLevel >= targetVal ) {
                     outputLevel = targetVal;
                     this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
-                    clearInterval(this.timer[channelIndex]);
+                    clearInterval(this.grpTimer[channelIndex]);
                     window.storeRedux.dispatch({
                         type:'SET_GRP_OUTPUT_LEVEL',
                         channel: channelIndex,
@@ -245,7 +247,7 @@ export class MixerConnection {
         const min = this.mixerProtocol.fader.min;
         const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
 
-        this.timer[channelIndex] = setInterval(() => {
+        this.grpTimer[channelIndex] = setInterval(() => {
 
             outputLevel -= step;
             this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
@@ -253,7 +255,7 @@ export class MixerConnection {
             if ( outputLevel <= min ){
                 outputLevel=min;
                 this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
-                clearInterval(this.timer[channelIndex]);
+                clearInterval(this.grpTimer[channelIndex]);
                 window.storeRedux.dispatch({
                     type:'SET_GRP_OUTPUT_LEVEL',
                     channel: channelIndex,
