@@ -9,8 +9,9 @@ export const midasMeter = (message) => {
     let dataview = new DataView(uint8bytes.buffer);
     //console.log(dataview);
     let vuMeters = [];
+    let numberOfChannels = store.settings[0].numberOfChannels;
 
-    for (let i=0; i < store.settings[0].numberOfChannels; i++) {
+    for (let i=0; i < numberOfchannels; i++) {
         vuMeters.push({vuVal : dataview.getFloat32(4*i+headerData , true)});
     }
     window.storeRedux.dispatch({
