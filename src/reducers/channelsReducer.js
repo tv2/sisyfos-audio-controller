@@ -4,7 +4,8 @@ const defaultChannelsReducerState = (numberOfChannels) => {
     let defaultObj = [{
         channel: [],
         vuMeters: [],
-        grpFader: []
+        grpFader: [],
+        grpVuMeters: [],
     }];
     for (let i=0; i < numberOfChannels; i++) {
         defaultObj[0].channel.push({
@@ -34,7 +35,10 @@ const defaultChannelsReducerState = (numberOfChannels) => {
             pgmOn: false,
             pstOn: false,
             showChannel: true,
-    });
+        });
+        defaultObj[0].grpVuMeters.push({
+            vuVal: 0.0
+        });
     }
     return defaultObj;
 };
@@ -44,7 +48,8 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
         channel: [...state[0].channel],
-        grpFader: [...state[0].grpFader]
+        grpFader: [...state[0].grpFader],
+        grpVuMeters: [...state[0].grpVuMeters]
     }];
 
     switch(action.type) {
@@ -105,6 +110,11 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
                 nextState[0].channel[index].pstOn = state[0].channel[index].pgmOn;
                 nextState[0].channel[index].pgmOn = nextPgmOn;
             });
+            nextState[0].grpFader.map((item, index) => {
+                let nextPgmOn = state[0].grpFader[index].pstOn;
+                nextState[0].grpFader[index].pstOn = state[0].grpFader[index].pgmOn;
+                nextState[0].grpFader[index].pgmOn = nextPgmOn;
+            });
             return nextState;
         case 'FADE_TO_BLACK': //none
             nextState[0].channel.map((item, index) => {
@@ -121,6 +131,9 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
             return nextState;
         case 'SET_GRP_FADER_LEVEL': //channel:  level:
             nextState[0].grpFader[action.channel].faderLevel = action.level;
+            return nextState;
+        case 'SET_GRP_OUTPUT_LEVEL': //channel:  level:
+            nextState[0].grpFader[action.channel].outputLevel = action.level;
             return nextState;
         case 'SET_GRP_VU_LEVEL': //channel:  level:
             if (typeof nextState[0].grpVuMeters[action.channel] != 'undefined') {

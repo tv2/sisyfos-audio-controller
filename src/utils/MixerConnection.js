@@ -39,11 +39,20 @@ export class MixerConnection {
             this.fadeInOut(index);
             this.mixerConnection.updateOutLevel(index);
         });
+        this.store.channels[0].grpFader.map((channel, index) => {
+            this.fadeGrpInOut(index);
+            this.mixerConnection.updateGrpOutLevel(index);
+        });
     }
 
     updateOutLevel(channelIndex) {
         this.fadeInOut(channelIndex);
         this.mixerConnection.updateOutLevel(channelIndex);
+    }
+
+    updateGrpOutLevel(channelIndex) {
+        this.fadeGrpInOut(channelIndex);
+        this.mixerConnection.updateGrpOutLevel(channelIndex);
     }
 
     fadeInOut (channelIndex){
@@ -144,6 +153,114 @@ export class MixerConnection {
                 });
                 window.storeRedux.dispatch({
                     type:'FADE_ACTIVE',
+                    channel: channelIndex,
+                    active: false
+                });
+                return true;
+            }
+
+        }, FADE_INOUT_SPEED);
+    }
+
+
+    fadeGrpInOut (channelIndex){
+        //Clear Old timer or set Fade to active:
+        if (this.store.channels[0].grpFader[channelIndex].fadeActive) {
+            clearInterval(this.timer[channelIndex]);
+        } else {
+            window.storeRedux.dispatch({
+                type:'FADE_GRP_ACTIVE',
+                channel: channelIndex,
+                active: true
+            });
+        }
+
+        if (this.store.channels[0].grpFader[channelIndex].pgmOn) {
+            this.fadeGrpUp(channelIndex);
+        } else {
+            this.fadeGrpDown(channelIndex);
+        }
+    }
+
+    fadeGrpUp(channelIndex) {
+        let outputLevel = parseFloat(this.store.channels[0].grpFader[channelIndex].outputLevel);
+        let targetVal = this.mixerProtocol.fader.zero;
+        if (this.mixerProtocol.mode === "master") {
+            targetVal = parseFloat(this.store.channels[0].grpFader[channelIndex].faderLevel);
+        }
+        const step = (targetVal-outputLevel)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
+
+
+        if (targetVal<outputLevel) {
+            this.timer[channelIndex] = setInterval(() => {
+                outputLevel += step;
+                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+
+                if ( outputLevel <= targetVal){
+                    outputLevel = targetVal;
+                    this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
+                    clearInterval(this.timer[channelIndex]);
+
+                    window.storeRedux.dispatch({
+                        type:'SET_GRP_OUTPUT_LEVEL',
+                        channel: channelIndex,
+                        level: outputLevel
+                    });
+                    window.storeRedux.dispatch({
+                        type:'FADE_GRP_ACTIVE',
+                        channel: channelIndex,
+                        active: false
+                    });
+                    return true;
+                }
+            }, FADE_INOUT_SPEED);
+        } else {
+            this.timer[channelIndex] = setInterval(() => {
+                outputLevel += step;
+                this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
+
+                if ( outputLevel >= targetVal ) {
+                    outputLevel = targetVal;
+                    this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
+                    clearInterval(this.timer[channelIndex]);
+                    window.storeRedux.dispatch({
+                        type:'SET_GRP_OUTPUT_LEVEL',
+                        channel: channelIndex,
+                        level: outputLevel
+                    });
+                    window.storeRedux.dispatch({
+                        type:'FADE_GRP_ACTIVE',
+                        channel: channelIndex,
+                        active: false
+                    });
+                    return true;
+                }
+
+            }, FADE_INOUT_SPEED);
+        }
+    }
+
+    fadeGrpDown(channelIndex) {
+        let outputLevel = this.store.channels[0].grpFader[channelIndex].outputLevel;
+        const min = this.mixerProtocol.fader.min;
+        const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
+
+        this.timer[channelIndex] = setInterval(() => {
+
+            outputLevel -= step;
+            this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+
+            if ( outputLevel <= min ){
+                outputLevel=min;
+                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+                clearInterval(this.timer[channelIndex]);
+                window.storeRedux.dispatch({
+                    type:'SET_GRP_OUTPUT_LEVEL',
+                    channel: channelIndex,
+                    level: outputLevel
+                });
+                window.storeRedux.dispatch({
+                    type:'FADE_GRP_ACTIVE',
                     channel: channelIndex,
                     active: false
                 });

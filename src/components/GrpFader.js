@@ -22,26 +22,26 @@ class GrpFader extends PureComponent {
 
     handlePgm() {
         this.props.dispatch({
-            type:'TOGGLE_PGM',
+            type:'TOGGLE_GRP_PGM',
             channel: this.faderIndex
         });
-        this.mixerConnection.updateOutLevel(this.faderIndex);
+        this.mixerConnection.updateGrpOutLevel(this.faderIndex);
     }
 
     handlePst() {
         this.props.dispatch({
-            type:'TOGGLE_PST',
+            type:'TOGGLE_GRP_PST',
             channel: this.faderIndex
         });
     }
 
     handleLevel(event) {
         this.props.dispatch({
-            type:'SET_FADER_LEVEL',
+            type:'SET_GRP_FADER_LEVEL',
             channel: this.faderIndex,
             level: event.target.value
         });
-        this.mixerConnection.updateOutLevel(this.faderIndex);
+        this.mixerConnection.updateGrpOutLevel(this.faderIndex);
     }
 
     fader() {
@@ -140,10 +140,10 @@ class GrpFader extends PureComponent {
                 {this.pstButton()}
                 <br/>
                 <div className="grpFader-name">
-                    {this.props.label != "" ? this.props.label : ("CH " + (this.faderIndex + 1)) }
+                    {this.props.label != "" ? this.props.label : ("GRP " + (this.faderIndex + 1)) }
                 </div>
                 <div className="grpFader-gain-label">
-                    GAIN: {parseInt(this.props.outputLevel*100)/100}
+                    GAIN: {parseInt(this.props.faderLevel*100)/100}
                 </div>
             </div>
         )
@@ -155,7 +155,6 @@ const mapStateToProps = (state, props) => {
         pgmOn: state.channels[0].grpFader[props.faderIndex].pgmOn,
         pstOn: state.channels[0].grpFader[props.faderIndex].pstOn,
         faderLevel: state.channels[0].grpFader[props.faderIndex].faderLevel,
-        outputLevel: state.channels[0].grpFader[props.faderIndex].outputLevel,
         label: state.channels[0].grpFader[props.faderIndex].label,
         mixerProtocol: state.settings[0].mixerProtocol,
         showSnaps: state.settings[0].showSnaps

@@ -203,5 +203,30 @@ export class OscMixerConnection {
         );
     }
 
+
+    updateGrpOutLevel(channelIndex) {
+        this.sendOutMessage(
+            this.mixerProtocol.toMixer.GRP_OUT_GAIN,
+            channelIndex+1,
+            this.store.channels[0].grpFader[channelIndex].outputLevel,
+            "f"
+        );
+        this.sendOutMessage(
+            this.mixerProtocol.toMixer.GRP_FADER_LEVEL,
+            channelIndex+1,
+            this.store.channels[0].grpFader[channelIndex].faderLevel,
+            "f"
+        );
+    }
+
+    updateGrpFadeIOLevel(channelIndex, outputLevel) {
+        this.sendOutMessage(
+            this.mixerProtocol.toMixer.GRP_OUT_GAIN,
+            channelIndex+1,
+            outputLevel,
+            "f"
+        );
+    }
+
 }
 
