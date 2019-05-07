@@ -25,7 +25,7 @@ class Channels extends PureComponent {
 
     handleClearAllChannels() {
         this.props.dispatch({
-            type:'CLEAR_ALL_CHANNELS'
+            type:'FADE_TO_BLACK'
         });
         this.props.mixerConnection.updateOutLevels();
     }

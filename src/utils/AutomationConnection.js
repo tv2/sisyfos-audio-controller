@@ -76,9 +76,22 @@ export class AutomationConnection {
                     type:'X_MIX'
                 });
                 this.mixerConnection.updateOutLevels();
-            }
+            } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .CHANNEL_VISIBLE)){
+                let ch = message.address.split("/")[2];
+                window.storeRedux.dispatch({
+                    type:'SHOW_CHANNEL',
+                    channel: ch - 1,
+                    showChannel: message.args[0]===1 ? true : false
+                });
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                    .FADE_TO_BLACK)) {
+                    window.storeRedux.dispatch({
+                        type:'FADE_TO_BLACK'
+                    });
+                    this.mixerConnection.updateOutLevels();
             // Get state from Producers Audio Mixer:
-            else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_PGM)) {
                 let ch = message.address.split("/")[3];
                 this.sendOutMessage(

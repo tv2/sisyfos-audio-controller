@@ -88,7 +88,7 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
                 nextState[0].channel[index].pgmOn = nextPgmOn;
             });
             return nextState;
-        case 'CLEAR_ALL_CHANNELS': //none
+        case 'FADE_TO_BLACK': //none
             nextState[0].channel.map((item, index) => {
                 nextState[0].channel[index].pgmOn = false;
             });

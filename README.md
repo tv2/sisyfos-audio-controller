@@ -64,6 +64,10 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /take
 #### Set snap 1-xx to PST:
 /snap/1
+#### Fade all channels to black (mute)
+/fadetoblack
+#### Hide or show channel strips on GUI: 
+/ch/{value1}/visible - integer { 0 or 1 }
 
 ## Get state:
 #### Set channel to PGM:
