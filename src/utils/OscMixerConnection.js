@@ -222,6 +222,25 @@ export class OscMixerConnection {
         }
     }
 
+
+    sendOutGrpMessage(oscMessage, channel, value, type) {
+        let message = oscMessage.replace(
+                "{channel}",
+                channel
+            );
+        if (message != 'none') {
+            this.oscConnection.send({
+                address: message,
+                args: [
+                    {
+                        type: type,
+                        value: value
+                    }
+                ]
+            });
+        }
+    }
+
     sendOutRequest(oscMessage, channel) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
@@ -261,13 +280,13 @@ export class OscMixerConnection {
 
 
     updateGrpOutLevel(channelIndex) {
-        this.sendOutMessage(
+        this.sendOutGrpMessage(
             this.mixerProtocol.toMixer.GRP_OUT_GAIN,
             channelIndex+1,
             this.store.channels[0].grpFader[channelIndex].outputLevel,
             "f"
         );
-        this.sendOutMessage(
+        this.sendOutGrpMessage(
             this.mixerProtocol.toMixer.GRP_FADER_LEVEL,
             channelIndex+1,
             this.store.channels[0].grpFader[channelIndex].faderLevel,
@@ -276,7 +295,7 @@ export class OscMixerConnection {
     }
 
     updateGrpFadeIOLevel(channelIndex, outputLevel) {
-        this.sendOutMessage(
+        this.sendOutGrpMessage(
             this.mixerProtocol.toMixer.GRP_OUT_GAIN,
             channelIndex+1,
             outputLevel,
