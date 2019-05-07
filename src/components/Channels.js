@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 
 import Channel from './Channel';
+import GroupFader from './GroupFader';
 import '../assets/css/Channels.css';
 
 class Channels extends PureComponent {
@@ -71,6 +72,14 @@ class Channels extends PureComponent {
             {this.props.store.channels[0].channel.map((none, index) => {
                 return <Channel
                             channelIndex = {index}
+                            key={index}
+                            mixerConnection = { this.props.mixerConnection}
+                        />
+                })
+            }
+            {this.props.store.channels[0].groupFader.map((none, index) => {
+                return <GroupFader
+                            faderIndex = {index}
                             key={index}
                             mixerConnection = { this.props.mixerConnection}
                         />

@@ -3,7 +3,8 @@ import * as DEFAULTS from '../constants/DEFAULTS';
 const defaultChannelsReducerState = (numberOfChannels) => {
     let defaultObj = [{
         channel: [],
-        vuMeters: []
+        vuMeters: [],
+        groupFader: []
     }];
     for (let i=0; i < numberOfChannels; i++) {
         defaultObj[0].channel.push({
@@ -16,6 +17,15 @@ const defaultChannelsReducerState = (numberOfChannels) => {
                 showChannel: true,
                 snapOn: [],
         });
+        defaultObj[0].groupFader.push({
+            fadeActive: false,
+            faderLevel: 0,
+            label: "",
+            outputLevel: 0.0,
+            pgmOn: false,
+            pstOn: false,
+            showChannel: true,
+    });
         defaultObj[0].vuMeters.push({
             vuVal: 0.0
         });
@@ -31,7 +41,8 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
-        channel: [...state[0].channel]
+        channel: [...state[0].channel],
+        groupFader: [...state[0].groupFader]
     }];
 
     switch(action.type) {
