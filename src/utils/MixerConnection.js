@@ -194,7 +194,7 @@ export class MixerConnection {
         if (targetVal<outputLevel) {
             this.timer[channelIndex] = setInterval(() => {
                 outputLevel += step;
-                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+                this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
 
                 if ( outputLevel <= targetVal){
                     outputLevel = targetVal;
@@ -248,11 +248,11 @@ export class MixerConnection {
         this.timer[channelIndex] = setInterval(() => {
 
             outputLevel -= step;
-            this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+            this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
 
             if ( outputLevel <= min ){
                 outputLevel=min;
-                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+                this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
                 clearInterval(this.timer[channelIndex]);
                 window.storeRedux.dispatch({
                     type:'SET_GRP_OUTPUT_LEVEL',

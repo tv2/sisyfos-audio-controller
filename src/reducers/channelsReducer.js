@@ -143,7 +143,7 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
         case 'SET_ALL_GRP_VU_LEVELS': //channel:  level:
             nextState[0].grpVuMeters = action.grpVuMeters;
             return nextState;
-        case 'SET_GRP_FADER_LABEL': //channel:  label:
+        case 'SET_GRP_LABEL': //channel:  label:
             nextState[0].grpFader[action.channel].label = action.label;
             return nextState;
         case 'TOGGLE_GRP_PGM': //channel
