@@ -23,7 +23,7 @@ export const AutomationPresets = {
             CHANNEL_VISIBLE: '/ch/{value1}/visible',
             X_MIX: '/take',
             FADE_TO_BLACK: '/fadetoblack',
-            SNAP_MIX: '/snap/{value1}',
+            SNAP_RECALL: '/snap/{value1}',
             STATE_CHANNEL_PGM: '/state/ch/{value1}/mix/pgm',
             STATE_CHANNEL_PST: '/state/ch/{value1}/mix/pst',
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/mix/faderlevel',

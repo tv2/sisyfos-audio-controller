@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 
 import Channel from './Channel';
-import GroupFader from './GroupFader';
+import GrpFader from './GrpFader';
 import '../assets/css/Channels.css';
 
 class Channels extends PureComponent {
@@ -33,7 +33,7 @@ class Channels extends PureComponent {
 
     handleSnapMix(snapIndex) {
         this.props.dispatch({
-            type:'SNAP_MIX',
+            type:'SNAP_RECALL',
             snapIndex: snapIndex
         });
         this.props.mixerConnection.updateOutLevels();
@@ -77,8 +77,8 @@ class Channels extends PureComponent {
                         />
                 })
             }
-            {this.props.store.channels[0].groupFader.map((none, index) => {
-                return <GroupFader
+            {this.props.store.channels[0].grpFader.map((none, index) => {
+                return <GrpFader
                             faderIndex = {index}
                             key={index}
                             mixerConnection = { this.props.mixerConnection}

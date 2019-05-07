@@ -4,7 +4,7 @@ const defaultChannelsReducerState = (numberOfChannels) => {
     let defaultObj = [{
         channel: [],
         vuMeters: [],
-        groupFader: []
+        grpFader: []
     }];
     for (let i=0; i < numberOfChannels; i++) {
         defaultObj[0].channel.push({
@@ -17,7 +17,16 @@ const defaultChannelsReducerState = (numberOfChannels) => {
                 showChannel: true,
                 snapOn: [],
         });
-        defaultObj[0].groupFader.push({
+        defaultObj[0].vuMeters.push({
+            vuVal: 0.0
+        });
+
+        for (let y=0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
+            defaultObj[0].channel[i].snapOn.push(0.0);
+        }
+    }
+    for (let i=0; i < DEFAULTS.NUMBER_OF_GROUP_FADERS; i++) {
+        defaultObj[0].grpFader.push({
             fadeActive: false,
             faderLevel: 0,
             label: "",
@@ -26,13 +35,6 @@ const defaultChannelsReducerState = (numberOfChannels) => {
             pstOn: false,
             showChannel: true,
     });
-        defaultObj[0].vuMeters.push({
-            vuVal: 0.0
-        });
-
-        for (let y=0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
-            defaultObj[0].channel[i].snapOn.push(0.0);
-        }
     }
     return defaultObj;
 };
@@ -42,7 +44,7 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
         channel: [...state[0].channel],
-        groupFader: [...state[0].groupFader]
+        grpFader: [...state[0].grpFader]
     }];
 
     switch(action.type) {
@@ -51,6 +53,11 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
             action.allState.channel.map((channel, index) => {
                 if (index < action.numberOfChannels) {
                     nextState[0].channel[index] = channel;
+                }
+            });
+            action.allState.grpFader.map((grpFader, index) => {
+                if (index < DEFAULTS.NUMBER_OF_GROUP_FADERS) {
+                    nextState[0].grpFader[index] = grpFader;
                 }
             });
             return nextState;
@@ -104,10 +111,42 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
                 nextState[0].channel[index].pgmOn = false;
             });
             return nextState;
-        case 'SNAP_MIX': //snapIndex
+        case 'SNAP_RECALL': //snapIndex
             nextState[0].channel.map((item, index) => {
                 nextState[0].channel[index].pstOn = state[0].channel[index].snapOn[action.snapIndex];
             });
+            return nextState;
+        case 'FADE_GRP_ACTIVE':
+            nextState[0].grpFader[action.channel].fadeActive = action.active;
+            return nextState;
+        case 'SET_GRP_FADER_LEVEL': //channel:  level:
+            nextState[0].grpFader[action.channel].faderLevel = action.level;
+            return nextState;
+        case 'SET_GRP_VU_LEVEL': //channel:  level:
+            if (typeof nextState[0].grpVuMeters[action.channel] != 'undefined') {
+                nextState[0].grpVuMeters[action.channel].vuVal = action.level;
+            }
+            return nextState;
+        case 'SET_ALL_GRP_VU_LEVELS': //channel:  level:
+            nextState[0].grpVuMeters = action.grpVuMeters;
+            return nextState;
+        case 'SET_GRP_FADER_LABEL': //channel:  label:
+            nextState[0].grpFader[action.channel].label = action.label;
+            return nextState;
+        case 'TOGGLE_GRP_PGM': //channel
+            nextState[0].grpFader[action.channel].pgmOn = !nextState[0].grpFader[action.channel].pgmOn;
+            return nextState;
+        case 'SET_GRP_PGM': //channel
+            nextState[0].grpFader[action.channel].pgmOn = action.pgmOn;
+            return nextState;
+        case 'TOGGLE_GRP_PST': //channel
+            nextState[0].grpFader[action.channel].pstOn = !nextState[0].grpFader[action.channel].pstOn;
+            return nextState;
+        case 'SET_GRP_PST': //channel
+            nextState[0].grpFader[action.channel].pstOn = action.pstOn;
+            return nextState;
+        case 'SHOW_GRP_CHANNEL': //channel // showChannel
+            nextState[0].grpFader[action.channel].showChannel = action.showChannel;
             return nextState;
         default:
             return nextState;
