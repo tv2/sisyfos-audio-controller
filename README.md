@@ -27,13 +27,18 @@ yarn start
 ### Following preset name are possible:
 * reaper
   * OSC protocol for control Reaper (reaper.fm)
-* midas
+* midasmaster
+  * OSC protocol for Midas M32 and Behringer X32
+  * Port 10023
+  * The volume change on the Midas/X32 desk is on it´s channel faders.
+* midasclient
   * OSC protocol for Midas M32 and Behringer X32
   * Port 10023
   * Route ch 1-16 to bus 1-2 and in main turn off main stereo
   * Set send to Bus 1-2 to Post Fader on all channels
   * Link Bus 1-2 to stereo and in main turn on main stereo
   * Send to Bus 1-2 is then used for Fade In-Out
+  * Be aware of post faders mix% issues.
 * behringerxrclient (same protocoltype as the midas M32)
   * OSC protocol for Behringer XR12-16-18
   * Port 10024
@@ -60,6 +65,12 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /ch/1/mix/pst - integer: { 0 or 1 }
 #### Set channel faderlevel:
 /ch/1/mix/faderlevel - float {between 0 and 1}
+#### Set group to PGM:
+/grp/1/pgm - integer: { 0 or 1 }
+#### Set group to PST:
+/grp/1/pst - integer: { 0 or 1 }
+#### Set group faderlevel:
+/grp/1/faderlevel - float {between 0 and 1}
 #### Crossfade between PGM and PST:
 /take
 #### Set snap 1-xx to PST:
@@ -68,11 +79,19 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /fadetoblack
 #### Hide or show channel strips on GUI: 
 /ch/{value1}/visible - integer { 0 or 1 }
+#### Hide or show group strips on GUI: 
+/grp/{value1}/visible - integer { 0 or 1 }
 
 ## Get state:
-#### Set channel to PGM:
+#### Get state channel PGM:
 /state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
-#### Set channel to PST:
+#### get state channel PST:
 /state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
-#### Set channel faderlevel:
+#### Get state channel faderlevel:
+/state/ch/1/mix/faderlevel - float {between 0 and 1}
+#### Get state group PGM:
+/state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
+#### get state group PST:
+/state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
+#### Get state group faderlevel:
 /state/ch/1/mix/faderlevel - float {between 0 and 1}
