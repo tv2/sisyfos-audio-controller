@@ -40,7 +40,6 @@ class Channels extends PureComponent {
         );
     }
 
-
     handleShowChannel(index, event) {
         this.props.dispatch({
             type:'SHOW_CHANNEL',
@@ -64,6 +63,36 @@ class Channels extends PureComponent {
         this.props.store.channels[0].channel.map((channel, index) => {
             this.props.dispatch({
                 type:'SHOW_CHANNEL',
+                channel: index,
+                showChannel: false
+            });
+        });
+    }
+
+
+    handleShowGrpFader(index, event) {
+        this.props.dispatch({
+            type:'SHOW_GRP_FADER',
+            channel: index,
+            showChannel: event.target.checked
+        });
+    }
+
+    handleShowAllGrpFaders() {
+        this.props.store.channels[0].grpFader.map((channel, index) => {
+            this.props.dispatch({
+                type:'SHOW_GRP_FADER',
+                channel: index,
+                showChannel: true
+            });
+        });
+    }
+
+
+    handleHideAllGrpFaders() {
+        this.props.store.channels[0].grpFader.map((channel, index) => {
+            this.props.dispatch({
+                type:'SHOW_GRP_FADER',
                 channel: index,
                 showChannel: false
             });
@@ -102,6 +131,39 @@ class Channels extends PureComponent {
                                 type="checkbox"
                                 checked={this.props.store.channels[0].channel[index].showChannel }
                                 onChange={(event) => this.handleShowChannel(index, event)}
+                            />
+                        </div>
+                    })
+                }
+            </div>
+        )
+    }
+
+
+    renderShowGrpFadersSelection() {
+        return (
+            <div className="settings-show-channel-selection">
+                <input className="settings-channels-button"
+                    onClick=
+                        {() => {
+                            this.handleShowAllGrpFaders();
+                        }}
+                    value="ALL GROUPS"
+                />
+                <input className="settings-channels-button"
+                    onClick=
+                        {() => {
+                            this.handleHideAllGrpFaders();
+                        }}
+                    value="NO GROUPS"
+                />
+                {this.props.store.channels[0].grpFader.map((channel, index) => {
+                        return <div key={index}>
+                            {channel.label != "" ? channel.label : ("GRP " + (index + 1)) }
+                            <input
+                                type="checkbox"
+                                checked={this.props.store.channels[0].grpFader[index].showChannel }
+                                onChange={(event) => this.handleShowGrpFader(index, event)}
                             />
                         </div>
                     })
@@ -154,6 +216,8 @@ class Channels extends PureComponent {
                 </label>
                 <br/>
                 {this.renderShowChannelsSelection()}
+                <br/>
+                {this.renderShowGrpFadersSelection()}
                 <br/>
                 <input
                     className="settings-save-button"

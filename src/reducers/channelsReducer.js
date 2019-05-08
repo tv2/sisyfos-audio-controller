@@ -161,7 +161,7 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
         case 'SET_GRP_PST': //channel
             nextState[0].grpFader[action.channel].pstOn = action.pstOn;
             return nextState;
-        case 'SHOW_GRP_CHANNEL': //channel // showChannel
+        case 'SHOW_GRP_FADER': //channel // showChannel
             nextState[0].grpFader[action.channel].showChannel = action.showChannel;
             return nextState;
         default:

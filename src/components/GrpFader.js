@@ -154,6 +154,7 @@ const mapStateToProps = (state, props) => {
     return {
         pgmOn: state.channels[0].grpFader[props.faderIndex].pgmOn,
         pstOn: state.channels[0].grpFader[props.faderIndex].pstOn,
+        showChannel: state.channels[0].grpFader[props.faderIndex].showChannel,
         faderLevel: state.channels[0].grpFader[props.faderIndex].faderLevel,
         label: state.channels[0].grpFader[props.faderIndex].label,
         mixerProtocol: state.settings[0].mixerProtocol,
