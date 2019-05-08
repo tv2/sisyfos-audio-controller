@@ -20,6 +20,7 @@ export const AutomationPresets = {
             CHANNEL_PGM_ON_OFF: '/ch/{value1}/mix/pgm',
             CHANNEL_PST_ON_OFF: '/ch/{value1}/mix/pst',
             CHANNEL_FADER_LEVEL: '/ch/{value1}/mix/faderlevel',
+            CHANNEL_VISIBLE: '/ch/{value1}/visible',
             GRP_FADER_PGM_ON_OFF: '/grp/{value1}/pgm',
             GRP_FADER_PST_ON_OFF: '/grp/{value1}/pst',
             GRP_FADER_LEVEL: '/grp/{value1}/faderlevel',
