@@ -100,24 +100,9 @@ export class OscMixerConnection {
                     });
                 console.log("OSC message: ", message.address);
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
-                .GRP_FADER_LEVEL)){
-                let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SET_GRP_FADER_LEVEL',
-                    channel: ch - 1,
-                    level: message.args[0]
-                });
-                if (this.mixerProtocol.mode === 'master') {
-                    if (this.store.channels[0].grpFader[ch - 1].pgmOn)
-                    {
-                        this.updateGrpOutLevel(ch-1);
-                    }
-                }
-            } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .GRP_OUT_GAIN)){
                 let ch = message.address.split("/")[2];
-                if (this.mixerProtocol.mode === 'master'
-                    && !this.store.channels[0].grpFader[ch - 1].fadeActive
+                if (!this.store.channels[0].grpFader[ch - 1].fadeActive
                     &&  message.args[0] > this.mixerProtocol.fader.min)
                 {
                     window.storeRedux.dispatch({
@@ -284,12 +269,6 @@ export class OscMixerConnection {
             this.mixerProtocol.toMixer.GRP_OUT_GAIN,
             channelIndex+1,
             this.store.channels[0].grpFader[channelIndex].outputLevel,
-            "f"
-        );
-        this.sendOutGrpMessage(
-            this.mixerProtocol.toMixer.GRP_FADER_LEVEL,
-            channelIndex+1,
-            this.store.channels[0].grpFader[channelIndex].faderLevel,
             "f"
         );
     }

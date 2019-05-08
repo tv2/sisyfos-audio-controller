@@ -186,12 +186,8 @@ export class MixerConnection {
 
     fadeGrpUp(channelIndex) {
         let outputLevel = parseFloat(this.store.channels[0].grpFader[channelIndex].outputLevel);
-        let targetVal = this.mixerProtocol.fader.zero;
-        if (this.mixerProtocol.mode === "master") {
-            targetVal = parseFloat(this.store.channels[0].grpFader[channelIndex].faderLevel);
-        }
+        let targetVal = parseFloat(this.store.channels[0].grpFader[channelIndex].faderLevel);
         const step = (targetVal-outputLevel)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
-
 
         if (targetVal<outputLevel) {
             this.grpTimer[channelIndex] = setInterval(() => {
