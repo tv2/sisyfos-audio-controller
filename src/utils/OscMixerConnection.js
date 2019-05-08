@@ -110,7 +110,7 @@ export class OscMixerConnection {
                         channel: ch - 1,
                         level: message.args[0]
                     });
-                    if (!this.store.channels[0].channel[ch - 1].pgmOn) {
+                    if (!this.store.channels[0].grpFader[ch - 1].pgmOn) {
                         window.storeRedux.dispatch({
                             type:'TOGGLE_GRP_PGM',
                             channel: ch - 1
