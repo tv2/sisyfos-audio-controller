@@ -4,8 +4,8 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { behringerMeter } from './productSpecific/behringer';
-import { midasMeter } from './productSpecific/midas';
+import { behringerMeter, behringerGrpMeter } from './productSpecific/behringer';
+import { midasMeter, midasGrpMeter } from './productSpecific/midas';
 
 export class OscMixerConnection {
     constructor() {
@@ -99,6 +99,47 @@ export class OscMixerConnection {
                         label: message.args[0]
                     });
                 console.log("OSC message: ", message.address);
+            } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+                .GRP_OUT_GAIN)){
+                let ch = message.address.split("/")[2];
+                if (!this.store.channels[0].grpFader[ch - 1].fadeActive
+                    &&  message.args[0] > this.mixerProtocol.fader.min)
+                {
+                    window.storeRedux.dispatch({
+                        type:'SET_GRP_FADER_LEVEL',
+                        channel: ch - 1,
+                        level: message.args[0]
+                    });
+                    if (!this.store.channels[0].grpFader[ch - 1].pgmOn) {
+                        window.storeRedux.dispatch({
+                            type:'TOGGLE_GRP_PGM',
+                            channel: ch - 1
+                        });
+                    }
+                }
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+                .GRP_VU)){
+                if (this.store.settings[0].mixerProtocol.includes('behringer')) {
+                    behringerGrpMeter(message.args);
+                } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
+                    midasGrpMeter(message.args);
+                } else {
+                    let ch = message.address.split("/")[2];
+                    window.storeRedux.dispatch({
+                        type:'SET_GRP_VU_LEVEL',
+                        channel: ch - 1,
+                        level: message.args[0]
+                    });
+                }
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+                .GRP_NAME)) {
+                    let ch = message.address.split("/")[2];
+                    window.storeRedux.dispatch({
+                        type:'SET_GRP_LABEL',
+                        channel: ch - 1,
+                        label: message.args[0]
+                    });
+                console.log("OSC message: ", message.address);
             }
         })
         .on('error', (error) => {
@@ -166,6 +207,25 @@ export class OscMixerConnection {
         }
     }
 
+
+    sendOutGrpMessage(oscMessage, channel, value, type) {
+        let message = oscMessage.replace(
+                "{channel}",
+                channel
+            );
+        if (message != 'none') {
+            this.oscConnection.send({
+                address: message,
+                args: [
+                    {
+                        type: type,
+                        value: value
+                    }
+                ]
+            });
+        }
+    }
+
     sendOutRequest(oscMessage, channel) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
@@ -197,6 +257,25 @@ export class OscMixerConnection {
     updateFadeIOLevel(channelIndex, outputLevel) {
         this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
+            channelIndex+1,
+            outputLevel,
+            "f"
+        );
+    }
+
+
+    updateGrpOutLevel(channelIndex) {
+        this.sendOutGrpMessage(
+            this.mixerProtocol.toMixer.GRP_OUT_GAIN,
+            channelIndex+1,
+            this.store.channels[0].grpFader[channelIndex].outputLevel,
+            "f"
+        );
+    }
+
+    updateGrpFadeIOLevel(channelIndex, outputLevel) {
+        this.sendOutGrpMessage(
+            this.mixerProtocol.toMixer.GRP_OUT_GAIN,
             channelIndex+1,
             outputLevel,
             "f"

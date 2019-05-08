@@ -1,3 +1,5 @@
+import { DEFAULTS } from '../../constants/DEFAULTS';
+
 export const behringerMeter = (message) => {
     const store = window.storeRedux.getState();
 
@@ -10,6 +12,21 @@ export const behringerMeter = (message) => {
     for (let i=0; i < store.settings[0].numberOfChannels; i++) {
         window.storeRedux.dispatch({
             type:'SET_VU_LEVEL',
+            channel: i,
+            level: (dataview.getInt16(2*(i+2) , true) + 8000)/8000
+        });
+    }
+};
+
+export const behringerGrpMeter = (message) => {
+    const store = window.storeRedux.getState();
+
+    let uint8bytes = Uint8Array.from(message[0]);
+    let dataview = new DataView(uint8bytes.buffer);
+
+    for (let i=0; i < DEFAULTS.NUMBER_OF_GROUP_FADERS; i++) {
+        window.storeRedux.dispatch({
+            type:'SET_GRP_VU_LEVEL',
             channel: i,
             level: (dataview.getInt16(2*(i+2) , true) + 8000)/8000
         });

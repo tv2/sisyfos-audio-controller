@@ -23,10 +23,14 @@ export const MixerProtocolPresets = {
             CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
             CHANNEL_VU: '/track/{channel}/vu',
             CHANNEL_NAME: '/track/{channel}/name',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
+            GRP_VU: '/meters/1',
+            GRP_NAME: '/dca/{channel}/config/name',
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
             CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
         },
         fader: {
             min: 0,
@@ -74,10 +78,14 @@ export const MixerProtocolPresets = {
             CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
             CHANNEL_VU: '/meters/1',
             CHANNEL_NAME: '/ch/{channel}/config/name',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
+            GRP_VU: '/meters/1',
+            GRP_NAME: '/dca/{channel}/config/name',
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: 'none',
             CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
         },
         fader: {
             min: 0,
@@ -125,10 +133,14 @@ export const MixerProtocolPresets = {
             CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
             CHANNEL_VU: '/meters/1',
             CHANNEL_NAME: '/ch/{channel}/config/name',
+            GRP_VU: '/meters/1',
+            GRP_NAME: '/dca/{channel}/config/name',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',
             CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
         },
         fader: {
             min: 0,
@@ -181,10 +193,14 @@ export const MixerProtocolPresets = {
             CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
             CHANNEL_VU: '/meters/1',
             CHANNEL_NAME: '/ch/{channel}/config/name',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
+            GRP_VU: 'none', //'/meters/1',
+            GRP_NAME: '/dca/{channel}/config/name',
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: 'none',
             CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
         },
         fader: {
             min: 0,
@@ -242,10 +258,14 @@ export const MixerProtocolPresets = {
             CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
             CHANNEL_VU: '/meters/1',
             CHANNEL_NAME: '/ch/{channel}/config/name',
+            GRP_OUT_GAIN: '/dca/{channel}/mix/01/level',
+            GRP_VU: '/meters/1',
+            GRP_NAME: '/dca/{channel}/config/name',
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',
             CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
+            GRP_OUT_GAIN: '/dca/{channel}/mix/01/level',
         },
         fader: {
             min: 0,
@@ -290,10 +310,14 @@ export const MixerProtocolPresets = {
             CHANNEL_OUT_GAIN: 0,            //PgmChange 0 - ignores this command
             CHANNEL_VU: 0,                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: 'some sysex not yet build',
+            GRP_FADER_LEVEL: 'none',
+            GRP_VU: 'none',
+            GRP_NAME: 'none',
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: 39,
             CHANNEL_OUT_GAIN: 38,
+            GRP_OUT_GAIN: 'none',
         },
         fader: {
             min: 0,
