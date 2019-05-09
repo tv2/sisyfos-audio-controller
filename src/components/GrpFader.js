@@ -134,7 +134,7 @@ class GrpFader extends PureComponent {
             :
             <div className="grpFader-body">
                 {this.fader()}
-                <GrpVuMeter faderIndex = {this.faderIndex}/>
+                { this.mixerProtocol.fromMixer.GRP_VU != 'none' ? <GrpVuMeter faderIndex = {this.faderIndex}/> : ''}
                 <br/>
                 {this.pgmButton()}
                 <br/>
