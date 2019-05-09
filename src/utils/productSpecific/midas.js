@@ -1,4 +1,4 @@
-import { DEFAULTS } from '../../constants/DEFAULTS';
+import * as DEFAULTS from '../../constants/DEFAULTS';
 
 export const midasMeter = (message) => {
     const store = window.storeRedux.getState();
@@ -29,7 +29,6 @@ export const midasGrpMeter = (message) => {
     let dataview = new DataView(uint8bytes.buffer);
     //console.log(dataview);
     let vuMeters = [];
-
 
     for (let i=0; i < DEFAULTS.NUMBER_OF_GROUP_FADERS; i++) {
         vuMeters.push({vuVal : dataview.getFloat32(4*i+headerData , true)});

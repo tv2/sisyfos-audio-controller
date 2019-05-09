@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 
-import VuMeter from './VuMeter';
+import GrpVuMeter from './GrpVuMeter';
 //assets:
 import '../assets/css/GrpFader.css';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
@@ -134,6 +134,7 @@ class GrpFader extends PureComponent {
             :
             <div className="grpFader-body">
                 {this.fader()}
+                <GrpVuMeter faderIndex = {this.faderIndex}/>
                 <br/>
                 {this.pgmButton()}
                 <br/>
