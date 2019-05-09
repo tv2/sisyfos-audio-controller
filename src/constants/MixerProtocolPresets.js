@@ -24,7 +24,7 @@ export const MixerProtocolPresets = {
             CHANNEL_VU: '/track/{channel}/vu',
             CHANNEL_NAME: '/track/{channel}/name',
             GRP_OUT_GAIN: '/dca/{channel}/fader',
-            GRP_VU: '/meters/1',
+            GRP_VU: 'none',
             GRP_NAME: '/dca/{channel}/config/name',
         },
         toMixer: {
@@ -63,6 +63,11 @@ export const MixerProtocolPresets = {
                 oscMessage: "/meters",
                 value: "/meters/1",
                 type: "s"
+            },
+            {
+                oscMessage: "/meters",
+                value: "/meters/5",
+                type: "s"
             }
         ],
         pingTime: 9500,
@@ -79,7 +84,7 @@ export const MixerProtocolPresets = {
             CHANNEL_VU: '/meters/1',
             CHANNEL_NAME: '/ch/{channel}/config/name',
             GRP_OUT_GAIN: '/dca/{channel}/fader',
-            GRP_VU: '/meters/1',
+            GRP_VU: 'none',
             GRP_NAME: '/dca/{channel}/config/name',
         },
         toMixer: {
@@ -118,6 +123,11 @@ export const MixerProtocolPresets = {
                 oscMessage: "/meters",
                 value: "/meters/1",
                 type: "s"
+            },
+            {
+                oscMessage: "/meters",
+                value: "/meters/5",
+                type: "s"
             }
         ],
         pingTime: 9500,
@@ -133,7 +143,7 @@ export const MixerProtocolPresets = {
             CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
             CHANNEL_VU: '/meters/1',
             CHANNEL_NAME: '/ch/{channel}/config/name',
-            GRP_VU: '/meters/1',
+            GRP_VU: 'none',
             GRP_NAME: '/dca/{channel}/config/name',
             GRP_OUT_GAIN: '/dca/{channel}/fader',
         },
@@ -194,7 +204,7 @@ export const MixerProtocolPresets = {
             CHANNEL_VU: '/meters/1',
             CHANNEL_NAME: '/ch/{channel}/config/name',
             GRP_OUT_GAIN: '/dca/{channel}/fader',
-            GRP_VU: 'none', //'/meters/1',
+            GRP_VU: 'none',
             GRP_NAME: '/dca/{channel}/config/name',
         },
         toMixer: {
@@ -233,6 +243,11 @@ export const MixerProtocolPresets = {
                 oscMessage: "/meters",
                 value: "/meters/1",
                 type: "s"
+            },
+            {
+                oscMessage: "/meters",
+                value: "/meters/5",
+                type: "s"
             }
         ],
         pingTime: 9500,
@@ -259,7 +274,7 @@ export const MixerProtocolPresets = {
             CHANNEL_VU: '/meters/1',
             CHANNEL_NAME: '/ch/{channel}/config/name',
             GRP_OUT_GAIN: '/dca/{channel}/mix/01/level',
-            GRP_VU: '/meters/1',
+            GRP_VU: 'none',
             GRP_NAME: '/dca/{channel}/config/name',
         },
         toMixer: {

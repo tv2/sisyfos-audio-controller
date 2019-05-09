@@ -1,4 +1,4 @@
-import { DEFAULTS } from '../../constants/DEFAULTS';
+import * as DEFAULTS from '../../constants/DEFAULTS';
 
 export const behringerMeter = (message) => {
     const store = window.storeRedux.getState();
