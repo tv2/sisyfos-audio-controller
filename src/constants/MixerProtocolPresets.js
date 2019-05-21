@@ -347,8 +347,8 @@ export const MixerProtocolPresets = {
         meter: {
             min: 0,
             max: 1,
-            zero: 0.75,
-            test: 0.6,
+            zero: 0.85,
+            test: 0.75,
         },
     },
 // ---------------------------------------------------------
