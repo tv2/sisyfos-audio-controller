@@ -27,11 +27,18 @@ yarn start
 ### Following preset name are possible:
 * reaper
   * OSC protocol for control Reaper (reaper.fm)
-* midasmaster
+* Ardour Master
+  * OSC protocol for Ardour (www.ardour.org)
+  * Port 3819
+  * The volume change in Ardour is on it´s channel faders.
+  * Todo:
+    * Group support
+    * Meter calibration
+* Midas Master
   * OSC protocol for Midas M32 and Behringer X32
   * Port 10023
   * The volume change on the Midas/X32 desk is on it´s channel faders.
-* midasclient
+* Midas Client
   * OSC protocol for Midas M32 and Behringer X32
   * Port 10023
   * Route ch 1-16 to bus 1-2 and in main turn off main stereo
@@ -39,14 +46,14 @@ yarn start
   * Link Bus 1-2 to stereo and in main turn on main stereo
   * Send to Bus 1-2 is then used for Fade In-Out
   * Be aware of post faders mix% issues.
-* behringerxrclient (same protocoltype as the midas M32)
+* Behringer xr client
   * OSC protocol for Behringer XR12-16-18
   * Port 10024
   * Route ch 1-16 to bus 1-2 and in main turn off main stereo
   * Set send to Bus 1-2 to Post Fader on all channels
   * Link Bus 1-2 to stereo and in main turn on main stereo
   * Send to Bus 1-2 is then used for Fade In-Out
-* behringerxrmaster
+* Behringer xr master
   * OSC protocol for Behringer XR12,16,18
   * Port 10024
   * In this version the Behringer is slave of Producers-Audio-mixer, so faders on the behringer is turned down when channel is of.
