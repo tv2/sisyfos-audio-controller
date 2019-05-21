@@ -19,6 +19,8 @@ export class OscMixerConnection {
 
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
+        this.cmdChannelIndex = this.mixerProtocol.fromMixer.CHANNEL_OUT_GAIN.split('/').findIndex(ch => ch==='{channel}');
+
         this.oscConnection = new osc.UDPPort({
             localAddress: this.store.settings[0].localOscIp,
             localPort: parseInt(this.store.settings[0].localOscPort),
@@ -45,7 +47,7 @@ export class OscMixerConnection {
         .on('message', (message) => {
             if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_FADER_LEVEL)){
-                let ch = message.address.split("/")[2];
+                let ch = message.address.split("/")[this.cmdChannelIndex];
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
                     channel: ch - 1,
@@ -59,7 +61,7 @@ export class OscMixerConnection {
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_OUT_GAIN)){
-                let ch = message.address.split("/")[2];
+                let ch = message.address.split("/")[this.cmdChannelIndex];
                 if (this.mixerProtocol.mode === 'master'
                     && !this.store.channels[0].channel[ch - 1].fadeActive
                     &&  message.args[0] > this.mixerProtocol.fader.min)
@@ -83,7 +85,7 @@ export class OscMixerConnection {
                 } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
                     midasMeter(message.args);
                 } else {
-                    let ch = message.address.split("/")[2];
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_VU_LEVEL',
                         channel: ch - 1,
@@ -92,7 +94,7 @@ export class OscMixerConnection {
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_NAME)) {
-                    let ch = message.address.split("/")[2];
+                                    let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_CHANNEL_LABEL',
                         channel: ch - 1,
@@ -101,7 +103,7 @@ export class OscMixerConnection {
                 console.log("OSC message: ", message.address);
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .GRP_OUT_GAIN)){
-                let ch = message.address.split("/")[2];
+                let ch = message.address.split("/")[this.cmdChannelIndex];
                 if (!this.store.channels[0].grpFader[ch - 1].fadeActive
                     &&  message.args[0] > this.mixerProtocol.fader.min)
                 {
@@ -124,7 +126,7 @@ export class OscMixerConnection {
                 } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
                     midasGrpMeter(message.args);
                 } else {
-                    let ch = message.address.split("/")[2];
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_GRP_VU_LEVEL',
                         channel: ch - 1,
@@ -133,7 +135,7 @@ export class OscMixerConnection {
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .GRP_NAME)) {
-                    let ch = message.address.split("/")[2];
+                                    let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_GRP_LABEL',
                         channel: ch - 1,
