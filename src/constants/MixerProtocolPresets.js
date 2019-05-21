@@ -312,30 +312,20 @@ export const MixerProtocolPresets = {
         ],
         pingTime: 9500,
         initializeCommands: [
-            {
-                oscMessage: '/ch/{channel}/mix/fader',
-                value: "",
-                type: ""
-            },
-            {
-                oscMessage: '/ch/{channel}/config/name',
-                value: "",
-                type: ""
-            }
         ],
         fromMixer: {
             CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
             CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
             CHANNEL_VU: '/strip/meter/{channel}',
-            CHANNEL_NAME: '/ch/{channel}/config/name',
-            GRP_OUT_GAIN: '/dca/{channel}/fader',
+            CHANNEL_NAME: '/strip/name/{channel}',
+            GRP_OUT_GAIN: 'todo',
             GRP_VU: 'none',
-            GRP_NAME: '/dca/{channel}/config/name',
+            GRP_NAME: 'todo',
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: 'none',
             CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
-            GRP_OUT_GAIN: '/dca/{channel}/fader',
+            GRP_OUT_GAIN: 'todo',
         },
         fader: {
             min: 0,
