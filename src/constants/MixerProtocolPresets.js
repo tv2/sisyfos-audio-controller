@@ -296,6 +296,61 @@ export const MixerProtocolPresets = {
             test: 0.6,
         },
     },
+    // ---------------------------------------------------------
+    ardourMaster: {
+        protocol: 'OSC',
+        label: 'Ardour DAW - Master Mode',
+        mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
+                        //client (use feedback from mixers fader level)
+        leadingZeros: true,
+        pingCommand: [
+            {
+                oscMessage: "/strip/list",
+                value: "",
+                type: ""
+            }
+        ],
+        pingTime: 9500,
+        initializeCommands: [
+            {
+                oscMessage: '/ch/{channel}/mix/fader',
+                value: "",
+                type: ""
+            },
+            {
+                oscMessage: '/ch/{channel}/config/name',
+                value: "",
+                type: ""
+            }
+        ],
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
+            CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
+            CHANNEL_VU: '/meters/1',
+            CHANNEL_NAME: '/ch/{channel}/config/name',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
+            GRP_VU: 'none',
+            GRP_NAME: '/dca/{channel}/config/name',
+        },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: 'none',
+            CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
+            GRP_OUT_GAIN: '/dca/{channel}/fader',
+        },
+        fader: {
+            min: 0,
+            max: 1,
+            zero: 0.75,
+            step: 0.01,
+            fadeTime: 40,
+        },
+        meter: {
+            min: 0,
+            max: 1,
+            zero: 0.75,
+            test: 0.6,
+        },
+    },
 // ---------------------------------------------------------
     genericMidi: {
         protocol: 'MIDI',
