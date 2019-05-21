@@ -177,15 +177,21 @@ export class OscMixerConnection {
         if (message === command) return true;
 
         let cmdArray = command.split("{channel}");
-        if (
-            message.substr(0, cmdArray[0].length) === cmdArray[0] &&
-            message.substr(-cmdArray[1].length) === cmdArray[1] &&
-            message.length >= command.replace("{channel}", "").length
-        ) {
-            return true;
-        } else {
-            return false;
+        if (message.substr(0, cmdArray[0].length) === cmdArray[0])
+        {
+            if (
+                message.substr(-cmdArray[1].length) === cmdArray[1] &&
+                message.length >= command.replace("{channel}", "").length
+            ) {
+                return true;
+            } else if (
+                cmdArray[1] = "" &&
+                message.length >= command.replace("{channel}", "").length
+            ) {
+                return true;
+            }
         }
+        return false;
     }
 
     sendOutMessage(oscMessage, channel, value, type) {
