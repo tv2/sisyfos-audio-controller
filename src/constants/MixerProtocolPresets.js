@@ -326,7 +326,7 @@ export const MixerProtocolPresets = {
         fromMixer: {
             CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
             CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
-            CHANNEL_VU: '/strip/meters/{channel}',
+            CHANNEL_VU: '/strip/meter/{channel}',
             CHANNEL_NAME: '/ch/{channel}/config/name',
             GRP_OUT_GAIN: '/dca/{channel}/fader',
             GRP_VU: 'none',
