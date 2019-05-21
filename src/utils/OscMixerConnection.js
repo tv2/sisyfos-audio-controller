@@ -185,7 +185,7 @@ export class OscMixerConnection {
             ) {
                 return true;
             } else if (
-                cmdArray[1] = "" &&
+                cmdArray[1] === "" &&
                 message.length >= command.replace("{channel}", "").length
             ) {
                 return true;
