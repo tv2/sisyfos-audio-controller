@@ -62,7 +62,7 @@ const defaultChannelsReducerState = (numberOfChannels: number) => {
     return defaultObj;
 };
 
-export const channels = ((state = defaultChannelsReducerState(1), action: any) => {
+export const channels = ((state = defaultChannelsReducerState(1), action: any): Array<Channels> => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
