@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { Store } from '../reducers/indexReducer';
 
 import '../assets/css/App.css';
 import Channels from './Channels';
@@ -11,10 +12,13 @@ import { MixerConnection } from '../utils/MixerConnection';
 import { AutomationConnection } from '../utils/AutomationConnection';
 
 
-class App extends Component {
+class App extends Component<any, any> {
     mixerConnection: any;
     automationConnection: any;
 
+    constructor(props: any) {
+        super(props)
+    }
 
     componentWillMount() {
         this.mixerConnection = new MixerConnection(this.props.store);
@@ -40,10 +44,11 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+
+const mapStateToProps = (state: any) => {
     return {
         store: state
     }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect<any, any>(mapStateToProps)(App) as any;
