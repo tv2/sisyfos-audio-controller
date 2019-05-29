@@ -10,6 +10,13 @@ import indexReducer from './reducers/indexReducer';
 //Utils:
 import { loadSettings } from './utils/SettingsStorage';
 
+declare global {
+    interface Window {
+        storeRedux: any
+    }
+}
+
+
 const storeRedux = createStore(
     indexReducer
 );
