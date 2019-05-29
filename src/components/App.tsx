@@ -12,6 +12,10 @@ import { AutomationConnection } from '../utils/AutomationConnection';
 
 
 class App extends Component {
+    mixerConnection: any;
+    automationConnection: any;
+
+
     componentWillMount() {
         this.mixerConnection = new MixerConnection(this.props.store);
         this.automationConnection = new AutomationConnection(this.props.store, this.mixerConnection);

@@ -8,7 +8,7 @@ import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 let FADE_INOUT_SPEED = 3;
 
 export class MixerConnection {
-    constructor(initialStore) {
+    constructor(initialStore: any) {
         this.updateOutLevels = this.updateOutLevels.bind(this);
         this.updateOutLevel = this.updateOutLevel.bind(this);
         this.fadeInOut = this.fadeInOut.bind(this);

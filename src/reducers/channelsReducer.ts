@@ -1,12 +1,30 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
 
-const defaultChannelsReducerState = (numberOfChannels) => {
-    let defaultObj = [{
-        channel: [],
-        vuMeters: [],
-        grpFader: [],
-        grpVuMeters: [],
-    }];
+export interface Channels {
+    channel: Array<Channel>,
+    vuMeters: Array<VuMeters>,
+    grpFader: Array<Channel>,
+    grpVuMeters: Array<VuMeters>,
+}
+
+interface Channel {
+    fadeActive: boolean,
+    faderLevel: number,
+    label: string,
+    outputLevel: number,
+    pgmOn: boolean,
+    pstOn: boolean,
+    showChannel: boolean,
+    snapOn: [],
+}
+
+interface VuMeters {
+    vuVal: number
+}
+
+const defaultChannelsReducerState = (numberOfChannels: number) => {
+    let defaultObj: Channels;
+
     for (let i=0; i < numberOfChannels; i++) {
         defaultObj[0].channel.push({
                 fadeActive: false,
