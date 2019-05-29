@@ -15,7 +15,7 @@ interface Channel {
     pgmOn: boolean,
     pstOn: boolean,
     showChannel: boolean,
-    snapOn: [],
+    snapOn: Array<boolean>,
 }
 
 interface VuMeters {
@@ -23,7 +23,7 @@ interface VuMeters {
 }
 
 const defaultChannelsReducerState = (numberOfChannels: number) => {
-    let defaultObj: Channels;
+    let defaultObj: Array<Channels> = [];
 
     for (let i=0; i < numberOfChannels; i++) {
         defaultObj[0].channel.push({
@@ -41,7 +41,7 @@ const defaultChannelsReducerState = (numberOfChannels: number) => {
         });
 
         for (let y=0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
-            defaultObj[0].channel[i].snapOn.push(0.0);
+            defaultObj[0].channel[i].snapOn.push(false);
         }
     }
     for (let i=0; i < DEFAULTS.NUMBER_OF_GROUP_FADERS; i++) {
@@ -53,6 +53,7 @@ const defaultChannelsReducerState = (numberOfChannels: number) => {
             pgmOn: false,
             pstOn: false,
             showChannel: true,
+            snapOn: [],
         });
         defaultObj[0].grpVuMeters.push({
             vuVal: 0.0
@@ -61,7 +62,7 @@ const defaultChannelsReducerState = (numberOfChannels: number) => {
     return defaultObj;
 };
 
-export const channels = ((state = defaultChannelsReducerState(1), action) => {
+export const channels = ((state = defaultChannelsReducerState(1), action: any) => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
@@ -73,12 +74,12 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
     switch(action.type) {
         case 'SET_COMPLETE_STATE': //allState  //numberOfChannels
             nextState = defaultChannelsReducerState(action.numberOfChannels);
-            action.allState.channel.map((channel, index) => {
+            action.allState.channel.map((channel: any, index: number) => {
                 if (index < action.numberOfChannels) {
                     nextState[0].channel[index] = channel;
                 }
             });
-            action.allState.grpFader.map((grpFader, index) => {
+            action.allState.grpFader.map((grpFader: Channel, index: number) => {
                 if (index < DEFAULTS.NUMBER_OF_GROUP_FADERS) {
                     nextState[0].grpFader[index] = grpFader;
                 }
