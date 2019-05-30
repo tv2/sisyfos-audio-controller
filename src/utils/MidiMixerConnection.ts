@@ -137,6 +137,23 @@ return true;
         );
     }
 
+    updatePflState(channelIndex: number) {
+
+        if (this.store.channels[0].channel[channelIndex].pflOn = true) {
+            this.sendOutMessage(
+                this.mixerProtocol.toMixer.PFL_ON,
+                channelIndex+1,
+                this.store.channels[0].channel[channelIndex].outputLevel
+            );
+        } else {
+            this.sendOutMessage(
+                this.mixerProtocol.toMixer.PFL_OFF,
+                channelIndex+1,
+                this.store.channels[0].channel[channelIndex].outputLevel
+            );
+        }
+    }
+
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
