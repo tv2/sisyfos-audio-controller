@@ -35,8 +35,16 @@ export const GenericMidi: IMixerProtocol = {
         CHANNEL_FADER_LEVEL: "39",
         CHANNEL_OUT_GAIN: "38",
         GRP_OUT_GAIN: 'none',
-        PFL_ON: 'todo',
-        PFL_OFF: 'todo'
+        PFL_ON: {
+            oscMessage: "/not_in_use",
+            value: 0,
+            type: "f"
+        },
+        PFL_OFF: {
+            oscMessage: "/not_in_use",
+            value: 0,
+            type: "f"
+        }
     },
     fader: {
         min: 0,

@@ -55,8 +55,16 @@ export const MidasClient: IMixerProtocol = {
         CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',
         CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
         GRP_OUT_GAIN: '/dca/{channel}/mix/01/level',
-        PFL_ON: 'todo',
-        PFL_OFF: 'todo'
+        PFL_ON: {
+            oscMessage: "/not_in_use",
+            value: 0,
+            type: "f"
+        },
+        PFL_OFF: {
+            oscMessage: "/not_in_use",
+            value: 0,
+            type: "f"
+        }
     },
     fader: {
         min: 0,

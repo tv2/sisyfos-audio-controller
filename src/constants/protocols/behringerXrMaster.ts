@@ -41,12 +41,20 @@ export const BehringerXrMaster: IMixerProtocol = {
         GRP_NAME: '/dca/{channel}/config/name',
         PFL: 'todo'
     },
-    toMixer: {
+    toMixer : {
         CHANNEL_FADER_LEVEL: 'none',
         CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
-        PFL_ON: 'todo',
-        PFL_OFF: 'todo'
+        PFL_ON: {
+            oscMessage: "/not_in_use",
+            value: 0,
+            type: "f"
+        },
+        PFL_OFF: {
+            oscMessage: "/not_in_use",
+            value: 0,
+            type: "f"
+        }
     },
     fader: {
         min: 0,
@@ -60,5 +68,5 @@ export const BehringerXrMaster: IMixerProtocol = {
         max: 1,
         zero: 0.75,
         test: 0.6,
-    },
+    }
 }

@@ -35,8 +35,16 @@ export const ArdourMaster: IMixerProtocol = {
         CHANNEL_FADER_LEVEL: 'none',
         CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
         GRP_OUT_GAIN: 'todo',
-        PFL_ON: 'todo',
-        PFL_OFF: 'todo'
+        PFL_ON: {
+            oscMessage: "/not_in_use",
+            value: 0,
+            type: "f"
+        },
+        PFL_OFF: {
+            oscMessage: "/not_in_use",
+            value: 0,
+            type: "f"
+        }
     },
     fader: {
         min: 0,

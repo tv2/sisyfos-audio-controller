@@ -141,15 +141,15 @@ return true;
 
         if (this.store.channels[0].channel[channelIndex].pflOn = true) {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_ON,
+                this.mixerProtocol.toMixer.PFL_ON.oscMessage,
                 channelIndex+1,
-                this.store.channels[0].channel[channelIndex].outputLevel
+                this.mixerProtocol.toMixer.PFL_ON.value
             );
         } else {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_OFF,
+                this.mixerProtocol.toMixer.PFL_OFF.oscMessage,
                 channelIndex+1,
-                this.store.channels[0].channel[channelIndex].outputLevel
+                this.mixerProtocol.toMixer.PFL_OFF.value
             );
         }
     }

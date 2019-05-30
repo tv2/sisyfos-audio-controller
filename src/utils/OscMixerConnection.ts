@@ -270,17 +270,17 @@ export class OscMixerConnection {
     updatePflState(channelIndex: number) {
         if (this.store.channels[0].channel[channelIndex].pflOn = true) {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_ON,
+                this.mixerProtocol.toMixer.PFL_ON.oscMessage,
                 channelIndex+1,
-                this.store.channels[0].channel[channelIndex].pflOn,
-                "f"
+                this.mixerProtocol.toMixer.PFL_ON.value,
+                this.mixerProtocol.toMixer.PFL_ON.type
             );
         } else {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_OFF,
+                this.mixerProtocol.toMixer.PFL_OFF.oscMessage,
                 channelIndex+1,
-                this.store.channels[0].channel[channelIndex].pflOn,
-                "f"
+                this.mixerProtocol.toMixer.PFL_OFF.value,
+                this.mixerProtocol.toMixer.PFL_OFF.type
             );
         }
     }

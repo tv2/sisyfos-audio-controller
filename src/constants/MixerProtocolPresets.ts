@@ -28,8 +28,8 @@ export interface IMixerProtocol {
         CHANNEL_FADER_LEVEL: string,
         CHANNEL_OUT_GAIN: string,
         GRP_OUT_GAIN: string,
-        PFL_ON: string,
-        PFL_OFF: string
+        PFL_ON: IMessageProtocol,
+        PFL_OFF: IMessageProtocol
     },
     fader: {
         min: number,
