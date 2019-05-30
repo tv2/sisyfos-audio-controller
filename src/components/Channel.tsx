@@ -23,6 +23,7 @@ class Channel extends PureComponent<any, any> {
 
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);
+        this.pflButton = this.pflButton.bind(this);
         this.snapButton = this.snapButton.bind(this);
     }
 
@@ -37,6 +38,13 @@ class Channel extends PureComponent<any, any> {
     handlePst() {
         this.props.dispatch({
             type:'TOGGLE_PST',
+            channel: this.channelIndex
+        });
+    }
+
+    handlePfl() {
+        this.props.dispatch({
+            type:'TOGGLE_PFL',
             channel: this.channelIndex
         });
     }
@@ -142,6 +150,28 @@ class Channel extends PureComponent<any, any> {
         )
     }
 
+
+    pflButton() {
+        return (
+            <button
+                className="channel-pfl-button"
+                style={
+                    Object.assign(
+                        this.props.pflOn
+                        ? {backgroundColor: "green"}
+                        : {backgroundColor: "rgb(59, 73, 59)"},
+                        this.props.showSnaps
+                        ?   {height: "40px"}
+                        :   {height: "90px"}
+                    )
+                }
+                onClick={event => {
+                    this.handlePfl();
+                }}
+            >PFL</button>
+        )
+    }
+
     snapButton(snapIndex: number) {
         if (this.props.showSnaps) {
             return (
@@ -177,6 +207,8 @@ class Channel extends PureComponent<any, any> {
                 <br/>
                 {this.pstButton()}
                 <br/>
+                {this.pflButton()}
+                <br/>
                 <div className="channel-name">
                     {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
                 </div>
@@ -199,6 +231,7 @@ const mapStateToProps = (state: any, props: any) => {
     return {
         pgmOn: state.channels[0].channel[props.channelIndex].pgmOn,
         pstOn: state.channels[0].channel[props.channelIndex].pstOn,
+        pflOn: state.channels[0].channel[props.channelIndex].pflOn,
         showChannel: state.channels[0].channel[props.channelIndex].showChannel,
         faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
         outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,

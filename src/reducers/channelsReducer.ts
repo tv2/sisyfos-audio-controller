@@ -14,6 +14,7 @@ interface IChannel {
     outputLevel: number,
     pgmOn: boolean,
     pstOn: boolean,
+    pflOn: boolean,
     showChannel: boolean,
     snapOn: Array<boolean>,
 }
@@ -39,6 +40,7 @@ const defaultChannelsReducerState = (numberOfChannels: number) => {
                 outputLevel: 0.0,
                 pgmOn: false,
                 pstOn: false,
+                pflOn: false,
                 showChannel: true,
                 snapOn: [],
         });
@@ -58,6 +60,7 @@ const defaultChannelsReducerState = (numberOfChannels: number) => {
             outputLevel: 0.0,
             pgmOn: false,
             pstOn: false,
+            pflOn: false,
             showChannel: true,
             snapOn: [],
         });
@@ -122,6 +125,12 @@ export const channels = ((state = defaultChannelsReducerState(1), action: any): 
             return nextState;
         case 'SET_PST': //channel
             nextState[0].channel[action.channel].pstOn = action.pstOn;
+            return nextState;
+        case 'TOGGLE_PFL': //channel
+            nextState[0].channel[action.channel].pflOn = !nextState[0].channel[action.channel].pflOn;
+            return nextState;
+        case 'SET_PFL': //channel
+            nextState[0].channel[action.channel].pflOn = action.pflOn;
             return nextState;
         case 'SHOW_CHANNEL': //channel // showChannel
             nextState[0].channel[action.channel].showChannel = action.showChannel;

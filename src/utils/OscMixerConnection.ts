@@ -140,7 +140,7 @@ export class OscMixerConnection {
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .GRP_NAME)) {
-                                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_GRP_LABEL',
                         channel: ch - 1,
