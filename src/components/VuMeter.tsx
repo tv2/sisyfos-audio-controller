@@ -104,4 +104,4 @@ const mapStateToProps = (state: any, props: any) => {
     }
 }
 
-export default connect<any, any>(mapStateToProps)(VuMeter);
+export default connect<any, any, any>(mapStateToProps)(VuMeter);

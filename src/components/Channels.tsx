@@ -136,4 +136,4 @@ const mapStateToProps = (state: any) => {
     }
 }
 
-export default connect<any, any>(mapStateToProps)(Channels);
+export default connect<any, any, any>(mapStateToProps)(Channels);
