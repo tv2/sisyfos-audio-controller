@@ -52,7 +52,7 @@
     color: white;
     height: 40px;
     width: 80px;
-    background-color: red;
+    background-color: rgb(17, 0, 255);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
 }

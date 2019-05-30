@@ -49,11 +49,13 @@ export const MidasClient: IMixerProtocol = {
         GRP_OUT_GAIN: '/dca/{channel}/mix/01/level',
         GRP_VU: 'none',
         GRP_NAME: '/dca/{channel}/config/name',
+        PFL: 'todo'
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',
         CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
         GRP_OUT_GAIN: '/dca/{channel}/mix/01/level',
+        PFL: 'todo'
     },
     fader: {
         min: 0,

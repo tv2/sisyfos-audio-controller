@@ -29,11 +29,13 @@ export const GenericMidi: IMixerProtocol = {
         GRP_OUT_GAIN: 'none',
         GRP_VU: 'none',
         GRP_NAME: 'none',
+        PFL: 'todo'
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: "39",
         CHANNEL_OUT_GAIN: "38",
         GRP_OUT_GAIN: 'none',
+        PFL: 'todo'
     },
     fader: {
         min: 0,

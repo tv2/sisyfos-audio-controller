@@ -29,11 +29,13 @@ export const ArdourMaster: IMixerProtocol = {
         GRP_OUT_GAIN: 'todo',
         GRP_VU: 'none',
         GRP_NAME: 'todo',
+        PFL: 'todo'
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: 'none',
         CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
         GRP_OUT_GAIN: 'todo',
+        PFL: 'todo'
     },
     fader: {
         min: 0,

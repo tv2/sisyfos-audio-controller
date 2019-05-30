@@ -58,6 +58,11 @@ export class MixerConnection {
         this.mixerConnection.updateOutLevel(channelIndex);
     }
 
+
+    updatePflState(channelIndex: number) {
+        this.mixerConnection.updatePflState(channelIndex);
+    }
+
     updateGrpOutLevel(channelIndex: number) {
         this.fadeGrpInOut(channelIndex);
         this.mixerConnection.updateGrpOutLevel(channelIndex);

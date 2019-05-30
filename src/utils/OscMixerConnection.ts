@@ -267,6 +267,15 @@ export class OscMixerConnection {
         );
     }
 
+    updatePflState(channelIndex: number) {
+        this.sendOutMessage(
+            this.mixerProtocol.toMixer.PFL,
+            channelIndex+1,
+            this.store.channels[0].channel[channelIndex].pflOn,
+            "f"
+        );
+    }
+
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,

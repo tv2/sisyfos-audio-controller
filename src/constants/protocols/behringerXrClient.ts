@@ -39,11 +39,13 @@ export const BehringerXrClient: IMixerProtocol = {
         GRP_VU: 'none',
         GRP_NAME: '/dca/{channel}/config/name',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
+        PFL: 'todo'
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: '/ch/{channel}/mix/fader',
         CHANNEL_OUT_GAIN: '/ch/{channel}/mix/01/level',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
+        PFL: 'todo'
     },
     fader: {
         min: 0,

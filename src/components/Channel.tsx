@@ -47,6 +47,7 @@ class Channel extends PureComponent<any, any> {
             type:'TOGGLE_PFL',
             channel: this.channelIndex
         });
+        this.mixerConnection.updatePflState(this.channelIndex);
     }
 
     handleLevel(event: any) {
@@ -158,8 +159,8 @@ class Channel extends PureComponent<any, any> {
                 style={
                     Object.assign(
                         this.props.pflOn
-                        ? {backgroundColor: "green"}
-                        : {backgroundColor: "rgb(59, 73, 59)"},
+                        ? {backgroundColor: "rgb(17, 0, 255)"}
+                        : {backgroundColor: "rgb(9, 0, 59)"},
                         this.props.showSnaps
                         ?   {height: "40px"}
                         :   {height: "90px"}

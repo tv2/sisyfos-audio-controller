@@ -29,11 +29,13 @@ export const Reaper: IMixerProtocol = {
         GRP_OUT_GAIN: '/dca/{channel}/fader',
         GRP_VU: 'none',
         GRP_NAME: '/dca/{channel}/config/name',
+        PFL: 'todo'
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
         CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
+        PFL: 'todo'
     },
     fader: {
         min: 0,
