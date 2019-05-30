@@ -3,13 +3,14 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
-import { AutomationPresets } from '../constants/AutomationPresets';
+import { IAutomationProtocol, AutomationPresets } from '../constants/AutomationPresets';
 
 const AUTOMATION_OSC_PORT = 5255;
 export class AutomationConnection {
     mixerConnection: any;
     store: any;
     oscConnection: any;
+    automationProtocol: IAutomationProtocol;
 
     constructor( mixerConnection: any) {
         this.mixerConnection = mixerConnection;

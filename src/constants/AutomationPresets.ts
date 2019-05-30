@@ -2,9 +2,62 @@
 //At first release these will be in seperate files
 //So it´s easy to add new equipment.
 
+export interface IAutomationProtocol {
+    protocol: string,
+    label: string,
+    mode: string,
+    leadingZeros: boolean,
+    initializeCommands: [
+        {
+            oscMessage: string,
+            value: string,
+            type: string
+        }
+    ],
+    fromAutomation: {
+        CHANNEL_PGM_ON_OFF: string,
+        CHANNEL_PST_ON_OFF: string,
+        CHANNEL_FADER_LEVEL: string,
+        CHANNEL_VISIBLE: string,
+        GRP_FADER_PGM_ON_OFF: string,
+        GRP_FADER_PST_ON_OFF: string,
+        GRP_FADER_LEVEL: string,
+        GRP_FADER_VISIBLE: string,
+        X_MIX: string,
+        FADE_TO_BLACK: string,
+        SNAP_RECALL: string,
+        STATE_CHANNEL_PGM: string,
+        STATE_CHANNEL_PST: string,
+        STATE_CHANNEL_FADER_LEVEL: string,
+        STATE_GRP_FADER_PGM: string,
+        STATE_GRP_FADER_PST: string,
+        STATE_GRP_FADER_LEVEL: string,
+    },
+    toAutomation: {
+        STATE_CHANNEL_PGM: string,
+        STATE_CHANNEL_PST: string,
+        STATE_CHANNEL_FADER_LEVEL: string,
+        STATE_GRP_FADER_PGM: string,
+        STATE_GRP_FADER_PST: string,
+        STATE_GRP_FADER_LEVEL: string,
+    },
+    fader: {
+        min: number,
+        max: number,
+        zero: number,
+        step: number,
+        fadeTime: number,
+    },
+    meter: {
+        min: number,
+        max: number,
+        zero: number,
+        test: number,
+    },
+}
 
 
-export const AutomationPresets = {
+export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
 
     sofie: {
         protocol: 'OSC',
@@ -14,7 +67,7 @@ export const AutomationPresets = {
         initializeCommands: [
             {
                 oscMessage: "/info",
-                value: 0,
+                value: "",
                 type: "f"
             }
         ],
