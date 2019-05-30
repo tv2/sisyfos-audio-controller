@@ -15,7 +15,7 @@ module.exports = {
             include: defaultInclude
         },
         {
-            test: /\.jsx?$/,
+            test: /\.(tsx?|ts)$/,
             use: [{ loader: 'babel-loader' }],
             include: defaultInclude
         },
@@ -28,11 +28,6 @@ module.exports = {
             test: /\.(eot|svg|ttf|woff|woff2)$/,
             use: [{ loader: 'file-loader?name=font/[name]__[hash:base64:5].[ext]' }],
             include: defaultInclude
-        },
-        {
-            test: /\.tsx?$/,
-            use: 'ts-loader',
-            exclude: /node_modules/
         }
         ]
     },
