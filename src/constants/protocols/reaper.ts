@@ -35,7 +35,8 @@ export const Reaper: IMixerProtocol = {
         CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
         CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
-        PFL: 'todo'
+        PFL_ON: 'todo',
+        PFL_OFF: 'todo'
     },
     fader: {
         min: 0,

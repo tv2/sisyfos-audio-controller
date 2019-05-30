@@ -22,13 +22,14 @@ export interface IMixerProtocol {
         GRP_OUT_GAIN: string,
         GRP_VU: string,
         GRP_NAME: string,
-        PFL: string,
+        PFL: string
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: string,
         CHANNEL_OUT_GAIN: string,
         GRP_OUT_GAIN: string,
-        PFL: string,
+        PFL_ON: string,
+        PFL_OFF: string
     },
     fader: {
         min: number,
