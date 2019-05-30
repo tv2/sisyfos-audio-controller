@@ -41,7 +41,7 @@ export interface IMixerProtocol {
 
 interface IMessageProtocol {
     oscMessage: string,
-    value: string,
+    value: any,
     type: string
 }
 
@@ -55,7 +55,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         pingCommand: [
             {
                 oscMessage: "/note_in_use",
-                value: "0",
+                value: 0,
                 type: "f"
             }
         ],
@@ -63,7 +63,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         initializeCommands: [
             {
                 oscMessage: "/note_in_use",
-                value: "0",
+                value: 0,
                 type: "f"
             }
         ],
@@ -105,7 +105,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         pingCommand: [
             {
                 oscMessage: "/xremote",
-                value: "",
+                value: 0,
                 type: "f"
             },
             {
@@ -123,7 +123,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         initializeCommands: [
             {
                 oscMessage: "/info",
-                value: "",
+                value: 0,
                 type: "f"
             }
         ],
@@ -165,7 +165,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         pingCommand: [
             {
                 oscMessage: "/xremote",
-                value: "",
+                value: 0,
                 type: "f"
             },
             {
@@ -183,7 +183,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         initializeCommands: [
             {
                 oscMessage: "/info",
-                value: "",
+                value: 0,
                 type: "f"
             }
         ],
@@ -225,7 +225,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         pingCommand: [
             {
                 oscMessage: "/xremote",
-                value: "",
+                value: 0,
                 type: "f"
             },
             {
@@ -239,12 +239,12 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
             {
                 oscMessage: '/ch/{channel}/mix/fader',
                 value: "",
-                type: ""
+                type: "s"
             },
             {
                 oscMessage: '/ch/{channel}/config/name',
                 value: "",
-                type: ""
+                type: "s"
             }
         ],
         fromMixer: {
@@ -285,7 +285,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         pingCommand: [
             {
                 oscMessage: "/xremote",
-                value: "",
+                value: 0,
                 type: "f"
             },
             {
@@ -304,17 +304,17 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
             {
                 oscMessage: '/ch/{channel}/mix/fader',
                 value: "",
-                type: ""
+                type: "s"
             },
             {
                 oscMessage: '/ch/{channel}/mix/01/level',
                 value: "",
-                type: ""
+                type: "s"
             },
             {
                 oscMessage: '/ch/{channel}/config/name',
                 value: "",
-                type: ""
+                type: "s"
             }
         ],
         fromMixer: {
@@ -355,16 +355,16 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         pingCommand: [
             {
                 oscMessage: "/strip/list",
-                value: "",
-                type: ""
+                value: 0,
+                type: "f"
             }
         ],
         pingTime: 9500,
         initializeCommands: [
             {
                 oscMessage: "/strip/list",
-                value: "",
-                type: ""
+                value: 0,
+                type: "f"
             }
         ],
         fromMixer: {
@@ -405,7 +405,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         pingCommand: [
             {
                 oscMessage: "/note_in_use",
-                value: "0",
+                value: 0,
                 type: "f"
             }
         ],
@@ -413,7 +413,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
         initializeCommands: [
             {
                 oscMessage: "/note_in_use",
-                value: "0",
+                value: 0,
                 type: "f"
             }
         ],
