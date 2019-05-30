@@ -1,13 +1,19 @@
 import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
-
 import VuMeter from './VuMeter';
+
 //assets:
 import '../assets/css/Channel.css';
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { any } from 'prop-types';
 
-class Channel extends PureComponent {
-    constructor(props) {
+
+class Channel extends PureComponent<any, any> {
+    mixerProtocol: IMixerProtocol;
+    channelIndex: number;
+    mixerConnection: any;
+
+    constructor(props: any) {
         super(props);
         this.channelIndex = this.props.channelIndex;
         this.mixerConnection = this.props.mixerConnection;
@@ -17,6 +23,7 @@ class Channel extends PureComponent {
 
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);
+        this.pflButton = this.pflButton.bind(this);
         this.snapButton = this.snapButton.bind(this);
     }
 
@@ -35,7 +42,15 @@ class Channel extends PureComponent {
         });
     }
 
-    handleLevel(event) {
+    handlePfl() {
+        this.props.dispatch({
+            type:'TOGGLE_PFL',
+            channel: this.channelIndex
+        });
+        this.mixerConnection.updatePflState(this.channelIndex);
+    }
+
+    handleLevel(event: any) {
         this.props.dispatch({
             type:'SET_FADER_LEVEL',
             channel: this.channelIndex,
@@ -45,7 +60,7 @@ class Channel extends PureComponent {
     }
 
 
-    handleSnap(snapIndex) {
+    handleSnap(snapIndex: number) {
         this.props.dispatch({
             type:'SET_SNAP',
             channel: this.channelIndex,
@@ -107,7 +122,7 @@ class Channel extends PureComponent {
                     )
                 }
                 onClick={event => {
-                    this.handlePgm(event);
+                    this.handlePgm();
                 }}
             >
                 {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
@@ -130,13 +145,35 @@ class Channel extends PureComponent {
                     )
                 }
                 onClick={event => {
-                    this.handlePst(event);
+                    this.handlePst();
                 }}
             >PST</button>
         )
     }
 
-    snapButton(snapIndex) {
+
+    pflButton() {
+        return (
+            <button
+                className="channel-pfl-button"
+                style={
+                    Object.assign(
+                        this.props.pflOn
+                        ? {backgroundColor: "rgb(17, 0, 255)"}
+                        : {backgroundColor: "rgb(9, 0, 59)"},
+                        this.props.showSnaps
+                        ?   {height: "40px"}
+                        :   {height: "90px"}
+                    )
+                }
+                onClick={event => {
+                    this.handlePfl();
+                }}
+            >PFL</button>
+        )
+    }
+
+    snapButton(snapIndex: number) {
         if (this.props.showSnaps) {
             return (
                 <div key={snapIndex} className="channel-snap-line">
@@ -171,15 +208,17 @@ class Channel extends PureComponent {
                 <br/>
                 {this.pstButton()}
                 <br/>
+                {this.pflButton()}
+                <br/>
                 <div className="channel-name">
                     {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
                 </div>
                 <div className="channel-gain-label">
-                    GAIN: {parseInt(this.props.outputLevel*100)/100}
+                    GAIN: {parseInt(this.props.outputLevel)*100/100}
                 </div>
                 <div className="channel-snap-body">
                     {this.props.snapOn
-                        .map((none, index) => {
+                        .map((none: any, index: number) => {
                             return this.snapButton(index)
                         })
                     }
@@ -189,18 +228,19 @@ class Channel extends PureComponent {
     }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state: any, props: any) => {
     return {
         pgmOn: state.channels[0].channel[props.channelIndex].pgmOn,
         pstOn: state.channels[0].channel[props.channelIndex].pstOn,
+        pflOn: state.channels[0].channel[props.channelIndex].pflOn,
         showChannel: state.channels[0].channel[props.channelIndex].showChannel,
         faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
         outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
         label: state.channels[0].channel[props.channelIndex].label,
-        snapOn: state.channels[0].channel[props.channelIndex].snapOn.map((item) => {return item}),
+        snapOn: state.channels[0].channel[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,
         showSnaps: state.settings[0].showSnaps
     }
 }
 
-export default connect(mapStateToProps)(Channel);
+export default connect<any, any>(mapStateToProps)(Channel) as any;

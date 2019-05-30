@@ -1,6 +1,6 @@
 import * as DEFAULTS from '../../constants/DEFAULTS';
 
-export const midasMeter = (message) => {
+export const midasMeter = (message: any) => {
     const store = window.storeRedux.getState();
 
     const headerData = 4;
@@ -21,7 +21,7 @@ export const midasMeter = (message) => {
 };
 
 
-export const midasGrpMeter = (message) => {
+export const midasGrpMeter = (message: any) => {
     const store = window.storeRedux.getState();
 
     const headerData = 4;

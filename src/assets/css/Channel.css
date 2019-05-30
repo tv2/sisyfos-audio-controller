@@ -44,6 +44,19 @@
     border-color: rgb(99, 99, 99);
 }
 
+.channel-pfl-button {
+    outline : none;
+    -moz-outline : none;
+    margin-left: 10px;
+    margin-top: 5px;
+    color: white;
+    height: 40px;
+    width: 80px;
+    background-color: rgb(17, 0, 255);
+    border-radius: 7px;
+    border-color: rgb(99, 99, 99);
+}
+
 .channel-snap-body {
     margin-top: 10px;
 }

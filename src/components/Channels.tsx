@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 import Channel from './Channel';
 import GrpFader from './GrpFader';
 import '../assets/css/Channels.css';
+import { any } from 'prop-types';
 
-class Channels extends PureComponent {
-    constructor(props) {
+class Channels extends PureComponent<any, any> {
+    constructor(props: any) {
         super(props);
         this.state = {
             showSnap: false
@@ -31,7 +32,7 @@ class Channels extends PureComponent {
         this.props.mixerConnection.updateOutLevels();
     }
 
-    handleSnapMix(snapIndex) {
+    handleSnapMix(snapIndex: number) {
         this.props.dispatch({
             type:'SNAP_RECALL',
             snapIndex: snapIndex
@@ -52,7 +53,7 @@ class Channels extends PureComponent {
         });
     }
 
-    snapMixButton(snapIndex) {
+    snapMixButton(snapIndex: number) {
         return (
             <div key={snapIndex} className="channels-snap-mix-line">
                 <button
@@ -69,7 +70,7 @@ class Channels extends PureComponent {
     render() {
         return (
         <div className="channels-body">
-            {this.props.store.channels[0].channel.map((none, index) => {
+            {this.props.store.channels[0].channel.map((none: any, index: number) => {
                 return <Channel
                             channelIndex = {index}
                             key={index}
@@ -77,7 +78,7 @@ class Channels extends PureComponent {
                         />
                 })
             }
-            {this.props.store.channels[0].grpFader.map((none, index) => {
+            {this.props.store.channels[0].grpFader.map((none: any, index: number) => {
                 return <GrpFader
                             faderIndex = {index}
                             key={index}
@@ -129,10 +130,10 @@ class Channels extends PureComponent {
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
         store: state
     }
 }
 
-export default connect(mapStateToProps)(Channels);
+export default connect<any, any, any>(mapStateToProps)(Channels);

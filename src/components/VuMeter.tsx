@@ -4,10 +4,14 @@ import { connect } from "react-redux";
 //assets:
 import '../assets/css/VuMeter.css';
 //Utils:
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { any } from 'prop-types';
 
-class VuMeter extends PureComponent {
-    constructor(props) {
+class VuMeter extends PureComponent<any, any> {
+    channelIndex: number;
+    mixerProtocol: IMixerProtocol;
+
+    constructor(props: any) {
         super(props);
         this.channelIndex = this.props.channelIndex;
 
@@ -92,7 +96,7 @@ class VuMeter extends PureComponent {
     }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state: any, props: any) => {
     return {
         vuVal: state.channels[0].vuMeters[props.channelIndex].vuVal,
         mixerProtocol: state.settings[0].mixerProtocol,
@@ -100,4 +104,4 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-export default connect(mapStateToProps)(VuMeter);
+export default connect<any, any, any>(mapStateToProps)(VuMeter);

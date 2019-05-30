@@ -4,10 +4,15 @@ import { connect } from "react-redux";
 import GrpVuMeter from './GrpVuMeter';
 //assets:
 import '../assets/css/GrpFader.css';
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { any } from 'prop-types';
 
-class GrpFader extends PureComponent {
-    constructor(props) {
+class GrpFader extends PureComponent<any, any> {
+    mixerProtocol: IMixerProtocol;
+    faderIndex: number;
+    mixerConnection: any;
+
+    constructor(props: any) {
         super(props);
         this.faderIndex = this.props.faderIndex;
         this.mixerConnection = this.props.mixerConnection;
@@ -35,7 +40,7 @@ class GrpFader extends PureComponent {
         });
     }
 
-    handleLevel(event) {
+    handleLevel(event: any) {
         this.props.dispatch({
             type:'SET_GRP_FADER_LEVEL',
             channel: this.faderIndex,
@@ -98,7 +103,7 @@ class GrpFader extends PureComponent {
                     )
                 }
                 onClick={event => {
-                    this.handlePgm(event);
+                    this.handlePgm();
                 }}
             >
                 {this.props.label != "" ? this.props.label : ("GRP " + (this.faderIndex + 1)) }
@@ -121,7 +126,7 @@ class GrpFader extends PureComponent {
                     )
                 }
                 onClick={event => {
-                    this.handlePst(event);
+                    this.handlePst();
                 }}
             >PST</button>
         )
@@ -144,14 +149,14 @@ class GrpFader extends PureComponent {
                     {this.props.label != "" ? this.props.label : ("GRP " + (this.faderIndex + 1)) }
                 </div>
                 <div className="grpFader-gain-label">
-                    GAIN: {parseInt(this.props.faderLevel*100)/100}
+                    GAIN: {parseInt(this.props.faderLevel)*100/100}
                 </div>
             </div>
         )
     }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state: any, props: any) => {
     return {
         pgmOn: state.channels[0].grpFader[props.faderIndex].pgmOn,
         pstOn: state.channels[0].grpFader[props.faderIndex].pstOn,
@@ -163,4 +168,4 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-export default connect(mapStateToProps)(GrpFader);
+export default connect<any, any>(mapStateToProps)(GrpFader) as any;

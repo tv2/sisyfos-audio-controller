@@ -1,7 +1,21 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
-const defaultSettingsReducerState = [
+export interface ISettings {
+    showSnaps: boolean,
+    showSettings: boolean,
+    mixerProtocol: string,
+    localOscIp: string,
+    localOscPort: number,
+    machineOscIp: string,
+    machineOscPort: number,
+    numberOfChannels: number,
+    numberOfSnaps: number,
+    fadeTime: number
+}
+
+
+const defaultSettingsReducerState: Array<ISettings> = [
     {
         showSnaps: false,
         showSettings: false,
@@ -16,8 +30,8 @@ const defaultSettingsReducerState = [
     },
 ];
 
-export const settings = (state = defaultSettingsReducerState, action) => {
-    let {...nextState} = state;
+export const settings = (state = defaultSettingsReducerState, action: any): Array<ISettings> => {
+    let nextState = [...state];
 
     switch (action.type) {
         case 'TOGGLE_SHOW_SETTINGS':
