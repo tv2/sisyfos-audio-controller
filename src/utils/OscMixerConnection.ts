@@ -268,7 +268,7 @@ export class OscMixerConnection {
     }
 
     updatePflState(channelIndex: number) {
-        if (this.store.channels[0].channel[channelIndex].pflOn = true) {
+        if (this.store.channels[0].channel[channelIndex].pflOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.toMixer.PFL_ON.oscMessage,
                 channelIndex+1,
