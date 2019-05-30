@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Store } from '../reducers/indexReducer';
+import { IStore } from '../reducers/indexReducer';
 
 import '../assets/css/App.css';
 import Channels from './Channels';

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import { Channels, channels} from './channelsReducer';
-import { Settings, settings } from './settingsReducer';
+import { IChannels, channels} from './channelsReducer';
+import { ISettings, settings } from './settingsReducer';
 
-export interface Store {
-    settings: Array<Settings>,
-    channels: Array<Channels>
+export interface IStore {
+    settings: Array<ISettings>,
+    channels: Array<IChannels>
 };
 
 const indexReducer = combineReducers({

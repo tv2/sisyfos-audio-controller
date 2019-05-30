@@ -2,14 +2,14 @@
 //At first release these will be in seperate files
 //So it´s easy to add new equipment.
 
-export interface MixerProtocol {
+export interface IMixerProtocol {
     protocol: string,
     label: string,
     mode: string,
     leadingZeros: boolean,
-    pingCommand: Array<MessageProtocol>,
+    pingCommand: Array<IMessageProtocol>,
     pingTime: number,
-    initializeCommands: Array<MessageProtocol>,
+    initializeCommands: Array<IMessageProtocol>,
     fromMixer: {
         CHANNEL_FADER_LEVEL: string,
         CHANNEL_OUT_GAIN: string,
@@ -39,13 +39,13 @@ export interface MixerProtocol {
     }
 }
 
-interface MessageProtocol {
+interface IMessageProtocol {
     oscMessage: string,
     value: string,
     type: string
 }
 
-export const MixerProtocolPresets: { [key: string]: MixerProtocol } = {
+export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
     reaper: {
         protocol: 'OSC',
         label: 'Reaper DAW (reaper.fm)',

@@ -1,15 +1,20 @@
 import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 
-import VuMeter from './VuMeter';
+import GrpVuMeter from './GrpVuMeter';
 //assets:
-import '../assets/css/Channel.css';
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import '../assets/css/GrpFader.css';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { any } from 'prop-types';
 
-class Channel extends PureComponent {
-    constructor(props) {
+class GrpFader extends PureComponent<any, any> {
+    mixerProtocol: IMixerProtocol;
+    faderIndex: number;
+    mixerConnection: any;
+
+    constructor(props: any) {
         super(props);
-        this.channelIndex = this.props.channelIndex;
+        this.faderIndex = this.props.faderIndex;
         this.mixerConnection = this.props.mixerConnection;
         this.state = {
         };
@@ -17,45 +22,36 @@ class Channel extends PureComponent {
 
         this.pgmButton = this.pgmButton.bind(this);
         this.pstButton = this.pstButton.bind(this);
-        this.snapButton = this.snapButton.bind(this);
+
     }
 
     handlePgm() {
         this.props.dispatch({
-            type:'TOGGLE_PGM',
-            channel: this.channelIndex
+            type:'TOGGLE_GRP_PGM',
+            channel: this.faderIndex
         });
-        this.mixerConnection.updateOutLevel(this.channelIndex);
+        this.mixerConnection.updateGrpOutLevel(this.faderIndex);
     }
 
     handlePst() {
         this.props.dispatch({
-            type:'TOGGLE_PST',
-            channel: this.channelIndex
+            type:'TOGGLE_GRP_PST',
+            channel: this.faderIndex
         });
     }
 
-    handleLevel(event) {
+    handleLevel(event: any) {
         this.props.dispatch({
-            type:'SET_FADER_LEVEL',
-            channel: this.channelIndex,
+            type:'SET_GRP_FADER_LEVEL',
+            channel: this.faderIndex,
             level: event.target.value
         });
-        this.mixerConnection.updateOutLevel(this.channelIndex);
-    }
-
-
-    handleSnap(snapIndex) {
-        this.props.dispatch({
-            type:'SET_SNAP',
-            channel: this.channelIndex,
-            snapIndex: snapIndex
-        });
+        this.mixerConnection.updateGrpOutLevel(this.faderIndex);
     }
 
     fader() {
         return (
-            <input className="channel-volume-slider"
+            <input className="grpFader-volume-slider"
                 style= {
                     Object.assign(
                         this.props.showSnaps
@@ -89,7 +85,7 @@ class Channel extends PureComponent {
         return (
 
             <button
-                className="channel-pgm-button"
+                className="grpFader-pgm-button"
                 style={
                     Object.assign(
                         this.props.pgmOn
@@ -107,10 +103,10 @@ class Channel extends PureComponent {
                     )
                 }
                 onClick={event => {
-                    this.handlePgm(event);
+                    this.handlePgm();
                 }}
             >
-                {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+                {this.props.label != "" ? this.props.label : ("GRP " + (this.faderIndex + 1)) }
             </button>
         )
     }
@@ -118,7 +114,7 @@ class Channel extends PureComponent {
     pstButton() {
         return (
             <button
-                className="channel-pst-button"
+                className="grpFader-pst-button"
                 style={
                     Object.assign(
                         this.props.pstOn
@@ -130,32 +126,10 @@ class Channel extends PureComponent {
                     )
                 }
                 onClick={event => {
-                    this.handlePst(event);
+                    this.handlePst();
                 }}
             >PST</button>
         )
-    }
-
-    snapButton(snapIndex) {
-        if (this.props.showSnaps) {
-            return (
-                <div key={snapIndex} className="channel-snap-line">
-                    <button
-                        className="channel-snap-button"
-                        style={this.props.snapOn[snapIndex]
-                            ? {backgroundColor: "rgb(183, 182, 20)"}
-                            : {backgroundColor: "rgb(89, 83, 10)"}
-                        }
-                        onClick={event => {
-                            this.handleSnap(snapIndex);
-                        }}
-                    >{snapIndex + 1 }</button>
-                    <br/>
-                </div>
-            )
-        } else {
-            return("")
-        }
     }
 
     render() {
@@ -163,44 +137,35 @@ class Channel extends PureComponent {
         this.props.showChannel === false ?
             <div></div>
             :
-            <div className="channel-body">
+            <div className="grpFader-body">
                 {this.fader()}
-                <VuMeter channelIndex = {this.channelIndex}/>
+                { this.mixerProtocol.fromMixer.GRP_VU != 'none' ? <GrpVuMeter faderIndex = {this.faderIndex}/> : ''}
                 <br/>
                 {this.pgmButton()}
                 <br/>
                 {this.pstButton()}
                 <br/>
-                <div className="channel-name">
-                    {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+                <div className="grpFader-name">
+                    {this.props.label != "" ? this.props.label : ("GRP " + (this.faderIndex + 1)) }
                 </div>
-                <div className="channel-gain-label">
-                    GAIN: {parseInt(this.props.outputLevel*100)/100}
-                </div>
-                <div className="channel-snap-body">
-                    {this.props.snapOn
-                        .map((none, index) => {
-                            return this.snapButton(index)
-                        })
-                    }
+                <div className="grpFader-gain-label">
+                    GAIN: {parseInt(this.props.faderLevel)*100/100}
                 </div>
             </div>
         )
     }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state: any, props: any) => {
     return {
-        pgmOn: state.channels[0].channel[props.channelIndex].pgmOn,
-        pstOn: state.channels[0].channel[props.channelIndex].pstOn,
-        showChannel: state.channels[0].channel[props.channelIndex].showChannel,
-        faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
-        outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
-        label: state.channels[0].channel[props.channelIndex].label,
-        snapOn: state.channels[0].channel[props.channelIndex].snapOn.map((item) => {return item}),
+        pgmOn: state.channels[0].grpFader[props.faderIndex].pgmOn,
+        pstOn: state.channels[0].grpFader[props.faderIndex].pstOn,
+        showChannel: state.channels[0].grpFader[props.faderIndex].showChannel,
+        faderLevel: state.channels[0].grpFader[props.faderIndex].faderLevel,
+        label: state.channels[0].grpFader[props.faderIndex].label,
         mixerProtocol: state.settings[0].mixerProtocol,
         showSnaps: state.settings[0].showSnaps
     }
 }
 
-export default connect(mapStateToProps)(Channel);
+export default connect<any, any>(mapStateToProps)(GrpFader) as any;

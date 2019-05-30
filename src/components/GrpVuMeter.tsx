@@ -4,10 +4,14 @@ import { connect } from "react-redux";
 //assets:
 import '../assets/css/VuMeter.css';
 //Utils:
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { any } from 'prop-types';
 
-class GrpVuMeter extends PureComponent {
-    constructor(props) {
+class GrpVuMeter extends PureComponent<any, any> {
+    faderIndex: number;
+    mixerProtocol: IMixerProtocol;
+
+    constructor(props: any) {
         super(props);
         this.faderIndex = this.props.faderIndex;
 
@@ -92,7 +96,7 @@ class GrpVuMeter extends PureComponent {
     }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state: any, props: any) => {
     return {
         vuVal: state.channels[0].grpVuMeters[props.faderIndex].vuVal,
         mixerProtocol: state.settings[0].mixerProtocol,
@@ -100,4 +104,4 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-export default connect(mapStateToProps)(GrpVuMeter);
+export default connect<any, any>(mapStateToProps)(GrpVuMeter) as any;

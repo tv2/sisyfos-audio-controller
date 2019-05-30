@@ -3,13 +3,13 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
-import { MixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { behringerMeter, behringerGrpMeter } from './productSpecific/behringer';
 import { midasMeter, midasGrpMeter } from './productSpecific/midas';
 
 export class OscMixerConnection {
     store: any;
-    mixerProtocol: MixerProtocol;
+    mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
     oscConnection: any;
 

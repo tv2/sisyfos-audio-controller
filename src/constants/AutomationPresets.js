@@ -2,6 +2,8 @@
 //At first release these will be in seperate files
 //So it´s easy to add new equipment.
 
+
+
 export const AutomationPresets = {
 
     sofie: {

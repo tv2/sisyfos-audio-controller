@@ -1,5 +1,5 @@
 //Utils:
-import { MixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 
@@ -9,7 +9,7 @@ let FADE_INOUT_SPEED = 3;
 
 export class MixerConnection {
     store: any;
-    mixerProtocol: MixerProtocol;
+    mixerProtocol: IMixerProtocol;
     mixerConnection: any;
     timer: any;
     grpTimer: any;

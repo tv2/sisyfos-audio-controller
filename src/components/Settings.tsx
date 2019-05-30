@@ -6,10 +6,14 @@ import Select from 'react-select';
 import { saveSettings } from '../utils/SettingsStorage';
 import '../assets/css/Settings.css';
 import { MixerProtocolPresets, MixerProtocolList } from '../constants/MixerProtocolPresets';
+import { any } from 'prop-types';
 
 
-class Channels extends PureComponent {
-    constructor(props) {
+class Channels extends PureComponent<any, any> {
+    templateOptions: any;
+    mixerProtocolPresets: any;
+
+    constructor(props: any) {
         super(props);
         this.templateOptions = MixerProtocolList;
         this.mixerProtocolPresets = MixerProtocolPresets;
@@ -40,7 +44,7 @@ class Channels extends PureComponent {
         );
     }
 
-    handleShowChannel(index, event) {
+    handleShowChannel(index: number, event: any) {
         this.props.dispatch({
             type:'SHOW_CHANNEL',
             channel: index,
@@ -49,7 +53,7 @@ class Channels extends PureComponent {
     }
 
     handleShowAllChannels() {
-        this.props.store.channels[0].channel.map((channel, index) => {
+        this.props.store.channels[0].channel.map((channel: any, index: number) => {
             this.props.dispatch({
                 type:'SHOW_CHANNEL',
                 channel: index,
@@ -60,7 +64,7 @@ class Channels extends PureComponent {
 
 
     handleHideAllChannels() {
-        this.props.store.channels[0].channel.map((channel, index) => {
+        this.props.store.channels[0].channel.map((channel: any, index: number) => {
             this.props.dispatch({
                 type:'SHOW_CHANNEL',
                 channel: index,
@@ -70,7 +74,7 @@ class Channels extends PureComponent {
     }
 
 
-    handleShowGrpFader(index, event) {
+    handleShowGrpFader(index: number, event: any) {
         this.props.dispatch({
             type:'SHOW_GRP_FADER',
             channel: index,
@@ -79,7 +83,7 @@ class Channels extends PureComponent {
     }
 
     handleShowAllGrpFaders() {
-        this.props.store.channels[0].grpFader.map((channel, index) => {
+        this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
             this.props.dispatch({
                 type:'SHOW_GRP_FADER',
                 channel: index,
@@ -90,7 +94,7 @@ class Channels extends PureComponent {
 
 
     handleHideAllGrpFaders() {
-        this.props.store.channels[0].grpFader.map((channel, index) => {
+        this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
             this.props.dispatch({
                 type:'SHOW_GRP_FADER',
                 channel: index,
@@ -124,7 +128,7 @@ class Channels extends PureComponent {
                         }}
                     value="NO CHANNELS"
                 />
-                {this.props.store.channels[0].channel.map((channel, index) => {
+                {this.props.store.channels[0].channel.map((channel: any, index: number) => {
                         return <div key={index}>
                             {channel.label != "" ? channel.label : ("CH " + (index + 1)) }
                             <input
@@ -157,7 +161,7 @@ class Channels extends PureComponent {
                         }}
                     value="NO GROUPS"
                 />
-                {this.props.store.channels[0].grpFader.map((channel, index) => {
+                {this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
                         return <div key={index}>
                             {channel.label != "" ? channel.label : ("GRP " + (index + 1)) }
                             <input
@@ -232,10 +236,10 @@ class Channels extends PureComponent {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
         store: state
     }
 }
 
-export default connect(mapStateToProps)(Channels);
+export default connect<any, any>(mapStateToProps)(Channels) as any;

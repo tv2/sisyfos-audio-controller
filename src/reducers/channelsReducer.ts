@@ -1,13 +1,13 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
 
-export interface Channels {
-    channel: Array<Channel>,
-    vuMeters: Array<VuMeters>,
-    grpFader: Array<Channel>,
-    grpVuMeters: Array<VuMeters>,
+export interface IChannels {
+    channel: Array<IChannel>,
+    vuMeters: Array<IVuMeters>,
+    grpFader: Array<IChannel>,
+    grpVuMeters: Array<IVuMeters>,
 }
 
-interface Channel {
+interface IChannel {
     fadeActive: boolean,
     faderLevel: number,
     label: string,
@@ -18,12 +18,12 @@ interface Channel {
     snapOn: Array<boolean>,
 }
 
-interface VuMeters {
+interface IVuMeters {
     vuVal: number
 }
 
 const defaultChannelsReducerState = (numberOfChannels: number) => {
-    let defaultObj: Array<Channels> = [];
+    let defaultObj: Array<IChannels> = [];
 
     for (let i=0; i < numberOfChannels; i++) {
         defaultObj[0].channel.push({
@@ -62,7 +62,7 @@ const defaultChannelsReducerState = (numberOfChannels: number) => {
     return defaultObj;
 };
 
-export const channels = ((state = defaultChannelsReducerState(1), action: any): Array<Channels> => {
+export const channels = ((state = defaultChannelsReducerState(1), action: any): Array<IChannels> => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
@@ -79,7 +79,7 @@ export const channels = ((state = defaultChannelsReducerState(1), action: any): 
                     nextState[0].channel[index] = channel;
                 }
             });
-            action.allState.grpFader.map((grpFader: Channel, index: number) => {
+            action.allState.grpFader.map((grpFader: IChannel, index: number) => {
                 if (index < DEFAULTS.NUMBER_OF_GROUP_FADERS) {
                     nextState[0].grpFader[index] = grpFader;
                 }

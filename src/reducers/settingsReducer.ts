@@ -1,7 +1,7 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
-export interface Settings {
+export interface ISettings {
     showSnaps: boolean,
     showSettings: boolean,
     mixerProtocol: string,
@@ -15,7 +15,7 @@ export interface Settings {
 }
 
 
-const defaultSettingsReducerState: Array<Settings> = [
+const defaultSettingsReducerState: Array<ISettings> = [
     {
         showSnaps: false,
         showSettings: false,
@@ -30,7 +30,7 @@ const defaultSettingsReducerState: Array<Settings> = [
     },
 ];
 
-export const settings = (state = defaultSettingsReducerState, action: any): Array<Settings> => {
+export const settings = (state = defaultSettingsReducerState, action: any): Array<ISettings> => {
     let nextState = [...state];
 
     switch (action.type) {

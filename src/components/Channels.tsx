@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 import Channel from './Channel';
 import GrpFader from './GrpFader';
 import '../assets/css/Channels.css';
+import { any } from 'prop-types';
 
-class Channels extends PureComponent {
-    constructor(props) {
+class Channels extends PureComponent<any, any> {
+    constructor(props: any) {
         super(props);
         this.state = {
             showSnap: false
@@ -129,10 +130,10 @@ class Channels extends PureComponent {
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
         store: state
     }
 }
 
-export default connect(mapStateToProps)(Channels);
+export default connect<any, any>(mapStateToProps)(Channels);
