@@ -30,9 +30,9 @@ export class MixerConnection {
         // Get mixer protocol
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
         if (this.mixerProtocol.protocol === 'OSC') {
-            this.mixerConnection = new OscMixerConnection(this.fadeInOut);
+            this.mixerConnection = new OscMixerConnection();
         } else if (this.mixerProtocol.protocol === 'MIDI') {
-            this.mixerConnection = new MidiMixerConnection(this.fadeInOut);
+            this.mixerConnection = new MidiMixerConnection();
         }
 
         //Setup timers for fade in & out

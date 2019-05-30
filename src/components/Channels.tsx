@@ -32,7 +32,7 @@ class Channels extends PureComponent<any, any> {
         this.props.mixerConnection.updateOutLevels();
     }
 
-    handleSnapMix(snapIndex) {
+    handleSnapMix(snapIndex: number) {
         this.props.dispatch({
             type:'SNAP_RECALL',
             snapIndex: snapIndex
@@ -53,7 +53,7 @@ class Channels extends PureComponent<any, any> {
         });
     }
 
-    snapMixButton(snapIndex) {
+    snapMixButton(snapIndex: number) {
         return (
             <div key={snapIndex} className="channels-snap-mix-line">
                 <button
@@ -70,7 +70,7 @@ class Channels extends PureComponent<any, any> {
     render() {
         return (
         <div className="channels-body">
-            {this.props.store.channels[0].channel.map((none, index) => {
+            {this.props.store.channels[0].channel.map((none: any, index: number) => {
                 return <Channel
                             channelIndex = {index}
                             key={index}
@@ -78,7 +78,7 @@ class Channels extends PureComponent<any, any> {
                         />
                 })
             }
-            {this.props.store.channels[0].grpFader.map((none, index) => {
+            {this.props.store.channels[0].grpFader.map((none: any, index: number) => {
                 return <GrpFader
                             faderIndex = {index}
                             key={index}

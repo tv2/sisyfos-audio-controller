@@ -27,7 +27,7 @@ class Channels extends PureComponent<any, any> {
         this.handleHideAllChannels = this.handleHideAllChannels.bind(this);
     }
 
-    handleChange() {
+    handleChange(event: any) {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy[event.target.name] = event.target.value;
         this.setState(
@@ -36,7 +36,7 @@ class Channels extends PureComponent<any, any> {
     }
 
 
-    handleTemplateChange(selectedOption ) {
+    handleTemplateChange(selectedOption: any) {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.mixerProtocol = selectedOption.value;
         this.setState(
