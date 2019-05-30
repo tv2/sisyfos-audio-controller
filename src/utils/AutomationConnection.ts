@@ -7,7 +7,11 @@ import { AutomationPresets } from '../constants/AutomationPresets';
 
 const AUTOMATION_OSC_PORT = 5255;
 export class AutomationConnection {
-    constructor(initialStore, mixerConnection) {
+    mixerConnection: any;
+    store: any;
+    oscConnection: any;
+
+    constructor( mixerConnection: any) {
         this.mixerConnection = mixerConnection;
         this.sendOutMessage = this.sendOutMessage.bind(this);
 
@@ -33,7 +37,7 @@ export class AutomationConnection {
                 console.log("Listening for Automation via OSC over UDP.");
             });
         })
-        .on('message', (message) => {
+        .on('message', (message: any) => {
             console.log("RECIEVED AUTOMATION MESSAGE :", message.address, message.args[0]);
             //Set state of Producers Audio Mixer:
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -210,7 +214,7 @@ export class AutomationConnection {
                 );
             }
         })
-        .on('error', (error) => {
+        .on('error', (error: any) => {
             console.log("Error : ", error);
             console.log("Lost OSC Automation connection");
         });
@@ -220,7 +224,7 @@ export class AutomationConnection {
 
     }
 
-    checkOscCommand(message, command) {
+    checkOscCommand(message: string, command: string) {
         if (message === command) return true;
 
         let cmdArray = command.split("{value1}");
@@ -236,7 +240,7 @@ export class AutomationConnection {
         }
     }
 
-    sendOutMessage(oscMessage, channel, value, type) {
+    sendOutMessage(oscMessage: string, channel: number, value: string, type: string) {
         let channelString = this.automationProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{value1}",
