@@ -14,13 +14,15 @@ export class MidiRemoteConnection {
 
     constructor() {
         this.sendOutMessage = this.sendOutMessage.bind(this);
+        this.convertFromRemoteLevel = this.convertFromRemoteLevel.bind(this);
+        this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this);
 
         this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
             this.store = window.storeRedux.getState();
         });
 
-        this.remoteProtocol = RemoteFaderPresets[this.store.settings[0].mixerProtocol]  || RemoteFaderPresets.hui;
+        this.remoteProtocol = RemoteFaderPresets[this.store.settings[0].remoteProtocol]  || RemoteFaderPresets.hui;
 
 
         WebMidi.enable((err) => {
@@ -93,16 +95,37 @@ export class MidiRemoteConnection {
     }
 
     sendOutMessage(CtrlMessage: IMidiMessage, channel: number, value: string) {
+        let convertValue = this.convertToRemoteLevel(parseFloat(value));
         if (CtrlMessage.type === MidiTypes.sendControlChange) {
-            this.midiOutput.sendControlChange(CtrlMessage.message, value, channel);
+            this.midiOutput.sendControlChange(CtrlMessage.message, convertValue, channel);
         } else if (CtrlMessage.type === MidiTypes.playNote) {
-            this.midiOutput.playNote(CtrlMessage.message, value, channel);
+            this.midiOutput.playNote(CtrlMessage.message, convertValue, channel);
         } else if (CtrlMessage.type === MidiTypes.stopNote) {
-            this.midiOutput.stopNote(CtrlMessage.message, value, channel);
+            this.midiOutput.stopNote(CtrlMessage.message, convertValue, channel);
         } else if (CtrlMessage.type === MidiTypes.sendPitchBend) {
-            this.midiOutput.sendPitchBend(CtrlMessage.message, value, channel);
+            this.midiOutput.sendPitchBend(convertValue, channel);
         }
     }
+    convertToRemoteLevel(level: number) {
+        /*
+        let oldMin =
+        let oldMax =
+        let newMin =
+        let newMax =
+        */
+        return level //convert from mixer min-max to remote min-max
+    }
+
+    convertFromRemoteLevel(level: number) {
+        /*
+        let oldMin =
+        let oldMax =
+        let newMin =
+        let newMax =
+        */
+        return level //convert from mixer min-max to remote min-max
+    }
+
 
     updateOutLevel(channelIndex: number) {
         if (this.remoteProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
