@@ -36,14 +36,14 @@ export const Reaper: IMixerProtocol = {
         CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
         PFL_ON: {
-            oscMessage: "/not_in_use",
-            value: 0,
-            type: "f"
+            oscMessage: "/track/{channel}/solo",
+            value: 1,
+            type: "i"
         },
         PFL_OFF: {
-            oscMessage: "/not_in_use",
+            oscMessage: "/track/{channel}/solo",
             value: 0,
-            type: "f"
+            type: "i"
         }
     },
     fader: {
