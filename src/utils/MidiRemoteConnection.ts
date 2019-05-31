@@ -116,15 +116,15 @@ export class MidiRemoteConnection {
 
         if (this.store.channels[0].channel[channelIndex].pflOn = true) {
             this.sendOutMessage(
-                this.remoteProtocol.toRemote.STATE_CHANNEL_PFL.oscMessage,
+                this.remoteProtocol.toRemote.STATE_CHANNEL_PFL,
                 channelIndex+1,
-                this.remoteProtocol.toRemote.STATE_CHANNEL_PFL.value
+                "1"
             );
         } else {
             this.sendOutMessage(
-                this.remoteProtocol.toRemote.STATE_CHANNEL_PFL.oscMessage,
+                this.remoteProtocol.toRemote.STATE_CHANNEL_PFL,
                 channelIndex+1,
-                this.remoteProtocol.toRemote.STATE_CHANNEL_PFL.value
+                "0"
             );
         }
     }
