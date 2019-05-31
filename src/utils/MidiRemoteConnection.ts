@@ -3,7 +3,7 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 
 //Utils:
-import { IRemoteProtocol, RemoteFaderPresets } from '../constants/RemoteFaderPresets';
+import { IRemoteProtocol, RemoteFaderPresets, IMidiMessage, MidiTypes } from '../constants/RemoteFaderPresets';
 
 export class MidiRemoteConnection {
     store: any;
@@ -92,8 +92,16 @@ export class MidiRemoteConnection {
 */
     }
 
-    sendOutMessage(CtrlMessage: string, channel: number, value: string) {
-        this.midiOutput.sendControlChange(CtrlMessage, value, channel);
+    sendOutMessage(CtrlMessage: IMidiMessage, channel: number, value: string) {
+        if (CtrlMessage.type === MidiTypes.sendControlChange) {
+            this.midiOutput.sendControlChange(CtrlMessage.message, value, channel);
+        } else if (CtrlMessage.type === MidiTypes.playNote) {
+            this.midiOutput.playNote(CtrlMessage.message, value, channel);
+        } else if (CtrlMessage.type === MidiTypes.stopNote) {
+            this.midiOutput.stopNote(CtrlMessage.message, value, channel);
+        } else if (CtrlMessage.type === MidiTypes.sendPitchBend) {
+            this.midiOutput.sendPitchBend(CtrlMessage.message, value, channel);
+        }
     }
 
     updateOutLevel(channelIndex: number) {
