@@ -1,10 +1,10 @@
-import { ArdourMaster } from './protocols/ardourMaster';
-import { Reaper } from './protocols/reaper';
-import { BehringerXrMaster } from './protocols/behringerXrMaster';
-import { BehringerXrClient } from './protocols/behringerXrClient';
-import { MidasMaster } from './protocols/midasMaster';
-import { MidasClient } from './protocols/midasClient';
-import { GenericMidi } from './protocols/genericMidi';
+import { ArdourMaster } from './mixerProtocols/ardourMaster';
+import { Reaper } from './mixerProtocols/reaper';
+import { BehringerXrMaster } from './mixerProtocols/behringerXrMaster';
+import { BehringerXrClient } from './mixerProtocols/behringerXrClient';
+import { MidasMaster } from './mixerProtocols/midasMaster';
+import { MidasClient } from './mixerProtocols/midasClient';
+import { GenericMidi } from './mixerProtocols/genericMidi';
 
 export interface IMixerProtocol {
     protocol: string,
