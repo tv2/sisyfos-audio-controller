@@ -3,7 +3,12 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 
 //Utils:
-import { IRemoteProtocol, RemoteFaderPresets, IMidiMessage, MidiTypes } from '../constants/RemoteFaderPresets';
+import { IRemoteProtocol,
+    RemoteFaderPresets,
+    IMidiSendMessage,
+    MidiSendTypes,
+    IMidiReceiveMessage,
+    MidiReceiveTypes } from '../constants/RemoteFaderPresets';
 
 export class MidiRemoteConnection {
     store: any;
@@ -46,7 +51,7 @@ export class MidiRemoteConnection {
     }
 
     setupMixerConnection() {
-        this.midiInput.addListener(this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type, this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.message,
+        this.midiInput.addListener(MidiReceiveTypes[this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type], undefined,
             (error: any) => {
                 console.log("Received 'controlchange' message (" + error.data + ").");
                 window.storeRedux.dispatch({
@@ -94,15 +99,15 @@ export class MidiRemoteConnection {
 */
     }
 
-    sendOutMessage(CtrlMessage: IMidiMessage, channel: number, value: string) {
+    sendOutMessage(CtrlMessage: IMidiSendMessage, channel: number, value: string) {
         let convertValue = this.convertToRemoteLevel(parseFloat(value));
-        if (CtrlMessage.type === MidiTypes.sendControlChange) {
+        if (CtrlMessage.type === MidiSendTypes.sendControlChange) {
             this.midiOutput.sendControlChange(CtrlMessage.message, convertValue, channel);
-        } else if (CtrlMessage.type === MidiTypes.playNote) {
+        } else if (CtrlMessage.type === MidiSendTypes.playNote) {
             this.midiOutput.playNote(CtrlMessage.message, convertValue, channel);
-        } else if (CtrlMessage.type === MidiTypes.stopNote) {
+        } else if (CtrlMessage.type === MidiSendTypes.stopNote) {
             this.midiOutput.stopNote(CtrlMessage.message, convertValue, channel);
-        } else if (CtrlMessage.type === MidiTypes.sendPitchBend) {
+        } else if (CtrlMessage.type === MidiSendTypes.sendPitchBend) {
             this.midiOutput.sendPitchBend(convertValue, channel);
         }
     }

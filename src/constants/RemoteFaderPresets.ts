@@ -27,7 +27,7 @@ export enum MidiReceiveTypes {
     noteon,
     noteoff,
     controlchange,
-    pichtbend
+    pitchbend
 }
 
 export interface IRemoteProtocol {
@@ -106,7 +106,7 @@ export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
             CHANNEL_FADER_LEVEL: {
                 message: "",
                 value: "",
-                type: MidiReceiveTypes.pichtbend
+                type: MidiReceiveTypes.pitchbend
             },
             GRP_FADER_PGM_ON_OFF: {
                 message: "",
