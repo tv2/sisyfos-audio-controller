@@ -9,11 +9,15 @@ import { IRemoteProtocol,
     MidiSendTypes,
     IMidiReceiveMessage,
     MidiReceiveTypes } from '../constants/RemoteFaderPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+
+
 
 export class MidiRemoteConnection {
     store: any;
     mixerConnection: any;
     remoteProtocol: IRemoteProtocol;
+    mixerProtocol: any;
     midiInput: any;
     midiOutput:any;
 
@@ -28,6 +32,7 @@ export class MidiRemoteConnection {
         });
 
         this.remoteProtocol = RemoteFaderPresets[this.store.settings[0].remoteProtocol]  || RemoteFaderPresets.hui;
+        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
 
         WebMidi.enable((err) => {
@@ -52,51 +57,23 @@ export class MidiRemoteConnection {
 
     setupMixerConnection() {
         this.midiInput.addListener(MidiReceiveTypes[this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type], undefined,
-            (error: any) => {
-                console.log("Received 'controlchange' message (" + error.data + ").");
+            (message: any) => {
+                console.log("Received 'controlchange' message (" + message.data + ").");
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
-                    channel: error.channel - 1,
-                    level: error.data[2]
+                    channel: message.channel - 1,
+                    level: message.data[2]
                 });
-                if (this.store.channels[0].channel[error.channel - 1].pgmOn && this.remoteProtocol.mode === 'master')
-                {
-                    this.updateOutLevel(error.channel-1);
-                }
+                this.updateOutLevel(message.channel-1);
             }
         );
+        //for testing:
         this.midiInput.addListener('noteon', "all",
             (error: any) => {
                 console.log("Received 'noteon' message (" + error.note.name + error.note.octave + ").");
             }
         );
-/*
-            if (
-                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_VU)
-            ) {
-                if (this.store.settings[0].mixerProtocol === 'behringer') {
-                    behringerMeter(message.args);
-                } else {
-                    let ch = message.address.split("/")[2];
-                    window.storeRedux.dispatch({
-                        type:'SET_VU_LEVEL',
-                        channel: ch - 1,
-                        level: message.args[0]
-                    });
-                }
-            }
-            if (
-                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_NAME)
-            ) {
-                    let ch = message.address.split("/")[2];
-                    window.storeRedux.dispatch({
-                        type:'SET_CHANNEL_LABEL',
-                        channel: ch - 1,
-                        label: message.args[0]
-                    });
-                console.log("OSC message: ", message.address);
-            }
-*/
+
     }
 
     sendOutMessage(CtrlMessage: IMidiSendMessage, channel: number, value: string) {
@@ -112,23 +89,28 @@ export class MidiRemoteConnection {
         }
     }
     convertToRemoteLevel(level: number) {
-        /*
-        let oldMin =
-        let oldMax =
-        let newMin =
-        let newMax =
-        */
-        return level //convert from mixer min-max to remote min-max
+
+        let oldMin = this.mixerProtocol.fader.min;
+        let oldMax = this.mixerProtocol.fader.max;
+        let newMin = this.remoteProtocol.fader.min;
+        let newMax = this.remoteProtocol.fader.max;
+
+        let indexLevel = (level/(oldMax-oldMin))/ (newMax-newMin)
+        let newLevel = newMin + indexLevel;
+        return newLevel //convert from mixer min-max to remote min-max
     }
 
     convertFromRemoteLevel(level: number) {
-        /*
-        let oldMin =
-        let oldMax =
-        let newMin =
-        let newMax =
-        */
-        return level //convert from mixer min-max to remote min-max
+
+        let oldMin = this.remoteProtocol.fader.min;
+        let oldMax = this.remoteProtocol.fader.max;
+        let newMin = this.mixerProtocol.fader.min;
+        let newMax = this.mixerProtocol.fader.max;
+
+        let indexLevel = (level/(oldMax-oldMin))/ (newMax-newMin)
+        let newLevel = newMin + indexLevel;
+
+        return newLevel //convert from mixer min-max to remote min-max
     }
 
 
