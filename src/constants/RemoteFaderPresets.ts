@@ -3,45 +3,59 @@
 //So it´s easy to add new equipment.
 
 
-export interface IMidiMessage {
+export interface IMidiSendMessage {
     message: string,
     value: any,
-    type: MidiTypes
+    type: MidiSendTypes
 }
 
-export enum MidiTypes {
+export enum MidiSendTypes {
     disabled,
     playNote,
     stopNote,
     sendControlChange,
     sendPitchBend
 }
+
+export interface IMidiReceiveMessage {
+    message: string,
+    value: any,
+    type: MidiReceiveTypes
+}
+export enum MidiReceiveTypes {
+    disabled,
+    noteon,
+    noteoff,
+    controlchange,
+    pichtbend
+}
+
 export interface IRemoteProtocol {
     protocol: string,
     label: string,
     mode: string,
     leadingZeros: boolean,
-    initializeCommands: [ IMidiMessage ],
+    initializeCommands: [ IMidiSendMessage ],
     fromRemote: {
-        CHANNEL_PGM_ON_OFF: IMidiMessage,
-        CHANNEL_PST_ON_OFF: IMidiMessage,
-        CHANNEL_PFL_ON_OFF: IMidiMessage,
-        CHANNEL_FADER_LEVEL: IMidiMessage,
-        GRP_FADER_PGM_ON_OFF: IMidiMessage,
-        GRP_FADER_PST_ON_OFF: IMidiMessage,
-        GRP_FADER_LEVEL: IMidiMessage,
-        X_MIX: IMidiMessage,
-        FADE_TO_BLACK: IMidiMessage,
-        SNAP_RECALL: IMidiMessage,
+        CHANNEL_PGM_ON_OFF: IMidiReceiveMessage,
+        CHANNEL_PST_ON_OFF: IMidiReceiveMessage,
+        CHANNEL_PFL_ON_OFF: IMidiReceiveMessage,
+        CHANNEL_FADER_LEVEL: IMidiReceiveMessage,
+        GRP_FADER_PGM_ON_OFF: IMidiReceiveMessage,
+        GRP_FADER_PST_ON_OFF: IMidiReceiveMessage,
+        GRP_FADER_LEVEL: IMidiReceiveMessage,
+        X_MIX: IMidiReceiveMessage,
+        FADE_TO_BLACK: IMidiReceiveMessage,
+        SNAP_RECALL: IMidiReceiveMessage,
     },
     toRemote: {
-        STATE_CHANNEL_PGM: IMidiMessage,
-        STATE_CHANNEL_PST: IMidiMessage,
-        STATE_CHANNEL_PFL: IMidiMessage,
-        STATE_CHANNEL_FADER_LEVEL: IMidiMessage,
-        STATE_GRP_FADER_PGM: IMidiMessage,
-        STATE_GRP_FADER_PST: IMidiMessage,
-        STATE_GRP_FADER_LEVEL: IMidiMessage,
+        STATE_CHANNEL_PGM: IMidiSendMessage,
+        STATE_CHANNEL_PST: IMidiSendMessage,
+        STATE_CHANNEL_PFL: IMidiSendMessage,
+        STATE_CHANNEL_FADER_LEVEL: IMidiSendMessage,
+        STATE_GRP_FADER_PGM: IMidiSendMessage,
+        STATE_GRP_FADER_PST: IMidiSendMessage,
+        STATE_GRP_FADER_LEVEL: IMidiSendMessage,
     },
     fader: {
         min: number,
@@ -70,96 +84,96 @@ export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
             {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiSendTypes.disabled
             }
         ],
         fromRemote: {
             CHANNEL_PGM_ON_OFF: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.disabled
             },
             CHANNEL_PST_ON_OFF: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.disabled
             },
             CHANNEL_PFL_ON_OFF: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.disabled
             },
             CHANNEL_FADER_LEVEL: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.pichtbend
             },
             GRP_FADER_PGM_ON_OFF: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.disabled
             },
             GRP_FADER_PST_ON_OFF: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.disabled
             },
             GRP_FADER_LEVEL: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.disabled
             },
             X_MIX: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.disabled
             },
             FADE_TO_BLACK: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.disabled
             },
             SNAP_RECALL: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiReceiveTypes.disabled
             },
         },
         toRemote: {
             STATE_CHANNEL_PGM: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiSendTypes.disabled
             },
             STATE_CHANNEL_PST: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiSendTypes.disabled
             },
             STATE_CHANNEL_PFL: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiSendTypes.disabled
             },
             STATE_CHANNEL_FADER_LEVEL: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiSendTypes.disabled
             },
             STATE_GRP_FADER_PGM: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiSendTypes.disabled
             },
             STATE_GRP_FADER_PST: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiSendTypes.disabled
             },
             STATE_GRP_FADER_LEVEL: {
                 message: "",
                 value: "",
-                type: MidiTypes.disabled
+                type: MidiSendTypes.disabled
             },
         },
         fader: {

@@ -46,7 +46,7 @@ export class MidiRemoteConnection {
     }
 
     setupMixerConnection() {
-        this.midiInput.addListener('controlchange', this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL,
+        this.midiInput.addListener(this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type, this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.message,
             (error: any) => {
                 console.log("Received 'controlchange' message (" + error.data + ").");
                 window.storeRedux.dispatch({
