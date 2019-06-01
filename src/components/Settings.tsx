@@ -249,7 +249,9 @@ class Channels extends PureComponent<any, any> {
                 <div className="settings-header">
                     REMOTE CONTROLLER SETTINGS:
                 </div>
-                Remote Midi Input Port :
+                <div className="settings-input-field">
+                    Remote Midi Input Port :
+                </div>
                 <Select
                     styles={selectorColorStyles}
                     value={{label: this.state.settings.remoteFaderMidiInputPort, value: this.state.settings.remoteFaderMidiInputPort}}
@@ -257,7 +259,9 @@ class Channels extends PureComponent<any, any> {
                     options={this.remoteFaderMidiInputPortList}
                 />
                 <br/>
-                Remote Midi Output Port :
+                <div className="settings-input-field">
+                    Remote Midi Output Port :
+                </div>
                 <Select
                     styles={selectorColorStyles}
                     value={{label: this.state.settings.remoteFaderMidiOutputPort, value: this.state.settings.remoteFaderMidiOutputPort}}
