@@ -9,6 +9,8 @@ export interface ISettings {
     localOscPort: number,
     machineOscIp: string,
     machineOscPort: number,
+    remoteFaderMidiInputPort: string,
+    remoteFaderMidiOutputPort: string,
     numberOfChannels: number,
     numberOfSnaps: number,
     fadeTime: number
@@ -24,6 +26,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         localOscPort: 8000,
         machineOscIp: "0.0.0.0",
         machineOscPort: 10024,
+        remoteFaderMidiInputPort: "",
+        remoteFaderMidiOutputPort: "",
         numberOfChannels: DEFAULTS.NUMBER_OF_CHANNELS,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         fadeTime: 100 //Time in ms
