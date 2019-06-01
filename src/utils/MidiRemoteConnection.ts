@@ -31,31 +31,28 @@ export class MidiRemoteConnection {
             this.store = window.storeRedux.getState();
         });
 
-        this.remoteProtocol = RemoteFaderPresets[this.store.settings[0].remoteProtocol]  || RemoteFaderPresets.hui;
+        this.remoteProtocol = RemoteFaderPresets.hui;
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
 
         WebMidi.enable((err) => {
 
             if (err) {
-                console.log("WebMidi could not be enabled.", err);
+                console.log("Remote MidiController connection could not be enabled.", err);
             }
 
-            // Viewing available inputs and outputs
-            console.log("Midi inputs : ", WebMidi.inputs);
-            console.log("Midi outputs : ", WebMidi.outputs);
+            this.midiInput = WebMidi.getInputByName(this.store.settings[0].remoteFaderMidiInputPort);
+            this.midiOutput = WebMidi.getOutputByName(this.store.settings[0].remoteFaderMidiOutputPort);
 
-            // Display the current time
-            console.log("Midi time : ", WebMidi.time);
+            console.log("Remote Midi Controller connected on port")
+            console.log("Midi input :", this.store.settings[0].remoteFaderMidiInputPort)
+            console.log("Midi output :", this.store.settings[0].remoteFaderMidiOutputPort)
 
-            this.midiInput = WebMidi.getInputByName("IAC-driver ProducersMixer");
-            this.midiOutput = WebMidi.getOutputByName("IAC-driver ProducersMixer");
-
-            this.setupMixerConnection();
+            this.setupRemoteFaderConnection();
         });
     }
 
-    setupMixerConnection() {
+    setupRemoteFaderConnection() {
         this.midiInput.addListener(MidiReceiveTypes[this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type], undefined,
             (message: any) => {
                 console.log("Received 'controlchange' message (" + message.data + ").");
