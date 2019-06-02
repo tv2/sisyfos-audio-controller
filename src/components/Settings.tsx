@@ -29,7 +29,7 @@ const selectorColorStyles = {
 
 
 class Channels extends PureComponent<any, any> {
-    templateOptions: any;
+    mixerProtocolList: any;
     mixerProtocolPresets: any;
     remoteFaderMidiInputPortList: any;
     remoteFaderMidiOutputPortList: any;
@@ -48,7 +48,7 @@ class Channels extends PureComponent<any, any> {
         this.renderRemoteControllerSettings = this.renderRemoteControllerSettings.bind(this);
         this.findMidiPorts = this.findMidiPorts.bind(this);
 
-        this.templateOptions = MixerProtocolList;
+        this.mixerProtocolList = MixerProtocolList;
         this.mixerProtocolPresets = MixerProtocolPresets;
         this.state = {
             settings: this.props.store.settings[0]
@@ -284,7 +284,7 @@ class Channels extends PureComponent<any, any> {
                     styles={selectorColorStyles}
                     value={{label: this.mixerProtocolPresets[this.state.settings.mixerProtocol].label, value: this.state.settings.mixerProtocol}}
                     onChange={this.handleTemplateChange}
-                    options={this.templateOptions}
+                    options={this.mixerProtocolList}
                 />
                 <br/>
                 <label className="settings-input-field">
