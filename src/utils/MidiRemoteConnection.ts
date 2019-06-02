@@ -62,7 +62,7 @@ export class MidiRemoteConnection {
                     channel: message.channel - 1,
                     level: message.data[2]
                 });
-                this.updateOutLevel(message.channel-1);
+                this.mixerConnection.updateOutLevel(message.channel-1);
             }
         );
         //for testing:
