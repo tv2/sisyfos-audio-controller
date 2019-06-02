@@ -21,7 +21,8 @@ export class MidiRemoteConnection {
     midiInput: any;
     midiOutput:any;
 
-    constructor() {
+    constructor(mixerConnection: any) {
+        this.mixerConnection = mixerConnection;
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.convertFromRemoteLevel = this.convertFromRemoteLevel.bind(this);
         this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this);
