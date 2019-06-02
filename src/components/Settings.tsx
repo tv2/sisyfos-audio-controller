@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 import Select from 'react-select';
+import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
+
 
 //Utils:
 import { saveSettings } from '../utils/SettingsStorage';
@@ -9,23 +11,88 @@ import { MixerProtocolPresets, MixerProtocolList } from '../constants/MixerProto
 import { any } from 'prop-types';
 
 
+//Set style for Select dropdown component:
+const selectorColorStyles = {
+    control:
+        (styles: any) => ({
+            ...styles, backgroundColor: '#676767', color: 'white', border: 0, width: 500, marginLeft: 100
+        }
+    ),
+    option: (styles: any) => {
+        return {
+            backgroundColor: '#AAAAAA',
+            color: 'white'
+        };
+    },
+    singleValue: (styles: any) => ({ ...styles, color: 'white' }),
+};
+
+
 class Channels extends PureComponent<any, any> {
-    templateOptions: any;
+    mixerProtocolList: any;
     mixerProtocolPresets: any;
+    remoteFaderMidiInputPortList: any;
+    remoteFaderMidiOutputPortList: any;
+
 
     constructor(props: any) {
         super(props);
-        this.templateOptions = MixerProtocolList;
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleTemplateChange = this.handleTemplateChange.bind(this);
+        this.handleMidiInputPort = this.handleMidiInputPort.bind(this);
+        this.handleMidiOutputPort = this.handleMidiOutputPort.bind(this);
+        this.handleShowChannel = this.handleShowChannel.bind(this);
+        this.handleShowAllChannels = this.handleShowAllChannels.bind(this);
+        this.handleHideAllChannels = this.handleHideAllChannels.bind(this);
+        this.renderRemoteControllerSettings = this.renderRemoteControllerSettings.bind(this);
+        this.findMidiPorts = this.findMidiPorts.bind(this);
+
+        this.mixerProtocolList = MixerProtocolList;
         this.mixerProtocolPresets = MixerProtocolPresets;
         this.state = {
             settings: this.props.store.settings[0]
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleTemplateChange = this.handleTemplateChange.bind(this);
-        this.handleShowChannel = this.handleShowChannel.bind(this);
-        this.handleShowAllChannels = this.handleShowAllChannels.bind(this);
-        this.handleHideAllChannels = this.handleHideAllChannels.bind(this);
+        //Initialise list of Midi ports:
+        this.findMidiPorts();
     }
+
+    findMidiPorts() {
+        WebMidi.enable((err) => {
+
+            if (err) {
+                console.log("WebMidi could not be enabled.", err);
+            }
+
+            // Viewing available inputs and outputs
+            console.log("Midi inputs : ", WebMidi.inputs);
+            console.log("Midi outputs : ", WebMidi.outputs);
+        });
+        this.remoteFaderMidiInputPortList = WebMidi.inputs.map((input) => {
+            return {"label": input.name, "value": input.name}
+        });
+        this.remoteFaderMidiOutputPortList = WebMidi.outputs.map((output) => {
+            return {"label": output.name, "value": output.name}
+        });
+
+    }
+
+    handleMidiInputPort(selectedOption: any) {
+        var settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.remoteFaderMidiInputPort = selectedOption.value;
+        this.setState(
+            {settings: settingsCopy}
+        );
+    }
+
+    handleMidiOutputPort(selectedOption: any) {
+        var settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.remoteFaderMidiOutputPort = selectedOption.value;
+        this.setState(
+            {settings: settingsCopy}
+        );
+    }
+
 
     handleChange(event: any) {
         var settingsCopy= Object.assign({}, this.state.settings);
@@ -176,17 +243,48 @@ class Channels extends PureComponent<any, any> {
         )
     }
 
+    renderRemoteControllerSettings() {
+        return (
+            <div>
+                <div className="settings-header">
+                    REMOTE CONTROLLER SETTINGS:
+                </div>
+                <div className="settings-input-field">
+                    Remote Midi Input Port :
+                </div>
+                <Select
+                    styles={selectorColorStyles}
+                    value={{label: this.state.settings.remoteFaderMidiInputPort, value: this.state.settings.remoteFaderMidiInputPort}}
+                    onChange={this.handleMidiInputPort}
+                    options={this.remoteFaderMidiInputPortList}
+                />
+                <br/>
+                <div className="settings-input-field">
+                    Remote Midi Output Port :
+                </div>
+                <Select
+                    styles={selectorColorStyles}
+                    value={{label: this.state.settings.remoteFaderMidiOutputPort, value: this.state.settings.remoteFaderMidiOutputPort}}
+                    onChange={this.handleMidiOutputPort}
+                    options={this.remoteFaderMidiOutputPortList}
+                />
+                <br/>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className="settings-body">
                 <div className="settings-header">
-                    SETTINGS:
+                    MIXER SETTINGS:
                 </div>
 
                 <Select
+                    styles={selectorColorStyles}
                     value={{label: this.mixerProtocolPresets[this.state.settings.mixerProtocol].label, value: this.state.settings.mixerProtocol}}
                     onChange={this.handleTemplateChange}
-                    options={this.templateOptions}
+                    options={this.mixerProtocolList}
                 />
                 <br/>
                 <label className="settings-input-field">
@@ -222,6 +320,8 @@ class Channels extends PureComponent<any, any> {
                 {this.renderShowChannelsSelection()}
                 <br/>
                 {this.renderShowGrpFadersSelection()}
+                <br/>
+                {this.renderRemoteControllerSettings()}
                 <br/>
                 <input
                     className="settings-save-button"

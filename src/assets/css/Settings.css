@@ -11,10 +11,13 @@
 }
 
 .settings-header{
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 20px;
     color: white;
     font-size: 140%;
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
 }
 
 
