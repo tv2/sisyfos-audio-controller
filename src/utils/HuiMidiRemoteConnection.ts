@@ -68,7 +68,7 @@ export class HuiMidiRemoteConnection {
                         level: this.convertFromRemoteLevel(message.data[2])
                     });
                     this.mixerConnection.updateOutLevel(message.data[1]);
-                    this.updateRemoteFaderLevel(message, this.convertFromRemoteLevel(message.data[2]))
+                    this.updateRemoteFaderLevel(message.data[1], this.convertFromRemoteLevel(message.data[2]))
                 }
             }
         );
@@ -100,7 +100,7 @@ export class HuiMidiRemoteConnection {
         let newMin = this.remoteProtocol.fader.min;
         let newMax = this.remoteProtocol.fader.max;
 
-        let indexLevel = (level/(oldMax-oldMin))/ (newMax-newMin)
+        let indexLevel = (level/(oldMax-oldMin)) * (newMax-newMin)
         let newLevel = newMin + indexLevel;
         return newLevel //convert from mixer min-max to remote min-max
     }
@@ -112,16 +112,22 @@ export class HuiMidiRemoteConnection {
         let newMin = this.mixerProtocol.fader.min;
         let newMax = this.mixerProtocol.fader.max;
 
-        let indexLevel = (level/(oldMax-oldMin))/ (newMax-newMin)
+        let indexLevel = (level/(oldMax-oldMin)) * (newMax-newMin)
         let newLevel = newMin + indexLevel;
 
         return newLevel //convert from mixer min-max to remote min-max
     }
 
     updateRemoteFaderLevel(channelIndex: number, outputLevel: number) {
+        console.log("Send fader update :", "Channel index : ", channelIndex, "OutputLevel : ", this.convertToRemoteLevel(outputLevel))
         this.midiOutput.sendControlChange(
-            String(21+channelIndex),
+            (channelIndex),
             this.convertToRemoteLevel(outputLevel),
+            1
+        );
+        this.midiOutput.sendControlChange(
+            (32+channelIndex),
+            28,
             1
         );
     }
