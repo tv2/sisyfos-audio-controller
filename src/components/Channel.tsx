@@ -33,6 +33,7 @@ class Channel extends PureComponent<any, any> {
             channel: this.channelIndex
         });
         this.mixerConnection.updateOutLevel(this.channelIndex);
+        this.props.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
     }
 
     handlePst() {
@@ -48,6 +49,7 @@ class Channel extends PureComponent<any, any> {
             channel: this.channelIndex
         });
         this.mixerConnection.updatePflState(this.channelIndex);
+        this.props.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
     }
 
     handleLevel(event: any) {
@@ -57,6 +59,7 @@ class Channel extends PureComponent<any, any> {
             level: event.target.value
         });
         this.mixerConnection.updateOutLevel(this.channelIndex);
+        this.props.huiRemoteConnection.updateRemoteFaderState(this.channelIndex, event.target.value)
     }
 
 

@@ -75,6 +75,7 @@ class Channels extends PureComponent<any, any> {
                             channelIndex = {index}
                             key={index}
                             mixerConnection = { this.props.mixerConnection}
+                            huiRemoteConnection = { this.props.huiRemoteConnection }
                         />
                 })
             }

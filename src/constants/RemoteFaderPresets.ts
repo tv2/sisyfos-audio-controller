@@ -52,7 +52,7 @@ export interface IRemoteProtocol {
         STATE_CHANNEL_PGM: IMidiSendMessage,
         STATE_CHANNEL_PST: IMidiSendMessage,
         STATE_CHANNEL_PFL: IMidiSendMessage,
-        STATE_CHANNEL_FADER_LEVEL: IMidiSendMessage,
+        STATE_CHANNEL_FADER_LEVEL: Array<IMidiSendMessage>,
         STATE_GRP_FADER_PGM: IMidiSendMessage,
         STATE_GRP_FADER_PST: IMidiSendMessage,
         STATE_GRP_FADER_LEVEL: IMidiSendMessage,
@@ -77,7 +77,7 @@ export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
 
     hui: {
         protocol: 'MIDI',
-        label: 'HUI Midicontroller',
+        label: 'Generic HUI Midicontroller',
         mode: "client",
         leadingZeros: true,
         initializeCommands: [
@@ -104,9 +104,9 @@ export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
                 type: MidiReceiveTypes.disabled
             },
             CHANNEL_FADER_LEVEL: {
-                message: "",
+                message: "0",
                 value: "",
-                type: MidiReceiveTypes.pitchbend
+                type: MidiReceiveTypes.controlchange
             },
             GRP_FADER_PGM_ON_OFF: {
                 message: "",
@@ -155,11 +155,18 @@ export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
                 value: "",
                 type: MidiSendTypes.disabled
             },
-            STATE_CHANNEL_FADER_LEVEL: {
-                message: "",
-                value: "",
-                type: MidiSendTypes.disabled
-            },
+            STATE_CHANNEL_FADER_LEVEL: [
+                {
+                    message: "21",
+                    value: "",
+                    type: MidiSendTypes.sendControlChange
+                },
+                {
+                    message: "01",
+                    value: "",
+                    type: MidiSendTypes.sendControlChange
+                    },
+            ],
             STATE_GRP_FADER_PGM: {
                 message: "",
                 value: "",
@@ -177,10 +184,10 @@ export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
             },
         },
         fader: {
-            min: -8192,
-            max: 8191,
-            zero: 4396,
-            step: 10,
+            min: 0,
+            max: 127,
+            zero: 70,
+            step: 1,
             fadeTime: 40,
         },
         meter: {
