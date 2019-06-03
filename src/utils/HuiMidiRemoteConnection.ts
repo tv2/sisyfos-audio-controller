@@ -64,11 +64,10 @@ export class HuiMidiRemoteConnection {
             (message: any) => {
                 if (message.data[1] = 15) {
                     if (message.data[2]<9) {
-                        console.log("Active channel :", message.data);
+                        //Set active channel for next midi message:
                         this.activeHuiChannel = message.data[2];
                     } else if (message.data[2] && message.data[2] === 65) {
-
-                        console.log("Select channel :", this.activeHuiChannel);
+                        //SELECT button - toggle PGM ON/OFF
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PGM',
                             channel: this.activeHuiChannel
@@ -76,8 +75,7 @@ export class HuiMidiRemoteConnection {
                         this.mixerConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     } else if (message.data[2] && message.data[2] === 67) {
-
-                        console.log("Select channel :", this.activeHuiChannel);
+                        //SOLO button - toggle PFL ON/OFF
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PFL',
                             channel: this.activeHuiChannel
@@ -108,18 +106,6 @@ export class HuiMidiRemoteConnection {
 
     }
 
-    sendOutMessage(CtrlMessage: IMidiSendMessage, channel: number, value: string) {
-        let convertValue = this.convertToRemoteLevel(parseFloat(value));
-        if (CtrlMessage.type === MidiSendTypes.sendControlChange) {
-            this.midiOutput.sendControlChange(CtrlMessage.message, convertValue, channel);
-        } else if (CtrlMessage.type === MidiSendTypes.playNote) {
-            this.midiOutput.playNote(CtrlMessage.message, convertValue, channel);
-        } else if (CtrlMessage.type === MidiSendTypes.stopNote) {
-            this.midiOutput.stopNote(CtrlMessage.message, convertValue, channel);
-        } else if (CtrlMessage.type === MidiSendTypes.sendPitchBend) {
-            this.midiOutput.sendPitchBend(convertValue, channel);
-        }
-    }
     convertToRemoteLevel(level: number) {
 
         let oldMin = this.mixerProtocol.fader.min;
@@ -162,12 +148,29 @@ export class HuiMidiRemoteConnection {
     }
 
     updateRemotePgmPstPfl(channelIndex: number) {
+        //Update SELECT button:
         this.midiOutput.sendControlChange(
-            (65+channelIndex),
-            1,
+            12,
+            channelIndex,
+            1
+        );
+        this.midiOutput.sendControlChange(
+            44,
+            1 + (64*this.store.channels[0].channel[channelIndex].pgmOn),
             1
         );
 
+        //Update SOLO button:
+        this.midiOutput.sendControlChange(
+            12,
+            channelIndex,
+            1
+        );
+        this.midiOutput.sendControlChange(
+            44,
+            3 + (64*this.store.channels[0].channel[channelIndex].pflOn),
+            1
+        );
     }
 }
 
