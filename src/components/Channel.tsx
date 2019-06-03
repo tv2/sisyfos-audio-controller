@@ -57,7 +57,7 @@ class Channel extends PureComponent<any, any> {
             level: event.target.value
         });
         this.mixerConnection.updateOutLevel(this.channelIndex);
-        this.props.huiRemoteConnection.updateRemoteFaderLevel(this.channelIndex, event.target.value)
+        this.props.huiRemoteConnection.updateRemoteFaderState(this.channelIndex, event.target.value)
     }
 
 

@@ -21,12 +21,13 @@ export class HuiMidiRemoteConnection {
     mixerProtocol: any;
     midiInput: any;
     midiOutput:any;
+    activeHuiChannel: number = 0;
 
     constructor(mixerConnection: any) {
         this.mixerConnection = mixerConnection;
         this.convertFromRemoteLevel = this.convertFromRemoteLevel.bind(this);
         this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this);
-        this.updateRemoteFaderLevel = this.updateRemoteFaderLevel.bind(this);
+        this.updateRemoteFaderState = this.updateRemoteFaderState.bind(this);
 
         this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
@@ -61,18 +62,40 @@ export class HuiMidiRemoteConnection {
     setupRemoteFaderConnection() {
         this.midiInput.addListener(this.midiReceiveTypes[this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type], undefined,
             (message: any) => {
-                //Fader changed:
+                if (message.data[1] = 15) {
+                    if (message.data[2]<9) {
+                        console.log("Active channel :", message.data);
+                        this.activeHuiChannel = message.data[2];
+                    } else if (message.data[2] && message.data[2] === 65) {
+
+                        console.log("Select channel :", this.activeHuiChannel);
+                        window.storeRedux.dispatch({
+                            type:'TOGGLE_PGM',
+                            channel: this.activeHuiChannel
+                        });
+                        this.mixerConnection.updateOutLevel(this.activeHuiChannel);
+                        this.updateRemotePgmPstPfl(this.activeHuiChannel);
+                    }
+                }
                 if (message.data[1] < 9) {
-                    console.log("Received 'controlchange' message (" + message.data + ").");
-                    //Uint8Array
-                    console.log("message.data-2 : ", message.data[2])
+                    //Fader changed:
+                    console.log("Received Fader message (" + message.data + ").");
                     window.storeRedux.dispatch({
                         type:'SET_FADER_LEVEL',
                         channel: message.data[1],
                         level: this.convertFromRemoteLevel(message.data[2])
                     });
                     this.mixerConnection.updateOutLevel(message.data[1]);
-                    this.updateRemoteFaderLevel(message.data[1], this.convertFromRemoteLevel(message.data[2]))
+                    this.updateRemoteFaderState(message.data[1], this.convertFromRemoteLevel(message.data[2]))
+                } else if (46 < message.data[1] && message.data[1] < 55) {
+                    // Selectbutton pressed :
+                    console.log("Received Select message (" + message.data + ").");
+                    window.storeRedux.dispatch({
+                        type:'TOGGLE_PGM',
+                        channel: message.data[1]-41
+                    });
+                    this.mixerConnection.updateOutLevel(message.data[1]-41);
+                    this.updateRemoteFaderState(message.data[1]-41, this.convertFromRemoteLevel(message.data[2]))
                 }
             }
         );
@@ -122,7 +145,7 @@ export class HuiMidiRemoteConnection {
         return newLevel //convert from mixer min-max to remote min-max
     }
 
-    updateRemoteFaderLevel(channelIndex: number, outputLevel: number) {
+    updateRemoteFaderState(channelIndex: number, outputLevel: number) {
         console.log("Send fader update :", "Channel index : ", channelIndex, "OutputLevel : ", this.convertToRemoteLevel(outputLevel))
         this.midiOutput.sendControlChange(
             (channelIndex),
@@ -131,10 +154,20 @@ export class HuiMidiRemoteConnection {
         );
         this.midiOutput.sendControlChange(
             (32+channelIndex),
+            0,
+            1
+        );
+        this.updateRemotePgmPstPfl(channelIndex)
+
+    }
+
+    updateRemotePgmPstPfl(channelIndex: number) {
+        this.midiOutput.sendControlChange(
+            (65+channelIndex),
             1,
             1
         );
-    }
 
+    }
 }
 
