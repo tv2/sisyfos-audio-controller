@@ -13,7 +13,7 @@ import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocol
 
 
 
-export class MidiRemoteConnection {
+export class HuiMidiRemoteConnection {
     store: any;
     mixerConnection: any;
     remoteProtocol: IRemoteProtocol;
@@ -24,9 +24,9 @@ export class MidiRemoteConnection {
 
     constructor(mixerConnection: any) {
         this.mixerConnection = mixerConnection;
-        this.sendOutMessage = this.sendOutMessage.bind(this);
         this.convertFromRemoteLevel = this.convertFromRemoteLevel.bind(this);
         this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this);
+        this.updateRemoteFaderLevel = this.updateRemoteFaderLevel.bind(this);
 
         this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
@@ -57,13 +57,19 @@ export class MidiRemoteConnection {
     setupRemoteFaderConnection() {
         this.midiInput.addListener(this.midiReceiveTypes[this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type], undefined,
             (message: any) => {
-                console.log("Received 'controlchange' message (" + message.data + ").");
-                window.storeRedux.dispatch({
-                    type:'SET_FADER_LEVEL',
-                    channel: message.channel - 1,
-                    level: message.data[2]
-                });
-                this.mixerConnection.updateOutLevel(message.channel-1);
+                //Fader changed:
+                if (message.data[1] < 9) {
+                    console.log("Received 'controlchange' message (" + message.data + ").");
+                    //Uint8Array
+                    console.log("message.data-2 : ", message.data[2])
+                    window.storeRedux.dispatch({
+                        type:'SET_FADER_LEVEL',
+                        channel: message.data[1],
+                        level: this.convertFromRemoteLevel(message.data[2])
+                    });
+                    this.mixerConnection.updateOutLevel(message.data[1]);
+                    this.updateRemoteFaderLevel(message, this.convertFromRemoteLevel(message.data[2]))
+                }
             }
         );
         //for testing:
@@ -112,46 +118,11 @@ export class MidiRemoteConnection {
         return newLevel //convert from mixer min-max to remote min-max
     }
 
-
-    updateOutLevel(channelIndex: number) {
-        if (this.remoteProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
-            window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
-                channel: channelIndex,
-                level: this.store.channels[0].channel[channelIndex].faderLevel
-            });
-        }
-
-        this.sendOutMessage(
-            this.remoteProtocol.toRemote.STATE_CHANNEL_FADER_LEVEL,
-            channelIndex+1,
-            this.store.channels[0].channel[channelIndex].faderLevel
-        );
-    }
-
-    updatePflState(channelIndex: number) {
-
-        if (this.store.channels[0].channel[channelIndex].pflOn = true) {
-            this.sendOutMessage(
-                this.remoteProtocol.toRemote.STATE_CHANNEL_PFL,
-                channelIndex+1,
-                "1"
-            );
-        } else {
-            this.sendOutMessage(
-                this.remoteProtocol.toRemote.STATE_CHANNEL_PFL,
-                channelIndex+1,
-                "0"
-            );
-        }
-    }
-
-
-    updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        this.sendOutMessage(
-            this.remoteProtocol.toRemote.STATE_CHANNEL_FADER_LEVEL,
-            channelIndex+1,
-            String(outputLevel)
+    updateRemoteFaderLevel(channelIndex: number, outputLevel: number) {
+        this.midiOutput.sendControlChange(
+            String(21+channelIndex),
+            this.convertToRemoteLevel(outputLevel),
+            1
         );
     }
 

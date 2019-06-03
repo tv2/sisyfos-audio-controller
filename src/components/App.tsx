@@ -10,7 +10,7 @@ import Settings from './Settings';
 import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
 import { MixerConnection } from '../utils/MixerConnection';
 import { AutomationConnection } from '../utils/AutomationConnection';
-import { MidiRemoteConnection } from '../utils/MidiRemoteConnection';
+import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
 
 
 class App extends Component<any, any> {
@@ -25,7 +25,7 @@ class App extends Component<any, any> {
     componentWillMount() {
         this.mixerConnection = new MixerConnection(this.props.store);
         this.automationConnection = new AutomationConnection(this.mixerConnection);
-        this.midiRemoteConnection = new MidiRemoteConnection(this.mixerConnection);
+        this.midiRemoteConnection = new HuiMidiRemoteConnection(this.mixerConnection);
         this.snapShopStoreTimer();
         loadSnapshotState(this.props.store.channels[0], this.props.store.settings[0].numberOfChannels);
     }
