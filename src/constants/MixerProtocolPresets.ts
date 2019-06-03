@@ -1,5 +1,6 @@
 import { ArdourMaster } from './mixerProtocols/ardourMaster';
 import { Reaper } from './mixerProtocols/reaper';
+import { ReaperMaster } from './mixerProtocols/reaperMaster';
 import { BehringerXrMaster } from './mixerProtocols/behringerXrMaster';
 import { BehringerXrClient } from './mixerProtocols/behringerXrClient';
 import { MidasMaster } from './mixerProtocols/midasMaster';
@@ -55,6 +56,7 @@ interface IMessageProtocol {
 export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
     ardourMaster: ArdourMaster,
     reaper: Reaper,
+    reaperMaster: ReaperMaster,
     behringerxrmaster: BehringerXrMaster,
     behringerxrclient: BehringerXrClient,
     midasMaster: MidasMaster,
