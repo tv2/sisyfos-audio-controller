@@ -62,7 +62,17 @@ export class HuiMidiRemoteConnection {
     setupRemoteFaderConnection() {
         this.midiInput.addListener(this.midiReceiveTypes[this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type], undefined,
             (message: any) => {
-                if (message.data[1] = 15) {
+                if (message.data[1] < 9) {
+                    //Fader changed:
+                    console.log("Received Fader message (" + message.data + ").");
+                    window.storeRedux.dispatch({
+                        type:'SET_FADER_LEVEL',
+                        channel: message.data[1],
+                        level: this.convertFromRemoteLevel(message.data[2])
+                    });
+                    this.mixerConnection.updateOutLevel(message.data[1]);
+                    this.updateRemoteFaderState(message.data[1], this.convertFromRemoteLevel(message.data[2]))
+                } else if (message.data[1] = 15) {
                     if (message.data[2]<9) {
                         //Set active channel for next midi message:
                         this.activeHuiChannel = message.data[2];
@@ -83,17 +93,6 @@ export class HuiMidiRemoteConnection {
                         this.mixerConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     }
-                }
-                if (message.data[1] < 9) {
-                    //Fader changed:
-                    console.log("Received Fader message (" + message.data + ").");
-                    window.storeRedux.dispatch({
-                        type:'SET_FADER_LEVEL',
-                        channel: message.data[1],
-                        level: this.convertFromRemoteLevel(message.data[2])
-                    });
-                    this.mixerConnection.updateOutLevel(message.data[1]);
-                    this.updateRemoteFaderState(message.data[1], this.convertFromRemoteLevel(message.data[2]))
                 }
             }
         );
