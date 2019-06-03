@@ -46,11 +46,15 @@ export class HuiMidiRemoteConnection {
             this.midiInput = WebMidi.getInputByName(this.store.settings[0].remoteFaderMidiInputPort);
             this.midiOutput = WebMidi.getOutputByName(this.store.settings[0].remoteFaderMidiOutputPort);
 
-            console.log("Remote Midi Controller connected on port")
-            console.log("Midi input :", this.store.settings[0].remoteFaderMidiInputPort)
-            console.log("Midi output :", this.store.settings[0].remoteFaderMidiOutputPort)
+            if (this.midiInput && this.midiOutput ) {
+                console.log("Remote Midi Controller connected on port")
+                console.log("Midi input :", this.store.settings[0].remoteFaderMidiInputPort)
+                console.log("Midi output :", this.store.settings[0].remoteFaderMidiOutputPort)
 
-            this.setupRemoteFaderConnection();
+                this.setupRemoteFaderConnection();
+            } else {
+                console.log("Remote Midi Controller not found or not configured.")
+            }
         });
     }
 
@@ -127,7 +131,7 @@ export class HuiMidiRemoteConnection {
         );
         this.midiOutput.sendControlChange(
             (32+channelIndex),
-            28,
+            1,
             1
         );
     }
