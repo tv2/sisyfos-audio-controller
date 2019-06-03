@@ -16,14 +16,14 @@ import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
 class App extends Component<any, any> {
     mixerConnection: any;
     automationConnection: any;
-    huiRemoteConnection: any;
+    huiRemoteConnection: any = false;
 
     constructor(props: any) {
         super(props)
     }
 
     componentWillMount() {
-        this.mixerConnection = new MixerConnection(this.props.store);
+        this.mixerConnection = new MixerConnection(this.props.store, this.huiRemoteConnection);
         this.automationConnection = new AutomationConnection(this.mixerConnection);
         this.huiRemoteConnection = new HuiMidiRemoteConnection(this.mixerConnection);
         this.snapShopStoreTimer();
