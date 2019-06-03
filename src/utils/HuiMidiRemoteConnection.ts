@@ -131,6 +131,7 @@ export class HuiMidiRemoteConnection {
     }
 
     updateRemoteFaderState(channelIndex: number, outputLevel: number) {
+        if (!this.midiOutput) { return };
         console.log("Send fader update :", "Channel index : ", channelIndex, "OutputLevel : ", this.convertToRemoteLevel(outputLevel))
         this.midiOutput.sendControlChange(
             (channelIndex),
@@ -147,6 +148,7 @@ export class HuiMidiRemoteConnection {
     }
 
     updateRemotePgmPstPfl(channelIndex: number) {
+        if (!this.midiOutput) { return };
         //Update SELECT button:
         this.midiOutput.sendControlChange(
             12,
