@@ -75,6 +75,15 @@ export class HuiMidiRemoteConnection {
                         });
                         this.mixerConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
+                    } else if (message.data[2] && message.data[2] === 67) {
+
+                        console.log("Select channel :", this.activeHuiChannel);
+                        window.storeRedux.dispatch({
+                            type:'TOGGLE_PFL',
+                            channel: this.activeHuiChannel
+                        });
+                        this.mixerConnection.updateOutLevel(this.activeHuiChannel);
+                        this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     }
                 }
                 if (message.data[1] < 9) {
@@ -87,15 +96,6 @@ export class HuiMidiRemoteConnection {
                     });
                     this.mixerConnection.updateOutLevel(message.data[1]);
                     this.updateRemoteFaderState(message.data[1], this.convertFromRemoteLevel(message.data[2]))
-                } else if (46 < message.data[1] && message.data[1] < 55) {
-                    // Selectbutton pressed :
-                    console.log("Received Select message (" + message.data + ").");
-                    window.storeRedux.dispatch({
-                        type:'TOGGLE_PGM',
-                        channel: message.data[1]-41
-                    });
-                    this.mixerConnection.updateOutLevel(message.data[1]-41);
-                    this.updateRemoteFaderState(message.data[1]-41, this.convertFromRemoteLevel(message.data[2]))
                 }
             }
         );
