@@ -3,11 +3,16 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { behringerMeter, behringerGrpMeter } from './productSpecific/behringer';
 import { midasMeter, midasGrpMeter } from './productSpecific/midas';
 
 export class OscMixerConnection {
+    store: any;
+    mixerProtocol: IMixerProtocol;
+    cmdChannelIndex: number;
+    oscConnection: any;
+
     constructor() {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
@@ -36,7 +41,7 @@ export class OscMixerConnection {
             console.log("Receiving state of desk");
             this.mixerProtocol.initializeCommands.map((item) => {
                 if (item.oscMessage.includes("{channel}")) {
-                    this.store.channels[0].channel.map((channel, index) => {
+                    this.store.channels[0].channel.map((channel: any, index: any) => {
                         this.sendOutRequest(item.oscMessage,(index +1));
                     });
                 } else {
@@ -44,7 +49,7 @@ export class OscMixerConnection {
                 }
             });
         })
-        .on('message', (message) => {
+        .on('message', (message: any) => {
             if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
@@ -53,6 +58,11 @@ export class OscMixerConnection {
                     channel: ch - 1,
                     level: message.args[0]
                 });
+
+                if (window.huiRemoteConnection) {
+                    window.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
+                }
+
                 if (this.mixerProtocol.mode === 'master') {
                     if (this.store.channels[0].channel[ch - 1].pgmOn)
                     {
@@ -77,6 +87,11 @@ export class OscMixerConnection {
                             channel: ch - 1
                         });
                     }
+
+                    if (window.huiRemoteConnection) {
+                        window.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
+                    }
+
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_VU)){
@@ -135,7 +150,7 @@ export class OscMixerConnection {
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .GRP_NAME)) {
-                                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_GRP_LABEL',
                         channel: ch - 1,
@@ -144,7 +159,7 @@ export class OscMixerConnection {
                 console.log("OSC message: ", message.address);
             }
         })
-        .on('error', (error) => {
+        .on('error', (error: any) => {
             console.log("Error : ", error);
             console.log("Lost OSC connection");
         });
@@ -175,7 +190,7 @@ export class OscMixerConnection {
         });
     }
 
-    checkOscCommand(message, command) {
+    checkOscCommand(message: string, command: string) {
         if (message === command) return true;
 
         let cmdArray = command.split("{channel}");
@@ -196,7 +211,7 @@ export class OscMixerConnection {
         return false;
     }
 
-    sendOutMessage(oscMessage, channel, value, type) {
+    sendOutMessage(oscMessage: string, channel: number, value: string, type: string) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{channel}",
@@ -216,10 +231,10 @@ export class OscMixerConnection {
     }
 
 
-    sendOutGrpMessage(oscMessage, channel, value, type) {
+    sendOutGrpMessage(oscMessage: string, channel: number, value: string, type: string) {
         let message = oscMessage.replace(
                 "{channel}",
-                channel
+                String(channel)
             );
         if (message != 'none') {
             this.oscConnection.send({
@@ -234,7 +249,7 @@ export class OscMixerConnection {
         }
     }
 
-    sendOutRequest(oscMessage, channel) {
+    sendOutRequest(oscMessage: string, channel: number) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{channel}",
@@ -247,7 +262,7 @@ export class OscMixerConnection {
         }
     }
 
-    updateOutLevel(channelIndex) {
+    updateOutLevel(channelIndex: number) {
         this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
             channelIndex+1,
@@ -262,17 +277,35 @@ export class OscMixerConnection {
         );
     }
 
-    updateFadeIOLevel(channelIndex, outputLevel) {
+    updatePflState(channelIndex: number) {
+        if (this.store.channels[0].channel[channelIndex].pflOn === true) {
+            this.sendOutMessage(
+                this.mixerProtocol.toMixer.PFL_ON.oscMessage,
+                channelIndex+1,
+                this.mixerProtocol.toMixer.PFL_ON.value,
+                this.mixerProtocol.toMixer.PFL_ON.type
+            );
+        } else {
+            this.sendOutMessage(
+                this.mixerProtocol.toMixer.PFL_OFF.oscMessage,
+                channelIndex+1,
+                this.mixerProtocol.toMixer.PFL_OFF.value,
+                this.mixerProtocol.toMixer.PFL_OFF.type
+            );
+        }
+    }
+
+    updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
             channelIndex+1,
-            outputLevel,
+            String(outputLevel),
             "f"
         );
     }
 
 
-    updateGrpOutLevel(channelIndex) {
+    updateGrpOutLevel(channelIndex: number) {
         this.sendOutGrpMessage(
             this.mixerProtocol.toMixer.GRP_OUT_GAIN,
             channelIndex+1,
@@ -281,11 +314,11 @@ export class OscMixerConnection {
         );
     }
 
-    updateGrpFadeIOLevel(channelIndex, outputLevel) {
+    updateGrpFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutGrpMessage(
             this.mixerProtocol.toMixer.GRP_OUT_GAIN,
             channelIndex+1,
-            outputLevel,
+            String(outputLevel),
             "f"
         );
     }

@@ -1,20 +1,46 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
 
-const defaultChannelsReducerState = (numberOfChannels) => {
-    let defaultObj = [{
+export interface IChannels {
+    channel: Array<IChannel>,
+    vuMeters: Array<IVuMeters>,
+    grpFader: Array<IChannel>,
+    grpVuMeters: Array<IVuMeters>,
+}
+
+interface IChannel {
+    fadeActive: boolean,
+    faderLevel: number,
+    label: string,
+    outputLevel: number,
+    pgmOn: boolean,
+    pstOn: boolean,
+    pflOn: boolean,
+    showChannel: boolean,
+    snapOn: Array<boolean>,
+}
+
+interface IVuMeters {
+    vuVal: number
+}
+
+const defaultChannelsReducerState = (numberOfChannels: number) => {
+    let defaultObj: Array<IChannels> = new Array(1);
+    defaultObj[0] = {
         channel: [],
         vuMeters: [],
         grpFader: [],
         grpVuMeters: [],
-    }];
+    };
+
     for (let i=0; i < numberOfChannels; i++) {
-        defaultObj[0].channel.push({
+        defaultObj[0].channel[i] = ({
                 fadeActive: false,
                 faderLevel: 0,
                 label: "",
                 outputLevel: 0.0,
                 pgmOn: false,
                 pstOn: false,
+                pflOn: false,
                 showChannel: true,
                 snapOn: [],
         });
@@ -23,7 +49,7 @@ const defaultChannelsReducerState = (numberOfChannels) => {
         });
 
         for (let y=0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
-            defaultObj[0].channel[i].snapOn.push(0.0);
+            defaultObj[0].channel[i].snapOn.push(false);
         }
     }
     for (let i=0; i < DEFAULTS.NUMBER_OF_GROUP_FADERS; i++) {
@@ -34,7 +60,9 @@ const defaultChannelsReducerState = (numberOfChannels) => {
             outputLevel: 0.0,
             pgmOn: false,
             pstOn: false,
+            pflOn: false,
             showChannel: true,
+            snapOn: [],
         });
         defaultObj[0].grpVuMeters.push({
             vuVal: 0.0
@@ -43,7 +71,7 @@ const defaultChannelsReducerState = (numberOfChannels) => {
     return defaultObj;
 };
 
-export const channels = ((state = defaultChannelsReducerState(1), action) => {
+export const channels = ((state = defaultChannelsReducerState(1), action: any): Array<IChannels> => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
@@ -55,12 +83,12 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
     switch(action.type) {
         case 'SET_COMPLETE_STATE': //allState  //numberOfChannels
             nextState = defaultChannelsReducerState(action.numberOfChannels);
-            action.allState.channel.map((channel, index) => {
+            action.allState.channel.map((channel: any, index: number) => {
                 if (index < action.numberOfChannels) {
                     nextState[0].channel[index] = channel;
                 }
             });
-            action.allState.grpFader.map((grpFader, index) => {
+            action.allState.grpFader.map((grpFader: IChannel, index: number) => {
                 if (index < DEFAULTS.NUMBER_OF_GROUP_FADERS) {
                     nextState[0].grpFader[index] = grpFader;
                 }
@@ -97,6 +125,12 @@ export const channels = ((state = defaultChannelsReducerState(1), action) => {
             return nextState;
         case 'SET_PST': //channel
             nextState[0].channel[action.channel].pstOn = action.pstOn;
+            return nextState;
+        case 'TOGGLE_PFL': //channel
+            nextState[0].channel[action.channel].pflOn = !nextState[0].channel[action.channel].pflOn;
+            return nextState;
+        case 'SET_PFL': //channel
+            nextState[0].channel[action.channel].pflOn = action.pflOn;
             return nextState;
         case 'SHOW_CHANNEL': //channel // showChannel
             nextState[0].channel[action.channel].showChannel = action.showChannel;

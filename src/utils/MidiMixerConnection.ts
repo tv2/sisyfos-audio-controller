@@ -3,9 +3,14 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 
 //Utils:
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 export class MidiMixerConnection {
+    store: any;
+    mixerProtocol: IMixerProtocol;
+    midiInput: any;
+    midiOutput:any;
+
     constructor() {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
@@ -39,23 +44,23 @@ export class MidiMixerConnection {
     }
 
     setupMixerConnection() {
-        this.midiInput.addListener('controlchange', this.mixerProtocol.CHANNEL_FADER_LEVEL,
-            (e) => {
-                console.log("Received 'controlchange' message (" + e.data + ").");
+        this.midiInput.addListener('controlchange', this.mixerProtocol.fromMixer.CHANNEL_FADER_LEVEL,
+            (error: any) => {
+                console.log("Received 'controlchange' message (" + error.data + ").");
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
-                    channel: e.channel - 1,
-                    level: e.data[2]
+                    channel: error.channel - 1,
+                    level: error.data[2]
                 });
-                if (this.store.channels[0].channel[e.channel - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                if (this.store.channels[0].channel[error.channel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                 {
-                    this.updateOutLevel(e.channel-1);
+                    this.updateOutLevel(error.channel-1);
                 }
             }
         );
         this.midiInput.addListener('noteon', "all",
-            (e) => {
-                console.log("Received 'noteon' message (" + e.note.name + e.note.octave + ").");
+            (error: any) => {
+                console.log("Received 'noteon' message (" + error.note.name + error.note.octave + ").");
             }
         );
 /*
@@ -103,17 +108,16 @@ return true;
             this.sendOutMessage(
                 command.oscMessage,
                 0,
-                command.value,
-                command.type
+                command.value
             );
         });
     }
 
-    sendOutMessage(CtrlMessage, channel, value) {
+    sendOutMessage(CtrlMessage: string, channel: number, value: string) {
         this.midiOutput.sendControlChange(CtrlMessage, value, channel);
     }
 
-    updateOutLevel(channelIndex) {
+    updateOutLevel(channelIndex: number) {
         if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
             window.storeRedux.dispatch({
                 type:'SET_OUTPUT_LEVEL',
@@ -133,12 +137,29 @@ return true;
         );
     }
 
+    updatePflState(channelIndex: number) {
 
-    updateFadeIOLevel(channelIndex, outputLevel) {
+        if (this.store.channels[0].channel[channelIndex].pflOn = true) {
+            this.sendOutMessage(
+                this.mixerProtocol.toMixer.PFL_ON.oscMessage,
+                channelIndex+1,
+                this.mixerProtocol.toMixer.PFL_ON.value
+            );
+        } else {
+            this.sendOutMessage(
+                this.mixerProtocol.toMixer.PFL_OFF.oscMessage,
+                channelIndex+1,
+                this.mixerProtocol.toMixer.PFL_OFF.value
+            );
+        }
+    }
+
+
+    updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
             channelIndex+1,
-            outputLevel
+            String(outputLevel)
         );
     }
 

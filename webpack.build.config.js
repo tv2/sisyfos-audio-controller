@@ -13,16 +13,16 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader'
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'postcss-loader' }
         ],
         include: defaultInclude
       },
       {
-        test: /\.jsx?$/,
-        use: [{ loader: 'babel-loader' }],
-        include: defaultInclude
+          test: /\.(tsx?|ts)$/,
+          use: [{ loader: 'babel-loader' }],
+          include: defaultInclude
       },
       {
         test: /\.(jpe?g|png|gif)$/,
@@ -36,6 +36,9 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ]
+},
   target: 'electron-renderer',
   plugins: [
     new HtmlWebpackPlugin(),

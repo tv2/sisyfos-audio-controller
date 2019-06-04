@@ -7,14 +7,23 @@ import { createStore } from 'redux';
 import { Provider as ReduxProvider} from 'react-redux';
 import indexReducer from './reducers/indexReducer';
 
-
 //Utils:
 import { loadSettings } from './utils/SettingsStorage';
+
+declare global {
+    interface Window {
+        storeRedux: any
+        mixerConnection: any
+        automationConnection: any
+        huiRemoteConnection: any
+    }
+}
+
 
 const storeRedux = createStore(
     indexReducer
 );
-window.storeRedux = storeRedux;
+(window as any).storeRedux = storeRedux;
 
 
 storeRedux.dispatch({

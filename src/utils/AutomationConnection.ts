@@ -3,12 +3,15 @@ import os from 'os'; // Used to display (log) network addresses on local machine
 import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
-import { AutomationPresets } from '../constants/AutomationPresets';
+import { IAutomationProtocol, AutomationPresets } from '../constants/AutomationPresets';
 
 const AUTOMATION_OSC_PORT = 5255;
 export class AutomationConnection {
-    constructor(initialStore, mixerConnection) {
-        this.mixerConnection = mixerConnection;
+    store: any;
+    oscConnection: any;
+    automationProtocol: IAutomationProtocol;
+
+    constructor() {
         this.sendOutMessage = this.sendOutMessage.bind(this);
 
         this.store = window.storeRedux.getState();
@@ -33,7 +36,7 @@ export class AutomationConnection {
                 console.log("Listening for Automation via OSC over UDP.");
             });
         })
-        .on('message', (message) => {
+        .on('message', (message: any) => {
             console.log("RECIEVED AUTOMATION MESSAGE :", message.address, message.args[0]);
             //Set state of Producers Audio Mixer:
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -44,7 +47,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pgmOn: message.args[0]===1 ? true : false
                 });
-                this.mixerConnection.updateOutLevel(ch-1);
+                window.mixerConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PST_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -53,7 +56,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pstOn: message.args[0]===1 ? true : false
                 });
-                this.mixerConnection.updateOutLevel(ch-1);
+                window.mixerConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[2];
@@ -62,7 +65,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     level: message.args[0]
                 });
-                this.mixerConnection.updateOutLevel(ch-1);
+                window.mixerConnection.updateOutLevel(ch-1);
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
@@ -75,7 +78,7 @@ export class AutomationConnection {
                 window.storeRedux.dispatch({
                     type:'X_MIX'
                 });
-                this.mixerConnection.updateOutLevels();
+                window.mixerConnection.updateOutLevels();
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_VISIBLE)){
                 let ch = message.address.split("/")[2];
@@ -89,7 +92,7 @@ export class AutomationConnection {
                     window.storeRedux.dispatch({
                         type:'FADE_TO_BLACK'
                     });
-                    this.mixerConnection.updateOutLevels();
+                    window.mixerConnection.updateOutLevels();
             // Get state from Producers Audio Mixer:
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .GRP_FADER_PGM_ON_OFF)){
@@ -99,7 +102,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pgmOn: message.args[0]===1 ? true : false
                 });
-                this.mixerConnection.updateOutLevel(ch-1);
+                window.mixerConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .GRP_FADER_PST_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -108,7 +111,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pstOn: message.args[0]===1 ? true : false
                 });
-                this.mixerConnection.updateOutLevel(ch-1);
+                window.mixerConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .GRP_FADER_LEVEL)){
                 let ch = message.address.split("/")[2];
@@ -117,7 +120,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     level: message.args[0]
                 });
-                this.mixerConnection.updateOutLevel(ch-1);
+                window.mixerConnection.updateOutLevel(ch-1);
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
@@ -130,7 +133,7 @@ export class AutomationConnection {
                 window.storeRedux.dispatch({
                     type:'X_MIX'
                 });
-                this.mixerConnection.updateOutLevels();
+                window.mixerConnection.updateOutLevels();
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_VISIBLE)){
                 let ch = message.address.split("/")[2];
@@ -152,7 +155,7 @@ export class AutomationConnection {
                     window.storeRedux.dispatch({
                         type:'FADE_TO_BLACK'
                     });
-                    this.mixerConnection.updateOutLevels();
+                    window.mixerConnection.updateOutLevels();
             // Get state from Producers Audio Mixer:
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_PGM)) {
@@ -210,7 +213,7 @@ export class AutomationConnection {
                 );
             }
         })
-        .on('error', (error) => {
+        .on('error', (error: any) => {
             console.log("Error : ", error);
             console.log("Lost OSC Automation connection");
         });
@@ -220,7 +223,7 @@ export class AutomationConnection {
 
     }
 
-    checkOscCommand(message, command) {
+    checkOscCommand(message: string, command: string) {
         if (message === command) return true;
 
         let cmdArray = command.split("{value1}");
@@ -236,7 +239,7 @@ export class AutomationConnection {
         }
     }
 
-    sendOutMessage(oscMessage, channel, value, type) {
+    sendOutMessage(oscMessage: string, channel: number, value: string, type: string) {
         let channelString = this.automationProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{value1}",

@@ -1,6 +1,6 @@
 import * as DEFAULTS from '../../constants/DEFAULTS';
 
-export const behringerMeter = (message) => {
+export const behringerMeter = (message: any) => {
     const store = window.storeRedux.getState();
 
     //Test data from Behringer:
@@ -18,7 +18,7 @@ export const behringerMeter = (message) => {
     }
 };
 
-export const behringerGrpMeter = (message) => {
+export const behringerGrpMeter = (message: any) => {
     const store = window.storeRedux.getState();
 
     let uint8bytes = Uint8Array.from(message[0]);

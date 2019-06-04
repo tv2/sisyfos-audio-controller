@@ -1,5 +1,5 @@
 //Utils:
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 
@@ -8,7 +8,13 @@ import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 let FADE_INOUT_SPEED = 3;
 
 export class MixerConnection {
-    constructor(initialStore) {
+    store: any;
+    mixerProtocol: IMixerProtocol;
+    mixerConnection: any;
+    timer: any;
+    grpTimer: any;
+
+    constructor() {
         this.updateOutLevels = this.updateOutLevels.bind(this);
         this.updateOutLevel = this.updateOutLevel.bind(this);
         this.fadeInOut = this.fadeInOut.bind(this);
@@ -24,9 +30,9 @@ export class MixerConnection {
         // Get mixer protocol
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
         if (this.mixerProtocol.protocol === 'OSC') {
-            this.mixerConnection = new OscMixerConnection(this.fadeInOut);
+            this.mixerConnection = new OscMixerConnection();
         } else if (this.mixerProtocol.protocol === 'MIDI') {
-            this.mixerConnection = new MidiMixerConnection(this.fadeInOut);
+            this.mixerConnection = new MidiMixerConnection();
         }
 
         //Setup timers for fade in & out
@@ -37,27 +43,32 @@ export class MixerConnection {
     }
 
     updateOutLevels() {
-        this.store.channels[0].channel.map((channel, index) => {
+        this.store.channels[0].channel.map((channel: any, index: number) => {
             this.fadeInOut(index);
             this.mixerConnection.updateOutLevel(index);
         });
-        this.store.channels[0].grpFader.map((channel, index) => {
+        this.store.channels[0].grpFader.map((channel: any, index: number) => {
             this.fadeGrpInOut(index);
             this.mixerConnection.updateGrpOutLevel(index);
         });
     }
 
-    updateOutLevel(channelIndex) {
+    updateOutLevel(channelIndex: number) {
         this.fadeInOut(channelIndex);
         this.mixerConnection.updateOutLevel(channelIndex);
     }
 
-    updateGrpOutLevel(channelIndex) {
+
+    updatePflState(channelIndex: number) {
+        this.mixerConnection.updatePflState(channelIndex);
+    }
+
+    updateGrpOutLevel(channelIndex: number) {
         this.fadeGrpInOut(channelIndex);
         this.mixerConnection.updateGrpOutLevel(channelIndex);
     }
 
-    fadeInOut (channelIndex){
+    fadeInOut (channelIndex: number){
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
             clearInterval(this.timer[channelIndex]);
@@ -76,7 +87,7 @@ export class MixerConnection {
         }
     }
 
-    fadeUp(channelIndex) {
+    fadeUp(channelIndex: number) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
         let targetVal = this.mixerProtocol.fader.zero;
         if (this.mixerProtocol.mode === "master") {
@@ -89,6 +100,12 @@ export class MixerConnection {
             this.timer[channelIndex] = setInterval(() => {
                 outputLevel += step;
                 this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+
+                window.storeRedux.dispatch({
+                    type:'SET_OUTPUT_LEVEL',
+                    channel: channelIndex,
+                    level: outputLevel
+                });
 
                 if ( outputLevel <= targetVal){
                     outputLevel = targetVal;
@@ -113,6 +130,12 @@ export class MixerConnection {
                 outputLevel += step;
                 this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
 
+                window.storeRedux.dispatch({
+                    type:'SET_OUTPUT_LEVEL',
+                    channel: channelIndex,
+                    level: outputLevel
+                });
+
                 if ( outputLevel >= targetVal ) {
                     outputLevel = targetVal;
                     this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
@@ -134,7 +157,7 @@ export class MixerConnection {
         }
     }
 
-    fadeDown(channelIndex) {
+    fadeDown(channelIndex: number) {
         let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
         const min = this.mixerProtocol.fader.min;
         const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
@@ -143,6 +166,12 @@ export class MixerConnection {
 
             outputLevel -= step;
             this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+
+            window.storeRedux.dispatch({
+                type:'SET_OUTPUT_LEVEL',
+                channel: channelIndex,
+                level: outputLevel
+            });
 
             if ( outputLevel <= min ){
                 outputLevel=min;
@@ -165,7 +194,7 @@ export class MixerConnection {
     }
 
 
-    fadeGrpInOut (channelIndex){
+    fadeGrpInOut (channelIndex: number){
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].grpFader[channelIndex].fadeActive) {
             clearInterval(this.grpTimer[channelIndex]);
@@ -184,7 +213,7 @@ export class MixerConnection {
         }
     }
 
-    fadeGrpUp(channelIndex) {
+    fadeGrpUp(channelIndex: number) {
         let outputLevel = parseFloat(this.store.channels[0].grpFader[channelIndex].outputLevel);
         let targetVal = parseFloat(this.store.channels[0].grpFader[channelIndex].faderLevel);
         const step = (targetVal-outputLevel)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
@@ -238,7 +267,7 @@ export class MixerConnection {
         }
     }
 
-    fadeGrpDown(channelIndex) {
+    fadeGrpDown(channelIndex: number) {
         let outputLevel = this.store.channels[0].grpFader[channelIndex].outputLevel;
         const min = this.mixerProtocol.fader.min;
         const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
