@@ -12,13 +12,11 @@ export class OscMixerConnection {
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
     oscConnection: any;
-    huiRemoteConnection: any;
 
-    constructor(huiRemoteConnection: any) {
+    constructor() {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.huiRemoteConnection = huiRemoteConnection;
         this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
             this.store = window.storeRedux.getState();
@@ -61,8 +59,8 @@ export class OscMixerConnection {
                     level: message.args[0]
                 });
 
-                if (this.huiRemoteConnection) {
-                    this.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
+                if (window.huiRemoteConnection) {
+                    window.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
                 }
 
                 if (this.mixerProtocol.mode === 'master') {
@@ -90,8 +88,8 @@ export class OscMixerConnection {
                         });
                     }
 
-                    if (this.huiRemoteConnection) {
-                        this.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
+                    if (window.huiRemoteConnection) {
+                        window.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
                     }
 
                 }

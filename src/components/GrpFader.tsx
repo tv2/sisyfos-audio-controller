@@ -10,12 +10,10 @@ import { any } from 'prop-types';
 class GrpFader extends PureComponent<any, any> {
     mixerProtocol: IMixerProtocol;
     faderIndex: number;
-    mixerConnection: any;
 
     constructor(props: any) {
         super(props);
         this.faderIndex = this.props.faderIndex;
-        this.mixerConnection = this.props.mixerConnection;
         this.state = {
         };
         this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi;
@@ -30,7 +28,7 @@ class GrpFader extends PureComponent<any, any> {
             type:'TOGGLE_GRP_PGM',
             channel: this.faderIndex
         });
-        this.mixerConnection.updateGrpOutLevel(this.faderIndex);
+        window.mixerConnection.updateGrpOutLevel(this.faderIndex);
     }
 
     handlePst() {
@@ -46,7 +44,7 @@ class GrpFader extends PureComponent<any, any> {
             channel: this.faderIndex,
             level: event.target.value
         });
-        this.mixerConnection.updateGrpOutLevel(this.faderIndex);
+        window.mixerConnection.updateGrpOutLevel(this.faderIndex);
     }
 
     fader() {

@@ -15,7 +15,6 @@ import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocol
 
 export class HuiMidiRemoteConnection {
     store: any;
-    mixerConnection: any;
     remoteProtocol: IRemoteProtocol;
     midiReceiveTypes = MidiReceiveTypes;
     mixerProtocol: any;
@@ -23,8 +22,7 @@ export class HuiMidiRemoteConnection {
     midiOutput:any;
     activeHuiChannel: number = 0;
 
-    constructor(mixerConnection: any) {
-        this.mixerConnection = mixerConnection;
+    constructor() {
         this.convertFromRemoteLevel = this.convertFromRemoteLevel.bind(this);
         this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this);
         this.updateRemoteFaderState = this.updateRemoteFaderState.bind(this);
@@ -70,7 +68,7 @@ export class HuiMidiRemoteConnection {
                         channel: message.data[1],
                         level: this.convertFromRemoteLevel(message.data[2])
                     });
-                    this.mixerConnection.updateOutLevel(message.data[1]);
+                    window.mixerConnection.updateOutLevel(message.data[1]);
                     this.updateRemoteFaderState(message.data[1], this.convertFromRemoteLevel(message.data[2]))
                 } else if (message.data[1] = 15) {
                     if (message.data[2]<9) {
@@ -82,7 +80,7 @@ export class HuiMidiRemoteConnection {
                             type:'TOGGLE_PGM',
                             channel: this.activeHuiChannel
                         });
-                        this.mixerConnection.updateOutLevel(this.activeHuiChannel);
+                        window.mixerConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
@@ -90,7 +88,7 @@ export class HuiMidiRemoteConnection {
                             type:'TOGGLE_PFL',
                             channel: this.activeHuiChannel
                         });
-                        this.mixerConnection.updateOutLevel(this.activeHuiChannel);
+                        window.mixerConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     }
                 }
