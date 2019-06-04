@@ -11,12 +11,10 @@ export class MixerConnection {
     store: any;
     mixerProtocol: IMixerProtocol;
     mixerConnection: any;
-    huiRemoteConnection: any;
     timer: any;
     grpTimer: any;
 
-    constructor(initialStore: any, huiRemoteConnection: any) {
-        this.huiRemoteConnection = huiRemoteConnection;
+    constructor() {
         this.updateOutLevels = this.updateOutLevels.bind(this);
         this.updateOutLevel = this.updateOutLevel.bind(this);
         this.fadeInOut = this.fadeInOut.bind(this);
@@ -32,9 +30,9 @@ export class MixerConnection {
         // Get mixer protocol
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
         if (this.mixerProtocol.protocol === 'OSC') {
-            this.mixerConnection = new OscMixerConnection(this.huiRemoteConnection);
+            this.mixerConnection = new OscMixerConnection();
         } else if (this.mixerProtocol.protocol === 'MIDI') {
-            this.mixerConnection = new MidiMixerConnection(this.huiRemoteConnection);
+            this.mixerConnection = new MidiMixerConnection();
         }
 
         //Setup timers for fade in & out
