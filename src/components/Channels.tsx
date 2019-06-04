@@ -22,14 +22,14 @@ class Channels extends PureComponent<any, any> {
         this.props.dispatch({
             type:'X_MIX'
         });
-        this.props.mixerConnection.updateOutLevels();
+        window.mixerConnection.updateOutLevels();
     }
 
     handleClearAllChannels() {
         this.props.dispatch({
             type:'FADE_TO_BLACK'
         });
-        this.props.mixerConnection.updateOutLevels();
+        window.mixerConnection.updateOutLevels();
     }
 
     handleSnapMix(snapIndex: number) {
@@ -37,7 +37,7 @@ class Channels extends PureComponent<any, any> {
             type:'SNAP_RECALL',
             snapIndex: snapIndex
         });
-        this.props.mixerConnection.updateOutLevels();
+        window.mixerConnection.updateOutLevels();
     }
 
     handleShowSnaps() {
@@ -74,8 +74,6 @@ class Channels extends PureComponent<any, any> {
                 return <Channel
                             channelIndex = {index}
                             key={index}
-                            mixerConnection = { this.props.mixerConnection}
-                            huiRemoteConnection = { this.props.huiRemoteConnection }
                         />
                 })
             }
@@ -83,7 +81,6 @@ class Channels extends PureComponent<any, any> {
                 return <GrpFader
                             faderIndex = {index}
                             key={index}
-                            mixerConnection = { this.props.mixerConnection}
                         />
                 })
             }

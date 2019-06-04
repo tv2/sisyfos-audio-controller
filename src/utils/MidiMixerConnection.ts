@@ -11,7 +11,7 @@ export class MidiMixerConnection {
     midiInput: any;
     midiOutput:any;
 
-    constructor(huiRemoteConnection: any) {
+    constructor() {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 

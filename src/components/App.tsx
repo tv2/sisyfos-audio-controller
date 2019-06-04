@@ -14,18 +14,15 @@ import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
 
 
 class App extends Component<any, any> {
-    mixerConnection: any;
-    automationConnection: any;
-    huiRemoteConnection: any = false;
 
     constructor(props: any) {
         super(props)
     }
 
     componentWillMount() {
-        this.mixerConnection = new MixerConnection(this.props.store, this.huiRemoteConnection);
-        this.automationConnection = new AutomationConnection(this.mixerConnection);
-        this.huiRemoteConnection = new HuiMidiRemoteConnection(this.mixerConnection);
+        (window as any).mixerConnection = new MixerConnection();
+        (window as any).automationConnection = new AutomationConnection();
+        (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         this.snapShopStoreTimer();
         loadSnapshotState(this.props.store.channels[0], this.props.store.settings[0].numberOfChannels);
     }
@@ -40,10 +37,7 @@ class App extends Component<any, any> {
     render() {
         return (
         <div>
-            <Channels
-                mixerConnection = {this.mixerConnection}
-                huiRemoteConnection = { this.huiRemoteConnection }
-            />
+            <Channels />
             {this.props.store.settings[0].showSettings ? <Settings/> : <div></div>}
         </div>
         )
