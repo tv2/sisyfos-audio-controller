@@ -41,20 +41,27 @@ export class CasparCGConnection {
     }
 
     setupMixerConnection() {
-        this.oscClient = new osc.UDPPort({
-            localAddress: this.store.settings[0].localIp,
-            localPort: parseInt(this.store.settings[0].localOscPort + ''),
-            remoteAddress: this.store.settings[0].deviceIp,
-            remotePort: parseInt(this.store.settings[0].devicePort + '') + 1000
-        })
-        this.oscClient
-        .on('ready', () => {
+        if (!this.oscClient) {
+            this.oscClient = new osc.UDPPort({
+                localAddress: this.store.settings[0].localIp,
+                localPort: parseInt(this.store.settings[0].localOscPort + ''),
+                remoteAddress: this.store.settings[0].deviceIp,
+                remotePort: parseInt(this.store.settings[0].devicePort + '') + 1000
+            })
+            .on('ready', () => {
+    
+            })
+            .on('error', (error: any) => {
+                console.log("Error : ", error);
+                console.log("Lost OSC connection");
+            });
+        }
 
+        // Restore mixer values to the ones we have internally
+        this.store.channels[0].channel.forEach((channel, index) => {
+            this.updateOutLevel(index)
+            this.updatePflState(index)
         })
-        .on('error', (error: any) => {
-            console.log("Error : ", error);
-            console.log("Lost OSC connection");
-        });
     }
 
     pingMixerCommand = () => {
@@ -183,7 +190,7 @@ export class CasparCGConnection {
     }
 
     updateGrpOutLevel(channelIndex: number) {
-        
+        // CasparCG does not support Groups
     }
 
     updateGrpFadeIOLevel(channelIndex: number, outputLevel: number) {

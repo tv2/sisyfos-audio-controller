@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from "react-redux";
 import Select from 'react-select';
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
@@ -28,7 +28,7 @@ const selectorColorStyles = {
 };
 
 
-class Channels extends PureComponent<any, any> {
+class Channels extends React.PureComponent<any, any> {
     mixerProtocolList: any;
     mixerProtocolPresets: any;
     remoteFaderMidiInputPortList: any;

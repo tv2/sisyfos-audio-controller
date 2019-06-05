@@ -1,0 +1,55 @@
+{
+	"label": "Sample Mixer Geometry",
+	"MONITOR_CHANNEL_FADER_LEVEL": [
+		[
+			{
+				"channel": 2,
+				"layer": 51
+			}
+		],
+		[
+			{
+				"channel": 2,
+				"layer": 52
+			}
+		],
+		[
+			{
+				"channel": 2,
+				"layer": 53
+			}
+		],
+		[
+			{
+				"channel": 2,
+				"layer": 54
+			}
+		]
+	],
+	"PGM_CHANNEL_FADER_LEVEL": [
+		[
+			{
+				"channel": 1,
+				"layer": 51
+			}
+		],
+		[
+			{
+				"channel": 1,
+				"layer": 52
+			}
+		],
+		[
+			{
+				"channel": 1,
+				"layer": 53
+			}
+		],
+		[
+			{
+				"channel": 1,
+				"layer": 54
+			}
+		]
+	]
+}

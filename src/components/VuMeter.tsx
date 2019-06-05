@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 //assets:
 import '../assets/css/VuMeter.css';
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric } from '../constants/MixerProtocolPresets';
 import { any } from 'prop-types';
 
 class VuMeter extends PureComponent<any, any> {
     channelIndex: number;
-    mixerProtocol: IMixerProtocol;
+    mixerProtocol: IMixerProtocolGeneric;
 
     constructor(props: any) {
         super(props);

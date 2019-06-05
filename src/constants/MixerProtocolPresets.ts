@@ -6,7 +6,7 @@ import { BehringerXrClient } from './mixerProtocols/behringerXrClient';
 import { MidasMaster } from './mixerProtocols/midasMaster';
 import { MidasClient } from './mixerProtocols/midasClient';
 import { GenericMidi } from './mixerProtocols/genericMidi';
-import { SofieRK10Master } from './mixerProtocols/sofieRK10Master';
+import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 
 export interface IMixerProtocolGeneric {
     protocol: string,
@@ -56,6 +56,12 @@ export interface ChannelLayerPair {
     layer: number
 }
 
+export interface ICasparCGMixerGeometryFile {
+    label?: string,
+    PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
+    MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>
+} 
+
 export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
     studio: string,
     leadingZeros: boolean,
@@ -86,7 +92,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = {
     midasMaster: MidasMaster,
     midasClient: MidasClient,
     genericMidi: GenericMidi,
-    sofieRK10Master: SofieRK10Master
+    casparCGMaster: CasparCGMaster
 };
 
 
