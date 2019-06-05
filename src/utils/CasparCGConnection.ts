@@ -81,12 +81,6 @@ export class CasparCGConnection {
         })
     }
 
-    premultiplyChannel(channel: IChannel, fadeOverride?: number | undefined, gainOverride?: number | undefined) {
-        const fade = ((fadeOverride || channel.faderLevel) - this.mixerProtocol.fader.min) / (this.mixerProtocol.fader.max - this.mixerProtocol.fader.min);
-        const gain = ((gainOverride || channel.outputLevel) - this.mixerProtocol.fader.min) / (this.mixerProtocol.fader.max - this.mixerProtocol.fader.min);
-        return ((fade * gain) * (this.mixerProtocol.fader.max - this.mixerProtocol.fader.min)) + this.mixerProtocol.fader.min;
-    }
-
     setAllLayers = (pairs: ChannelLayerPair[], value: number) => {
         pairs.forEach((i) => {
             this.controlVolume(i.channel, i.layer, value);
@@ -106,7 +100,7 @@ export class CasparCGConnection {
             });
         }
         const pairs = this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL[channelIndex];
-        this.setAllLayers(pairs, this.premultiplyChannel(this.store.channels[0].channel[channelIndex]));
+        this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].outputLevel);
 
         const anyPflOn = this.store.channels[0].channel.reduce((memo, i) => memo || i.pflOn, false)
         // Check if there are no SOLO channels on MONITOR or there are, but this channel is SOLO
@@ -115,7 +109,7 @@ export class CasparCGConnection {
             if (this.store.channels[0].channel[channelIndex].pflOn) {
                 this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].faderLevel);
             } else {
-                this.setAllLayers(pairs, this.premultiplyChannel(this.store.channels[0].channel[channelIndex]));
+                this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].outputLevel);
             }
         }
     }
@@ -162,7 +156,7 @@ export class CasparCGConnection {
                     }
 
                     const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[index];
-                    this.setAllLayers(pairs, this.premultiplyChannel(this.store.channels[0].channel[index]));
+                    this.setAllLayers(pairs, this.store.channels[0].channel[index].outputLevel);
                 })
             }
         }
@@ -175,7 +169,7 @@ export class CasparCGConnection {
         }
 
         const pgmPairs = this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL[channelIndex]
-        this.setAllLayers(pgmPairs, this.premultiplyChannel(this.store.channels[0].channel[channelIndex], undefined, outputLevel))
+        this.setAllLayers(pgmPairs, outputLevel)
 
         const anyPflOn = this.store.channels[0].channel.reduce((memo, i) => memo || i.pflOn, false)
         // Check if there are no SOLO channels on MONITOR or there are, but this channel is SOLO
@@ -184,7 +178,7 @@ export class CasparCGConnection {
             if (this.store.channels[0].channel[channelIndex].pflOn) {
                 this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].faderLevel);
             } else {
-                this.setAllLayers(pairs, this.premultiplyChannel(this.store.channels[0].channel[channelIndex]));
+                this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].outputLevel);
             }
         }
     }

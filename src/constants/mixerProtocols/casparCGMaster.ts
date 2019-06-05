@@ -18,7 +18,6 @@ try {
 	if (inputObj.MONITOR_CHANNEL_FADER_LEVEL && inputObj.PGM_CHANNEL_FADER_LEVEL) {
 		geometry = inputObj
 	}
-	console.log(JSON.stringify(inputObj, undefined, 2))
 } catch (e) {
 	console.error('Could not open CasparCG Audio geometry file', e)
 }
@@ -38,7 +37,7 @@ export const CasparCGMaster: ICasparCGMixerGeometry = {
 	toMixer: geometry,
 	fader: {
 		min: 0,
-		max: 2,
+		max: 1.5,
 		zero: 1,
 		step: 0.001,
 		fadeTime: 40,
