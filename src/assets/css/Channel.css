@@ -52,9 +52,31 @@
     color: white;
     height: 40px;
     width: 80px;
-    background-color: rgb(17, 0, 255);
+    background-color: rgb(9, 0, 59);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
+}
+
+@keyframes pfl-active-flash {
+    0% {
+        box-shadow: 0 0 10px rgba(105, 140, 255, 1);
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(105, 140, 255, 1);
+    }
+    50.0001% {
+        box-shadow: 0 0 10px rgba(105, 140, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(105, 140, 255, 0);
+    }
+}
+
+.channel-pfl-button.pfl-active {
+    background-color: rgb(17, 0, 255);
+    animation: 2s pfl-active-flash;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
 }
 
 .channel-snap-body {

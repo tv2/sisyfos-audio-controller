@@ -1,15 +1,15 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from "react-redux";
 import VuMeter from './VuMeter';
 
 //assets:
 import '../assets/css/Channel.css';
-import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric } from '../constants/MixerProtocolPresets';
 import { any } from 'prop-types';
 
 
-class Channel extends PureComponent<any, any> {
-    mixerProtocol: IMixerProtocol;
+class Channel extends React.PureComponent<any, any> {
+    mixerProtocol: IMixerProtocolGeneric;
     channelIndex: number;
 
     constructor(props: any) {
@@ -54,7 +54,7 @@ class Channel extends PureComponent<any, any> {
         this.props.dispatch({
             type:'SET_FADER_LEVEL',
             channel: this.channelIndex,
-            level: event.target.value
+            level: parseFloat(event.target.value)
         });
         window.mixerConnection.updateOutLevel(this.channelIndex);
         window.huiRemoteConnection.updateRemoteFaderState(this.channelIndex, event.target.value)
@@ -156,12 +156,15 @@ class Channel extends PureComponent<any, any> {
     pflButton() {
         return (
             <button
-                className="channel-pfl-button"
+                className={
+                    "channel-pfl-button " +
+                    (this.props.pflOn ?
+                        "pfl-active" :
+                        ""
+                    )
+                }
                 style={
                     Object.assign(
-                        this.props.pflOn
-                        ? {backgroundColor: "rgb(17, 0, 255)"}
-                        : {backgroundColor: "rgb(9, 0, 59)"},
                         this.props.showSnaps
                         ?   {height: "40px"}
                         :   {height: "90px"}

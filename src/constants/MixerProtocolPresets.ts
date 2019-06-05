@@ -6,11 +6,28 @@ import { BehringerXrClient } from './mixerProtocols/behringerXrClient';
 import { MidasMaster } from './mixerProtocols/midasMaster';
 import { MidasClient } from './mixerProtocols/midasClient';
 import { GenericMidi } from './mixerProtocols/genericMidi';
+import { SofieRK10Master } from './mixerProtocols/sofieRK10Master';
 
-export interface IMixerProtocol {
+export interface IMixerProtocolGeneric {
     protocol: string,
     label: string,
-    mode: string,
+    mode: string
+    fader: {
+        min: number
+        max: number
+        zero: number
+        step: number
+        fadeTime: number
+    },
+    meter: {
+        min: number,
+        max: number,
+        zero: number,
+        test: number,
+    }
+}
+
+export interface IMixerProtocol extends IMixerProtocolGeneric{
     leadingZeros: boolean,
     pingCommand: Array<IMessageProtocol>,
     pingTime: number,
@@ -31,19 +48,26 @@ export interface IMixerProtocol {
         GRP_OUT_GAIN: string,
         PFL_ON: IMessageProtocol,
         PFL_OFF: IMessageProtocol
+    }
+}
+
+export interface ChannelLayerPair {
+    channel: number
+    layer: number
+}
+
+export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
+    studio: string,
+    leadingZeros: boolean,
+    pingTime: number,
+    fromMixer: {
+        CHANNEL_FADER_LEVEL: string,
+        CHANNEL_OUT_GAIN: string,
+        CHANNEL_VU: string,
     },
-    fader: {
-        min: number,
-        max: number,
-        zero: number,
-        step: number,
-        fadeTime: number,
-    },
-    meter: {
-        min: number,
-        max: number,
-        zero: number,
-        test: number,
+    toMixer: {
+        PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
+        MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
     }
 }
 
@@ -53,7 +77,7 @@ interface IMessageProtocol {
     type: string
 }
 
-export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
+export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = {
     ardourMaster: ArdourMaster,
     reaper: Reaper,
     reaperMaster: ReaperMaster,
@@ -62,6 +86,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
     midasMaster: MidasMaster,
     midasClient: MidasClient,
     genericMidi: GenericMidi,
+    sofieRK10Master: SofieRK10Master
 };
 
 

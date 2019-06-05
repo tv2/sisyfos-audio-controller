@@ -1,19 +1,20 @@
 //Node Modules:
-import os from 'os'; // Used to display (log) network addresses on local machine
-import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
+import * as os from 'os'; // Used to display (log) network addresses on local machine
+import * as osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
 import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { behringerMeter, behringerGrpMeter } from './productSpecific/behringer';
 import { midasMeter, midasGrpMeter } from './productSpecific/midas';
+import { IStore } from '../reducers/indexReducer';
 
 export class OscMixerConnection {
-    store: any;
+    store: IStore;
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
     oscConnection: any;
 
-    constructor() {
+    constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
@@ -22,15 +23,15 @@ export class OscMixerConnection {
             this.store = window.storeRedux.getState();
         });
 
-        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
+        this.mixerProtocol = mixerProtocol;
 
         this.cmdChannelIndex = this.mixerProtocol.fromMixer.CHANNEL_OUT_GAIN.split('/').findIndex(ch => ch==='{channel}');
 
         this.oscConnection = new osc.UDPPort({
-            localAddress: this.store.settings[0].localOscIp,
-            localPort: parseInt(this.store.settings[0].localOscPort),
-            remoteAddress: this.store.settings[0].machineOscIp,
-            remotePort: parseInt(this.store.settings[0].machineOscPort)
+            localAddress: this.store.settings[0].localIp,
+            localPort: parseInt(this.store.settings[0].localOscPort + ''),
+            remoteAddress: this.store.settings[0].deviceIp,
+            remotePort: parseInt(this.store.settings[0].devicePort + '')
         });
         this.setupMixerConnection();
     }
@@ -165,7 +166,7 @@ export class OscMixerConnection {
         });
 
         this.oscConnection.open();
-        console.log(`OSC listening on port ` + this.store.settings[0].oscPort );
+        console.log(`OSC listening on port ` + this.store.settings[0].localOscPort );
 
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
@@ -211,7 +212,7 @@ export class OscMixerConnection {
         return false;
     }
 
-    sendOutMessage(oscMessage: string, channel: number, value: string, type: string) {
+    sendOutMessage(oscMessage: string, channel: number, value: string | number, type: string) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{channel}",
@@ -231,7 +232,7 @@ export class OscMixerConnection {
     }
 
 
-    sendOutGrpMessage(oscMessage: string, channel: number, value: string, type: string) {
+    sendOutGrpMessage(oscMessage: string, channel: number, value: string | number, type: string) {
         let message = oscMessage.replace(
                 "{channel}",
                 String(channel)

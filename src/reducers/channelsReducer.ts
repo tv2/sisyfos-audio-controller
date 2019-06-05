@@ -7,7 +7,7 @@ export interface IChannels {
     grpVuMeters: Array<IVuMeters>,
 }
 
-interface IChannel {
+export interface IChannel {
     fadeActive: boolean,
     faderLevel: number,
     label: string,
