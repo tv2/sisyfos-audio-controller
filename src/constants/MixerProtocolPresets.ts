@@ -83,7 +83,7 @@ interface IMessageProtocol {
     type: string
 }
 
-export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = {
+export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Object.assign({
     ardourMaster: ArdourMaster,
     reaper: Reaper,
     reaperMaster: ReaperMaster,
@@ -91,9 +91,10 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = {
     behringerxrclient: BehringerXrClient,
     midasMaster: MidasMaster,
     midasClient: MidasClient,
-    genericMidi: GenericMidi,
+    genericMidi: GenericMidi
+}, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
-};
+} : {});
 
 
 export const MixerProtocolList = Object.getOwnPropertyNames(MixerProtocolPresets).map((preset) => {
