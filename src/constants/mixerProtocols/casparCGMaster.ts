@@ -47,7 +47,8 @@ if (geometry) {
 			max: 1,
 			zero: 0.75,
 			test: 0.6,
-		}
+		},
+		channelLabels: geometry.channelLabels
 	}
 }
 

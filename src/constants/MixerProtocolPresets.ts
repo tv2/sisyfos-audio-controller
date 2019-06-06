@@ -58,6 +58,7 @@ export interface ChannelLayerPair {
 
 export interface ICasparCGMixerGeometryFile {
     label?: string,
+    channelLabels?: string[],
     PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
     MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>
 } 
@@ -75,6 +76,7 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
         PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
         MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
     }
+    channelLabels?: string[]
 }
 
 interface IMessageProtocol {

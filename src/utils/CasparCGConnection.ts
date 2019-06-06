@@ -59,9 +59,20 @@ export class CasparCGConnection {
 
         // Restore mixer values to the ones we have internally
         this.store.channels[0].channel.forEach((channel, index) => {
-            this.updateOutLevel(index)
-            this.updatePflState(index)
+            this.updateOutLevel(index);
+            this.updatePflState(index);
         })
+
+        // Set source labels from geometry definition
+        if (this.mixerProtocol.channelLabels) {
+            this.mixerProtocol.channelLabels.forEach((label, channelIndex) => {
+                window.storeRedux.dispatch({
+                    type: 'SET_CHANNEL_LABEL',
+                    channel: channelIndex,
+                    label
+                });
+            });
+        }
     }
 
     pingMixerCommand = () => {
