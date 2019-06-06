@@ -4,6 +4,7 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 
 //Utils:
 import { IAutomationProtocol, AutomationPresets } from '../constants/AutomationPresets';
+import { IChannel } from '../reducers/channelsReducer';
 
 const AUTOMATION_OSC_PORT = 5255;
 export class AutomationConnection {
@@ -32,11 +33,11 @@ export class AutomationConnection {
         this.oscConnection
         .on("ready", () => {
             this.automationProtocol.initializeCommands.map((item) => {
-                this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
+                // this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
                 console.log("Listening for Automation via OSC over UDP.");
             });
         })
-        .on('message', (message: any) => {
+        .on('message', (message: any, timetag: number | undefined, info: any) => {
             console.log("RECIEVED AUTOMATION MESSAGE :", message.address, message.args[0]);
             //Set state of Sisyfos:
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -135,13 +136,30 @@ export class AutomationConnection {
                     window.mixerGenericConnection.updateOutLevels();
             // Get state from Producers Audio Mixer:
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .STATE_FULL)) {
+                this.sendOutMessage(
+                    this.automationProtocol.toAutomation.STATE_FULL,
+                    0,
+                    JSON.stringify({
+                        channel: this.store.channels[0].channel.map(({ faderLevel, pgmOn, pstOn }: IChannel) => ({
+                            faderLevel, pgmOn, pstOn
+                        })),
+                        grpFader: this.store.channels[0].grpFader.map(({ faderLevel, pgmOn, pstOn }: IChannel) => ({
+                            faderLevel, pgmOn, pstOn
+                        }))
+                    }),
+                    "s",
+                    info
+                )
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_PGM)) {
                 let ch = message.address.split("/")[3];
                 this.sendOutMessage(
                     this.automationProtocol.toAutomation.STATE_CHANNEL_PGM,
                     ch,
                     this.store.channels[0].channel[ch-1].pgmOn,
-                    "i"
+                    "i",
+                    info
                 );
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_PST)) {
@@ -150,7 +168,8 @@ export class AutomationConnection {
                     this.automationProtocol.toAutomation.STATE_CHANNEL_PST,
                     ch,
                     this.store.channels[0].channel[ch-1].pstOn,
-                    "i"
+                    "i",
+                    info
                 );
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_FADER_LEVEL)) {
@@ -159,7 +178,8 @@ export class AutomationConnection {
                     this.automationProtocol.toAutomation.STATE_CHANNEL_FADER_LEVEL,
                     ch,
                     this.store.channels[0].channel[ch-1].faderLevel,
-                    "f"
+                    "f",
+                    info
                 );
             }
         })
@@ -189,7 +209,7 @@ export class AutomationConnection {
         }
     }
 
-    sendOutMessage(oscMessage: string, channel: number, value: string, type: string) {
+    sendOutMessage(oscMessage: string, channel: number, value: string, type: string, to: { ip: string, port: number }) {
         let channelString = this.automationProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{value1}",
@@ -204,7 +224,7 @@ export class AutomationConnection {
                         value: value
                     }
                 ]
-            });
+            }, to.ip, to.port);
         }
     }
 }

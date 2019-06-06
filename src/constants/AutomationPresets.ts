@@ -26,11 +26,13 @@ export interface IAutomationProtocol {
         STATE_CHANNEL_PGM: string,
         STATE_CHANNEL_PST: string,
         STATE_CHANNEL_FADER_LEVEL: string,
+        STATE_FULL: string
     },
     toAutomation: {
         STATE_CHANNEL_PGM: string,
         STATE_CHANNEL_PST: string,
         STATE_CHANNEL_FADER_LEVEL: string,
+        STATE_FULL: string
     },
     fader: {
         min: number,
@@ -62,22 +64,24 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
             }
         ],
         fromAutomation: {
-            CHANNEL_PGM_ON_OFF: '/ch/{value1}/mix/pgm',
-            CHANNEL_PST_ON_OFF: '/ch/{value1}/mix/pst',
-            CHANNEL_FADER_LEVEL: '/ch/{value1}/mix/faderlevel',
+            CHANNEL_PGM_ON_OFF: '/ch/{value1}/pgm',
+            CHANNEL_PST_ON_OFF: '/ch/{value1}/pst',
+            CHANNEL_FADER_LEVEL: '/ch/{value1}/faderlevel',
             CHANNEL_VISIBLE: '/ch/{value1}/visible',
             X_MIX: '/take',
             SET_LABEL: '/ch/{value1}/label',
             FADE_TO_BLACK: '/fadetoblack',
             SNAP_RECALL: '/snap/{value1}',
-            STATE_CHANNEL_PGM: '/state/ch/{value1}/mix/pgm',
-            STATE_CHANNEL_PST: '/state/ch/{value1}/mix/pst',
-            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/mix/faderlevel',
+            STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
+            STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
+            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
+            STATE_FULL: '/state/full'
         },
         toAutomation: {
-            STATE_CHANNEL_PGM: '/state/ch/{value1}/mix/pgm',
-            STATE_CHANNEL_PST: '/state/ch/{value1}/mix/pst',
-            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/mix/faderlevel',
+            STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
+            STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
+            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
+            STATE_FULL: '/state/full'
         },
         fader: {
             min: 0,
