@@ -6,11 +6,28 @@ import { BehringerXrClient } from './mixerProtocols/behringerXrClient';
 import { MidasMaster } from './mixerProtocols/midasMaster';
 import { MidasClient } from './mixerProtocols/midasClient';
 import { GenericMidi } from './mixerProtocols/genericMidi';
+import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 
-export interface IMixerProtocol {
+export interface IMixerProtocolGeneric {
     protocol: string,
     label: string,
-    mode: string,
+    mode: string
+    fader: {
+        min: number
+        max: number
+        zero: number
+        step: number
+        fadeTime: number
+    },
+    meter: {
+        min: number,
+        max: number,
+        zero: number,
+        test: number,
+    }
+}
+
+export interface IMixerProtocol extends IMixerProtocolGeneric{
     leadingZeros: boolean,
     pingCommand: Array<IMessageProtocol>,
     pingTime: number,
@@ -31,20 +48,35 @@ export interface IMixerProtocol {
         GRP_OUT_GAIN: string,
         PFL_ON: IMessageProtocol,
         PFL_OFF: IMessageProtocol
-    },
-    fader: {
-        min: number,
-        max: number,
-        zero: number,
-        step: number,
-        fadeTime: number,
-    },
-    meter: {
-        min: number,
-        max: number,
-        zero: number,
-        test: number,
     }
+}
+
+export interface ChannelLayerPair {
+    channel: number
+    layer: number
+}
+
+export interface ICasparCGMixerGeometryFile {
+    label?: string,
+    channelLabels?: string[],
+    PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
+    MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>
+} 
+
+export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
+    studio: string,
+    leadingZeros: boolean,
+    pingTime: number,
+    fromMixer: {
+        CHANNEL_FADER_LEVEL: string,
+        CHANNEL_OUT_GAIN: string,
+        CHANNEL_VU: string,
+    },
+    toMixer: {
+        PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
+        MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
+    }
+    channelLabels?: string[]
 }
 
 interface IMessageProtocol {
@@ -53,7 +85,7 @@ interface IMessageProtocol {
     type: string
 }
 
-export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
+export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Object.assign({
     ardourMaster: ArdourMaster,
     reaper: Reaper,
     reaperMaster: ReaperMaster,
@@ -61,8 +93,10 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocol } = {
     behringerxrclient: BehringerXrClient,
     midasMaster: MidasMaster,
     midasClient: MidasClient,
-    genericMidi: GenericMidi,
-};
+    genericMidi: GenericMidi
+}, CasparCGMaster !== undefined ? {
+    casparCGMaster: CasparCGMaster
+} : {});
 
 
 export const MixerProtocolList = Object.getOwnPropertyNames(MixerProtocolPresets).map((preset) => {

@@ -1,7 +1,8 @@
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
+import { CasparCGConnection } from './CasparCGConnection';
 
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
 // The lower the more CPU
@@ -9,7 +10,7 @@ let FADE_INOUT_SPEED = 3;
 
 export class MixerConnection {
     store: any;
-    mixerProtocol: IMixerProtocol;
+    mixerProtocol: IMixerProtocolGeneric;
     mixerConnection: any;
     timer: any;
     grpTimer: any;
@@ -30,9 +31,11 @@ export class MixerConnection {
         // Get mixer protocol
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
         if (this.mixerProtocol.protocol === 'OSC') {
-            this.mixerConnection = new OscMixerConnection();
+            this.mixerConnection = new OscMixerConnection(this.mixerProtocol as IMixerProtocol);
         } else if (this.mixerProtocol.protocol === 'MIDI') {
-            this.mixerConnection = new MidiMixerConnection();
+            this.mixerConnection = new MidiMixerConnection(this.mixerProtocol as IMixerProtocol);
+        } else if (this.mixerProtocol.protocol === 'CasparCG') {
+            this.mixerConnection = new CasparCGConnection(this.mixerProtocol as ICasparCGMixerGeometry);
         }
 
         //Setup timers for fade in & out

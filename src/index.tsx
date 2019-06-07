@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { render } from 'react-dom';
 import App from './components/App';
 
@@ -23,7 +23,7 @@ declare global {
 const storeRedux = createStore(
     indexReducer
 );
-(window as any).storeRedux = storeRedux;
+window.storeRedux = storeRedux;
 
 
 storeRedux.dispatch({

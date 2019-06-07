@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from "react-redux";
 import Select from 'react-select';
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
@@ -28,7 +28,7 @@ const selectorColorStyles = {
 };
 
 
-class Channels extends PureComponent<any, any> {
+class Channels extends React.PureComponent<any, any> {
     mixerProtocolList: any;
     mixerProtocolPresets: any;
     remoteFaderMidiInputPortList: any;
@@ -289,7 +289,7 @@ class Channels extends PureComponent<any, any> {
                 <br/>
                 <label className="settings-input-field">
                     LOCAL IP :
-                    <input name="localOscIp" type="text" value={this.state.settings.localOscIp} onChange={this.handleChange} />
+                    <input name="localIp" type="text" value={this.state.settings.localIp} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
@@ -309,12 +309,12 @@ class Channels extends PureComponent<any, any> {
                 <br/>
                 <label className="settings-input-field">
                     MIXER IP :
-                    <input name="machineOscIp" type="text" value={this.state.settings.machineOscIp} onChange={this.handleChange} />
+                    <input name="deviceIp" type="text" value={this.state.settings.deviceIp} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
                     MIXER PORT :
-                    <input name="machineOscPort" type="text" value={this.state.settings.machineOscPort} onChange={this.handleChange} />
+                    <input name="devicePort" type="text" value={this.state.settings.devicePort} onChange={this.handleChange} />
                 </label>
                 <br/>
                 {this.renderShowChannelsSelection()}
@@ -323,14 +323,15 @@ class Channels extends PureComponent<any, any> {
                 <br/>
                 {this.renderRemoteControllerSettings()}
                 <br/>
-                <input
+                <button
                     className="settings-save-button"
                     onClick=
                         {() => {
                             this.handleSave();
                         }}
-                    value="SAVE SETTINGS"
-                />
+                >
+                    SAVE SETTINGS
+                </button>
             </div>
         )
     }
