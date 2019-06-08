@@ -1,28 +1,42 @@
 import * as React from 'react';
+//@ts-ignore
+import * as ClassNames from 'classnames';
 import { connect } from "react-redux";
 import VuMeter from './VuMeter';
+import { Store } from 'redux';
 
 //assets:
 import '../assets/css/Channel.css';
 import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric } from '../constants/MixerProtocolPresets';
 import { any } from 'prop-types';
 
+interface IChannelInjectProps {
+    pgmOn: boolean,
+    pstOn: boolean,
+    pflOn: boolean,
+    showChannel: boolean,
+    faderLevel: number,
+    outputLevel: number,
+    label: string,
+    snapOn: boolean[],
+    mixerProtocol: string,
+    showSnaps: boolean
+    showPfl: boolean
+}
 
-class Channel extends React.PureComponent<any, any> {
+interface IChannelProps {
+    channelIndex: number
+}
+
+
+class Channel extends React.PureComponent<IChannelProps & IChannelInjectProps & Store> {
     mixerProtocol: IMixerProtocolGeneric;
     channelIndex: number;
 
     constructor(props: any) {
         super(props);
         this.channelIndex = this.props.channelIndex;
-        this.state = {
-        };
         this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi;
-
-        this.pgmButton = this.pgmButton.bind(this);
-        this.pstButton = this.pstButton.bind(this);
-        this.pflButton = this.pflButton.bind(this);
-        this.snapButton = this.snapButton.bind(this);
     }
 
     handlePgm() {
@@ -72,21 +86,6 @@ class Channel extends React.PureComponent<any, any> {
     fader() {
         return (
             <input className="channel-volume-slider"
-                style= {
-                    Object.assign(
-                        this.props.showSnaps
-                        ?   {
-                                width: "220px",
-                                marginTop: "140px",
-                                transform: "translate(-40px, 0) rotate(270deg) "
-                            }
-                        :   {
-                                width: "460px",
-                                marginTop: "260px",
-                                transform: "translate(-160px, 0) rotate(270deg) "
-                            }
-                    )
-                }
                 id="typeinp"
                 type="range"
                 min={this.mixerProtocol.fader.min}
@@ -101,27 +100,13 @@ class Channel extends React.PureComponent<any, any> {
         )
     }
 
-    pgmButton() {
+    pgmButton = () => {
         return (
 
             <button
-                className="channel-pgm-button"
-                style={
-                    Object.assign(
-                        this.props.pgmOn
-                        ? {backgroundColor: "red"}
-                        : {backgroundColor: "rgb(66, 27, 27)"},
-                        this.props.showSnaps
-                        ?   {
-                                height: "40px",
-                                marginTop: "130px"
-                            }
-                        :   {
-                                height: "90px",
-                                marginTop: "260px"
-                            }
-                    )
-                }
+                className={ClassNames("channel-pgm-button", {
+                    'on': this.props.pgmOn
+                })}
                 onClick={event => {
                     this.handlePgm();
                 }}
@@ -131,20 +116,12 @@ class Channel extends React.PureComponent<any, any> {
         )
     }
 
-    pstButton() {
+    pstButton = () => {
         return (
             <button
-                className="channel-pst-button"
-                style={
-                    Object.assign(
-                        this.props.pstOn
-                        ? {backgroundColor: "green"}
-                        : {backgroundColor: "rgb(59, 73, 59)"},
-                        this.props.showSnaps
-                        ?   {height: "40px"}
-                        :   {height: "90px"}
-                    )
-                }
+                className={ClassNames("channel-pst-button", {
+                    'on': this.props.pstOn
+                })}
                 onClick={event => {
                     this.handlePst();
                 }}
@@ -153,23 +130,12 @@ class Channel extends React.PureComponent<any, any> {
     }
 
 
-    pflButton() {
+    pflButton = () => {
         return (
             <button
-                className={
-                    "channel-pfl-button " +
-                    (this.props.pflOn ?
-                        "pfl-active" :
-                        ""
-                    )
-                }
-                style={
-                    Object.assign(
-                        this.props.showSnaps
-                        ?   {height: "40px"}
-                        :   {height: "90px"}
-                    )
-                }
+                className={ClassNames("channel-pfl-button", {
+                    'on': this.props.pflOn
+                })}
                 onClick={event => {
                     this.handlePfl();
                 }}
@@ -177,16 +143,14 @@ class Channel extends React.PureComponent<any, any> {
         )
     }
 
-    snapButton(snapIndex: number) {
+    snapButton = (snapIndex: number) => {
         if (this.props.showSnaps) {
             return (
                 <div key={snapIndex} className="channel-snap-line">
                     <button
-                        className="channel-snap-button"
-                        style={this.props.snapOn[snapIndex]
-                            ? {backgroundColor: "rgb(183, 182, 20)"}
-                            : {backgroundColor: "rgb(89, 83, 10)"}
-                        }
+                        className={ClassNames("channel-snap-button", {
+                            'on': this.props.snapOn[snapIndex]
+                        })}
                         onClick={event => {
                             this.handleSnap(snapIndex);
                         }}
@@ -204,7 +168,10 @@ class Channel extends React.PureComponent<any, any> {
         this.props.showChannel === false ?
             <div></div>
             :
-            <div className="channel-body">
+            <div className={ClassNames("channel-body", {
+                "with-snaps": this.props.showSnaps,
+                "with-pfl": this.props.showPfl
+            })}>
                 {this.fader()}
                 <VuMeter channelIndex = {this.channelIndex}/>
                 <br/>
@@ -212,13 +179,18 @@ class Channel extends React.PureComponent<any, any> {
                 <br/>
                 {this.pstButton()}
                 <br/>
-                {this.pflButton()}
-                <br/>
+                {this.props.showPfl ?
+                    <React.Fragment>
+                        {this.pflButton()}
+                        <br />
+                    </React.Fragment>
+                    : null
+                }
                 <div className="channel-name">
                     {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
                 </div>
                 <div className="channel-gain-label">
-                    GAIN: {parseInt(this.props.outputLevel)*100/100}
+                    GAIN: {Math.round(this.props.outputLevel * 100) / 100}
                 </div>
                 <div className="channel-snap-body">
                     {this.props.snapOn
@@ -232,7 +204,7 @@ class Channel extends React.PureComponent<any, any> {
     }
 }
 
-const mapStateToProps = (state: any, props: any) => {
+const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
         pgmOn: state.channels[0].channel[props.channelIndex].pgmOn,
         pstOn: state.channels[0].channel[props.channelIndex].pstOn,
@@ -243,8 +215,9 @@ const mapStateToProps = (state: any, props: any) => {
         label: state.channels[0].channel[props.channelIndex].label,
         snapOn: state.channels[0].channel[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,
-        showSnaps: state.settings[0].showSnaps
+        showSnaps: state.settings[0].showSnaps,
+        showPfl: state.settings[0].showPfl
     }
 }
 
-export default connect<any, any>(mapStateToProps)(Channel) as any;
+export default connect<any, IChannelInjectProps>(mapStateToProps)(Channel) as any;

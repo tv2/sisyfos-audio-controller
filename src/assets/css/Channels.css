@@ -97,3 +97,6 @@
     border-color: rgb(99, 99, 99);
 }
 
+.channels-snap-mix-line:last-of-type {
+    margin-bottom: 51px;
+}

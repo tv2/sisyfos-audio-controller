@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from "react-redux";
 import { IStore } from '../reducers/indexReducer';
 
@@ -11,11 +11,17 @@ import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
 import { MixerConnection } from '../utils/MixerConnection';
 import { AutomationConnection } from '../utils/AutomationConnection';
 import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
+import { Store, AnyAction } from 'redux';
+import { ISettings } from '../reducers/settingsReducer';
+import { IChannels } from '../reducers/channelsReducer';
 
+export interface IAppProps {
+    store: IStore
+}
 
-class App extends Component<any, any> {
+class App extends React.Component<IAppProps> {
 
-    constructor(props: any) {
+    constructor(props: IAppProps) {
         super(props)
     }
 
@@ -45,10 +51,10 @@ class App extends Component<any, any> {
 }
 
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: any): IAppProps => {
     return {
         store: state
     }
 }
 
-export default connect<any, any>(mapStateToProps)(App) as any;
+export default connect<any, IAppProps>(mapStateToProps)(App) as any;

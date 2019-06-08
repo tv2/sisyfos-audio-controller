@@ -31,6 +31,7 @@
         "@types/react-redux": "^7.0.9",
         "@types/react-select": "^2.0.19",
         "casparcg-connection": "^4.7.0",
+        "classnames": "^2.2.6",
         "osc": "https://github.com/PieceMeta/osc.js/tarball/master",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",

@@ -6,8 +6,8 @@
     margin-left: 14px;
     background-color: black;
     border-radius: 7px;
-    transform:  rotate(180deg) ;
-    -moz-transform: rotate(180deg) ;
+    transform:  rotate(180deg);
+    height: 430px;
 }
 
 .vumeter-lower-part {

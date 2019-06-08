@@ -95,17 +95,17 @@ export const channels = ((state = defaultChannelsReducerState(1), action: any): 
             });
             return nextState;
         case 'FADE_ACTIVE':
-            nextState[0].channel[action.channel].fadeActive = action.active;
+            nextState[0].channel[action.channel].fadeActive = !!action.active;
             return nextState;
         case 'SET_FADER_LEVEL': //channel:  level:
-            nextState[0].channel[action.channel].faderLevel = action.level;
+            nextState[0].channel[action.channel].faderLevel = parseFloat(action.level);
             return nextState;
         case 'SET_OUTPUT_LEVEL': //channel:  level:
-            nextState[0].channel[action.channel].outputLevel = action.level;
+            nextState[0].channel[action.channel].outputLevel = parseFloat(action.level);
             return nextState;
         case 'SET_VU_LEVEL': //channel:  level:
             if (typeof nextState[0].vuMeters[action.channel] != 'undefined') {
-                nextState[0].vuMeters[action.channel].vuVal = action.level;
+                nextState[0].vuMeters[action.channel].vuVal = parseFloat(action.level);
             }
             return nextState;
         case 'SET_ALL_VU_LEVELS': //channel:  level:
@@ -118,22 +118,22 @@ export const channels = ((state = defaultChannelsReducerState(1), action: any): 
             nextState[0].channel[action.channel].pgmOn = !nextState[0].channel[action.channel].pgmOn;
             return nextState;
         case 'SET_PGM': //channel
-            nextState[0].channel[action.channel].pgmOn = action.pgmOn;
+            nextState[0].channel[action.channel].pgmOn = !!action.pgmOn;
             return nextState;
         case 'TOGGLE_PST': //channel
             nextState[0].channel[action.channel].pstOn = !nextState[0].channel[action.channel].pstOn;
             return nextState;
         case 'SET_PST': //channel
-            nextState[0].channel[action.channel].pstOn = action.pstOn;
+            nextState[0].channel[action.channel].pstOn = !!action.pstOn;
             return nextState;
         case 'TOGGLE_PFL': //channel
             nextState[0].channel[action.channel].pflOn = !nextState[0].channel[action.channel].pflOn;
             return nextState;
         case 'SET_PFL': //channel
-            nextState[0].channel[action.channel].pflOn = action.pflOn;
+            nextState[0].channel[action.channel].pflOn = !!action.pflOn;
             return nextState;
         case 'SHOW_CHANNEL': //channel // showChannel
-            nextState[0].channel[action.channel].showChannel = action.showChannel;
+            nextState[0].channel[action.channel].showChannel = !!action.showChannel;
             return nextState;
         case 'SET_SNAP': //channel //snapIndex
             nextState[0].channel[action.channel].snapOn[action.snapIndex] = !nextState[0].channel[action.channel].snapOn[action.snapIndex];
@@ -160,21 +160,21 @@ export const channels = ((state = defaultChannelsReducerState(1), action: any): 
             return nextState;
         case 'SNAP_RECALL': //snapIndex
             nextState[0].channel.map((item, index) => {
-                nextState[0].channel[index].pstOn = state[0].channel[index].snapOn[action.snapIndex];
+                nextState[0].channel[index].pstOn = !!state[0].channel[index].snapOn[action.snapIndex];
             });
             return nextState;
         case 'FADE_GRP_ACTIVE':
             nextState[0].grpFader[action.channel].fadeActive = action.active;
             return nextState;
         case 'SET_GRP_FADER_LEVEL': //channel:  level:
-            nextState[0].grpFader[action.channel].faderLevel = action.level;
+            nextState[0].grpFader[action.channel].faderLevel = parseFloat(action.level);
             return nextState;
         case 'SET_GRP_OUTPUT_LEVEL': //channel:  level:
-            nextState[0].grpFader[action.channel].outputLevel = action.level;
+            nextState[0].grpFader[action.channel].outputLevel = parseFloat(action.level);
             return nextState;
         case 'SET_GRP_VU_LEVEL': //channel:  level:
             if (typeof nextState[0].grpVuMeters[action.channel] != 'undefined') {
-                nextState[0].grpVuMeters[action.channel].vuVal = action.level;
+                nextState[0].grpVuMeters[action.channel].vuVal = parseFloat(action.level);
             }
             return nextState;
         case 'SET_ALL_GRP_VU_LEVELS': //channel:  level:
@@ -187,16 +187,16 @@ export const channels = ((state = defaultChannelsReducerState(1), action: any): 
             nextState[0].grpFader[action.channel].pgmOn = !nextState[0].grpFader[action.channel].pgmOn;
             return nextState;
         case 'SET_GRP_PGM': //channel
-            nextState[0].grpFader[action.channel].pgmOn = action.pgmOn;
+            nextState[0].grpFader[action.channel].pgmOn = !!action.pgmOn;
             return nextState;
         case 'TOGGLE_GRP_PST': //channel
             nextState[0].grpFader[action.channel].pstOn = !nextState[0].grpFader[action.channel].pstOn;
             return nextState;
         case 'SET_GRP_PST': //channel
-            nextState[0].grpFader[action.channel].pstOn = action.pstOn;
+            nextState[0].grpFader[action.channel].pstOn = !!action.pstOn;
             return nextState;
         case 'SHOW_GRP_FADER': //channel // showChannel
-            nextState[0].grpFader[action.channel].showChannel = action.showChannel;
+            nextState[0].grpFader[action.channel].showChannel = !!action.showChannel;
             return nextState;
         default:
             return nextState;

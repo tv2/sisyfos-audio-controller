@@ -7,7 +7,17 @@ import '../assets/css/VuMeter.css';
 import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric } from '../constants/MixerProtocolPresets';
 import { any } from 'prop-types';
 
-class VuMeter extends React.PureComponent<any, any> {
+interface IVuMeterInjectedProps {
+    showSnaps: boolean
+    mixerProtocol: string
+    vuVal: number
+}
+
+interface IVuMeterProps {
+    channelIndex: number
+}
+
+class VuMeter extends React.PureComponent<IVuMeterProps & IVuMeterInjectedProps> {
     channelIndex: number;
     mixerProtocol: IMixerProtocolGeneric;
 
@@ -15,22 +25,14 @@ class VuMeter extends React.PureComponent<any, any> {
         super(props);
         this.channelIndex = this.props.channelIndex;
 
-
-        this.state = {
-        };
         this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol]  || MixerProtocolPresets.genericMidi;
-
-        this.totalHeight = this.totalHeight.bind(this);
-        this.calcLower = this.calcLower.bind(this);
-        this.calcMiddle = this.calcMiddle.bind(this);
-        this.calcUpper = this.calcUpper.bind(this);
     }
 
-    totalHeight() {
+    totalHeight = () => {
         return (this.props.showSnaps ? 1 : 2) * 200 / (this.mixerProtocol.meter.max - this.mixerProtocol.meter.min);
     }
 
-    calcLower() {
+    calcLower = () => {
         let val = this.props.vuVal;
         if (val >= this.mixerProtocol.meter.test) {
             val = this.mixerProtocol.meter.test;
@@ -38,7 +40,7 @@ class VuMeter extends React.PureComponent<any, any> {
         return this.totalHeight()*val;
     }
 
-    calcMiddle() {
+    calcMiddle = () => {
         let val = this.props.vuVal;
         if (val < this.mixerProtocol.meter.test) {
             val = this.mixerProtocol.meter.test;
@@ -48,7 +50,7 @@ class VuMeter extends React.PureComponent<any, any> {
         return this.totalHeight()*(val-this.mixerProtocol.meter.test)+1;
     }
 
-    calcUpper() {
+    calcUpper = () => {
         let val = this.props.vuVal;
         if (val < this.mixerProtocol.meter.zero) {
             val = this.mixerProtocol.meter.zero;
@@ -96,7 +98,7 @@ class VuMeter extends React.PureComponent<any, any> {
     }
 }
 
-const mapStateToProps = (state: any, props: any) => {
+const mapStateToProps = (state: any, props: any): IVuMeterInjectedProps => {
     return {
         vuVal: state.channels[0].vuMeters[props.channelIndex].vuVal,
         mixerProtocol: state.settings[0].mixerProtocol,
@@ -104,4 +106,4 @@ const mapStateToProps = (state: any, props: any) => {
     }
 }
 
-export default connect<any, any, any>(mapStateToProps)(VuMeter);
+export default connect<IVuMeterInjectedProps, any, any>(mapStateToProps)(VuMeter);

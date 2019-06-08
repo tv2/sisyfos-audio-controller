@@ -21,13 +21,17 @@
     outline : none;
     -moz-outline : none;
     margin-left: 10px;
-    margin-top: 130px;
+    margin-top: 260px;
     color: white;
-    height: 40px;
+    height: 90px;
     width: 80px;
-    background-color: green;
+    background-color: rgb(66, 27, 27);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
+}
+
+.grpFader-pgm-button.on {
+    background-color: red;
 }
 
 .grpFader-pst-button {
@@ -36,12 +40,34 @@
     margin-left: 10px;
     margin-top: 5px;
     color: white;
-    height: 40px;
+    height: 90px;
     width: 80px;
-    background-color: red;
+    background-color: green;
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
 }
+
+.grpFader-pst-button.on {
+    background-color: rgb(59, 73, 59);
+}
+
+.grpFader-body.with-snaps .grpFader-pgm-button, .grpFader-body.with-snaps .grpFader-pst-button {
+    height: 40px;
+}
+
+.grpFader-body.with-snaps .grpFader-pgm-button {
+    margin-top: 187px;
+}
+
+.grpFader-body.with-snaps .grpFader-pst-button {
+    margin-bottom: 44px;
+}
+.grpFader-body.with-pfl .grpFader-pst-button {
+    margin-bottom: 95px;
+}
+.grpFader-body.with-snaps.with-pfl .grpFader-pst-button {
+    margin-bottom: 44px;
+} 
 
 .grpFader-snap-body {
     margin-top: 10px;
