@@ -183,20 +183,22 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     renderShowChannelsSelection = () => {
         return (
             <div className="settings-show-channel-selection">
-                <input className="settings-channels-button"
+                <button className="settings-channels-button"
                     onClick=
                         {() => {
                             this.handleShowAllChannels();
                         }}
-                    value="ALL CHANNELS"
-                />
-                <input className="settings-channels-button"
+                >
+                    ALL CHANNELS
+                </button>
+                <button className="settings-channels-button"
                     onClick=
                         {() => {
                             this.handleHideAllChannels();
                         }}
-                    value="NO CHANNELS"
-                />
+                >
+                    NO CHANNELS
+                </button>
                 {this.props.store.channels[0].channel.map((channel: any, index: number) => {
                         return <div key={index}>
                             {channel.label != "" ? channel.label : ("CH " + (index + 1)) }
@@ -216,20 +218,22 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     renderShowGrpFadersSelection = () => {
         return (
             <div className="settings-show-channel-selection">
-                <input className="settings-channels-button"
+                <button className="settings-channels-button"
                     onClick=
                         {() => {
                             this.handleShowAllGrpFaders();
                         }}
-                    value="ALL GROUPS"
-                />
-                <input className="settings-channels-button"
+                >
+                    ALL GROUPS
+                </button>
+                <button className="settings-channels-button"
                     onClick=
                         {() => {
                             this.handleHideAllGrpFaders();
                         }}
-                    value="NO GROUPS"
-                />
+                >
+                    NO GROUPS
+                </button>
                 {this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
                         return <div key={index}>
                             {channel.label != "" ? channel.label : ("GRP " + (index + 1)) }
