@@ -1,13 +1,20 @@
 {
-    "name": "producers-audio-mixer",
+    "name": "sisyfos-audio-controller",
     "version": "0.1.0",
     "description": "Audio mixer build with the logic from a video mixer",
     "license": "MIT",
     "private": false,
     "author": {
-        "name": "Kasper Olsson Hans",
+        "name": "Kasper Olsson Hans (TV2 Denmark)",
         "email": "github@olzzon.dk"
     },
+    "contributors": [
+        {
+        "name": "Jan Starzak",
+        "email": "jan@superfly.tv",
+        "url": "https://superfly.tv"
+        }
+    ],
     "keywords": [
         "app",
         "audio",
