@@ -95,6 +95,7 @@
     width: 60px;
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
+    white-space: nowrap;
 }
 
 .channels-snap-mix-line:last-of-type {
