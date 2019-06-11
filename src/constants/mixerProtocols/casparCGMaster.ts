@@ -12,7 +12,7 @@ try {
 	let inputObj = JSON.parse(fs.readFileSync(geometryFile, {
 		encoding: 'utf-8'
 	}))
-	if (inputObj.MONITOR_CHANNEL_FADER_LEVEL && inputObj.PGM_CHANNEL_FADER_LEVEL) {
+	if (inputObj.toMixer && inputObj.toMixer.PGM_CHANNEL_FADER_LEVEL) {
 		geometry = inputObj
 	}
 } catch (e) {
@@ -29,12 +29,8 @@ if (geometry) {
 		studio: "rk10",
 		leadingZeros: false,
 		pingTime: 0,
-		fromMixer: {
-			CHANNEL_FADER_LEVEL: "39",        //PgmChange 0 - ignores this command
-			CHANNEL_OUT_GAIN: "0",            //PgmChange 0 - ignores this command
-			CHANNEL_VU: "0",                  //PgmChange 0 - ignores this command
-		},
-		toMixer: geometry,
+		fromMixer: geometry.fromMixer,
+		toMixer: geometry.toMixer,
 		fader: {
 			min: 0,
 			max: 1.5,

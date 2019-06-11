@@ -9,7 +9,7 @@ declare module 'osc' {
 
 	interface OSCMessage {
 		address: string,
-		args: TypeAnnotatedArg | TypeAnnotatedArg[]
+		args: any[]
 	}
 
 	type OSCMessageOrBundle = OSCMessage | OSCBundle
@@ -27,12 +27,6 @@ declare module 'osc' {
 		b: number,
 		a: number
 	}
-
-	interface TypeAnnotatedArg {
-		type: string
-		value: any
-	}
-
 
 	interface OSCPort extends EventEmitter {
 		on(event: 'ready', handler: () => void): this
@@ -64,5 +58,6 @@ declare module 'osc' {
 		on(event: "raw", handler: (data: Uint8Array, info: any) => void): this
 		on(event: "error", handler: (error: Error) => void): this
 		send(packet: OSCMessage | OSCBundle): void
+		open(): void
 	}
 }

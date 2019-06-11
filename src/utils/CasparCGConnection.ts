@@ -8,11 +8,16 @@ import { IMixerProtocol, MixerProtocolPresets, ICasparCGMixerGeometry, ChannelLa
 import { IStore } from '../reducers/indexReducer';
 import { IChannel } from '../reducers/channelsReducer';
 
+interface CommandChannelMap {
+    [key: string]: number
+}
+
 export class CasparCGConnection {
     store: IStore;
     mixerProtocol: ICasparCGMixerGeometry;
     connection: CasparCG;
     oscClient: osc.UDPPort | undefined;
+    oscCommandMap: { [key: string]: CommandChannelMap } = {};
 
     constructor(mixerProtocol: ICasparCGMixerGeometry) {
         this.store = window.storeRedux.getState() as IStore;
@@ -38,23 +43,44 @@ export class CasparCGConnection {
             console.log("CasparCG disconnected");
         }
         this.connection.connect();
+
+        this.oscCommandMap.CHANNEL_VU = {}
+        this.mixerProtocol.fromMixer.CHANNEL_VU.forEach((paths, index) => {
+            this.oscCommandMap.CHANNEL_VU[paths[0]] = index
+        })
     }
 
     setupMixerConnection() {
         if (!this.oscClient) {
+            const remotePort = parseInt(this.store.settings[0].devicePort + '') + 1000
             this.oscClient = new osc.UDPPort({
                 localAddress: this.store.settings[0].localIp,
-                localPort: parseInt(this.store.settings[0].localOscPort + ''),
+                localPort: remotePort,
                 remoteAddress: this.store.settings[0].deviceIp,
-                remotePort: parseInt(this.store.settings[0].devicePort + '') + 1000
+                remotePort
             })
             .on('ready', () => {
-    
+                console.log("Receiving state of mixer");
+            })
+            .on('message', (message: osc.OSCMessage) => {
+                const index = this.checkOscCommand(message.address, this.oscCommandMap.CHANNEL_VU)
+                if (index !== undefined && message.args) {
+                    window.storeRedux.dispatch({
+                        type: 'SET_VU_LEVEL',
+                        channel: index,
+                        // CCG returns "produced" audio levels, before the Volume mixer transform
+                        // We therefore want to premultiply this to show useful information about audio levels
+                        level: Math.min(1, message.args[0] * this.store.channels[0].channel[index].faderLevel)
+                    });
+                }
             })
             .on('error', (error: any) => {
                 console.log("Error : ", error);
                 console.log("Lost OSC connection");
             });
+            
+            this.oscClient.open();
+            console.log("Listening for status on CasparCG: ", this.store.settings[0].deviceIp, remotePort)
         }
 
         // Restore mixer values to the ones we have internally
@@ -73,6 +99,14 @@ export class CasparCGConnection {
                 });
             });
         }
+    }
+
+    checkOscCommand(address: string, commandSpace: CommandChannelMap): number | undefined {
+        const index = commandSpace[address]
+        if (index !== undefined) {
+            return index
+        }
+        return undefined
     }
 
     pingMixerCommand = () => {
