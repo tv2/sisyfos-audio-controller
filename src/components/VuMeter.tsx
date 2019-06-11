@@ -7,7 +7,7 @@ import '../assets/css/VuMeter.css';
 import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric } from '../constants/MixerProtocolPresets';
 import { any } from 'prop-types';
 
-interface IVuMeterInjectedProps {
+export interface IVuMeterInjectedProps {
     showSnaps: boolean
     mixerProtocol: string
     vuVal: number
@@ -17,13 +17,11 @@ interface IVuMeterProps {
     channelIndex: number
 }
 
-class VuMeter extends React.PureComponent<IVuMeterProps & IVuMeterInjectedProps> {
-    channelIndex: number;
+export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     mixerProtocol: IMixerProtocolGeneric;
 
     constructor(props: any) {
         super(props);
-        this.channelIndex = this.props.channelIndex;
 
         this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol]  || MixerProtocolPresets.genericMidi;
     }
