@@ -255,6 +255,16 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <div className="settings-header">
                     REMOTE CONTROLLER SETTINGS:
                 </div>
+                <label className="settings-input-field">
+                    ENABLE REMOTE CONTROLLER:
+                    <input
+                        type="checkbox"
+                        name="enableRemoteFader"
+                        checked={this.state.settings.enableRemoteFader}
+                        onChange={this.handleChange}
+                    />
+                </label>
+                <br/>
                 <div className="settings-input-field">
                     Remote Midi Input Port :
                 </div>
