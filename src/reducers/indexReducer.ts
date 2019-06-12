@@ -8,8 +8,8 @@ export interface IStore {
 };
 
 const indexReducer = combineReducers({
-    settings,
-    channels
+    channels,
+    settings
 });
 
 export default indexReducer;
