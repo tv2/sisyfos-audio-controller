@@ -191,6 +191,8 @@ class Channel extends React.PureComponent<IChannelProps & IChannelInjectProps & 
                 </div>
                 <div className="channel-gain-label">
                     GAIN: {Math.round(this.props.outputLevel * 100) / 100}
+                    <br/>
+                    TIME: {Date.now()}
                 </div>
                 <div className="channel-snap-body">
                     {this.props.snapOn
