@@ -51,7 +51,21 @@ export class OscMixerConnection {
             });
         })
         .on('message', (message: any) => {
-            if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+            if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+                .CHANNEL_VU)){
+                if (this.store.settings[0].mixerProtocol.includes('behringer')) {
+                    behringerMeter(message.args);
+                } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
+                    midasMeter(message.args);
+                } else {
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    window.storeRedux.dispatch({
+                        type:'SET_VU_LEVEL',
+                        channel: ch - 1,
+                        level: message.args[0]
+                    });
+                }
+            } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
                 window.storeRedux.dispatch({
@@ -93,20 +107,6 @@ export class OscMixerConnection {
                         window.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
                     }
 
-                }
-            } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
-                .CHANNEL_VU)){
-                if (this.store.settings[0].mixerProtocol.includes('behringer')) {
-                    behringerMeter(message.args);
-                } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
-                    midasMeter(message.args);
-                } else {
-                    let ch = message.address.split("/")[this.cmdChannelIndex];
-                    window.storeRedux.dispatch({
-                        type:'SET_VU_LEVEL',
-                        channel: ch - 1,
-                        level: message.args[0]
-                    });
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_NAME)) {

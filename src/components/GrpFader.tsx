@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from "react-redux";
 //@ts-ignore
 import * as ClassNames from 'classnames';
@@ -25,7 +25,7 @@ interface IGrpFaderProps {
     faderIndex: number
 }
 
-class GrpFader extends PureComponent<IGrpFaderProps & IGrpFaderInjectProps & Store> {
+class GrpFader extends Component<IGrpFaderProps & IGrpFaderInjectProps & Store> {
     mixerProtocol: IMixerProtocol;
     faderIndex: number;
 
@@ -34,6 +34,18 @@ class GrpFader extends PureComponent<IGrpFaderProps & IGrpFaderInjectProps & Sto
         this.faderIndex = this.props.faderIndex;
         this.mixerProtocol = (MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi) as IMixerProtocol;
 
+    }
+
+    public shouldComponentUpdate(nextProps: IGrpFaderInjectProps) {
+        return (nextProps.pgmOn != this.props.pgmOn ||
+            nextProps.pstOn != this.props.pstOn ||
+            nextProps.showChannel != this.props.showChannel ||
+            nextProps.faderLevel != this.props.faderLevel ||
+            nextProps.label != this.props.label ||
+            nextProps.mixerProtocol != this.props.mixerProtocol ||
+            nextProps.showSnaps != this.props.showSnaps ||
+            nextProps.showPfl != this.props.showPfl)
+//ToDo: handle snaps state re-rendering:  nextProps.snapOn != this.props.snapOn ||
     }
 
     handlePgm() {
