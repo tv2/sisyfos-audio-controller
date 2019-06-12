@@ -66,6 +66,17 @@ export interface ICasparCGMixerGeometryFile {
         PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
         MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>
     }
+    sourceOptions?: {
+        sources: (ChannelLayerPair & {
+            producer: string,
+            file: string
+        })
+        options: {
+            [key: string]: { // producer property invocation
+                [key: string]: string // label: property
+            }
+        }
+    }
 } 
 
 export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
@@ -81,7 +92,18 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
         PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
         MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
     }
-    channelLabels?: string[]
+    channelLabels?: string[],
+    sourceOptions?: {
+        sources: (ChannelLayerPair & {
+            producer: string,
+            file: string
+        })
+        options: {
+            [key: string]: { // producer property invocation
+                [key: string]: string // label: property
+            }
+        }
+    }
 }
 
 interface IMessageProtocol {

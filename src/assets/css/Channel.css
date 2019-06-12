@@ -5,6 +5,7 @@
     margin: 4px;
     border-radius: 10px;
     max-width: 100px;
+    position: relative;
 }
 
 
@@ -178,6 +179,29 @@ input[type=range]::-webkit-slider-thumb {
 
 input[type=range]:focus::-webkit-slider-runnable-track {
     background: #000000;
+}
+
+.channel-settings {
+    position: absolute;
+    top: 5px;
+    left: 9px;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.channel-settings:hover > svg {
+    fill: rgba(255, 255, 255, 0.5);
+}
+
+.channel-settings:active > svg {
+    fill: rgba(255, 255, 255, 1);
+}
+
+.channel-settings > svg {
+    width: 25px;
+    height: 25px;
+    fill: rgba(255, 255, 255, 0.3);
 }
 
 .channel-body.with-snaps .vumeter-body {

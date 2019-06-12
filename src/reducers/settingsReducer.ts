@@ -4,6 +4,7 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 export interface ISettings {
     showSnaps: boolean,
     showSettings: boolean,
+    showOptions: number | false,
     mixerProtocol: string,
     localIp: string,
     localOscPort: number,
@@ -23,6 +24,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
     {
         showSnaps: false,
         showSettings: false,
+        showOptions: false,
         mixerProtocol: "genericMidi",
         localIp: "0.0.0.0",
         localOscPort: 8000,
@@ -44,6 +46,9 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
     switch (action.type) {
         case 'TOGGLE_SHOW_SETTINGS':
             nextState[0].showSettings = !nextState[0].showSettings;
+            return nextState;
+        case 'TOGGLE_SHOW_OPTION':
+            nextState[0].showOptions = typeof nextState[0].showOptions === "number" ? false : action.channel;
             return nextState;
         case 'TOGGLE_SHOW_SNAPS':
             nextState[0].showSnaps = !nextState[0].showSnaps;

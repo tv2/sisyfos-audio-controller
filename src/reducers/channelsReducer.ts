@@ -16,7 +16,7 @@ export interface IChannel {
     pstOn: boolean,
     pflOn: boolean,
     showChannel: boolean,
-    snapOn: Array<boolean>,
+    snapOn: Array<boolean>
 }
 
 interface IVuMeters {

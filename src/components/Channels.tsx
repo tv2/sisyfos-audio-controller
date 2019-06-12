@@ -6,6 +6,7 @@ import GrpFader from './GrpFader';
 import '../assets/css/Channels.css';
 import { Store } from 'redux';
 import { IAppProps } from './App';
+import ChannelSettings from './ChannelSettings';
 
 class Channels extends PureComponent<IAppProps & Store> {
     constructor(props: any) {
@@ -64,6 +65,7 @@ class Channels extends PureComponent<IAppProps & Store> {
     render() {
         return (
         <div className="channels-body">
+            {(typeof this.props.store.settings[0].showOptions === "number") && <ChannelSettings channelIndex={this.props.store.settings[0].showOptions} />}
             {this.props.store.channels[0].channel.map((none: any, index: number) => {
                 return <Channel
                             channelIndex = {index}
