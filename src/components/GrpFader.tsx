@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from "react-redux";
 //@ts-ignore
 import * as ClassNames from 'classnames';
@@ -25,7 +25,7 @@ interface IGrpFaderProps {
     faderIndex: number
 }
 
-class GrpFader extends PureComponent<IGrpFaderProps & IGrpFaderInjectProps & Store> {
+class GrpFader extends Component<IGrpFaderProps & IGrpFaderInjectProps & Store> {
     mixerProtocol: IMixerProtocol;
     faderIndex: number;
 
