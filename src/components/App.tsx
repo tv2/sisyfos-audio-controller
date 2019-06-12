@@ -33,6 +33,10 @@ class App extends React.Component<IAppProps> {
         loadSnapshotState(this.props.store.channels[0], this.props.store.settings[0].numberOfChannels);
     }
 
+    public shouldComponentUpdate(nextProps: IAppProps) {
+        return nextProps.store.settings[0].showSettings != this.props.store.settings[0].showSettings
+    }
+
     snapShopStoreTimer() {
         const saveTimer = setInterval(() => {
                 saveSnapshotState(this.props.store.channels[0]);

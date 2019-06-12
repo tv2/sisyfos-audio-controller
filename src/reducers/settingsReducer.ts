@@ -39,7 +39,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
 ];
 
 export const settings = (state = defaultSettingsReducerState, action: any): Array<ISettings> => {
-    let nextState = [...state];
+    let nextState = [Object.assign({}, state[0])];
 
     switch (action.type) {
         case 'TOGGLE_SHOW_SETTINGS':
