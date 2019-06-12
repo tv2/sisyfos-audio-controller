@@ -16,7 +16,6 @@ interface IChannelInjectProps {
     pflOn: boolean,
     showChannel: boolean,
     faderLevel: number,
-    outputLevel: number,
     label: string,
     snapOn: boolean[],
     mixerProtocol: string,
@@ -29,7 +28,7 @@ interface IChannelProps {
 }
 
 
-class Channel extends React.PureComponent<IChannelProps & IChannelInjectProps & Store> {
+class Channel extends React.Component<IChannelProps & IChannelInjectProps & Store> {
     mixerProtocol: IMixerProtocolGeneric;
     channelIndex: number;
 
@@ -37,6 +36,19 @@ class Channel extends React.PureComponent<IChannelProps & IChannelInjectProps & 
         super(props);
         this.channelIndex = this.props.channelIndex;
         this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi;
+    }
+
+    public shouldComponentUpdate(nextProps: IChannelInjectProps) {
+        return (nextProps.pgmOn != this.props.pgmOn ||
+            nextProps.pstOn != this.props.pstOn ||
+            nextProps.pflOn != this.props.pflOn ||
+            nextProps.showChannel != this.props.showChannel ||
+            nextProps.faderLevel != this.props.faderLevel ||
+            nextProps.label != this.props.label ||
+            nextProps.mixerProtocol != this.props.mixerProtocol ||
+            nextProps.showSnaps != this.props.showSnaps ||
+            nextProps.showPfl != this.props.showPfl)
+//ToDo: handle snaps state re-rendering:  nextProps.snapOn != this.props.snapOn ||
     }
 
     handlePgm() {
@@ -189,9 +201,6 @@ class Channel extends React.PureComponent<IChannelProps & IChannelInjectProps & 
                 <div className="channel-name">
                     {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
                 </div>
-                <div className="channel-gain-label">
-                    GAIN: {Math.round(this.props.outputLevel * 100) / 100}
-                </div>
                 <div className="channel-snap-body">
                     {this.props.snapOn
                         .map((none: any, index: number) => {
@@ -211,7 +220,6 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         pflOn: state.channels[0].channel[props.channelIndex].pflOn,
         showChannel: state.channels[0].channel[props.channelIndex].showChannel,
         faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
-        outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
         label: state.channels[0].channel[props.channelIndex].label,
         snapOn: state.channels[0].channel[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,
@@ -220,4 +228,4 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     }
 }
 
-export default connect<any, IChannelInjectProps>(mapStateToProps)(Channel) as any;
+export default connect<any, IChannelInjectProps, any>(mapStateToProps)(Channel) as any;
