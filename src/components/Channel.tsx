@@ -16,7 +16,6 @@ interface IChannelInjectProps {
     pflOn: boolean,
     showChannel: boolean,
     faderLevel: number,
-    outputLevel: number,
     label: string,
     snapOn: boolean[],
     mixerProtocol: string,
@@ -40,21 +39,16 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     public shouldComponentUpdate(nextProps: IChannelInjectProps) {
-        console.log("shouldComponentUpdate Next Props:", nextProps, "Current Props : ", this.props);
-        let updated = (nextProps.pgmOn != this.props.pgmOn ||
+        return (nextProps.pgmOn != this.props.pgmOn ||
             nextProps.pstOn != this.props.pstOn ||
             nextProps.pflOn != this.props.pflOn ||
             nextProps.showChannel != this.props.showChannel ||
             nextProps.faderLevel != this.props.faderLevel ||
-            nextProps.outputLevel != this.props.outputLevel  ||
             nextProps.label != this.props.label ||
             nextProps.mixerProtocol != this.props.mixerProtocol ||
             nextProps.showSnaps != this.props.showSnaps ||
             nextProps.showPfl != this.props.showPfl)
 //ToDo: handle snaps state re-rendering:  nextProps.snapOn != this.props.snapOn ||
-
-            console.log("Channel :", this.props.channelIndex, " Update : ", updated)
-            return updated;
     }
 
     handlePgm() {
@@ -207,9 +201,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 <div className="channel-name">
                     {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
                 </div>
-                <div className="channel-gain-label">
-                    GAIN: {Math.round(this.props.outputLevel * 100) / 100}
-                </div>
                 <div className="channel-snap-body">
                     {this.props.snapOn
                         .map((none: any, index: number) => {
@@ -229,7 +220,6 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         pflOn: state.channels[0].channel[props.channelIndex].pflOn,
         showChannel: state.channels[0].channel[props.channelIndex].showChannel,
         faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
-        outputLevel: state.channels[0].channel[props.channelIndex].outputLevel,
         label: state.channels[0].channel[props.channelIndex].label,
         snapOn: state.channels[0].channel[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,

@@ -36,6 +36,18 @@ class GrpFader extends PureComponent<IGrpFaderProps & IGrpFaderInjectProps & Sto
 
     }
 
+    public shouldComponentUpdate(nextProps: IGrpFaderInjectProps) {
+        return (nextProps.pgmOn != this.props.pgmOn ||
+            nextProps.pstOn != this.props.pstOn ||
+            nextProps.showChannel != this.props.showChannel ||
+            nextProps.faderLevel != this.props.faderLevel ||
+            nextProps.label != this.props.label ||
+            nextProps.mixerProtocol != this.props.mixerProtocol ||
+            nextProps.showSnaps != this.props.showSnaps ||
+            nextProps.showPfl != this.props.showPfl)
+//ToDo: handle snaps state re-rendering:  nextProps.snapOn != this.props.snapOn ||
+    }
+
     handlePgm() {
         this.props.dispatch({
             type:'TOGGLE_GRP_PGM',
