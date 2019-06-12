@@ -29,7 +29,7 @@ interface IChannelProps {
 }
 
 
-class Channel extends React.PureComponent<IChannelProps & IChannelInjectProps & Store> {
+class Channel extends React.Component<IChannelProps & IChannelInjectProps & Store> {
     mixerProtocol: IMixerProtocolGeneric;
     channelIndex: number;
 
@@ -37,6 +37,24 @@ class Channel extends React.PureComponent<IChannelProps & IChannelInjectProps & 
         super(props);
         this.channelIndex = this.props.channelIndex;
         this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi;
+    }
+
+    public shouldComponentUpdate(nextProps: IChannelInjectProps) {
+        console.log("shouldComponentUpdate Next Props:", nextProps, "Current Props : ", this.props);
+        let updated = (nextProps.pgmOn != this.props.pgmOn ||
+            nextProps.pstOn != this.props.pstOn ||
+            nextProps.pflOn != this.props.pflOn ||
+            nextProps.showChannel != this.props.showChannel ||
+            nextProps.faderLevel != this.props.faderLevel ||
+            nextProps.outputLevel != this.props.outputLevel  ||
+            nextProps.label != this.props.label ||
+            nextProps.mixerProtocol != this.props.mixerProtocol ||
+            nextProps.showSnaps != this.props.showSnaps ||
+            nextProps.showPfl != this.props.showPfl)
+//ToDo: handle snaps state re-rendering:  nextProps.snapOn != this.props.snapOn ||
+
+            console.log("Channel :", this.props.channelIndex, " Update : ", updated)
+            return updated;
     }
 
     handlePgm() {
@@ -191,8 +209,6 @@ class Channel extends React.PureComponent<IChannelProps & IChannelInjectProps & 
                 </div>
                 <div className="channel-gain-label">
                     GAIN: {Math.round(this.props.outputLevel * 100) / 100}
-                    <br/>
-                    TIME: {Date.now()}
                 </div>
                 <div className="channel-snap-body">
                     {this.props.snapOn
@@ -222,4 +238,4 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     }
 }
 
-export default connect<any, IChannelInjectProps>(mapStateToProps)(Channel) as any;
+export default connect<any, IChannelInjectProps, any>(mapStateToProps)(Channel) as any;
