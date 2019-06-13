@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from "react-redux";
 
 import Channel from './Channel';
@@ -8,10 +8,15 @@ import { Store } from 'redux';
 import { IAppProps } from './App';
 import ChannelSettings from './ChannelSettings';
 
-class Channels extends PureComponent<IAppProps & Store> {
+class Channels extends React.Component<IAppProps & Store> {
     constructor(props: any) {
         super(props);
     }
+
+    public shouldComponentUpdate(nextProps: IAppProps) {
+        return false;
+    }
+
 
     handleMix() {
         this.props.dispatch({
