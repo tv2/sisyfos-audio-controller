@@ -94,7 +94,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
             antialias: false,
             stencil: false,
             preserveDrawingBuffer: true
-        })
+        }) as CanvasRenderingContext2D
 
         if (!context) return
 

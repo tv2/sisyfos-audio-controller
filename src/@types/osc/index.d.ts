@@ -39,10 +39,10 @@ declare module 'osc' {
 	}
 
 	interface UDPPortOptions {
-		localPort?: number,
-		localAddress?: string,
-		remotePort: number,
-		remoteAddress: string,
+		localPort: number,
+		localAddress: string,
+		remotePort?: number,
+		remoteAddress?: string,
 		broadcast?: boolean,
 		multicastTTL?: number,
 		multicastMembership?: string[],
