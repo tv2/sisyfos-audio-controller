@@ -1,22 +1,22 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from "react-redux";
 
 import Channel from './Channel';
 import GrpFader from './GrpFader';
 import '../assets/css/Channels.css';
-import { any } from 'prop-types';
+import { Store } from 'redux';
+import { IAppProps } from './App';
+import ChannelSettings from './ChannelSettings';
 
-class Channels extends PureComponent<any, any> {
+class Channels extends React.Component<IAppProps & Store> {
     constructor(props: any) {
         super(props);
-        this.state = {
-            showSnap: false
-        };
     }
 
-    componentDidMount() {
-
+    public shouldComponentUpdate(nextProps: IAppProps) {
+        return false;
     }
+
 
     handleMix() {
         this.props.dispatch({
@@ -70,6 +70,7 @@ class Channels extends PureComponent<any, any> {
     render() {
         return (
         <div className="channels-body">
+            {(typeof this.props.store.settings[0].showOptions === "number") && <ChannelSettings channelIndex={this.props.store.settings[0].showOptions} />}
             {this.props.store.channels[0].channel.map((none: any, index: number) => {
                 return <Channel
                             channelIndex = {index}
@@ -128,10 +129,10 @@ class Channels extends PureComponent<any, any> {
 }
 
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: any): IAppProps => {
     return {
         store: state
     }
 }
 
-export default connect<any, any, any>(mapStateToProps)(Channels);
+export default connect<IAppProps, any, any>(mapStateToProps)(Channels);

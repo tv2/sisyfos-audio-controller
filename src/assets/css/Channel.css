@@ -5,7 +5,9 @@
     margin: 4px;
     border-radius: 10px;
     max-width: 100px;
+    position: relative;
 }
+
 
 .channel-name {
     margin-top: 10px;
@@ -22,13 +24,18 @@
     outline : none;
     -moz-outline : none;
     margin-left: 10px;
-    margin-top: 130px;
+    margin-top: 260px;
     color: white;
-    height: 40px;
+    height: 90px;
     width: 80px;
-    background-color: green;
+    background-color: rgb(66, 27, 27);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
+}
+
+
+.channel-pgm-button.on {
+    background-color: red;
 }
 
 .channel-pst-button {
@@ -37,11 +44,16 @@
     margin-left: 10px;
     margin-top: 5px;
     color: white;
-    height: 40px;
+    height: 90px;
     width: 80px;
-    background-color: red;
+    background-color: rgb(59, 73, 59);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
+    margin-bottom: 0;
+}
+
+.channel-pst-button.on {
+    background-color: green; 
 }
 
 .channel-pfl-button {
@@ -50,11 +62,45 @@
     margin-left: 10px;
     margin-top: 5px;
     color: white;
-    height: 40px;
+    height: 90px;
     width: 80px;
-    background-color: rgb(17, 0, 255);
+    background-color: rgb(9, 0, 59);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
+}
+
+.channel-pfl-button.on {
+    background-color: rgb(17, 0, 255);
+    animation: 2s pfl-active-flash;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+}
+
+.channel-body.with-snaps .channel-pgm-button, .channel-body.with-snaps .channel-pst-button, .channel-body.with-snaps .channel-pfl-button {
+    height: 40px;
+}
+
+.channel-body.with-snaps .channel-pgm-button {
+    margin-top: 187px;
+}
+
+.channel-body.with-snaps:not(.with-pfl) .channel-pst-button {
+    margin-bottom: 44px;
+}
+
+@keyframes pfl-active-flash {
+    0% {
+        box-shadow: 0 0 10px rgba(105, 140, 255, 1);
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(105, 140, 255, 1);
+    }
+    50.0001% {
+        box-shadow: 0 0 10px rgba(105, 140, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(105, 140, 255, 0);
+    }
 }
 
 .channel-snap-body {
@@ -77,16 +123,27 @@
     width: 60px;
     border-radius: 7px;
     border-color: rgb(68, 68, 68);
+    background-color: rgb(89, 83, 10);
+}
+
+.channel-snap-button.on {
+    background-color: rgb(183, 182, 20);
 }
 
 
 .channel-volume-slider {
-
-    transform: translate(-40px, 0) rotate(270deg) ;
-    -moz-transform: translate(-40px, 0) rotate(270deg) ;
+    width: 460px;
+    margin-top: 260px;
+    transform: translate(-160px, 0px) rotate(270deg);
 
     /*do same for other browsers if required*/
     background-color: rgb(39, 39, 39);
+}
+
+.channel-body.with-snaps .channel-volume-slider {
+    width: 220px;
+    margin-top: 140px;
+    transform: translate(-40px, 0) rotate(270deg);
 }
 
 input[type=range] {
@@ -109,78 +166,44 @@ input[type=range]::-webkit-slider-runnable-track {
 
 input[type=range]::-webkit-slider-thumb {
     box-shadow: 1px 1px 1px #111111, 0px 0px 1px #1e1e1e;
-    border: 1px solid white;
-    height: 30px;
-    width: 10px;
+    border: 1px solid #aaa;
+    height: 50px;
+    width: 70px;
     border-radius: 8px;
-    background: #919191;
+    background: linear-gradient(to left, #3a3a3a 0%, #c2c2c2 20%, #919191 50%, #00a 1px, #919191 52%, #c2c2c2 80%, #3a3a3a 100%);
     cursor: pointer;
     -webkit-appearance: none;
-    margin-top: -11px;
+    margin-top: -21px;
+    position: relative;
 }
 
 input[type=range]:focus::-webkit-slider-runnable-track {
     background: #000000;
 }
 
-input[type=range]::-moz-range-track {
-    width: 100%;
-    height: 10px;
-    cursor: pointer;
-    box-shadow: 2px 2px 2px #222222, 0px 0px 2px #2f2f2f;
-    background: #424242;
-    border-radius: 5px;
-    border: 1px solid black;
+.channel-settings {
+    position: absolute;
+    top: 5px;
+    left: 9px;
+    background: none;
+    border: none;
+    outline: none;
 }
 
-input[type=range]::-moz-range-thumb {
-    box-shadow: 1px 1px 1px #111111, 0px 0px 1px #1e1e1e;
-    border: 1px solid white;
-    height: 30px;
-    width: 30px;
-    border-radius: 8px;
-    background: #555bc8;
-    cursor: pointer;
+.channel-settings:hover > svg {
+    fill: rgba(255, 255, 255, 0.5);
 }
 
-input[type=range]::-ms-track {
-    width: 100%;
-    height: 10px;
-    cursor: pointer;
-    background: transparent;
-    border-color: transparent;
-    color: transparent;
+.channel-settings:active > svg {
+    fill: rgba(255, 255, 255, 1);
 }
 
-input[type=range]::-ms-fill-lower {
-    background: #353535;
-    border: 1px solid black;
-    border-radius: 10px;
-    box-shadow: 2px 2px 2px #222222, 0px 0px 2px #2f2f2f;
+.channel-settings > svg {
+    width: 25px;
+    height: 25px;
+    fill: rgba(255, 255, 255, 0.3);
 }
 
-input[type=range]::-ms-fill-upper {
-    background: #424242;
-    border: 1px solid black;
-    border-radius: 10px;
-    box-shadow: 2px 2px 2px #222222, 0px 0px 2px #2f2f2f;
-}
-
-input[type=range]::-ms-thumb {
-    box-shadow: 1px 1px 1px #111111, 0px 0px 1px #1e1e1e;
-    border: 1px solid white;
-    height: 30px;
-    width: 30px;
-    border-radius: 8px;
-    background: #555bc8;
-    cursor: pointer;
-    height: 10px;
-}
-
-input[type=range]:focus::-ms-fill-lower {
-    background: #424242;
-}
-
-input[type=range]:focus::-ms-fill-upper {
-    background: #4f4f4f;
+.channel-body.with-snaps .vumeter-body {
+    height: 230px;
 }

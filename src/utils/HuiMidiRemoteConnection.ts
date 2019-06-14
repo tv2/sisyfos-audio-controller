@@ -35,9 +35,11 @@ export class HuiMidiRemoteConnection {
         this.remoteProtocol = RemoteFaderPresets.hui;
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
+        if (!this.store.settings[0].enableRemoteFader) {
+            return
+        }
 
         WebMidi.enable((err) => {
-
             if (err) {
                 console.log("Remote MidiController connection could not be enabled.", err);
             }

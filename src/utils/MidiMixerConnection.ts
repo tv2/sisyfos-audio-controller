@@ -1,5 +1,5 @@
 //Node Modules:
-import os from 'os'; // Used to display (log) network addresses on local machine
+import * as os from 'os'; // Used to display (log) network addresses on local machine
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 
 //Utils:
@@ -11,7 +11,7 @@ export class MidiMixerConnection {
     midiInput: any;
     midiOutput:any;
 
-    constructor() {
+    constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
@@ -20,8 +20,7 @@ export class MidiMixerConnection {
             this.store = window.storeRedux.getState();
         });
 
-        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
-
+        this.mixerProtocol = mixerProtocol || MixerProtocolPresets.genericMidi;
 
         WebMidi.enable((err) => {
 

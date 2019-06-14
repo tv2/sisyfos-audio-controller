@@ -1,7 +1,8 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from "react-redux";
 import Select from 'react-select';
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
+import { IAppProps } from './App';
 
 
 //Utils:
@@ -9,6 +10,9 @@ import { saveSettings } from '../utils/SettingsStorage';
 import '../assets/css/Settings.css';
 import { MixerProtocolPresets, MixerProtocolList } from '../constants/MixerProtocolPresets';
 import { any } from 'prop-types';
+import { ISettings } from '../reducers/settingsReducer';
+import { Store } from 'redux';
+import { ChangeEvent } from 'react';
 
 
 //Set style for Select dropdown component:
@@ -27,8 +31,12 @@ const selectorColorStyles = {
     singleValue: (styles: any) => ({ ...styles, color: 'white' }),
 };
 
+interface IState {
+    settings: ISettings
+}
 
-class Channels extends PureComponent<any, any> {
+
+class Settings extends React.PureComponent<IAppProps & Store, IState> {
     mixerProtocolList: any;
     mixerProtocolPresets: any;
     remoteFaderMidiInputPortList: any;
@@ -37,16 +45,6 @@ class Channels extends PureComponent<any, any> {
 
     constructor(props: any) {
         super(props);
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleTemplateChange = this.handleTemplateChange.bind(this);
-        this.handleMidiInputPort = this.handleMidiInputPort.bind(this);
-        this.handleMidiOutputPort = this.handleMidiOutputPort.bind(this);
-        this.handleShowChannel = this.handleShowChannel.bind(this);
-        this.handleShowAllChannels = this.handleShowAllChannels.bind(this);
-        this.handleHideAllChannels = this.handleHideAllChannels.bind(this);
-        this.renderRemoteControllerSettings = this.renderRemoteControllerSettings.bind(this);
-        this.findMidiPorts = this.findMidiPorts.bind(this);
 
         this.mixerProtocolList = MixerProtocolList;
         this.mixerProtocolPresets = MixerProtocolPresets;
@@ -57,7 +55,7 @@ class Channels extends PureComponent<any, any> {
         this.findMidiPorts();
     }
 
-    findMidiPorts() {
+    findMidiPorts = () => {
         WebMidi.enable((err) => {
 
             if (err) {
@@ -77,7 +75,7 @@ class Channels extends PureComponent<any, any> {
 
     }
 
-    handleMidiInputPort(selectedOption: any) {
+    handleMidiInputPort = (selectedOption: any) => {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.remoteFaderMidiInputPort = selectedOption.value;
         this.setState(
@@ -85,8 +83,8 @@ class Channels extends PureComponent<any, any> {
         );
     }
 
-    handleMidiOutputPort(selectedOption: any) {
-        var settingsCopy= Object.assign({}, this.state.settings);
+    handleMidiOutputPort = (selectedOption: any) => {
+        var settingsCopy = Object.assign({}, this.state.settings);
         settingsCopy.remoteFaderMidiOutputPort = selectedOption.value;
         this.setState(
             {settings: settingsCopy}
@@ -94,16 +92,20 @@ class Channels extends PureComponent<any, any> {
     }
 
 
-    handleChange(event: any) {
-        var settingsCopy= Object.assign({}, this.state.settings);
-        settingsCopy[event.target.name] = event.target.value;
+    handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        var settingsCopy = Object.assign({}, this.state.settings);
+        if (event.target.type === "checkbox") {
+            (settingsCopy as any)[event.target.name] = !!event.target.checked;
+        } else {
+            (settingsCopy as any)[event.target.name] = event.target.value;
+        }
         this.setState(
             {settings: settingsCopy}
         );
     }
 
 
-    handleTemplateChange(selectedOption: any) {
+    handleTemplateChange = (selectedOption: any) => {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.mixerProtocol = selectedOption.value;
         this.setState(
@@ -111,7 +113,7 @@ class Channels extends PureComponent<any, any> {
         );
     }
 
-    handleShowChannel(index: number, event: any) {
+    handleShowChannel = (index: number, event: any) => {
         this.props.dispatch({
             type:'SHOW_CHANNEL',
             channel: index,
@@ -119,7 +121,7 @@ class Channels extends PureComponent<any, any> {
         });
     }
 
-    handleShowAllChannels() {
+    handleShowAllChannels = () => {
         this.props.store.channels[0].channel.map((channel: any, index: number) => {
             this.props.dispatch({
                 type:'SHOW_CHANNEL',
@@ -130,7 +132,7 @@ class Channels extends PureComponent<any, any> {
     }
 
 
-    handleHideAllChannels() {
+    handleHideAllChannels = () => {
         this.props.store.channels[0].channel.map((channel: any, index: number) => {
             this.props.dispatch({
                 type:'SHOW_CHANNEL',
@@ -141,7 +143,7 @@ class Channels extends PureComponent<any, any> {
     }
 
 
-    handleShowGrpFader(index: number, event: any) {
+    handleShowGrpFader = (index: number, event: any) => {
         this.props.dispatch({
             type:'SHOW_GRP_FADER',
             channel: index,
@@ -149,7 +151,7 @@ class Channels extends PureComponent<any, any> {
         });
     }
 
-    handleShowAllGrpFaders() {
+    handleShowAllGrpFaders = () => {
         this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
             this.props.dispatch({
                 type:'SHOW_GRP_FADER',
@@ -160,7 +162,7 @@ class Channels extends PureComponent<any, any> {
     }
 
 
-    handleHideAllGrpFaders() {
+    handleHideAllGrpFaders = () => {
         this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
             this.props.dispatch({
                 type:'SHOW_GRP_FADER',
@@ -170,7 +172,7 @@ class Channels extends PureComponent<any, any> {
         });
     }
 
-    handleSave() {
+    handleSave = () => {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.showSettings = false;
 
@@ -178,23 +180,25 @@ class Channels extends PureComponent<any, any> {
         location.reload();
     }
 
-    renderShowChannelsSelection() {
+    renderShowChannelsSelection = () => {
         return (
             <div className="settings-show-channel-selection">
-                <input className="settings-channels-button"
+                <button className="settings-channels-button"
                     onClick=
                         {() => {
                             this.handleShowAllChannels();
                         }}
-                    value="ALL CHANNELS"
-                />
-                <input className="settings-channels-button"
+                >
+                    ALL CHANNELS
+                </button>
+                <button className="settings-channels-button"
                     onClick=
                         {() => {
                             this.handleHideAllChannels();
                         }}
-                    value="NO CHANNELS"
-                />
+                >
+                    NO CHANNELS
+                </button>
                 {this.props.store.channels[0].channel.map((channel: any, index: number) => {
                         return <div key={index}>
                             {channel.label != "" ? channel.label : ("CH " + (index + 1)) }
@@ -211,23 +215,25 @@ class Channels extends PureComponent<any, any> {
     }
 
 
-    renderShowGrpFadersSelection() {
+    renderShowGrpFadersSelection = () => {
         return (
             <div className="settings-show-channel-selection">
-                <input className="settings-channels-button"
+                <button className="settings-channels-button"
                     onClick=
                         {() => {
                             this.handleShowAllGrpFaders();
                         }}
-                    value="ALL GROUPS"
-                />
-                <input className="settings-channels-button"
+                >
+                    ALL GROUPS
+                </button>
+                <button className="settings-channels-button"
                     onClick=
                         {() => {
                             this.handleHideAllGrpFaders();
                         }}
-                    value="NO GROUPS"
-                />
+                >
+                    NO GROUPS
+                </button>
                 {this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
                         return <div key={index}>
                             {channel.label != "" ? channel.label : ("GRP " + (index + 1)) }
@@ -243,12 +249,22 @@ class Channels extends PureComponent<any, any> {
         )
     }
 
-    renderRemoteControllerSettings() {
+    renderRemoteControllerSettings = () => {
         return (
             <div>
                 <div className="settings-header">
                     REMOTE CONTROLLER SETTINGS:
                 </div>
+                <label className="settings-input-field">
+                    ENABLE REMOTE CONTROLLER:
+                    <input
+                        type="checkbox"
+                        name="enableRemoteFader"
+                        checked={this.state.settings.enableRemoteFader}
+                        onChange={this.handleChange}
+                    />
+                </label>
+                <br/>
                 <div className="settings-input-field">
                     Remote Midi Input Port :
                 </div>
@@ -289,7 +305,7 @@ class Channels extends PureComponent<any, any> {
                 <br/>
                 <label className="settings-input-field">
                     LOCAL IP :
-                    <input name="localOscIp" type="text" value={this.state.settings.localOscIp} onChange={this.handleChange} />
+                    <input name="localIp" type="text" value={this.state.settings.localIp} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
@@ -309,12 +325,22 @@ class Channels extends PureComponent<any, any> {
                 <br/>
                 <label className="settings-input-field">
                     MIXER IP :
-                    <input name="machineOscIp" type="text" value={this.state.settings.machineOscIp} onChange={this.handleChange} />
+                    <input name="deviceIp" type="text" value={this.state.settings.deviceIp} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
                     MIXER PORT :
-                    <input name="machineOscPort" type="text" value={this.state.settings.machineOscPort} onChange={this.handleChange} />
+                    <input name="devicePort" type="text" value={this.state.settings.devicePort} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    SHOW PFL CONTROLS:
+                    <input
+                        type="checkbox"
+                        name="showPfl"
+                        checked={this.state.settings.showPfl}
+                        onChange={this.handleChange}
+                    />
                 </label>
                 <br/>
                 {this.renderShowChannelsSelection()}
@@ -323,23 +349,24 @@ class Channels extends PureComponent<any, any> {
                 <br/>
                 {this.renderRemoteControllerSettings()}
                 <br/>
-                <input
+                <button
                     className="settings-save-button"
                     onClick=
                         {() => {
                             this.handleSave();
                         }}
-                    value="SAVE SETTINGS"
-                />
+                >
+                    SAVE SETTINGS
+                </button>
             </div>
         )
     }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: any): IAppProps => {
     return {
         store: state
     }
 }
 
-export default connect<any, any>(mapStateToProps)(Channels) as any;
+export default connect<any, any>(mapStateToProps)(Settings) as any;

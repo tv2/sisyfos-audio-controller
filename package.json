@@ -1,13 +1,20 @@
 {
-    "name": "producers-audio-mixer",
-    "version": "0.1.0",
+    "name": "sisyfos-audio-controller",
+    "version": "0.1.1",
     "description": "Audio mixer build with the logic from a video mixer",
     "license": "MIT",
     "private": false,
     "author": {
-        "name": "Kasper Olsson Hans",
+        "name": "Kasper Olsson Hans (TV2 Denmark)",
         "email": "github@olzzon.dk"
     },
+    "contributors": [
+        {
+        "name": "Jan Starzak",
+        "email": "jan@superfly.tv",
+        "url": "https://superfly.tv"
+        }
+    ],
     "keywords": [
         "app",
         "audio",
@@ -22,7 +29,8 @@
     "scripts": {
         "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
         "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
-        "build": "webpack --config webpack.build.config.js --mode production",
+        "build": "yarn tsc || webpack --config webpack.build.config.js --mode production",
+        "build-now": "webpack --config webpack.build.config.js --mode production",
         "package": "yarn run build",
         "postpackage": "electron-packager ./ --out=./builds"
     },
@@ -30,6 +38,8 @@
         "@types/hoist-non-react-statics": "^3.3.1",
         "@types/react-redux": "^7.0.9",
         "@types/react-select": "^2.0.19",
+        "casparcg-connection": "^4.7.0",
+        "classnames": "^2.2.6",
         "osc": "https://github.com/PieceMeta/osc.js/tarball/master",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",

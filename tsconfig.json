@@ -17,7 +17,9 @@
       //Support for jsx.
       "jsx": "react",
       // Check for "any" while converting to TS this can be turned off.
-      "noImplicitAny": true
+      "noImplicitAny": true,
+      "module": "commonjs",
+      "allowSyntheticDefaultImports": true
     },
     "include": [
         "src"

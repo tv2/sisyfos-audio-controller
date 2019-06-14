@@ -1,26 +1,51 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from "react-redux";
+//@ts-ignore
+import * as ClassNames from 'classnames';
 
 import GrpVuMeter from './GrpVuMeter';
 //assets:
 import '../assets/css/GrpFader.css';
-import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric } from '../constants/MixerProtocolPresets';
 import { any } from 'prop-types';
+import { Store } from 'redux';
 
-class GrpFader extends PureComponent<any, any> {
+interface IGrpFaderInjectProps {
+    mixerProtocol: string
+    showSnaps: boolean
+    faderLevel: number
+    pgmOn: boolean
+    pstOn: boolean
+    label: string
+    showChannel: boolean
+    showPfl: boolean
+}
+
+interface IGrpFaderProps {
+    faderIndex: number
+}
+
+class GrpFader extends Component<IGrpFaderProps & IGrpFaderInjectProps & Store> {
     mixerProtocol: IMixerProtocol;
     faderIndex: number;
 
     constructor(props: any) {
         super(props);
         this.faderIndex = this.props.faderIndex;
-        this.state = {
-        };
-        this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi;
+        this.mixerProtocol = (MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi) as IMixerProtocol;
 
-        this.pgmButton = this.pgmButton.bind(this);
-        this.pstButton = this.pstButton.bind(this);
+    }
 
+    public shouldComponentUpdate(nextProps: IGrpFaderInjectProps) {
+        return (nextProps.pgmOn != this.props.pgmOn ||
+            nextProps.pstOn != this.props.pstOn ||
+            nextProps.showChannel != this.props.showChannel ||
+            nextProps.faderLevel != this.props.faderLevel ||
+            nextProps.label != this.props.label ||
+            nextProps.mixerProtocol != this.props.mixerProtocol ||
+            nextProps.showSnaps != this.props.showSnaps ||
+            nextProps.showPfl != this.props.showPfl)
+//ToDo: handle snaps state re-rendering:  nextProps.snapOn != this.props.snapOn ||
     }
 
     handlePgm() {
@@ -79,27 +104,13 @@ class GrpFader extends PureComponent<any, any> {
         )
     }
 
-    pgmButton() {
+    pgmButton = () => {
         return (
 
             <button
-                className="grpFader-pgm-button"
-                style={
-                    Object.assign(
-                        this.props.pgmOn
-                        ? {backgroundColor: "red"}
-                        : {backgroundColor: "rgb(66, 27, 27)"},
-                        this.props.showSnaps
-                        ?   {
-                                height: "40px",
-                                marginTop: "130px"
-                            }
-                        :   {
-                                height: "90px",
-                                marginTop: "260px"
-                            }
-                    )
-                }
+                className={ClassNames("grpFader-pgm-button", {
+                    'on': this.props.pgmOn
+                })}
                 onClick={event => {
                     this.handlePgm();
                 }}
@@ -109,20 +120,12 @@ class GrpFader extends PureComponent<any, any> {
         )
     }
 
-    pstButton() {
+    pstButton = () => {
         return (
             <button
-                className="grpFader-pst-button"
-                style={
-                    Object.assign(
-                        this.props.pstOn
-                        ? {backgroundColor: "green"}
-                        : {backgroundColor: "rgb(59, 73, 59)"},
-                        this.props.showSnaps
-                        ?   {height: "40px"}
-                        :   {height: "90px"}
-                    )
-                }
+                className={ClassNames("grpFader-pst-button", {
+                    'on': this.props.pstOn
+                })}
                 onClick={event => {
                     this.handlePst();
                 }}
@@ -135,7 +138,10 @@ class GrpFader extends PureComponent<any, any> {
         this.props.showChannel === false ?
             <div></div>
             :
-            <div className="grpFader-body">
+                <div className={ClassNames("grpFader-body", {
+                    "with-snaps": this.props.showSnaps,
+                    "with-pfl": this.props.showPfl
+                })}>
                 {this.fader()}
                 { this.mixerProtocol.fromMixer.GRP_VU != 'none' ? <GrpVuMeter faderIndex = {this.faderIndex}/> : ''}
                 <br/>
@@ -147,14 +153,14 @@ class GrpFader extends PureComponent<any, any> {
                     {this.props.label != "" ? this.props.label : ("GRP " + (this.faderIndex + 1)) }
                 </div>
                 <div className="grpFader-gain-label">
-                    GAIN: {parseInt(this.props.faderLevel)*100/100}
+                    GAIN: {Math.round(this.props.faderLevel * 100) / 100}
                 </div>
             </div>
         )
     }
 }
 
-const mapStateToProps = (state: any, props: any) => {
+const mapStateToProps = (state: any, props: any): IGrpFaderInjectProps => {
     return {
         pgmOn: state.channels[0].grpFader[props.faderIndex].pgmOn,
         pstOn: state.channels[0].grpFader[props.faderIndex].pstOn,
@@ -162,7 +168,8 @@ const mapStateToProps = (state: any, props: any) => {
         faderLevel: state.channels[0].grpFader[props.faderIndex].faderLevel,
         label: state.channels[0].grpFader[props.faderIndex].label,
         mixerProtocol: state.settings[0].mixerProtocol,
-        showSnaps: state.settings[0].showSnaps
+        showSnaps: state.settings[0].showSnaps,
+        showPfl: state.settings[0].showPfl
     }
 }
 
