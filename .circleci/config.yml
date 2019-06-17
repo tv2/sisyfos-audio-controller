@@ -31,7 +31,7 @@
         parallelism: 4
         docker:
         - image: electronuserland/builder:wine-mono
-            environment: wine
+            environment:
             JEST_JUNIT_OUTPUT: ./test-reports/test.xml
             TZ: Europe/Berlin
         steps:
@@ -65,10 +65,10 @@
                 branches:
                 ignore:
                     - docs
-        - test:
-            filters:
-                branches:
-                ignore:
-                    - docs
-            requires:
-                - build
+#        - test:
+#            filters:
+#                branches:
+#                ignore:
+#                    - docs
+#            requires:
+#                - build
