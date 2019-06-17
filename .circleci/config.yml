@@ -15,7 +15,7 @@
         - run:
             command: yarn --frozen-lockfile
         - run:
-            command: yarn pretest
+            command: yarn build
         - save_cache:
             key: deps-{{ checksum "yarn.lock" }}
             paths:
@@ -51,7 +51,7 @@
         - run:
             # do not use yarn test because lint is done in the build job
             command: |
-                yarn compile
+                yarn build
                 node ./test/out/helpers/runTests.js
         - store_test_results:
             path: test-reports
