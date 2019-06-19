@@ -22,7 +22,7 @@ export class AutomationConnection {
         this.automationProtocol = AutomationPresets[this.store.settings[0].automationProtocol]  || AutomationPresets.sofie;
 
         this.oscConnection = new osc.UDPPort({
-            localAddress: "127.0.0.1",
+            localAddress: "0.0.0.0",
             localPort: AUTOMATION_OSC_PORT
         });
         this.setupAutomationConnection();
