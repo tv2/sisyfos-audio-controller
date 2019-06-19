@@ -25,6 +25,11 @@ yarn start
 ## Settings:
 (Mixer presets are stored in MixerProtocolPresets.js)
 ### Following preset name are possible:
+* CasparCG
+  * copy sisyfos-casparcg-geometry.json from Docs/CasparCG-Example to the root of your user account
+  * base your casparcg.config by the casparcg.config file in the same folder
+  * remember to active OSC in the casparcg.config file
+
 * reaper
   * OSC protocol for control Reaper (reaper.fm)
 * Ardour Master
