@@ -38,7 +38,7 @@ export class AutomationConnection {
         })
         .on('message', (message: any) => {
             console.log("RECIEVED AUTOMATION MESSAGE :", message.address, message.args[0]);
-            //Set state of Producers Audio Mixer:
+            //Set state of Sisyfos:
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -78,6 +78,14 @@ export class AutomationConnection {
                     snapIndex: snapNumber -1
                 });
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .SET_LABEL)) {
+                    let ch = message.address.split("/")[2];
+                    window.storeRedux.dispatch({
+                        type:'SET_CHANNEL_LABEL',
+                        channel: ch -1,
+                        label: message.args[0]
+                    });
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .X_MIX)) {
                 window.storeRedux.dispatch({
                     type:'X_MIX'
@@ -92,12 +100,11 @@ export class AutomationConnection {
                     showChannel: message.args[0]===1 ? true : false
                 });
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                    .FADE_TO_BLACK)) {
+                .FADE_TO_BLACK)) {
                     window.storeRedux.dispatch({
                         type:'FADE_TO_BLACK'
-                    });
-                    window.mixerGenericConnection.updateOutLevels();
-            // Get state from Producers Audio Mixer:
+                });
+                window.mixerGenericConnection.updateOutLevels();
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .GRP_FADER_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];

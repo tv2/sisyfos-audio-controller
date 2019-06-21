@@ -78,6 +78,8 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /ch/1/mix/pst - integer: { 0 or 1 }
 #### Set channel faderlevel:
 /ch/1/mix/faderlevel - float {between 0 and 1}
+#### Set channel label:
+/ch/1/label - string {name of channel}
 #### Set group to PGM:
 /grp/1/pgm - integer: { 0 or 1 }
 #### Set group to PST:
