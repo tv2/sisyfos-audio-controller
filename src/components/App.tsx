@@ -8,7 +8,7 @@ import Settings from './Settings';
 
 //Utils:
 import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
-import { MixerConnection } from '../utils/MixerConnection';
+import { MixerGenericConnection } from '../utils/MixerConnection';
 import { AutomationConnection } from '../utils/AutomationConnection';
 import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
 import { Store, AnyAction } from 'redux';
@@ -26,7 +26,7 @@ class App extends React.Component<IAppProps> {
     }
 
     componentWillMount() {
-        (window as any).mixerConnection = new MixerConnection();
+        (window as any).mixerGenericConnection = new MixerGenericConnection();
         (window as any).automationConnection = new AutomationConnection();
         (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         this.snapShopStoreTimer();

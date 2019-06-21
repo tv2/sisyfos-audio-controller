@@ -53,7 +53,7 @@ class GrpFader extends Component<IGrpFaderProps & IGrpFaderInjectProps & Store> 
             type:'TOGGLE_GRP_PGM',
             channel: this.faderIndex
         });
-        window.mixerConnection.updateGrpOutLevel(this.faderIndex);
+        window.mixerGenericConnection.updateGrpOutLevel(this.faderIndex);
     }
 
     handlePst() {
@@ -69,7 +69,7 @@ class GrpFader extends Component<IGrpFaderProps & IGrpFaderInjectProps & Store> 
             channel: this.faderIndex,
             level: event.target.value
         });
-        window.mixerConnection.updateGrpOutLevel(this.faderIndex);
+        window.mixerGenericConnection.updateGrpOutLevel(this.faderIndex);
     }
 
     fader() {

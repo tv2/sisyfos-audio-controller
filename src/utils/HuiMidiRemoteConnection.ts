@@ -70,7 +70,7 @@ export class HuiMidiRemoteConnection {
                         channel: message.data[1],
                         level: this.convertFromRemoteLevel(message.data[2])
                     });
-                    window.mixerConnection.updateOutLevel(message.data[1]);
+                    window.mixerGenericConnection.updateOutLevel(message.data[1]);
                     this.updateRemoteFaderState(message.data[1], this.convertFromRemoteLevel(message.data[2]))
                 } else if (message.data[1] = 15) {
                     if (message.data[2]<9) {
@@ -82,7 +82,7 @@ export class HuiMidiRemoteConnection {
                             type:'TOGGLE_PGM',
                             channel: this.activeHuiChannel
                         });
-                        window.mixerConnection.updateOutLevel(this.activeHuiChannel);
+                        window.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
@@ -90,7 +90,7 @@ export class HuiMidiRemoteConnection {
                             type:'TOGGLE_PFL',
                             channel: this.activeHuiChannel
                         });
-                        window.mixerConnection.updateOutLevel(this.activeHuiChannel);
+                        window.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     }
                 }

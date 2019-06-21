@@ -71,8 +71,9 @@ It´s possible to control the Producers-Audio-Mixer from an automationsystem, fo
 
 ## Set state:
 To set the state send these OSC commands from you Automation to ProducersAudioMixer Port: 5255:
-#### Set channel to PGM:
-/ch/1/mix/pgm - integer: { 0 or 1 }
+#### Set channel to PGM (optional: indiviaul fadetime): 
+(if second is missing it will take default fade value)
+/ch/1/mix/pgm - integer: { 0 or 1 } - float { fadetime in ms }
 #### Set channel to PST:
 /ch/1/mix/pst - integer: { 0 or 1 }
 #### Set channel faderlevel:
