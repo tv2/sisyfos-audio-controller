@@ -115,9 +115,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     reaper: Reaper,
     reaperMaster: ReaperMaster,
     behringerxrmaster: BehringerXrMaster,
-    behringerxrclient: BehringerXrClient,
     midasMaster: MidasMaster,
-    midasClient: MidasClient,
     genericMidi: GenericMidi
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
