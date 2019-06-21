@@ -8,7 +8,7 @@ import { CasparCGConnection } from './CasparCGConnection';
 // The lower the more CPU
 let FADE_INOUT_SPEED = 3;
 
-export class MixerConnection {
+export class MixerGenericConnection {
     store: any;
     mixerProtocol: IMixerProtocolGeneric;
     mixerConnection: any;
@@ -41,23 +41,21 @@ export class MixerConnection {
         //Setup timers for fade in & out
         this.timer = new Array(this.store.channels[0].channel.length);
         this.grpTimer = new Array(this.store.channels[0].grpFader.length);
-
-
     }
 
     updateOutLevels() {
         this.store.channels[0].channel.map((channel: any, index: number) => {
-            this.fadeInOut(index);
+            this.fadeInOut(index, this.store.settings[0].fadeTime);
             this.mixerConnection.updateOutLevel(index);
         });
         this.store.channels[0].grpFader.map((channel: any, index: number) => {
-            this.fadeGrpInOut(index);
+            this.fadeGrpInOut(index, this.store.settings[0].fadeTime);
             this.mixerConnection.updateGrpOutLevel(index);
         });
     }
 
-    updateOutLevel(channelIndex: number) {
-        this.fadeInOut(channelIndex);
+    updateOutLevel(channelIndex: number, fadeTime: number = this.store.settings[0].fadeTime) {
+        this.fadeInOut(channelIndex, fadeTime);
         this.mixerConnection.updateOutLevel(channelIndex);
     }
 
@@ -66,12 +64,12 @@ export class MixerConnection {
         this.mixerConnection.updatePflState(channelIndex);
     }
 
-    updateGrpOutLevel(channelIndex: number) {
-        this.fadeGrpInOut(channelIndex);
+    updateGrpOutLevel(channelIndex: number, fadeTime: number = this.store.settings[0].fadeTime) {
+        this.fadeGrpInOut(channelIndex, fadeTime);
         this.mixerConnection.updateGrpOutLevel(channelIndex);
     }
 
-    fadeInOut (channelIndex: number){
+    fadeInOut (channelIndex: number, fadeTime: number){
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
             clearInterval(this.timer[channelIndex]);
@@ -84,13 +82,13 @@ export class MixerConnection {
         }
 
         if (this.store.channels[0].channel[channelIndex].pgmOn) {
-            this.fadeUp(channelIndex);
+            this.fadeUp(channelIndex, fadeTime);
         } else {
-            this.fadeDown(channelIndex);
+            this.fadeDown(channelIndex, fadeTime);
         }
     }
 
-    fadeUp(channelIndex: number) {
+    fadeUp(channelIndex: number, fadeTime: number) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
         let targetVal = this.mixerProtocol.fader.zero;
         if (this.mixerProtocol.mode === "master") {
@@ -160,7 +158,7 @@ export class MixerConnection {
         }
     }
 
-    fadeDown(channelIndex: number) {
+    fadeDown(channelIndex: number, fadeTime: number) {
         let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
         const min = this.mixerProtocol.fader.min;
         const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
@@ -197,7 +195,7 @@ export class MixerConnection {
     }
 
 
-    fadeGrpInOut (channelIndex: number){
+    fadeGrpInOut (channelIndex: number, fadeTime: number){
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].grpFader[channelIndex].fadeActive) {
             clearInterval(this.grpTimer[channelIndex]);
@@ -210,13 +208,13 @@ export class MixerConnection {
         }
 
         if (this.store.channels[0].grpFader[channelIndex].pgmOn) {
-            this.fadeGrpUp(channelIndex);
+            this.fadeGrpUp(channelIndex, fadeTime);
         } else {
-            this.fadeGrpDown(channelIndex);
+            this.fadeGrpDown(channelIndex, fadeTime);
         }
     }
 
-    fadeGrpUp(channelIndex: number) {
+    fadeGrpUp(channelIndex: number, fadeTime: number) {
         let outputLevel = parseFloat(this.store.channels[0].grpFader[channelIndex].outputLevel);
         let targetVal = parseFloat(this.store.channels[0].grpFader[channelIndex].faderLevel);
         const step = (targetVal-outputLevel)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
@@ -270,7 +268,7 @@ export class MixerConnection {
         }
     }
 
-    fadeGrpDown(channelIndex: number) {
+    fadeGrpDown(channelIndex: number, fadeTime: number) {
         let outputLevel = this.store.channels[0].grpFader[channelIndex].outputLevel;
         const min = this.mixerProtocol.fader.min;
         const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);

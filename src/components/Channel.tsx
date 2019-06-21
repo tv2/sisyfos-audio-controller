@@ -56,7 +56,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             type:'TOGGLE_PGM',
             channel: this.channelIndex
         });
-        window.mixerConnection.updateOutLevel(this.channelIndex);
+        window.mixerGenericConnection.updateOutLevel(this.channelIndex);
         window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
     }
 
@@ -72,7 +72,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             type:'TOGGLE_PFL',
             channel: this.channelIndex
         });
-        window.mixerConnection.updatePflState(this.channelIndex);
+        window.mixerGenericConnection.updatePflState(this.channelIndex);
         window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
     }
 
@@ -82,7 +82,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             channel: this.channelIndex,
             level: parseFloat(event.target.value)
         });
-        window.mixerConnection.updateOutLevel(this.channelIndex);
+        window.mixerGenericConnection.updateOutLevel(this.channelIndex);
         window.huiRemoteConnection.updateRemoteFaderState(this.channelIndex, event.target.value)
     }
 
