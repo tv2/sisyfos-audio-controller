@@ -13,7 +13,7 @@ import { loadSettings } from './utils/SettingsStorage';
 declare global {
     interface Window {
         storeRedux: any
-        mixerConnection: any
+        mixerGenericConnection: any
         automationConnection: any
         huiRemoteConnection: any
     }

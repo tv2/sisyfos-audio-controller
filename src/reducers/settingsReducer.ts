@@ -27,7 +27,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showOptions: false,
         mixerProtocol: "genericMidi",
         localIp: "0.0.0.0",
-        localOscPort: 8000,
+        localOscPort: 1234,
         deviceIp: "0.0.0.0",
         devicePort: 10024,
         enableRemoteFader: false,

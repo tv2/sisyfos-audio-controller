@@ -22,14 +22,14 @@ class Channels extends React.Component<IAppProps & Store> {
         this.props.dispatch({
             type:'X_MIX'
         });
-        window.mixerConnection.updateOutLevels();
+        window.mixerGenericConnection.updateOutLevels();
     }
 
     handleClearAllChannels() {
         this.props.dispatch({
             type:'FADE_TO_BLACK'
         });
-        window.mixerConnection.updateOutLevels();
+        window.mixerGenericConnection.updateOutLevels();
     }
 
     handleSnapMix(snapIndex: number) {
@@ -37,7 +37,7 @@ class Channels extends React.Component<IAppProps & Store> {
             type:'SNAP_RECALL',
             snapIndex: snapIndex
         });
-        window.mixerConnection.updateOutLevels();
+        window.mixerGenericConnection.updateOutLevels();
     }
 
     handleShowSnaps() {

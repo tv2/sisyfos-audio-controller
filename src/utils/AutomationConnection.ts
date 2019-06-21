@@ -38,7 +38,7 @@ export class AutomationConnection {
         })
         .on('message', (message: any) => {
             console.log("RECIEVED AUTOMATION MESSAGE :", message.address, message.args[0]);
-            //Set state of Producers Audio Mixer:
+            //Set state of Sisyfos:
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -47,7 +47,11 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pgmOn: message.args[0]===1 ? true : false
                 });
-                window.mixerConnection.updateOutLevel(ch-1);
+                if (message.args.length > 1) {
+                    window.mixerGenericConnection.updateOutLevel(ch-1, parseFloat(message.args[1]));
+                } else {
+                    window.mixerGenericConnection.updateOutLevel(ch-1);
+                }
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PST_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -56,7 +60,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pstOn: message.args[0]===1 ? true : false
                 });
-                window.mixerConnection.updateOutLevel(ch-1);
+                window.mixerGenericConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[2];
@@ -65,7 +69,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     level: message.args[0]
                 });
-                window.mixerConnection.updateOutLevel(ch-1);
+                window.mixerGenericConnection.updateOutLevel(ch-1);
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
@@ -74,11 +78,19 @@ export class AutomationConnection {
                     snapIndex: snapNumber -1
                 });
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .SET_LABEL)) {
+                    let ch = message.address.split("/")[2];
+                    window.storeRedux.dispatch({
+                        type:'SET_CHANNEL_LABEL',
+                        channel: ch -1,
+                        label: message.args[0]
+                    });
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .X_MIX)) {
                 window.storeRedux.dispatch({
                     type:'X_MIX'
                 });
-                window.mixerConnection.updateOutLevels();
+                window.mixerGenericConnection.updateOutLevels();
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_VISIBLE)){
                 let ch = message.address.split("/")[2];
@@ -88,12 +100,11 @@ export class AutomationConnection {
                     showChannel: message.args[0]===1 ? true : false
                 });
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                    .FADE_TO_BLACK)) {
+                .FADE_TO_BLACK)) {
                     window.storeRedux.dispatch({
                         type:'FADE_TO_BLACK'
-                    });
-                    window.mixerConnection.updateOutLevels();
-            // Get state from Producers Audio Mixer:
+                });
+                window.mixerGenericConnection.updateOutLevels();
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .GRP_FADER_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -102,7 +113,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pgmOn: message.args[0]===1 ? true : false
                 });
-                window.mixerConnection.updateOutLevel(ch-1);
+                window.mixerGenericConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .GRP_FADER_PST_ON_OFF)){
                 let ch = message.address.split("/")[2];
@@ -111,7 +122,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     pstOn: message.args[0]===1 ? true : false
                 });
-                window.mixerConnection.updateOutLevel(ch-1);
+                window.mixerGenericConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .GRP_FADER_LEVEL)){
                 let ch = message.address.split("/")[2];
@@ -120,7 +131,7 @@ export class AutomationConnection {
                     channel: ch - 1,
                     level: message.args[0]
                 });
-                window.mixerConnection.updateOutLevel(ch-1);
+                window.mixerGenericConnection.updateOutLevel(ch-1);
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
@@ -133,7 +144,7 @@ export class AutomationConnection {
                 window.storeRedux.dispatch({
                     type:'X_MIX'
                 });
-                window.mixerConnection.updateOutLevels();
+                window.mixerGenericConnection.updateOutLevels();
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_VISIBLE)){
                 let ch = message.address.split("/")[2];
@@ -155,7 +166,7 @@ export class AutomationConnection {
                     window.storeRedux.dispatch({
                         type:'FADE_TO_BLACK'
                     });
-                    window.mixerConnection.updateOutLevels();
+                    window.mixerGenericConnection.updateOutLevels();
             // Get state from Producers Audio Mixer:
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_CHANNEL_PGM)) {
