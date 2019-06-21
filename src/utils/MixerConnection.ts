@@ -94,7 +94,7 @@ export class MixerGenericConnection {
         if (this.mixerProtocol.mode === "master") {
             targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
         }
-        const step = (targetVal-outputLevel)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
+        const step = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
 
 
         if (targetVal<outputLevel) {
@@ -161,7 +161,7 @@ export class MixerGenericConnection {
     fadeDown(channelIndex: number, fadeTime: number) {
         let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
         const min = this.mixerProtocol.fader.min;
-        const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
+        const step = (outputLevel-min)/(fadeTime/FADE_INOUT_SPEED);
 
         this.timer[channelIndex] = setInterval(() => {
 
@@ -217,7 +217,7 @@ export class MixerGenericConnection {
     fadeGrpUp(channelIndex: number, fadeTime: number) {
         let outputLevel = parseFloat(this.store.channels[0].grpFader[channelIndex].outputLevel);
         let targetVal = parseFloat(this.store.channels[0].grpFader[channelIndex].faderLevel);
-        const step = (targetVal-outputLevel)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
+        const step = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
 
         if (targetVal<outputLevel) {
             this.grpTimer[channelIndex] = setInterval(() => {
@@ -271,7 +271,7 @@ export class MixerGenericConnection {
     fadeGrpDown(channelIndex: number, fadeTime: number) {
         let outputLevel = this.store.channels[0].grpFader[channelIndex].outputLevel;
         const min = this.mixerProtocol.fader.min;
-        const step = (outputLevel-min)/(this.store.settings[0].fadeTime/FADE_INOUT_SPEED);
+        const step = (outputLevel-min)/(fadeTime/FADE_INOUT_SPEED);
 
         this.grpTimer[channelIndex] = setInterval(() => {
 
