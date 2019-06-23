@@ -24,13 +24,12 @@ interface IVuMeters {
 }
 
 const defaultChannelsReducerState = (numberOfChannels: number) => {
-    let defaultObj: Array<IChannels> = new Array(1);
-    defaultObj[0] = {
+    let defaultObj: Array<IChannels> = [{
         channel: [],
         vuMeters: [],
         grpFader: [],
         grpVuMeters: [],
-    };
+    }];
 
     for (let i=0; i < numberOfChannels; i++) {
         defaultObj[0].channel[i] = ({
