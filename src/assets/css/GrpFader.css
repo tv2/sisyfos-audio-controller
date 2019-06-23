@@ -10,6 +10,7 @@
     margin-top: 10px;
     text-align: center;
 }
+
 .grpFader-gain-label {
     color: #777777;
     font-size: 0.8em;
@@ -42,13 +43,13 @@
     color: white;
     height: 90px;
     width: 80px;
-    background-color: green;
+    background-color: rgb(59, 73, 59);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
 }
 
 .grpFader-pst-button.on {
-    background-color: rgb(59, 73, 59);
+    background-color: green;
 }
 
 .grpFader-body.with-snaps .grpFader-pgm-button, .grpFader-body.with-snaps .grpFader-pst-button {
@@ -67,7 +68,7 @@
 }
 .grpFader-body.with-snaps.with-pfl .grpFader-pst-button {
     margin-bottom: 44px;
-} 
+}
 
 .grpFader-snap-body {
     margin-top: 10px;
