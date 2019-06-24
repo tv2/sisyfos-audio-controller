@@ -2,9 +2,7 @@ import { ArdourMaster } from './mixerProtocols/ardourMaster';
 import { Reaper } from './mixerProtocols/reaper';
 import { ReaperMaster } from './mixerProtocols/reaperMaster';
 import { BehringerXrMaster } from './mixerProtocols/behringerXrMaster';
-import { BehringerXrClient } from './mixerProtocols/behringerXrClient';
 import { MidasMaster } from './mixerProtocols/midasMaster';
-import { MidasClient } from './mixerProtocols/midasClient';
 import { GenericMidi } from './mixerProtocols/genericMidi';
 import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 
@@ -77,7 +75,7 @@ export interface ICasparCGMixerGeometryFile {
             }
         }
     }
-} 
+}
 
 export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
     studio: string,
@@ -117,9 +115,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     reaper: Reaper,
     reaperMaster: ReaperMaster,
     behringerxrmaster: BehringerXrMaster,
-    behringerxrclient: BehringerXrClient,
     midasMaster: MidasMaster,
-    midasClient: MidasClient,
     genericMidi: GenericMidi
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
