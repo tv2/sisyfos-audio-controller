@@ -29,10 +29,13 @@
     "scripts": {
         "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
         "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
-        "build": "yarn tsc || webpack --config webpack.build.config.js --mode production",
+        "build": "yarn tsc && webpack --config webpack.build.config.js --mode production",
         "build-now": "webpack --config webpack.build.config.js --mode production",
         "package": "yarn run build",
-        "postpackage": "electron-packager ./ --out=./builds"
+        "postpackage": "electron-packager ./ --out=./builds --overwrite",
+        "package-linux": "electron-packager . sisyfos-audio-controller --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
+        "package-win": "electron-packager . sisyfos-audio-controller --overwrite --asar=true --platform=win32 --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds"
+
     },
     "dependencies": {
         "@types/hoist-non-react-statics": "^3.3.1",
