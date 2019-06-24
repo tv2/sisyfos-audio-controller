@@ -39,7 +39,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     public shouldComponentUpdate(nextProps: IChannelInjectProps) {
-        return (nextProps.pgmOn != this.props.pgmOn ||
+        let snapChanged: boolean = false;
+        nextProps.snapOn.map((snapOn, index) => {
+            if (snapOn === this.props.snapOn[index]) {
+                snapChanged = true;
+            }
+        })
+        return (
+            nextProps.pgmOn != this.props.pgmOn ||
             nextProps.pstOn != this.props.pstOn ||
             nextProps.pflOn != this.props.pflOn ||
             nextProps.showChannel != this.props.showChannel ||
@@ -47,8 +54,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             nextProps.label != this.props.label ||
             nextProps.mixerProtocol != this.props.mixerProtocol ||
             nextProps.showSnaps != this.props.showSnaps ||
-            nextProps.showPfl != this.props.showPfl)
-//ToDo: handle snaps state re-rendering:  nextProps.snapOn != this.props.snapOn ||
+            nextProps.showPfl != this.props.showPfl ||
+            snapChanged
+        )
     }
 
     handlePgm() {
