@@ -33,8 +33,9 @@
         "build-now": "webpack --config webpack.build.config.js --mode production",
         "package": "yarn run build",
         "postpackage": "electron-packager ./ --out=./builds --overwrite",
-        "package-linux": "electron-packager . sisyfos-audio-controller --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
-        "package-win": "electron-packager . sisyfos-audio-controller --overwrite --asar=true --platform=win32 --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds"
+        "package-linux": "electron-packager . sisyfos-audio-controller --overwrite --asar=true --platform=linux --arch=x64  --prune=true --out=builds",
+        "package-win": "electron-packager . sisyfos-audio-controller --overwrite --asar=true --platform=win32 --arch=x64  --prune=true --out=builds",
+        "package-release": "yarn package && yarn package-win && yarn package-linux"
 
     },
     "dependencies": {
