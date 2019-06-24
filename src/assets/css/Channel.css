@@ -1,5 +1,4 @@
 .channel-body {
-    background-color: #414040;
     color: white;
     background-color: #2f2f2f;
     margin: 4px;
@@ -53,7 +52,7 @@
 }
 
 .channel-pst-button.on {
-    background-color: green; 
+    background-color: green;
 }
 
 .channel-pfl-button {
