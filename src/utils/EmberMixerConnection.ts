@@ -1,4 +1,4 @@
-import { DeviceTree } from 'emberplus';
+import { DeviceTree, Ember } from 'emberplus';
 
 //Utils:
 import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
@@ -52,6 +52,15 @@ export class EmberMixerConnection {
     setupMixerConnection() {
         console.log("Ember Connected");
         console.log(this.deviceRoot.elements[0].children[0].children[0].children[0].contents.value);
+        this.emberConnection.getNodeByPath("Sapphire/Sources/Source1/Gain")
+        .then((response: any) => {
+            console.log(response.contents.value);
+        })
+        this.emberConnection.invokeFunction(new Ember.QualifiedFunction("Sapphire/Sources/Source1/Gain"), ["Gain", new Ember.ParameterContents("value", 'real'), new Ember.ParameterContents(100, 'real')])
+        .then((response: any) => {
+            console.log(response.contents.value);
+        })
+
         this.emberConnection
         .on("ready", () => {
             console.log("Receiving state of desk");
