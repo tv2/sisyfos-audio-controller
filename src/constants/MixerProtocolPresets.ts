@@ -78,6 +78,10 @@ export interface ICasparCGMixerGeometryFile {
     }
 }
 
+export interface IEmberMixerProtocol extends IMixerProtocol {
+    channelList: Array<string>
+}
+
 export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
     studio: string,
     leadingZeros: boolean,
@@ -118,7 +122,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     behringerxrmaster: BehringerXrMaster,
     midasMaster: MidasMaster,
     genericMidi: GenericMidi,
-    lawoMaster: LawoClient,
+    lawoClient: LawoClient,
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
 } : {});

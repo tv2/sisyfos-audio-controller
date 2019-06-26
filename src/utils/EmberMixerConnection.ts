@@ -1,18 +1,18 @@
 import { DeviceTree, Ember } from 'emberplus';
 
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IEmberMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IStore } from '../reducers/indexReducer';
 
 export class EmberMixerConnection {
     store: IStore;
-    mixerProtocol: IMixerProtocol;
+    mixerProtocol: IEmberMixerProtocol;
     cmdChannelIndex: number;
     emberConnection: any;
     deviceRoot: any;
 
 
-    constructor(mixerProtocol: IMixerProtocol) {
+    constructor(mixerProtocol: IEmberMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
