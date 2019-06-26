@@ -52,23 +52,6 @@ export class EmberMixerConnection {
     setupMixerConnection() {
         let node: any;
         console.log("Ember Connected");
-        console.log(this.deviceRoot.elements[0].children[0].children[0].children[0].contents.value);
-        this.emberConnection.getNodeByPath("Sapphire/Sources/Source1/Fader")
-        .then((response: any) => {
-            console.log("Node : ", response);
-            console.log("ParameterContents :", new Ember.ParameterContents(100, 'real'))
-            //return
-            let newVal = 241;
-            this.emberConnection.setValue(
-                response,
-                newVal
-            )
-            .then((response: any) => {
-                console.log("setValue response :", response)
-            })
-        })
-
-
 
         this.emberConnection
         .on("connected", () => {
@@ -200,6 +183,7 @@ export class EmberMixerConnection {
 
     pingMixerCommand() {
         //Ping Ember mixer if mixerProtocol needs it.
+        return;
         this.mixerProtocol.pingCommand.map((command) => {
             this.sendOutMessage(
                 command.mixerMessage,
@@ -238,16 +222,21 @@ export class EmberMixerConnection {
                 channelString
             );
         if (message != 'none') {
-/*            this.oscConnection.send({
-                address: message,
-                args: [
-                    {
-                        type: type,
-                        value: value
-                    }
-                ]
-            });
-*/
+//            console.log(this.deviceRoot.elements[0].children[0].children[0].children[0].contents.value);
+            this.emberConnection.getNodeByPath(message)// "Sapphire/Sources/Source1/Fader")
+            .then((response: any) => {
+                console.log("Node : ", response);
+                console.log("ParameterContents :", new Ember.ParameterContents(100, 'real'))
+                //return
+//                let newVal = 241;
+                this.emberConnection.setValue(
+                    response,
+                    typeof value === 'number' ? value : parseFloat(value)
+                )
+                .then((response: any) => {
+                    console.log("setValue response :", response)
+                })
+            })
         }
     }
 

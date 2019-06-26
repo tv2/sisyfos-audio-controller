@@ -33,7 +33,7 @@ export const LawoMaster: IMixerProtocol = {
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '/track/{channel}/volume',
+        CHANNEL_OUT_GAIN: 'Sapphire/Sources/Source{channel}/Fader',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
         PFL_ON: {
             mixerMessage: "/track/{channel}/solo",
@@ -48,9 +48,9 @@ export const LawoMaster: IMixerProtocol = {
     },
     fader: {
         min: 0,
-        max: 1,
-        zero: 0.75,
-        step: 0.01,
+        max: 1000,
+        zero: 750,
+        step: 10,
         fadeTime: 40,  //Total time for a fade in ms.
     },
     meter: {
