@@ -9,7 +9,7 @@ export interface IAutomationProtocol {
     leadingZeros: boolean,
     initializeCommands: [
         {
-            oscMessage: string,
+            mixerMessage: string,
             value: string,
             type: string
         }
@@ -67,7 +67,7 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
         leadingZeros: true,
         initializeCommands: [
             {
-                oscMessage: "/info",
+                mixerMessage: "/info",
                 value: "",
                 type: "f"
             }

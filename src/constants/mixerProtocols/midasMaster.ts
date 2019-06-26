@@ -8,12 +8,12 @@ export const MidasMaster: IMixerProtocol = {
     leadingZeros: true,
     pingCommand: [
         {
-            oscMessage: "/xremote",
+            mixerMessage: "/xremote",
             value: 0,
             type: "f"
         },
         {
-            oscMessage: "/meters",
+            mixerMessage: "/meters",
             value: "/meters/1",
             type: "s"
         }
@@ -21,12 +21,12 @@ export const MidasMaster: IMixerProtocol = {
     pingTime: 9500,
     initializeCommands: [
         {
-            oscMessage: '/ch/{channel}/mix/fader',
+            mixerMessage: '/ch/{channel}/mix/fader',
             value: "",
             type: "s"
         },
         {
-            oscMessage: '/ch/{channel}/config/name',
+            mixerMessage: '/ch/{channel}/config/name',
             value: "",
             type: "s"
         }
@@ -46,12 +46,12 @@ export const MidasMaster: IMixerProtocol = {
         CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
         PFL_ON: {
-            oscMessage: "/not_in_use",
+            mixerMessage: "/not_in_use",
             value: 0,
             type: "f"
         },
         PFL_OFF: {
-            oscMessage: "/not_in_use",
+            mixerMessage: "/not_in_use",
             value: 0,
             type: "f"
         }

@@ -78,7 +78,7 @@ export class CasparCGConnection {
                 console.log("Error : ", error);
                 console.log("Lost OSC connection");
             });
-            
+
             this.oscClient.open();
             console.log("Listening for status on CasparCG: ", this.store.settings[0].deviceIp, remotePort)
         }
@@ -113,7 +113,7 @@ export class CasparCGConnection {
         //Ping OSC mixer if mixerProtocol needs it.
         /* this.mixerProtocol.pingCommand.map((command) => {
             this.sendOutMessage(
-                command.oscMessage,
+                command.mixerMessage,
                 0,
                 command.value
             );
@@ -233,7 +233,7 @@ export class CasparCGConnection {
     }
 
     updateGrpFadeIOLevel(channelIndex: number, outputLevel: number) {
-        
+
     }
 
 }

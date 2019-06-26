@@ -105,7 +105,7 @@ return true;
         //Ping OSC mixer if mixerProtocol needs it.
         this.mixerProtocol.pingCommand.map((command) => {
             this.sendOutMessage(
-                command.oscMessage,
+                command.mixerMessage,
                 0,
                 command.value
             );
@@ -140,13 +140,13 @@ return true;
 
         if (this.store.channels[0].channel[channelIndex].pflOn = true) {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_ON.oscMessage,
+                this.mixerProtocol.toMixer.PFL_ON.mixerMessage,
                 channelIndex+1,
                 this.mixerProtocol.toMixer.PFL_ON.value
             );
         } else {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_OFF.oscMessage,
+                this.mixerProtocol.toMixer.PFL_OFF.mixerMessage,
                 channelIndex+1,
                 this.mixerProtocol.toMixer.PFL_OFF.value
             );

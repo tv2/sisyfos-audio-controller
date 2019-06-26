@@ -41,12 +41,12 @@ export class OscMixerConnection {
         .on("ready", () => {
             console.log("Receiving state of desk");
             this.mixerProtocol.initializeCommands.map((item) => {
-                if (item.oscMessage.includes("{channel}")) {
+                if (item.mixerMessage.includes("{channel}")) {
                     this.store.channels[0].channel.map((channel: any, index: any) => {
-                        this.sendOutRequest(item.oscMessage,(index +1));
+                        this.sendOutRequest(item.mixerMessage,(index +1));
                     });
                 } else {
-                    this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
+                    this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
                 }
             });
         })
@@ -183,7 +183,7 @@ export class OscMixerConnection {
         //Ping OSC mixer if mixerProtocol needs it.
         this.mixerProtocol.pingCommand.map((command) => {
             this.sendOutMessage(
-                command.oscMessage,
+                command.mixerMessage,
                 0,
                 command.value,
                 command.type
@@ -281,14 +281,14 @@ export class OscMixerConnection {
     updatePflState(channelIndex: number) {
         if (this.store.channels[0].channel[channelIndex].pflOn === true) {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_ON.oscMessage,
+                this.mixerProtocol.toMixer.PFL_ON.mixerMessage,
                 channelIndex+1,
                 this.mixerProtocol.toMixer.PFL_ON.value,
                 this.mixerProtocol.toMixer.PFL_ON.type
             );
         } else {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_OFF.oscMessage,
+                this.mixerProtocol.toMixer.PFL_OFF.mixerMessage,
                 channelIndex+1,
                 this.mixerProtocol.toMixer.PFL_OFF.value,
                 this.mixerProtocol.toMixer.PFL_OFF.type

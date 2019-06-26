@@ -8,7 +8,7 @@ export const GenericMidi: IMixerProtocol = {
     leadingZeros: false,
     pingCommand: [
         {
-            oscMessage: "/note_in_use",
+            mixerMessage: "/note_in_use",
             value: 0,
             type: "f"
         }
@@ -16,7 +16,7 @@ export const GenericMidi: IMixerProtocol = {
     pingTime: 0,
     initializeCommands: [
         {
-            oscMessage: "/note_in_use",
+            mixerMessage: "/note_in_use",
             value: 0,
             type: "f"
         }
@@ -36,12 +36,12 @@ export const GenericMidi: IMixerProtocol = {
         CHANNEL_OUT_GAIN: "38",
         GRP_OUT_GAIN: 'none',
         PFL_ON: {
-            oscMessage: "/not_in_use",
+            mixerMessage: "/not_in_use",
             value: 0,
             type: "f"
         },
         PFL_OFF: {
-            oscMessage: "/not_in_use",
+            mixerMessage: "/not_in_use",
             value: 0,
             type: "f"
         }

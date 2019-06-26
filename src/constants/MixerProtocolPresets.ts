@@ -106,7 +106,7 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
 }
 
 interface IMessageProtocol {
-    oscMessage: string,
+    mixerMessage: string,
     value: any,
     type: string
 }
