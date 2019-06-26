@@ -4,7 +4,7 @@ import { CasparCG } from 'casparcg-connection';
 import * as osc from 'osc';
 
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets, ICasparCGMixerGeometry, ChannelLayerPair } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets, ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolPresets';
 import { IStore } from '../reducers/indexReducer';
 import { IChannel } from '../reducers/channelsReducer';
 
@@ -126,7 +126,7 @@ export class CasparCGConnection {
         })
     }
 
-    setAllLayers = (pairs: ChannelLayerPair[], value: number) => {
+    setAllLayers = (pairs: ICasparCGChannelLayerPair[], value: number) => {
         pairs.forEach((i) => {
             this.controlVolume(i.channel, i.layer, value);
         })
