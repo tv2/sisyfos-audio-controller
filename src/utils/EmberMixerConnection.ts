@@ -50,19 +50,23 @@ export class EmberMixerConnection {
     }
 
     setupMixerConnection() {
+        let node: any;
         console.log("Ember Connected");
         console.log(this.deviceRoot.elements[0].children[0].children[0].children[0].contents.value);
-        this.emberConnection.getNodeByPath("Sapphire/Sources/Source1/Gain")
+        this.emberConnection.getNodeByPath("Sapphire/Sources/Source1/Fader")
         .then((response: any) => {
-            console.log(response.contents.value);
-        })
-        this.emberConnection.invokeFunction(new Ember.QualifiedFunction("Sapphire/Sources/Source1/Gain"), ["Gain", new Ember.ParameterContents("value", 'real'), new Ember.ParameterContents(100, 'real')])
-        .then((response: any) => {
-            console.log(response.contents.value);
+            console.log(response);
+            //return
+            this.emberConnection.setValue(
+                response,
+                new Ember.ParameterContents(100, 'real')
+            )
         })
 
+
+
         this.emberConnection
-        .on("ready", () => {
+        .on("connected", () => {
             console.log("Receiving state of desk");
             this.mixerProtocol.initializeCommands.map((item) => {
                 if (item.oscMessage.includes("{channel}")) {
