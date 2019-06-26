@@ -53,19 +53,27 @@ export class EmberMixerConnection {
         let node: any;
         console.log("Ember Connected");
 
-        this.emberConnection
-        .on("connected", () => {
-            console.log("Receiving state of desk");
-            this.mixerProtocol.initializeCommands.map((item) => {
-                if (item.mixerMessage.includes("{channel}")) {
-                    this.store.channels[0].channel.map((channel: any, index: any) => {
-                        this.sendOutRequest(item.mixerMessage,(index +1));
-                    });
-                } else {
-                    this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
-                }
-            });
-        })
+        for (let ch=1; ch <= this.store.settings[0].numberOfChannels ; ch++) {
+            this.emberConnection.getNodeByPath(this.mixerProtocol.fromMixer.CHANNEL_FADER_LEVEL.replace("{channel}", String(ch)))
+            .then((node: any) => {
+                this.emberConnection.subscribe(node, (() => {
+                        window.storeRedux.dispatch({
+                            type:'SET_FADER_LEVEL',
+                            channel: ch - 1,
+                            level: node.contents.value
+                        });
+
+                        if (window.huiRemoteConnection) {
+                            window.huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
+                        }
+                        console.log("subscription :", node.contents.value)
+                })
+                )
+            })
+        }
+
+/*
+
         .on('message', (message: any) => {
             if (this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_VU)){
@@ -93,30 +101,6 @@ export class EmberMixerConnection {
                     {
                         this.updateOutLevel(ch-1);
                     }
-                }
-            } else if ( this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
-                .CHANNEL_OUT_GAIN)){
-                let ch = message.address.split("/")[this.cmdChannelIndex];
-                if (this.mixerProtocol.mode === 'master'
-                    && !this.store.channels[0].channel[ch - 1].fadeActive
-                    &&  message.args[0] > this.mixerProtocol.fader.min)
-                {
-                    window.storeRedux.dispatch({
-                        type:'SET_FADER_LEVEL',
-                        channel: ch - 1,
-                        level: message.args[0]
-                    });
-                    if (!this.store.channels[0].channel[ch - 1].pgmOn) {
-                        window.storeRedux.dispatch({
-                            type:'TOGGLE_PGM',
-                            channel: ch - 1
-                        });
-                    }
-
-                    if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
-                    }
-
                 }
             } else if (this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_NAME)) {
@@ -164,15 +148,16 @@ export class EmberMixerConnection {
                 console.log("OSC message: ", message.address);
             }
         })
+        */
+        this.emberConnection
         .on('error', (error: any) => {
             console.log("Error : ", error);
             console.log("Lost EMBER connection");
         });
 
-
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
-            let oscTimer = setInterval(
+            let emberTimer = setInterval(
                 () => {
                     this.pingMixerCommand();
                 },
@@ -194,27 +179,6 @@ export class EmberMixerConnection {
         });
     }
 
-    checkEmberCommand(message: string, command: string) {
-        if (message === command) return true;
-
-        let cmdArray = command.split("{channel}");
-        if (message.substr(0, cmdArray[0].length) === cmdArray[0])
-        {
-            if (
-                message.substr(-cmdArray[1].length) === cmdArray[1] &&
-                message.length >= command.replace("{channel}", "").length
-            ) {
-                return true;
-            } else if (
-                cmdArray[1] === "" &&
-                message.length >= command.replace("{channel}", "").length
-            ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     sendOutMessage(mixerMessage: string, channel: number, value: string | number, type: string) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = mixerMessage.replace(
@@ -222,20 +186,12 @@ export class EmberMixerConnection {
                 channelString
             );
         if (message != 'none') {
-//            console.log(this.deviceRoot.elements[0].children[0].children[0].children[0].contents.value);
-            this.emberConnection.getNodeByPath(message)// "Sapphire/Sources/Source1/Fader")
+            this.emberConnection.getNodeByPath(message)
             .then((response: any) => {
-                console.log("Node : ", response);
-                console.log("ParameterContents :", new Ember.ParameterContents(100, 'real'))
-                //return
-//                let newVal = 241;
                 this.emberConnection.setValue(
                     response,
                     typeof value === 'number' ? value : parseFloat(value)
                 )
-                .then((response: any) => {
-                    console.log("setValue response :", response)
-                })
             })
         }
     }

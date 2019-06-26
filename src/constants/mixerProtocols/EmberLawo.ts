@@ -1,9 +1,9 @@
 import { IMixerProtocol } from '../MixerProtocolPresets';
 
-export const LawoMaster: IMixerProtocol = {
+export const LawoClient: IMixerProtocol = {
     protocol: 'EMBER',
-    label: 'Ember+ Lawo',
-    mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
+    label: 'Lawo client, XX-gain as fade I/O',
+    mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [
@@ -22,8 +22,8 @@ export const LawoMaster: IMixerProtocol = {
         }
     ],
     fromMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '0, {channel}, 0',
+        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
+        CHANNEL_OUT_GAIN: '',
         CHANNEL_VU: '/track/{channel}/vu',
         CHANNEL_NAME: '/track/{channel}/name',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
@@ -32,8 +32,8 @@ export const LawoMaster: IMixerProtocol = {
         PFL: 'todo'
     },
     toMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: 'Sapphire/Sources/Source{channel}/Fader',
+        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
+        CHANNEL_OUT_GAIN: 'Sapphire/Sources/Source{channel}/Gain',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
         PFL_ON: {
             mixerMessage: "/track/{channel}/solo",

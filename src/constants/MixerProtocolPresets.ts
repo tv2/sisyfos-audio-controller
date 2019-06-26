@@ -4,7 +4,7 @@ import { ReaperMaster } from './mixerProtocols/reaperMaster';
 import { BehringerXrMaster } from './mixerProtocols/behringerXrMaster';
 import { MidasMaster } from './mixerProtocols/midasMaster';
 import { GenericMidi } from './mixerProtocols/genericMidi';
-import { LawoMaster } from './mixerProtocols/EmberLawo';
+import { LawoClient } from './mixerProtocols/EmberLawo';
 import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 
 export interface IMixerProtocolGeneric {
@@ -118,7 +118,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     behringerxrmaster: BehringerXrMaster,
     midasMaster: MidasMaster,
     genericMidi: GenericMidi,
-    lawoMaster: LawoMaster,
+    lawoMaster: LawoClient,
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
 } : {});
