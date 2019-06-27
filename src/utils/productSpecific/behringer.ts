@@ -9,7 +9,7 @@ export const behringerMeter = (message: any) => {
     let uint8bytes = Uint8Array.from(message[0]);
     let dataview = new DataView(uint8bytes.buffer);
 
-    for (let i=0; i < store.settings[0].numberOfChannels; i++) {
+    for (let i=0; i < store.settings[0].numberOfChannelsInType[0]; i++) {
         window.storeRedux.dispatch({
             type:'SET_VU_LEVEL',
             channel: i,

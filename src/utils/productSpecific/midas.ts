@@ -8,7 +8,7 @@ export const midasMeter = (message: any) => {
     let dataview = new DataView(uint8bytes.buffer);
     //console.log(dataview);
     let vuMeters = [];
-    let numberOfChannels = store.settings[0].numberOfChannels;
+    let numberOfChannels = store.settings[0].numberOfChannelsInType[0];
 
     for (let i=0; i < numberOfChannels; i++) {
         vuMeters.push({vuVal : dataview.getFloat32(4*i+headerData , true)});

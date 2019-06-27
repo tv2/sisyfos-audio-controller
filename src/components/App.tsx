@@ -30,7 +30,7 @@ class App extends React.Component<IAppProps> {
         (window as any).automationConnection = new AutomationConnection();
         (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         this.snapShopStoreTimer();
-        loadSnapshotState(this.props.store.channels[0], this.props.store.settings[0].numberOfChannels);
+        loadSnapshotState(this.props.store.channels[0], this.props.store.settings[0].numberOfChannelsInType[0]);
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {

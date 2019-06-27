@@ -53,7 +53,7 @@ export class EmberMixerConnection {
         let node: any;
         console.log("Ember Connected");
 
-        for (let ch=1; ch <= this.store.settings[0].numberOfChannels ; ch++) {
+        for (let ch=1; ch <= this.store.settings[0].numberOfChannelsInType[0] ; ch++) {
             this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_FADER_LEVEL.replace("{channel}", String(ch)))
             .then((node: any) => {
                 this.emberConnection.subscribe(node, (() => {

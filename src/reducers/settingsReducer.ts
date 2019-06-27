@@ -13,7 +13,7 @@ export interface ISettings {
     enableRemoteFader: boolean,
     remoteFaderMidiInputPort: string,
     remoteFaderMidiOutputPort: string,
-    numberOfChannels: number,
+    numberOfChannelsInType: Array<number>,
     numberOfSnaps: number,
     fadeTime: number
     showPfl: boolean
@@ -33,7 +33,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         enableRemoteFader: false,
         remoteFaderMidiInputPort: "",
         remoteFaderMidiOutputPort: "",
-        numberOfChannels: 8,
+        numberOfChannelsInType: [8],
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         fadeTime: 100, //Time in ms
         showPfl: false

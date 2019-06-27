@@ -250,7 +250,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <br/>
                 <label className="settings-input-field">
                     NUMBER OF CHANNELS :
-                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannels} onChange={this.handleChange} />
+                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannelsInType[0]} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
