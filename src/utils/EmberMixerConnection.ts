@@ -55,7 +55,7 @@ export class EmberMixerConnection {
         let ch: number = 1;
         this.store.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
             for (let channelTypeIndex=0; channelTypeIndex < numberOfChannels ; channelTypeIndex++) {
-                this.subscribeFaderLevel(ch, typeIndex);
+                this.subscribeFaderLevel(ch, typeIndex, channelTypeIndex);
                 ch++;
             }
         })
@@ -97,8 +97,8 @@ export class EmberMixerConnection {
         }
     }
 
-    subscribeFaderLevel(ch: number, typeIndex: number) {
-        this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_FADER_LEVEL[0].replace("{channel}", String(ch)))
+    subscribeFaderLevel(ch: number, typeIndex: number, channelTypeIndex: number) {
+        this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_FADER_LEVEL[0].replace("{channel}", String(channelTypeIndex+1)))
         .then((node: any) => {
             console.log("Subscribing to channel :", ch);
             this.emberConnection.subscribe(node, (() => {
