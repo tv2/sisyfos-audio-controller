@@ -50,6 +50,33 @@ export const LawoClient: IMixerProtocol = {
             }],
             AUX_SEND: ['none'],
         },
+    },
+    {
+        channelTypeName: 'Sums',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: ['Sapphire/Sums/Source{channel}/Fader'],
+            CHANNEL_OUT_GAIN: [''],
+            CHANNEL_VU: ['/track/{channel}/vu'],
+            CHANNEL_NAME: '/track/{channel}/name',
+            PFL: ['todo'],
+            AUX_SEND: ['none'],
+        },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: ['Sapphire/Sums/Source{channel}/Fader'],
+            CHANNEL_OUT_GAIN: ['Sapphire/Sums/Source{channel}/Gain'],
+            PFL_ON: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 1,
+                type: "i"
+            }],
+            PFL_OFF: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 0,
+                type: "i"
+            }],
+            AUX_SEND: ['none'],
+        },
     }],
     fader: {
         min: 0,
