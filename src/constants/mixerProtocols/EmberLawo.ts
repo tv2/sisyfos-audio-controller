@@ -24,27 +24,33 @@ export const LawoClient: IMixerProtocol = {
             type: "f"
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
-        CHANNEL_OUT_GAIN: '',
-        CHANNEL_VU: '/track/{channel}/vu',
-        CHANNEL_NAME: '/track/{channel}/name',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
-        CHANNEL_OUT_GAIN: 'Sapphire/Sources/Source{channel}/Gain',
-        PFL_ON: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 1,
-            type: "i"
+    channelTypes: [{
+        channelTypeName: 'Channels',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
+            CHANNEL_OUT_GAIN: '',
+            CHANNEL_VU: '/track/{channel}/vu',
+            CHANNEL_NAME: '/track/{channel}/name',
+            PFL: 'todo',
+            AUX_SEND: ['none'],
         },
-        PFL_OFF: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 0,
-            type: "i"
-        }
-    },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
+            CHANNEL_OUT_GAIN: 'Sapphire/Sources/Source{channel}/Gain',
+            PFL_ON: {
+                mixerMessage: "/track/{channel}/solo",
+                value: 1,
+                type: "i"
+            },
+            PFL_OFF: {
+                mixerMessage: "/track/{channel}/solo",
+                value: 0,
+                type: "i"
+            },
+            AUX_SEND: ['none'],
+        },
+    }],
     fader: {
         min: 0,
         max: 1000,

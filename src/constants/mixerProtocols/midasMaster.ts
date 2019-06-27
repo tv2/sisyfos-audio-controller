@@ -31,27 +31,33 @@ export const MidasMaster: IMixerProtocol = {
             type: "s"
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
-        CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
-        CHANNEL_VU: '/meters/1',
-        CHANNEL_NAME: '/ch/{channel}/config/name',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
-        PFL_ON: {
-            mixerMessage: "/not_in_use",
-            value: 0,
-            type: "f"
+    channelTypes: [{
+        channelTypeName: 'Channels',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
+            CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+            CHANNEL_VU: '/meters/1',
+            CHANNEL_NAME: '/ch/{channel}/config/name',
+            PFL: 'todo',
+            AUX_SEND: ['none'],
         },
-        PFL_OFF: {
-            mixerMessage: "/not_in_use",
-            value: 0,
-            type: "f"
-        }
-    },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: 'none',
+            CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
+            PFL_ON: {
+                mixerMessage: "/not_in_use",
+                value: 0,
+                type: "f"
+            },
+            PFL_OFF: {
+                mixerMessage: "/not_in_use",
+                value: 0,
+                type: "f"
+            },
+            AUX_SEND: ['none'],
+        },
+    }],
     fader: {
         min: 0,
         max: 1,

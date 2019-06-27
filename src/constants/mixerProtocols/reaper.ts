@@ -21,27 +21,33 @@ export const Reaper: IMixerProtocol = {
             type: "f"
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
-        CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
-        CHANNEL_VU: '/track/{channel}/vu',
-        CHANNEL_NAME: '/track/{channel}/name',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
-        CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
-        PFL_ON: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 1,
-            type: "i"
+    channelTypes: [{
+        channelTypeName: 'Channels',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
+            CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
+            CHANNEL_VU: '/track/{channel}/vu',
+            CHANNEL_NAME: '/track/{channel}/name',
+            PFL: 'todo',
+            AUX_SEND: ['none'],
         },
-        PFL_OFF: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 0,
-            type: "i"
-        }
-    },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
+            CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
+            PFL_ON: {
+                mixerMessage: "/track/{channel}/solo",
+                value: 1,
+                type: "i"
+            },
+            PFL_OFF: {
+                mixerMessage: "/track/{channel}/solo",
+                value: 0,
+                type: "i"
+            },
+            AUX_SEND: ['none'],
+        },
+    }],
     fader: {
         min: 0,
         max: 1,
