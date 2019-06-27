@@ -77,9 +77,7 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
             nextState = defaultChannelsReducerState(action.numberOfTypeChannels);
             if (action.allState.channel.length == nextState[0].channel.length) {
                 action.allState.channel.map((channel: any, index: number) => {
-                    if (index < action.numberOfTypeChannels[0]) {
-                        nextState[0].channel[index] = channel;
-                    }
+                    nextState[0].channel[index] = channel;
                 });
             }
             return nextState;
