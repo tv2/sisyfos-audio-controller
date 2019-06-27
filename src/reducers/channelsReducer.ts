@@ -7,6 +7,7 @@ export interface IChannels {
 
 export interface IChannel {
     channelType: number,
+    channelTypeIndex: number,
     fadeActive: boolean,
     faderLevel: number,
     label: string,
@@ -22,15 +23,18 @@ interface IVuMeters {
     vuVal: number
 }
 
-const defaultChannelsReducerState = (numberOfChannels: number) => {
+const defaultChannelsReducerState = (numberOfTypeChannels: Array<number>) => {
     let defaultObj: Array<IChannels> = [{
         channel: [],
         vuMeters: [],
     }];
 
-    for (let i=0; i < numberOfChannels; i++) {
-        defaultObj[0].channel[i] = ({
-                channelType: 0,
+    let totalNumberOfChannels = 0;
+    numberOfTypeChannels.forEach((numberOfChannels, typeIndex) => {
+        for (let index=0; index < numberOfChannels; index++) {
+            defaultObj[0].channel[totalNumberOfChannels] = ({
+                channelType: typeIndex,
+                channelTypeIndex: index,
                 fadeActive: false,
                 faderLevel: 0,
                 label: "",
@@ -40,19 +44,20 @@ const defaultChannelsReducerState = (numberOfChannels: number) => {
                 pflOn: false,
                 showChannel: true,
                 snapOn: [],
-        });
-        defaultObj[0].vuMeters.push({
-            vuVal: 0.0
-        });
-
-        for (let y=0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
-            defaultObj[0].channel[i].snapOn.push(false);
+            });
+            defaultObj[0].vuMeters.push({
+                vuVal: 0.0
+            });
+            for (let y=0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
+                defaultObj[0].channel[totalNumberOfChannels].snapOn.push(false);
+            }
+            totalNumberOfChannels ++;
         }
-    }
+    })
     return defaultObj;
 };
 
-export const channels = ((state = defaultChannelsReducerState(1), action: any): Array<IChannels> => {
+export const channels = ((state = defaultChannelsReducerState([1]), action: any): Array<IChannels> => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
@@ -69,12 +74,14 @@ export const channels = ((state = defaultChannelsReducerState(1), action: any): 
             }
             return nextState;
         case 'SET_COMPLETE_STATE': //allState  //numberOfChannels
-            nextState = defaultChannelsReducerState(action.numberOfChannels);
-            action.allState.channel.map((channel: any, index: number) => {
-                if (index < action.numberOfChannels) {
-                    nextState[0].channel[index] = channel;
-                }
-            });
+            nextState = defaultChannelsReducerState(action.numberOfTypeChannels);
+            if (action.allState.channel.length == nextState[0].channel.length) {
+                action.allState.channel.map((channel: any, index: number) => {
+                    if (index < action.numberOfTypeChannels[0]) {
+                        nextState[0].channel[index] = channel;
+                    }
+                });
+            }
             return nextState;
         case 'FADE_ACTIVE':
             nextState[0].channel[action.channel].fadeActive = !!action.active;

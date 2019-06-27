@@ -37,7 +37,7 @@ class App extends React.Component<IAppProps> {
         selectedProtocol.channelTypes.forEach((item, index) => {
             totalNumberOfChannels =+ this.props.store.settings[0].numberOfChannelsInType[index];
         });
-        loadSnapshotState(this.props.store.channels[0], totalNumberOfChannels);
+        loadSnapshotState(this.props.store.channels[0], this.props.store.settings[0].numberOfChannelsInType);
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
