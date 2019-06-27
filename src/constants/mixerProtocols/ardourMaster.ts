@@ -47,7 +47,6 @@ export const ArdourMaster: IMixerProtocol = {
         max: 1,
         zero: 0.75,
         step: 0.01,
-        fadeTime: 40,
     },
     meter: {
         min: 0,

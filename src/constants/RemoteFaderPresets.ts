@@ -56,7 +56,6 @@ export interface IRemoteProtocol {
         max: number,
         zero: number,
         step: number,
-        fadeTime: number,
     },
     meter: {
         min: number,
@@ -151,7 +150,6 @@ export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
             max: 127,
             zero: 70,
             step: 1,
-            fadeTime: 40,
         },
         meter: {
             min: 0,

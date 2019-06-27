@@ -47,7 +47,6 @@ export const GenericMidi: IMixerProtocol = {
         max: 127,
         zero: 100,
         step: 1,
-        fadeTime: 40,
     },
     meter: {
         min: 0,

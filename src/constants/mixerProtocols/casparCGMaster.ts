@@ -36,7 +36,6 @@ if (geometry) {
 			max: 1.5,
 			zero: 1,
 			step: 0.001,
-			fadeTime: 40,
 		},
 		meter: {
 			min: 0,

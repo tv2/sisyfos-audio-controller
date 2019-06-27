@@ -47,7 +47,6 @@ export const ReaperMaster: IMixerProtocol = {
         max: 1,
         zero: 0.75,
         step: 0.01,
-        fadeTime: 40,  //Total time for a fade in ms.
     },
     meter: {
         min: 0,

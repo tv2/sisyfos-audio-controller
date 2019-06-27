@@ -37,7 +37,6 @@ export interface IAutomationProtocol {
         max: number,
         zero: number,
         step: number,
-        fadeTime: number,
     },
     meter: {
         min: number,
@@ -85,7 +84,6 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
             max: 1,
             zero: 0.75,
             step: 0.01,
-            fadeTime: 40,
         },
         meter: {
             min: 0,

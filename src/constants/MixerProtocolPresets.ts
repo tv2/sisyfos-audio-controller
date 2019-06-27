@@ -16,7 +16,6 @@ export interface IMixerProtocolGeneric {
         max: number
         zero: number
         step: number
-        fadeTime: number
     },
     meter: {
         min: number,

@@ -50,7 +50,6 @@ export const LawoClient: IMixerProtocol = {
         max: 1000,
         zero: 750,
         step: 10,
-        fadeTime: 40,  //Total time for a fade in ms.
     },
     meter: {
         min: 0,
