@@ -1,31 +1,9 @@
-import { IEmberMixerProtocol } from '../MixerProtocolPresets';
+import { IMixerProtocol } from '../MixerProtocolPresets';
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
 
-interface IChannelList {
-    channelList: Array<string>
-};
-
-const CONFIG_FILE_NAME = 'sisyfos-lawo-channels.json';
-const channelListFile = path.join(os.homedir(), CONFIG_FILE_NAME);
-
-let channelList: IChannelList = { channelList: ["Sapphire/mono/1", "Sapphire/stereo/3"]}
-
-/*
-try {
-	let inputObj = JSON.parse(fs.readFileSync(channelListFile, {
-		encoding: 'utf-8'
-	}))
-	if (inputObj.toMixer && inputObj.toMixer.PGM_CHANNEL_FADER_LEVEL) {
-		channelList = inputObj
-	}
-} catch (e) {
-	console.error('Could not open Lawo Channel List file', e)
-}
-*/
-
-export const LawoClient: IEmberMixerProtocol = {
+export const LawoClient: IMixerProtocol = {
     protocol: 'EMBER',
     label: 'Lawo client, XX-gain as fade I/O',
     mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
@@ -83,7 +61,6 @@ export const LawoClient: IEmberMixerProtocol = {
         max: 1,
         zero: 0.75,
         test: 0.6,
-    },
-    channelList: channelList.channelList
+    }
 }
 

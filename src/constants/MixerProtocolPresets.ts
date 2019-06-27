@@ -78,10 +78,6 @@ export interface ICasparCGMixerGeometryFile {
     }
 }
 
-export interface IEmberMixerProtocol extends IMixerProtocol {
-    channelList: Array<string>
-}
-
 export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
     studio: string,
     leadingZeros: boolean,
