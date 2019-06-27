@@ -6,6 +6,7 @@ export interface IChannels {
 }
 
 export interface IChannel {
+    channelType: number,
     fadeActive: boolean,
     faderLevel: number,
     label: string,
@@ -29,6 +30,7 @@ const defaultChannelsReducerState = (numberOfChannels: number) => {
 
     for (let i=0; i < numberOfChannels; i++) {
         defaultObj[0].channel[i] = ({
+                channelType: 0,
                 fadeActive: false,
                 faderLevel: 0,
                 label: "",
