@@ -32,13 +32,15 @@ const selectorColorStyles = {
 };
 
 interface IState {
-    settings: ISettings
+    settings: ISettings,
+    selectedProtocol: any
 }
 
 
 class Settings extends React.PureComponent<IAppProps & Store, IState> {
     mixerProtocolList: any;
     mixerProtocolPresets: any;
+    selectedProtocol: any;
     remoteFaderMidiInputPortList: any;
     remoteFaderMidiOutputPortList: any;
 
@@ -49,7 +51,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         this.mixerProtocolList = MixerProtocolList;
         this.mixerProtocolPresets = MixerProtocolPresets;
         this.state = {
-            settings: this.props.store.settings[0]
+            settings: this.props.store.settings[0],
+            selectedProtocol: this.mixerProtocolPresets[this.props.store.settings[0].mixerProtocol]
         };
         //Initialise list of Midi ports:
         this.findMidiPorts();
@@ -105,9 +108,18 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     }
 
 
-    handleTemplateChange = (selectedOption: any) => {
+    handleProtocolChange = (selectedOption: any) => {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.mixerProtocol = selectedOption.value;
+        this.setState(
+            {settings: settingsCopy}
+        );
+        this.setState({selectedProtocol: this.mixerProtocolPresets[this.state.settings.mixerProtocol]})
+    }
+
+    handleNumberOfChannels = (index: number, event: any) => {
+        var settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.numberOfChannelsInType[index] = event.target.value;
         this.setState(
             {settings: settingsCopy}
         );
@@ -154,12 +166,17 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         return (
             <div className="settings-show-channel-selection">
                 <div className="settings-header">
-                    NUMBER OF CHANNELS:
+                    NUMBER OF CHANNELTYPES:
                 </div>
-                <label className="settings-input-field">
-                    NUMBER OF "channelTypeName" :
-                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannelsInType[0]} onChange={this.handleChange} />
-                </label>
+                {this.state.selectedProtocol.channelTypes.map((item: any, index: number) => {
+                    return <React.Fragment>
+                        <label className="settings-input-field">
+                            Number of { item.channelTypeName } :
+                            <input name="numberOfChannelsInType" type="text" value={this.state.settings.numberOfChannelsInType[index]} onChange={(event) => this.handleNumberOfChannels(index, event)} />
+                        </label>
+                        <br/>
+                    </React.Fragment>
+                })}
             </div>
         )
     }
@@ -251,7 +268,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <Select
                     styles={selectorColorStyles}
                     value={{label: this.mixerProtocolPresets[this.state.settings.mixerProtocol].label, value: this.state.settings.mixerProtocol}}
-                    onChange={this.handleTemplateChange}
+                    onChange={this.handleProtocolChange}
                     options={this.mixerProtocolList}
                 />
                 <br/>
