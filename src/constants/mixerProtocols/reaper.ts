@@ -25,26 +25,26 @@ export const Reaper: IMixerProtocol = {
         channelTypeName: 'Channels',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
-            CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
-            CHANNEL_VU: '/track/{channel}/vu',
+            CHANNEL_FADER_LEVEL: ['/track/{channel}/volume'],
+            CHANNEL_OUT_GAIN: ['/track/{channel}/fx/1/fxparam/1/value'],
+            CHANNEL_VU: ['/track/{channel}/vu'],
             CHANNEL_NAME: '/track/{channel}/name',
-            PFL: 'todo',
+            PFL: ['todo'],
             AUX_SEND: ['none'],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
-            CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
-            PFL_ON: {
+            CHANNEL_FADER_LEVEL: ['/track/{channel}/volume'],
+            CHANNEL_OUT_GAIN: ['/track/{channel}/fx/1/fxparam/1/value'],
+            PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
                 type: "i"
-            },
-            PFL_OFF: {
+            }],
+            PFL_OFF: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 0,
                 type: "i"
-            },
+            }],
             AUX_SEND: ['none'],
         },
     }],

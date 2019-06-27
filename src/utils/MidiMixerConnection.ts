@@ -125,12 +125,12 @@ return true;
             });
         }
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel
         );
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0],
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel
         );
@@ -140,15 +140,15 @@ return true;
 
         if (this.store.channels[0].channel[channelIndex].pflOn = true) {
             this.sendOutMessage(
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON.mixerMessage,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].mixerMessage,
                 channelIndex+1,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON.value
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].value
             );
         } else {
             this.sendOutMessage(
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF.mixerMessage,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].mixerMessage,
                 channelIndex+1,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF.value
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].value
             );
         }
     }
@@ -156,7 +156,7 @@ return true;
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
             channelIndex+1,
             String(outputLevel)
         );

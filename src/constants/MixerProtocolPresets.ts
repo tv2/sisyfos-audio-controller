@@ -37,18 +37,18 @@ export interface IChannelTypes {
     channelTypeName: string,
     channelTypeColor: string,
     fromMixer: {
-        CHANNEL_FADER_LEVEL: string,
-        CHANNEL_OUT_GAIN: string,
-        CHANNEL_VU: string,
+        CHANNEL_FADER_LEVEL: Array<string>,
+        CHANNEL_OUT_GAIN: Array<string>,
+        CHANNEL_VU: Array<string>,
         CHANNEL_NAME: string,
-        PFL: string
+        PFL: Array<string>
         AUX_SEND: Array<string>
     },
     toMixer: {
-        CHANNEL_FADER_LEVEL: string,
-        CHANNEL_OUT_GAIN: string,
-        PFL_ON: IMixerMessageProtocol,
-        PFL_OFF: IMixerMessageProtocol
+        CHANNEL_FADER_LEVEL: Array<string>,
+        CHANNEL_OUT_GAIN: Array<string>,
+        PFL_ON: Array<IMixerMessageProtocol>,
+        PFL_OFF: Array<IMixerMessageProtocol>
         AUX_SEND: Array<string>
     }
 }

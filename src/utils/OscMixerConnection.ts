@@ -25,7 +25,7 @@ export class OscMixerConnection {
 
         this.mixerProtocol = mixerProtocol;
 
-        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN.split('/').findIndex(ch => ch==='{channel}');
+        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].split('/').findIndex(ch => ch==='{channel}');
 
         this.oscConnection = new osc.UDPPort({
             localAddress: this.store.settings[0].localIp,
@@ -52,7 +52,7 @@ export class OscMixerConnection {
         })
         .on('message', (message: any) => {
             if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
-                .CHANNEL_VU)){
+                .CHANNEL_VU[0])){
                 if (this.store.settings[0].mixerProtocol.includes('behringer')) {
                     behringerMeter(message.args);
                 } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
@@ -66,7 +66,7 @@ export class OscMixerConnection {
                     });
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
-                .CHANNEL_FADER_LEVEL)){
+                .CHANNEL_FADER_LEVEL[0])){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
@@ -85,7 +85,7 @@ export class OscMixerConnection {
                     }
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
-                .CHANNEL_OUT_GAIN)){
+                .CHANNEL_OUT_GAIN[0])){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
                 if (this.mixerProtocol.mode === 'master'
                     && !this.store.channels[0].channel[ch - 1].fadeActive
@@ -206,13 +206,13 @@ export class OscMixerConnection {
 
     updateOutLevel(channelIndex: number) {
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0],
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
@@ -222,24 +222,24 @@ export class OscMixerConnection {
     updatePflState(channelIndex: number) {
         if (this.store.channels[0].channel[channelIndex].pflOn === true) {
             this.sendOutMessage(
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON.mixerMessage,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].mixerMessage,
                 channelIndex+1,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON.value,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON.type
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].value,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].type
             );
         } else {
             this.sendOutMessage(
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF.mixerMessage,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].mixerMessage,
                 channelIndex+1,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF.value,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF.type
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].value,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].type
             );
         }
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
             channelIndex+1,
             String(outputLevel),
             "f"

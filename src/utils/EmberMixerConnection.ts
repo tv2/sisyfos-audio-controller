@@ -23,7 +23,7 @@ export class EmberMixerConnection {
 
         this.mixerProtocol = mixerProtocol;
 
-        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN.split('/').findIndex(ch => ch==='{channel}');
+        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].split('/').findIndex(ch => ch==='{channel}');
 
         this.emberConnection = new DeviceTree(
                 this.store.settings[0].deviceIp,
@@ -54,7 +54,7 @@ export class EmberMixerConnection {
         console.log("Ember Connected");
 
         for (let ch=1; ch <= this.store.settings[0].numberOfChannelsInType[0] ; ch++) {
-            this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_FADER_LEVEL.replace("{channel}", String(ch)))
+            this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_FADER_LEVEL[0].replace("{channel}", String(ch)))
             .then((node: any) => {
                 this.emberConnection.subscribe(node, (() => {
                         window.storeRedux.dispatch({
@@ -178,13 +178,13 @@ export class EmberMixerConnection {
 
     updateOutLevel(channelIndex: number) {
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0],
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
@@ -194,24 +194,24 @@ export class EmberMixerConnection {
     updatePflState(channelIndex: number) {
         if (this.store.channels[0].channel[channelIndex].pflOn === true) {
             this.sendOutMessage(
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON.mixerMessage,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].mixerMessage,
                 channelIndex+1,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON.value,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON.type
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].value,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].type
             );
         } else {
             this.sendOutMessage(
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF.mixerMessage,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].mixerMessage,
                 channelIndex+1,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF.value,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF.type
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].value,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].type
             );
         }
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
             channelIndex+1,
             String(outputLevel),
             "f"

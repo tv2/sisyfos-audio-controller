@@ -25,26 +25,26 @@ export const GenericMidi: IMixerProtocol = {
         channelTypeName: 'Channels',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: "39",        //PgmChange 0 - ignores this command
-            CHANNEL_OUT_GAIN: "0",            //PgmChange 0 - ignores this command
-            CHANNEL_VU: "0",                   //PgmChange 0 - ignores this command
+            CHANNEL_FADER_LEVEL: ["39"],        //PgmChange 0 - ignores this command
+            CHANNEL_OUT_GAIN: ["0"],            //PgmChange 0 - ignores this command
+            CHANNEL_VU: ["0"],                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: 'some sysex not yet build',
-            PFL: 'todo',
+            PFL: ['todo'],
             AUX_SEND: ['none'],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: "39",
-            CHANNEL_OUT_GAIN: "38",
-            PFL_ON: {
+            CHANNEL_FADER_LEVEL: ["39"],
+            CHANNEL_OUT_GAIN: ["38"],
+            PFL_ON: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
                 type: "f"
-            },
-            PFL_OFF: {
+            }],
+            PFL_OFF: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
                 type: "f"
-            },
+            }],
             AUX_SEND: ['none'],
         },
     }],
