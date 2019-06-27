@@ -11,6 +11,8 @@ import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
 import { MixerGenericConnection } from '../utils/MixerConnection';
 import { AutomationConnection } from '../utils/AutomationConnection';
 import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+
 import { Store, AnyAction } from 'redux';
 import { ISettings } from '../reducers/settingsReducer';
 import { IChannels } from '../reducers/channelsReducer';
@@ -30,7 +32,12 @@ class App extends React.Component<IAppProps> {
         (window as any).automationConnection = new AutomationConnection();
         (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         this.snapShopStoreTimer();
-        loadSnapshotState(this.props.store.channels[0], this.props.store.settings[0].numberOfChannelsInType[0]);
+        let totalNumberOfChannels = 0;
+        let selectedProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
+        selectedProtocol.channelTypes.forEach((item, index) => {
+            totalNumberOfChannels =+ this.props.store.settings[0].numberOfChannelsInType[index];
+        });
+        loadSnapshotState(this.props.store.channels[0], totalNumberOfChannels);
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {

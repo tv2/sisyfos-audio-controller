@@ -22,7 +22,8 @@ export interface IMixerProtocolGeneric {
         max: number,
         zero: number,
         test: number,
-    }
+    },
+    channelTypes: Array<IChannelTypes>
 }
 
 export interface IMixerProtocol extends IMixerProtocolGeneric{
@@ -30,7 +31,6 @@ export interface IMixerProtocol extends IMixerProtocolGeneric{
     pingCommand: Array<IMixerMessageProtocol>,
     pingTime: number,
     initializeCommands: Array<IMixerMessageProtocol>,
-    channelTypes: Array<IChannelTypes>
 }
 
 export interface IChannelTypes {

@@ -44,7 +44,37 @@ if (geometry) {
 			test: 0.6,
 		},
 		channelLabels: geometry.channelLabels,
-		sourceOptions: geometry.sourceOptions
+        sourceOptions: geometry.sourceOptions,
+        //CHANNELTYES ARE NOT IMPLEMENTED.
+        //THIS IS JUST TO AVOID ERRORS AS
+        //channelTypes are moved to IMixerProtocolGeneric
+        channelTypes: [{
+            channelTypeName: 'Channels',
+            channelTypeColor: '#2f2f2f',
+            fromMixer: {
+                CHANNEL_FADER_LEVEL: ['none'],
+                CHANNEL_OUT_GAIN: ['none'],
+                CHANNEL_VU: ['none'],
+                CHANNEL_NAME: 'none',
+                PFL: ['todo'],
+                AUX_SEND: ['none'],
+            },
+            toMixer: {
+                CHANNEL_FADER_LEVEL: ['none'],
+                CHANNEL_OUT_GAIN: ['none'],
+                PFL_ON: [{
+                    mixerMessage: "none",
+                    value: 1,
+                    type: "i"
+                }],
+                PFL_OFF: [{
+                    mixerMessage: "none",
+                    value: 0,
+                    type: "i"
+                }],
+                AUX_SEND: ['none'],
+            },
+        }]
 	}
 }
 
