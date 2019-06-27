@@ -8,7 +8,7 @@ export const Reaper: IMixerProtocol = {
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [
         {
-            oscMessage: "/note_in_use",
+            mixerMessage: "/note_in_use",
             value: 0,
             type: "f"
         }
@@ -16,7 +16,7 @@ export const Reaper: IMixerProtocol = {
     pingTime: 0,  //Bypass ping when pingTime is zero
     initializeCommands: [
         {
-            oscMessage: "/note_in_use",
+            mixerMessage: "/note_in_use",
             value: 0,
             type: "f"
         }
@@ -36,12 +36,12 @@ export const Reaper: IMixerProtocol = {
         CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
         PFL_ON: {
-            oscMessage: "/track/{channel}/solo",
+            mixerMessage: "/track/{channel}/solo",
             value: 1,
             type: "i"
         },
         PFL_OFF: {
-            oscMessage: "/track/{channel}/solo",
+            mixerMessage: "/track/{channel}/solo",
             value: 0,
             type: "i"
         }

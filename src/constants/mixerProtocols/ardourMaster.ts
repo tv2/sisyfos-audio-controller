@@ -8,7 +8,7 @@ export const ArdourMaster: IMixerProtocol = {
     leadingZeros: false,
     pingCommand: [
         {
-            oscMessage: "/strip/list",
+            mixerMessage: "/strip/list",
             value: "",
             type: ""
         }
@@ -16,7 +16,7 @@ export const ArdourMaster: IMixerProtocol = {
     pingTime: 9500,
     initializeCommands: [
         {
-            oscMessage: "/strip/list",
+            mixerMessage: "/strip/list",
             value: "",
             type: ""
         }
@@ -36,12 +36,12 @@ export const ArdourMaster: IMixerProtocol = {
         CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
         GRP_OUT_GAIN: 'todo',
         PFL_ON: {
-            oscMessage: "/not_in_use",
+            mixerMessage: "/not_in_use",
             value: 0,
             type: "f"
         },
         PFL_OFF: {
-            oscMessage: "/not_in_use",
+            mixerMessage: "/not_in_use",
             value: 0,
             type: "f"
         }

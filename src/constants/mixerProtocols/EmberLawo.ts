@@ -1,9 +1,12 @@
 import { IMixerProtocol } from '../MixerProtocolPresets';
+import path from 'path';
+import os from 'os';
+import fs from 'fs';
 
-export const ReaperMaster: IMixerProtocol = {
-    protocol: 'OSC',
-    label: 'Reaper DAW Master mode(reaper.fm)',
-    mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
+export const LawoClient: IMixerProtocol = {
+    protocol: 'EMBER',
+    label: 'Lawo client, XX-gain as fade I/O',
+    mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [
@@ -22,8 +25,8 @@ export const ReaperMaster: IMixerProtocol = {
         }
     ],
     fromMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '/track/{channel}/volume',
+        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
+        CHANNEL_OUT_GAIN: '',
         CHANNEL_VU: '/track/{channel}/vu',
         CHANNEL_NAME: '/track/{channel}/name',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
@@ -32,8 +35,8 @@ export const ReaperMaster: IMixerProtocol = {
         PFL: 'todo'
     },
     toMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '/track/{channel}/volume',
+        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
+        CHANNEL_OUT_GAIN: 'Sapphire/Sources/Source{channel}/Gain',
         GRP_OUT_GAIN: '/dca/{channel}/fader',
         PFL_ON: {
             mixerMessage: "/track/{channel}/solo",
@@ -48,9 +51,9 @@ export const ReaperMaster: IMixerProtocol = {
     },
     fader: {
         min: 0,
-        max: 1,
-        zero: 0.75,
-        step: 0.01,
+        max: 1000,
+        zero: 750,
+        step: 10,
         fadeTime: 40,  //Total time for a fade in ms.
     },
     meter: {
@@ -58,5 +61,6 @@ export const ReaperMaster: IMixerProtocol = {
         max: 1,
         zero: 0.75,
         test: 0.6,
-    },
+    }
 }
+

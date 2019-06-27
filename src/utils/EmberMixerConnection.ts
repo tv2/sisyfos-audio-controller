@@ -1,18 +1,16 @@
-//Node Modules:
-import * as os from 'os'; // Used to display (log) network addresses on local machine
-import * as osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
+import { DeviceTree, Ember } from 'emberplus';
 
 //Utils:
 import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { behringerMeter, behringerGrpMeter } from './productSpecific/behringer';
-import { midasMeter, midasGrpMeter } from './productSpecific/midas';
 import { IStore } from '../reducers/indexReducer';
 
-export class OscMixerConnection {
+export class EmberMixerConnection {
     store: IStore;
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
-    oscConnection: any;
+    emberConnection: any;
+    deviceRoot: any;
+
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
@@ -27,45 +25,65 @@ export class OscMixerConnection {
 
         this.cmdChannelIndex = this.mixerProtocol.fromMixer.CHANNEL_OUT_GAIN.split('/').findIndex(ch => ch==='{channel}');
 
-        this.oscConnection = new osc.UDPPort({
-            localAddress: this.store.settings[0].localIp,
-            localPort: parseInt(this.store.settings[0].localOscPort + ''),
-            remoteAddress: this.store.settings[0].deviceIp,
-            remotePort: parseInt(this.store.settings[0].devicePort + '')
+        this.emberConnection = new DeviceTree(
+                this.store.settings[0].deviceIp,
+                this.store.settings[0].devicePort
+            );
+        let deviceRoot: any;
+        this.emberConnection.connect()
+        .then(() => {
+            console.log("Getting Directory")
+            return this.emberConnection.getDirectory();
+        })
+        .then((r: any) => {
+            console.log("Directory :", r);
+            this.deviceRoot = r;
+            this.emberConnection.expand(r.elements[0])
+            .then(() => {
+                this.setupMixerConnection();
+            })
+        })
+        .catch((e: any) => {
+            console.log(e.stack);
         });
-        this.setupMixerConnection();
+
     }
 
     setupMixerConnection() {
-        this.oscConnection
-        .on("ready", () => {
-            console.log("Receiving state of desk");
-            this.mixerProtocol.initializeCommands.map((item) => {
-                if (item.mixerMessage.includes("{channel}")) {
-                    this.store.channels[0].channel.map((channel: any, index: any) => {
-                        this.sendOutRequest(item.mixerMessage,(index +1));
-                    });
-                } else {
-                    this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
-                }
-            });
-        })
+        let node: any;
+        console.log("Ember Connected");
+
+        for (let ch=1; ch <= this.store.settings[0].numberOfChannels ; ch++) {
+            this.emberConnection.getNodeByPath(this.mixerProtocol.fromMixer.CHANNEL_FADER_LEVEL.replace("{channel}", String(ch)))
+            .then((node: any) => {
+                this.emberConnection.subscribe(node, (() => {
+                        window.storeRedux.dispatch({
+                            type:'SET_FADER_LEVEL',
+                            channel: ch - 1,
+                            level: node.contents.value
+                        });
+
+                        if (window.huiRemoteConnection) {
+                            window.huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
+                        }
+                        console.log("subscription :", node.contents.value)
+                })
+                )
+            })
+        }
+
+/*
+
         .on('message', (message: any) => {
-            if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+            if (this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_VU)){
-                if (this.store.settings[0].mixerProtocol.includes('behringer')) {
-                    behringerMeter(message.args);
-                } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
-                    midasMeter(message.args);
-                } else {
                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_VU_LEVEL',
                         channel: ch - 1,
                         level: message.args[0]
                     });
-                }
-            } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+            } else if ( this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
                 window.storeRedux.dispatch({
@@ -84,31 +102,7 @@ export class OscMixerConnection {
                         this.updateOutLevel(ch-1);
                     }
                 }
-            } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
-                .CHANNEL_OUT_GAIN)){
-                let ch = message.address.split("/")[this.cmdChannelIndex];
-                if (this.mixerProtocol.mode === 'master'
-                    && !this.store.channels[0].channel[ch - 1].fadeActive
-                    &&  message.args[0] > this.mixerProtocol.fader.min)
-                {
-                    window.storeRedux.dispatch({
-                        type:'SET_FADER_LEVEL',
-                        channel: ch - 1,
-                        level: message.args[0]
-                    });
-                    if (!this.store.channels[0].channel[ch - 1].pgmOn) {
-                        window.storeRedux.dispatch({
-                            type:'TOGGLE_PGM',
-                            channel: ch - 1
-                        });
-                    }
-
-                    if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
-                    }
-
-                }
-            } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+            } else if (this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
                 .CHANNEL_NAME)) {
                                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
@@ -117,7 +111,7 @@ export class OscMixerConnection {
                         label: message.args[0]
                     });
                 console.log("OSC message: ", message.address);
-            } else if ( this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+            } else if ( this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
                 .GRP_OUT_GAIN)){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
                 if (!this.store.channels[0].grpFader[ch - 1].fadeActive
@@ -135,21 +129,15 @@ export class OscMixerConnection {
                         });
                     }
                 }
-            } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+            } else if (this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
                 .GRP_VU)){
-                if (this.store.settings[0].mixerProtocol.includes('behringer')) {
-                    behringerGrpMeter(message.args);
-                } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
-                    midasGrpMeter(message.args);
-                } else {
                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_GRP_VU_LEVEL',
                         channel: ch - 1,
                         level: message.args[0]
                     });
-                }
-            } else if (this.checkOscCommand(message.address, this.mixerProtocol.fromMixer
+            } else if (this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
                 .GRP_NAME)) {
                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
@@ -160,17 +148,16 @@ export class OscMixerConnection {
                 console.log("OSC message: ", message.address);
             }
         })
+        */
+        this.emberConnection
         .on('error', (error: any) => {
             console.log("Error : ", error);
-            console.log("Lost OSC connection");
+            console.log("Lost EMBER connection");
         });
-
-        this.oscConnection.open();
-        console.log(`OSC listening on port ` + this.store.settings[0].localOscPort );
 
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
-            let oscTimer = setInterval(
+            let emberTimer = setInterval(
                 () => {
                     this.pingMixerCommand();
                 },
@@ -180,7 +167,8 @@ export class OscMixerConnection {
     }
 
     pingMixerCommand() {
-        //Ping OSC mixer if mixerProtocol needs it.
+        //Ping Ember mixer if mixerProtocol needs it.
+        return;
         this.mixerProtocol.pingCommand.map((command) => {
             this.sendOutMessage(
                 command.mixerMessage,
@@ -191,53 +179,31 @@ export class OscMixerConnection {
         });
     }
 
-    checkOscCommand(message: string, command: string) {
-        if (message === command) return true;
-
-        let cmdArray = command.split("{channel}");
-        if (message.substr(0, cmdArray[0].length) === cmdArray[0])
-        {
-            if (
-                message.substr(-cmdArray[1].length) === cmdArray[1] &&
-                message.length >= command.replace("{channel}", "").length
-            ) {
-                return true;
-            } else if (
-                cmdArray[1] === "" &&
-                message.length >= command.replace("{channel}", "").length
-            ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    sendOutMessage(oscMessage: string, channel: number, value: string | number, type: string) {
+    sendOutMessage(mixerMessage: string, channel: number, value: string | number, type: string) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
-        let message = oscMessage.replace(
+        let message = mixerMessage.replace(
                 "{channel}",
                 channelString
             );
         if (message != 'none') {
-            this.oscConnection.send({
-                address: message,
-                args: [
-                    {
-                        type: type,
-                        value: value
-                    }
-                ]
-            });
+            this.emberConnection.getNodeByPath(message)
+            .then((response: any) => {
+                this.emberConnection.setValue(
+                    response,
+                    typeof value === 'number' ? value : parseFloat(value)
+                )
+            })
         }
     }
 
 
-    sendOutGrpMessage(oscMessage: string, channel: number, value: string | number, type: string) {
-        let message = oscMessage.replace(
+    sendOutGrpMessage(mixerMessage: string, channel: number, value: string | number, type: string) {
+        let message = mixerMessage.replace(
                 "{channel}",
                 String(channel)
             );
         if (message != 'none') {
+/*
             this.oscConnection.send({
                 address: message,
                 args: [
@@ -247,19 +213,22 @@ export class OscMixerConnection {
                     }
                 ]
             });
+*/
         }
     }
 
-    sendOutRequest(oscMessage: string, channel: number) {
+    sendOutRequest(mixerMessage: string, channel: number) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
-        let message = oscMessage.replace(
+        let message = mixerMessage.replace(
                 "{channel}",
                 channelString
             );
         if (message != 'none') {
+/*
             this.oscConnection.send({
                 address: message
             });
+*/
         }
     }
 

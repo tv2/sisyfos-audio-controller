@@ -2,6 +2,7 @@
 import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolPresets';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
+import { EmberMixerConnection } from './EmberMixerConnection';
 import { CasparCGConnection } from './CasparCGConnection';
 
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
@@ -37,6 +38,8 @@ export class MixerGenericConnection {
             this.mixerConnection = new MidiMixerConnection(this.mixerProtocol as IMixerProtocol);
         } else if (this.mixerProtocol.protocol === 'CasparCG') {
             this.mixerConnection = new CasparCGConnection(this.mixerProtocol as ICasparCGMixerGeometry);
+        } else if (this.mixerProtocol.protocol === 'EMBER') {
+            this.mixerConnection = new EmberMixerConnection(this.mixerProtocol as IMixerProtocol);
         }
 
         //Setup timers for fade in & out

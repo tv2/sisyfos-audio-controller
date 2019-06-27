@@ -4,6 +4,7 @@ import { ReaperMaster } from './mixerProtocols/reaperMaster';
 import { BehringerXrMaster } from './mixerProtocols/behringerXrMaster';
 import { MidasMaster } from './mixerProtocols/midasMaster';
 import { GenericMidi } from './mixerProtocols/genericMidi';
+import { LawoClient } from './mixerProtocols/EmberLawo';
 import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 
 export interface IMixerProtocolGeneric {
@@ -49,7 +50,7 @@ export interface IMixerProtocol extends IMixerProtocolGeneric{
     }
 }
 
-export interface ChannelLayerPair {
+export interface ICasparCGChannelLayerPair {
     channel: number
     layer: number
 }
@@ -61,11 +62,11 @@ export interface ICasparCGMixerGeometryFile {
         CHANNEL_VU: Array<string[]>,
     }
     toMixer: {
-        PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
-        MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>
+        PGM_CHANNEL_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>,
+        MONITOR_CHANNEL_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
     }
     sourceOptions?: {
-        sources: (ChannelLayerPair & {
+        sources: (ICasparCGChannelLayerPair & {
             producer: string,
             file: string
         })
@@ -87,12 +88,12 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
         CHANNEL_VU: Array<string[]>,
     },
     toMixer: {
-        PGM_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
-        MONITOR_CHANNEL_FADER_LEVEL: Array<ChannelLayerPair[]>,
+        PGM_CHANNEL_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>,
+        MONITOR_CHANNEL_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>,
     }
     channelLabels?: string[],
     sourceOptions?: {
-        sources: (ChannelLayerPair & {
+        sources: (ICasparCGChannelLayerPair & {
             producer: string,
             file: string
         })
@@ -105,7 +106,7 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
 }
 
 interface IMessageProtocol {
-    oscMessage: string,
+    mixerMessage: string,
     value: any,
     type: string
 }
@@ -116,7 +117,8 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     reaperMaster: ReaperMaster,
     behringerxrmaster: BehringerXrMaster,
     midasMaster: MidasMaster,
-    genericMidi: GenericMidi
+    genericMidi: GenericMidi,
+    lawoClient: LawoClient,
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
 } : {});

@@ -4,7 +4,7 @@ import { CasparCG } from 'casparcg-connection';
 import * as osc from 'osc';
 
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets, ICasparCGMixerGeometry, ChannelLayerPair } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, MixerProtocolPresets, ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolPresets';
 import { IStore } from '../reducers/indexReducer';
 import { IChannel } from '../reducers/channelsReducer';
 
@@ -78,7 +78,7 @@ export class CasparCGConnection {
                 console.log("Error : ", error);
                 console.log("Lost OSC connection");
             });
-            
+
             this.oscClient.open();
             console.log("Listening for status on CasparCG: ", this.store.settings[0].deviceIp, remotePort)
         }
@@ -113,7 +113,7 @@ export class CasparCGConnection {
         //Ping OSC mixer if mixerProtocol needs it.
         /* this.mixerProtocol.pingCommand.map((command) => {
             this.sendOutMessage(
-                command.oscMessage,
+                command.mixerMessage,
                 0,
                 command.value
             );
@@ -126,7 +126,7 @@ export class CasparCGConnection {
         })
     }
 
-    setAllLayers = (pairs: ChannelLayerPair[], value: number) => {
+    setAllLayers = (pairs: ICasparCGChannelLayerPair[], value: number) => {
         pairs.forEach((i) => {
             this.controlVolume(i.channel, i.layer, value);
         })
@@ -233,7 +233,7 @@ export class CasparCGConnection {
     }
 
     updateGrpFadeIOLevel(channelIndex: number, outputLevel: number) {
-        
+
     }
 
 }
