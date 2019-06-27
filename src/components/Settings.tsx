@@ -150,9 +150,26 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         location.reload();
     }
 
+    renderChannelTypeSettings = () => {
+        return (
+            <div className="settings-show-channel-selection">
+                <div className="settings-header">
+                    NUMBER OF CHANNELS:
+                </div>
+                <label className="settings-input-field">
+                    NUMBER OF "channelTypeName" :
+                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannelsInType[0]} onChange={this.handleChange} />
+                </label>
+            </div>
+        )
+    }
+
     renderShowChannelsSelection = () => {
         return (
             <div className="settings-show-channel-selection">
+                <div className="settings-header">
+                    SHOW/HIDE FADERS:
+                </div>
                 <button className="settings-channels-button"
                     onClick=
                         {() => {
@@ -249,11 +266,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    NUMBER OF CHANNELS :
-                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannelsInType[0]} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
                     FADE TIME IN ms :
                     <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
                 </label>
@@ -277,6 +289,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                         onChange={this.handleChange}
                     />
                 </label>
+                <br/>
+                {this.renderChannelTypeSettings()}
                 <br/>
                 {this.renderShowChannelsSelection()}
                 <br/>
