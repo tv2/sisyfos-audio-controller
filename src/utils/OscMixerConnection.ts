@@ -205,42 +205,48 @@ export class OscMixerConnection {
     }
 
     updateOutLevel(channelIndex: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
-            channelIndex+1,
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0],
+            channelTypeIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0],
-            channelIndex+1,
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0],
+            channelTypeIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
         );
     }
 
     updatePflState(channelIndex: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         if (this.store.channels[0].channel[channelIndex].pflOn === true) {
             this.sendOutMessage(
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].mixerMessage,
-                channelIndex+1,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].value,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].type
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].mixerMessage,
+                channelTypeIndex+1,
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].value,
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].type
             );
         } else {
             this.sendOutMessage(
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].mixerMessage,
-                channelIndex+1,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].value,
-                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].type
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].mixerMessage,
+                channelTypeIndex+1,
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].value,
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].type
             );
         }
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
-            channelIndex+1,
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0],
+            channelTypeIndex+1,
             String(outputLevel),
             "f"
         );

@@ -49,26 +49,29 @@ export const ReaperMaster: IMixerProtocol = {
         },
     },
     {
-                channelTypeName: 'DCA',
+        channelTypeName: 'MASTER',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/dca/{channel}/fader'],
-            CHANNEL_VU: ['/dca/{channel}/vu'],
-            CHANNEL_NAME: '/dca/{channel}/config/name',
+            CHANNEL_OUT_GAIN: ['/master/volume'],
+            CHANNEL_VU: [
+                '/master/vu/L',
+                '/master/vu/R'
+                ],
+            CHANNEL_NAME: '',
             PFL: ['todo'],
             AUX_SEND: ['none'],
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/dca/{channel}/volume'],
+            CHANNEL_OUT_GAIN: ['/master/volume'],
             PFL_ON: [{
-                mixerMessage: "/dca/{channel}/solo",
+                mixerMessage: "",
                 value: 1,
                 type: "i"
             }],
             PFL_OFF: [{
-                mixerMessage: "/dca/{channel}/solo",
+                mixerMessage: "",
                 value: 0,
                 type: "i"
             }],
