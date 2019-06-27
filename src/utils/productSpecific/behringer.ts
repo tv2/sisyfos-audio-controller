@@ -18,17 +18,3 @@ export const behringerMeter = (message: any) => {
     }
 };
 
-export const behringerGrpMeter = (message: any) => {
-    const store = window.storeRedux.getState();
-
-    let uint8bytes = Uint8Array.from(message[0]);
-    let dataview = new DataView(uint8bytes.buffer);
-
-    for (let i=0; i < DEFAULTS.NUMBER_OF_GROUP_FADERS; i++) {
-        window.storeRedux.dispatch({
-            type:'SET_GRP_VU_LEVEL',
-            channel: i,
-            level: (dataview.getInt16(2*(i+2) , true) + 8000)/8000
-        });
-    }
-};

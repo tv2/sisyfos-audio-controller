@@ -111,41 +111,6 @@ export class EmberMixerConnection {
                         label: message.args[0]
                     });
                 console.log("OSC message: ", message.address);
-            } else if ( this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
-                .GRP_OUT_GAIN)){
-                let ch = message.address.split("/")[this.cmdChannelIndex];
-                if (!this.store.channels[0].grpFader[ch - 1].fadeActive
-                    &&  message.args[0] > this.mixerProtocol.fader.min)
-                {
-                    window.storeRedux.dispatch({
-                        type:'SET_GRP_FADER_LEVEL',
-                        channel: ch - 1,
-                        level: message.args[0]
-                    });
-                    if (!this.store.channels[0].grpFader[ch - 1].pgmOn) {
-                        window.storeRedux.dispatch({
-                            type:'TOGGLE_GRP_PGM',
-                            channel: ch - 1
-                        });
-                    }
-                }
-            } else if (this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
-                .GRP_VU)){
-                    let ch = message.address.split("/")[this.cmdChannelIndex];
-                    window.storeRedux.dispatch({
-                        type:'SET_GRP_VU_LEVEL',
-                        channel: ch - 1,
-                        level: message.args[0]
-                    });
-            } else if (this.checkEmberCommand(message.address, this.mixerProtocol.fromMixer
-                .GRP_NAME)) {
-                    let ch = message.address.split("/")[this.cmdChannelIndex];
-                    window.storeRedux.dispatch({
-                        type:'SET_GRP_LABEL',
-                        channel: ch - 1,
-                        label: message.args[0]
-                    });
-                console.log("OSC message: ", message.address);
             }
         })
         */
@@ -193,27 +158,6 @@ export class EmberMixerConnection {
                     typeof value === 'number' ? value : parseFloat(value)
                 )
             })
-        }
-    }
-
-
-    sendOutGrpMessage(mixerMessage: string, channel: number, value: string | number, type: string) {
-        let message = mixerMessage.replace(
-                "{channel}",
-                String(channel)
-            );
-        if (message != 'none') {
-/*
-            this.oscConnection.send({
-                address: message,
-                args: [
-                    {
-                        type: type,
-                        value: value
-                    }
-                ]
-            });
-*/
         }
     }
 
@@ -268,25 +212,6 @@ export class EmberMixerConnection {
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
             this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
-            channelIndex+1,
-            String(outputLevel),
-            "f"
-        );
-    }
-
-
-    updateGrpOutLevel(channelIndex: number) {
-        this.sendOutGrpMessage(
-            this.mixerProtocol.toMixer.GRP_OUT_GAIN,
-            channelIndex+1,
-            this.store.channels[0].grpFader[channelIndex].outputLevel,
-            "f"
-        );
-    }
-
-    updateGrpFadeIOLevel(channelIndex: number, outputLevel: number) {
-        this.sendOutGrpMessage(
-            this.mixerProtocol.toMixer.GRP_OUT_GAIN,
             channelIndex+1,
             String(outputLevel),
             "f"

@@ -142,36 +142,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         });
     }
 
-
-    handleShowGrpFader = (index: number, event: any) => {
-        this.props.dispatch({
-            type:'SHOW_GRP_FADER',
-            channel: index,
-            showChannel: event.target.checked
-        });
-    }
-
-    handleShowAllGrpFaders = () => {
-        this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
-            this.props.dispatch({
-                type:'SHOW_GRP_FADER',
-                channel: index,
-                showChannel: true
-            });
-        });
-    }
-
-
-    handleHideAllGrpFaders = () => {
-        this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
-            this.props.dispatch({
-                type:'SHOW_GRP_FADER',
-                channel: index,
-                showChannel: false
-            });
-        });
-    }
-
     handleSave = () => {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.showSettings = false;
@@ -206,41 +176,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                 type="checkbox"
                                 checked={this.props.store.channels[0].channel[index].showChannel }
                                 onChange={(event) => this.handleShowChannel(index, event)}
-                            />
-                        </div>
-                    })
-                }
-            </div>
-        )
-    }
-
-
-    renderShowGrpFadersSelection = () => {
-        return (
-            <div className="settings-show-channel-selection">
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleShowAllGrpFaders();
-                        }}
-                >
-                    ALL GROUPS
-                </button>
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleHideAllGrpFaders();
-                        }}
-                >
-                    NO GROUPS
-                </button>
-                {this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
-                        return <div key={index}>
-                            {channel.label != "" ? channel.label : ("GRP " + (index + 1)) }
-                            <input
-                                type="checkbox"
-                                checked={this.props.store.channels[0].grpFader[index].showChannel }
-                                onChange={(event) => this.handleShowGrpFader(index, event)}
                             />
                         </div>
                     })
@@ -344,8 +279,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 {this.renderShowChannelsSelection()}
-                <br/>
-                {this.renderShowGrpFadersSelection()}
                 <br/>
                 {this.renderRemoteControllerSettings()}
                 <br/>

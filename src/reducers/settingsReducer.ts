@@ -33,7 +33,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         enableRemoteFader: false,
         remoteFaderMidiInputPort: "",
         remoteFaderMidiOutputPort: "",
-        numberOfChannels: DEFAULTS.NUMBER_OF_CHANNELS,
+        numberOfChannels: 8,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         fadeTime: 100, //Time in ms
         showPfl: false

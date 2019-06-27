@@ -26,15 +26,11 @@ export const ArdourMaster: IMixerProtocol = {
         CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
         CHANNEL_VU: '/strip/meter/{channel}',
         CHANNEL_NAME: '/strip/name/{channel}',
-        GRP_OUT_GAIN: 'todo',
-        GRP_VU: 'none',
-        GRP_NAME: 'todo',
         PFL: 'todo'
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: 'none',
         CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
-        GRP_OUT_GAIN: 'todo',
         PFL_ON: {
             mixerMessage: "/not_in_use",
             value: 0,

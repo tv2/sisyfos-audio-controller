@@ -105,33 +105,6 @@ export class AutomationConnection {
                         type:'FADE_TO_BLACK'
                 });
                 window.mixerGenericConnection.updateOutLevels();
-            } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .GRP_FADER_PGM_ON_OFF)){
-                let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SET_GRP_PGM',
-                    channel: ch - 1,
-                    pgmOn: message.args[0]===1 ? true : false
-                });
-                window.mixerGenericConnection.updateOutLevel(ch-1);
-            } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .GRP_FADER_PST_ON_OFF)){
-                let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SET_GRP_PST',
-                    channel: ch - 1,
-                    pstOn: message.args[0]===1 ? true : false
-                });
-                window.mixerGenericConnection.updateOutLevel(ch-1);
-            } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .GRP_FADER_LEVEL)){
-                let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SET_GRP_FADER_LEVEL',
-                    channel: ch - 1,
-                    level: message.args[0]
-                });
-                window.mixerGenericConnection.updateOutLevel(ch-1);
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
@@ -150,14 +123,6 @@ export class AutomationConnection {
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
                     type:'SHOW_CHANNEL',
-                    channel: ch - 1,
-                    showChannel: message.args[0]===1 ? true : false
-                });
-            } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .GRP_FADER_VISIBLE)){
-                let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SHOW_GRP_FADER',
                     channel: ch - 1,
                     showChannel: message.args[0]===1 ? true : false
                 });
@@ -193,33 +158,6 @@ export class AutomationConnection {
                     this.automationProtocol.toAutomation.STATE_CHANNEL_FADER_LEVEL,
                     ch,
                     this.store.channels[0].channel[ch-1].faderLevel,
-                    "f"
-                );
-            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .STATE_GRP_FADER_PGM)) {
-                let ch = message.address.split("/")[3];
-                this.sendOutMessage(
-                    this.automationProtocol.toAutomation.STATE_GRP_FADER_PGM,
-                    ch,
-                    this.store.channels[0].grpFader[ch-1].pgmOn,
-                    "i"
-                );
-            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .STATE_GRP_FADER_PST)) {
-                let ch = message.address.split("/")[3];
-                this.sendOutMessage(
-                    this.automationProtocol.toAutomation.STATE_GRP_FADER_PST,
-                    ch,
-                    this.store.channels[0].grpFader[ch-1].pstOn,
-                    "i"
-                );
-            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .STATE_GRP_FADER_LEVEL)) {
-                let ch = message.address.split("/")[3];
-                this.sendOutMessage(
-                    this.automationProtocol.toAutomation.STATE_GRP_FADER_LEVEL,
-                    ch,
-                    this.store.channels[0].grpFader[ch-1].faderLevel,
                     "f"
                 );
             }

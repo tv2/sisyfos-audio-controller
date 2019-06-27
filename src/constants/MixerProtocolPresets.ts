@@ -36,15 +36,11 @@ export interface IMixerProtocol extends IMixerProtocolGeneric{
         CHANNEL_OUT_GAIN: string,
         CHANNEL_VU: string,
         CHANNEL_NAME: string,
-        GRP_OUT_GAIN: string,
-        GRP_VU: string,
-        GRP_NAME: string,
         PFL: string
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: string,
         CHANNEL_OUT_GAIN: string,
-        GRP_OUT_GAIN: string,
         PFL_ON: IMessageProtocol,
         PFL_OFF: IMessageProtocol
     }

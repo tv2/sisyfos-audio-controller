@@ -26,15 +26,11 @@ export const GenericMidi: IMixerProtocol = {
         CHANNEL_OUT_GAIN: "0",            //PgmChange 0 - ignores this command
         CHANNEL_VU: "0",                   //PgmChange 0 - ignores this command
         CHANNEL_NAME: 'some sysex not yet build',
-        GRP_OUT_GAIN: 'none',
-        GRP_VU: 'none',
-        GRP_NAME: 'none',
         PFL: 'todo'
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: "39",
         CHANNEL_OUT_GAIN: "38",
-        GRP_OUT_GAIN: 'none',
         PFL_ON: {
             mixerMessage: "/not_in_use",
             value: 0,
