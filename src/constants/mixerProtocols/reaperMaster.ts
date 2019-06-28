@@ -50,7 +50,7 @@ export const ReaperMaster: IMixerProtocol = {
     },
     {
         channelTypeName: 'MASTER',
-        channelTypeColor: '#2f2f2f',
+        channelTypeColor: '#0f0f3f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: ['none'],
             CHANNEL_OUT_GAIN: ['/master/volume'],

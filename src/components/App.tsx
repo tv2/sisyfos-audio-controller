@@ -32,12 +32,12 @@ class App extends React.Component<IAppProps> {
         (window as any).automationConnection = new AutomationConnection();
         (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         this.snapShopStoreTimer();
-        let totalNumberOfChannels = 0;
         let selectedProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
+        let numberOfChannels: Array<number> = [];
         selectedProtocol.channelTypes.forEach((item, index) => {
-            totalNumberOfChannels =+ this.props.store.settings[0].numberOfChannelsInType[index];
+            numberOfChannels.push(this.props.store.settings[0].numberOfChannelsInType[index]);
         });
-        loadSnapshotState(this.props.store.channels[0], this.props.store.settings[0].numberOfChannelsInType);
+        loadSnapshotState(this.props.store.channels[0], numberOfChannels);
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
