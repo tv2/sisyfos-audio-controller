@@ -25,7 +25,7 @@ export const LawoClient: IMixerProtocol = {
         }
     ],
     channelTypes: [{
-        channelTypeName: 'Channels',
+        channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: ['Sapphire/Sources/Source{channel}/Fader'],
@@ -52,8 +52,8 @@ export const LawoClient: IMixerProtocol = {
         },
     },
     {
-        channelTypeName: 'Sums',
-        channelTypeColor: '#2f2f2f',
+        channelTypeName: 'MST',
+        channelTypeColor: 'rgb(21, 21, 49)',
         fromMixer: {
             CHANNEL_FADER_LEVEL: ['Sapphire/Sums/Source{channel}/Fader'],
             CHANNEL_OUT_GAIN: [''],

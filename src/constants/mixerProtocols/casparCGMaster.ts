@@ -49,7 +49,7 @@ if (geometry) {
         //THIS IS JUST TO AVOID ERRORS AS
         //channelTypes are moved to IMixerProtocolGeneric
         channelTypes: [{
-            channelTypeName: 'Channels',
+            channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
                 CHANNEL_FADER_LEVEL: ['none'],

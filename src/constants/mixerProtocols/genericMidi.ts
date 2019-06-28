@@ -22,7 +22,7 @@ export const GenericMidi: IMixerProtocol = {
         }
     ],
     channelTypes: [{
-        channelTypeName: 'Channels',
+        channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: ["39"],        //PgmChange 0 - ignores this command

@@ -22,7 +22,7 @@ export const Reaper: IMixerProtocol = {
         }
     ],
     channelTypes: [{
-        channelTypeName: 'Channels',
+        channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: ['/track/{channel}/volume'],
