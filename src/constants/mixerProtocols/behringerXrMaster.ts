@@ -9,52 +9,54 @@ export const BehringerXrMaster: IMixerProtocol = {
     pingCommand: [
         {
             mixerMessage: "/xremote", value: 0,
-            type: "f", min: 0, max: 1
+            type: "f", min: 0, max: 1, zero: 0.75
         },
         {
             mixerMessage: "/meters", value: "/meters/1",
-            type: "s", min: 0, max: 1
+            type: "s", min: 0, max: 1, zero: 0.75
         },
         {
             mixerMessage: "/meters", value: "/meters/5",
-            type: "s", min: 0, max: 1
+            type: "s", min: 0, max: 1, zero: 0.75
         }
     ],
     pingTime: 9500,
     initializeCommands: [
         {
-            mixerMessage: "/info", value: 0, type: "f", min: 0, max: 1
+            mixerMessage: "/info", value: 0, type: "f", min: 0, max: 1, zero: 0.75
         }
     ],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],        //'none' ignores this command
-            CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1}],
-            CHANNEL_VU: [{ mixerMessage: '/meters/1', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],        //'none' ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_VU: [{ mixerMessage: '/meters/1', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: '/ch/{channel}/config/name',
-            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
         toMixer : {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
                 type: "f",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
             PFL_OFF: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
                 type: "f",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
     }],
     fader: {

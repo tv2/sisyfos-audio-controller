@@ -12,7 +12,8 @@ export const GenericMidi: IMixerProtocol = {
             value: 0,
             type: "f",
             min: 0,
-            max: 1
+            max: 1,
+            zero: 0.75
         }
     ],
     pingTime: 0,
@@ -22,38 +23,41 @@ export const GenericMidi: IMixerProtocol = {
             value: 0,
             type: "f",
             min: 0,
-            max: 1
+            max: 1,
+            zero: 0.75
         }
     ],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'f', min: 0, max: 1}],        //PgmChange 0 - ignores this command
-            CHANNEL_OUT_GAIN: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1}],            //PgmChange 0 - ignores this command
-            CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1}],                   //PgmChange 0 - ignores this command
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],        //PgmChange 0 - ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],            //PgmChange 0 - ignores this command
+            CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: 'some sysex not yet build',
-            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'f', min: 0, max: 1}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: "38", value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: "38", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
                 type: "f",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
             PFL_OFF: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
                 type: "f",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
     }],
     fader: {

@@ -15,7 +15,8 @@ export const LawoClient: IMixerProtocol = {
             value: 0,
             type: "f",
             min: 0,
-            max: 1
+            max: 1,
+            zero: 0.75
         }
     ],
     pingTime: 0,  //Bypass ping when pingTime is zero
@@ -25,69 +26,74 @@ export const LawoClient: IMixerProtocol = {
             value: 0,
             type: "f",
             min: 0,
-            max: 1
+            max: 1,
+            zero: 0.75
         }
     ],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification', value: 0, type: 'f', min: 0, max: 1}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
-            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: '/track/{channel}/name',
-            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification', value: 0, type: 'f', min: 0, max: 1}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
                 type: "i",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
             PFL_OFF: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 0,
                 type: "i",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
     },
     {
         channelTypeName: 'MST',
         channelTypeColor: 'rgb(21, 21, 49)',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
-            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: '/track/{channel}/name',
-            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Gain', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Gain', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
                 type: "i",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
             PFL_OFF: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 0,
                 type: "i",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
     }],
     fader: {

@@ -58,8 +58,8 @@ interface IMixerMessageProtocol {
     value: any,
     type: string,
     min: number,
-    max: number
-
+    max: number,
+    zero: number
 }
 
 // CasparCG Specific interfaces:
