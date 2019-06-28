@@ -24,37 +24,65 @@ export const LawoClient: IMixerProtocol = {
             type: "f"
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
-        CHANNEL_OUT_GAIN: '',
-        CHANNEL_VU: '/track/{channel}/vu',
-        CHANNEL_NAME: '/track/{channel}/name',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        GRP_VU: 'none',
-        GRP_NAME: '/dca/{channel}/config/name',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
-        CHANNEL_OUT_GAIN: 'Sapphire/Sources/Source{channel}/Gain',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        PFL_ON: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 1,
-            type: "i"
+    channelTypes: [{
+        channelTypeName: 'CH',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: ['Sapphire/Sources/Source{channel}/Fader'],
+            CHANNEL_OUT_GAIN: [''],
+            CHANNEL_VU: ['/track/{channel}/vu'],
+            CHANNEL_NAME: '/track/{channel}/name',
+            PFL: ['todo'],
+            AUX_SEND: ['none'],
         },
-        PFL_OFF: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 0,
-            type: "i"
-        }
+        toMixer: {
+            CHANNEL_FADER_LEVEL: ['Sapphire/Sources/Source{channel}/Fader'],
+            CHANNEL_OUT_GAIN: ['Sapphire/Sources/Source{channel}/Gain'],
+            PFL_ON: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 1,
+                type: "i"
+            }],
+            PFL_OFF: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 0,
+                type: "i"
+            }],
+            AUX_SEND: ['none'],
+        },
     },
+    {
+        channelTypeName: 'MST',
+        channelTypeColor: 'rgb(21, 21, 49)',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: ['Sapphire/Sums/Source{channel}/Fader'],
+            CHANNEL_OUT_GAIN: [''],
+            CHANNEL_VU: ['/track/{channel}/vu'],
+            CHANNEL_NAME: '/track/{channel}/name',
+            PFL: ['todo'],
+            AUX_SEND: ['none'],
+        },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: ['Sapphire/Sums/Source{channel}/Fader'],
+            CHANNEL_OUT_GAIN: ['Sapphire/Sums/Source{channel}/Gain'],
+            PFL_ON: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 1,
+                type: "i"
+            }],
+            PFL_OFF: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 0,
+                type: "i"
+            }],
+            AUX_SEND: ['none'],
+        },
+    }],
     fader: {
         min: 0,
         max: 1000,
         zero: 750,
         step: 10,
-        fadeTime: 40,  //Total time for a fade in ms.
     },
     meter: {
         min: 0,

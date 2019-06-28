@@ -13,7 +13,7 @@ export interface ISettings {
     enableRemoteFader: boolean,
     remoteFaderMidiInputPort: string,
     remoteFaderMidiOutputPort: string,
-    numberOfChannels: number,
+    numberOfChannelsInType: Array<number>,
     numberOfSnaps: number,
     fadeTime: number
     showPfl: boolean
@@ -33,7 +33,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         enableRemoteFader: false,
         remoteFaderMidiInputPort: "",
         remoteFaderMidiOutputPort: "",
-        numberOfChannels: DEFAULTS.NUMBER_OF_CHANNELS,
+        numberOfChannelsInType: [8],
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         fadeTime: 100, //Time in ms
         showPfl: false
@@ -55,6 +55,7 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             return nextState;
         case 'UPDATE_SETTINGS':
             nextState[0] = action.settings;
+            nextState[0].showOptions = false;
             if (typeof MixerProtocolPresets[nextState[0].mixerProtocol] === 'undefined')
                 {
                     nextState[0].mixerProtocol = 'genericMidi';

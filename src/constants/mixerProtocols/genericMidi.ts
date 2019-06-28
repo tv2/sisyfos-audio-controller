@@ -21,37 +21,38 @@ export const GenericMidi: IMixerProtocol = {
             type: "f"
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: "39",        //PgmChange 0 - ignores this command
-        CHANNEL_OUT_GAIN: "0",            //PgmChange 0 - ignores this command
-        CHANNEL_VU: "0",                   //PgmChange 0 - ignores this command
-        CHANNEL_NAME: 'some sysex not yet build',
-        GRP_OUT_GAIN: 'none',
-        GRP_VU: 'none',
-        GRP_NAME: 'none',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: "39",
-        CHANNEL_OUT_GAIN: "38",
-        GRP_OUT_GAIN: 'none',
-        PFL_ON: {
-            mixerMessage: "/not_in_use",
-            value: 0,
-            type: "f"
+    channelTypes: [{
+        channelTypeName: 'CH',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: ["39"],        //PgmChange 0 - ignores this command
+            CHANNEL_OUT_GAIN: ["0"],            //PgmChange 0 - ignores this command
+            CHANNEL_VU: ["0"],                   //PgmChange 0 - ignores this command
+            CHANNEL_NAME: 'some sysex not yet build',
+            PFL: ['todo'],
+            AUX_SEND: ['none'],
         },
-        PFL_OFF: {
-            mixerMessage: "/not_in_use",
-            value: 0,
-            type: "f"
-        }
-    },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: ["39"],
+            CHANNEL_OUT_GAIN: ["38"],
+            PFL_ON: [{
+                mixerMessage: "/not_in_use",
+                value: 0,
+                type: "f"
+            }],
+            PFL_OFF: [{
+                mixerMessage: "/not_in_use",
+                value: 0,
+                type: "f"
+            }],
+            AUX_SEND: ['none'],
+        },
+    }],
     fader: {
         min: 0,
         max: 127,
         zero: 100,
         step: 1,
-        fadeTime: 40,
     },
     meter: {
         min: 0,

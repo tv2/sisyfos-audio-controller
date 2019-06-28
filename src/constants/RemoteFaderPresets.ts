@@ -41,9 +41,6 @@ export interface IRemoteProtocol {
         CHANNEL_PST_ON_OFF: IMidiReceiveMessage,
         CHANNEL_PFL_ON_OFF: IMidiReceiveMessage,
         CHANNEL_FADER_LEVEL: IMidiReceiveMessage,
-        GRP_FADER_PGM_ON_OFF: IMidiReceiveMessage,
-        GRP_FADER_PST_ON_OFF: IMidiReceiveMessage,
-        GRP_FADER_LEVEL: IMidiReceiveMessage,
         X_MIX: IMidiReceiveMessage,
         FADE_TO_BLACK: IMidiReceiveMessage,
         SNAP_RECALL: IMidiReceiveMessage,
@@ -53,16 +50,12 @@ export interface IRemoteProtocol {
         STATE_CHANNEL_PST: IMidiSendMessage,
         STATE_CHANNEL_PFL: IMidiSendMessage,
         STATE_CHANNEL_FADER_LEVEL: Array<IMidiSendMessage>,
-        STATE_GRP_FADER_PGM: IMidiSendMessage,
-        STATE_GRP_FADER_PST: IMidiSendMessage,
-        STATE_GRP_FADER_LEVEL: IMidiSendMessage,
     },
     fader: {
         min: number,
         max: number,
         zero: number,
         step: number,
-        fadeTime: number,
     },
     meter: {
         min: number,
@@ -74,7 +67,6 @@ export interface IRemoteProtocol {
 
 
 export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
-
     hui: {
         protocol: 'MIDI',
         label: 'Generic HUI Midicontroller',
@@ -107,21 +99,6 @@ export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
                 message: "0",
                 value: "",
                 type: MidiReceiveTypes.controlchange
-            },
-            GRP_FADER_PGM_ON_OFF: {
-                message: "",
-                value: "",
-                type: MidiReceiveTypes.disabled
-            },
-            GRP_FADER_PST_ON_OFF: {
-                message: "",
-                value: "",
-                type: MidiReceiveTypes.disabled
-            },
-            GRP_FADER_LEVEL: {
-                message: "",
-                value: "",
-                type: MidiReceiveTypes.disabled
             },
             X_MIX: {
                 message: "",
@@ -167,28 +144,12 @@ export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
                     type: MidiSendTypes.sendControlChange
                     },
             ],
-            STATE_GRP_FADER_PGM: {
-                message: "",
-                value: "",
-                type: MidiSendTypes.disabled
-            },
-            STATE_GRP_FADER_PST: {
-                message: "",
-                value: "",
-                type: MidiSendTypes.disabled
-            },
-            STATE_GRP_FADER_LEVEL: {
-                message: "",
-                value: "",
-                type: MidiSendTypes.disabled
-            },
         },
         fader: {
             min: 0,
             max: 127,
             zero: 70,
             step: 1,
-            fadeTime: 40,
         },
         meter: {
             min: 0,

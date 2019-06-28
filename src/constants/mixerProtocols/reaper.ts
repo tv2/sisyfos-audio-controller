@@ -21,37 +21,38 @@ export const Reaper: IMixerProtocol = {
             type: "f"
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
-        CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
-        CHANNEL_VU: '/track/{channel}/vu',
-        CHANNEL_NAME: '/track/{channel}/name',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        GRP_VU: 'none',
-        GRP_NAME: '/dca/{channel}/config/name',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: '/track/{channel}/volume',
-        CHANNEL_OUT_GAIN: '/track/{channel}/fx/1/fxparam/1/value',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        PFL_ON: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 1,
-            type: "i"
+    channelTypes: [{
+        channelTypeName: 'CH',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: ['/track/{channel}/volume'],
+            CHANNEL_OUT_GAIN: ['/track/{channel}/fx/1/fxparam/1/value'],
+            CHANNEL_VU: ['/track/{channel}/vu'],
+            CHANNEL_NAME: '/track/{channel}/name',
+            PFL: ['todo'],
+            AUX_SEND: ['none'],
         },
-        PFL_OFF: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 0,
-            type: "i"
-        }
-    },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: ['/track/{channel}/volume'],
+            CHANNEL_OUT_GAIN: ['/track/{channel}/fx/1/fxparam/1/value'],
+            PFL_ON: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 1,
+                type: "i"
+            }],
+            PFL_OFF: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 0,
+                type: "i"
+            }],
+            AUX_SEND: ['none'],
+        },
+    }],
     fader: {
         min: 0,
         max: 1,
         zero: 0.75,
         step: 0.01,
-        fadeTime: 40,  //Total time for a fade in ms.
     },
     meter: {
         min: 0,

@@ -21,37 +21,38 @@ export const ArdourMaster: IMixerProtocol = {
             type: ""
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
-        CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
-        CHANNEL_VU: '/strip/meter/{channel}',
-        CHANNEL_NAME: '/strip/name/{channel}',
-        GRP_OUT_GAIN: 'todo',
-        GRP_VU: 'none',
-        GRP_NAME: 'todo',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
-        GRP_OUT_GAIN: 'todo',
-        PFL_ON: {
-            mixerMessage: "/not_in_use",
-            value: 0,
-            type: "f"
+    channelTypes: [{
+        channelTypeName: 'CH',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: ['none'],        //'none' ignores this command
+            CHANNEL_OUT_GAIN: ['/strip/fader/{channel}'],
+            CHANNEL_VU: ['/strip/meter/{channel}'],
+            CHANNEL_NAME: '/strip/name/{channel}',
+            PFL: ['todo'],
+            AUX_SEND: ['none'],
         },
-        PFL_OFF: {
-            mixerMessage: "/not_in_use",
-            value: 0,
-            type: "f"
-        }
-    },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: ['none'],
+            CHANNEL_OUT_GAIN: ['/strip/fader/{channel}'],
+            PFL_ON: [{
+                mixerMessage: "/not_in_use",
+                value: 0,
+                type: "f"
+            }],
+            PFL_OFF: [{
+                mixerMessage: "/not_in_use",
+                value: 0,
+                type: "f"
+            }],
+            AUX_SEND: ['none'],
+    }
+    }],
     fader: {
         min: 0,
         max: 1,
         zero: 0.75,
         step: 0.01,
-        fadeTime: 40,
     },
     meter: {
         min: 0,

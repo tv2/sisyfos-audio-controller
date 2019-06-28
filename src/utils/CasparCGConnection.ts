@@ -227,14 +227,5 @@ export class CasparCGConnection {
             }
         }
     }
-
-    updateGrpOutLevel(channelIndex: number) {
-        // CasparCG does not support Groups
-    }
-
-    updateGrpFadeIOLevel(channelIndex: number, outputLevel: number) {
-
-    }
-
 }
 

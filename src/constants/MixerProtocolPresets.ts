@@ -16,40 +16,51 @@ export interface IMixerProtocolGeneric {
         max: number
         zero: number
         step: number
-        fadeTime: number
     },
     meter: {
         min: number,
         max: number,
         zero: number,
         test: number,
-    }
+    },
+    channelTypes: Array<IChannelTypes>
 }
 
 export interface IMixerProtocol extends IMixerProtocolGeneric{
     leadingZeros: boolean,
-    pingCommand: Array<IMessageProtocol>,
+    pingCommand: Array<IMixerMessageProtocol>,
     pingTime: number,
-    initializeCommands: Array<IMessageProtocol>,
+    initializeCommands: Array<IMixerMessageProtocol>,
+}
+
+export interface IChannelTypes {
+    channelTypeName: string,
+    channelTypeColor: string,
     fromMixer: {
-        CHANNEL_FADER_LEVEL: string,
-        CHANNEL_OUT_GAIN: string,
-        CHANNEL_VU: string,
+        CHANNEL_FADER_LEVEL: Array<string>,
+        CHANNEL_OUT_GAIN: Array<string>,
+        CHANNEL_VU: Array<string>,
         CHANNEL_NAME: string,
-        GRP_OUT_GAIN: string,
-        GRP_VU: string,
-        GRP_NAME: string,
-        PFL: string
+        PFL: Array<string>
+        AUX_SEND: Array<string>
     },
     toMixer: {
-        CHANNEL_FADER_LEVEL: string,
-        CHANNEL_OUT_GAIN: string,
-        GRP_OUT_GAIN: string,
-        PFL_ON: IMessageProtocol,
-        PFL_OFF: IMessageProtocol
+        CHANNEL_FADER_LEVEL: Array<string>,
+        CHANNEL_OUT_GAIN: Array<string>,
+        PFL_ON: Array<IMixerMessageProtocol>,
+        PFL_OFF: Array<IMixerMessageProtocol>
+        AUX_SEND: Array<string>
     }
 }
 
+interface IMixerMessageProtocol {
+    mixerMessage: string,
+    value: any,
+    type: string
+}
+
+
+// CasparCG Specific interfaces:
 export interface ICasparCGChannelLayerPair {
     channel: number
     layer: number
@@ -103,12 +114,6 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
             }
         }
     }
-}
-
-interface IMessageProtocol {
-    mixerMessage: string,
-    value: any,
-    type: string
 }
 
 export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Object.assign({

@@ -32,13 +32,15 @@ const selectorColorStyles = {
 };
 
 interface IState {
-    settings: ISettings
+    settings: ISettings,
+    selectedProtocol: any
 }
 
 
 class Settings extends React.PureComponent<IAppProps & Store, IState> {
     mixerProtocolList: any;
     mixerProtocolPresets: any;
+    selectedProtocol: any;
     remoteFaderMidiInputPortList: any;
     remoteFaderMidiOutputPortList: any;
 
@@ -49,7 +51,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         this.mixerProtocolList = MixerProtocolList;
         this.mixerProtocolPresets = MixerProtocolPresets;
         this.state = {
-            settings: this.props.store.settings[0]
+            settings: this.props.store.settings[0],
+            selectedProtocol: this.mixerProtocolPresets[this.props.store.settings[0].mixerProtocol]
         };
         //Initialise list of Midi ports:
         this.findMidiPorts();
@@ -105,9 +108,18 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     }
 
 
-    handleTemplateChange = (selectedOption: any) => {
+    handleProtocolChange = (selectedOption: any) => {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.mixerProtocol = selectedOption.value;
+        this.setState(
+            {settings: settingsCopy}
+        );
+        this.setState({selectedProtocol: this.mixerProtocolPresets[this.state.settings.mixerProtocol]})
+    }
+
+    handleNumberOfChannels = (index: number, event: any) => {
+        var settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.numberOfChannelsInType[index] = event.target.value;
         this.setState(
             {settings: settingsCopy}
         );
@@ -142,36 +154,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         });
     }
 
-
-    handleShowGrpFader = (index: number, event: any) => {
-        this.props.dispatch({
-            type:'SHOW_GRP_FADER',
-            channel: index,
-            showChannel: event.target.checked
-        });
-    }
-
-    handleShowAllGrpFaders = () => {
-        this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
-            this.props.dispatch({
-                type:'SHOW_GRP_FADER',
-                channel: index,
-                showChannel: true
-            });
-        });
-    }
-
-
-    handleHideAllGrpFaders = () => {
-        this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
-            this.props.dispatch({
-                type:'SHOW_GRP_FADER',
-                channel: index,
-                showChannel: false
-            });
-        });
-    }
-
     handleSave = () => {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.showSettings = false;
@@ -180,9 +162,31 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         location.reload();
     }
 
+    renderChannelTypeSettings = () => {
+        return (
+            <div className="settings-show-channel-selection">
+                <div className="settings-header">
+                    NUMBER OF CHANNELTYPES:
+                </div>
+                {this.state.selectedProtocol.channelTypes.map((item: any, index: number) => {
+                    return <React.Fragment>
+                        <label className="settings-input-field">
+                            Number of { item.channelTypeName } :
+                            <input name="numberOfChannelsInType" type="text" value={this.state.settings.numberOfChannelsInType[index]} onChange={(event) => this.handleNumberOfChannels(index, event)} />
+                        </label>
+                        <br/>
+                    </React.Fragment>
+                })}
+            </div>
+        )
+    }
+
     renderShowChannelsSelection = () => {
         return (
             <div className="settings-show-channel-selection">
+                <div className="settings-header">
+                    SHOW/HIDE FADERS:
+                </div>
                 <button className="settings-channels-button"
                     onClick=
                         {() => {
@@ -206,41 +210,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                 type="checkbox"
                                 checked={this.props.store.channels[0].channel[index].showChannel }
                                 onChange={(event) => this.handleShowChannel(index, event)}
-                            />
-                        </div>
-                    })
-                }
-            </div>
-        )
-    }
-
-
-    renderShowGrpFadersSelection = () => {
-        return (
-            <div className="settings-show-channel-selection">
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleShowAllGrpFaders();
-                        }}
-                >
-                    ALL GROUPS
-                </button>
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleHideAllGrpFaders();
-                        }}
-                >
-                    NO GROUPS
-                </button>
-                {this.props.store.channels[0].grpFader.map((channel: any, index: number) => {
-                        return <div key={index}>
-                            {channel.label != "" ? channel.label : ("GRP " + (index + 1)) }
-                            <input
-                                type="checkbox"
-                                checked={this.props.store.channels[0].grpFader[index].showChannel }
-                                onChange={(event) => this.handleShowGrpFader(index, event)}
                             />
                         </div>
                     })
@@ -299,7 +268,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <Select
                     styles={selectorColorStyles}
                     value={{label: this.mixerProtocolPresets[this.state.settings.mixerProtocol].label, value: this.state.settings.mixerProtocol}}
-                    onChange={this.handleTemplateChange}
+                    onChange={this.handleProtocolChange}
                     options={this.mixerProtocolList}
                 />
                 <br/>
@@ -311,11 +280,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <label className="settings-input-field">
                     LOCAL PORT :
                     <input name="localOscPort" type="text" value={this.state.settings.localOscPort} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
-                    NUMBER OF CHANNELS :
-                    <input name="numberOfChannels" type="text" value={this.state.settings.numberOfChannels} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
@@ -343,9 +307,9 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     />
                 </label>
                 <br/>
-                {this.renderShowChannelsSelection()}
+                {this.renderChannelTypeSettings()}
                 <br/>
-                {this.renderShowGrpFadersSelection()}
+                {this.renderShowChannelsSelection()}
                 <br/>
                 {this.renderRemoteControllerSettings()}
                 <br/>

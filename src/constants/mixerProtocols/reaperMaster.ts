@@ -21,37 +21,68 @@ export const ReaperMaster: IMixerProtocol = {
             type: "f"
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '/track/{channel}/volume',
-        CHANNEL_VU: '/track/{channel}/vu',
-        CHANNEL_NAME: '/track/{channel}/name',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        GRP_VU: 'none',
-        GRP_NAME: '/dca/{channel}/config/name',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '/track/{channel}/volume',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        PFL_ON: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 1,
-            type: "i"
+    channelTypes: [{
+        channelTypeName: 'CH',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: ['none'],
+            CHANNEL_OUT_GAIN: ['/track/{channel}/volume'],
+            CHANNEL_VU: ['/track/{channel}/vu'],
+            CHANNEL_NAME: '/track/{channel}/name',
+            PFL: ['todo'],
+            AUX_SEND: ['none'],
         },
-        PFL_OFF: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 0,
-            type: "i"
-        }
+        toMixer: {
+            CHANNEL_FADER_LEVEL: ['none'],
+            CHANNEL_OUT_GAIN: ['/track/{channel}/volume'],
+            PFL_ON: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 1,
+                type: "i"
+            }],
+            PFL_OFF: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 0,
+                type: "i"
+            }],
+            AUX_SEND: ['none'],
+        },
     },
+    {
+        channelTypeName: 'MASTER',
+        channelTypeColor: '#0f0f3f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: ['none'],
+            CHANNEL_OUT_GAIN: ['/master/volume'],
+            CHANNEL_VU: [
+                '/master/vu/L',
+                '/master/vu/R'
+                ],
+            CHANNEL_NAME: '',
+            PFL: ['todo'],
+            AUX_SEND: ['none'],
+        },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: ['none'],
+            CHANNEL_OUT_GAIN: ['/master/volume'],
+            PFL_ON: [{
+                mixerMessage: "",
+                value: 1,
+                type: "i"
+            }],
+            PFL_OFF: [{
+                mixerMessage: "",
+                value: 0,
+                type: "i"
+            }],
+            AUX_SEND: ['none'],
+        },
+    }],
     fader: {
         min: 0,
         max: 1,
         zero: 0.75,
         step: 0.01,
-        fadeTime: 40,  //Total time for a fade in ms.
     },
     meter: {
         min: 0,
