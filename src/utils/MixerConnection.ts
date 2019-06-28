@@ -83,7 +83,7 @@ export class MixerGenericConnection {
 
     fadeUp(channelIndex: number, fadeTime: number) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
-        let targetVal = this.mixerProtocol.fader.zero;
+        let targetVal = this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].zero;
         if (this.mixerProtocol.mode === "master") {
             targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
         }
@@ -163,7 +163,7 @@ export class MixerGenericConnection {
 
     fadeDown(channelIndex: number, fadeTime: number) {
         let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
-        const min = this.mixerProtocol.fader.min;
+        const min = this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].min;
         const step = (outputLevel-min)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
         let dispatchTrigger: number = 0;
