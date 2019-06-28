@@ -10,7 +10,9 @@ export const ReaperMaster: IMixerProtocol = {
         {
             mixerMessage: "/note_in_use",
             value: 0,
-            type: "f"
+            type: "f",
+            min: 0,
+            max: 1
         }
     ],
     pingTime: 0,  //Bypass ping when pingTime is zero
@@ -18,7 +20,9 @@ export const ReaperMaster: IMixerProtocol = {
         {
             mixerMessage: "/note_in_use",
             value: 0,
-            type: "f"
+            type: "f",
+            min: 0,
+            max: 1
         }
     ],
     channelTypes: [{
@@ -38,12 +42,16 @@ export const ReaperMaster: IMixerProtocol = {
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
-                type: "i"
+                type: "i",
+                min: 0,
+                max: 1
             }],
             PFL_OFF: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 0,
-                type: "i"
+                type: "i",
+                min: 0,
+                max: 1
             }],
             AUX_SEND: ['none'],
         },
@@ -68,12 +76,16 @@ export const ReaperMaster: IMixerProtocol = {
             PFL_ON: [{
                 mixerMessage: "",
                 value: 1,
-                type: "i"
+                type: "i",
+                min: 0,
+                max: 1
             }],
             PFL_OFF: [{
                 mixerMessage: "",
                 value: 0,
-                type: "i"
+                type: "i",
+                min: 0,
+                max: 1
             }],
             AUX_SEND: ['none'],
         },

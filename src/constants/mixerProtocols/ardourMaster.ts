@@ -10,7 +10,9 @@ export const ArdourMaster: IMixerProtocol = {
         {
             mixerMessage: "/strip/list",
             value: "",
-            type: ""
+            type: "",
+            min: 0,
+            max: 1
         }
     ],
     pingTime: 9500,
@@ -18,7 +20,9 @@ export const ArdourMaster: IMixerProtocol = {
         {
             mixerMessage: "/strip/list",
             value: "",
-            type: ""
+            type: "",
+            min: 0,
+            max: 1
         }
     ],
     channelTypes: [{
@@ -38,12 +42,16 @@ export const ArdourMaster: IMixerProtocol = {
             PFL_ON: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
-                type: "f"
+                type: "f",
+                min: 0,
+                max: 1
             }],
             PFL_OFF: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
-                type: "f"
+                type: "f",
+                min: 0,
+                max: 1
             }],
             AUX_SEND: ['none'],
     }

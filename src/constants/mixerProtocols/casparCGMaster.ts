@@ -65,12 +65,16 @@ if (geometry) {
                 PFL_ON: [{
                     mixerMessage: "none",
                     value: 1,
-                    type: "i"
+                    type: "i",
+                    min: 0,
+                    max: 1
                 }],
                 PFL_OFF: [{
                     mixerMessage: "none",
                     value: 0,
-                    type: "i"
+                    type: "i",
+                    min: 0,
+                    max: 1
                 }],
                 AUX_SEND: ['none'],
             },

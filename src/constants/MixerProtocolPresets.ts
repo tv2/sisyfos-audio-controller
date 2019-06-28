@@ -56,9 +56,11 @@ export interface IChannelTypes {
 interface IMixerMessageProtocol {
     mixerMessage: string,
     value: any,
-    type: string
-}
+    type: string,
+    min: number,
+    max: number
 
+}
 
 // CasparCG Specific interfaces:
 export interface ICasparCGChannelLayerPair {

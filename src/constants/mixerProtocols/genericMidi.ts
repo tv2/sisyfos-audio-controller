@@ -10,7 +10,9 @@ export const GenericMidi: IMixerProtocol = {
         {
             mixerMessage: "/note_in_use",
             value: 0,
-            type: "f"
+            type: "f",
+            min: 0,
+            max: 1
         }
     ],
     pingTime: 0,
@@ -18,7 +20,9 @@ export const GenericMidi: IMixerProtocol = {
         {
             mixerMessage: "/note_in_use",
             value: 0,
-            type: "f"
+            type: "f",
+            min: 0,
+            max: 1
         }
     ],
     channelTypes: [{
@@ -38,12 +42,16 @@ export const GenericMidi: IMixerProtocol = {
             PFL_ON: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
-                type: "f"
+                type: "f",
+                min: 0,
+                max: 1
             }],
             PFL_OFF: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
-                type: "f"
+                type: "f",
+                min: 0,
+                max: 1
             }],
             AUX_SEND: ['none'],
         },

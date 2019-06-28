@@ -10,17 +10,23 @@ export const BehringerXrMaster: IMixerProtocol = {
         {
             mixerMessage: "/xremote",
             value: 0,
-            type: "f"
+            type: "f",
+            min: 0,
+            max: 1
         },
         {
             mixerMessage: "/meters",
             value: "/meters/1",
-            type: "s"
+            type: "s",
+            min: 0,
+            max: 1
         },
         {
             mixerMessage: "/meters",
             value: "/meters/5",
-            type: "s"
+            type: "s",
+            min: 0,
+            max: 1
         }
     ],
     pingTime: 9500,
@@ -28,7 +34,9 @@ export const BehringerXrMaster: IMixerProtocol = {
         {
             mixerMessage: "/info",
             value: 0,
-            type: "f"
+            type: "f",
+            min: 0,
+            max: 1
         }
     ],
     channelTypes: [{
@@ -48,12 +56,16 @@ export const BehringerXrMaster: IMixerProtocol = {
             PFL_ON: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
-                type: "f"
+                type: "f",
+                min: 0,
+                max: 1
             }],
             PFL_OFF: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
-                type: "f"
+                type: "f",
+                min: 0,
+                max: 1
             }],
             AUX_SEND: ['none'],
         },

@@ -13,7 +13,9 @@ export const LawoClient: IMixerProtocol = {
         {
             mixerMessage: "/note_in_use",
             value: 0,
-            type: "f"
+            type: "f",
+            min: 0,
+            max: 1
         }
     ],
     pingTime: 0,  //Bypass ping when pingTime is zero
@@ -21,14 +23,16 @@ export const LawoClient: IMixerProtocol = {
         {
             mixerMessage: "/note_in_use",
             value: 0,
-            type: "f"
+            type: "f",
+            min: 0,
+            max: 1
         }
     ],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: ['Sapphire/Sources/Source{channel}/Fader'],
+            CHANNEL_FADER_LEVEL: ['R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification'],
             CHANNEL_OUT_GAIN: [''],
             CHANNEL_VU: ['/track/{channel}/vu'],
             CHANNEL_NAME: '/track/{channel}/name',
@@ -36,17 +40,21 @@ export const LawoClient: IMixerProtocol = {
             AUX_SEND: ['none'],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: ['Sapphire/Sources/Source{channel}/Fader'],
-            CHANNEL_OUT_GAIN: ['Sapphire/Sources/Source{channel}/Gain'],
+            CHANNEL_FADER_LEVEL: ['R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification'],
+            CHANNEL_OUT_GAIN: ['R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition'],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
-                type: "i"
+                type: "i",
+                min: 0,
+                max: 1
             }],
             PFL_OFF: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 0,
-                type: "i"
+                type: "i",
+                min: 0,
+                max: 1
             }],
             AUX_SEND: ['none'],
         },
@@ -68,20 +76,24 @@ export const LawoClient: IMixerProtocol = {
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
-                type: "i"
+                type: "i",
+                min: 0,
+                max: 1
             }],
             PFL_OFF: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 0,
-                type: "i"
+                type: "i",
+                min: 0,
+                max: 1
             }],
             AUX_SEND: ['none'],
         },
     }],
     fader: {
         min: 0,
-        max: 1000,
-        zero: 750,
+        max: 200,
+        zero: 1300,
         step: 10,
     },
     meter: {
