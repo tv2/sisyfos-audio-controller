@@ -125,12 +125,12 @@ return true;
             });
         }
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel
         );
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0],
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel
         );
@@ -156,7 +156,7 @@ return true;
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0],
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelIndex+1,
             String(outputLevel)
         );

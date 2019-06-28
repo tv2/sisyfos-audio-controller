@@ -29,16 +29,16 @@ export const ReaperMaster: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/track/{channel}/volume'],
-            CHANNEL_VU: ['/track/{channel}/vu'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1}],
             CHANNEL_NAME: '/track/{channel}/name',
-            PFL: ['todo'],
-            AUX_SEND: ['none'],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/track/{channel}/volume'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1}],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
@@ -53,26 +53,26 @@ export const ReaperMaster: IMixerProtocol = {
                 min: 0,
                 max: 1
             }],
-            AUX_SEND: ['none'],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
         },
     },
     {
         channelTypeName: 'MASTER',
         channelTypeColor: '#0f0f3f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/master/volume'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/master/volume', value: 0, type: 'f', min: 0, max: 1}],
             CHANNEL_VU: [
-                '/master/vu/L',
-                '/master/vu/R'
-                ],
+                { mixerMessage: '/master/vu/L', value: 0, type: 'f', min: 0, max: 1},
+                { mixerMessage: '/master/vu/R', value: 0, type: 'f', min: 0, max: 1}
+            ],
             CHANNEL_NAME: '',
-            PFL: ['todo'],
-            AUX_SEND: ['none'],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/master/volume'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/master/volume', value: 0, type: 'f', min: 0, max: 1}],
             PFL_ON: [{
                 mixerMessage: "",
                 value: 1,
@@ -87,7 +87,7 @@ export const ReaperMaster: IMixerProtocol = {
                 min: 0,
                 max: 1
             }],
-            AUX_SEND: ['none'],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
         },
     }],
     fader: {

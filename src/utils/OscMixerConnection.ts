@@ -25,7 +25,7 @@ export class OscMixerConnection {
 
         this.mixerProtocol = mixerProtocol;
 
-        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].split('/').findIndex(ch => ch==='{channel}');
+        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.split('/').findIndex(ch => ch==='{channel}');
 
         this.oscConnection = new osc.UDPPort({
             localAddress: this.store.settings[0].localIp,
@@ -52,7 +52,7 @@ export class OscMixerConnection {
         })
         .on('message', (message: any) => {
             if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
-                .CHANNEL_VU[0])){
+                .CHANNEL_VU[0].mixerMessage)){
                 if (this.store.settings[0].mixerProtocol.includes('behringer')) {
                     behringerMeter(message.args);
                 } else if (this.store.settings[0].mixerProtocol.includes('midas')) {
@@ -66,7 +66,7 @@ export class OscMixerConnection {
                     });
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
-                .CHANNEL_FADER_LEVEL[0])){
+                .CHANNEL_FADER_LEVEL[0].mixerMessage)){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
@@ -85,7 +85,7 @@ export class OscMixerConnection {
                     }
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
-                .CHANNEL_OUT_GAIN[0])){
+                .CHANNEL_OUT_GAIN[0].mixerMessage)){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
                 if (this.mixerProtocol.mode === 'master'
                     && !this.store.channels[0].channel[ch - 1].fadeActive
@@ -208,13 +208,13 @@ export class OscMixerConnection {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0],
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0],
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelTypeIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
@@ -245,7 +245,7 @@ export class OscMixerConnection {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0],
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex+1,
             String(outputLevel),
             "f"

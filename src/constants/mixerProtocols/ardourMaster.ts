@@ -29,31 +29,23 @@ export const ArdourMaster: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],        //'none' ignores this command
-            CHANNEL_OUT_GAIN: ['/strip/fader/{channel}'],
-            CHANNEL_VU: ['/strip/meter/{channel}'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],        //'none' ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/strip/fader/{channel}', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_VU: [{ mixerMessage: '/strip/meter/{channel}', value: 0, type: 'f', min: 0, max: 1}],
             CHANNEL_NAME: '/strip/name/{channel}',
-            PFL: ['todo'],
-            AUX_SEND: ['none'],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/strip/fader/{channel}'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/strip/fader/{channel}', value: 0, type: 'f', min: 0, max: 1}],
             PFL_ON: [{
-                mixerMessage: "/not_in_use",
-                value: 0,
-                type: "f",
-                min: 0,
-                max: 1
+                mixerMessage: "/not_in_use", value: 0, type: "f", min: 0, max: 1
             }],
             PFL_OFF: [{
-                mixerMessage: "/not_in_use",
-                value: 0,
-                type: "f",
-                min: 0,
-                max: 1
+                mixerMessage: "/not_in_use", value: 0, type: "f", min: 0, max: 1
             }],
-            AUX_SEND: ['none'],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
     }
     }],
     fader: {

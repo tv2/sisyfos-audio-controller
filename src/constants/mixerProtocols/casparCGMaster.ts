@@ -52,16 +52,16 @@ if (geometry) {
             channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_FADER_LEVEL: ['none'],
-                CHANNEL_OUT_GAIN: ['none'],
-                CHANNEL_VU: ['none'],
+                CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+                CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+                CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
                 CHANNEL_NAME: 'none',
-                PFL: ['todo'],
-                AUX_SEND: ['none'],
+                PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+                AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
             },
             toMixer: {
-                CHANNEL_FADER_LEVEL: ['none'],
-                CHANNEL_OUT_GAIN: ['none'],
+                CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+                CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
                 PFL_ON: [{
                     mixerMessage: "none",
                     value: 1,
@@ -76,7 +76,7 @@ if (geometry) {
                     min: 0,
                     max: 1
                 }],
-                AUX_SEND: ['none'],
+                AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
             },
         }]
 	}

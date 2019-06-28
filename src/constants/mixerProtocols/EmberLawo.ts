@@ -5,7 +5,7 @@ import fs from 'fs';
 
 export const LawoClient: IMixerProtocol = {
     protocol: 'EMBER',
-    label: 'Lawo client, XX-gain as fade I/O',
+    label: 'Lawo Relay VRX4 - client',
     mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
@@ -32,16 +32,16 @@ export const LawoClient: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: ['R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification'],
-            CHANNEL_OUT_GAIN: [''],
-            CHANNEL_VU: ['/track/{channel}/vu'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1}],
             CHANNEL_NAME: '/track/{channel}/name',
-            PFL: ['todo'],
-            AUX_SEND: ['none'],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: ['R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification'],
-            CHANNEL_OUT_GAIN: ['R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition', value: 0, type: 'f', min: 0, max: 1}],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
@@ -56,23 +56,23 @@ export const LawoClient: IMixerProtocol = {
                 min: 0,
                 max: 1
             }],
-            AUX_SEND: ['none'],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
         },
     },
     {
         channelTypeName: 'MST',
         channelTypeColor: 'rgb(21, 21, 49)',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: ['Sapphire/Sums/Source{channel}/Fader'],
-            CHANNEL_OUT_GAIN: [''],
-            CHANNEL_VU: ['/track/{channel}/vu'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1}],
             CHANNEL_NAME: '/track/{channel}/name',
-            PFL: ['todo'],
-            AUX_SEND: ['none'],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: ['Sapphire/Sums/Source{channel}/Fader'],
-            CHANNEL_OUT_GAIN: ['Sapphire/Sums/Source{channel}/Gain'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Gain', value: 0, type: 'f', min: 0, max: 1}],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
@@ -87,7 +87,7 @@ export const LawoClient: IMixerProtocol = {
                 min: 0,
                 max: 1
             }],
-            AUX_SEND: ['none'],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1}],
         },
     }],
     fader: {

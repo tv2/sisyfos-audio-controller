@@ -23,7 +23,7 @@ export class EmberMixerConnection {
 
         this.mixerProtocol = mixerProtocol;
 
-        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].split('/').findIndex(ch => ch==='{channel}');
+        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.split('/').findIndex(ch => ch==='{channel}');
 
         this.emberConnection = new DeviceTree(
                 this.store.settings[0].deviceIp,
@@ -98,7 +98,7 @@ export class EmberMixerConnection {
     }
 
     subscribeFaderLevel(ch: number, typeIndex: number, channelTypeIndex: number) {
-        this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_FADER_LEVEL[0].replace("{channel}", String(channelTypeIndex+1)))
+        this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_FADER_LEVEL[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
         .then((node: any) => {
             console.log("Subscribing to channel :", ch);
             this.emberConnection.subscribe(node, (() => {
@@ -166,13 +166,13 @@ export class EmberMixerConnection {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0],
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0],
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelTypeIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
@@ -204,7 +204,7 @@ export class EmberMixerConnection {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0],
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex+1,
             String(outputLevel),
             "f"
