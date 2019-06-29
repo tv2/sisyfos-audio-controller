@@ -9,14 +9,14 @@ export const StuderVistaMaster: IMixerProtocol = {
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
-    pingCommand: [emptyMixerMessage()],
+    pingCommand: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
     pingTime: 0,  //Bypass ping when pingTime is zero
-    initializeCommands: [emptyMixerMessage()],
+    initializeCommands: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Fader/Value',
                 value: 0,
@@ -25,7 +25,7 @@ export const StuderVistaMaster: IMixerProtocol = {
                 max: 10,
                 zero: 0
             }],
-            CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
             CHANNEL_NAME: [{
                 mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Channel Attribute/User Label',
                 value: 0,
@@ -34,11 +34,11 @@ export const StuderVistaMaster: IMixerProtocol = {
                 max: 10,
                 zero: 0
             }],
-            PFL: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Fader/Value',
                 value: 0,
@@ -56,16 +56,16 @@ export const StuderVistaMaster: IMixerProtocol = {
                 max: 10,
                 zero: 0
             }],
-            PFL_ON: [emptyMixerMessage()],
-            PFL_OFF: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            PFL_ON: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            PFL_OFF: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
         },
     },
     {
         channelTypeName: 'ST',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Fader/Value',
                 value: 0,
@@ -74,7 +74,7 @@ export const StuderVistaMaster: IMixerProtocol = {
                 max: 10,
                 zero: 0
             }],
-            CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
             CHANNEL_NAME: [{
                 mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Channel Attribute/User Label',
                 value: 0,
@@ -83,11 +83,11 @@ export const StuderVistaMaster: IMixerProtocol = {
                 max: 10,
                 zero: 0
             }],
-            PFL: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Fader/Value',
                 value: 0,
@@ -105,16 +105,16 @@ export const StuderVistaMaster: IMixerProtocol = {
                 max: 10,
                 zero: 0
             }],
-            PFL_ON: [emptyMixerMessage()],
-            PFL_OFF: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            PFL_ON: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            PFL_OFF: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
         },
     },
     {
         channelTypeName: 'Inp X',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Fader/Value',
                 value: 0,
@@ -123,7 +123,7 @@ export const StuderVistaMaster: IMixerProtocol = {
                 max: 10,
                 zero: 0
             }],
-            CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
             CHANNEL_NAME: [{
                 mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Channel Attribute/User Label',
                 value: 0,
@@ -132,11 +132,11 @@ export const StuderVistaMaster: IMixerProtocol = {
                 max: 10,
                 zero: 0
             }],
-            PFL: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Fader/Value',
                 value: 0,
@@ -154,9 +154,9 @@ export const StuderVistaMaster: IMixerProtocol = {
                 max: 10,
                 zero: 0
             }],
-            PFL_ON: [emptyMixerMessage()],
-            PFL_OFF: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            PFL_ON: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            PFL_OFF: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
         },
     }],
     fader: {

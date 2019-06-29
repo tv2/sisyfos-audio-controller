@@ -9,9 +9,9 @@ export const LawoClient: IMixerProtocol = {
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
-    pingCommand: [emptyMixerMessage()],
+    pingCommand: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
     pingTime: 0,  //Bypass ping when pingTime is zero
-    initializeCommands: [emptyMixerMessage()],
+    initializeCommands: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
@@ -24,11 +24,11 @@ export const LawoClient: IMixerProtocol = {
                 max: 100,
                 zero: 75
             }],
-            CHANNEL_OUT_GAIN: [emptyMixerMessage()],
-            CHANNEL_VU: [emptyMixerMessage()],
-            CHANNEL_NAME: [emptyMixerMessage()],
-            PFL: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            CHANNEL_NAME: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [{
@@ -48,10 +48,10 @@ export const LawoClient: IMixerProtocol = {
                 zero: 0
 
             }],
-            CHANNEL_NAME: [emptyMixerMessage()],
-            PFL_ON: [emptyMixerMessage()],
-            PFL_OFF: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_NAME: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            PFL_ON: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            PFL_OFF: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
         }
     }],
     fader: {
