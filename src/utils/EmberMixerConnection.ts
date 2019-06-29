@@ -231,5 +231,16 @@ export class EmberMixerConnection {
         );
     }
 
+    updateChannelName(channelIndex: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let channelName = this.store.channels[0].channel[channelIndex].label;
+        this.sendOutMessage(
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
+            channelTypeIndex+1,
+            channelName,
+            "string"
+        );
+    }
 }
 

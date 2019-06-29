@@ -162,5 +162,15 @@ return true;
         );
     }
 
+
+    updateChannelName(channelIndex: number) {
+        let channelName = this.store.channels[0].channel[channelIndex].label;
+        this.sendOutMessage(
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_NAME[0].mixerMessage,
+            channelIndex+1,
+            channelName
+        );
+    }
+
 }
 

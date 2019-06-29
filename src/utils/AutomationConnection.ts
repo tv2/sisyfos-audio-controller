@@ -85,6 +85,7 @@ export class AutomationConnection {
                         channel: ch -1,
                         label: message.args[0]
                     });
+                    window.mixerGenericConnection.updateChannelName(ch-1);
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .X_MIX)) {
                 window.storeRedux.dispatch({

@@ -62,6 +62,10 @@ export class MixerGenericConnection {
         this.mixerConnection.updatePflState(channelIndex);
     }
 
+    updateChannelName(channelIndex: number) {
+        this.mixerConnection.updateChannelName(channelIndex);
+    }
+
     fadeInOut (channelIndex: number, fadeTime: number){
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
