@@ -1,4 +1,4 @@
-import { IMixerProtocol } from '../MixerProtocolPresets';
+import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolPresets';
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
@@ -9,27 +9,9 @@ export const LawoClient: IMixerProtocol = {
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
-    pingCommand: [
-        {
-            mixerMessage: "/note_in_use",
-            value: 0,
-            type: "f",
-            min: 0,
-            max: 1,
-            zero: 0.75
-        }
-    ],
+    pingCommand: [emptyMixerMessage()],
     pingTime: 0,  //Bypass ping when pingTime is zero
-    initializeCommands: [
-        {
-            mixerMessage: "/note_in_use",
-            value: 0,
-            type: "f",
-            min: 0,
-            max: 1,
-            zero: 0.75
-        }
-    ],
+    initializeCommands: [emptyMixerMessage()],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
@@ -42,11 +24,11 @@ export const LawoClient: IMixerProtocol = {
                 max: 100,
                 zero: 75
             }],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [emptyMixerMessage()],
+            CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_NAME: [emptyMixerMessage()],
+            PFL: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [{
@@ -66,59 +48,11 @@ export const LawoClient: IMixerProtocol = {
                 zero: 0
 
             }],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            PFL_ON: [{
-                mixerMessage: "/track/{channel}/solo",
-                value: 1,
-                type: "i",
-                min: 0,
-                max: 1,
-                zero: 0.75
-            }],
-            PFL_OFF: [{
-                mixerMessage: "/track/{channel}/solo",
-                value: 0,
-                type: "i",
-                min: 0,
-                max: 1,
-                zero: 0.75
-            }],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-        },
-    },
-    {
-        channelTypeName: 'MST',
-        channelTypeColor: 'rgb(21, 21, 49)',
-        fromMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-        },
-        toMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Gain', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            PFL_ON: [{
-                mixerMessage: "/track/{channel}/solo",
-                value: 1,
-                type: "i",
-                min: 0,
-                max: 1,
-                zero: 0.75
-            }],
-            PFL_OFF: [{
-                mixerMessage: "/track/{channel}/solo",
-                value: 0,
-                type: "i",
-                min: 0,
-                max: 1,
-                zero: 0.75
-            }],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-        },
+            CHANNEL_NAME: [emptyMixerMessage()],
+            PFL_ON: [emptyMixerMessage()],
+            PFL_OFF: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
+        }
     }],
     fader: {
         min: 0,

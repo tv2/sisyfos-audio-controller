@@ -1,4 +1,4 @@
-import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile } from '../MixerProtocolPresets';
+import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile, emptyMixerMessage } from '../MixerProtocolPresets';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -54,18 +54,18 @@ if (geometry) {
             fromMixer: {
                 CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
                 CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
-                CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-                CHANNEL_NAME: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-                PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-                AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+                CHANNEL_VU: [emptyMixerMessage()],
+                CHANNEL_NAME: [emptyMixerMessage()],
+                PFL: [emptyMixerMessage()],
+                AUX_SEND: [emptyMixerMessage()],
             },
             toMixer: {
                 CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
                 CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
-                CHANNEL_NAME: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-                PFL_ON: [{ mixerMessage: "none", value: 1, type: "i", min: 0, max: 1, zero: 0.75 }],
-                PFL_OFF: [{ mixerMessage: "none", value: 0, type: "i", min: 0, max: 1, zero: 0.75 }],
-                AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+                CHANNEL_NAME: [emptyMixerMessage()],
+                PFL_ON: [emptyMixerMessage()],
+                PFL_OFF: [emptyMixerMessage()],
+                AUX_SEND: [emptyMixerMessage()],
             },
         }]
 	}

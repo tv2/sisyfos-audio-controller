@@ -64,6 +64,17 @@ interface IMixerMessageProtocol {
     zero: number
 }
 
+export const emptyMixerMessage = (():IMixerMessageProtocol => {
+    return {
+        mixerMessage: "",
+        value: 0,
+        type: "",
+        min: 0,
+        max: 0,
+        zero: 0
+    }
+})
+
 // CasparCG Specific interfaces:
 export interface ICasparCGChannelLayerPair {
     channel: number
