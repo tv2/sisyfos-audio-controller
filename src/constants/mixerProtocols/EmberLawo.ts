@@ -44,7 +44,7 @@ export const LawoClient: IMixerProtocol = {
             }],
             CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_NAME: 'none',
+            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
@@ -66,6 +66,7 @@ export const LawoClient: IMixerProtocol = {
                 zero: 0
 
             }],
+            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
@@ -92,13 +93,14 @@ export const LawoClient: IMixerProtocol = {
             CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_NAME: '/track/{channel}/name',
+            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_OUT_GAIN: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Gain', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
