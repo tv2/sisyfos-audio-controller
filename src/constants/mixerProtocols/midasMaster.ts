@@ -12,14 +12,14 @@ export const MidasMaster: IMixerProtocol = {
             value: 0,
             type: "f",
             min: 0,
-            max: 1
+            max: 1, zero: 0.75
         },
         {
             mixerMessage: "/meters",
             value: "/meters/1",
             type: "s",
             min: 0,
-            max: 1
+            max: 1, zero: 0.75
         }
     ],
     pingTime: 9500,
@@ -29,45 +29,49 @@ export const MidasMaster: IMixerProtocol = {
             value: "",
             type: "s",
             min: 0,
-            max: 1
+            max: 1,
+            zero: 0.75
         },
         {
             mixerMessage: '/ch/{channel}/config/name',
             value: "",
             type: "s",
             min: 0,
-            max: 1
+            max: 1,
+            zero: 0.75
         }
     ],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],        //'none' ignores this command
-            CHANNEL_OUT_GAIN: ['/ch/{channel}/mix/fader'],
-            CHANNEL_VU: ['/meters/1'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],        //'none' ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_VU: [{ mixerMessage: '/meters/1', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: '/ch/{channel}/config/name',
-            PFL: ['todo'],
-            AUX_SEND: ['none'],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/ch/{channel}/mix/fader'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
                 type: "f",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
             PFL_OFF: [{
                 mixerMessage: "/not_in_use",
                 value: 0,
                 type: "f",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
-            AUX_SEND: ['none'],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
     }],
     fader: {

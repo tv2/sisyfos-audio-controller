@@ -12,7 +12,8 @@ export const ReaperMaster: IMixerProtocol = {
             value: 0,
             type: "f",
             min: 0,
-            max: 1
+            max: 1,
+            zero: 0.75
         }
     ],
     pingTime: 0,  //Bypass ping when pingTime is zero
@@ -22,72 +23,77 @@ export const ReaperMaster: IMixerProtocol = {
             value: 0,
             type: "f",
             min: 0,
-            max: 1
+            max: 1,
+            zero: 0.75
         }
     ],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/track/{channel}/volume'],
-            CHANNEL_VU: ['/track/{channel}/vu'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
+            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_NAME: '/track/{channel}/name',
-            PFL: ['todo'],
-            AUX_SEND: ['none'],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/track/{channel}/volume'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
                 type: "i",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
             PFL_OFF: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 0,
                 type: "i",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
-            AUX_SEND: ['none'],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
         },
     },
     {
         channelTypeName: 'MASTER',
         channelTypeColor: '#0f0f3f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/master/volume'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/master/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_VU: [
-                '/master/vu/L',
-                '/master/vu/R'
-                ],
+                { mixerMessage: '/master/vu/L', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 },
+                { mixerMessage: '/master/vu/R', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }
+            ],
             CHANNEL_NAME: '',
-            PFL: ['todo'],
-            AUX_SEND: ['none'],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: ['none'],
-            CHANNEL_OUT_GAIN: ['/master/volume'],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/master/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             PFL_ON: [{
                 mixerMessage: "",
                 value: 1,
                 type: "i",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
             PFL_OFF: [{
                 mixerMessage: "",
                 value: 0,
                 type: "i",
                 min: 0,
-                max: 1
+                max: 1,
+                zero: 0.75
             }],
-            AUX_SEND: ['none'],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
         },
     }],
     fader: {
