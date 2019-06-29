@@ -182,7 +182,6 @@ export class MixerGenericConnection {
                 dispatchTrigger = 0;
             }
 
-
             if ( outputLevel <= min ){
                 outputLevel=min;
                 this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
