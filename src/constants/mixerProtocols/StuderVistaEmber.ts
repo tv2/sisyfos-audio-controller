@@ -44,7 +44,14 @@ export const StuderVistaMaster: IMixerProtocol = {
                 zero: 0
             }],
             CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Channel Attribute/User Label',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+            }],
             PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
@@ -59,7 +66,14 @@ export const StuderVistaMaster: IMixerProtocol = {
                 zero: 0
 
             }],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Channel Attribute/User Label',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+            }],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
@@ -93,7 +107,14 @@ export const StuderVistaMaster: IMixerProtocol = {
                 zero: 0
             }],
             CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Channel Attribute/User Label',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+            }],
             PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
@@ -108,7 +129,14 @@ export const StuderVistaMaster: IMixerProtocol = {
                 zero: 0
 
             }],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Channel Attribute/User Label',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+            }],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,
@@ -142,7 +170,14 @@ export const StuderVistaMaster: IMixerProtocol = {
                 zero: 0
             }],
             CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Channel Attribute/User Label',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+            }],
             PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
@@ -157,7 +192,14 @@ export const StuderVistaMaster: IMixerProtocol = {
                 zero: 0
 
             }],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Channel Attribute/User Label',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+            }],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
                 value: 1,

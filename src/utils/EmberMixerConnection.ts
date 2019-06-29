@@ -60,6 +60,14 @@ export class EmberMixerConnection {
             }
         })
 
+        ch = 1;
+        this.store.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
+            for (let channelTypeIndex=0; channelTypeIndex < numberOfChannels ; channelTypeIndex++) {
+                this.subscribeChannelName(ch, typeIndex, channelTypeIndex);
+                ch++;
+            }
+        })
+
 /*
                 .CHANNEL_VU)){
                     window.storeRedux.dispatch({
@@ -100,7 +108,6 @@ export class EmberMixerConnection {
     subscribeFaderLevel(ch: number, typeIndex: number, channelTypeIndex: number) {
         this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_FADER_LEVEL[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
         .then((node: any) => {
-            console.log("Subscribing to channel :", ch);
             this.emberConnection.subscribe(node, (() => {
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
@@ -111,7 +118,20 @@ export class EmberMixerConnection {
                 if (window.huiRemoteConnection) {
                     window.huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
                 }
-                console.log("subscription :", node.contents.value)
+            })
+            )
+        })
+    }
+
+    subscribeChannelName(ch: number, typeIndex: number, channelTypeIndex: number) {
+        this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_NAME[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
+        .then((node: any) => {
+            this.emberConnection.subscribe(node, (() => {
+                window.storeRedux.dispatch({
+                    type:'SET_CHANNEL_LABEL',
+                    channel: ch-1,
+                    level: node.contents.value
+                });
             })
             )
         })
@@ -211,5 +231,16 @@ export class EmberMixerConnection {
         );
     }
 
+    updateChannelName(channelIndex: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let channelName = this.store.channels[0].channel[channelIndex].label;
+        this.sendOutMessage(
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
+            channelTypeIndex+1,
+            channelName,
+            "string"
+        );
+    }
 }
 
