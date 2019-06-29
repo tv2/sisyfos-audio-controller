@@ -109,7 +109,7 @@ export class OscMixerConnection {
 
                 }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
-                .CHANNEL_NAME)) {
+                .CHANNEL_NAME[0].mixerMessage)) {
                                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_CHANNEL_LABEL',

@@ -3,9 +3,9 @@ import path from 'path';
 import os from 'os';
 import fs from 'fs';
 
-export const LawoClient: IMixerProtocol = {
+export const StuderVistaMaster: IMixerProtocol = {
     protocol: 'EMBER',
-    label: 'Lawo Relay VRX4 - client',
+    label: 'Studer Vista - master',
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
@@ -34,35 +34,28 @@ export const LawoClient: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{
-                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Fader/Value',
                 value: 0,
                 type: 'real',
-                min: 0,
-                max: 100,
-                zero: 75
+                min: -90,
+                max: 10,
+                zero: 0
             }],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{
-                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
-                value: 0,
-                type: 'real',
-                min: 0,
-                max: 100,
-                zero: 75
-            }],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification',
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Fader/Value',
                 value: 0,
                 type: 'real',
-                min: -200,
-                max: 20,
+                min: -90,
+                max: 10,
                 zero: 0
 
             }],
@@ -87,19 +80,83 @@ export const LawoClient: IMixerProtocol = {
         },
     },
     {
-        channelTypeName: 'MST',
-        channelTypeColor: 'rgb(21, 21, 49)',
+        channelTypeName: 'ST',
+        channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Fader/Value',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+            }],
+            CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'Sapphire/Sums/Source{channel}/Gain', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Fader/Value',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+
+            }],
+            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            PFL_ON: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 1,
+                type: "i",
+                min: 0,
+                max: 1,
+                zero: 0.75
+            }],
+            PFL_OFF: [{
+                mixerMessage: "/track/{channel}/solo",
+                value: 0,
+                type: "i",
+                min: 0,
+                max: 1,
+                zero: 0.75
+            }],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+        },
+    },
+    {
+        channelTypeName: 'Inp X',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Fader/Value',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+            }],
+            CHANNEL_VU: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+        },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{
+                mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Fader/Value',
+                value: 0,
+                type: 'real',
+                min: -90,
+                max: 10,
+                zero: 0
+
+            }],
             CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [{
                 mixerMessage: "/track/{channel}/solo",
