@@ -1,17 +1,4 @@
-import { IMixerProtocol } from '../MixerProtocolInterface';
-
-
-const emptyMixerMessage = ():any => {
-    return {
-        mixerMessage: "",
-        value: 0,
-        type: "",
-        min: 0,
-        max: 0,
-        zero: 0
-    }
-}
-
+import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
 export const ReaperMaster: IMixerProtocol = {
     protocol: 'OSC',
@@ -21,7 +8,7 @@ export const ReaperMaster: IMixerProtocol = {
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],
     pingTime: 0,  //Bypass ping when pingTime is zero
-    initializeCommands: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+    initializeCommands: [emptyMixerMessage()],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
@@ -30,11 +17,11 @@ export const ReaperMaster: IMixerProtocol = {
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_NAME: [{ mixerMessage: '/track/{channel}/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            PFL: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_NAME: [{ mixerMessage: '/track/{channel}/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [{
@@ -53,30 +40,30 @@ export const ReaperMaster: IMixerProtocol = {
                 max: 1,
                 zero: 0.75
             }],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [emptyMixerMessage()],
         },
     },
     {
         channelTypeName: 'MASTER',
         channelTypeColor: '#0f0f3f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/master/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_VU: [
                 { mixerMessage: '/master/vu/L', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 },
                 { mixerMessage: '/master/vu/R', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }
             ],
-            CHANNEL_NAME: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
-            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            CHANNEL_NAME: [emptyMixerMessage()],
+            PFL: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/master/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
-            CHANNEL_NAME: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
-            PFL_ON: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
-            PFL_OFF: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            CHANNEL_NAME: [emptyMixerMessage()],
+            PFL_ON: [emptyMixerMessage()],
+            PFL_OFF: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         },
     }],
     fader: {

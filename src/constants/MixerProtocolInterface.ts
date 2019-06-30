@@ -54,9 +54,9 @@ interface IMixerMessageProtocol {
     zero: number
 }
 
-export const emptyMixerMessage = (message: string):any => {
+export const emptyMixerMessage = (): IMixerMessageProtocol => {
     return {
-        mixerMessage: message,
+        mixerMessage: "none",
         value: 0,
         type: "",
         min: 0,

@@ -118,8 +118,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             <input className="channel-volume-slider"
                 id="typeinp"
                 type="range"
-                min={this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].min}
-                max={this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].max}
+                min={this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage != 'none' ?
+                    this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].min
+                    : this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].min
+                }
+                max={this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage != 'none' ?
+                    this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].max
+                    : this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].max
+                }
                 step={this.mixerProtocol.fader.step}
                 value= {this.props.faderLevel}
                 onChange={event => {

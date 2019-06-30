@@ -6,9 +6,9 @@ export const Reaper: IMixerProtocol = {
     mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
-    pingCommand: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+    pingCommand: [emptyMixerMessage()],
     pingTime: 0,  //Bypass ping when pingTime is zero
-    initializeCommands: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+    initializeCommands: [emptyMixerMessage()],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
@@ -17,8 +17,8 @@ export const Reaper: IMixerProtocol = {
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/track/{channel}/fx/1/fxparam/1/value', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [{ mixerMessage: '/track/{channel}/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            PFL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            PFL: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
@@ -38,7 +38,7 @@ export const Reaper: IMixerProtocol = {
                 min: 0,
                 max: 1, zero: 0.75
             }],
-            AUX_SEND: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            AUX_SEND: [emptyMixerMessage()],
         },
     }],
     fader: {
