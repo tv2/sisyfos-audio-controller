@@ -4,7 +4,8 @@ import { CasparCG } from 'casparcg-connection';
 import * as osc from 'osc';
 
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets, ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
 import { IChannel } from '../reducers/channelsReducer';
 

@@ -1,4 +1,17 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolPresets';
+import { IMixerProtocol } from '../MixerProtocolInterface';
+
+
+const emptyMixerMessage = ():any => {
+    return {
+        mixerMessage: "",
+        value: 0,
+        type: "",
+        min: 0,
+        max: 0,
+        zero: 0
+    }
+}
+
 
 export const ReaperMaster: IMixerProtocol = {
     protocol: 'OSC',
@@ -6,14 +19,14 @@ export const ReaperMaster: IMixerProtocol = {
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
-    pingCommand: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+    pingCommand: [emptyMixerMessage()],
     pingTime: 0,  //Bypass ping when pingTime is zero
     initializeCommands: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_NAME: [{ mixerMessage: '/track/{channel}/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],

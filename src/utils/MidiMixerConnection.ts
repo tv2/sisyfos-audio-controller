@@ -3,7 +3,8 @@ import * as os from 'os'; // Used to display (log) network addresses on local ma
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol } from '../constants/MixerProtocolInterface';
 
 export class MidiMixerConnection {
     store: any;

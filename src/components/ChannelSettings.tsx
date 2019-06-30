@@ -1,7 +1,8 @@
 import React from 'react';
 
 import '../assets/css/ChannelSettings.css';
-import { IMixerProtocolGeneric, MixerProtocolPresets, ICasparCGMixerGeometry } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 
@@ -26,7 +27,7 @@ class ChannelSettings extends React.PureComponent<IChannelProps & IChannelSettin
 			this.mixerProtocol = protocol;
 		}
 	}
-	
+
 	handleOption = (prop: string, option: string) => {
 		this.props.dispatch({
 			type: 'SET_OPTION',
@@ -59,7 +60,7 @@ class ChannelSettings extends React.PureComponent<IChannelProps & IChannelSettin
 								}) || null}
 							</div>
 						)
-					})}	
+					})}
             </div>
         )
     }

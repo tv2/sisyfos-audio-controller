@@ -1,5 +1,6 @@
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 import { EmberMixerConnection } from './EmberMixerConnection';

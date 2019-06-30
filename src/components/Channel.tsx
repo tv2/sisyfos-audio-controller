@@ -7,7 +7,8 @@ import { Store } from 'redux';
 
 //assets:
 import '../assets/css/Channel.css';
-import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets} from '../constants/MixerProtocolPresets';
+import { IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { any, number } from 'prop-types';
 
 interface IChannelInjectProps {

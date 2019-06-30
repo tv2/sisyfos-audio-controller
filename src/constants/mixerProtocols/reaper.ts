@@ -1,4 +1,4 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolPresets';
+import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
 export const Reaper: IMixerProtocol = {
     protocol: 'OSC',

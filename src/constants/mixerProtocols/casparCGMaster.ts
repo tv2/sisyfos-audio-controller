@@ -1,4 +1,4 @@
-import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile, emptyMixerMessage } from '../MixerProtocolPresets';
+import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile, emptyMixerMessage } from '../MixerProtocolInterface';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';

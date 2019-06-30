@@ -3,7 +3,7 @@ import * as os from 'os'; // Used to display (log) network addresses on local ma
 import * as osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
 
 //Utils:
-import { IMixerProtocol } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol } from '../constants/MixerProtocolInterface';
 import { behringerMeter } from './productSpecific/behringer';
 import { midasMeter } from './productSpecific/midas';
 import { IStore } from '../reducers/indexReducer';

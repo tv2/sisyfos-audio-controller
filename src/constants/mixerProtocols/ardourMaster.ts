@@ -1,4 +1,4 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolPresets';
+import { IMixerProtocol } from '../MixerProtocolInterface';
 
 export const ArdourMaster: IMixerProtocol = {
     protocol: 'OSC',

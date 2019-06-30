@@ -1,7 +1,7 @@
 import { DeviceTree, Ember } from 'emberplus';
 
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
 
 export class EmberMixerConnection {
