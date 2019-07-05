@@ -1,4 +1,4 @@
-import { DeviceTree, Ember } from 'emberplus';
+import { DeviceTree, QualifiedParameter } from 'emberplus';
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
@@ -7,9 +7,9 @@ import { IStore } from '../reducers/indexReducer';
 export class EmberMixerConnection {
     store: IStore;
     mixerProtocol: IMixerProtocol;
-    cmdChannelIndex: number;
     emberConnection: any;
     deviceRoot: any;
+    emberNodeObject: Array<any>;
 
 
     constructor(mixerProtocol: IMixerProtocol) {
@@ -21,9 +21,8 @@ export class EmberMixerConnection {
             this.store = window.storeRedux.getState();
         });
 
+        this.emberNodeObject = new Array(200);
         this.mixerProtocol = mixerProtocol;
-
-        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.split('/').findIndex(ch => ch==='{channel}');
 
         this.emberConnection = new DeviceTree(
                 this.store.settings[0].deviceIp,
@@ -75,18 +74,6 @@ export class EmberMixerConnection {
                         channel: ch - 1,
                         level: message.args[0]
                     });
-                .CHANNEL_FADER_LEVEL)){
-                window.storeRedux.dispatch({
-                    type:'SET_FADER_LEVEL',
-                    channel: ch - 1,
-                    level: message.args[0]
-                });
-                .CHANNEL_NAME)) {
-                    window.storeRedux.dispatch({
-                        type:'SET_CHANNEL_LABEL',
-                        channel: ch - 1,
-                        label: message.args[0]
-                    });
         */
         this.emberConnection
         .on('error', (error: any) => {
@@ -106,18 +93,23 @@ export class EmberMixerConnection {
     }
 
     subscribeFaderLevel(ch: number, typeIndex: number, channelTypeIndex: number) {
-        this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_FADER_LEVEL[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
+        this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
         .then((node: any) => {
+            this.emberNodeObject[ch-1] = node;
             this.emberConnection.subscribe(node, (() => {
-                window.storeRedux.dispatch({
-                    type:'SET_FADER_LEVEL',
-                    channel: ch-1,
-                    level: node.contents.value
-                });
-
-                if (window.huiRemoteConnection) {
-                    window.huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
+                if (!this.store.channels[0].channel[ch-1].fadeActive
+                    && !this.store.channels[0].channel[ch - 1].fadeActive
+                    &&  node.contents.value > this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].min) {
+                    window.storeRedux.dispatch({
+                        type:'SET_FADER_LEVEL',
+                        channel: ch-1,
+                        level: node.contents.value
+                    });
+                    if (window.huiRemoteConnection) {
+                        window.huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
+                    }
                 }
+
             })
             )
         })
@@ -152,19 +144,16 @@ export class EmberMixerConnection {
 
     sendOutMessage(mixerMessage: string, channel: number, value: string | number, type: string) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
-        let message = mixerMessage.replace(
-                "{channel}",
-                channelString
-            );
-        if (message != 'none') {
-            this.emberConnection.getNodeByPath(message)
-            .then((response: any) => {
+
+//            this.emberConnection.QualifiedParameter.setValue("1.1.1.1.1.1", 21)
+//            this.emberConnection.getNodeByPath(message)
+//            .then((response: any) => {
+//                console.log("Node object :", response)
                 this.emberConnection.setValue(
-                    response,
+                    mixerMessage,
                     typeof value === 'number' ? value : parseFloat(value)
                 )
-            })
-        }
+//            })
     }
 
     sendOutRequest(mixerMessage: string, channel: number) {
@@ -186,15 +175,9 @@ export class EmberMixerConnection {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
+            this.emberNodeObject[channelIndex],
             channelTypeIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel,
-            "f"
-        );
-        this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
-            channelTypeIndex+1,
-            this.store.channels[0].channel[channelIndex].faderLevel,
             "f"
         );
     }
@@ -224,7 +207,7 @@ export class EmberMixerConnection {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
+            this.emberNodeObject[channelIndex],
             channelTypeIndex+1,
             String(outputLevel),
             "f"

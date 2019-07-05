@@ -161,9 +161,9 @@ export const StuderVistaMaster: IMixerProtocol = {
     }],
     fader: {
         min: 0,
-        max: 200,
-        zero: 1300,
-        step: 10,
+        max: 100,
+        zero: 70,
+        step: 1,
     },
     meter: {
         min: 0,

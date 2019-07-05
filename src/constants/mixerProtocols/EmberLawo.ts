@@ -16,7 +16,8 @@ export const LawoClient: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
                 value: 0,
                 type: 'real',
@@ -24,9 +25,16 @@ export const LawoClient: IMixerProtocol = {
                 max: 100,
                 zero: 75
             }],
-            CHANNEL_OUT_GAIN: [emptyMixerMessage()],
             CHANNEL_VU: [emptyMixerMessage()],
-            CHANNEL_NAME: [emptyMixerMessage()],
+            CHANNEL_NAME: [{
+                mixerMessage: '',
+                value: 0,
+                type: 'real',
+                min: -200,
+                max: 20,
+                zero: 0
+
+            }],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
         },
@@ -48,7 +56,15 @@ export const LawoClient: IMixerProtocol = {
                 zero: 0
 
             }],
-            CHANNEL_NAME: [emptyMixerMessage()],
+            CHANNEL_NAME: [{
+                mixerMessage: '',
+                value: 0,
+                type: 'real',
+                min: -200,
+                max: 20,
+                zero: 0
+
+            }],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
