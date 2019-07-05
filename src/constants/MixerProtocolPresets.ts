@@ -6,7 +6,9 @@ import { MidasMaster } from './mixerProtocols/midasMaster';
 import { GenericMidi } from './mixerProtocols/genericMidi';
 import { LawoClient } from './mixerProtocols/EmberLawo';
 import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
-import { StuderVistaMaster } from './mixerProtocols/StuderVistaEmber';
+import { StuderVista1Master } from './mixerProtocols/StuderVista1Ember';
+import { StuderVista5Master } from './mixerProtocols/StuderVista5Ember';
+import { StuderVista9Master } from './mixerProtocols/StuderVista9Ember';
 // Interface:
 import { IMixerProtocolGeneric} from './MixerProtocolInterface'
 
@@ -18,7 +20,9 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     midasMaster: MidasMaster,
     genericMidi: GenericMidi,
     lawoClient: LawoClient,
-    studerVistaMaster: StuderVistaMaster,
+    studerVista1Master: StuderVista1Master,
+    studerVista5Master: StuderVista5Master,
+    studerVista9Master: StuderVista9Master,
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
 } : {});

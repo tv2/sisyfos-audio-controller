@@ -3,9 +3,9 @@ import path from 'path';
 import os from 'os';
 import fs from 'fs';
 
-export const StuderVistaMaster: IMixerProtocol = {
+export const StuderVista1Master: IMixerProtocol = {
     protocol: 'EMBER',
-    label: 'Studer Vista - master',
+    label: 'Studer Vista 1 - master',
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
@@ -18,7 +18,7 @@ export const StuderVistaMaster: IMixerProtocol = {
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Fader/Value',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -27,7 +27,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             }],
             CHANNEL_VU: [emptyMixerMessage()],
             CHANNEL_NAME: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Channel Attribute/User Label',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Channel Attribute/User Label',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -40,7 +40,7 @@ export const StuderVistaMaster: IMixerProtocol = {
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Fader/Value',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -49,7 +49,7 @@ export const StuderVistaMaster: IMixerProtocol = {
 
             }],
             CHANNEL_NAME: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Channel Attribute/User Label',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Channel Attribute/User Label',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -67,7 +67,7 @@ export const StuderVistaMaster: IMixerProtocol = {
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Fader/Value',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -76,7 +76,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             }],
             CHANNEL_VU: [emptyMixerMessage()],
             CHANNEL_NAME: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Channel Attribute/User Label',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Functions/Channel Attribute/User Label',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -89,7 +89,7 @@ export const StuderVistaMaster: IMixerProtocol = {
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Fader/Value',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -98,7 +98,7 @@ export const StuderVistaMaster: IMixerProtocol = {
 
             }],
             CHANNEL_NAME: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Channel Attribute/User Label',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Functions/Channel Attribute/User Label',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -116,7 +116,7 @@ export const StuderVistaMaster: IMixerProtocol = {
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Fader/Value',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -125,7 +125,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             }],
             CHANNEL_VU: [emptyMixerMessage()],
             CHANNEL_NAME: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Channel Attribute/User Label',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Functions/Channel Attribute/User Label',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -138,7 +138,7 @@ export const StuderVistaMaster: IMixerProtocol = {
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Fader/Value',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
                 min: -90,
@@ -147,7 +147,7 @@ export const StuderVistaMaster: IMixerProtocol = {
 
             }],
             CHANNEL_NAME: [{
-                mixerMessage: 'Vista 9/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Channel Attribute/User Label',
+                mixerMessage: 'Vista 1/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Functions/Channel Attribute/User Label',
                 value: 0,
                 type: 'real',
                 min: -90,
