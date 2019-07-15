@@ -1,5 +1,6 @@
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 import { EmberMixerConnection } from './EmberMixerConnection';
@@ -15,7 +16,6 @@ export class MixerGenericConnection {
     mixerProtocol: IMixerProtocolGeneric;
     mixerConnection: any;
     timer: any;
-    grpTimer: any;
 
     constructor() {
         this.updateOutLevels = this.updateOutLevels.bind(this);
@@ -44,17 +44,12 @@ export class MixerGenericConnection {
 
         //Setup timers for fade in & out
         this.timer = new Array(this.store.channels[0].channel.length);
-        this.grpTimer = new Array(this.store.channels[0].grpFader.length);
     }
 
     updateOutLevels() {
         this.store.channels[0].channel.map((channel: any, index: number) => {
             this.fadeInOut(index, this.store.settings[0].fadeTime);
             this.mixerConnection.updateOutLevel(index);
-        });
-        this.store.channels[0].grpFader.map((channel: any, index: number) => {
-            this.fadeGrpInOut(index, this.store.settings[0].fadeTime);
-            this.mixerConnection.updateGrpOutLevel(index);
         });
     }
 
@@ -68,9 +63,8 @@ export class MixerGenericConnection {
         this.mixerConnection.updatePflState(channelIndex);
     }
 
-    updateGrpOutLevel(channelIndex: number, fadeTime: number = this.store.settings[0].fadeTime) {
-        this.fadeGrpInOut(channelIndex, fadeTime);
-        this.mixerConnection.updateGrpOutLevel(channelIndex);
+    updateChannelName(channelIndex: number) {
+        this.mixerConnection.updateChannelName(channelIndex);
     }
 
     updateChannelSettings(channelIndex: number, setting: string, value: string) {
@@ -100,7 +94,7 @@ export class MixerGenericConnection {
 
     fadeUp(channelIndex: number, fadeTime: number) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
-        let targetVal = this.mixerProtocol.fader.zero;
+        let targetVal = this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].zero;
         if (this.mixerProtocol.mode === "master") {
             targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
         }
@@ -180,7 +174,7 @@ export class MixerGenericConnection {
 
     fadeDown(channelIndex: number, fadeTime: number) {
         let outputLevel = this.store.channels[0].channel[channelIndex].outputLevel;
-        const min = this.mixerProtocol.fader.min;
+        const min = this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].min;
         const step = (outputLevel-min)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
         let dispatchTrigger: number = 0;
@@ -199,7 +193,6 @@ export class MixerGenericConnection {
                 dispatchTrigger = 0;
             }
 
-
             if ( outputLevel <= min ){
                 outputLevel=min;
                 this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
@@ -211,110 +204,6 @@ export class MixerGenericConnection {
                 });
                 window.storeRedux.dispatch({
                     type:'FADE_ACTIVE',
-                    channel: channelIndex,
-                    active: false
-                });
-                return true;
-            }
-
-        }, FADE_INOUT_SPEED);
-    }
-
-
-    fadeGrpInOut (channelIndex: number, fadeTime: number){
-        //Clear Old timer or set Fade to active:
-        if (this.store.channels[0].grpFader[channelIndex].fadeActive) {
-            clearInterval(this.grpTimer[channelIndex]);
-        } else {
-            window.storeRedux.dispatch({
-                type:'FADE_GRP_ACTIVE',
-                channel: channelIndex,
-                active: true
-            });
-        }
-
-        if (this.store.channels[0].grpFader[channelIndex].pgmOn) {
-            this.fadeGrpUp(channelIndex, fadeTime);
-        } else {
-            this.fadeGrpDown(channelIndex, fadeTime);
-        }
-    }
-
-    fadeGrpUp(channelIndex: number, fadeTime: number) {
-        let outputLevel = parseFloat(this.store.channels[0].grpFader[channelIndex].outputLevel);
-        let targetVal = parseFloat(this.store.channels[0].grpFader[channelIndex].faderLevel);
-        const step = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
-
-        if (targetVal<outputLevel) {
-            this.grpTimer[channelIndex] = setInterval(() => {
-                outputLevel += step;
-                this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
-
-                if ( outputLevel <= targetVal){
-                    outputLevel = targetVal;
-                    this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
-                    clearInterval(this.grpTimer[channelIndex]);
-
-                    window.storeRedux.dispatch({
-                        type:'SET_GRP_OUTPUT_LEVEL',
-                        channel: channelIndex,
-                        level: outputLevel
-                    });
-                    window.storeRedux.dispatch({
-                        type:'FADE_GRP_ACTIVE',
-                        channel: channelIndex,
-                        active: false
-                    });
-                    return true;
-                }
-            }, FADE_INOUT_SPEED);
-        } else {
-            this.grpTimer[channelIndex] = setInterval(() => {
-                outputLevel += step;
-                this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
-
-                if ( outputLevel >= targetVal ) {
-                    outputLevel = targetVal;
-                    this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
-                    clearInterval(this.grpTimer[channelIndex]);
-                    window.storeRedux.dispatch({
-                        type:'SET_GRP_OUTPUT_LEVEL',
-                        channel: channelIndex,
-                        level: outputLevel
-                    });
-                    window.storeRedux.dispatch({
-                        type:'FADE_GRP_ACTIVE',
-                        channel: channelIndex,
-                        active: false
-                    });
-                    return true;
-                }
-
-            }, FADE_INOUT_SPEED);
-        }
-    }
-
-    fadeGrpDown(channelIndex: number, fadeTime: number) {
-        let outputLevel = this.store.channels[0].grpFader[channelIndex].outputLevel;
-        const min = this.mixerProtocol.fader.min;
-        const step = (outputLevel-min)/(fadeTime/FADE_INOUT_SPEED);
-
-        this.grpTimer[channelIndex] = setInterval(() => {
-
-            outputLevel -= step;
-            this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
-
-            if ( outputLevel <= min ){
-                outputLevel=min;
-                this.mixerConnection.updateGrpFadeIOLevel(channelIndex, outputLevel);
-                clearInterval(this.grpTimer[channelIndex]);
-                window.storeRedux.dispatch({
-                    type:'SET_GRP_OUTPUT_LEVEL',
-                    channel: channelIndex,
-                    level: outputLevel
-                });
-                window.storeRedux.dispatch({
-                    type:'FADE_GRP_ACTIVE',
                     channel: channelIndex,
                     active: false
                 });

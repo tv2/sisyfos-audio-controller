@@ -1,60 +1,80 @@
-import { IMixerProtocol } from '../MixerProtocolPresets';
+import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
 
 export const LawoClient: IMixerProtocol = {
     protocol: 'EMBER',
-    label: 'Lawo client, XX-gain as fade I/O',
-    mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
+    label: 'Lawo Relay VRX4 - client',
+    mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
-    pingCommand: [
-        {
-            mixerMessage: "/note_in_use",
-            value: 0,
-            type: "f"
-        }
-    ],
+    pingCommand: [emptyMixerMessage()],
     pingTime: 0,  //Bypass ping when pingTime is zero
-    initializeCommands: [
-        {
-            mixerMessage: "/note_in_use",
-            value: 0,
-            type: "f"
-        }
-    ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
-        CHANNEL_OUT_GAIN: '',
-        CHANNEL_VU: '/track/{channel}/vu',
-        CHANNEL_NAME: '/track/{channel}/name',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        GRP_VU: 'none',
-        GRP_NAME: '/dca/{channel}/config/name',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: 'Sapphire/Sources/Source{channel}/Fader',
-        CHANNEL_OUT_GAIN: 'Sapphire/Sources/Source{channel}/Gain',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        PFL_ON: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 1,
-            type: "i"
+    initializeCommands: [emptyMixerMessage()],
+    channelTypes: [{
+        channelTypeName: 'CH',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_OUT_GAIN: [{
+                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
+                value: 0,
+                type: 'real',
+                min: 0,
+                max: 100,
+                zero: 75
+            }],
+            CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_NAME: [{
+                mixerMessage: '',
+                value: 0,
+                type: 'real',
+                min: -200,
+                max: 20,
+                zero: 0
+
+            }],
+            PFL: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         },
-        PFL_OFF: {
-            mixerMessage: "/track/{channel}/solo",
-            value: 0,
-            type: "i"
+        toMixer: {
+            CHANNEL_FADER_LEVEL: [{
+                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
+                value: 0,
+                type: 'real',
+                min: 0,
+                max: 100,
+                zero: 75
+            }],
+            CHANNEL_OUT_GAIN: [{
+                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification',
+                value: 0,
+                type: 'real',
+                min: -200,
+                max: 20,
+                zero: 0
+
+            }],
+            CHANNEL_NAME: [{
+                mixerMessage: '',
+                value: 0,
+                type: 'real',
+                min: -200,
+                max: 20,
+                zero: 0
+
+            }],
+            PFL_ON: [emptyMixerMessage()],
+            PFL_OFF: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         }
-    },
+    }],
     fader: {
         min: 0,
-        max: 1000,
-        zero: 750,
+        max: 200,
+        zero: 1300,
         step: 10,
-        fadeTime: 40,  //Total time for a fade in ms.
     },
     meter: {
         min: 0,

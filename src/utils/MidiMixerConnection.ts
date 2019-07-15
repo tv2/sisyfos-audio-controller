@@ -3,7 +3,8 @@ import * as os from 'os'; // Used to display (log) network addresses on local ma
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol } from '../constants/MixerProtocolInterface';
 
 export class MidiMixerConnection {
     store: any;
@@ -43,7 +44,7 @@ export class MidiMixerConnection {
     }
 
     setupMixerConnection() {
-        this.midiInput.addListener('controlchange', this.mixerProtocol.fromMixer.CHANNEL_FADER_LEVEL,
+        this.midiInput.addListener('controlchange', this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_FADER_LEVEL,
             (error: any) => {
                 console.log("Received 'controlchange' message (" + error.data + ").");
                 window.storeRedux.dispatch({
@@ -64,7 +65,7 @@ export class MidiMixerConnection {
         );
 /*
             if (
-                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_VU)
+                this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU)
             ) {
                 if (this.store.settings[0].mixerProtocol === 'behringer') {
                     behringerMeter(message.args);
@@ -78,7 +79,7 @@ export class MidiMixerConnection {
                 }
             }
             if (
-                this.checkOscCommand(message.address, this.mixerProtocol.fromMixer.CHANNEL_NAME)
+                this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_NAME)
             ) {
                     let ch = message.address.split("/")[2];
                     window.storeRedux.dispatch({
@@ -125,12 +126,12 @@ return true;
             });
         }
         this.sendOutMessage(
-            this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel
         );
         this.sendOutMessage(
-            this.mixerProtocol.toMixer.CHANNEL_FADER_LEVEL,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].faderLevel
         );
@@ -140,15 +141,15 @@ return true;
 
         if (this.store.channels[0].channel[channelIndex].pflOn = true) {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_ON.mixerMessage,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].mixerMessage,
                 channelIndex+1,
-                this.mixerProtocol.toMixer.PFL_ON.value
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].value
             );
         } else {
             this.sendOutMessage(
-                this.mixerProtocol.toMixer.PFL_OFF.mixerMessage,
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].mixerMessage,
                 channelIndex+1,
-                this.mixerProtocol.toMixer.PFL_OFF.value
+                this.mixerProtocol.channelTypes[0].toMixer.PFL_OFF[0].value
             );
         }
     }
@@ -156,9 +157,19 @@ return true;
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(
-            this.mixerProtocol.toMixer.CHANNEL_OUT_GAIN,
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelIndex+1,
             String(outputLevel)
+        );
+    }
+
+
+    updateChannelName(channelIndex: number) {
+        let channelName = this.store.channels[0].channel[channelIndex].label;
+        this.sendOutMessage(
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_NAME[0].mixerMessage,
+            channelIndex+1,
+            channelName
         );
     }
 

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from "react-redux";
 
 import Channel from './Channel';
-import GrpFader from './GrpFader';
 import '../assets/css/Channels.css';
 import { Store } from 'redux';
 import { IAppProps } from './App';
@@ -74,13 +73,6 @@ class Channels extends React.Component<IAppProps & Store> {
             {this.props.store.channels[0].channel.map((none: any, index: number) => {
                 return <Channel
                             channelIndex = {index}
-                            key={index}
-                        />
-                })
-            }
-            {this.props.store.channels[0].grpFader.map((none: any, index: number) => {
-                return <GrpFader
-                            faderIndex = {index}
                             key={index}
                         />
                 })

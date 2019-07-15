@@ -43,7 +43,7 @@
         "@types/react-select": "^2.0.19",
         "casparcg-connection": "^4.7.0",
         "classnames": "^2.2.6",
-        "emberplus": "https://github.com/nrkno/tv-automation-emberplus-connection.git",
+        "emberplus": "https://github.com/olzzon/tv-automation-emberplus-connection.git",
         "osc": "https://github.com/PieceMeta/osc.js/tarball/master",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",

@@ -1,4 +1,4 @@
-import { IMixerProtocol } from '../MixerProtocolPresets';
+import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
 export const ArdourMaster: IMixerProtocol = {
     protocol: 'OSC',
@@ -10,7 +10,10 @@ export const ArdourMaster: IMixerProtocol = {
         {
             mixerMessage: "/strip/list",
             value: "",
-            type: ""
+            type: "",
+            min: 0,
+            max: 1,
+            zero: 0.75
         }
     ],
     pingTime: 9500,
@@ -18,40 +21,37 @@ export const ArdourMaster: IMixerProtocol = {
         {
             mixerMessage: "/strip/list",
             value: "",
-            type: ""
+            type: "",
+            min: 0,
+            max: 1,
+            zero: 0.75
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
-        CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
-        CHANNEL_VU: '/strip/meter/{channel}',
-        CHANNEL_NAME: '/strip/name/{channel}',
-        GRP_OUT_GAIN: 'todo',
-        GRP_VU: 'none',
-        GRP_NAME: 'todo',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '/strip/fader/{channel}',
-        GRP_OUT_GAIN: 'todo',
-        PFL_ON: {
-            mixerMessage: "/not_in_use",
-            value: 0,
-            type: "f"
+    channelTypes: [{
+        channelTypeName: 'CH',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/strip/fader/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_VU: [{ mixerMessage: '/strip/meter/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{ mixerMessage: '/strip/name/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            PFL: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         },
-        PFL_OFF: {
-            mixerMessage: "/not_in_use",
-            value: 0,
-            type: "f"
-        }
-    },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/strip/fader/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{ mixerMessage: '/strip/name/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            PFL_ON: [emptyMixerMessage()],
+            PFL_OFF: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
+    }
+    }],
     fader: {
         min: 0,
         max: 1,
         zero: 0.75,
         step: 0.01,
-        fadeTime: 40,
     },
     meter: {
         min: 0,
