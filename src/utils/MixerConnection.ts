@@ -67,6 +67,12 @@ export class MixerGenericConnection {
         this.mixerConnection.updateChannelName(channelIndex);
     }
 
+    updateChannelSettings(channelIndex: number, setting: string, value: string) {
+        if (this.mixerProtocol.protocol === 'CasparCG') {
+            this.mixerConnection.updateChannelSetting(channelIndex, setting, value)
+        }
+    }
+
     fadeInOut (channelIndex: number, fadeTime: number){
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].channel[channelIndex].fadeActive) {

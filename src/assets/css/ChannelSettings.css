@@ -60,3 +60,7 @@
 	font-size: 30px;
     line-height: 50px;
 }
+
+.channel-settings-group > button.active {
+	border-color: rgb(17, 0, 255);
+}

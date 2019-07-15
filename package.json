@@ -32,7 +32,7 @@
         "build": "yarn tsc && webpack --config webpack.build.config.js --mode production",
         "build-now": "webpack --config webpack.build.config.js --mode production",
         "package": "yarn run build",
-        "postpackage": "electron-packager ./ --out=./builds --overwrite",
+        "postpackage": "electron-packager --overwrite ./ --out=./builds --overwrite",
         "package-linux": "electron-packager . sisyfos-audio-controller --overwrite --asar=true --platform=linux --arch=x64  --prune=true --out=builds",
         "package-win": "electron-packager . sisyfos-audio-controller --overwrite --asar=true --platform=win32 --arch=x64  --prune=true --out=builds",
         "package-release": "yarn package && yarn package-win && yarn package-linux"

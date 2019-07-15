@@ -13,7 +13,7 @@ class Channels extends React.Component<IAppProps & Store> {
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
-        return false;
+        return this.props.store.settings[0].showOptions !== nextProps.store.settings[0].showOptions;
     }
 
 

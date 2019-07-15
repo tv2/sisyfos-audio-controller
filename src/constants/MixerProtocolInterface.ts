@@ -82,10 +82,10 @@ export interface ICasparCGMixerGeometryFile {
         MONITOR_CHANNEL_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
     }
     sourceOptions?: {
-        sources: (ICasparCGChannelLayerPair & {
+        sources: Array<(ICasparCGChannelLayerPair & {
             producer: string,
             file: string
-        })
+        })>
         options: {
             [key: string]: { // producer property invocation
                 [key: string]: string // label: property
@@ -109,10 +109,10 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
     }
     channelLabels?: string[],
     sourceOptions?: {
-        sources: (ICasparCGChannelLayerPair & {
+        sources: Array<(ICasparCGChannelLayerPair & {
             producer: string,
             file: string
-        })
+        })>
         options: {
             [key: string]: { // producer property invocation
                 [key: string]: string // label: property

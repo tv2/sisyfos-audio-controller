@@ -6,6 +6,12 @@ import { MidasMaster } from './mixerProtocols/midasMaster';
 import { GenericMidi } from './mixerProtocols/genericMidi';
 import { LawoClient } from './mixerProtocols/EmberLawo';
 import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
+
+interface IMessageProtocol {
+    mixerMessage: string,
+    value: any,
+    type: string
+}
 import { StuderVista1Master } from './mixerProtocols/StuderVista1Ember';
 import { StuderVista5Master } from './mixerProtocols/StuderVista5Ember';
 import { StuderVista9Master } from './mixerProtocols/StuderVista9Ember';
