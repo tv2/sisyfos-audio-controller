@@ -69,7 +69,7 @@ export interface ICasparCGMixerGeometryFile {
         sources: (ICasparCGChannelLayerPair & {
             producer: string,
             file: string
-        })
+        })[]
         options: {
             [key: string]: { // producer property invocation
                 [key: string]: string // label: property
@@ -96,7 +96,7 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
         sources: (ICasparCGChannelLayerPair & {
             producer: string,
             file: string
-        })
+        })[]
         options: {
             [key: string]: { // producer property invocation
                 [key: string]: string // label: property

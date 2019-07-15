@@ -12,6 +12,15 @@ interface CommandChannelMap {
     [key: string]: number
 }
 
+interface ICasparCGChannel extends IChannel {
+    producer?: string
+    source?: string
+}
+
+const OSC_PATH_PRODUCER = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/type/
+const OSC_PATH_PRODUCER_FILE_NAME = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/file\/path/
+const OSC_PATH_PRODUCER_CHANNEL_LAYOUT = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/channel_layout/
+
 export class CasparCGConnection {
     store: IStore;
     mixerProtocol: ICasparCGMixerGeometry;
@@ -72,6 +81,40 @@ export class CasparCGConnection {
                         // We therefore want to premultiply this to show useful information about audio levels
                         level: Math.min(1, message.args[0] * this.store.channels[0].channel[index].faderLevel)
                     });
+                } else if (this.mixerProtocol.sourceOptions) {
+                    const m = message.address.split('/');
+
+                    if (m[1] === 'channel' && m[6] === 'producer' && m[7] === 'type') {
+                        const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
+                        if (index >= 0) {
+                            window.storeRedux.dispatch({
+                                type: 'SET_PRIVATE',
+                                channel: index,
+                                tag: 'producer',
+                                value: message.args[0]
+                            })
+                        }
+                    } else if (m[1] === 'channel' && m[6] === 'producer' && m[7] === 'channel_layout') {
+                        const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
+                        if (index >= 0) {
+                            window.storeRedux.dispatch({
+                                type: 'SET_PRIVATE',
+                                channel: index,
+                                tag: 'channel_layout',
+                                value: message.args[0]
+                            })
+                        }
+                    } else if (m[1] === 'channel' && m[6] === 'file' && m[7] === 'path') {
+                        const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
+                        if (index >= 0) {
+                            window.storeRedux.dispatch({
+                                type: 'SET_PRIVATE',
+                                channel: index,
+                                tag: 'file_path',
+                                value: message.args[0]
+                            })
+                        }
+                    }
                 }
             })
             .on('error', (error: any) => {
@@ -109,6 +152,15 @@ export class CasparCGConnection {
         return undefined
     }
 
+    findChannelIndex(channel: number, layer: number, channelLayerPairs: Array<ICasparCGChannelLayerPair[]>, matchFirst?: boolean): number {
+        return channelLayerPairs.findIndex((i) => {
+            if (matchFirst) {
+                return (i[0].channel === channel && i[0].layer === layer)
+            }
+            return !!i.find(j => j.channel === channel && j.layer === layer)
+        })
+    }
+
     pingMixerCommand = () => {
         //Ping OSC mixer if mixerProtocol needs it.
         /* this.mixerProtocol.pingCommand.map((command) => {
@@ -126,10 +178,62 @@ export class CasparCGConnection {
         })
     }
 
+    controlChannelSetting = (channel: number, layer: number, producer: string, file: string, setting: string, value: string) => {
+        this.connection.stop(channel, layer)
+        .then(() => {
+            if (setting === 'CHANNEL_LAYOUT') {
+                switch (producer) {
+                    case 'ffmpeg':
+                        return this.connection.play(
+                            channel,
+                            layer,
+                            file,
+                            true,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            value);
+                    case 'decklink':
+                        return this.connection.playDecklink(
+                            channel,
+                            layer,
+                            parseInt(file, 10),
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            value);
+                }
+            }
+            return Promise.reject('Unknown operation');
+        }).then(() => {
+
+        }).catch((e) => {
+            console.error('Failed to change channel setting', e);
+        })
+    }
+
     setAllLayers = (pairs: ICasparCGChannelLayerPair[], value: number) => {
         pairs.forEach((i) => {
             this.controlVolume(i.channel, i.layer, value);
         })
+    }
+
+    updateChannelSetting(channelIndex: number, setting: string, value: string) {
+        if (this.mixerProtocol.sourceOptions && this.store.channels[0].channel[channelIndex].private) {
+            const pair = this.mixerProtocol.sourceOptions.sources[channelIndex];
+            const producer = this.store.channels[0].channel[channelIndex].private!['producer'];
+            let filePath = this.store.channels[0].channel[channelIndex].private!['file_path'];
+            filePath = filePath.replace(/\.[\w\d]+$/, '')
+            this.controlChannelSetting(pair.channel, pair.layer, producer, filePath, setting, value);
+        }
     }
 
     updateOutLevel(channelIndex: number) {

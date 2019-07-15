@@ -16,7 +16,10 @@ export interface IChannel {
     pstOn: boolean,
     pflOn: boolean,
     showChannel: boolean,
-    snapOn: Array<boolean>
+    snapOn: Array<boolean>,
+    private?: {
+        [key: string]: string
+    }
 }
 
 interface IVuMeters {
@@ -161,6 +164,16 @@ export const channels = ((state = defaultChannelsReducerState(1), action: any): 
             nextState[0].channel.map((item, index) => {
                 nextState[0].channel[index].pstOn = !!state[0].channel[index].snapOn[action.snapIndex];
             });
+            return nextState;
+        case 'SET_PRIVATE':
+            if (!nextState[0].channel[action.channel].private) {
+                nextState[0].channel[action.channel].private = {};
+            }
+            nextState[0].channel[action.channel].private![action.tag] = action.value;
+            return nextState;
+        case 'SET_OPTION':
+            console.log(action);
+            window.mixerGenericConnection.updateChannelSettings(action.channel, action.prop, action.option);
             return nextState;
         case 'FADE_GRP_ACTIVE':
             nextState[0].grpFader[action.channel].fadeActive = action.active;
