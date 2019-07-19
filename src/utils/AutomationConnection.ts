@@ -143,9 +143,6 @@ export class AutomationConnection {
                     JSON.stringify({
                         channel: this.store.channels[0].channel.map(({ faderLevel, pgmOn, pstOn }: IChannel) => ({
                             faderLevel, pgmOn, pstOn
-                        })),
-                        grpFader: this.store.channels[0].grpFader.map(({ faderLevel, pgmOn, pstOn }: IChannel) => ({
-                            faderLevel, pgmOn, pstOn
                         }))
                     }),
                     "s",
