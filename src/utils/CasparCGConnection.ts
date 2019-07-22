@@ -179,7 +179,7 @@ export class CasparCGConnection {
             this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e) => {
                 console.error('Failed to send command', e);
             })
-        ).then(() => { console.log(`Volume set to ${channel}-${layer}: ${value}`) })
+        ).then(() => { })
     }
 
     controlChannelSetting = (channel: number, layer: number, producer: string, file: string, setting: string, value: string) => {
@@ -225,7 +225,6 @@ export class CasparCGConnection {
     }
 
     setAllLayers = (pairs: ICasparCGChannelLayerPair[], value: number) => {
-        console.log(`Setting all pairs to ${value}`, pairs)
         pairs.forEach((i) => {
             this.controlVolume(i.channel, i.layer, value);
         })
