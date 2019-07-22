@@ -129,7 +129,7 @@ export class CasparCGConnection {
 
         // Restore mixer values to the ones we have internally
         this.store.channels[0].channel.forEach((channel, index) => {
-            this.updateOutLevel(index);
+            this.updateFadeIOLevel(index, channel.faderLevel);
             this.updatePflState(index);
         })
 
@@ -173,10 +173,13 @@ export class CasparCGConnection {
         }); */
     }
 
+    private syncCommand = Promise.resolve()
     controlVolume = (channel: number, layer: number, value: number) => {
-        this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e) => {
-            console.error('Failed to send command', e);
-        })
+        this.syncCommand = this.syncCommand.then(() => 
+            this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e) => {
+                console.error('Failed to send command', e);
+            })
+        ).then(() => { console.log(`Volume set to ${channel}-${layer}: ${value}`) })
     }
 
     controlChannelSetting = (channel: number, layer: number, producer: string, file: string, setting: string, value: string) => {
@@ -222,6 +225,7 @@ export class CasparCGConnection {
     }
 
     setAllLayers = (pairs: ICasparCGChannelLayerPair[], value: number) => {
+        console.log(`Setting all pairs to ${value}`, pairs)
         pairs.forEach((i) => {
             this.controlVolume(i.channel, i.layer, value);
         })
@@ -234,33 +238,6 @@ export class CasparCGConnection {
             let filePath = this.store.channels[0].channel[channelIndex].private!['file_path'];
             filePath = filePath.replace(/\.[\w\d]+$/, '')
             this.controlChannelSetting(pair.channel, pair.layer, producer, filePath, setting, value);
-        }
-    }
-
-    updateOutLevel(channelIndex: number) {
-        if (channelIndex > this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL.length - 1) {
-            return
-        }
-
-        if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
-            window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
-                channel: channelIndex,
-                level: this.store.channels[0].channel[channelIndex].faderLevel
-            });
-        }
-        const pairs = this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL[channelIndex];
-        this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].outputLevel);
-
-        const anyPflOn = this.store.channels[0].channel.reduce((memo, i) => memo || i.pflOn, false)
-        // Check if there are no SOLO channels on MONITOR or there are, but this channel is SOLO
-        if (!anyPflOn || (anyPflOn && this.store.channels[0].channel[channelIndex].pflOn)) {
-            const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[channelIndex];
-            if (this.store.channels[0].channel[channelIndex].pflOn) {
-                this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].faderLevel);
-            } else {
-                this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].outputLevel);
-            }
         }
     }
 
@@ -328,7 +305,7 @@ export class CasparCGConnection {
             if (this.store.channels[0].channel[channelIndex].pflOn) {
                 this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].faderLevel);
             } else {
-                this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].outputLevel);
+                this.setAllLayers(pairs, outputLevel);
             }
         }
     }
