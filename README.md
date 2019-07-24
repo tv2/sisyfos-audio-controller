@@ -90,6 +90,8 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /ch/{value1}/visible - integer { 0 or 1 }
 
 ## Get state:
+#### Get full state of all channels:
+/state/full -  returns a json string with an array of channels: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
 #### Get state channel PGM:
 /state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
 #### get state channel PST:
