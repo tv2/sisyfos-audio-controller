@@ -104,3 +104,7 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
 #### Get state group faderlevel:
 /state/ch/1/mix/faderlevel - float {between 0 and 1}
+
+## Check connectivity
+/ping/{value}
+_In response to a ping, sisyfos will reply with /pong and the provided value_
