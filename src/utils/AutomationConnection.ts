@@ -178,6 +178,17 @@ export class AutomationConnection {
                     "f",
                     info
                 );
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .PING)) {
+                let pingValue = message.address.split("/")[2];
+                
+                this.sendOutMessage(
+                    this.automationProtocol.toAutomation.PONG,
+                    0,
+                    pingValue,
+                    "s",
+                    info
+                )
             }
         })
         .on('error', (error: any) => {
