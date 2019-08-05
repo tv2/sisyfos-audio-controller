@@ -27,12 +27,14 @@ export interface IAutomationProtocol {
         STATE_CHANNEL_PST: string,
         STATE_CHANNEL_FADER_LEVEL: string,
         STATE_FULL: string
+        PING: string
     },
     toAutomation: {
         STATE_CHANNEL_PGM: string,
         STATE_CHANNEL_PST: string,
         STATE_CHANNEL_FADER_LEVEL: string,
-        STATE_FULL: string
+        STATE_FULL: string,
+        PONG: string
     },
     fader: {
         min: number,
@@ -75,13 +77,15 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
             STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
             STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
-            STATE_FULL: '/state/full'
+            STATE_FULL: '/state/full',
+            PING: '/ping/{value1}'
         },
         toAutomation: {
             STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
             STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
-            STATE_FULL: '/state/full'
+            STATE_FULL: '/state/full',
+            PONG: '/pong'
         },
         fader: {
             min: 0,
