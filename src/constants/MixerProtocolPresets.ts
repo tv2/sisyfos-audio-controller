@@ -12,9 +12,7 @@ interface IMessageProtocol {
     value: any,
     type: string
 }
-import { StuderVista1Master } from './mixerProtocols/StuderVista1Ember';
-import { StuderVista5Master } from './mixerProtocols/StuderVista5Ember';
-import { StuderVista9Master } from './mixerProtocols/StuderVista9Ember';
+import { StuderVistaMaster } from './mixerProtocols/StuderVistaEmber';
 // Interface:
 import { IMixerProtocolGeneric} from './MixerProtocolInterface'
 
@@ -26,13 +24,12 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     midasMaster: MidasMaster,
     genericMidi: GenericMidi,
     lawoClient: LawoClient,
-    studerVista1Master: StuderVista1Master,
-    studerVista5Master: StuderVista5Master,
-    studerVista9Master: StuderVista9Master,
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
 } : {});
-
+/*
+    studerVistaMaster: StuderVistaMaster,
+*/
 
 export const MixerProtocolList = Object.getOwnPropertyNames(MixerProtocolPresets).map((preset) => {
     return {
