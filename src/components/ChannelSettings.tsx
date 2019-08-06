@@ -1,13 +1,16 @@
 import React from 'react';
 
 import '../assets/css/ChannelSettings.css';
-import { IMixerProtocolGeneric, MixerProtocolPresets, ICasparCGMixerGeometry } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
+import { IStore } from '../reducers/indexReducer';
 
 interface IChannelSettingsInjectProps {
 	label: string,
 	mixerProtocol: string,
+	sourceOption: string
 }
 
 interface IChannelProps {
@@ -26,7 +29,7 @@ class ChannelSettings extends React.PureComponent<IChannelProps & IChannelSettin
 			this.mixerProtocol = protocol;
 		}
 	}
-	
+
 	handleOption = (prop: string, option: string) => {
 		this.props.dispatch({
 			type: 'SET_OPTION',
@@ -54,22 +57,28 @@ class ChannelSettings extends React.PureComponent<IChannelProps & IChannelSettin
 						return (
 							<div className="channel-settings-group" key={prop}>
 								{Object.getOwnPropertyNames(this.mixerProtocol!.sourceOptions!.options[prop]).map(option => {
-									console.log(prop, option)
-									return <button key={option} className="channel-settings-group-item" onClick={() => this.handleOption(prop, this.mixerProtocol!.sourceOptions!.options[prop][option])}>{option}</button>
+									return <button
+										key={option}
+										className={"channel-settings-group-item" +
+											(this.props.sourceOption === this.mixerProtocol!.sourceOptions!.options[prop][option] ? ' active' : '')
+										}
+										onClick={() => this.handleOption(prop, this.mixerProtocol!.sourceOptions!.options[prop][option])}>
+											{option}
+									</button>
 								}) || null}
 							</div>
 						)
-					})}	
+					})}
             </div>
         )
     }
 }
 
 const mapStateToProps = (state: any, props: any): IChannelSettingsInjectProps => {
-	console.log(state.channels[0].channel, props.channelIndex);
     return {
         label: state.channels[0].channel[props.channelIndex].label,
-        mixerProtocol: state.settings[0].mixerProtocol
+		mixerProtocol: state.settings[0].mixerProtocol,
+		sourceOption: (state.channels[0].channel[props.channelIndex].private || {})['channel_layout']
     }
 }
 

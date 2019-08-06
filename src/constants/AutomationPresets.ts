@@ -9,7 +9,7 @@ export interface IAutomationProtocol {
     leadingZeros: boolean,
     initializeCommands: [
         {
-            oscMessage: string,
+            mixerMessage: string,
             value: string,
             type: string
         }
@@ -19,10 +19,6 @@ export interface IAutomationProtocol {
         CHANNEL_PST_ON_OFF: string,
         CHANNEL_FADER_LEVEL: string,
         CHANNEL_VISIBLE: string,
-        GRP_FADER_PGM_ON_OFF: string,
-        GRP_FADER_PST_ON_OFF: string,
-        GRP_FADER_LEVEL: string,
-        GRP_FADER_VISIBLE: string,
         X_MIX: string,
         SET_LABEL: string,
         FADE_TO_BLACK: string,
@@ -30,24 +26,21 @@ export interface IAutomationProtocol {
         STATE_CHANNEL_PGM: string,
         STATE_CHANNEL_PST: string,
         STATE_CHANNEL_FADER_LEVEL: string,
-        STATE_GRP_FADER_PGM: string,
-        STATE_GRP_FADER_PST: string,
-        STATE_GRP_FADER_LEVEL: string,
+        STATE_FULL: string
+        PING: string
     },
     toAutomation: {
         STATE_CHANNEL_PGM: string,
         STATE_CHANNEL_PST: string,
         STATE_CHANNEL_FADER_LEVEL: string,
-        STATE_GRP_FADER_PGM: string,
-        STATE_GRP_FADER_PST: string,
-        STATE_GRP_FADER_LEVEL: string,
+        STATE_FULL: string,
+        PONG: string
     },
     fader: {
         min: number,
         max: number,
         zero: number,
         step: number,
-        fadeTime: number,
     },
     meter: {
         min: number,
@@ -67,45 +60,38 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
         leadingZeros: true,
         initializeCommands: [
             {
-                oscMessage: "/info",
+                mixerMessage: "/info",
                 value: "",
                 type: "f"
             }
         ],
         fromAutomation: {
-            CHANNEL_PGM_ON_OFF: '/ch/{value1}/mix/pgm',
-            CHANNEL_PST_ON_OFF: '/ch/{value1}/mix/pst',
-            CHANNEL_FADER_LEVEL: '/ch/{value1}/mix/faderlevel',
+            CHANNEL_PGM_ON_OFF: '/ch/{value1}/pgm',
+            CHANNEL_PST_ON_OFF: '/ch/{value1}/pst',
+            CHANNEL_FADER_LEVEL: '/ch/{value1}/faderlevel',
             CHANNEL_VISIBLE: '/ch/{value1}/visible',
-            GRP_FADER_PGM_ON_OFF: '/grp/{value1}/pgm',
-            GRP_FADER_PST_ON_OFF: '/grp/{value1}/pst',
-            GRP_FADER_LEVEL: '/grp/{value1}/faderlevel',
-            GRP_FADER_VISIBLE: '/grp/{value1}/visible',
             X_MIX: '/take',
             SET_LABEL: '/ch/{value1}/label',
             FADE_TO_BLACK: '/fadetoblack',
             SNAP_RECALL: '/snap/{value1}',
-            STATE_CHANNEL_PGM: '/state/ch/{value1}/mix/pgm',
-            STATE_CHANNEL_PST: '/state/ch/{value1}/mix/pst',
-            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/mix/faderlevel',
-            STATE_GRP_FADER_PGM: '/state/grp/{value1}/pgm',
-            STATE_GRP_FADER_PST: '/state/grp/{value1}/pst',
-            STATE_GRP_FADER_LEVEL: '/state/grp/{value1}/faderlevel',
+            STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
+            STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
+            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
+            STATE_FULL: '/state/full',
+            PING: '/ping/{value1}'
         },
         toAutomation: {
-            STATE_CHANNEL_PGM: '/state/ch/{value1}/mix/pgm',
-            STATE_CHANNEL_PST: '/state/ch/{value1}/mix/pst',
-            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/mix/faderlevel',
-            STATE_GRP_FADER_PGM: '/state/grp/{value1}/pgm',
-            STATE_GRP_FADER_PST: '/state/grp/{value1}/pst',
-            STATE_GRP_FADER_LEVEL: '/state/grp/{value1}/faderlevel',
+            STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
+            STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
+            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
+            STATE_FULL: '/state/full',
+            PONG: '/pong'
         },
         fader: {
             min: 0,
             max: 1,
             zero: 0.75,
             step: 0.01,
-            fadeTime: 40,
         },
         meter: {
             min: 0,

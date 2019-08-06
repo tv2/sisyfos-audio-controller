@@ -1,4 +1,4 @@
-import { IMixerProtocol } from '../MixerProtocolPresets';
+import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
 export const GenericMidi: IMixerProtocol = {
     protocol: 'MIDI',
@@ -6,52 +6,34 @@ export const GenericMidi: IMixerProtocol = {
     mode: "client", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,
-    pingCommand: [
-        {
-            oscMessage: "/note_in_use",
-            value: 0,
-            type: "f"
-        }
-    ],
+    pingCommand: [emptyMixerMessage()],
     pingTime: 0,
-    initializeCommands: [
-        {
-            oscMessage: "/note_in_use",
-            value: 0,
-            type: "f"
-        }
-    ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: "39",        //PgmChange 0 - ignores this command
-        CHANNEL_OUT_GAIN: "0",            //PgmChange 0 - ignores this command
-        CHANNEL_VU: "0",                   //PgmChange 0 - ignores this command
-        CHANNEL_NAME: 'some sysex not yet build',
-        GRP_OUT_GAIN: 'none',
-        GRP_VU: 'none',
-        GRP_NAME: 'none',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: "39",
-        CHANNEL_OUT_GAIN: "38",
-        GRP_OUT_GAIN: 'none',
-        PFL_ON: {
-            oscMessage: "/not_in_use",
-            value: 0,
-            type: "f"
+    initializeCommands: [emptyMixerMessage()],
+    channelTypes: [{
+        channelTypeName: 'CH',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],        //PgmChange 0 - ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],            //PgmChange 0 - ignores this command
+            CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],                   //PgmChange 0 - ignores this command
+            CHANNEL_NAME: [emptyMixerMessage()],
+            PFL: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         },
-        PFL_OFF: {
-            oscMessage: "/not_in_use",
-            value: 0,
-            type: "f"
-        }
-    },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: "38", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [emptyMixerMessage()],
+            PFL_ON: [emptyMixerMessage()],
+            PFL_OFF: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
+        },
+    }],
     fader: {
         min: 0,
         max: 127,
         zero: 100,
         step: 1,
-        fadeTime: 40,
     },
     meter: {
         min: 0,

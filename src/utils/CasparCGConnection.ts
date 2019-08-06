@@ -4,13 +4,23 @@ import { CasparCG } from 'casparcg-connection';
 import * as osc from 'osc';
 
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets, ICasparCGMixerGeometry, ChannelLayerPair } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
 import { IChannel } from '../reducers/channelsReducer';
 
 interface CommandChannelMap {
     [key: string]: number
 }
+
+interface ICasparCGChannel extends IChannel {
+    producer?: string
+    source?: string
+}
+
+const OSC_PATH_PRODUCER = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/type/
+const OSC_PATH_PRODUCER_FILE_NAME = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/file\/path/
+const OSC_PATH_PRODUCER_CHANNEL_LAYOUT = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/channel_layout/
 
 export class CasparCGConnection {
     store: IStore;
@@ -72,20 +82,54 @@ export class CasparCGConnection {
                         // We therefore want to premultiply this to show useful information about audio levels
                         level: Math.min(1, message.args[0] * this.store.channels[0].channel[index].faderLevel)
                     });
+                } else if (this.mixerProtocol.sourceOptions) {
+                    const m = message.address.split('/');
+
+                    if (m[1] === 'channel' && m[6] === 'producer' && m[7] === 'type') {
+                        const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
+                        if (index >= 0) {
+                            window.storeRedux.dispatch({
+                                type: 'SET_PRIVATE',
+                                channel: index,
+                                tag: 'producer',
+                                value: message.args[0]
+                            })
+                        }
+                    } else if (m[1] === 'channel' && m[6] === 'producer' && m[7] === 'channel_layout') {
+                        const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
+                        if (index >= 0) {
+                            window.storeRedux.dispatch({
+                                type: 'SET_PRIVATE',
+                                channel: index,
+                                tag: 'channel_layout',
+                                value: message.args[0]
+                            })
+                        }
+                    } else if (m[1] === 'channel' && m[6] === 'file' && m[7] === 'path') {
+                        const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
+                        if (index >= 0) {
+                            window.storeRedux.dispatch({
+                                type: 'SET_PRIVATE',
+                                channel: index,
+                                tag: 'file_path',
+                                value: message.args[0]
+                            })
+                        }
+                    }
                 }
             })
             .on('error', (error: any) => {
                 console.log("Error : ", error);
                 console.log("Lost OSC connection");
             });
-            
+
             this.oscClient.open();
             console.log("Listening for status on CasparCG: ", this.store.settings[0].deviceIp, remotePort)
         }
 
         // Restore mixer values to the ones we have internally
         this.store.channels[0].channel.forEach((channel, index) => {
-            this.updateOutLevel(index);
+            this.updateFadeIOLevel(index, channel.faderLevel);
             this.updatePflState(index);
         })
 
@@ -109,53 +153,90 @@ export class CasparCGConnection {
         return undefined
     }
 
+    findChannelIndex(channel: number, layer: number, channelLayerPairs: Array<ICasparCGChannelLayerPair[]>, matchFirst?: boolean): number {
+        return channelLayerPairs.findIndex((i) => {
+            if (matchFirst) {
+                return (i[0].channel === channel && i[0].layer === layer)
+            }
+            return !!i.find(j => j.channel === channel && j.layer === layer)
+        })
+    }
+
     pingMixerCommand = () => {
         //Ping OSC mixer if mixerProtocol needs it.
         /* this.mixerProtocol.pingCommand.map((command) => {
             this.sendOutMessage(
-                command.oscMessage,
+                command.mixerMessage,
                 0,
                 command.value
             );
         }); */
     }
 
+    private syncCommand = Promise.resolve()
     controlVolume = (channel: number, layer: number, value: number) => {
-        this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e) => {
-            console.error('Failed to send command', e);
+        this.syncCommand = this.syncCommand.then(() => 
+            this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e) => {
+                console.error('Failed to send command', e);
+            })
+        ).then(() => { })
+    }
+
+    controlChannelSetting = (channel: number, layer: number, producer: string, file: string, setting: string, value: string) => {
+        this.connection.stop(channel, layer)
+        .then(() => {
+            if (setting === 'CHANNEL_LAYOUT') {
+                switch (producer) {
+                    case 'ffmpeg':
+                        return this.connection.play(
+                            channel,
+                            layer,
+                            file,
+                            true,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            value);
+                    case 'decklink':
+                        return this.connection.playDecklink(
+                            channel,
+                            layer,
+                            parseInt(file, 10),
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            value);
+                }
+            }
+            return Promise.reject('Unknown operation');
+        }).then(() => {
+
+        }).catch((e) => {
+            console.error('Failed to change channel setting', e);
         })
     }
 
-    setAllLayers = (pairs: ChannelLayerPair[], value: number) => {
+    setAllLayers = (pairs: ICasparCGChannelLayerPair[], value: number) => {
         pairs.forEach((i) => {
             this.controlVolume(i.channel, i.layer, value);
         })
     }
 
-    updateOutLevel(channelIndex: number) {
-        if (channelIndex > this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL.length - 1) {
-            return
-        }
-
-        if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
-            window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
-                channel: channelIndex,
-                level: this.store.channels[0].channel[channelIndex].faderLevel
-            });
-        }
-        const pairs = this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL[channelIndex];
-        this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].outputLevel);
-
-        const anyPflOn = this.store.channels[0].channel.reduce((memo, i) => memo || i.pflOn, false)
-        // Check if there are no SOLO channels on MONITOR or there are, but this channel is SOLO
-        if (!anyPflOn || (anyPflOn && this.store.channels[0].channel[channelIndex].pflOn)) {
-            const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[channelIndex];
-            if (this.store.channels[0].channel[channelIndex].pflOn) {
-                this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].faderLevel);
-            } else {
-                this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].outputLevel);
-            }
+    updateChannelSetting(channelIndex: number, setting: string, value: string) {
+        if (this.mixerProtocol.sourceOptions && this.store.channels[0].channel[channelIndex].private) {
+            const pair = this.mixerProtocol.sourceOptions.sources[channelIndex];
+            const producer = this.store.channels[0].channel[channelIndex].private!['producer'];
+            let filePath = this.store.channels[0].channel[channelIndex].private!['file_path'];
+            filePath = filePath.replace(/\.[\w\d]+$/, '')
+            this.controlChannelSetting(pair.channel, pair.layer, producer, filePath, setting, value);
         }
     }
 
@@ -223,18 +304,13 @@ export class CasparCGConnection {
             if (this.store.channels[0].channel[channelIndex].pflOn) {
                 this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].faderLevel);
             } else {
-                this.setAllLayers(pairs, this.store.channels[0].channel[channelIndex].outputLevel);
+                this.setAllLayers(pairs, outputLevel);
             }
         }
     }
 
-    updateGrpOutLevel(channelIndex: number) {
-        // CasparCG does not support Groups
+    updateChannelName(channelIndex: number) {
+        //CasparCG does not need Labels.
     }
-
-    updateGrpFadeIOLevel(channelIndex: number, outputLevel: number) {
-        
-    }
-
 }
 

@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 //assets:
 import '../assets/css/VuMeter.css';
 //Utils:
-import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric } from '../constants/MixerProtocolPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
+import { IMixerProtocol, IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { any } from 'prop-types';
 
 export interface IVuMeterInjectedProps {
@@ -104,7 +105,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
         // lower part
         context.fillStyle = 'rgb(0, 122, 37)';
         context.fillRect(0, (this.totalHeight() - this.calcLower()), this.canvas.clientWidth, this.calcLower());
-        
+
         // middle part
         context.fillStyle = 'rgb(53, 167, 0)';
         context.fillRect(0, (this.totalHeight() * (range - this.mixerProtocol.meter.test) - this.calcMiddle()), this.canvas.clientWidth, this.calcMiddle());
@@ -121,7 +122,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
             context.fillStyle = 'rgb(100, 100, 100)';
         }
         context.fillRect(0, (this.totalHeight() - windowPeak), this.canvas.clientWidth, 2);
-        
+
         // absolute peak
         if (this.totalPeak < this.mixerProtocol.meter.zero) {
             context.fillStyle = 'rgb(64, 64, 64)';

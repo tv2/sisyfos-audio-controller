@@ -1,4 +1,4 @@
-import { IMixerProtocol } from '../MixerProtocolPresets';
+import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
 export const MidasMaster: IMixerProtocol = {
     protocol: 'OSC',
@@ -8,60 +8,64 @@ export const MidasMaster: IMixerProtocol = {
     leadingZeros: true,
     pingCommand: [
         {
-            oscMessage: "/xremote",
+            mixerMessage: "/xremote",
             value: 0,
-            type: "f"
+            type: "f",
+            min: 0,
+            max: 1, zero: 0.75
         },
         {
-            oscMessage: "/meters",
+            mixerMessage: "/meters",
             value: "/meters/1",
-            type: "s"
+            type: "s",
+            min: 0,
+            max: 1, zero: 0.75
         }
     ],
     pingTime: 9500,
     initializeCommands: [
         {
-            oscMessage: '/ch/{channel}/mix/fader',
+            mixerMessage: '/ch/{channel}/mix/fader',
             value: "",
-            type: "s"
+            type: "s",
+            min: 0,
+            max: 1,
+            zero: 0.75
         },
         {
-            oscMessage: '/ch/{channel}/config/name',
+            mixerMessage: '/ch/{channel}/config/name',
             value: "",
-            type: "s"
+            type: "s",
+            min: 0,
+            max: 1,
+            zero: 0.75
         }
     ],
-    fromMixer: {
-        CHANNEL_FADER_LEVEL: 'none',        //'none' ignores this command
-        CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
-        CHANNEL_VU: '/meters/1',
-        CHANNEL_NAME: '/ch/{channel}/config/name',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        GRP_VU: 'none',
-        GRP_NAME: '/dca/{channel}/config/name',
-        PFL: 'todo'
-    },
-    toMixer: {
-        CHANNEL_FADER_LEVEL: 'none',
-        CHANNEL_OUT_GAIN: '/ch/{channel}/mix/fader',
-        GRP_OUT_GAIN: '/dca/{channel}/fader',
-        PFL_ON: {
-            oscMessage: "/not_in_use",
-            value: 0,
-            type: "f"
+    channelTypes: [{
+        channelTypeName: 'CH',
+        channelTypeColor: '#2f2f2f',
+        fromMixer: {
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //'none' ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_VU: [{ mixerMessage: '/meters/1', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            PFL: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
         },
-        PFL_OFF: {
-            oscMessage: "/not_in_use",
-            value: 0,
-            type: "f"
-        }
-    },
+        toMixer: {
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            PFL_ON: [emptyMixerMessage()],
+            PFL_OFF: [emptyMixerMessage()],
+            AUX_SEND: [emptyMixerMessage()],
+        },
+    }],
     fader: {
         min: 0,
         max: 1,
         zero: 0.75,
         step: 0.01,
-        fadeTime: 40,
     },
     meter: {
         min: 0,

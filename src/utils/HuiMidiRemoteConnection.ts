@@ -9,9 +9,7 @@ import { IRemoteProtocol,
     MidiSendTypes,
     IMidiReceiveMessage,
     MidiReceiveTypes } from '../constants/RemoteFaderPresets';
-import { IMixerProtocol, MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-
-
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 export class HuiMidiRemoteConnection {
     store: any;

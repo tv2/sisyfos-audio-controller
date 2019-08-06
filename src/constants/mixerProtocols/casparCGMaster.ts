@@ -1,4 +1,4 @@
-import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile } from '../MixerProtocolPresets';
+import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile, emptyMixerMessage } from '../MixerProtocolInterface';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -36,7 +36,6 @@ if (geometry) {
 			max: 1.5,
 			zero: 1,
 			step: 0.001,
-			fadeTime: 40,
 		},
 		meter: {
 			min: 0,
@@ -45,7 +44,30 @@ if (geometry) {
 			test: 0.6,
 		},
 		channelLabels: geometry.channelLabels,
-		sourceOptions: geometry.sourceOptions
+        sourceOptions: geometry.sourceOptions,
+        //CHANNELTYES ARE NOT IMPLEMENTED.
+        //THIS IS JUST TO AVOID ERRORS AS
+        //channelTypes are moved to IMixerProtocolGeneric
+        channelTypes: [{
+            channelTypeName: 'CH',
+            channelTypeColor: '#2f2f2f',
+            fromMixer: {
+                CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+                CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+                CHANNEL_VU: [emptyMixerMessage()],
+                CHANNEL_NAME: [emptyMixerMessage()],
+                PFL: [emptyMixerMessage()],
+                AUX_SEND: [emptyMixerMessage()],
+            },
+            toMixer: {
+                CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+                CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
+                CHANNEL_NAME: [emptyMixerMessage()],
+                PFL_ON: [emptyMixerMessage()],
+                PFL_OFF: [emptyMixerMessage()],
+                AUX_SEND: [emptyMixerMessage()],
+            },
+        }]
 	}
 }
 

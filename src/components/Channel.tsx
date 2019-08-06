@@ -7,13 +7,16 @@ import { Store } from 'redux';
 
 //assets:
 import '../assets/css/Channel.css';
-import { IMixerProtocol, MixerProtocolPresets, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolPresets';
-import { any } from 'prop-types';
+import { MixerProtocolPresets} from '../constants/MixerProtocolPresets';
+import { IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
+import { any, number } from 'prop-types';
 
 interface IChannelInjectProps {
     pgmOn: boolean,
     pstOn: boolean,
     pflOn: boolean,
+    channelType: number,
+    channelTypeIndex: number,
     showChannel: boolean,
     faderLevel: number,
     label: string,
@@ -115,8 +118,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             <input className="channel-volume-slider"
                 id="typeinp"
                 type="range"
-                min={this.mixerProtocol.fader.min}
-                max={this.mixerProtocol.fader.max}
+                min={this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage != 'none' ?
+                    this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].min
+                    : this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].min
+                }
+                max={this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage != 'none' ?
+                    this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].max
+                    : this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].max
+                }
                 step={this.mixerProtocol.fader.step}
                 value= {this.props.faderLevel}
                 onChange={event => {
@@ -220,10 +229,13 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         this.props.showChannel === false ?
             <div></div>
             :
-            <div className={ClassNames("channel-body", {
-                "with-snaps": this.props.showSnaps,
-                "with-pfl": this.props.showPfl
-            })}>
+            <div
+                style={{backgroundColor: this.mixerProtocol.channelTypes[this.props.channelType].channelTypeColor}}
+                className={
+                    ClassNames("channel-body", {
+                    "with-snaps": this.props.showSnaps,
+                    "with-pfl": this.props.showPfl
+                })}>
                 {this.channelSettings()}
                 {this.fader()}
                 <VuMeter channelIndex = {this.channelIndex}/>
@@ -240,7 +252,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     : null
                 }
                 <div className="channel-name">
-                    {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+                    {this.props.label != "" ? this.props.label : (this.mixerProtocol.channelTypes[this.props.channelType].channelTypeName + " " + (this.props.channelTypeIndex + 1)) }
                 </div>
                 <div className="channel-snap-body">
                     {this.props.snapOn
@@ -261,6 +273,8 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         pflOn: state.channels[0].channel[props.channelIndex].pflOn,
         showChannel: state.channels[0].channel[props.channelIndex].showChannel,
         faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
+        channelType: state.channels[0].channel[props.channelIndex].channelType,
+        channelTypeIndex: state.channels[0].channel[props.channelIndex].channelTypeIndex,
         label: state.channels[0].channel[props.channelIndex].label,
         snapOn: state.channels[0].channel[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,

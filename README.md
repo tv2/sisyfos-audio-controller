@@ -80,12 +80,6 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /ch/1/mix/faderlevel - float {between 0 and 1}
 #### Set channel label:
 /ch/1/label - string {name of channel}
-#### Set group to PGM:
-/grp/1/pgm - integer: { 0 or 1 }
-#### Set group to PST:
-/grp/1/pst - integer: { 0 or 1 }
-#### Set group faderlevel:
-/grp/1/faderlevel - float {between 0 and 1}
 #### Crossfade between PGM and PST:
 /take
 #### Set snap 1-xx to PST:
@@ -94,10 +88,10 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /fadetoblack
 #### Hide or show channel strips on GUI: 
 /ch/{value1}/visible - integer { 0 or 1 }
-#### Hide or show group strips on GUI: 
-/grp/{value1}/visible - integer { 0 or 1 }
 
 ## Get state:
+#### Get full state of all channels:
+/state/full -  returns a json string with an array of channels: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
 #### Get state channel PGM:
 /state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
 #### get state channel PST:
@@ -110,3 +104,7 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
 #### Get state group faderlevel:
 /state/ch/1/mix/faderlevel - float {between 0 and 1}
+
+## Check connectivity
+/ping/{value}
+_In response to a ping, sisyfos will reply with /pong and the provided value_
