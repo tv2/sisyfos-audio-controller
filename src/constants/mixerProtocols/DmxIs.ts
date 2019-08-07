@@ -16,14 +16,14 @@ export const DMXIS: IMixerProtocol = {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //'none' ignores this command
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/dmxis/ch/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [emptyMixerMessage()],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/dmxis/ch/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_NAME: [{ mixerMessage: '/dmxis/ch/name/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
