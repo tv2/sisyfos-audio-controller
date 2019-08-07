@@ -26,11 +26,11 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     genericMidi: GenericMidi,
     lawoClient: LawoClient,
     dmxis: DMXIS,
+    studerVistaMaster: StuderVistaMaster,
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
 } : {});
 /*
-    studerVistaMaster: StuderVistaMaster,
 */
 
 export const MixerProtocolList = Object.getOwnPropertyNames(MixerProtocolPresets).map((preset) => {
