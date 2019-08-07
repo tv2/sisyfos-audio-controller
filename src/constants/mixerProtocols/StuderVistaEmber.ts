@@ -13,7 +13,7 @@ export const StuderVistaMaster: IMixerProtocol = {
     pingTime: 0,  //Bypass ping when pingTime is zero
     initializeCommands: [emptyMixerMessage()],
     channelTypes: [{
-        channelTypeName: 'CH',
+        channelTypeName: 'MONO',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
@@ -63,7 +63,7 @@ export const StuderVistaMaster: IMixerProtocol = {
     },
     {
         channelTypeName: 'ST',
-        channelTypeColor: '#2f2f2f',
+        channelTypeColor: '#3f2f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
@@ -112,7 +112,7 @@ export const StuderVistaMaster: IMixerProtocol = {
     },
     {
         channelTypeName: 'Inp X',
-        channelTypeColor: '#2f2f2f',
+        channelTypeColor: '#2f3f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
