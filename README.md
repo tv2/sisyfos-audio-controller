@@ -10,7 +10,7 @@ TAKE crossfades between PGM & PST:
 ### Snaps takes preset into PST:
 
 
-<img src="Docs/pix/ProducersAudioMixer.png">
+<img src="Docs/pix/ProducersAudioMixer02.png">
 
 
 
