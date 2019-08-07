@@ -62,6 +62,10 @@ yarn start
   * OSC protocol for Behringer XR12,16,18
   * Port 10024
   * In this version the Behringer is slave of Producers-Audio-mixer, so faders on the behringer is turned down when channel is of.
+* DMXIS - Sisyfos control of DMX Lightcontroller
+  * Default Port is 8000
+  * Controls Fader On/Off with preset level from Sisyfos.
+  * Easy implementation of state based lightcontrol from Automation.
 * midi
   * Generic MIDI - still preminilary
 
