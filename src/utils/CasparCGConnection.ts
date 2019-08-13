@@ -234,7 +234,7 @@ export class CasparCGConnection {
         if (this.mixerProtocol.sourceOptions && this.store.channels[0].channel[channelIndex].private) {
             const pair = this.mixerProtocol.sourceOptions.sources[channelIndex];
             const producer = this.store.channels[0].channel[channelIndex].private!['producer'];
-            let filePath = this.store.channels[0].channel[channelIndex].private!['file_path'];
+            let filePath = String(this.store.channels[0].channel[channelIndex].private!['file_path']);
             filePath = filePath.replace(/\.[\w\d]+$/, '')
             this.controlChannelSetting(pair.channel, pair.layer, producer, filePath, setting, value);
         }
