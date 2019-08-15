@@ -28,16 +28,10 @@ export class MidiMixerConnection {
             if (err) {
                 console.log("WebMidi could not be enabled.", err);
             }
-
-            // Viewing available inputs and outputs
-            console.log("Midi inputs : ", WebMidi.inputs);
-            console.log("Midi outputs : ", WebMidi.outputs);
-
-            // Display the current time
-            console.log("Midi time : ", WebMidi.time);
-
-            this.midiInput = WebMidi.getInputByName("IAC-driver ProducersMixer");
-            this.midiOutput = WebMidi.getOutputByName("IAC-driver ProducersMixer");
+            console.log("Connecting Mixer Midi input on port :", this.store.settings[0].mixerMidiInputPort);
+            console.log("Connecting Mixer Midi output on port :", this.store.settings[0].mixerMidiOutputPort);
+            this.midiInput = WebMidi.getInputByName(this.store.settings[0].mixerMidiInputPort);
+            this.midiOutput = WebMidi.getOutputByName(this.store.settings[0].mixerMidiOutputPort);
 
             this.setupMixerConnection();
         });
