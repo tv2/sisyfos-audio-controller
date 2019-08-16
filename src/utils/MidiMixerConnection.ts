@@ -41,16 +41,17 @@ export class MidiMixerConnection {
         this.midiInput.addListener('controlchange', 1,
             (message: any) => {
                 console.log("Received 'controlchange' message (" + message.data + ").");
-                if (message.data[1] === parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)) {
-
+                if (message.data[1] >= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
+                    && message.data[1] <= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage) + 24) {
+                    let faderChannel = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
                     window.storeRedux.dispatch({
                         type:'SET_FADER_LEVEL',
-                        channel: message.channel - 1,
+                        channel: faderChannel - 1,
                         level: message.data[2]
                     });
-                    if (this.store.channels[0].channel[message.channel - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                    if (this.store.channels[0].channel[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {
-                        this.updateOutLevel(message.channel-1);
+                        this.updateOutLevel(faderChannel-1);
                     }
                 }
             }
@@ -111,9 +112,9 @@ return true;
     }
 
     sendOutMessage(ctrlMessage: string, channel: number, value: string) {
-        if (ctrlMessage != "none") {
+        if (ctrlMessage != "none" && 0 <= parseFloat(value) && parseFloat(value) <= 127) {
             let ctrlMessageInt = (parseInt(ctrlMessage) + channel - 1)
-            this.midiOutput.sendControlChange(ctrlMessageInt, value, channel);
+            this.midiOutput.sendControlChange(ctrlMessageInt, value, 1);
         }
     }
 
