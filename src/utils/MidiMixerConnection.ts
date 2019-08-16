@@ -38,7 +38,7 @@ export class MidiMixerConnection {
     }
 
     setupMixerConnection() {
-        this.midiInput.addListener('controlchange', this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_FADER_LEVEL,
+        this.midiInput.addListener(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_FADER_LEVEL[0].type, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             (error: any) => {
                 console.log("Received 'controlchange' message (" + error.data + ").");
                 window.storeRedux.dispatch({

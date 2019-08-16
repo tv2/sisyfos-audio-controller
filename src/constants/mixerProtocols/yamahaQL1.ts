@@ -13,16 +13,16 @@ export const YamahaQL1: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],        //PgmChange 0 - ignores this command
-            CHANNEL_OUT_GAIN: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],            //PgmChange 0 - ignores this command
-            CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],                   //PgmChange 0 - ignores this command
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'controlchange', min: 0, max: 127, zero: 100}],        //PgmChange 0 - ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 127, zero: 100}],            //PgmChange 0 - ignores this command
+            CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 127, zero: 100}],                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: "38", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'controlchange', min: 0, max: 127, zero: 100}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: "38", value: 0, type: 'controlchange', min: 0, max: 127, zero: 100}],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
