@@ -38,17 +38,20 @@ export class MidiMixerConnection {
     }
 
     setupMixerConnection() {
-        this.midiInput.addListener(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_FADER_LEVEL[0].type, 1,
-            (error: any) => {
-                console.log("Received 'controlchange' message (" + error.data + ").");
-                window.storeRedux.dispatch({
-                    type:'SET_FADER_LEVEL',
-                    channel: error.channel - 1,
-                    level: error.data[2]
-                });
-                if (this.store.channels[0].channel[error.channel - 1].pgmOn && this.mixerProtocol.mode === 'master')
-                {
-                    this.updateOutLevel(error.channel-1);
+        this.midiInput.addListener('controlchange', 1,
+            (message: any) => {
+                console.log("Received 'controlchange' message (" + message.data + ").");
+                if (message.data[1] === parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)) {
+
+                    window.storeRedux.dispatch({
+                        type:'SET_FADER_LEVEL',
+                        channel: message.channel - 1,
+                        level: message.data[2]
+                    });
+                    if (this.store.channels[0].channel[message.channel - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                    {
+                        this.updateOutLevel(message.channel-1);
+                    }
                 }
             }
         );
@@ -107,8 +110,11 @@ return true;
         });
     }
 
-    sendOutMessage(CtrlMessage: string, channel: number, value: string) {
-        this.midiOutput.sendControlChange(CtrlMessage, value, channel);
+    sendOutMessage(ctrlMessage: string, channel: number, value: string) {
+        if (ctrlMessage != "none") {
+            let ctrlMessageInt = (parseInt(ctrlMessage) + channel - 1)
+            this.midiOutput.sendControlChange(ctrlMessageInt, value, channel);
+        }
     }
 
     updateOutLevel(channelIndex: number) {
