@@ -128,10 +128,10 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     handleProtocolChange = (selectedOption: any) => {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.mixerProtocol = selectedOption.value;
+        this.setState({selectedProtocol: this.mixerProtocolPresets[settingsCopy.mixerProtocol]})
         this.setState(
             {settings: settingsCopy}
         );
-        this.setState({selectedProtocol: this.mixerProtocolPresets[this.state.settings.mixerProtocol]})
     }
 
     handleNumberOfChannels = (index: number, event: any) => {
