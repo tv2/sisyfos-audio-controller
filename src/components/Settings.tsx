@@ -179,6 +179,10 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         location.reload();
     }
 
+    handleCancel = () => {
+        location.reload();
+    }
+
     renderChannelTypeSettings = () => {
         return (
             <div className="settings-show-channel-selection">
@@ -363,6 +367,15 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <br/>
                 {this.renderRemoteControllerSettings()}
                 <br/>
+                <button
+                    className="settings-cancel-button"
+                    onClick=
+                        {() => {
+                            this.handleCancel();
+                        }}
+                >
+                    CANCEL
+                </button>
                 <button
                     className="settings-save-button"
                     onClick=
