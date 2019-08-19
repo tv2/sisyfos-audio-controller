@@ -268,15 +268,15 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
-        pgmOn: state.channels[0].channel[props.channelIndex].pgmOn,
-        pstOn: state.channels[0].channel[props.channelIndex].pstOn,
-        pflOn: state.channels[0].channel[props.channelIndex].pflOn,
-        showChannel: state.channels[0].channel[props.channelIndex].showChannel,
-        faderLevel: state.channels[0].channel[props.channelIndex].faderLevel,
+        pgmOn: state.faders[0].fader[props.channelIndex].pgmOn,
+        pstOn: state.faders[0].fader[props.channelIndex].pstOn,
+        pflOn: state.faders[0].fader[props.channelIndex].pflOn,
+        showChannel: state.faders[0].fader[props.channelIndex].showChannel,
+        faderLevel: state.faders[0].fader[props.channelIndex].faderLevel,
         channelType: state.channels[0].channel[props.channelIndex].channelType,
         channelTypeIndex: state.channels[0].channel[props.channelIndex].channelTypeIndex,
-        label: state.channels[0].channel[props.channelIndex].label,
-        snapOn: state.channels[0].channel[props.channelIndex].snapOn.map((item: number) => {return item}),
+        label: state.faders[0].fader[props.channelIndex].label,
+        snapOn: state.faders[0].fader[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,
         showSnaps: state.settings[0].showSnaps,
         showPfl: state.settings[0].showPfl

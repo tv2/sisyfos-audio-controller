@@ -41,13 +41,13 @@ const defaultFadersReducerState = (numberOfTypeChannels: Array<number>) => {
                 vuVal: 0.0
             });
             for (let y=0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
-                defaultObj[0].fader[totalNumberOfFaders].snapOn.push(false);
+                defaultObj[0].fader[index].snapOn.push(false);
             }
         }
     return defaultObj;
 };
 
-export const channels = ((state = defaultFadersReducerState([1]), action: any): Array<IFaders> => {
+export const faders = ((state = defaultFadersReducerState([1]), action: any): Array<IFaders> => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],
