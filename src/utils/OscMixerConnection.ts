@@ -79,7 +79,7 @@ export class OscMixerConnection {
                 }
 
                 if (this.mixerProtocol.mode === 'master') {
-                    if (this.store.channels[0].channel[ch - 1].pgmOn)
+                    if (this.store.faders[0].fader[ch - 1].pgmOn)
                     {
                         this.updateOutLevel(ch-1);
                     }
@@ -96,7 +96,7 @@ export class OscMixerConnection {
                         channel: ch - 1,
                         level: message.args[0]
                     });
-                    if (!this.store.channels[0].channel[ch - 1].pgmOn) {
+                    if (!this.store.faders[0].fader[ch - 1].pgmOn) {
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PGM',
                             channel: ch - 1
@@ -216,7 +216,7 @@ export class OscMixerConnection {
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelTypeIndex+1,
-            this.store.channels[0].channel[channelIndex].faderLevel,
+            this.store.faders[0].fader[channelIndex].faderLevel,
             "f"
         );
     }

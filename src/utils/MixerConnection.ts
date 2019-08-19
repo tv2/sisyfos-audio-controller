@@ -5,6 +5,7 @@ import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 import { EmberMixerConnection } from './EmberMixerConnection';
 import { CasparCGConnection } from './CasparCGConnection';
+import { IChannel } from '../reducers/channelsReducer';
 
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
 // The lower the more CPU
@@ -53,9 +54,13 @@ export class MixerGenericConnection {
         });
     }
 
-    updateOutLevel(channelIndex: number, fadeTime: number = this.store.settings[0].fadeTime) {
-        this.fadeInOut(channelIndex, fadeTime);
-        this.mixerConnection.updateOutLevel(channelIndex);
+    updateOutLevel(faderIndex: number, fadeTime: number = this.store.settings[0].fadeTime) {
+        this.store.channels[0].channel.map((channel: IChannel, index: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.fadeInOut(index, fadeTime);
+                this.mixerConnection.updateOutLevel(index);
+            }
+        })
     }
 
 
@@ -85,7 +90,7 @@ export class MixerGenericConnection {
             });
         }
 
-        if (this.store.channels[0].channel[channelIndex].pgmOn) {
+        if (this.store.faders[0].fader[channelIndex].pgmOn) {
             this.fadeUp(channelIndex, fadeTime);
         } else {
             this.fadeDown(channelIndex, fadeTime);
@@ -96,7 +101,7 @@ export class MixerGenericConnection {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
         let targetVal = this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].zero;
         if (this.mixerProtocol.mode === "master") {
-            targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
+            targetVal = parseFloat(this.store.faders[0].fader[channelIndex].faderLevel);
         }
         const step: number = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;

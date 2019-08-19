@@ -49,7 +49,7 @@ export class MidiMixerConnection {
                         channel: faderChannel - 1,
                         level: message.data[2]
                     });
-                    if (this.store.channels[0].channel[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                    if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {
                         this.updateOutLevel(faderChannel-1);
                     }
@@ -119,11 +119,11 @@ return true;
     }
 
     updateOutLevel(channelIndex: number) {
-        if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
+        if (this.mixerProtocol.mode === "master" && this.store.faders[0].fader[channelIndex].pgmOn) {
             window.storeRedux.dispatch({
                 type:'SET_OUTPUT_LEVEL',
                 channel: channelIndex,
-                level: this.store.channels[0].channel[channelIndex].faderLevel
+                level: this.store.faders[0].fader[channelIndex].faderLevel
             });
         }
         this.sendOutMessage(
@@ -134,7 +134,7 @@ return true;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelIndex+1,
-            this.store.channels[0].channel[channelIndex].faderLevel
+            this.store.faders[0].fader[channelIndex].faderLevel
         );
     }
 

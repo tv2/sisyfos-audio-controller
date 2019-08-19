@@ -10,9 +10,7 @@ export interface IChannel {
     channelTypeIndex: number,
     assignedFader: number,
     fadeActive: boolean,
-    faderLevel: number,
     outputLevel: number,
-    pflOn: boolean,
     private?: {
         [key: string]: string
     }
@@ -34,11 +32,9 @@ const defaultChannelsReducerState = (numberOfTypeChannels: Array<number>) => {
             defaultObj[0].channel[totalNumberOfChannels] = ({
                 channelType: typeIndex,
                 channelTypeIndex: index,
-                assignedFader: 0,
+                assignedFader: totalNumberOfChannels,
                 fadeActive: false,
-                faderLevel: 0,
                 outputLevel: 0.0,
-                pflOn: false,
             });
             defaultObj[0].vuMeters.push({
                 vuVal: 0.0
@@ -75,9 +71,6 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
             return nextState;
         case 'FADE_ACTIVE':
             nextState[0].channel[action.channel].fadeActive = !!action.active;
-            return nextState;
-        case 'SET_FADER_LEVEL': //channel:  level:
-            nextState[0].channel[action.channel].faderLevel = parseFloat(action.level);
             return nextState;
         case 'SET_ALL_VU_LEVELS': //channel:  level:
             nextState[0].vuMeters = action.vuMeters;
