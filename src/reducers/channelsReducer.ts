@@ -8,15 +8,11 @@ export interface IChannels {
 export interface IChannel {
     channelType: number,
     channelTypeIndex: number,
+    assignedFader: number,
     fadeActive: boolean,
     faderLevel: number,
-    label: string,
     outputLevel: number,
-    pgmOn: boolean,
-    pstOn: boolean,
     pflOn: boolean,
-    showChannel: boolean,
-    snapOn: Array<boolean>,
     private?: {
         [key: string]: string
     }
@@ -38,22 +34,15 @@ const defaultChannelsReducerState = (numberOfTypeChannels: Array<number>) => {
             defaultObj[0].channel[totalNumberOfChannels] = ({
                 channelType: typeIndex,
                 channelTypeIndex: index,
+                assignedFader: 0,
                 fadeActive: false,
                 faderLevel: 0,
-                label: "",
                 outputLevel: 0.0,
-                pgmOn: false,
-                pstOn: false,
                 pflOn: false,
-                showChannel: true,
-                snapOn: [],
             });
             defaultObj[0].vuMeters.push({
                 vuVal: 0.0
             });
-            for (let y=0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
-                defaultObj[0].channel[totalNumberOfChannels].snapOn.push(false);
-            }
             totalNumberOfChannels ++;
         }
     })
@@ -92,50 +81,6 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
             return nextState;
         case 'SET_ALL_VU_LEVELS': //channel:  level:
             nextState[0].vuMeters = action.vuMeters;
-            return nextState;
-        case 'SET_CHANNEL_LABEL': //channel:  label:
-            nextState[0].channel[action.channel].label = action.label;
-            return nextState;
-        case 'TOGGLE_PGM': //channel
-            nextState[0].channel[action.channel].pgmOn = !nextState[0].channel[action.channel].pgmOn;
-            return nextState;
-        case 'SET_PGM': //channel
-            nextState[0].channel[action.channel].pgmOn = !!action.pgmOn;
-            return nextState;
-        case 'TOGGLE_PST': //channel
-            nextState[0].channel[action.channel].pstOn = !nextState[0].channel[action.channel].pstOn;
-            return nextState;
-        case 'SET_PST': //channel
-            nextState[0].channel[action.channel].pstOn = !!action.pstOn;
-            return nextState;
-        case 'TOGGLE_PFL': //channel
-            nextState[0].channel[action.channel].pflOn = !nextState[0].channel[action.channel].pflOn;
-            return nextState;
-        case 'SET_PFL': //channel
-            nextState[0].channel[action.channel].pflOn = !!action.pflOn;
-            return nextState;
-        case 'SHOW_CHANNEL': //channel // showChannel
-            nextState[0].channel[action.channel].showChannel = !!action.showChannel;
-            return nextState;
-        case 'SET_SNAP': //channel //snapIndex
-            nextState[0].channel[action.channel].snapOn[action.snapIndex] = !nextState[0].channel[action.channel].snapOn[action.snapIndex];
-            return nextState;
-        case 'X_MIX': //none
-            nextState[0].channel.map((item, index) => {
-                let nextPgmOn = state[0].channel[index].pstOn;
-                nextState[0].channel[index].pstOn = state[0].channel[index].pgmOn;
-                nextState[0].channel[index].pgmOn = nextPgmOn;
-            });
-            return nextState;
-        case 'FADE_TO_BLACK': //none
-            nextState[0].channel.map((item, index) => {
-                nextState[0].channel[index].pgmOn = false;
-            });
-            return nextState;
-        case 'SNAP_RECALL': //snapIndex
-            nextState[0].channel.map((item, index) => {
-                nextState[0].channel[index].pstOn = !!state[0].channel[index].snapOn[action.snapIndex];
-            });
             return nextState;
         case 'SET_PRIVATE':
             if (!nextState[0].channel[action.channel].private) {
