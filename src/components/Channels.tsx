@@ -5,7 +5,7 @@ import Channel from './Channel';
 import '../assets/css/Channels.css';
 import { Store } from 'redux';
 import { IAppProps } from './App';
-import CcgChannelSettings from './CcgChannelSettings';
+import ChannelRouteSettings from './ChannelRouteSettings';
 
 class Channels extends React.Component<IAppProps & Store> {
     constructor(props: any) {
@@ -70,7 +70,7 @@ class Channels extends React.Component<IAppProps & Store> {
         return (
         <div className="channels-body">
             {(typeof this.props.store.settings[0].showOptions === "number") ?
-                <CcgChannelSettings channelIndex={this.props.store.settings[0].showOptions}/>
+                <ChannelRouteSettings faderIndex={this.props.store.settings[0].showOptions}/>
                 :
                 ""
             }
