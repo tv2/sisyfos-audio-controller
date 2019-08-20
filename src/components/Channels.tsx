@@ -70,7 +70,7 @@ class Channels extends React.Component<IAppProps & Store> {
         return (
         <div className="channels-body">
             {(typeof this.props.store.settings[0].showOptions === "number") && <ChannelSettings channelIndex={this.props.store.settings[0].showOptions} />}
-            {this.props.store.channels[0].channel.map((none: any, index: number) => {
+            {this.props.store.faders[0].fader.map((none: any, index: number) => {
                 return <Channel
                             channelIndex = {index}
                             key={index}

@@ -29,15 +29,20 @@ export const loadSnapshotState = (stateSnapshot: any, numberOfChannels: Array<nu
     try {
         const stateFromFile = JSON.parse(fs.readFileSync(folder + "/state.json"));
         window.storeRedux.dispatch({
-            type:'SET_COMPLETE_STATE',
+            type:'SET_COMPLETE_FADER_STATE',
             allState: stateFromFile,
+            numberOfTypeChannels: numberOfChannels
+        });
+        window.storeRedux.dispatch({
+            type:'SET_COMPLETE_CH_STATE',
             numberOfTypeChannels: numberOfChannels
         });
     }
     catch (error) {
+        console.log("Error loading Snapshot, new snapshot created");
         saveSnapshotState(stateSnapshot);
         window.storeRedux.dispatch({
-            type:'SET_COMPLETE_STATE',
+            type:'SET_COMPLETE_FADER_STATE',
             allState: stateSnapshot,
             numberOfTypeChannels: numberOfChannels
         });

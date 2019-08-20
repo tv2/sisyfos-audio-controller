@@ -37,7 +37,7 @@ class App extends React.Component<IAppProps> {
         selectedProtocol.channelTypes.forEach((item, index) => {
             numberOfChannels.push(this.props.store.settings[0].numberOfChannelsInType[index]);
         });
-        loadSnapshotState(this.props.store.channels[0], numberOfChannels);
+        loadSnapshotState(this.props.store.faders[0], numberOfChannels);
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
@@ -46,7 +46,7 @@ class App extends React.Component<IAppProps> {
 
     snapShopStoreTimer() {
         const saveTimer = setInterval(() => {
-                saveSnapshotState(this.props.store.channels[0]);
+                saveSnapshotState(this.props.store.faders[0]);
             },
             2000);
     }

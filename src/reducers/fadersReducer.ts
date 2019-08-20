@@ -60,10 +60,10 @@ export const faders = ((state = defaultFadersReducerState([1]), action: any): Ar
                 nextState[0].vuMeters[action.channel].vuVal = parseFloat(action.level);
             }
             return nextState;
-        case 'SET_COMPLETE_STATE': //allState  //numberOfChannels
+        case 'SET_COMPLETE_FADER_STATE': //allState  //numberOfChannels
             nextState = defaultFadersReducerState(action.numberOfTypeChannels);
-            if (action.allState.channel.length == nextState[0].fader.length) {
-                action.allState.channel.map((channel: any, index: number) => {
+            if (action.allState.fader.length == nextState[0].fader.length) {
+                action.allState.fader.map((channel: any, index: number) => {
                     nextState[0].fader[index] = channel;
                 });
             }

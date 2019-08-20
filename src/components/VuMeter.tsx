@@ -162,7 +162,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
 const mapStateToProps = (state: any, props: any): IVuMeterInjectedProps => {
     return {
-        vuVal: state.channels[0].vuMeters[props.channelIndex].vuVal,
+        vuVal: state.faders[0].vuMeters[props.channelIndex].vuVal,
         mixerProtocol: state.settings[0].mixerProtocol,
         showSnaps: state.settings[0].showSnaps
     }

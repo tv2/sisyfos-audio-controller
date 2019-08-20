@@ -273,8 +273,8 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         pflOn: state.faders[0].fader[props.channelIndex].pflOn,
         showChannel: state.faders[0].fader[props.channelIndex].showChannel,
         faderLevel: state.faders[0].fader[props.channelIndex].faderLevel,
-        channelType: state.channels[0].channel[props.channelIndex].channelType,
-        channelTypeIndex: state.channels[0].channel[props.channelIndex].channelTypeIndex,
+        channelType: 0, /*state.channels[0].channel[props.channelIndex].channelType, */
+        channelTypeIndex: props.channelIndex ,/* state.channels[0].channel[props.channelIndex].channelTypeIndex, */
         label: state.faders[0].fader[props.channelIndex].label,
         snapOn: state.faders[0].fader[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,
