@@ -224,7 +224,7 @@ export class OscMixerConnection {
     updatePflState(channelIndex: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        if (this.store.channels[0].channel[channelIndex].pflOn === true) {
+        if (this.store.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].mixerMessage,
                 channelTypeIndex+1,
@@ -255,7 +255,7 @@ export class OscMixerConnection {
     updateChannelName(channelIndex: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        let channelName = this.store.channels[0].channel[channelIndex].label;
+        let channelName = this.store.faders[0].fader[channelIndex].label;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
             channelTypeIndex+1,

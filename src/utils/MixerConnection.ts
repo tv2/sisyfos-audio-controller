@@ -78,6 +78,17 @@ export class MixerGenericConnection {
         }
     }
 
+    delayedFadeActiveDisable (channelIndex: number) {
+        let delayedTimer = setTimeout( ()=>{
+            window.storeRedux.dispatch({
+                type:'FADE_ACTIVE',
+                channel: channelIndex,
+                active: false
+            })
+        },
+        this.store.settings[0].protocolLatency)
+    }
+
     fadeInOut (channelIndex: number, fadeTime: number){
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
@@ -132,11 +143,7 @@ export class MixerGenericConnection {
                         channel: channelIndex,
                         level: outputLevel
                     });
-                    window.storeRedux.dispatch({
-                        type:'FADE_ACTIVE',
-                        channel: channelIndex,
-                        active: false
-                    });
+                    this.delayedFadeActiveDisable(channelIndex);
                     return true;
                 }
             }, FADE_INOUT_SPEED);
@@ -165,11 +172,7 @@ export class MixerGenericConnection {
                         channel: channelIndex,
                         level: outputLevel
                     });
-                    window.storeRedux.dispatch({
-                        type:'FADE_ACTIVE',
-                        channel: channelIndex,
-                        active: false
-                    });
+                    this.delayedFadeActiveDisable(channelIndex);
                     return true;
                 }
 
@@ -207,11 +210,7 @@ export class MixerGenericConnection {
                     channel: channelIndex,
                     level: outputLevel
                 });
-                window.storeRedux.dispatch({
-                    type:'FADE_ACTIVE',
-                    channel: channelIndex,
-                    active: false
-                });
+                this.delayedFadeActiveDisable(channelIndex);
                 return true;
             }
 

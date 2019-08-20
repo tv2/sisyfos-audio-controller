@@ -350,6 +350,12 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
+                    PROTOCOL LATENCY :
+                    <input name="protocolLatency" type="text" value={this.state.settings.protocolLatency} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <br/>
+                <label className="settings-input-field">
                     SHOW PFL CONTROLS:
                     <input
                         type="checkbox"
