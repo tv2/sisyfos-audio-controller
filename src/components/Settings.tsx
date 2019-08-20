@@ -210,44 +210,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         )
     }
 
-    renderShowChannelsSelection = () => {
-        return (
-            <div className="settings-show-channel-selection">
-                <div className="settings-header">
-                    SHOW/HIDE FADERS:
-                </div>
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleShowAllChannels();
-                        }}
-                >
-                    ALL CHANNELS
-                </button>
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleHideAllChannels();
-                        }}
-                >
-                    NO CHANNELS
-                </button>
-                {this.props.store.channels[0].channel.map((channel: any, index: number) => {
-                        return <div key={index}>
-                            {channel.label != "" ? channel.label : ("CH " + (index + 1)) }
-                            <input
-                                type="checkbox"
-                                checked={this.props.store.channels[0].channel[index].showChannel }
-                                onChange={(event) => this.handleShowChannel(index, event)}
-                            />
-                        </div>
-                    })
-                }
-            </div>
-        )
-    }
-
-
     renderMixerMidiSettings = () => {
         return (
             <div>
@@ -381,8 +343,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 {this.state.selectedProtocol.protocol === "MIDI" ? this.renderMixerMidiSettings() : ""}
                 <br/>
                 {this.renderChannelTypeSettings()}
-                <br/>
-                {this.renderShowChannelsSelection()}
                 <br/>
                 {this.renderRemoteControllerSettings()}
                 <br/>
