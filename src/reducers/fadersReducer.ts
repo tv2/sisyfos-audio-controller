@@ -19,15 +19,14 @@ interface IVuMeters {
     vuVal: number
 }
 
-const defaultFadersReducerState = (numberOfTypeChannels: Array<number>) => {
+const defaultFadersReducerState = (numberOfFaders: number) => {
     let defaultObj: Array<IFaders> = [{
         fader: [],
         vuMeters: [],
     }];
 
-    let totalNumberOfFaders = 8;
 
-        for (let index=0; index < totalNumberOfFaders; index++) {
+        for (let index=0; index < numberOfFaders; index++) {
             defaultObj[0].fader[index] = ({
                 faderLevel: 0,
                 label: "",
@@ -47,7 +46,7 @@ const defaultFadersReducerState = (numberOfTypeChannels: Array<number>) => {
     return defaultObj;
 };
 
-export const faders = ((state = defaultFadersReducerState([1]), action: any): Array<IFaders> => {
+export const faders = ((state = defaultFadersReducerState(1), action: any): Array<IFaders> => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],

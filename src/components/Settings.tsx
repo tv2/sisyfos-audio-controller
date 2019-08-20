@@ -134,9 +134,17 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         );
     }
 
+    handleNumberOfFaders = (event: any) => {
+        let settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.numberOfFaders = parseInt(event.target.value);
+        this.setState(
+            {settings: settingsCopy}
+        );
+    }
+
     handleNumberOfChannels = (index: number, event: any) => {
-        var settingsCopy= Object.assign({}, this.state.settings);
-        settingsCopy.numberOfChannelsInType[index] = event.target.value;
+        let settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.numberOfChannelsInType[index] = parseInt(event.target.value);
         this.setState(
             {settings: settingsCopy}
         );
@@ -352,6 +360,11 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <label className="settings-input-field">
                     PROTOCOL LATENCY :
                     <input name="protocolLatency" type="text" value={this.state.settings.protocolLatency} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    NUMBER OF FADERS :
+                    <input name="numberOfFaders" type="text" value={this.state.settings.numberOfFaders} onChange={this.handleNumberOfFaders} />
                 </label>
                 <br/>
                 <br/>

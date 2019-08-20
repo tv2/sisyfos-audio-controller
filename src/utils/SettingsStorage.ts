@@ -25,13 +25,13 @@ export const saveSettings = (settings: any) => {
 };
 
 
-export const loadSnapshotState = (stateSnapshot: any, numberOfChannels: Array<number>) => {
+export const loadSnapshotState = (stateSnapshot: any, numberOfChannels: Array<number>, numberOfFaders: number) => {
     try {
         const stateFromFile = JSON.parse(fs.readFileSync(folder + "/state.json"));
         window.storeRedux.dispatch({
             type:'SET_COMPLETE_FADER_STATE',
             allState: stateFromFile,
-            numberOfTypeChannels: numberOfChannels
+            numberOfTypeChannels: numberOfFaders
         });
         window.storeRedux.dispatch({
             type:'SET_COMPLETE_CH_STATE',
