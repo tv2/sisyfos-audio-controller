@@ -63,6 +63,13 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
             return nextState;
         case 'SET_COMPLETE_CH_STATE': //allState  //numberOfChannels
             nextState = defaultChannelsReducerState(action.numberOfTypeChannels);
+            if (action.allState.channel.length == nextState[0].channel.length) {
+                action.allState.channel.map((channel: any, index: number) => {
+                    if (index < action.numberOfTypeChannels[0]) {
+                        nextState[0].channel[index] = channel;
+                    }
+                });
+            }
             return nextState;
         case 'FADE_ACTIVE':
             nextState[0].channel[action.channel].fadeActive = !!action.active;

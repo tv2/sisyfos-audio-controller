@@ -7,7 +7,7 @@ import Channels from './Channels';
 import Settings from './Settings';
 
 //Utils:
-import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
+import { loadSnapshotState, saveSnapshotState, saveSnapshotChannelState } from '../utils/SettingsStorage';
 import { MixerGenericConnection } from '../utils/MixerConnection';
 import { AutomationConnection } from '../utils/AutomationConnection';
 import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
@@ -37,7 +37,11 @@ class App extends React.Component<IAppProps> {
         selectedProtocol.channelTypes.forEach((item, index) => {
             numberOfChannels.push(this.props.store.settings[0].numberOfChannelsInType[index]);
         });
-        loadSnapshotState(this.props.store.faders[0], numberOfChannels, this.props.store.settings[0].numberOfFaders);
+        loadSnapshotState(
+            this.props.store.faders[0],
+            this.props.store.channels[0],
+            numberOfChannels,
+            this.props.store.settings[0].numberOfFaders);
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
@@ -47,6 +51,7 @@ class App extends React.Component<IAppProps> {
     snapShopStoreTimer() {
         const saveTimer = setInterval(() => {
                 saveSnapshotState(this.props.store.faders[0]);
+                saveSnapshotChannelState(this.props.store.channels[0]);
             },
             2000);
     }
