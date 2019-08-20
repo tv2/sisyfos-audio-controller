@@ -17,6 +17,7 @@ export class MixerGenericConnection {
     mixerProtocol: IMixerProtocolGeneric;
     mixerConnection: any;
     timer: any;
+    fadeActiveTimer: any;
 
     constructor() {
         this.updateOutLevels = this.updateOutLevels.bind(this);
@@ -45,6 +46,7 @@ export class MixerGenericConnection {
 
         //Setup timers for fade in & out
         this.timer = new Array(this.store.channels[0].channel.length);
+        this.fadeActiveTimer = new Array(this.store.channels[0].channel.length);
     }
 
     updateOutLevels() {
@@ -79,19 +81,21 @@ export class MixerGenericConnection {
     }
 
     delayedFadeActiveDisable (channelIndex: number) {
-        let delayedTimer = setTimeout( ()=>{
+        this.fadeActiveTimer[channelIndex] = setTimeout( ()=>{
             window.storeRedux.dispatch({
                 type:'FADE_ACTIVE',
                 channel: channelIndex,
                 active: false
             })
         },
-        this.store.settings[0].protocolLatency)
+            this.store.settings[0].protocolLatency
+        )
     }
 
     fadeInOut (channelIndex: number, fadeTime: number){
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
+            clearInterval(this.fadeActiveTimer[channelIndex]);
             clearInterval(this.timer[channelIndex]);
         } else {
             window.storeRedux.dispatch({
