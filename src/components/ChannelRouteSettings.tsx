@@ -70,9 +70,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                             {( "   (Fader " + (this.props.channel[index].assignedFader + 1) + ")")}
                         </div>
                     })
-                }
-
-                    OK TEST
+                    }
                 </div>
             )
         }

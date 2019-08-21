@@ -105,7 +105,7 @@ export class MixerGenericConnection {
             });
         }
 
-        if (this.store.faders[0].fader[channelIndex].pgmOn) {
+        if (this.store.faders[0].fader[this.store.channels[0].channel[channelIndex].assignedFader].pgmOn) {
             this.fadeUp(channelIndex, fadeTime);
         } else {
             this.fadeDown(channelIndex, fadeTime);
@@ -116,7 +116,7 @@ export class MixerGenericConnection {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
         let targetVal = this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].zero;
         if (this.mixerProtocol.mode === "master") {
-            targetVal = parseFloat(this.store.faders[0].fader[channelIndex].faderLevel);
+            targetVal = parseFloat(this.store.faders[0].fader[this.store.channels[0].channel[channelIndex].assignedFader].faderLevel);
         }
         const step: number = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
