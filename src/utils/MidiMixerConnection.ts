@@ -43,10 +43,11 @@ export class MidiMixerConnection {
                 console.log("Received 'controlchange' message (" + message.data + ").");
                 if (message.data[1] >= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
                     && message.data[1] <= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage) + 24) {
-                    let faderChannel = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
+                    let ch = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
+                    let faderChannel = this.store.channels[0].channel[ch - 1].assignedFader
                     window.storeRedux.dispatch({
                         type:'SET_FADER_LEVEL',
-                        channel: faderChannel - 1,
+                        channel: faderChannel -1,
                         level: message.data[2]
                     });
                     if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')

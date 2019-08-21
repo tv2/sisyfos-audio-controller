@@ -61,7 +61,7 @@ export class OscMixerConnection {
                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_VU_LEVEL',
-                        channel: ch - 1,
+                        channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         level: message.args[0]
                     });
                 }
@@ -70,7 +70,7 @@ export class OscMixerConnection {
                 let ch = message.address.split("/")[this.cmdChannelIndex];
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
-                    channel: ch - 1,
+                    channel: this.store.channels[0].channel[ch - 1].assignedFader,
                     level: message.args[0]
                 });
 
@@ -79,7 +79,7 @@ export class OscMixerConnection {
                 }
 
                 if (this.mixerProtocol.mode === 'master') {
-                    if (this.store.faders[0].fader[ch - 1].pgmOn)
+                    if (this.store.faders[0].fader[this.store.channels[0].channel[ch - 1].assignedFader].pgmOn)
                     {
                         this.updateOutLevel(ch-1);
                     }
@@ -93,13 +93,13 @@ export class OscMixerConnection {
                 {
                     window.storeRedux.dispatch({
                         type:'SET_FADER_LEVEL',
-                        channel: ch - 1,
+                        channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         level: message.args[0]
                     });
                     if (!this.store.faders[0].fader[ch - 1].pgmOn) {
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PGM',
-                            channel: ch - 1
+                            channel: this.store.channels[0].channel[ch - 1].assignedFader
                         });
                     }
 
@@ -113,7 +113,7 @@ export class OscMixerConnection {
                                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_CHANNEL_LABEL',
-                        channel: ch - 1,
+                        channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         label: message.args[0]
                     });
                 console.log("OSC message: ", message.address);
