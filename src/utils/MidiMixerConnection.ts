@@ -43,13 +43,14 @@ export class MidiMixerConnection {
                 console.log("Received 'controlchange' message (" + message.data + ").");
                 if (message.data[1] >= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
                     && message.data[1] <= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage) + 24) {
-                    let faderChannel = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
+                    let ch = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
+                    let faderChannel = this.store.channels[0].channel[ch - 1].assignedFader
                     window.storeRedux.dispatch({
                         type:'SET_FADER_LEVEL',
-                        channel: faderChannel - 1,
+                        channel: faderChannel -1,
                         level: message.data[2]
                     });
-                    if (this.store.channels[0].channel[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                    if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {
                         this.updateOutLevel(faderChannel-1);
                     }
@@ -119,11 +120,11 @@ return true;
     }
 
     updateOutLevel(channelIndex: number) {
-        if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
+        if (this.mixerProtocol.mode === "master" && this.store.faders[0].fader[channelIndex].pgmOn) {
             window.storeRedux.dispatch({
                 type:'SET_OUTPUT_LEVEL',
                 channel: channelIndex,
-                level: this.store.channels[0].channel[channelIndex].faderLevel
+                level: this.store.faders[0].fader[channelIndex].faderLevel
             });
         }
         this.sendOutMessage(
@@ -134,7 +135,7 @@ return true;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelIndex+1,
-            this.store.channels[0].channel[channelIndex].faderLevel
+            this.store.faders[0].fader[channelIndex].faderLevel
         );
     }
 

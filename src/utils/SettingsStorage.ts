@@ -25,20 +25,32 @@ export const saveSettings = (settings: any) => {
 };
 
 
-export const loadSnapshotState = (stateSnapshot: any, numberOfChannels: Array<number>) => {
+export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any, numberOfChannels: Array<number>, numberOfFaders: number) => {
     try {
-        const stateFromFile = JSON.parse(fs.readFileSync(folder + "/state.json"));
+        const stateFromFile = JSON.parse(fs.readFileSync(folder + "/fader-state.json"));
+        const stateFromChFile = JSON.parse(fs.readFileSync(folder + "/channel-state.json"));
         window.storeRedux.dispatch({
-            type:'SET_COMPLETE_STATE',
+            type:'SET_COMPLETE_FADER_STATE',
             allState: stateFromFile,
+            numberOfTypeChannels: numberOfFaders
+        });
+        window.storeRedux.dispatch({
+            type:'SET_COMPLETE_CH_STATE',
+            allState: stateFromChFile,
             numberOfTypeChannels: numberOfChannels
         });
     }
     catch (error) {
+        console.log("Error loading Snapshot, new snapshot created");
         saveSnapshotState(stateSnapshot);
         window.storeRedux.dispatch({
-            type:'SET_COMPLETE_STATE',
+            type:'SET_COMPLETE_FADER_STATE',
             allState: stateSnapshot,
+            numberOfTypeChannels: numberOfChannels
+        });
+        window.storeRedux.dispatch({
+            type:'SET_COMPLETE_CH_STATE',
+            allState: stateChannelSnapshot,
             numberOfTypeChannels: numberOfChannels
         });
     }
@@ -46,9 +58,15 @@ export const loadSnapshotState = (stateSnapshot: any, numberOfChannels: Array<nu
 
 export const saveSnapshotState = (stateSnapshot: any) => {
     let json = JSON.stringify(stateSnapshot);
-    fs.writeFile(folder + "/state.json", json, 'utf8', (error: any)=>{
+    fs.writeFile(folder + "/fader-state.json", json, 'utf8', (error: any)=>{
         //console.log(error);
     });
 }
 
+export const saveSnapshotChannelState = (stateSnapshot: any) => {
+    let json = JSON.stringify(stateSnapshot);
+    fs.writeFile(folder + "/channel-state.json", json, 'utf8', (error: any)=>{
+        //console.log(error);
+    });
+}
 

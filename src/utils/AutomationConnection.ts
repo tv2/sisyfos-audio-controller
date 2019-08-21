@@ -4,7 +4,7 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 
 //Utils:
 import { IAutomationProtocol, AutomationPresets } from '../constants/AutomationPresets';
-import { IChannel } from '../reducers/channelsReducer';
+import { IFader } from '../reducers/fadersReducer';
 
 const AUTOMATION_OSC_PORT = 5255;
 export class AutomationConnection {
@@ -141,7 +141,7 @@ export class AutomationConnection {
                     this.automationProtocol.toAutomation.STATE_FULL,
                     0,
                     JSON.stringify({
-                        channel: this.store.channels[0].channel.map(({ faderLevel, pgmOn, pstOn }: IChannel) => ({
+                        channel: this.store.faders[0].fader.map(({ faderLevel, pgmOn, pstOn }: IFader) => ({
                             faderLevel, pgmOn, pstOn
                         }))
                     }),
@@ -181,7 +181,7 @@ export class AutomationConnection {
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .PING)) {
                 let pingValue = message.address.split("/")[2];
-                
+
                 this.sendOutMessage(
                     this.automationProtocol.toAutomation.PONG,
                     0,

@@ -134,9 +134,17 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         );
     }
 
+    handleNumberOfFaders = (event: any) => {
+        let settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.numberOfFaders = parseInt(event.target.value);
+        this.setState(
+            {settings: settingsCopy}
+        );
+    }
+
     handleNumberOfChannels = (index: number, event: any) => {
-        var settingsCopy= Object.assign({}, this.state.settings);
-        settingsCopy.numberOfChannelsInType[index] = event.target.value;
+        let settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.numberOfChannelsInType[index] = parseInt(event.target.value);
         this.setState(
             {settings: settingsCopy}
         );
@@ -201,44 +209,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
             </div>
         )
     }
-
-    renderShowChannelsSelection = () => {
-        return (
-            <div className="settings-show-channel-selection">
-                <div className="settings-header">
-                    SHOW/HIDE FADERS:
-                </div>
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleShowAllChannels();
-                        }}
-                >
-                    ALL CHANNELS
-                </button>
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleHideAllChannels();
-                        }}
-                >
-                    NO CHANNELS
-                </button>
-                {this.props.store.channels[0].channel.map((channel: any, index: number) => {
-                        return <div key={index}>
-                            {channel.label != "" ? channel.label : ("CH " + (index + 1)) }
-                            <input
-                                type="checkbox"
-                                checked={this.props.store.channels[0].channel[index].showChannel }
-                                onChange={(event) => this.handleShowChannel(index, event)}
-                            />
-                        </div>
-                    })
-                }
-            </div>
-        )
-    }
-
 
     renderMixerMidiSettings = () => {
         return (
@@ -350,6 +320,17 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
+                    PROTOCOL LATENCY :
+                    <input name="protocolLatency" type="text" value={this.state.settings.protocolLatency} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    NUMBER OF FADERS :
+                    <input name="numberOfFaders" type="text" value={this.state.settings.numberOfFaders} onChange={this.handleNumberOfFaders} />
+                </label>
+                <br/>
+                <br/>
+                <label className="settings-input-field">
                     SHOW PFL CONTROLS:
                     <input
                         type="checkbox"
@@ -362,8 +343,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 {this.state.selectedProtocol.protocol === "MIDI" ? this.renderMixerMidiSettings() : ""}
                 <br/>
                 {this.renderChannelTypeSettings()}
-                <br/>
-                {this.renderShowChannelsSelection()}
                 <br/>
                 {this.renderRemoteControllerSettings()}
                 <br/>

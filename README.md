@@ -66,8 +66,16 @@ yarn start
   * Default Port is 8000
   * Controls Fader On/Off with preset level from Sisyfos.
   * Easy implementation of state based lightcontrol from Automation.
+  * the PROTOCOL DELAY setting should be raised to 50ms, as DMXIS is responding a little slowly.
 * midi
   * Generic MIDI - still preminilary
+  * When using MIDI protocols, the PROTOCOL DELAY setting should be rised to at least 50ms
+* Yamaha QL1
+  * MIDI based Protocol
+  * For now only the 24 first channels are supported.
+  * Set label not supported
+  * When using MIDI protocols, the PROTOCOL DELAY setting should be rised to at least 50ms
+
 
 
 ## Automation Support:

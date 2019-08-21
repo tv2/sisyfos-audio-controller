@@ -10,12 +10,14 @@ export interface ISettings {
     localOscPort: number,
     deviceIp: string,
     devicePort: number,
+    protocolLatency: number,
     enableRemoteFader: boolean,
     mixerMidiInputPort: string,
     mixerMidiOutputPort: string,
     remoteFaderMidiInputPort: string,
     remoteFaderMidiOutputPort: string,
     numberOfChannelsInType: Array<number>,
+    numberOfFaders: number,
     numberOfSnaps: number,
     fadeTime: number
     showPfl: boolean
@@ -32,12 +34,14 @@ const defaultSettingsReducerState: Array<ISettings> = [
         localOscPort: 1234,
         deviceIp: "0.0.0.0",
         devicePort: 10024,
+        protocolLatency: 20,
         enableRemoteFader: false,
         mixerMidiInputPort: "",
         mixerMidiOutputPort: "",
         remoteFaderMidiInputPort: "",
         remoteFaderMidiOutputPort: "",
         numberOfChannelsInType: [8],
+        numberOfFaders: 8,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         fadeTime: 100, //Time in ms
         showPfl: false
