@@ -50,9 +50,8 @@ export class MixerGenericConnection {
     }
 
     updateOutLevels() {
-        this.store.channels[0].channel.map((channel: any, index: number) => {
-            this.fadeInOut(index, this.store.settings[0].fadeTime);
-            this.mixerConnection.updateOutLevel(index);
+        this.store.faders[0].fader.map((channel: any, index: number) => {
+            this.updateOutLevel(index);
         });
     }
 
