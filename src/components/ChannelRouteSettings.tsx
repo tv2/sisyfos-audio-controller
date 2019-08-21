@@ -65,7 +65,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                             <input
                                 type="checkbox"
                                 checked={ this.props.channel[index].assignedFader === this.faderIndex }
-                                onChange={(event) => this.handleAssignChannel(index, event)}
+                                onChange={(event) => this.handleAssignChannel(index)}
                             />
                             {( "   (Fader " + (this.props.channel[index].assignedFader + 1) + ")")}
                         </div>
