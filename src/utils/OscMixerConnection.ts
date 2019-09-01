@@ -213,12 +213,14 @@ export class OscMixerConnection {
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
-        this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
-            channelTypeIndex+1,
-            this.store.faders[0].fader[channelIndex].faderLevel,
-            "f"
-        );
+        /* ToDo: skip client protocol mode, or incorporate separate fader in store.channels[0]
+            this.sendOutMessage(
+                this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
+                channelTypeIndex+1,
+                this.store.faders[0].fader[channelIndex].faderLevel,
+                "f"
+                );
+        */
     }
 
     updatePflState(channelIndex: number) {
