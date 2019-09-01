@@ -20,7 +20,7 @@ import { IMixerProtocolGeneric} from './MixerProtocolInterface'
 
 export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Object.assign({
     ardourMaster: ArdourMaster,
-    reaper: Reaper,
+/*    reaper: Reaper, */
     reaperMaster: ReaperMaster,
     behringerxrmaster: BehringerXrMaster,
     midasMaster: MidasMaster,
