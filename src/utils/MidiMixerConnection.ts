@@ -44,13 +44,13 @@ export class MidiMixerConnection {
                 if (message.data[1] >= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
                     && message.data[1] <= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage) + 24) {
                     let ch = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
-                    let faderChannel = this.store.channels[0].channel[ch - 1].assignedFader
+                    let faderChannel = 1 + this.store.channels[0].channel[ch - 1].assignedFader
                     window.storeRedux.dispatch({
-                        type:'SET_FADER_LEVEL',
+                        type:'SET_CHANNEL_LEVEL',
                         channel: faderChannel -1,
                         level: message.data[2]
                     });
-                    if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                    if (this.store.faders[0].fader[faderChannel - 1].pgmOn || false && this.mixerProtocol.mode === 'master')
                     {
                         this.updateOutLevel(faderChannel-1);
                     }
@@ -120,11 +120,12 @@ return true;
     }
 
     updateOutLevel(channelIndex: number) {
-        if (this.mixerProtocol.mode === "master" && this.store.faders[0].fader[channelIndex].pgmOn) {
+        let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
+        if (this.mixerProtocol.mode === "master" && this.store.faders[0].fader[faderIndex].pgmOn) {
             window.storeRedux.dispatch({
                 type:'SET_OUTPUT_LEVEL',
                 channel: channelIndex,
-                level: this.store.faders[0].fader[channelIndex].faderLevel
+                level: this.store.faders[0].fader[faderIndex].faderLevel
             });
         }
         this.sendOutMessage(
@@ -132,11 +133,13 @@ return true;
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel
         );
+        /* Client mode is disabled
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelIndex+1,
             this.store.faders[0].fader[channelIndex].faderLevel
         );
+        */
     }
 
     updatePflState(channelIndex: number) {
