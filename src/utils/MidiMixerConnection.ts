@@ -46,13 +46,22 @@ export class MidiMixerConnection {
                     let ch = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
                     let faderChannel = 1 + this.store.channels[0].channel[ch - 1].assignedFader
                     window.storeRedux.dispatch({
-                        type:'SET_CHANNEL_LEVEL',
+                        type:'SET_FADER_LEVEL',
                         channel: faderChannel -1,
                         level: message.data[2]
                     });
-                    if (this.store.faders[0].fader[faderChannel - 1].pgmOn || false && this.mixerProtocol.mode === 'master')
+                    if (!this.store.faders[0].fader[faderChannel - 1].pgmOn) {
+                        window.storeRedux.dispatch({
+                            type:'TOGGLE_PGM',
+                            channel: this.store.channels[0].channel[faderChannel - 1].assignedFader
+                        });
+                    }
+                    if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {
-                        this.updateOutLevel(faderChannel-1);
+                        this.store.channels[0].channel.map((channel: any, index: number) => {
+                            if (channel.assignedFader === faderChannel - 1)
+                            this.updateOutLevel(index);
+                        })
                     }
                 }
             }
