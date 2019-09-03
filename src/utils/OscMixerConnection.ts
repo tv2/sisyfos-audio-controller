@@ -76,11 +76,18 @@ export class OscMixerConnection {
                     level: message.args[0]
                 });
 
+
                 if (this.store.faders[0].fader[assignedFader - 1].pgmOn)
                 {
                     this.store.channels[0].channel.map((channel: any, index: number) => {
-                        if (channel.assignedFader === assignedFader - 1)
-                        this.updateOutLevel(index);
+                        if (channel.assignedFader === assignedFader - 1) {
+                            window.storeRedux.dispatch({
+                                type:'SET_OUTPUT_LEVEL',
+                                channel: index,
+                                level: message.args[0]
+                            });
+                            this.updateFadeIOLevel(index, this.store.faders[0].fader[assignedFader - 1].faderLevel);
+                        }
                     })
                 }
 
@@ -218,11 +225,10 @@ export class OscMixerConnection {
     updateOutLevel(channelIndex: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex+1,
-            this.store.faders[0].fader[faderIndex].faderLevel,
+            this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
     }
