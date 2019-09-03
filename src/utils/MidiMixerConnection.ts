@@ -47,20 +47,21 @@ export class MidiMixerConnection {
                     let faderChannel = 1 + this.store.channels[0].channel[ch - 1].assignedFader
                     window.storeRedux.dispatch({
                         type:'SET_FADER_LEVEL',
-                        channel: faderChannel -1,
+                        channel: faderChannel - 1,
                         level: message.data[2]
                     });
                     if (!this.store.faders[0].fader[faderChannel - 1].pgmOn) {
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PGM',
-                            channel: this.store.channels[0].channel[faderChannel - 1].assignedFader
+                            channel: this.store.channels[0].channel[ch - 1].assignedFader
                         });
                     }
                     if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {
                         this.store.channels[0].channel.map((channel: any, index: number) => {
-                            if (channel.assignedFader === faderChannel - 1)
-                            this.updateOutLevel(index);
+                            if (channel.assignedFader === faderChannel - 1) {
+                                this.updateOutLevel(index);
+                            }
                         })
                     }
                 }
