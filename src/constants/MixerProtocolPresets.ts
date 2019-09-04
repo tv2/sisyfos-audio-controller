@@ -28,7 +28,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     lawoClient: LawoClient,
     dmxis: DMXIS,
     yamahaQl1: YamahaQL1,
-    studerVistaMaster: StuderVistaMaster,
+/*    studerVistaMaster: StuderVistaMaster, */
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
 } : {});
