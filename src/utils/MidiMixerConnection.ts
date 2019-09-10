@@ -56,6 +56,7 @@ export class MidiMixerConnection {
                             channel: this.store.channels[0].channel[ch - 1].assignedFader
                         });
                     }
+                    window.huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, this.store.faders[0].fader[faderChannel - 1].faderLevel)
                     if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {
                         this.store.channels[0].channel.map((channel: any, index: number) => {

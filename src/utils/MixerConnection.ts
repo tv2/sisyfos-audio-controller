@@ -62,6 +62,7 @@ export class MixerGenericConnection {
                 this.mixerConnection.updateOutLevel(index);
             }
         })
+        window.huiRemoteConnection.updateRemoteFaderState(faderIndex, this.store.faders[0].fader[faderIndex].faderLevel)
     }
 
 
