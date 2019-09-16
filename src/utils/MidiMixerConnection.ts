@@ -53,10 +53,12 @@ export class MidiMixerConnection {
                     if (!this.store.faders[0].fader[faderChannel - 1].pgmOn) {
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PGM',
-                            channel: this.store.channels[0].channel[ch - 1].assignedFader
+                            channel: this.store.channels[0].channel[ch - 1].assignedFader -1
                         });
                     }
-                    window.huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, this.store.faders[0].fader[faderChannel - 1].faderLevel)
+                    if (window.huiRemoteConnection) {
+                        window.huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, this.store.faders[0].fader[faderChannel - 1].faderLevel)
+                    }
                     if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {
                         this.store.channels[0].channel.map((channel: any, index: number) => {

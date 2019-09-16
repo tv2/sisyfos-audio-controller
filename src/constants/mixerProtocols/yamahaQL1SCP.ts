@@ -1,6 +1,6 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
-export const YamahaQL1: IMixerProtocol = {
+export const YamahaQL1SCP: IMixerProtocol = {
     protocol: 'SCP',
     label: 'Yamaha QL1 SCP',
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
@@ -14,7 +14,7 @@ export const YamahaQL1: IMixerProtocol = {
         channelTypeColor: '#2f2f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //PgmChange 0 - ignores this command
-            CHANNEL_OUT_GAIN: [{ mixerMessage: "1", value: 0, type: 'controlchange', min: 0, max: 127, zero: 100}],            //PgmChange 0 - ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'NOTIFY set MIXER:Current/InCh/Fader/Level', value: 0, type: '', min: -130, max: 10, zero: 1}],            //PgmChange 0 - ignores this command
             CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 127, zero: 100}],                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
@@ -22,7 +22,7 @@ export const YamahaQL1: IMixerProtocol = {
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: "1", value: 0, type: 'controlchange', min: 0, max: 127, zero: 100}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: "set MIXER:Current/InCh/Fader/Level", value: 0, type: '', min: -130, max: 10, zero: 1}],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
@@ -30,14 +30,14 @@ export const YamahaQL1: IMixerProtocol = {
         },
     }],
     fader: {
-        min: 0,
-        max: 127,
+        min: -130,
+        max: 10,
         zero: 100,
         step: 1,
     },
     meter: {
-        min: 0,
-        max: 127,
+        min: -130,
+        max: 10,
         zero: 100,
         test: 80,
     },

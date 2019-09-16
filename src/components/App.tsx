@@ -30,7 +30,9 @@ class App extends React.Component<IAppProps> {
     componentWillMount() {
         (window as any).mixerGenericConnection = new MixerGenericConnection();
         (window as any).automationConnection = new AutomationConnection();
-        (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
+        if (this.props.store.settings[0].enableRemoteFader){
+            (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
+        }
         this.snapShopStoreTimer();
         let selectedProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
         let numberOfChannels: Array<number> = [];
