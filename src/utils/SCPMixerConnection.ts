@@ -32,7 +32,7 @@ export class SCPMixerConnection {
         }
         );
         //            remotePort: parseInt(this.store.settings[0].devicePort + '')
-        //this.setupMixerConnection();
+        this.setupMixerConnection();
     }
 
     setupMixerConnection() {
@@ -136,14 +136,14 @@ export class SCPMixerConnection {
     }
 
     sendOutMessage(oscMessage: string, channel: number, value: string | number, type: string) {
-        let channelString = this.mixerProtocol.leadingZeros ? ("0" + channel).slice(-2) : channel.toString();
-        let message = oscMessage.replace(
-            "{channel}",
-            channelString
-        );
-        if (message != 'none') {
-            this.scpConnection.write('set MIXER:Current/InCh/Fader/Level 0 0 1000\n');
+        let valueString: string = ''
+        if (typeof(value) === 'string') {
+            valueString = String(parseFloat(value) * 100)
+        } else {
+            valueString = String(value * 100)
         }
+        oscMessage = 'set MIXER:Current/InCh/Fader/Level'    
+        this.scpConnection.write(oscMessage + ' ' + (channel - 1) + ' 0 ' + valueString + '\n');
     }
 
 
