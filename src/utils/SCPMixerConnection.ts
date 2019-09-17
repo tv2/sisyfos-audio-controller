@@ -69,13 +69,15 @@ export class SCPMixerConnection {
                         let mixerValues: string[] = message.split(' ')
                         let ch = 1 + parseInt(mixerValues[3])
                         let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
-                        let mixerValue: number = parseInt(mixerValues[6].replace('"', '')) || this.mixerProtocol.fader.min
+                        let mixerLevel: number = parseFloat(mixerValues[5])
+                        let faderLevel =  Math.pow(2, (mixerLevel - 1000) / 2000)
+                        //let faderLevel = Math.log10((mixerLevel + 32768) / (1000 + 32768))
                         if (!this.store.channels[0].channel[ch - 1].fadeActive
-                            && mixerValue > this.mixerProtocol.fader.min) {
+                            && faderLevel > this.mixerProtocol.fader.min) {
                             window.storeRedux.dispatch({
                                 type: 'SET_FADER_LEVEL',
                                 channel: assignedFader - 1,
-                                level: mixerValue
+                                level: faderLevel
                             });
                             if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                                 window.storeRedux.dispatch({
@@ -137,12 +139,17 @@ export class SCPMixerConnection {
 
     sendOutMessage(oscMessage: string, channel: number, value: string | number, type: string) {
         let valueString: string = ''
+        let valueNumber: number
         if (typeof(value) === 'string') {
-            valueString = String(parseFloat(value) * 100)
-        } else {
-            valueString = String(value * 100)
+            value = parseFloat(value)
         }
-        oscMessage = 'set MIXER:Current/InCh/Fader/Level'    
+        // Reverse this : Math.pow(2, (mixerLevel - 1000) / 2000)
+        valueNumber = (Math.log(value)*2000/Math.log(2)+100)
+        if (valueNumber === -Infinity) { 
+            valueNumber = -32000 
+        }
+        valueString = valueNumber.toFixed(0)
+//        oscMessage = 'set MIXER:Current/InCh/Fader/Level'    
         this.scpConnection.write(oscMessage + ' ' + (channel - 1) + ' 0 ' + valueString + '\n');
     }
 

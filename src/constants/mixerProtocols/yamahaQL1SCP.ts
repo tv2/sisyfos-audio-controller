@@ -15,14 +15,14 @@ export const YamahaQL1SCP: IMixerProtocol = {
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //PgmChange 0 - ignores this command
             CHANNEL_OUT_GAIN: [{ mixerMessage: 'NOTIFY set MIXER:Current/InCh/Fader/Level', value: 0, type: '', min: -130, max: 10, zero: 1}],            //PgmChange 0 - ignores this command
-            CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 127, zero: 100}],                   //PgmChange 0 - ignores this command
+            CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: "set MIXER:Current/InCh/Fader/Level", value: 0, type: '', min: -130, max: 10, zero: 1}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: "set MIXER:Current/InCh/Fader/Level", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
@@ -30,15 +30,15 @@ export const YamahaQL1SCP: IMixerProtocol = {
         },
     }],
     fader: {
-        min: -130,
-        max: 10,
-        zero: 100,
-        step: 1,
+        min: 0,
+        max: 1,
+        zero: 0.75,
+        step: 0.01,
     },
     meter: {
-        min: -130,
-        max: 10,
-        zero: 100,
-        test: 80,
+        min: 0,
+        max: 1,
+        zero: 0.75,
+        test: 0.6,
     },
 }
