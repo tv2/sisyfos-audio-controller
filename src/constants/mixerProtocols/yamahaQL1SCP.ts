@@ -33,7 +33,7 @@ export const YamahaQL1SCP: IMixerProtocol = {
         min: 0,
         max: 1,
         zero: 0.75,
-        step: 0.01,
+        step: 0.1,
     },
     meter: {
         min: 0,
