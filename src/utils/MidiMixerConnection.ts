@@ -134,7 +134,7 @@ return true;
 
     updateOutLevel(channelIndex: number) {
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
-        if (this.mixerProtocol.mode === "master" && this.store.faders[0].fader[faderIndex].pgmOn) {
+        if (this.store.faders[0].fader[faderIndex].pgmOn) {
             window.storeRedux.dispatch({
                 type:'SET_OUTPUT_LEVEL',
                 channel: channelIndex,

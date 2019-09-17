@@ -89,6 +89,13 @@ export class SCPMixerConnection {
                             if (window.huiRemoteConnection) {
                                 window.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, message.args[0]);
                             }
+                            if (this.store.faders[0].fader[assignedFader - 1].pgmOn) {
+                                this.store.channels[0].channel.map((channel: any, index: number) => {
+                                    if (channel.assignedFader === assignedFader - 1) {
+                                        this.updateOutLevel(index);
+                                    }
+                                })
+                            }
 
                         }
                         } /*else if (this.checkSCPCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
@@ -138,24 +145,21 @@ export class SCPMixerConnection {
     }
 
     sendOutMessage(oscMessage: string, channel: number, value: string | number, type: string) {
-        let valueString: string = ''
         let valueNumber: number
         if (typeof(value) === 'string') {
             value = parseFloat(value)
         }
         // Reverse this : Math.pow(2, (mixerLevel - 1000) / 2000)
-        valueNumber = (Math.log(value)*2000/Math.log(2)+100)
+        valueNumber = (Math.log(value)*2000/Math.log(2)+1000)
         if (valueNumber === -Infinity) { 
             valueNumber = -32000 
         }
-        valueString = valueNumber.toFixed(0)
-//        oscMessage = 'set MIXER:Current/InCh/Fader/Level'    
-        this.scpConnection.write(oscMessage + ' ' + (channel - 1) + ' 0 ' + valueString + '\n');
+        this.scpConnection.write(oscMessage + ' ' + (channel - 1) + ' 0 ' + valueNumber.toFixed(0) + '\n');
     }
 
 
     sendOutRequest(oscMessage: string, channel: number) {
-        let channelString = this.mixerProtocol.leadingZeros ? ("0" + channel).slice(-2) : channel.toString();
+        let channelString = channel.toString();
         let message = oscMessage.replace(
             "{channel}",
             channelString
@@ -170,6 +174,14 @@ export class SCPMixerConnection {
     updateOutLevel(channelIndex: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
+        if (this.store.faders[0].fader[faderIndex].pgmOn) {
+            window.storeRedux.dispatch({
+                type:'SET_OUTPUT_LEVEL',
+                channel: channelIndex,
+                level: this.store.faders[0].fader[faderIndex].faderLevel
+            });
+        }
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex + 1,
