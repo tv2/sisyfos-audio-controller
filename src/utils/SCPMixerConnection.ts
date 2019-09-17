@@ -26,7 +26,7 @@ export class SCPMixerConnection {
         this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.split('/').findIndex(ch => ch === '{channel}');
 
         this.scpConnection = new net.Socket()
-        this.scpConnection.connect(49280, this.store.settings[0].deviceIp, () => {
+        this.scpConnection.connect(50000, this.store.settings[0].deviceIp, () => {
             console.log('Connected to Yamaha mixer')
 
         }
