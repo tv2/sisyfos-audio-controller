@@ -3,7 +3,7 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
-import { SCPMixerConnection } from '../utils/SCPMixerConnection';
+import { QlClMixerConnection } from './QlClMixerConnection';
 import { EmberMixerConnection } from './EmberMixerConnection';
 import { CasparCGConnection } from './CasparCGConnection';
 import { IChannel } from '../reducers/channelsReducer';
@@ -37,8 +37,8 @@ export class MixerGenericConnection {
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
         if (this.mixerProtocol.protocol === 'OSC') {
             this.mixerConnection = new OscMixerConnection(this.mixerProtocol as IMixerProtocol);
-        } else if (this.mixerProtocol.protocol === 'SCP') {
-            this.mixerConnection = new SCPMixerConnection(this.mixerProtocol as IMixerProtocol);
+        } else if (this.mixerProtocol.protocol === 'QLCL') {
+            this.mixerConnection = new QlClMixerConnection(this.mixerProtocol as IMixerProtocol);
         } else if (this.mixerProtocol.protocol === 'MIDI') {
             this.mixerConnection = new MidiMixerConnection(this.mixerProtocol as IMixerProtocol);
         } else if (this.mixerProtocol.protocol === 'CasparCG') {

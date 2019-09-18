@@ -1,8 +1,8 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
-export const YamahaQL1SCP: IMixerProtocol = {
-    protocol: 'SCP',
-    label: 'Yamaha QL1 SCP',
+export const YamahaQLCL: IMixerProtocol = {
+    protocol: 'QLCL',
+    label: 'Yamaha QL/CL',
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,

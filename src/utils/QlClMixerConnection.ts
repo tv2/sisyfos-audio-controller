@@ -6,7 +6,7 @@ import * as net from 'net'
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
 
-export class SCPMixerConnection {
+export class QlClMixerConnection {
     store: IStore;
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
@@ -45,7 +45,7 @@ export class SCPMixerConnection {
                             this.sendOutRequest(item.mixerMessage, (index + 1));
                         });
                     } else {
-                        this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
+                        this.sendOutMessage(item.mixerMessage, 0, item.value, item.type);
                     }
                 });
             })
@@ -144,17 +144,26 @@ export class SCPMixerConnection {
         return false;
     }
 
-    sendOutMessage(oscMessage: string, channel: number, value: string | number, type: string) {
+    sendOutMessage(oscMessage: string, channelIndex: number, value: string | number, type: string) {
         let valueNumber: number
         if (typeof(value) === 'string') {
             value = parseFloat(value)
         }
-        // Reverse this : Math.pow(2, (mixerLevel - 1000) / 2000)
-        valueNumber = (Math.log(value)*2000/Math.log(2)+1000)
-        if (valueNumber === -Infinity) { 
-            valueNumber = -32000 
-        }
-        this.scpConnection.write(oscMessage + ' ' + (channel - 1) + ' 0 ' + valueNumber.toFixed(0) + '\n');
+        
+        valueNumber = value * 2048
+        let valueByte = new Uint8Array([
+            (valueNumber & 0xff00) >> 8,
+            (valueNumber & 0x00ff),
+        ])
+
+        //f0 43 10 3e 19 01 00 37 00 00 00 00 00 00 00 07 0e f7
+        let command = 'f0 43 10 3e 19 01 00 37 00 00 00 {channel} 00 00 00 {level} f7'
+        command = command.replace('{channel}', channelIndex.toString(16))
+        command = command.replace('{level}', valueByte[0].toString(16) + ' ' + valueByte[1].toString(16))
+        let a = command.split(' ')
+        let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
+        this.scpConnection.write(buf)
+//        this.scpConnection.write(oscMessage + ' ' + (channel - 1) + ' 0 ' + valueNumber.toFixed(0) + '\n');
     }
 
 
@@ -184,7 +193,7 @@ export class SCPMixerConnection {
         }
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
-            channelTypeIndex + 1,
+            channelTypeIndex,
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
@@ -196,14 +205,14 @@ export class SCPMixerConnection {
         if (this.store.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].mixerMessage,
-                channelTypeIndex + 1,
+                channelTypeIndex,
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].value,
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].type
             );
         } else {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].mixerMessage,
-                channelTypeIndex + 1,
+                channelTypeIndex,
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].value,
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].type
             );
@@ -215,7 +224,7 @@ export class SCPMixerConnection {
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
-            channelTypeIndex + 1,
+            channelTypeIndex,
             String(outputLevel),
             "f"
         );
@@ -227,7 +236,7 @@ export class SCPMixerConnection {
         let channelName = this.store.faders[0].fader[channelIndex].label;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
-            channelTypeIndex + 1,
+            channelTypeIndex,
             channelName,
             "s"
         );
