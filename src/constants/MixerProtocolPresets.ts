@@ -8,6 +8,7 @@ import { LawoClient } from './mixerProtocols/EmberLawo';
 import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 import { DMXIS } from './mixerProtocols/DmxIs';
 import { YamahaQL1 } from './mixerProtocols/yamahaQL1'
+import { YamahaQLCL } from './mixerProtocols/yamahaQLCL'
 
 interface IMessageProtocol {
     mixerMessage: string,
@@ -27,7 +28,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     genericMidi: GenericMidi,
     lawoClient: LawoClient,
     dmxis: DMXIS,
-    yamahaQl1: YamahaQL1,
+    yamahaQlCl: YamahaQLCL,
     studerVistaMaster: StuderVistaMaster,
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster

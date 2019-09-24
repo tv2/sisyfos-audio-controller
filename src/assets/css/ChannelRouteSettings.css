@@ -10,7 +10,7 @@
     border-color: rgb(124, 124, 124);
     border-style: solid;
     border-width: 4px;
-	text-align: center;
+	text-align: left;
 	z-index: 1;
 
 	color: #fff;
@@ -21,6 +21,18 @@
 	margin: 0;
 	padding: 10px 0;
 	line-height: 50px;
+	text-align: center;
+
+}
+
+
+.channel-settings-body > h4 {
+	margin: 0;
+	margin-left: 40px;
+	padding: 0px 0;
+	line-height: 20px;
+	text-align: left;
+	font-size: 110%;
 }
 
 .channel-settings-body > .close {

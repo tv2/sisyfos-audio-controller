@@ -3,6 +3,7 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
+import { QlClMixerConnection } from './QlClMixerConnection';
 import { EmberMixerConnection } from './EmberMixerConnection';
 import { CasparCGConnection } from './CasparCGConnection';
 import { IChannel } from '../reducers/channelsReducer';
@@ -36,6 +37,8 @@ export class MixerGenericConnection {
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
         if (this.mixerProtocol.protocol === 'OSC') {
             this.mixerConnection = new OscMixerConnection(this.mixerProtocol as IMixerProtocol);
+        } else if (this.mixerProtocol.protocol === 'QLCL') {
+            this.mixerConnection = new QlClMixerConnection(this.mixerProtocol as IMixerProtocol);
         } else if (this.mixerProtocol.protocol === 'MIDI') {
             this.mixerConnection = new MidiMixerConnection(this.mixerProtocol as IMixerProtocol);
         } else if (this.mixerProtocol.protocol === 'CasparCG') {
@@ -59,10 +62,12 @@ export class MixerGenericConnection {
         this.store.channels[0].channel.map((channel: IChannel, index: number) => {
             if (faderIndex === channel.assignedFader) {
                 this.fadeInOut(index, fadeTime);
-                this.mixerConnection.updateOutLevel(index);
+                //this.mixerConnection.updateOutLevel(index);
             }
         })
-        window.huiRemoteConnection.updateRemoteFaderState(faderIndex, this.store.faders[0].fader[faderIndex].faderLevel)
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemoteFaderState(faderIndex, this.store.faders[0].fader[faderIndex].faderLevel)
+        }
     }
 
 
@@ -97,14 +102,13 @@ export class MixerGenericConnection {
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
             clearInterval(this.fadeActiveTimer[channelIndex]);
             clearInterval(this.timer[channelIndex]);
-        } else {
-            window.storeRedux.dispatch({
-                type:'FADE_ACTIVE',
-                channel: channelIndex,
-                active: true
-            });
-        }
-
+        } 
+        window.storeRedux.dispatch({
+            type:'FADE_ACTIVE',
+            channel: channelIndex,
+            active: true
+        });
+        
         if (this.store.faders[0].fader[this.store.channels[0].channel[channelIndex].assignedFader].pgmOn) {
             this.fadeUp(channelIndex, fadeTime);
         } else {
@@ -114,10 +118,7 @@ export class MixerGenericConnection {
 
     fadeUp(channelIndex: number, fadeTime: number) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
-        let targetVal = this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].zero;
-        if (this.mixerProtocol.mode === "master") {
-            targetVal = parseFloat(this.store.faders[0].fader[this.store.channels[0].channel[channelIndex].assignedFader].faderLevel);
-        }
+        let targetVal = parseFloat(this.store.faders[0].fader[this.store.channels[0].channel[channelIndex].assignedFader].faderLevel);
         const step: number = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
         let dispatchTrigger: number = 0;
@@ -126,9 +127,9 @@ export class MixerGenericConnection {
             this.timer[channelIndex] = setInterval(() => {
                 outputLevel += step;
                 dispatchTrigger += step;
-                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
-
+                
                 if (dispatchTrigger > dispatchResolution) {
+                    this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,

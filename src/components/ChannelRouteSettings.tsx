@@ -29,13 +29,16 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
 		this.mixerProtocol = MixerProtocolPresets[this.props.selectedProtocol];
     }
 
-    handleAssignChannel(index: number) {
-		this.props.dispatch({
-			type: 'SET_ASSIGNED_FADER',
+    handleAssignChannel(index: number, event: any) {
+        let faderAssign = this.faderIndex
+        if (event.target.checked === false) { 
+            faderAssign = -1
+        }
+        this.props.dispatch({
+            type: 'SET_ASSIGNED_FADER',
             channel: index,
-            faderNumber: this.faderIndex
-		});
-
+            faderNumber: faderAssign
+        });
         return true;
     }
 
@@ -60,15 +63,15 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
 
 
                     {this.props.channel.map((channel: any, index: number) => {
-                        return <div key={index}>
+                        return <h4 key={index}>
                             {(" Channel " + (index + 1) + " : " )}
                             <input
                                 type="checkbox"
                                 checked={ this.props.channel[index].assignedFader === this.faderIndex }
-                                onChange={(event) => this.handleAssignChannel(index)}
+                                onChange={(event) => this.handleAssignChannel(index, event)}
                             />
-                            {( "   (Fader " + (this.props.channel[index].assignedFader + 1) + ")")}
-                        </div>
+                            {this.props.channel[index].assignedFader >=0 ? ( "   (Fader " + (this.props.channel[index].assignedFader + 1) + ")") : ''}
+                        </h4>
                     })
                     }
                 </div>

@@ -68,7 +68,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             channel: this.channelIndex
         });
         window.mixerGenericConnection.updateOutLevel(this.channelIndex);
-        window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+        if (window.huiRemoteConnection) {
+                        window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+        }
     }
 
     handlePst() {
@@ -84,7 +86,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             channel: this.channelIndex
         });
         window.mixerGenericConnection.updatePflState(this.channelIndex);
-        window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+        }
     }
 
     handleLevel(event: any) {
@@ -94,7 +98,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             level: parseFloat(event.target.value)
         });
         window.mixerGenericConnection.updateOutLevel(this.channelIndex);
-        window.huiRemoteConnection.updateRemoteFaderState(this.channelIndex, event.target.value)
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemoteFaderState(this.channelIndex, event.target.value)
+        }
     }
 
 
