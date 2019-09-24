@@ -1,5 +1,5 @@
 import { ArdourMaster } from './mixerProtocols/ardourMaster';
-//import { Reaper } from './mixerProtocols/reaper';
+import { Reaper } from './mixerProtocols/reaper';
 import { ReaperMaster } from './mixerProtocols/reaperMaster';
 import { BehringerXrMaster } from './mixerProtocols/behringerXrMaster';
 import { MidasMaster } from './mixerProtocols/midasMaster';
@@ -15,8 +15,7 @@ interface IMessageProtocol {
     value: any,
     type: string
 }
-//import { StuderVistaMaster } from './mixerProtocols/StuderVistaEmber';
-
+import { StuderVistaMaster } from './mixerProtocols/StuderVistaEmber';
 // Interface:
 import { IMixerProtocolGeneric} from './MixerProtocolInterface'
 
@@ -29,9 +28,8 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     genericMidi: GenericMidi,
     lawoClient: LawoClient,
     dmxis: DMXIS,
-    yamahaQl1: YamahaQL1,
     yamahaQlCl: YamahaQLCL,
-/*    studerVistaMaster: StuderVistaMaster, */
+    studerVistaMaster: StuderVistaMaster,
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster
 } : {});
