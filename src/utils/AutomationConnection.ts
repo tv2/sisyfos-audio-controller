@@ -217,7 +217,7 @@ export class AutomationConnection {
         }
     }
 
-    sendOutMessage(oscMessage: string, channel: number, value: string, type: string, to: { ip: string, port: number }) {
+    sendOutMessage(oscMessage: string, channel: number, value: string, type: string, to: { address: string, port: number }) {
         let channelString = this.automationProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{value1}",
@@ -232,7 +232,7 @@ export class AutomationConnection {
                         value: value
                     }
                 ]
-            }, to.ip, to.port);
+            }, to.address, to.port);
         }
     }
 }
