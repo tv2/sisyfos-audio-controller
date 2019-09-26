@@ -112,7 +112,7 @@ export class CasparCGConnection {
                                 type: 'SET_PRIVATE',
                                 channel: index,
                                 tag: 'file_path',
-                                value: message.args[0]
+                                value: message.args[0].low
                             })
                         }
                     }
