@@ -122,6 +122,7 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
         case 'FADE_TO_BLACK': //none
             nextState[0].fader.map((item, index) => {
                 nextState[0].fader[index].pgmOn = false;
+                nextState[0].fader[index].voOn = false;
             });
             return nextState;
         case 'SNAP_RECALL': //snapIndex

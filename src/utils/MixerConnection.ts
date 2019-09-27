@@ -98,6 +98,7 @@ export class MixerGenericConnection {
     }
 
     fadeInOut (channelIndex: number, fadeTime: number){
+        let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
             clearInterval(this.fadeActiveTimer[channelIndex]);
@@ -109,16 +110,19 @@ export class MixerGenericConnection {
             active: true
         });
         
-        if (this.store.faders[0].fader[this.store.channels[0].channel[channelIndex].assignedFader].pgmOn) {
-            this.fadeUp(channelIndex, fadeTime);
+        if (this.store.faders[0].fader[faderIndex].pgmOn || this.store.faders[0].fader[faderIndex].voOn) {
+            this.fadeUp(channelIndex, fadeTime, faderIndex);
         } else {
             this.fadeDown(channelIndex, fadeTime);
         }
     }
 
-    fadeUp(channelIndex: number, fadeTime: number) {
+    fadeUp(channelIndex: number, fadeTime: number, faderIndex: number) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
-        let targetVal = parseFloat(this.store.faders[0].fader[this.store.channels[0].channel[channelIndex].assignedFader].faderLevel);
+        let targetVal = parseFloat(this.store.faders[0].fader[faderIndex].faderLevel);
+        if (this.store.faders[0].fader[faderIndex].voOn) {
+            targetVal = targetVal * (100-parseFloat(this.store.settings[0].voLevel))/100 
+        }
         const step: number = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
         let dispatchTrigger: number = 0;

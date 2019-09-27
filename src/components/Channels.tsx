@@ -53,7 +53,7 @@ class Channels extends React.Component<IAppProps & Store> {
     }
 
     snapMixButton(snapIndex: number) {
-        return (
+/*        return (
             <div key={snapIndex} className="channels-snap-mix-line">
                 <button
                     className="channels-snap-mix-button"
@@ -63,7 +63,7 @@ class Channels extends React.Component<IAppProps & Store> {
                 >SNAP {snapIndex + 1 }</button>
                 <br/>
             </div>
-        )
+        )*/
     }
 
     render() {
@@ -83,24 +83,26 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             <br/>
             <div className="channels-mix-body">
-                <button
+                {/*<button
                     className="channels-show-snaps-button"
                     onClick={() => {
                         this.handleShowSnaps();
                     }}
-                >SNAPS</button>
+                >SNAPS</button>*/}
                 <button
                     className="channels-show-settings-button"
                     onClick={() => {
                         this.handleShowSettings();
                     }}
                 >SETTINGS</button>
+                {/*
                 <button
                     className="channels-mix-button"
                     onClick={() => {
                         this.handleMix();
                     }}
                 >TAKE</button>
+                )*/}
                 <button
                     className="channels-clear-button"
                     onClick={() => {
