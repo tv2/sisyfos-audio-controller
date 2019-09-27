@@ -306,11 +306,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    FADE TIME IN ms :
-                    <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
                     MIXER IP :
                     <input name="deviceIp" type="text" value={this.state.settings.deviceIp} onChange={this.handleChange} />
                 </label>
@@ -320,6 +315,18 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     <input name="devicePort" type="text" value={this.state.settings.devicePort} onChange={this.handleChange} />
                 </label>
                 <br/>
+                <label className="settings-input-field">
+                    FADE TIME IN ms :
+                    <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    VOICE OVER DIM :
+                    <input name="voLevel" type="text" value={this.state.settings.voLevel} onChange={this.handleChange} />
+                    %
+                </label>
+                <br/>
+
                 <label className="settings-input-field">
                     PROTOCOL LATENCY :
                     <input name="protocolLatency" type="text" value={this.state.settings.protocolLatency} onChange={this.handleChange} />

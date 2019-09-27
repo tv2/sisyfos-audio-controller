@@ -19,7 +19,8 @@ export interface ISettings {
     numberOfChannelsInType: Array<number>,
     numberOfFaders: number,
     numberOfSnaps: number,
-    fadeTime: number
+    fadeTime: number,
+    voLevel: number,
     showPfl: boolean
 }
 
