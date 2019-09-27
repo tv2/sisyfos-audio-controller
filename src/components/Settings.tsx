@@ -5,6 +5,7 @@ import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 import { IAppProps } from './App';
 
 
+
 //Utils:
 import { saveSettings } from '../utils/SettingsStorage';
 import '../assets/css/Settings.css';
@@ -193,7 +194,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
 
     renderChannelTypeSettings = () => {
         return (
-            <div className="settings-show-channel-selection">
+            <div className={ClassNames("settings-show-channel-selection")
+            }>
                 <div className="settings-header">
                     NUMBER OF CHANNELTYPES:
                 </div>

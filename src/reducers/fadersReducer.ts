@@ -9,6 +9,7 @@ export interface IFader {
     faderLevel: number,
     label: string,
     pgmOn: boolean,
+    voOn: boolean,
     pstOn: boolean,
     pflOn: boolean,
     showChannel: boolean,
@@ -31,6 +32,7 @@ const defaultFadersReducerState = (numberOfFaders: number) => {
                 faderLevel: 0,
                 label: "",
                 pgmOn: false,
+                voOn: false,
                 pstOn: false,
                 pflOn: false,
                 showChannel: true,
@@ -78,9 +80,19 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
             return nextState;
         case 'TOGGLE_PGM': //channel
             nextState[0].fader[action.channel].pgmOn = !nextState[0].fader[action.channel].pgmOn;
+            nextState[0].fader[action.channel].voOn = false;
             return nextState;
         case 'SET_PGM': //channel
             nextState[0].fader[action.channel].pgmOn = !!action.pgmOn;
+            nextState[0].fader[action.channel].voOn = false;
+            return nextState;
+        case 'TOGGLE_VO': //channel
+            nextState[0].fader[action.channel].voOn = !nextState[0].fader[action.channel].voOn;
+            nextState[0].fader[action.channel].pgmOn = false;
+            return nextState;
+            case 'SET_VO': //channel
+            nextState[0].fader[action.channel].voOn = !!action.voOn;
+            nextState[0].fader[action.channel].pgmOn = false;
             return nextState;
         case 'TOGGLE_PST': //channel
             nextState[0].fader[action.channel].pstOn = !nextState[0].fader[action.channel].pstOn;
