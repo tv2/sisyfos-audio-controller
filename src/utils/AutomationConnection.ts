@@ -43,11 +43,26 @@ export class AutomationConnection {
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SET_PGM',
-                    channel: ch - 1,
-                    pgmOn: message.args[0]===1 ? true : false
-                });
+                if (message.args[0] === 1) {
+                    window.storeRedux.dispatch({
+                        type:'SET_PGM',
+                        channel: ch - 1,
+                        pgmOn: true
+                    });
+                } else if (message.args[0] === 2) {
+                    window.storeRedux.dispatch({
+                        type:'SET_VO',
+                        channel: ch - 1,
+                        voOn: true
+                    });
+                } else {
+                    window.storeRedux.dispatch({
+                        type:'SET_PGM',
+                        channel: ch - 1,
+                        pgmOn: false
+                    });
+                }
+
                 if (message.args.length > 1) {
                     window.mixerGenericConnection.updateOutLevel(ch-1, parseFloat(message.args[1]));
                 } else {
