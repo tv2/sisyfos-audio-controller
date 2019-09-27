@@ -52,7 +52,7 @@
 
 
 .channel-vo-button.on {
-    background-color: rgb(156, 154, 3);
+    background-color: rgb(219, 179, 0);
 }
 
 .channel-pst-button {
@@ -195,11 +195,13 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 input[color-pgm=pgm-on]::-webkit-slider-thumb {
+    border: 1px solid rgb(253, 60, 60);
     background: linear-gradient(to left, #3a1d1d 0%, #c04d4d 20%, #811919 50%, #00a 1px, #8a2626 52%, #bd5151 80%, #411f1f 100%);
 }
 
 input[color-vo=vo-on]::-webkit-slider-thumb {
-    background: linear-gradient(to left, #353006 0%, #c5b527 20%, #858314 50%, #00a 1px, #867424 52%, #ccbc2d 80%, #463b0a 100%);
+    border: 1px solid rgb(252, 255, 86);
+    background: linear-gradient(to left, #353006 0%, #c59327 20%, #856b14 50%, #00a 1px, #866724 52%, #cca22d 80%, #463b0a 100%);
 }
 
 
