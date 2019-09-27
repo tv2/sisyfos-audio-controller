@@ -23,7 +23,8 @@ interface IChannelInjectProps {
     label: string,
     snapOn: boolean[],
     mixerProtocol: string,
-    showSnaps: boolean
+    showSnaps: boolean,
+    automationMode: boolean,
     showPfl: boolean
 }
 
@@ -132,7 +133,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     fader() {
-        /* 'red' this.props.pgmOn, */
         return (
             <input className="channel-volume-slider"
                 id="typeinp"
@@ -192,7 +192,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     pstButton = () => {
-/*        return (
+        return (
             <button
                 className={ClassNames("channel-pst-button", {
                     'on': this.props.pstOn
@@ -201,7 +201,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     this.handlePst();
                 }}
             >PST</button>
-        )*/
+        )
     }
 
 
@@ -277,10 +277,20 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 <br/>
                 {this.pgmButton()}
                 <br/>
-                {this.voButton()}
-                <br/>
-                {this.pstButton()}
-                <br/>
+                {this.props.automationMode ?
+                    <React.Fragment>
+                        {this.voButton()}
+                        <br />
+                    </React.Fragment>
+                    : null
+                }
+                {this.props.automationMode ?
+                    null 
+                    : <React.Fragment>
+                        {this.pstButton()}
+                        <br />
+                    </React.Fragment>
+                }
                 {this.props.showPfl ?
                     <React.Fragment>
                         {this.pflButton()}
@@ -316,6 +326,7 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         label: state.faders[0].fader[props.channelIndex].label,
         snapOn: state.faders[0].fader[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,
+        automationMode: state.settings[0].automationMode,
         showSnaps: state.settings[0].showSnaps,
         showPfl: state.settings[0].showPfl
     }

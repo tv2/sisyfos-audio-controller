@@ -339,6 +339,16 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <br/>
                 <br/>
                 <label className="settings-input-field">
+                    AUTOMATION MODE:
+                    <input
+                        type="checkbox"
+                        name="automationMode"
+                        checked={this.state.settings.automationMode}
+                        onChange={this.handleChange}
+                    />
+                </label>
+                <br/>
+                <label className="settings-input-field">
                     SHOW PFL CONTROLS:
                     <input
                         type="checkbox"

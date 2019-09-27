@@ -53,7 +53,7 @@ class Channels extends React.Component<IAppProps & Store> {
     }
 
     snapMixButton(snapIndex: number) {
-/*        return (
+        return (
             <div key={snapIndex} className="channels-snap-mix-line">
                 <button
                     className="channels-snap-mix-button"
@@ -63,7 +63,7 @@ class Channels extends React.Component<IAppProps & Store> {
                 >SNAP {snapIndex + 1 }</button>
                 <br/>
             </div>
-        )*/
+        )
     }
 
     render() {
@@ -83,26 +83,41 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             <br/>
             <div className="channels-mix-body">
-                {/*<button
-                    className="channels-show-snaps-button"
-                    onClick={() => {
-                        this.handleShowSnaps();
-                    }}
-                >SNAPS</button>*/}
+            {this.props.store.settings[0].automationMode ?
+                    null 
+                    : <React.Fragment>
+                        {<button
+                            className="channels-show-snaps-button"
+                            onClick={() => {
+                                this.handleShowSnaps();
+                            }}
+                        >SNAPS
+                        </button>}
+                        <br />
+                    </React.Fragment>
+                }
+                
                 <button
                     className="channels-show-settings-button"
                     onClick={() => {
                         this.handleShowSettings();
                     }}
                 >SETTINGS</button>
-                {/*
-                <button
-                    className="channels-mix-button"
-                    onClick={() => {
-                        this.handleMix();
-                    }}
-                >TAKE</button>
-                )*/}
+
+                {this.props.store.settings[0].automationMode ?
+                    null 
+                    : <React.Fragment>
+                        {<button
+                            className="channels-mix-button"
+                            onClick={() => {
+                                this.handleMix();
+                            }}
+                        >TAKE
+                        </button>}
+                        <br />
+                    </React.Fragment>
+                }
+
                 <button
                     className="channels-clear-button"
                     onClick={() => {
@@ -110,16 +125,21 @@ class Channels extends React.Component<IAppProps & Store> {
                     }}
                 >CLEAR PGM</button>
                 <br/>
-                <div className="channels-snap-mix-body">
-                    {this.snapMixButton(0)}
-                    {this.snapMixButton(1)}
-                    {this.snapMixButton(2)}
-                    {this.snapMixButton(3)}
-                    {this.snapMixButton(4)}
-                    {this.snapMixButton(5)}
-                    {this.snapMixButton(6)}
-                    {this.snapMixButton(7)}
-                </div>
+                {this.props.store.settings[0].automationMode ?
+                    null 
+                    : <React.Fragment>
+                        <div className="channels-snap-mix-body">
+                            {this.snapMixButton(0)}
+                            {this.snapMixButton(1)}
+                            {this.snapMixButton(2)}
+                            {this.snapMixButton(3)}
+                            {this.snapMixButton(4)}
+                            {this.snapMixButton(5)}
+                            {this.snapMixButton(6)}
+                            {this.snapMixButton(7)}
+                        </div>
+                    </React.Fragment>
+                }
             </div>
         </div>
         )
