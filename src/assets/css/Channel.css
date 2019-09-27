@@ -195,7 +195,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 input[color-pgm=pgm-on]::-webkit-slider-thumb {
-    background: linear-gradient(to left, #3a1d1d 0%, #c06b6b 20%, #852f2f 50%, #00a 1px, #8f4a4a 52%, #c47171 80%, #411f1f 100%);
+    background: linear-gradient(to left, #3a1d1d 0%, #c04d4d 20%, #811919 50%, #00a 1px, #8a2626 52%, #bd5151 80%, #411f1f 100%);
 }
 
 input[color-vo=vo-on]::-webkit-slider-thumb {

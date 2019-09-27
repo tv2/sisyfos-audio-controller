@@ -194,8 +194,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
 
     renderChannelTypeSettings = () => {
         return (
-            <div className={ClassNames("settings-show-channel-selection")
-            }>
+            <div className="settings-show-channel-selection">
                 <div className="settings-header">
                     NUMBER OF CHANNELTYPES:
                 </div>
