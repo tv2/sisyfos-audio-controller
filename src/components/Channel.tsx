@@ -200,7 +200,17 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 onClick={event => {
                     this.handlePst();
                 }}
-            >PST</button>
+            >
+            {this.props.automationMode ? 
+                <React.Fragment>
+                    NEXT
+                </React.Fragment>
+                :
+                <React.Fragment>
+                    PST
+                </React.Fragment>
+            }
+            </button>
         )
     }
 
@@ -284,13 +294,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     </React.Fragment>
                     : null
                 }
-                {this.props.automationMode ?
-                    null 
-                    : <React.Fragment>
-                        {this.pstButton()}
-                        <br />
-                    </React.Fragment>
-                }
+                {this.pstButton()}
+                <br />
                 {this.props.showPfl ?
                     <React.Fragment>
                         {this.pflButton()}
