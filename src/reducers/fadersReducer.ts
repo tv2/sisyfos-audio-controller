@@ -101,7 +101,7 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
             nextState[0].fader[action.channel].pstVoOn = false;
             return nextState;
         case 'SET_PST': //channel
-            nextState[0].fader[action.channel].pstVoOn = !!action.pstVoOn;
+            nextState[0].fader[action.channel].pstOn = !!action.pstOn;
             nextState[0].fader[action.channel].pstVoOn = false;
             return nextState;
         case 'TOGGLE_PST_VO': //channel
@@ -109,7 +109,8 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
             nextState[0].fader[action.channel].pstOn = false;
             return nextState;
         case 'SET_PST_VO': //channel
-            nextState[0].fader[action.channel].pstOn = !!action.pstOn;
+            nextState[0].fader[action.channel].pstVoOn = !!action.pstVoOn;
+            nextState[0].fader[action.channel].pstOn = false;
             return nextState;
         case 'TOGGLE_PFL': //channel
             nextState[0].fader[action.channel].pflOn = !nextState[0].fader[action.channel].pflOn;
