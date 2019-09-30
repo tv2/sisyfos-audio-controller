@@ -15,6 +15,7 @@ interface IChannelInjectProps {
     pgmOn: boolean,
     voOn: boolean,
     pstOn: boolean,
+    pstVoOn: boolean,
     pflOn: boolean,
     channelType: number,
     channelTypeIndex: number,
@@ -195,7 +196,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         return (
             <button
                 className={ClassNames("channel-pst-button", {
-                    'on': this.props.pstOn
+                    'on': this.props.pstOn,
+                    'vo': this.props.pstVoOn
                 })}
                 onClick={event => {
                     this.handlePst();
@@ -323,6 +325,7 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         pgmOn: state.faders[0].fader[props.channelIndex].pgmOn,
         voOn: state.faders[0].fader[props.channelIndex].voOn,
         pstOn: state.faders[0].fader[props.channelIndex].pstOn,
+        pstVoOn: state.faders[0].fader[props.channelIndex].pstVoOn,
         pflOn: state.faders[0].fader[props.channelIndex].pflOn,
         showChannel: state.faders[0].fader[props.channelIndex].showChannel,
         faderLevel: state.faders[0].fader[props.channelIndex].faderLevel,

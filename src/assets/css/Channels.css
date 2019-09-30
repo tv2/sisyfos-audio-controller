@@ -51,11 +51,11 @@
     color: white;
     height: 90px;
     width: 90px;
-    border-color: rgb(18, 70, 11);
-    background-color: rgb(6, 70, 6);
+    border-color: rgb(139, 139, 139);
+    background-color: rgb(65, 65, 65);
     margin-left: 4px;
     margin-right: 4px;
-    margin-top: 106px;
+    margin-top: 50px;
     border-radius: 7px;
 }
 

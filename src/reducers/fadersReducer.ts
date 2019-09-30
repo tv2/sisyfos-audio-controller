@@ -97,16 +97,20 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
             nextState[0].fader[action.channel].pgmOn = false;
             return nextState;
         case 'TOGGLE_PST': //channel
-            nextState[0].fader[action.channel].pstOn = !nextState[0].fader[action.channel].pstOn;
-            nextState[0].fader[action.channel].pstVoOn = false;
+            if (nextState[0].fader[action.channel].pstOn) {
+                nextState[0].fader[action.channel].pstOn = false;
+                nextState[0].fader[action.channel].pstVoOn = true;
+            } else if (nextState[0].fader[action.channel].pstVoOn) {
+                nextState[0].fader[action.channel].pstOn = false;
+                nextState[0].fader[action.channel].pstVoOn = false;
+            } else {
+                nextState[0].fader[action.channel].pstOn = true;
+                nextState[0].fader[action.channel].pstVoOn = false;
+            }
             return nextState;
         case 'SET_PST': //channel
             nextState[0].fader[action.channel].pstOn = !!action.pstOn;
             nextState[0].fader[action.channel].pstVoOn = false;
-            return nextState;
-        case 'TOGGLE_PST_VO': //channel
-            nextState[0].fader[action.channel].pstVoOn = !nextState[0].fader[action.channel].pstVoOn;
-            nextState[0].fader[action.channel].pstOn = false;
             return nextState;
         case 'SET_PST_VO': //channel
             nextState[0].fader[action.channel].pstVoOn = !!action.pstVoOn;

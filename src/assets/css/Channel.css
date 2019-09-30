@@ -45,6 +45,7 @@
     color: white;
     height: 90px;
     width: 80px;
+    font-size: 105%;
     background-color: rgb(66, 65, 27);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
@@ -52,7 +53,7 @@
 
 
 .channel-vo-button.on {
-    background-color: rgb(219, 179, 0);
+    background-color: rgb(207, 135, 1);
 }
 
 .channel-pst-button {
@@ -63,14 +64,19 @@
     color: white;
     height: 90px;
     width: 80px;
-    background-color: rgb(59, 73, 59);
+    font-size: 103%;
+    background-color: rgb(88, 88, 88);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
     margin-bottom: 0;
 }
 
 .channel-pst-button.on {
-    background-color: green;
+    background-color: rgb(124, 0, 0);
+}
+
+.channel-pst-button.vo {
+    background-color: rgb(163, 106, 0);
 }
 
 .channel-pfl-button {

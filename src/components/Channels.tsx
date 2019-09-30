@@ -104,20 +104,6 @@ class Channels extends React.Component<IAppProps & Store> {
                     }}
                 >SETTINGS</button>
 
-                {this.props.store.settings[0].automationMode ?
-                    null 
-                    : <React.Fragment>
-                        {<button
-                            className="channels-mix-button"
-                            onClick={() => {
-                                this.handleMix();
-                            }}
-                        >TAKE
-                        </button>}
-                        <br />
-                    </React.Fragment>
-                }
-
                 <button
                     className="channels-clear-button"
                     onClick={() => {
@@ -125,6 +111,16 @@ class Channels extends React.Component<IAppProps & Store> {
                     }}
                 >CLEAR PGM</button>
                 <br/>
+
+                {<button
+                    className="channels-mix-button"
+                    onClick={() => {
+                        this.handleMix();
+                    }}
+                >NEXT
+                </button>}
+                <br />
+
                 {this.props.store.settings[0].automationMode ?
                     null 
                     : <React.Fragment>
