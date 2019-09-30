@@ -144,6 +144,12 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
                 nextState[0].fader[index].voOn = false;
             });
             return nextState;
+        case 'CLEAR_PST': //none
+            nextState[0].fader.map((item, index) => {
+                nextState[0].fader[index].pstOn = false;
+                nextState[0].fader[index].pstVoOn = false;
+            });
+            return nextState;
         case 'SNAP_RECALL': //snapIndex
             nextState[0].fader.map((item, index) => {
                 nextState[0].fader[index].pstOn = !!state[0].fader[index].snapOn[action.snapIndex];

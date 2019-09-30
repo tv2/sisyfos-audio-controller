@@ -137,6 +137,12 @@ export class AutomationConnection {
                 });
                 window.mixerGenericConnection.updateOutLevels();
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .CLEAR_PST)) {
+                    window.storeRedux.dispatch({
+                        type:'CLEAR_PST'
+                });
+                window.mixerGenericConnection.updateOutLevels();
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
                 window.storeRedux.dispatch({
