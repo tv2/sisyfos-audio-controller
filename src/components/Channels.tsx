@@ -24,9 +24,9 @@ class Channels extends React.Component<IAppProps & Store> {
         window.mixerGenericConnection.updateOutLevels();
     }
 
-    handleClearAllChannels() {
+    handleClearAllPst() {
         this.props.dispatch({
-            type:'FADE_TO_BLACK'
+            type:'CLEAR_PST'
         });
         window.mixerGenericConnection.updateOutLevels();
     }
@@ -107,9 +107,9 @@ class Channels extends React.Component<IAppProps & Store> {
                 <button
                     className="channels-clear-button"
                     onClick={() => {
-                        this.handleClearAllChannels();
+                        this.handleClearAllPst();
                     }}
-                >CLEAR PGM</button>
+                >CLEAR NEXT</button>
                 <br/>
 
                 {<button

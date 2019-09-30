@@ -274,10 +274,10 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     render() {
         return (
         this.props.showChannel === false ?
-            <div></div>
+            null
             :
             <div
-                style={{backgroundColor: this.mixerProtocol.channelTypes[this.props.channelType].channelTypeColor}}
+                /*style={{backgroundColor: this.mixerProtocol.channelTypes[this.props.channelType].channelTypeColor}}*/
                 className={
                     ClassNames("channel-body", {
                     "with-snaps": this.props.showSnaps,
