@@ -88,7 +88,7 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 (if second is missing it will take default fade value)
 /ch/1/mix/pgm - integer: { 0, 1 or 2 } - float { fadetime in ms }
 #### Set channel to PST:
-/ch/1/mix/pst - integer: { 0 or 1 }
+/ch/1/mix/pst - integer: { 0, 1 or 2 } (the integer defines: 0 - Off, 1 - Pgm On, 2 - Voice Over)
 #### Set channel faderlevel:
 /ch/1/mix/faderlevel - float {between 0 and 1}
 #### Set channel label:
@@ -99,6 +99,8 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /snap/1
 #### Fade all channels to black (mute)
 /fadetoblack
+#### Clear all pst buttons
+/clearpst
 #### Hide or show channel strips on GUI: 
 /ch/{value1}/visible - integer { 0 or 1 }
 
