@@ -71,11 +71,25 @@ export class AutomationConnection {
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PST_ON_OFF)){
                 let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SET_PST',
-                    channel: ch - 1,
-                    pstOn: message.args[0]===1 ? true : false
-                });
+                if (message.args[0] === 1) {
+                    window.storeRedux.dispatch({
+                        type:'SET_PST',
+                        channel: ch - 1,
+                        pstOn: true
+                    });
+                } else if (message.args[0] === 2) {
+                    window.storeRedux.dispatch({
+                        type:'SET_PST_VO',
+                        channel: ch - 1,
+                        pstVoOn: true
+                    });
+                } else {
+                    window.storeRedux.dispatch({
+                        type:'SET_PST',
+                        channel: ch - 1,
+                        pstOn: false
+                    });
+                }
                 window.mixerGenericConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_FADER_LEVEL)){
