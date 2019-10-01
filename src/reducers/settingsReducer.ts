@@ -60,7 +60,7 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             nextState[0].showSettings = !nextState[0].showSettings;
             return nextState;
         case 'TOGGLE_SHOW_OPTION':
-            nextState[0].showOptions = typeof nextState[0].showOptions === "number" ? false : action.channel;
+            nextState[0].showOptions = typeof nextState[0].showOptions === 'number' ? false : action.channel;
             return nextState;
         case 'TOGGLE_SHOW_SNAPS':
             nextState[0].showSnaps = !nextState[0].showSnaps;

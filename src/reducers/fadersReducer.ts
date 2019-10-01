@@ -59,7 +59,7 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
 
     switch(action.type) {
         case 'SET_VU_LEVEL': //channel:  level:
-            if (typeof nextState[0].vuMeters[action.channel] != 'undefined') {
+            if (typeof nextState[0].vuMeters[action.channel] !== 'undefined') {
                 nextState[0].vuMeters[action.channel].vuVal = parseFloat(action.level);
             }
             return nextState;

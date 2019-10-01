@@ -69,7 +69,7 @@ class Channels extends React.Component<IAppProps & Store> {
     render() {
         return (
         <div className="channels-body">
-            {(typeof this.props.store.settings[0].showOptions === "number") ?
+            {(typeof this.props.store.settings[0].showOptions === 'number') ?
                 <ChannelRouteSettings faderIndex={this.props.store.settings[0].showOptions}/>
                 :
                 ""
