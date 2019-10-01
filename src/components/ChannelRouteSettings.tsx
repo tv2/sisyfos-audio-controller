@@ -7,6 +7,7 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { IStore } from '../reducers/indexReducer';
 import CcgChannelSettings from './CcgChannelSettings';
+const { dialog } = require('electron').remote;
 
 interface IChannelSettingsInjectProps {
 	label: string,
@@ -33,6 +34,20 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
         let faderAssign = this.faderIndex
         if (event.target.checked === false) { 
             faderAssign = -1
+        } else {
+            const options = {
+                type: 'question',
+                buttons: ['Yes', 'Cancel'],
+                defaultId: 1,
+                title: 'Unlock Channel',
+                message: 'Bind Channel xx to Fader yy',
+                detail: 'This Channel is currently assigned to fader yy',
+            };
+            let response = dialog.showMessageBoxSync(null, options)
+
+            if (response === 1) {
+                return true
+            }
         }
         this.props.dispatch({
             type: 'SET_ASSIGNED_FADER',
