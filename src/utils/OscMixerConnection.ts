@@ -117,7 +117,7 @@ export class OscMixerConnection {
                     if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PGM',
-                            channel: assignedFader
+                            channel: assignedFader -1
                         });
                     }
 

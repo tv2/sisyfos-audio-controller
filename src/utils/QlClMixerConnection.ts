@@ -146,7 +146,7 @@ export class QlClMixerConnection {
 
     sendOutMessage(oscMessage: string, channelIndex: number, value: string | number, type: string) {
         let valueNumber: number
-        if (typeof(value) === 'string') {
+        if (typeof value === 'string') {
             value = parseFloat(value)
         }
         

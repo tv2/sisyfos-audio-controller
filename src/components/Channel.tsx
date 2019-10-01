@@ -13,7 +13,9 @@ import { any, number } from 'prop-types';
 
 interface IChannelInjectProps {
     pgmOn: boolean,
+    voOn: boolean,
     pstOn: boolean,
+    pstVoOn: boolean,
     pflOn: boolean,
     channelType: number,
     channelTypeIndex: number,
@@ -22,7 +24,8 @@ interface IChannelInjectProps {
     label: string,
     snapOn: boolean[],
     mixerProtocol: string,
-    showSnaps: boolean
+    showSnaps: boolean,
+    automationMode: boolean,
     showPfl: boolean
 }
 
@@ -65,6 +68,17 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     handlePgm() {
         this.props.dispatch({
             type:'TOGGLE_PGM',
+            channel: this.channelIndex
+        });
+        window.mixerGenericConnection.updateOutLevel(this.channelIndex);
+        if (window.huiRemoteConnection) {
+                        window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+        }
+    }
+
+    handleVo() {
+        this.props.dispatch({
+            type:'TOGGLE_VO',
             channel: this.channelIndex
         });
         window.mixerGenericConnection.updateOutLevel(this.channelIndex);
@@ -124,6 +138,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             <input className="channel-volume-slider"
                 id="typeinp"
                 type="range"
+                color-pgm = {this.props.pgmOn ? 'pgm-on' : ''}
+                color-vo = {this.props.voOn ? 'vo-on' : ''}
+
                 min={this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage != 'none' ?
                     this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].min
                     : this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].min
@@ -158,16 +175,44 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         )
     }
 
+
+    voButton = () => {
+        return (
+
+            <button
+                className={ClassNames("channel-vo-button", {
+                    'on': this.props.voOn
+                })}
+                onClick={event => {
+                    this.handleVo();
+                }}
+            >
+                VO
+            </button>
+        )
+    }
+
     pstButton = () => {
         return (
             <button
                 className={ClassNames("channel-pst-button", {
-                    'on': this.props.pstOn
+                    'on': this.props.pstOn,
+                    'vo': this.props.pstVoOn
                 })}
                 onClick={event => {
                     this.handlePst();
                 }}
-            >PST</button>
+            >
+            {this.props.automationMode ? 
+                <React.Fragment>
+                    NEXT
+                </React.Fragment>
+                :
+                <React.Fragment>
+                    PST
+                </React.Fragment>
+            }
+            </button>
         )
     }
 
@@ -229,14 +274,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     render() {
         return (
         this.props.showChannel === false ?
-            <div></div>
+            null
             :
             <div
-                style={{backgroundColor: this.mixerProtocol.channelTypes[this.props.channelType].channelTypeColor}}
+                /*style={{backgroundColor: this.mixerProtocol.channelTypes[this.props.channelType].channelTypeColor}}*/
                 className={
                     ClassNames("channel-body", {
                     "with-snaps": this.props.showSnaps,
-                    "with-pfl": this.props.showPfl
+                    "with-pfl": this.props.showPfl,
                 })}>
                 {this.channelSettings()}
                 {this.fader()}
@@ -244,8 +289,15 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 <br/>
                 {this.pgmButton()}
                 <br/>
+                {this.props.automationMode ?
+                    <React.Fragment>
+                        {this.voButton()}
+                        <br />
+                    </React.Fragment>
+                    : null
+                }
                 {this.pstButton()}
-                <br/>
+                <br />
                 {this.props.showPfl ?
                     <React.Fragment>
                         {this.pflButton()}
@@ -271,7 +323,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
         pgmOn: state.faders[0].fader[props.channelIndex].pgmOn,
+        voOn: state.faders[0].fader[props.channelIndex].voOn,
         pstOn: state.faders[0].fader[props.channelIndex].pstOn,
+        pstVoOn: state.faders[0].fader[props.channelIndex].pstVoOn,
         pflOn: state.faders[0].fader[props.channelIndex].pflOn,
         showChannel: state.faders[0].fader[props.channelIndex].showChannel,
         faderLevel: state.faders[0].fader[props.channelIndex].faderLevel,
@@ -280,6 +334,7 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         label: state.faders[0].fader[props.channelIndex].label,
         snapOn: state.faders[0].fader[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,
+        automationMode: state.settings[0].automationMode,
         showSnaps: state.settings[0].showSnaps,
         showPfl: state.settings[0].showPfl
     }

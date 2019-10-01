@@ -5,6 +5,7 @@ import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 import { IAppProps } from './App';
 
 
+
 //Utils:
 import { saveSettings } from '../utils/SettingsStorage';
 import '../assets/css/Settings.css';
@@ -305,11 +306,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    FADE TIME IN ms :
-                    <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
                     MIXER IP :
                     <input name="deviceIp" type="text" value={this.state.settings.deviceIp} onChange={this.handleChange} />
                 </label>
@@ -320,6 +316,18 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
+                    FADE TIME IN ms :
+                    <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    VOICE OVER DIM :
+                    <input name="voLevel" type="text" value={this.state.settings.voLevel} onChange={this.handleChange} />
+                    %
+                </label>
+                <br/>
+
+                <label className="settings-input-field">
                     PROTOCOL LATENCY :
                     <input name="protocolLatency" type="text" value={this.state.settings.protocolLatency} onChange={this.handleChange} />
                 </label>
@@ -329,6 +337,16 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     <input name="numberOfFaders" type="text" value={this.state.settings.numberOfFaders} onChange={this.handleNumberOfFaders} />
                 </label>
                 <br/>
+                <br/>
+                <label className="settings-input-field">
+                    AUTOMATION MODE:
+                    <input
+                        type="checkbox"
+                        name="automationMode"
+                        checked={this.state.settings.automationMode}
+                        onChange={this.handleChange}
+                    />
+                </label>
                 <br/>
                 <label className="settings-input-field">
                     SHOW PFL CONTROLS:

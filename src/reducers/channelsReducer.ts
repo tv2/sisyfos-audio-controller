@@ -57,7 +57,7 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
             nextState[0].channel[action.channel].outputLevel = parseFloat(action.level);
             return nextState;
         case 'SET_VU_LEVEL': //channel:  level:
-            if (typeof nextState[0].vuMeters[action.channel] != 'undefined') {
+            if (typeof nextState[0].vuMeters[action.channel] !== 'undefined') {
                 nextState[0].vuMeters[action.channel].vuVal = parseFloat(action.level);
             }
             return nextState;

@@ -19,7 +19,9 @@ export interface ISettings {
     numberOfChannelsInType: Array<number>,
     numberOfFaders: number,
     numberOfSnaps: number,
-    fadeTime: number
+    fadeTime: number,
+    voLevel: number,
+    automationMode: boolean,
     showPfl: boolean
 }
 
@@ -43,6 +45,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         numberOfChannelsInType: [8],
         numberOfFaders: 8,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
+        voLevel: 20,
+        automationMode: false,
         fadeTime: 100, //Time in ms
         showPfl: false
     },
@@ -56,7 +60,7 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             nextState[0].showSettings = !nextState[0].showSettings;
             return nextState;
         case 'TOGGLE_SHOW_OPTION':
-            nextState[0].showOptions = typeof nextState[0].showOptions === "number" ? false : action.channel;
+            nextState[0].showOptions = typeof nextState[0].showOptions === 'number' ? false : action.channel;
             return nextState;
         case 'TOGGLE_SHOW_SNAPS':
             nextState[0].showSnaps = !nextState[0].showSnaps;

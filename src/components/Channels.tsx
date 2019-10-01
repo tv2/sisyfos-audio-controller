@@ -24,9 +24,9 @@ class Channels extends React.Component<IAppProps & Store> {
         window.mixerGenericConnection.updateOutLevels();
     }
 
-    handleClearAllChannels() {
+    handleClearAllPst() {
         this.props.dispatch({
-            type:'FADE_TO_BLACK'
+            type:'CLEAR_PST'
         });
         window.mixerGenericConnection.updateOutLevels();
     }
@@ -69,7 +69,7 @@ class Channels extends React.Component<IAppProps & Store> {
     render() {
         return (
         <div className="channels-body">
-            {(typeof this.props.store.settings[0].showOptions === "number") ?
+            {(typeof this.props.store.settings[0].showOptions === 'number') ?
                 <ChannelRouteSettings faderIndex={this.props.store.settings[0].showOptions}/>
                 :
                 ""
@@ -83,41 +83,59 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             <br/>
             <div className="channels-mix-body">
-                <button
-                    className="channels-show-snaps-button"
-                    onClick={() => {
-                        this.handleShowSnaps();
-                    }}
-                >SNAPS</button>
+            {this.props.store.settings[0].automationMode ?
+                    null 
+                    : <React.Fragment>
+                        {<button
+                            className="channels-show-snaps-button"
+                            onClick={() => {
+                                this.handleShowSnaps();
+                            }}
+                        >SNAPS
+                        </button>}
+                        <br />
+                    </React.Fragment>
+                }
+                
                 <button
                     className="channels-show-settings-button"
                     onClick={() => {
                         this.handleShowSettings();
                     }}
                 >SETTINGS</button>
+
                 <button
+                    className="channels-clear-button"
+                    onClick={() => {
+                        this.handleClearAllPst();
+                    }}
+                >CLEAR NEXT</button>
+                <br/>
+
+                {<button
                     className="channels-mix-button"
                     onClick={() => {
                         this.handleMix();
                     }}
-                >TAKE</button>
-                <button
-                    className="channels-clear-button"
-                    onClick={() => {
-                        this.handleClearAllChannels();
-                    }}
-                >CLEAR PGM</button>
-                <br/>
-                <div className="channels-snap-mix-body">
-                    {this.snapMixButton(0)}
-                    {this.snapMixButton(1)}
-                    {this.snapMixButton(2)}
-                    {this.snapMixButton(3)}
-                    {this.snapMixButton(4)}
-                    {this.snapMixButton(5)}
-                    {this.snapMixButton(6)}
-                    {this.snapMixButton(7)}
-                </div>
+                >NEXT
+                </button>}
+                <br />
+
+                {this.props.store.settings[0].automationMode ?
+                    null 
+                    : <React.Fragment>
+                        <div className="channels-snap-mix-body">
+                            {this.snapMixButton(0)}
+                            {this.snapMixButton(1)}
+                            {this.snapMixButton(2)}
+                            {this.snapMixButton(3)}
+                            {this.snapMixButton(4)}
+                            {this.snapMixButton(5)}
+                            {this.snapMixButton(6)}
+                            {this.snapMixButton(7)}
+                        </div>
+                    </React.Fragment>
+                }
             </div>
         </div>
         )
