@@ -33,6 +33,19 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
     handleAssignChannel(index: number, event: any) {
         let faderAssign = this.faderIndex
         if (event.target.checked === false) { 
+            const options = {
+                type: 'question',
+                buttons: ['Yes', 'Cancel'],
+                defaultId: 1,
+                title: 'Unlock Channel',
+                message: 'Unbind Channel ' + String(index + 1) + ' from Fader ' + String(this.faderIndex + 1),
+            };
+            let response = dialog.showMessageBoxSync(null, options)
+
+            if (response === 1) {
+                return true
+            }
+
             faderAssign = -1
         } else {
             const options = {
@@ -40,8 +53,8 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                 buttons: ['Yes', 'Cancel'],
                 defaultId: 1,
                 title: 'Unlock Channel',
-                message: 'Bind Channel xx to Fader yy',
-                detail: 'This Channel is currently assigned to fader yy',
+                message: 'Bind Channel ' + String(index + 1) + ' to Fader ' + String(this.faderIndex + 1),
+                detail: 'THIS CHANNEL IS CURRENTLY ASSINGED TO ANOTHER FADER',
             };
             let response = dialog.showMessageBoxSync(null, options)
 
