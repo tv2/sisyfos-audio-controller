@@ -44,7 +44,7 @@
         "casparcg-connection": "^4.7.0",
         "classnames": "^2.2.6",
         "emberplus": "https://github.com/olzzon/tv-automation-emberplus-connection.git",
-        "osc": "https://github.com/PieceMeta/osc.js/tarball/master",
+        "osc": "2.3.1",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "react-redux": "^7.0.3",

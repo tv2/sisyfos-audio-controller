@@ -87,7 +87,7 @@ export class QlClMixerConnection {
                             }
 
                             if (window.huiRemoteConnection) {
-                                window.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, message.args[0]);
+                                window.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, faderLevel);
                             }
                             if (this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                                 this.store.channels[0].channel.map((channel: any, index: number) => {
