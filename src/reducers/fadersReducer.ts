@@ -138,6 +138,14 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
                 nextState[0].fader[index].voOn = nextVoOn;
             });
             return nextState;
+        case 'NEXT_MIX': //none
+            nextState[0].fader.map((item, index) => {
+                nextState[0].fader[index].pgmOn = state[0].fader[index].pstOn;
+                nextState[0].fader[index].voOn = state[0].fader[index].pstVoOn;
+                nextState[0].fader[index].pstOn = false;
+                nextState[0].fader[index].pstVoOn = false;
+            });
+            return nextState;
         case 'FADE_TO_BLACK': //none
             nextState[0].fader.map((item, index) => {
                 nextState[0].fader[index].pgmOn = false;

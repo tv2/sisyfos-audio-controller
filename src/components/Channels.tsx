@@ -18,9 +18,15 @@ class Channels extends React.Component<IAppProps & Store> {
 
 
     handleMix() {
-        this.props.dispatch({
-            type:'X_MIX'
-        });
+        if (this.props.store.settings[0].automationMode) {
+            this.props.dispatch({
+                type:'NEXT_MIX'
+            });
+        } else {
+            this.props.dispatch({
+                type:'X_MIX'
+            });
+        }
         window.mixerGenericConnection.updateOutLevels();
     }
 
