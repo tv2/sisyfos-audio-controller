@@ -46,8 +46,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         numberOfFaders: 8,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         voLevel: 20,
-        automationMode: false,
-        fadeTime: 100, //Time in ms
+        automationMode: true,
+        fadeTime: 60, //Time in ms
         showPfl: false
     },
 ];
