@@ -71,35 +71,17 @@ export class SSLMixerConnection {
                     buffers.push(data)
                 }
 
-                let buffer = buffers[0]
-                let commandHex = buffer.toString('hex')
-                let channel = buffer[6]
-                let value = buffer.readUInt16BE(7)/1024
-                console.log('Buffer Hex: ', this.addItemEvery(commandHex, ' ', 2))
-                console.log('Buffer Channel: ', channel)
-                console.log('Buffer Value: ', value)
-/*                channel.forEach((channel) => {
-                    if (this.checkSSLCommand(channel, this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_VU[0].mixerMessage)) {
-                            let mixerValues: string[] = channel.split(' ')
-                            let ch = parseInt(mixerValues[3])
-                            let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
-                            let mixerValue = parseInt(mixerValues[6])
-                            window.storeRedux.dispatch({
-                                type: 'SET_VU_LEVEL',
-                                channel: assignedFader,
-                                level: mixerValue
-                        }
-                        )
-                    } else if (this.checkSSLCommand(channel, this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_OUT_GAIN[0].mixerMessage)) {
-*/
-//                        let mixerValues: string[] = channel.split(' ')
-//                        let ch = 1 + parseInt(mixerValues[3])
+                buffers.forEach((buffer) => {
+                    if (buffer[1] === 6) {
+
+                        let commandHex = buffer.toString('hex')
+                        let channel = buffer[6]
+                        let value = buffer.readUInt16BE(7)/1024
+                        console.log('Buffer Hex: ', this.addItemEvery(commandHex, ' ', 2))
+                        console.log('Buffer Channel: ', channel)
+                        console.log('Buffer Value: ', value)
+                        
                         let assignedFader = 1 + this.store.channels[0].channel[channel].assignedFader
-//                        let mixerLevel: number = parseFloat(mixerValues[5])
-//                        let faderLevel =  Math.pow(2, (mixerLevel - 1000) / 2000)
-                        //let faderLevel = Math.log10((mixerLevel + 32768) / (1000 + 32768))
                         if (!this.store.channels[0].channel[channel].fadeActive
                             && value > this.mixerProtocol.fader.min) {
                             window.storeRedux.dispatch({
@@ -113,7 +95,7 @@ export class SSLMixerConnection {
                                     channel: assignedFader - 1
                                 });
                             }
-
+                            
                             if (window.huiRemoteConnection) {
                                 window.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, value);
                             }
@@ -124,21 +106,10 @@ export class SSLMixerConnection {
                                     }
                                 })
                             }
-
+                            
                         }
-
-//                         } 
-                        /*else if (this.checkSCPCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_NAME[0].mixerMessage)) {
-                        let ch = message.split("/")[this.cmdChannelIndex];
-                        window.storeRedux.dispatch({
-                            type: 'SET_CHANNEL_LABEL',
-                            channel: this.store.channels[0].channel[ch - 1].assignedFader,
-                            label: message.args[0]
-                        });
-                        console.log("OSC message: ", message);
-                    }*/
-//                })
+                    }
+                })    
             })
             .on('error', (error: any) => {
                 console.log("Error : ", error);
@@ -180,14 +151,14 @@ export class SSLMixerConnection {
             value = parseFloat(value)
         }
         
-        valueNumber = value * 2048
+        valueNumber = value * 1024
         let valueByte = new Uint8Array([
             (valueNumber & 0xff00) >> 8,
             (valueNumber & 0x00ff),
         ])
-
-        //f0 43 10 3e 19 01 00 37 00 00 00 00 00 00 00 07 0e f7
-        let command = 'f0 43 10 3e 19 01 00 37 00 00 00 {channel} 00 00 00 {level} f7'
+//        let value = buffer.readUInt16BE(7)/1024
+        //f1 06 ff 80 00 00 00 03 ff 7e
+        let command = 'f1 06 ff 80 00 00 {channel} {level} 80'
         command = command.replace('{channel}', channelIndex.toString(16))
         command = command.replace('{level}', valueByte[0].toString(16) + ' ' + valueByte[1].toString(16))
         let a = command.split(' ')
