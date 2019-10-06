@@ -27,7 +27,7 @@ export class SSLMixerConnection {
 
         this.SSLConnection = new net.Socket()
         // this.SSLConnection.connect(10001, this.store.settings[0].deviceIp, () => {
-        this.SSLConnection.connect(16219, '0.tcp.ngrok.io', () => {
+        this.SSLConnection.connect(this.store.settings[0].devicePort, this.store.settings[0].deviceIp, () => {
             console.log('Connected to SSL')
 
         }
