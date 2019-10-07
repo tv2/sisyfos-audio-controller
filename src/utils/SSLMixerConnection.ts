@@ -75,7 +75,7 @@ export class SSLMixerConnection {
                     if (buffer[1] !== 6) {
                         let commandHex = buffer.toString('hex')
                         console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
-                    } else if (buffer[1] === -1) {
+                    } else if (buffer[1] === 6) {
 
                         let commandHex = buffer.toString('hex')
                         let channel = buffer[6]
@@ -139,7 +139,6 @@ export class SSLMixerConnection {
     }
 
     calculate_checksum8(hexValues: string) {
-
         // convert input value to upper case
         hexValues = hexValues.toUpperCase();
 
@@ -163,23 +162,15 @@ export class SSLMixerConnection {
             else
                 fctr = 16;
         }
-        let strResult: any
-        if (result < 0) {
-            strResult = new String("Non-hex character entered");
-        } else if (fctr == 1) {
-            strResult = new String("Odd number of characters entered. e.g. correct value = aa aa");
-        } else {
-            // Calculate 2's complement
-            result = (~(result & 0xff) + 1) & 0xFF;
-            // Convert result to string
-            //strResult = new String(result.toString());
-            strResult = strHex.charAt(Math.floor(result / 16)) + strHex.charAt(result % 16);
-        }
-        return strResult;
+
+        // Calculate 2's complement
+        result = (~(result & 0xff) + 1) & 0xFF;
+        // Convert result to string
+        return strHex.charAt(Math.floor(result / 16)) + strHex.charAt(result % 16);
     }
 
 
-    sendOutMessage(oscMessage: string, channelIndex: number, value: string | number, type: string) {
+    sendOutMessage(sslMessage: string, channelIndex: number, value: string | number, type: string) {
         let valueNumber: number
         if (typeof value === 'string') {
             value = parseFloat(value)
@@ -190,18 +181,16 @@ export class SSLMixerConnection {
             (valueNumber & 0x0000ff00) >> 8,
             (valueNumber & 0x000000ff),
         ])
-        // 0xF1 0x06 0x00 0x80 0x00 0x00 0x02 0x01 0xFF 0x7E
-        //f1 06 ff 80 00 00 00 03 ff 7e
-        let command = 'f1 06 00 80 00 00 {channel} {level}'
-        command = command.replace('{channel}', ('0' + channelIndex.toString(16).slice(-2)))
-        command = command.replace('{level}', ('0' + valueByte[0].toString(16)).slice(-2) + ' ' + ('0' + valueByte[1].toString(16)).slice(-2) + ' ')
-        command = command + this.calculate_checksum8(command.slice(9))
-        let a = command.split(' ')
+        
+        //let sslMessage = 'f1 06 00 80 00 00 {channel} {level}'
+        sslMessage = sslMessage.replace('{channel}', ('0' + channelIndex.toString(16).slice(-2)))
+        sslMessage = sslMessage.replace('{level}', ('0' + valueByte[0].toString(16)).slice(-2) + ' ' + ('0' + valueByte[1].toString(16)).slice(-2) + ' ')
+        sslMessage = sslMessage + this.calculate_checksum8(sslMessage.slice(9))
+        let a = sslMessage.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
         
-        console.log("Send HEX: ", command) 
+        console.log("Send HEX: ", sslMessage) 
         this.SSLConnection.write(buf)
-//        this.scpConnection.write(oscMessage + ' ' + (channel - 1) + ' 0 ' + valueNumber.toFixed(0) + '\n');
     }
 
 
