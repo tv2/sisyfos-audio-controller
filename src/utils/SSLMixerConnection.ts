@@ -13,7 +13,7 @@ export class SSLMixerConnection {
     SSLConnection: any;
 
     constructor(mixerProtocol: IMixerProtocol) {
-        this.sendOutMessage = this.sendOutMessage.bind(this);
+        this.sendOutLevelMessage = this.sendOutLevelMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
         this.store = window.storeRedux.getState();
@@ -52,10 +52,10 @@ export class SSLMixerConnection {
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes("{channel}")) {
                         this.store.channels[0].channel.map((channel: any, index: any) => {
-                            this.sendOutRequest(item.mixerMessage, (index + 1));
+                            this.sendOutRequest(item.mixerMessage, index);
                         });
                     } else {
-                        this.sendOutMessage(item.mixerMessage, 0, item.value, item.type);
+                        this.sendOutLevelMessage(item.mixerMessage, 0, item.value, item.type);
                     }
                 });
             })
@@ -123,7 +123,7 @@ export class SSLMixerConnection {
     pingMixerCommand() {
         //Ping OSC mixer if mixerProtocol needs it.
         this.mixerProtocol.pingCommand.map((command) => {
-            this.sendOutMessage(
+            this.sendOutLevelMessage(
                 command.mixerMessage,
                 0,
                 command.value,
@@ -170,19 +170,17 @@ export class SSLMixerConnection {
     }
 
 
-    sendOutMessage(sslMessage: string, channelIndex: number, value: string | number, type: string) {
+    sendOutLevelMessage(sslMessage: string, channelIndex: number, value: string | number, type: string) {
         let valueNumber: number
         if (typeof value === 'string') {
             value = parseFloat(value)
         }
-        
         valueNumber = value * 1024
         let valueByte = new Uint8Array([
             (valueNumber & 0x0000ff00) >> 8,
             (valueNumber & 0x000000ff),
         ])
         
-        //let sslMessage = 'f1 06 00 80 00 00 {channel} {level}'
         sslMessage = sslMessage.replace('{channel}', ('0' + channelIndex.toString(16).slice(-2)))
         sslMessage = sslMessage.replace('{level}', ('0' + valueByte[0].toString(16)).slice(-2) + ' ' + ('0' + valueByte[1].toString(16)).slice(-2) + ' ')
         sslMessage = sslMessage + this.calculate_checksum8(sslMessage.slice(9))
@@ -194,17 +192,15 @@ export class SSLMixerConnection {
     }
 
 
-    sendOutRequest(oscMessage: string, channel: number) {
-        let channelString = channel.toString();
-        let message = oscMessage.replace(
-            "{channel}",
-            channelString
-        );
-        if (message != 'none') {
-            this.SSLConnection.send({
-                address: message
-            });
-        }
+    sendOutRequest(sslMessage: string, channelIndex: number) {
+        //let sslMessage = 'f1 06 00 80 00 00 {channel} {level}'
+        sslMessage = sslMessage.replace('{channel}', ('0' + channelIndex.toString(16).slice(-2)))
+        sslMessage = sslMessage + ' ' + this.calculate_checksum8(sslMessage.slice(9))
+        let a = sslMessage.split(' ')
+        let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
+        
+        console.log("Send HEX: ", sslMessage) 
+        this.SSLConnection.write(buf)
     }
 
     updateOutLevel(channelIndex: number) {
@@ -218,7 +214,7 @@ export class SSLMixerConnection {
                 level: this.store.faders[0].fader[faderIndex].faderLevel
             });
         }
-        this.sendOutMessage(
+        this.sendOutLevelMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex,
             this.store.channels[0].channel[channelIndex].outputLevel,
@@ -230,18 +226,14 @@ export class SSLMixerConnection {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         if (this.store.faders[0].fader[channelIndex].pflOn === true) {
-            this.sendOutMessage(
+            this.sendOutRequest(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].mixerMessage,
-                channelTypeIndex,
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].value,
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].type
+                channelTypeIndex
             );
         } else {
-            this.sendOutMessage(
+            this.sendOutRequest(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].mixerMessage,
-                channelTypeIndex,
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].value,
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].type
+                channelTypeIndex
             );
         }
     }
@@ -249,7 +241,7 @@ export class SSLMixerConnection {
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        this.sendOutMessage(
+        this.sendOutLevelMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex,
             String(outputLevel),
@@ -261,7 +253,7 @@ export class SSLMixerConnection {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         let channelName = this.store.faders[0].fader[channelIndex].label;
-        this.sendOutMessage(
+        this.sendOutLevelMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
             channelTypeIndex,
             channelName,
