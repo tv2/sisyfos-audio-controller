@@ -36,7 +36,7 @@ export class SSLMixerConnection {
         this.setupMixerConnection();
     }
 
-    addItemEvery(str: string, item: string, every: number) {
+    formatHexWithSpaces(str: string, item: string, every: number) {
         for(let i = 0; i < str.length; i++){
           if(!(i % (every + 1))){
             str = str.substring(0, i) + item + str.substring(i);
@@ -72,14 +72,17 @@ export class SSLMixerConnection {
                 }
 
                 buffers.forEach((buffer) => {
-                    if (buffer[1] === 6) {
+                    if (buffer[1] !== 6) {
+                        let commandHex = buffer.toString('hex')
+                        console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
+                    } else if (buffer[1] === -1) {
 
                         let commandHex = buffer.toString('hex')
                         let channel = buffer[6]
                         let value = buffer.readUInt16BE(7)/1024
-                        console.log('Buffer Hex: ', this.addItemEvery(commandHex, ' ', 2))
-                        console.log('Buffer Channel: ', channel)
-                        console.log('Buffer Value: ', value)
+                        console.log('Receive Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
+//                        console.log('Buffer Channel: ', channel)
+//                        console.log('Buffer Value: ', value)
                         
                         let assignedFader = 1 + this.store.channels[0].channel[channel].assignedFader
                         if (!this.store.channels[0].channel[channel].fadeActive
@@ -115,16 +118,6 @@ export class SSLMixerConnection {
                 console.log("Error : ", error);
                 console.log("Lost SCP connection");
             });
-
-        //Ping OSC mixer if mixerProtocol needs it.
-        if (this.mixerProtocol.pingTime > 0) {
-            let oscTimer = setInterval(
-                () => {
-                    this.pingMixerCommand();
-                },
-                this.mixerProtocol.pingTime
-            );
-        }
     }
 
     pingMixerCommand() {
@@ -145,6 +138,47 @@ export class SSLMixerConnection {
         return false;
     }
 
+    calculate_checksum8(hexValues: string) {
+
+        // convert input value to upper case
+        hexValues = hexValues.toUpperCase();
+
+        let strHex = new String("0123456789ABCDEF");
+        let result = 0;
+        let fctr = 16;
+
+        for (let i = 0; i < hexValues.length; i++) {
+            if (hexValues.charAt(i) == " ")
+                continue;
+
+            let v = strHex.indexOf(hexValues.charAt(i));
+            if (v < 0) {
+                result = -1;
+                break;
+            }
+            result += v * fctr;
+
+            if (fctr == 16)
+                fctr = 1;
+            else
+                fctr = 16;
+        }
+        let strResult: any
+        if (result < 0) {
+            strResult = new String("Non-hex character entered");
+        } else if (fctr == 1) {
+            strResult = new String("Odd number of characters entered. e.g. correct value = aa aa");
+        } else {
+            // Calculate 2's complement
+            result = (~(result & 0xff) + 1) & 0xFF;
+            // Convert result to string
+            //strResult = new String(result.toString());
+            strResult = strHex.charAt(Math.floor(result / 16)) + strHex.charAt(result % 16);
+        }
+        return strResult;
+    }
+
+
     sendOutMessage(oscMessage: string, channelIndex: number, value: string | number, type: string) {
         let valueNumber: number
         if (typeof value === 'string') {
@@ -153,16 +187,19 @@ export class SSLMixerConnection {
         
         valueNumber = value * 1024
         let valueByte = new Uint8Array([
-            (valueNumber & 0xff00) >> 8,
-            (valueNumber & 0x00ff),
+            (valueNumber & 0x0000ff00) >> 8,
+            (valueNumber & 0x000000ff),
         ])
-//        let value = buffer.readUInt16BE(7)/1024
+        // 0xF1 0x06 0x00 0x80 0x00 0x00 0x02 0x01 0xFF 0x7E
         //f1 06 ff 80 00 00 00 03 ff 7e
-        let command = 'f1 06 ff 80 00 00 {channel} {level} 80'
-        command = command.replace('{channel}', channelIndex.toString(16))
-        command = command.replace('{level}', valueByte[0].toString(16) + ' ' + valueByte[1].toString(16))
+        let command = 'f1 06 00 80 00 00 {channel} {level}'
+        command = command.replace('{channel}', ('0' + channelIndex.toString(16).slice(-2)))
+        command = command.replace('{level}', ('0' + valueByte[0].toString(16)).slice(-2) + ' ' + ('0' + valueByte[1].toString(16)).slice(-2) + ' ')
+        command = command + this.calculate_checksum8(command.slice(9))
         let a = command.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
+        
+        console.log("Send HEX: ", command) 
         this.SSLConnection.write(buf)
 //        this.scpConnection.write(oscMessage + ' ' + (channel - 1) + ' 0 ' + valueNumber.toFixed(0) + '\n');
     }
