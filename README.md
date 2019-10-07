@@ -39,6 +39,9 @@ yarn start
   * Todo:
     * Group support
     * Meter calibration
+* SSL System T - Broadcast Mixer
+  * SSL Automation Protocol for System T
+  * Port 10001
 * Midas Master
   * OSC protocol for Midas M32 and Behringer X32
   * Port 10023
