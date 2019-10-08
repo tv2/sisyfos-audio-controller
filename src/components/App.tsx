@@ -13,10 +13,6 @@ import { AutomationConnection } from '../utils/AutomationConnection';
 import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
-import { Store, AnyAction } from 'redux';
-import { ISettings } from '../reducers/settingsReducer';
-import { IChannels } from '../reducers/channelsReducer';
-
 export interface IAppProps {
     store: IStore
 }
@@ -43,7 +39,9 @@ class App extends React.Component<IAppProps> {
             this.props.store.faders[0],
             this.props.store.channels[0],
             numberOfChannels,
-            this.props.store.settings[0].numberOfFaders);
+            this.props.store.settings[0].numberOfFaders,
+            'default'
+        );
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
@@ -52,8 +50,8 @@ class App extends React.Component<IAppProps> {
 
     snapShopStoreTimer() {
         const saveTimer = setInterval(() => {
-                saveSnapshotState(this.props.store.faders[0]);
-                saveSnapshotChannelState(this.props.store.channels[0]);
+                saveSnapshotState(this.props.store.faders[0], 'default');
+                saveSnapshotChannelState(this.props.store.channels[0], 'default');
             },
             2000);
     }
