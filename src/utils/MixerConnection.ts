@@ -4,6 +4,7 @@ import { IMixerProtocol, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '.
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
 import { QlClMixerConnection } from './QlClMixerConnection';
+import { SSLMixerConnection } from './SSLMixerConnection';
 import { EmberMixerConnection } from './EmberMixerConnection';
 import { CasparCGConnection } from './CasparCGConnection';
 import { IChannel } from '../reducers/channelsReducer';
@@ -45,6 +46,8 @@ export class MixerGenericConnection {
             this.mixerConnection = new CasparCGConnection(this.mixerProtocol as ICasparCGMixerGeometry);
         } else if (this.mixerProtocol.protocol === 'EMBER') {
             this.mixerConnection = new EmberMixerConnection(this.mixerProtocol as IMixerProtocol);
+        } else if (this.mixerProtocol.protocol === 'SSL') {
+            this.mixerConnection = new SSLMixerConnection(this.mixerProtocol as IMixerProtocol);
         }
 
         //Setup timers for fade in & out
