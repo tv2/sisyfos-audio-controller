@@ -6,6 +6,8 @@ import '../assets/css/Channels.css';
 import { Store } from 'redux';
 import { IAppProps } from './App';
 import ChannelRouteSettings from './ChannelRouteSettings';
+const { dialog } = require('electron').remote;
+
 
 class Channels extends React.Component<IAppProps & Store> {
     constructor(props: any) {
@@ -56,6 +58,34 @@ class Channels extends React.Component<IAppProps & Store> {
         this.props.dispatch({
             type:'TOGGLE_SHOW_SETTINGS',
         });
+    }
+
+    handleShowStorage() {
+        this.props.dispatch({
+            type:'TOGGLE_SHOW_STORAGE',
+        });
+    }
+
+    saveFile() {
+        const options = {
+            type: 'saveFile',
+            title: 'Save Current Setup',
+            message: 'Stores the current state of Sisyfos - including Fader-Channel Routing',
+        };
+        let response = dialog.showSaveDialogSync(options)
+        if (response = 'save') {
+            console.log('SAVING CURRENT STATE')
+        }
+    }
+
+    loadFile() {
+        const options = {
+            type: 'loadFile',
+            title: 'Load selected file',
+            message: 'Loading Fader and Channels state',
+        };
+        let response = dialog.showOpenDialogSync(options)
+        console.log('LOAD STATE? :', response)
     }
 
     snapMixButton(snapIndex: number) {
@@ -111,6 +141,13 @@ class Channels extends React.Component<IAppProps & Store> {
                 >SETTINGS</button>
 
                 <button
+                    className="channels-show-storage-button"
+                    onClick={() => {
+                        this.handleShowStorage();
+                    }}
+                >STORAGE</button>
+
+                <button
                     className="channels-clear-button"
                     onClick={() => {
                         this.handleClearAllPst();
@@ -123,7 +160,7 @@ class Channels extends React.Component<IAppProps & Store> {
                     onClick={() => {
                         this.handleMix();
                     }}
-                >NEXT
+                >NEXT TAKE
                 </button>}
                 <br />
 
