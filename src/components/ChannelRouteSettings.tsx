@@ -48,8 +48,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                 title: 'Unlock Channel',
                 message: 'Unbind Channel ' + String(channel + 1) + ' from Fader ' + String(this.faderIndex + 1),
             };
-            let response = dialog.showMessageBoxSync(null, options)
-
+            let response = dialog.showMessageBoxSync(options)
             if (response === 1) {
                 return true
             }
@@ -67,7 +66,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                 message: 'Bind Channel ' + String(channel + 1) + ' to Fader ' + String(this.faderIndex + 1) + '?',
                 detail: detail,
             };
-            let response = dialog.showMessageBoxSync(null, options)
+            let response = dialog.showMessageBoxSync(options)
 
             if (response === 1) {
                 return true
