@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { connect } from "react-redux";
 import { IStore } from '../reducers/indexReducer';
+import * as electron from 'electron'
+
 
 import '../assets/css/App.css';
 import Channels from './Channels';
 import Settings from './Settings';
-import Storage from './Storage'
+import Storage from './RoutingStorage'
 
 //Utils:
-import { loadSnapshotState, saveSnapshotState, saveSnapshotChannelState } from '../utils/SettingsStorage';
+import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
 import { MixerGenericConnection } from '../utils/MixerConnection';
 import { AutomationConnection } from '../utils/AutomationConnection';
 import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
@@ -19,9 +21,13 @@ export interface IAppProps {
 }
 
 class App extends React.Component<IAppProps> {
+    numberOfChannels: number[] = []
+    settingsPath: string = ''
 
     constructor(props: IAppProps) {
         super(props)
+        this.saveSnapshotSettings = this.saveSnapshotSettings.bind(this)
+        this.loadSnapshotSettings = this.loadSnapshotSettings.bind(this)
     }
 
     componentWillMount() {
@@ -30,19 +36,14 @@ class App extends React.Component<IAppProps> {
         if (this.props.store.settings[0].enableRemoteFader){
             (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         }
+        this.settingsPath = electron.remote.app.getPath('userData');
+
         this.snapShopStoreTimer();
         let selectedProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
-        let numberOfChannels: Array<number> = [];
         selectedProtocol.channelTypes.forEach((item, index) => {
-            numberOfChannels.push(this.props.store.settings[0].numberOfChannelsInType[index]);
+            this.numberOfChannels.push(this.props.store.settings[0].numberOfChannelsInType[index]);
         });
-        loadSnapshotState(
-            this.props.store.faders[0],
-            this.props.store.channels[0],
-            numberOfChannels,
-            this.props.store.settings[0].numberOfFaders,
-            'default'
-        );
+        this.loadSnapshotSettings(this.settingsPath + '/default.shot', true)
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
@@ -54,17 +55,39 @@ class App extends React.Component<IAppProps> {
 
     snapShopStoreTimer() {
         const saveTimer = setInterval(() => {
-                saveSnapshotState(this.props.store.faders[0], 'default');
-                saveSnapshotChannelState(this.props.store.channels[0], 'default');
+                let snapshot = {
+                    faderState: this.props.store.faders[0],
+                    channelState: this.props.store.channels[0]
+                }
+                saveSnapshotState(snapshot, this.settingsPath + '/default.shot');
             },
             2000);
+    }
+
+    loadSnapshotSettings(fileName: string, loadAll: boolean) {
+        loadSnapshotState(
+            this.props.store.faders[0],
+            this.props.store.channels[0],
+            this.numberOfChannels,
+            this.props.store.settings[0].numberOfFaders,
+            fileName,
+            loadAll
+        );
+    }
+
+    saveSnapshotSettings(fileName: string) {
+        let snapshot = {
+            faderState: this.props.store.faders[0],
+            channelState: this.props.store.channels[0]
+        }
+        saveSnapshotState(snapshot, fileName);
     }
 
     render() {
         return (
         <div>
             <Channels />
-            {this.props.store.settings[0].showStorage ? <Storage/> : null}
+            {this.props.store.settings[0].showStorage ? <Storage load={this.loadSnapshotSettings} save={this.saveSnapshotSettings}/> : null}
             {this.props.store.settings[0].showSettings ? <Settings/> : null}
         </div>
         )

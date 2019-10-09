@@ -5,7 +5,6 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { IStore } from '../reducers/indexReducer';
 import CcgChannelSettings from './CcgChannelSettings';
 const { dialog } = require('electron').remote;
 
