@@ -26,12 +26,19 @@
 }
 
 
-.channel-storage-body > h4 {
+.channel-storage-body > h3 {
 	margin: 0;
-	margin-left: 40px;
 	padding: 0px 0;
 	line-height: 20px;
-	text-align: left;
+	text-align: center;
+	font-size: 110%;
+}
+
+.channel-storage-body > h4 {
+	margin: 0;
+	padding: 0px 0;
+	line-height: 20px;
+	text-align: center;
 	font-size: 110%;
 }
 
@@ -47,7 +54,7 @@
 	height: 50px;
 	font-size: 30px;
 	line-height: 50px;
-	top: 9px;
+	top: 1px;
 	right: 9px;
 }
 
@@ -57,18 +64,35 @@
 	outline : none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(97, 0, 0);
-    margin-right: auto;
 	margin-top: 15px;
     margin-bottom: 15px;
-	margin-left: auto;
+	margin-left: 120px;
 	border-radius: 7px;
 	display: block;
 	color: #fff;
-	width: 90%;
-	font-size: 30px;
+	width: 160px;
+	font-size: 20px;
     line-height: 50px;
 }
 
 .channel-storage-group > button.active {
 	border-color: rgb(17, 0, 255);
+}
+
+
+.storage-list {
+	list-style-type:none;
+}
+
+.storage-list > .item {
+	margin-bottom: 5px;
+	margin-right: 40px;
+	background-color: rgb(43, 42, 42);
+	border-color: rgb(94, 94, 94);
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 7px;
+	line-height: 30px;
+	text-align: center;
+	font-size: 120%;
 }

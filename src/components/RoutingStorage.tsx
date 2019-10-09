@@ -66,8 +66,8 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
             type: 'question',
             buttons: ['Yes', 'Cancel'],
             defaultId: 1,
-            title: 'Load ' + event.target,
-            message: 'Load Channel and Fader State and reset current',
+            title: 'Load Routing',
+            message: 'Load "' + event.target.textContent + '" Routing',
         };
         let response = dialog.showMessageBoxSync(options)
         if (!response) {
@@ -83,28 +83,30 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         })
         const listItems = files.map((file: string, index: number) => {
         return (
-            <li key={index} onClick={this.loadFile} className="storage-list-item">
+            <li key={index} onClick={this.loadFile} className="item">
             {file}
        </li>)
         }
         );
         return (
-          <ul>{listItems}</ul>
+          <ul className="storage-list">
+            {listItems}
+            </ul>
         );
     }
 
     render() {
         return (
             <div className="channel-storage-body">
-                <h2>FADER-CHANNEL ROUTING</h2>
-                <br/>
                 <button className="close" onClick={() => this.handleClose()}>X</button>
+                <h2>ROUTING</h2>
                 <br/>
+                <h3>SAVE ROUTING :</h3>
                 <button onClick={this.saveFile} className="button">
-                    SAVE SETUP
+                    SAVE
                 </button>
                 <hr/>
-                <h2>LOAD :</h2>
+                <h3>LOAD ROUTING :</h3>
                 <this.ListFiles files = {this.fileList}/>
             </div>
         )
