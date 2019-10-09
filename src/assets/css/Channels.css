@@ -44,6 +44,21 @@
 }
 
 
+.channels-show-storage-button {
+    outline : none;
+    -moz-outline : none;
+    color: white;
+    height: 60px;
+    width: 90px;
+    border-color: rgb(71, 71, 71);
+    background-color: rgb(53, 53, 53);
+    margin-left: 5px;
+    margin-right: 4px;
+    margin-top: 10px;
+    border-radius: 7px;
+}
+
+
 .channels-mix-button {
     outline : none;
     -moz-outline : none;
@@ -66,7 +81,7 @@
     height: 90px;
     width: 90px;
     border-color: rgb(99, 99, 99);
-    background-color: rgb(3, 0, 41);
+    background-color: rgb(19, 19, 19);
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 50px;

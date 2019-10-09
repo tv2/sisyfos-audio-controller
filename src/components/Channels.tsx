@@ -58,6 +58,12 @@ class Channels extends React.Component<IAppProps & Store> {
         });
     }
 
+    handleShowStorage() {
+        this.props.dispatch({
+            type:'TOGGLE_SHOW_STORAGE',
+        });
+    }
+
     snapMixButton(snapIndex: number) {
         return (
             <div key={snapIndex} className="channels-snap-mix-line">
@@ -111,6 +117,13 @@ class Channels extends React.Component<IAppProps & Store> {
                 >SETTINGS</button>
 
                 <button
+                    className="channels-show-storage-button"
+                    onClick={() => {
+                        this.handleShowStorage();
+                    }}
+                >STORAGE</button>
+
+                <button
                     className="channels-clear-button"
                     onClick={() => {
                         this.handleClearAllPst();
@@ -123,7 +136,7 @@ class Channels extends React.Component<IAppProps & Store> {
                     onClick={() => {
                         this.handleMix();
                     }}
-                >NEXT
+                >NEXT TAKE
                 </button>}
                 <br />
 

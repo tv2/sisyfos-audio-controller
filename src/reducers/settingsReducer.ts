@@ -5,6 +5,7 @@ export interface ISettings {
     showSnaps: boolean,
     showSettings: boolean,
     showOptions: number | false,
+    showStorage: boolean,
     mixerProtocol: string,
     localIp: string,
     localOscPort: number,
@@ -31,6 +32,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showSnaps: false,
         showSettings: false,
         showOptions: false,
+        showStorage: false,
         mixerProtocol: "genericMidi",
         localIp: "0.0.0.0",
         localOscPort: 1234,
@@ -62,12 +64,16 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
         case 'TOGGLE_SHOW_OPTION':
             nextState[0].showOptions = typeof nextState[0].showOptions === 'number' ? false : action.channel;
             return nextState;
+        case 'TOGGLE_SHOW_STORAGE':
+            nextState[0].showStorage = !nextState[0].showStorage;
+            return nextState;
         case 'TOGGLE_SHOW_SNAPS':
             nextState[0].showSnaps = !nextState[0].showSnaps;
             return nextState;
         case 'UPDATE_SETTINGS':
             nextState[0] = action.settings;
             nextState[0].showOptions = false;
+            nextState[0].showStorage = false;
             if (typeof MixerProtocolPresets[nextState[0].mixerProtocol] === 'undefined')
                 {
                     nextState[0].mixerProtocol = 'genericMidi';

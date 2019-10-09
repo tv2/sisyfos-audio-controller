@@ -5,6 +5,7 @@ import { IStore } from '../reducers/indexReducer';
 import '../assets/css/App.css';
 import Channels from './Channels';
 import Settings from './Settings';
+import Storage from './Storage'
 
 //Utils:
 import { loadSnapshotState, saveSnapshotState, saveSnapshotChannelState } from '../utils/SettingsStorage';
@@ -45,7 +46,10 @@ class App extends React.Component<IAppProps> {
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
-        return nextProps.store.settings[0].showSettings != this.props.store.settings[0].showSettings
+        return (
+            nextProps.store.settings[0].showSettings != this.props.store.settings[0].showSettings
+            || nextProps.store.settings[0].showStorage != this.props.store.settings[0].showStorage
+        )
     }
 
     snapShopStoreTimer() {
@@ -60,7 +64,8 @@ class App extends React.Component<IAppProps> {
         return (
         <div>
             <Channels />
-            {this.props.store.settings[0].showSettings ? <Settings/> : <div></div>}
+            {this.props.store.settings[0].showStorage ? <Storage/> : null}
+            {this.props.store.settings[0].showSettings ? <Settings/> : null}
         </div>
         )
     }
