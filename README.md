@@ -1,16 +1,29 @@
 # Sisyfos Audio Controller
 
-## Audiomixer control build with the logic from a videomixer.
+## Audiomixer control build for intelligent automation.
 
 You use the fader for the level, and PGM on/off for fade-in/out.
-TAKE crossfades between PGM & PST:
-<img src="Docs/pix/ProducersAudioMixer01.png">
+TAKE NEXT crossfades from NEXT to PGM
+
+It´s fast to see what faders are on-are, and whther they are PGM level or Voice over level
+<img src="Docs/pix/ProducersAudioMixerNext.png">
+
+### Routing of Faders to Channels
+Routing of Faders to multiple channels or a single channel are possible. This way Sisyfos can control some or all channels on a mixer. And a single fader can be used for E.G. a 5.1 (on 6 mono faders)
+
+<img src="Docs/pix/ProducersAudioMixerRouting.png">
+
+### Load/Save Routing
+Routing setups can be stored in STORAGE. So it´s possible to have different Routings dependent of what setup the Audio mixer is using.
+
+<img src="Docs/pix/ProducersAudioMixerStorage.png">
 
 
-### Snaps takes preset into PST:
+
+### When Automation mode is Disabled in settings - snaps takes preset into PST/NEXT:
 
 
-<img src="Docs/pix/ProducersAudioMixer02.png">
+<img src="Docs/pix/ProducersAudioMixerSnaps.png">
 
 
 
@@ -39,6 +52,10 @@ yarn start
   * Todo:
     * Group support
     * Meter calibration
+* SSL System T - Broadcast Mixer
+  * SSL Automation Protocol for System T
+  * Port 10001
+  * Set Protocol Latency to around 100ms
 * Midas Master
   * OSC protocol for Midas M32 and Behringer X32
   * Port 10023
@@ -66,8 +83,16 @@ yarn start
   * Default Port is 8000
   * Controls Fader On/Off with preset level from Sisyfos.
   * Easy implementation of state based lightcontrol from Automation.
+  * the PROTOCOL DELAY setting should be raised to 50ms, as DMXIS is responding a little slowly.
 * midi
   * Generic MIDI - still preminilary
+  * When using MIDI protocols, the PROTOCOL DELAY setting should be rised to at least 50ms
+* Yamaha QL1
+  * MIDI based Protocol
+  * For now only the 24 first channels are supported.
+  * Set label not supported
+  * When using MIDI protocols, the PROTOCOL DELAY setting should be rised to at least 50ms
+
 
 
 ## Automation Support:
@@ -76,10 +101,11 @@ It´s possible to control the Producers-Audio-Mixer from an automationsystem, fo
 ## Set state:
 To set the state send these OSC commands from you Automation to ProducersAudioMixer Port: 5255:
 #### Set channel to PGM (optional: indiviaul fadetime): 
+(the integer defines: 0 - Off, 1 - Pgm On, 2 - Voice Over)
 (if second is missing it will take default fade value)
-/ch/1/mix/pgm - integer: { 0 or 1 } - float { fadetime in ms }
+/ch/1/mix/pgm - integer: { 0, 1 or 2 } - float { fadetime in ms }
 #### Set channel to PST:
-/ch/1/mix/pst - integer: { 0 or 1 }
+/ch/1/mix/pst - integer: { 0, 1 or 2 } (the integer defines: 0 - Off, 1 - Pgm On, 2 - Voice Over)
 #### Set channel faderlevel:
 /ch/1/mix/faderlevel - float {between 0 and 1}
 #### Set channel label:
@@ -90,6 +116,8 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /snap/1
 #### Fade all channels to black (mute)
 /fadetoblack
+#### Clear all pst buttons
+/clearpst
 #### Hide or show channel strips on GUI: 
 /ch/{value1}/visible - integer { 0 or 1 }
 

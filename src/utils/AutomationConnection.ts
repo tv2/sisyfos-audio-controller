@@ -4,7 +4,7 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 
 //Utils:
 import { IAutomationProtocol, AutomationPresets } from '../constants/AutomationPresets';
-import { IChannel } from '../reducers/channelsReducer';
+import { IFader } from '../reducers/fadersReducer';
 
 const AUTOMATION_OSC_PORT = 5255;
 export class AutomationConnection {
@@ -43,11 +43,26 @@ export class AutomationConnection {
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SET_PGM',
-                    channel: ch - 1,
-                    pgmOn: message.args[0]===1 ? true : false
-                });
+                if (message.args[0] === 1) {
+                    window.storeRedux.dispatch({
+                        type:'SET_PGM',
+                        channel: ch - 1,
+                        pgmOn: true
+                    });
+                } else if (message.args[0] === 2) {
+                    window.storeRedux.dispatch({
+                        type:'SET_VO',
+                        channel: ch - 1,
+                        voOn: true
+                    });
+                } else {
+                    window.storeRedux.dispatch({
+                        type:'SET_PGM',
+                        channel: ch - 1,
+                        pgmOn: false
+                    });
+                }
+
                 if (message.args.length > 1) {
                     window.mixerGenericConnection.updateOutLevel(ch-1, parseFloat(message.args[1]));
                 } else {
@@ -56,11 +71,25 @@ export class AutomationConnection {
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PST_ON_OFF)){
                 let ch = message.address.split("/")[2];
-                window.storeRedux.dispatch({
-                    type:'SET_PST',
-                    channel: ch - 1,
-                    pstOn: message.args[0]===1 ? true : false
-                });
+                if (message.args[0] === 1) {
+                    window.storeRedux.dispatch({
+                        type:'SET_PST',
+                        channel: ch - 1,
+                        pstOn: true
+                    });
+                } else if (message.args[0] === 2) {
+                    window.storeRedux.dispatch({
+                        type:'SET_PST_VO',
+                        channel: ch - 1,
+                        pstVoOn: true
+                    });
+                } else {
+                    window.storeRedux.dispatch({
+                        type:'SET_PST',
+                        channel: ch - 1,
+                        pstOn: false
+                    });
+                }
                 window.mixerGenericConnection.updateOutLevel(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_FADER_LEVEL)){
@@ -108,6 +137,12 @@ export class AutomationConnection {
                 });
                 window.mixerGenericConnection.updateOutLevels();
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .CLEAR_PST)) {
+                    window.storeRedux.dispatch({
+                        type:'CLEAR_PST'
+                });
+                window.mixerGenericConnection.updateOutLevels();
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
                 window.storeRedux.dispatch({
@@ -141,7 +176,7 @@ export class AutomationConnection {
                     this.automationProtocol.toAutomation.STATE_FULL,
                     0,
                     JSON.stringify({
-                        channel: this.store.channels[0].channel.map(({ faderLevel, pgmOn, pstOn }: IChannel) => ({
+                        channel: this.store.faders[0].fader.map(({ faderLevel, pgmOn, pstOn }: IFader) => ({
                             faderLevel, pgmOn, pstOn
                         }))
                     }),
@@ -181,7 +216,7 @@ export class AutomationConnection {
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .PING)) {
                 let pingValue = message.address.split("/")[2];
-                
+
                 this.sendOutMessage(
                     this.automationProtocol.toAutomation.PONG,
                     0,
@@ -217,7 +252,7 @@ export class AutomationConnection {
         }
     }
 
-    sendOutMessage(oscMessage: string, channel: number, value: string, type: string, to: { ip: string, port: number }) {
+    sendOutMessage(oscMessage: string, channel: number, value: string, type: string, to: { address: string, port: number }) {
         let channelString = this.automationProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
         let message = oscMessage.replace(
                 "{value1}",
@@ -232,7 +267,7 @@ export class AutomationConnection {
                         value: value
                     }
                 ]
-            }, to.ip, to.port);
+            }, to.address, to.port);
         }
     }
 }

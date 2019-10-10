@@ -7,7 +7,6 @@ const folder = electron.remote.app.getPath('userData');
 export const loadSettings = (storeRedux: any) => {
     let settingsInterface = storeRedux.settings[0];
     try {
-
         const settingsFromFile = JSON.parse(fs.readFileSync(folder + "/settings.json"));
         return (settingsFromFile);
     }
@@ -25,30 +24,51 @@ export const saveSettings = (settings: any) => {
 };
 
 
-export const loadSnapshotState = (stateSnapshot: any, numberOfChannels: Array<number>) => {
+export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any, numberOfChannels: Array<number>, numberOfFaders: number, fileName: string, loadAll: boolean) => {
     try {
-        const stateFromFile = JSON.parse(fs.readFileSync(folder + "/state.json"));
-        window.storeRedux.dispatch({
-            type:'SET_COMPLETE_STATE',
-            allState: stateFromFile,
-            numberOfTypeChannels: numberOfChannels
-        });
+        const stateFromFile = JSON.parse(fs.readFileSync(fileName));
+        if (loadAll) {
+            window.storeRedux.dispatch({
+                type:'SET_COMPLETE_FADER_STATE',
+                allState: stateFromFile.faderState,
+                numberOfTypeChannels: numberOfFaders
+            });
+            window.storeRedux.dispatch({
+                type:'SET_COMPLETE_CH_STATE',
+                allState: stateFromFile.channelState,
+                numberOfTypeChannels: numberOfChannels
+            });
+        } else {
+            stateChannelSnapshot.channel = stateChannelSnapshot.channel.map((channel: any, index: number) => {
+                if (index < numberOfFaders) {
+                    channel.assignedFader = stateFromFile.channelState.channel[index].assignedFader
+                } else {
+                    channel.assignedFader = -1
+                }
+                return channel
+            })
+
+            window.storeRedux.dispatch({
+                type:'SET_COMPLETE_FADER_STATE',
+                allState: stateSnapshot,
+                numberOfTypeChannels: numberOfFaders
+            });
+            window.storeRedux.dispatch({
+                type:'SET_COMPLETE_CH_STATE',
+                allState: stateChannelSnapshot,
+                numberOfTypeChannels: numberOfChannels
+            });
+        }
     }
     catch (error) {
-        saveSnapshotState(stateSnapshot);
-        window.storeRedux.dispatch({
-            type:'SET_COMPLETE_STATE',
-            allState: stateSnapshot,
-            numberOfTypeChannels: numberOfChannels
-        });
+        console.log("Error loading Snapshot");
     }
 };
 
-export const saveSnapshotState = (stateSnapshot: any) => {
+export const saveSnapshotState = (stateSnapshot: any, fileName: string) => {
     let json = JSON.stringify(stateSnapshot);
-    fs.writeFile(folder + "/state.json", json, 'utf8', (error: any)=>{
+    fs.writeFile(fileName, json, 'utf8', (error: any)=>{
         //console.log(error);
     });
 }
-
 

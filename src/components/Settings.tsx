@@ -5,6 +5,7 @@ import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 import { IAppProps } from './App';
 
 
+
 //Utils:
 import { saveSettings } from '../utils/SettingsStorage';
 import '../assets/css/Settings.css';
@@ -41,8 +42,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     mixerProtocolList: any;
     mixerProtocolPresets: any;
     selectedProtocol: any;
-    remoteFaderMidiInputPortList: any;
-    remoteFaderMidiOutputPortList: any;
+    midiInputPortList: any;
+    midiOutputPortList: any;
 
 
     constructor(props: any) {
@@ -69,16 +70,16 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
             console.log("Midi inputs : ", WebMidi.inputs);
             console.log("Midi outputs : ", WebMidi.outputs);
         });
-        this.remoteFaderMidiInputPortList = WebMidi.inputs.map((input) => {
+        this.midiInputPortList = WebMidi.inputs.map((input) => {
             return {"label": input.name, "value": input.name}
         });
-        this.remoteFaderMidiOutputPortList = WebMidi.outputs.map((output) => {
+        this.midiOutputPortList = WebMidi.outputs.map((output) => {
             return {"label": output.name, "value": output.name}
         });
 
     }
 
-    handleMidiInputPort = (selectedOption: any) => {
+    handleRemoteMidiInputPort = (selectedOption: any) => {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.remoteFaderMidiInputPort = selectedOption.value;
         this.setState(
@@ -86,9 +87,26 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         );
     }
 
-    handleMidiOutputPort = (selectedOption: any) => {
+    handleRemoteMidiOutputPort = (selectedOption: any) => {
         var settingsCopy = Object.assign({}, this.state.settings);
         settingsCopy.remoteFaderMidiOutputPort = selectedOption.value;
+        this.setState(
+            {settings: settingsCopy}
+        );
+    }
+
+
+    handleMixerMidiInputPort = (selectedOption: any) => {
+        var settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.mixerMidiInputPort = selectedOption.value;
+        this.setState(
+            {settings: settingsCopy}
+        );
+    }
+
+    handleMixerMidiOutputPort = (selectedOption: any) => {
+        var settingsCopy = Object.assign({}, this.state.settings);
+        settingsCopy.mixerMidiOutputPort = selectedOption.value;
         this.setState(
             {settings: settingsCopy}
         );
@@ -111,15 +129,23 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     handleProtocolChange = (selectedOption: any) => {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.mixerProtocol = selectedOption.value;
+        this.setState({selectedProtocol: this.mixerProtocolPresets[settingsCopy.mixerProtocol]})
         this.setState(
             {settings: settingsCopy}
         );
-        this.setState({selectedProtocol: this.mixerProtocolPresets[this.state.settings.mixerProtocol]})
+    }
+
+    handleNumberOfFaders = (event: any) => {
+        let settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.numberOfFaders = parseInt(event.target.value);
+        this.setState(
+            {settings: settingsCopy}
+        );
     }
 
     handleNumberOfChannels = (index: number, event: any) => {
-        var settingsCopy= Object.assign({}, this.state.settings);
-        settingsCopy.numberOfChannelsInType[index] = event.target.value;
+        let settingsCopy= Object.assign({}, this.state.settings);
+        settingsCopy.numberOfChannelsInType[index] = parseInt(event.target.value);
         this.setState(
             {settings: settingsCopy}
         );
@@ -162,6 +188,10 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         location.reload();
     }
 
+    handleCancel = () => {
+        location.reload();
+    }
+
     renderChannelTypeSettings = () => {
         return (
             <div className="settings-show-channel-selection">
@@ -181,39 +211,32 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         )
     }
 
-    renderShowChannelsSelection = () => {
+    renderMixerMidiSettings = () => {
         return (
-            <div className="settings-show-channel-selection">
+            <div>
                 <div className="settings-header">
-                    SHOW/HIDE FADERS:
+                    MIXER MIDI SETTINGS:
                 </div>
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleShowAllChannels();
-                        }}
-                >
-                    ALL CHANNELS
-                </button>
-                <button className="settings-channels-button"
-                    onClick=
-                        {() => {
-                            this.handleHideAllChannels();
-                        }}
-                >
-                    NO CHANNELS
-                </button>
-                {this.props.store.channels[0].channel.map((channel: any, index: number) => {
-                        return <div key={index}>
-                            {channel.label != "" ? channel.label : ("CH " + (index + 1)) }
-                            <input
-                                type="checkbox"
-                                checked={this.props.store.channels[0].channel[index].showChannel }
-                                onChange={(event) => this.handleShowChannel(index, event)}
-                            />
-                        </div>
-                    })
-                }
+                <div className="settings-input-field">
+                    Mixer Midi Input Port :
+                </div>
+                <Select
+                    styles={selectorColorStyles}
+                    value={{label: this.state.settings.mixerMidiInputPort, value: this.state.settings.mixerMidiInputPort}}
+                    onChange={this.handleMixerMidiInputPort}
+                    options={this.midiInputPortList}
+                />
+                <br/>
+                <div className="settings-input-field">
+                    Mixer Midi Output Port :
+                </div>
+                <Select
+                    styles={selectorColorStyles}
+                    value={{label: this.state.settings.mixerMidiOutputPort, value: this.state.settings.mixerMidiOutputPort}}
+                    onChange={this.handleMixerMidiOutputPort}
+                    options={this.midiOutputPortList}
+                />
+                <br/>
             </div>
         )
     }
@@ -240,8 +263,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <Select
                     styles={selectorColorStyles}
                     value={{label: this.state.settings.remoteFaderMidiInputPort, value: this.state.settings.remoteFaderMidiInputPort}}
-                    onChange={this.handleMidiInputPort}
-                    options={this.remoteFaderMidiInputPortList}
+                    onChange={this.handleRemoteMidiInputPort}
+                    options={this.midiInputPortList}
                 />
                 <br/>
                 <div className="settings-input-field">
@@ -250,8 +273,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <Select
                     styles={selectorColorStyles}
                     value={{label: this.state.settings.remoteFaderMidiOutputPort, value: this.state.settings.remoteFaderMidiOutputPort}}
-                    onChange={this.handleMidiOutputPort}
-                    options={this.remoteFaderMidiOutputPortList}
+                    onChange={this.handleRemoteMidiOutputPort}
+                    options={this.midiOutputPortList}
                 />
                 <br/>
             </div>
@@ -283,11 +306,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    FADE TIME IN ms :
-                    <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label className="settings-input-field">
                     MIXER IP :
                     <input name="deviceIp" type="text" value={this.state.settings.deviceIp} onChange={this.handleChange} />
                 </label>
@@ -295,6 +313,39 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <label className="settings-input-field">
                     MIXER PORT :
                     <input name="devicePort" type="text" value={this.state.settings.devicePort} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    FADE TIME IN ms :
+                    <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    VOICE OVER DIM :
+                    <input name="voLevel" type="text" value={this.state.settings.voLevel} onChange={this.handleChange} />
+                    %
+                </label>
+                <br/>
+
+                <label className="settings-input-field">
+                    PROTOCOL LATENCY :
+                    <input name="protocolLatency" type="text" value={this.state.settings.protocolLatency} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    NUMBER OF FADERS :
+                    <input name="numberOfFaders" type="text" value={this.state.settings.numberOfFaders} onChange={this.handleNumberOfFaders} />
+                </label>
+                <br/>
+                <br/>
+                <label className="settings-input-field">
+                    AUTOMATION MODE:
+                    <input
+                        type="checkbox"
+                        name="automationMode"
+                        checked={this.state.settings.automationMode}
+                        onChange={this.handleChange}
+                    />
                 </label>
                 <br/>
                 <label className="settings-input-field">
@@ -307,12 +358,21 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     />
                 </label>
                 <br/>
-                {this.renderChannelTypeSettings()}
+                {this.state.selectedProtocol.protocol === "MIDI" ? this.renderMixerMidiSettings() : ""}
                 <br/>
-                {this.renderShowChannelsSelection()}
+                {this.renderChannelTypeSettings()}
                 <br/>
                 {this.renderRemoteControllerSettings()}
                 <br/>
+                <button
+                    className="settings-cancel-button"
+                    onClick=
+                        {() => {
+                            this.handleCancel();
+                        }}
+                >
+                    CANCEL
+                </button>
                 <button
                     className="settings-save-button"
                     onClick=

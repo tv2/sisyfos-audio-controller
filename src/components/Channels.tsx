@@ -5,7 +5,9 @@ import Channel from './Channel';
 import '../assets/css/Channels.css';
 import { Store } from 'redux';
 import { IAppProps } from './App';
-import ChannelSettings from './ChannelSettings';
+import ChannelRouteSettings from './ChannelRouteSettings';
+const { dialog } = require('electron').remote;
+
 
 class Channels extends React.Component<IAppProps & Store> {
     constructor(props: any) {
@@ -18,15 +20,21 @@ class Channels extends React.Component<IAppProps & Store> {
 
 
     handleMix() {
-        this.props.dispatch({
-            type:'X_MIX'
-        });
+        if (this.props.store.settings[0].automationMode) {
+            this.props.dispatch({
+                type:'NEXT_MIX'
+            });
+        } else {
+            this.props.dispatch({
+                type:'X_MIX'
+            });
+        }
         window.mixerGenericConnection.updateOutLevels();
     }
 
-    handleClearAllChannels() {
+    handleClearAllPst() {
         this.props.dispatch({
-            type:'FADE_TO_BLACK'
+            type:'CLEAR_PST'
         });
         window.mixerGenericConnection.updateOutLevels();
     }
@@ -52,6 +60,34 @@ class Channels extends React.Component<IAppProps & Store> {
         });
     }
 
+    handleShowStorage() {
+        this.props.dispatch({
+            type:'TOGGLE_SHOW_STORAGE',
+        });
+    }
+
+    saveFile() {
+        const options = {
+            type: 'saveFile',
+            title: 'Save Current Setup',
+            message: 'Stores the current state of Sisyfos - including Fader-Channel Routing',
+        };
+        let response = dialog.showSaveDialogSync(options)
+        if (response = 'save') {
+            console.log('SAVING CURRENT STATE')
+        }
+    }
+
+    loadFile() {
+        const options = {
+            type: 'loadFile',
+            title: 'Load selected file',
+            message: 'Loading Fader and Channels state',
+        };
+        let response = dialog.showOpenDialogSync(options)
+        console.log('LOAD STATE? :', response)
+    }
+
     snapMixButton(snapIndex: number) {
         return (
             <div key={snapIndex} className="channels-snap-mix-line">
@@ -69,8 +105,12 @@ class Channels extends React.Component<IAppProps & Store> {
     render() {
         return (
         <div className="channels-body">
-            {(typeof this.props.store.settings[0].showOptions === "number") && <ChannelSettings channelIndex={this.props.store.settings[0].showOptions} />}
-            {this.props.store.channels[0].channel.map((none: any, index: number) => {
+            {(typeof this.props.store.settings[0].showOptions === 'number') ?
+                <ChannelRouteSettings faderIndex={this.props.store.settings[0].showOptions}/>
+                :
+                ""
+            }
+            {this.props.store.faders[0].fader.map((none: any, index: number) => {
                 return <Channel
                             channelIndex = {index}
                             key={index}
@@ -79,41 +119,66 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             <br/>
             <div className="channels-mix-body">
-                <button
-                    className="channels-show-snaps-button"
-                    onClick={() => {
-                        this.handleShowSnaps();
-                    }}
-                >SNAPS</button>
+            {this.props.store.settings[0].automationMode ?
+                    null 
+                    : <React.Fragment>
+                        {<button
+                            className="channels-show-snaps-button"
+                            onClick={() => {
+                                this.handleShowSnaps();
+                            }}
+                        >SNAPS
+                        </button>}
+                        <br />
+                    </React.Fragment>
+                }
+                
                 <button
                     className="channels-show-settings-button"
                     onClick={() => {
                         this.handleShowSettings();
                     }}
                 >SETTINGS</button>
+
                 <button
+                    className="channels-show-storage-button"
+                    onClick={() => {
+                        this.handleShowStorage();
+                    }}
+                >STORAGE</button>
+
+                <button
+                    className="channels-clear-button"
+                    onClick={() => {
+                        this.handleClearAllPst();
+                    }}
+                >CLEAR NEXT</button>
+                <br/>
+
+                {<button
                     className="channels-mix-button"
                     onClick={() => {
                         this.handleMix();
                     }}
-                >TAKE</button>
-                <button
-                    className="channels-clear-button"
-                    onClick={() => {
-                        this.handleClearAllChannels();
-                    }}
-                >CLEAR PGM</button>
-                <br/>
-                <div className="channels-snap-mix-body">
-                    {this.snapMixButton(0)}
-                    {this.snapMixButton(1)}
-                    {this.snapMixButton(2)}
-                    {this.snapMixButton(3)}
-                    {this.snapMixButton(4)}
-                    {this.snapMixButton(5)}
-                    {this.snapMixButton(6)}
-                    {this.snapMixButton(7)}
-                </div>
+                >NEXT TAKE
+                </button>}
+                <br />
+
+                {this.props.store.settings[0].automationMode ?
+                    null 
+                    : <React.Fragment>
+                        <div className="channels-snap-mix-body">
+                            {this.snapMixButton(0)}
+                            {this.snapMixButton(1)}
+                            {this.snapMixButton(2)}
+                            {this.snapMixButton(3)}
+                            {this.snapMixButton(4)}
+                            {this.snapMixButton(5)}
+                            {this.snapMixButton(6)}
+                            {this.snapMixButton(7)}
+                        </div>
+                    </React.Fragment>
+                }
             </div>
         </div>
         )

@@ -8,7 +8,6 @@
 .channels-mix-body {
     max-width: 100px;
     min-height: 800px;
-    background-color: #414040;
     color: white;
     background-color: #2f2f2f;
     margin: 4px;
@@ -45,17 +44,32 @@
 }
 
 
+.channels-show-storage-button {
+    outline : none;
+    -moz-outline : none;
+    color: white;
+    height: 60px;
+    width: 90px;
+    border-color: rgb(71, 71, 71);
+    background-color: rgb(53, 53, 53);
+    margin-left: 5px;
+    margin-right: 4px;
+    margin-top: 10px;
+    border-radius: 7px;
+}
+
+
 .channels-mix-button {
     outline : none;
     -moz-outline : none;
     color: white;
     height: 90px;
     width: 90px;
-    border-color: rgb(18, 70, 11);
-    background-color: rgb(6, 70, 6);
+    border-color: rgb(139, 139, 139);
+    background-color: rgb(65, 65, 65);
     margin-left: 4px;
     margin-right: 4px;
-    margin-top: 106px;
+    margin-top: 50px;
     border-radius: 7px;
 }
 
@@ -67,7 +81,7 @@
     height: 90px;
     width: 90px;
     border-color: rgb(99, 99, 99);
-    background-color: rgb(66, 27, 27);
+    background-color: rgb(19, 19, 19);
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 50px;

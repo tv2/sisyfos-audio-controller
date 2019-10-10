@@ -61,50 +61,68 @@ export class OscMixerConnection {
                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_VU_LEVEL',
-                        channel: ch - 1,
+                        channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         level: message.args[0]
                     });
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_FADER_LEVEL[0].mixerMessage)){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
+                let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
+
                 window.storeRedux.dispatch({
                     type:'SET_FADER_LEVEL',
-                    channel: ch - 1,
+                    channel: assignedFader - 1,
                     level: message.args[0]
                 });
 
-                if (window.huiRemoteConnection) {
-                    window.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
+
+                if (this.store.faders[0].fader[assignedFader - 1].pgmOn)
+                {
+                    this.store.channels[0].channel.map((channel: any, index: number) => {
+                        if (channel.assignedFader === assignedFader - 1) {
+                            window.storeRedux.dispatch({
+                                type:'SET_OUTPUT_LEVEL',
+                                channel: index,
+                                level: message.args[0]
+                            });
+                            this.updateFadeIOLevel(index, this.store.faders[0].fader[assignedFader - 1].faderLevel);
+                        }
+                    })
                 }
 
-                if (this.mixerProtocol.mode === 'master') {
-                    if (this.store.channels[0].channel[ch - 1].pgmOn)
-                    {
-                        this.updateOutLevel(ch-1);
-                    }
+                if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
+                    window.storeRedux.dispatch({
+                        type:'TOGGLE_PGM',
+                        channel: assignedFader - 1
+                    });
+                }
+
+                if (window.huiRemoteConnection) {
+                    window.huiRemoteConnection.updateRemoteFaderState(assignedFader-1, message.args[0]);
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_OUT_GAIN[0].mixerMessage)){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
+                let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
                 if (this.mixerProtocol.mode === 'master'
                     && !this.store.channels[0].channel[ch - 1].fadeActive
                     &&  message.args[0] > this.mixerProtocol.fader.min)
                 {
                     window.storeRedux.dispatch({
                         type:'SET_FADER_LEVEL',
-                        channel: ch - 1,
+                        channel: assignedFader - 1,
                         level: message.args[0]
                     });
-                    if (!this.store.channels[0].channel[ch - 1].pgmOn) {
+                    if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                         window.storeRedux.dispatch({
                             type:'TOGGLE_PGM',
-                            channel: ch - 1
+                            channel: assignedFader -1
                         });
                     }
 
                     if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemoteFaderState(ch-1, message.args[0]);
+                        window.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, message.args[0]);
                     }
 
                 }
@@ -113,7 +131,7 @@ export class OscMixerConnection {
                                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
                         type:'SET_CHANNEL_LABEL',
-                        channel: ch - 1,
+                        channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         label: message.args[0]
                     });
                 console.log("OSC message: ", message.address);
@@ -213,18 +231,12 @@ export class OscMixerConnection {
             this.store.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
-        this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
-            channelTypeIndex+1,
-            this.store.channels[0].channel[channelIndex].faderLevel,
-            "f"
-        );
     }
 
     updatePflState(channelIndex: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        if (this.store.channels[0].channel[channelIndex].pflOn === true) {
+        if (this.store.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].mixerMessage,
                 channelTypeIndex+1,
@@ -255,7 +267,7 @@ export class OscMixerConnection {
     updateChannelName(channelIndex: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        let channelName = this.store.channels[0].channel[channelIndex].label;
+        let channelName = this.store.faders[0].fader[channelIndex].label;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
             channelTypeIndex+1,

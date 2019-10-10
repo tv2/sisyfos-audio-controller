@@ -71,6 +71,8 @@ export class HuiMidiRemoteConnection {
                     window.mixerGenericConnection.updateOutLevel(message.data[1]);
                     this.updateRemoteFaderState(message.data[1], this.convertFromRemoteLevel(message.data[2]))
                 } else if (message.data[1] = 15) {
+                    
+                    console.log("Received message (" + message.data + ").");
                     if (message.data[2]<9) {
                         //Set active channel for next midi message:
                         this.activeHuiChannel = message.data[2];
@@ -155,7 +157,7 @@ export class HuiMidiRemoteConnection {
         );
         this.midiOutput.sendControlChange(
             44,
-            1 + (64*this.store.channels[0].channel[channelIndex].pgmOn),
+            1 + (64*this.store.faders[0].fader[channelIndex].pgmOn),
             1
         );
 
@@ -167,7 +169,7 @@ export class HuiMidiRemoteConnection {
         );
         this.midiOutput.sendControlChange(
             44,
-            3 + (64*this.store.channels[0].channel[channelIndex].pflOn),
+            3 + (64*this.store.faders[0].fader[channelIndex].pflOn),
             1
         );
     }

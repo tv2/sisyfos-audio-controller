@@ -7,6 +7,8 @@ import { GenericMidi } from './mixerProtocols/genericMidi';
 import { LawoClient } from './mixerProtocols/EmberLawo';
 import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 import { DMXIS } from './mixerProtocols/DmxIs';
+import { YamahaQLCL } from './mixerProtocols/yamahaQLCL'
+import { SSLSystemT } from './mixerProtocols/SSLsystemT'
 
 interface IMessageProtocol {
     mixerMessage: string,
@@ -19,13 +21,14 @@ import { IMixerProtocolGeneric} from './MixerProtocolInterface'
 
 export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Object.assign({
     ardourMaster: ArdourMaster,
-    reaper: Reaper,
     reaperMaster: ReaperMaster,
     behringerxrmaster: BehringerXrMaster,
     midasMaster: MidasMaster,
     genericMidi: GenericMidi,
     lawoClient: LawoClient,
     dmxis: DMXIS,
+    yamahaQlCl: YamahaQLCL,
+    sslSystemT: SSLSystemT,
     studerVistaMaster: StuderVistaMaster,
 }, CasparCGMaster !== undefined ? {
     casparCGMaster: CasparCGMaster

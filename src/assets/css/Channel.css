@@ -1,12 +1,11 @@
 .channel-body {
     color: white;
-    background-color: #2f2f2f;
+    background: linear-gradient(#2f2f2f 0px,#2f2f2f 730px, rgb(0, 0, 0) 1px, #2f2f2f 740px, #2f2f2f 100%);
     margin: 4px;
     border-radius: 10px;
     max-width: 100px;
     position: relative;
 }
-
 
 .channel-name {
     margin-top: 10px;
@@ -27,6 +26,7 @@
     color: white;
     height: 90px;
     width: 80px;
+    font-size: 105%;
     background-color: rgb(66, 27, 27);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
@@ -37,7 +37,8 @@
     background-color: red;
 }
 
-.channel-pst-button {
+
+.channel-vo-button {
     outline : none;
     -moz-outline : none;
     margin-left: 10px;
@@ -45,14 +46,38 @@
     color: white;
     height: 90px;
     width: 80px;
-    background-color: rgb(59, 73, 59);
+    font-size: 105%;
+    background-color: rgb(66, 54, 27);
+    border-radius: 7px;
+    border-color: rgb(99, 99, 99);
+}
+
+
+.channel-vo-button.on {
+    background-color: rgb(207, 135, 1);
+}
+
+.channel-pst-button {
+    outline : none;
+    -moz-outline : none;
+    margin-left: 10px;
+    margin-top: 30px;
+    color: white;
+    height: 90px;
+    width: 80px;
+    font-size: 103%;
+    background-color: rgb(88, 88, 88);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
     margin-bottom: 0;
 }
 
 .channel-pst-button.on {
-    background-color: green;
+    background-color: rgb(124, 0, 0);
+}
+
+.channel-pst-button.vo {
+    background-color: rgb(163, 106, 0);
 }
 
 .channel-pfl-button {
@@ -122,11 +147,11 @@
     width: 60px;
     border-radius: 7px;
     border-color: rgb(68, 68, 68);
-    background-color: rgb(89, 83, 10);
+    color: rgb(89, 83, 10);
 }
 
 .channel-snap-button.on {
-    background-color: rgb(183, 182, 20);
+    color: rgb(183, 182, 20);
 }
 
 
@@ -175,6 +200,17 @@ input[type=range]::-webkit-slider-thumb {
     margin-top: -21px;
     position: relative;
 }
+
+input[color-pgm=pgm-on]::-webkit-slider-thumb {
+    border: 1px solid rgb(253, 60, 60);
+    background: linear-gradient(to left, #3a1d1d 0%, #c04d4d 20%, #811919 50%, #00a 1px, #8a2626 52%, #bd5151 80%, #411f1f 100%);
+}
+
+input[color-vo=vo-on]::-webkit-slider-thumb {
+    border: 1px solid rgb(252, 255, 86);
+    background: linear-gradient(to left, #353006 0%, #c59327 20%, #856b14 50%, #00a 1px, #866724 52%, #cca22d 80%, #463b0a 100%);
+}
+
 
 input[type=range]:focus::-webkit-slider-runnable-track {
     background: #000000;

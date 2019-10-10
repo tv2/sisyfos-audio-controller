@@ -28,33 +28,45 @@ export class MidiMixerConnection {
             if (err) {
                 console.log("WebMidi could not be enabled.", err);
             }
-
-            // Viewing available inputs and outputs
-            console.log("Midi inputs : ", WebMidi.inputs);
-            console.log("Midi outputs : ", WebMidi.outputs);
-
-            // Display the current time
-            console.log("Midi time : ", WebMidi.time);
-
-            this.midiInput = WebMidi.getInputByName("IAC-driver ProducersMixer");
-            this.midiOutput = WebMidi.getOutputByName("IAC-driver ProducersMixer");
+            console.log("Connecting Mixer Midi input on port :", this.store.settings[0].mixerMidiInputPort);
+            console.log("Connecting Mixer Midi output on port :", this.store.settings[0].mixerMidiOutputPort);
+            this.midiInput = WebMidi.getInputByName(this.store.settings[0].mixerMidiInputPort);
+            this.midiOutput = WebMidi.getOutputByName(this.store.settings[0].mixerMidiOutputPort);
 
             this.setupMixerConnection();
         });
     }
 
     setupMixerConnection() {
-        this.midiInput.addListener('controlchange', this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_FADER_LEVEL,
-            (error: any) => {
-                console.log("Received 'controlchange' message (" + error.data + ").");
-                window.storeRedux.dispatch({
-                    type:'SET_FADER_LEVEL',
-                    channel: error.channel - 1,
-                    level: error.data[2]
-                });
-                if (this.store.channels[0].channel[error.channel - 1].pgmOn && this.mixerProtocol.mode === 'master')
-                {
-                    this.updateOutLevel(error.channel-1);
+        this.midiInput.addListener('controlchange', 1,
+            (message: any) => {
+                console.log("Received 'controlchange' message (" + message.data + ").");
+                if (message.data[1] >= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
+                    && message.data[1] <= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage) + 24) {
+                    let ch = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
+                    let faderChannel = 1 + this.store.channels[0].channel[ch - 1].assignedFader
+                    window.storeRedux.dispatch({
+                        type:'SET_FADER_LEVEL',
+                        channel: faderChannel - 1,
+                        level: message.data[2]
+                    });
+                    if (!this.store.faders[0].fader[faderChannel - 1].pgmOn) {
+                        window.storeRedux.dispatch({
+                            type:'TOGGLE_PGM',
+                            channel: this.store.channels[0].channel[ch - 1].assignedFader -1
+                        });
+                    }
+                    if (window.huiRemoteConnection) {
+                        window.huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, this.store.faders[0].fader[faderChannel - 1].faderLevel)
+                    }
+                    if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                    {
+                        this.store.channels[0].channel.map((channel: any, index: number) => {
+                            if (channel.assignedFader === faderChannel - 1) {
+                                this.updateOutLevel(index);
+                            }
+                        })
+                    }
                 }
             }
         );
@@ -113,16 +125,20 @@ return true;
         });
     }
 
-    sendOutMessage(CtrlMessage: string, channel: number, value: string) {
-        this.midiOutput.sendControlChange(CtrlMessage, value, channel);
+    sendOutMessage(ctrlMessage: string, channel: number, value: string) {
+        if (ctrlMessage != "none" && 0 <= parseFloat(value) && parseFloat(value) <= 127) {
+            let ctrlMessageInt = (parseInt(ctrlMessage) + channel - 1)
+            this.midiOutput.sendControlChange(ctrlMessageInt, value, 1);
+        }
     }
 
     updateOutLevel(channelIndex: number) {
-        if (this.mixerProtocol.mode === "master" && this.store.channels[0].channel[channelIndex].pgmOn) {
+        let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
+        if (this.store.faders[0].fader[faderIndex].pgmOn) {
             window.storeRedux.dispatch({
                 type:'SET_OUTPUT_LEVEL',
                 channel: channelIndex,
-                level: this.store.channels[0].channel[channelIndex].faderLevel
+                level: this.store.faders[0].fader[faderIndex].faderLevel
             });
         }
         this.sendOutMessage(
@@ -130,11 +146,13 @@ return true;
             channelIndex+1,
             this.store.channels[0].channel[channelIndex].outputLevel
         );
+        /* Client mode is disabled
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelIndex+1,
-            this.store.channels[0].channel[channelIndex].faderLevel
+            this.store.faders[0].fader[channelIndex].faderLevel
         );
+        */
     }
 
     updatePflState(channelIndex: number) {

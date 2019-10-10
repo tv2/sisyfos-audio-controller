@@ -1,0 +1,98 @@
+.channel-storage-body {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 400px;
+	overflow: auto;
+    max-height: 90vh;
+    background-color: rgb(31, 31, 31);
+    border-color: rgb(124, 124, 124);
+    border-style: solid;
+    border-width: 4px;
+	text-align: left;
+	z-index: 1;
+
+	color: #fff;
+}
+
+.channel-storage-body > h2 {
+	border-bottom: 1px solid #999;
+	margin: 0;
+	padding: 10px 0;
+	line-height: 50px;
+	text-align: center;
+
+}
+
+
+.channel-storage-body > h3 {
+	margin: 0;
+	padding: 0px 0;
+	line-height: 20px;
+	text-align: center;
+	font-size: 110%;
+}
+
+.channel-storage-body > h4 {
+	margin: 0;
+	padding: 0px 0;
+	line-height: 20px;
+	text-align: center;
+	font-size: 110%;
+}
+
+.channel-storage-body > .close {
+	position: absolute;
+	outline : none;
+    border-color: rgb(99, 99, 99);
+    background-color: rgb(27, 27, 27);
+	border-radius: 100%;
+	display: block;
+	color: #fff;
+	width: 50px;
+	height: 50px;
+	font-size: 30px;
+	line-height: 50px;
+	top: 1px;
+	right: 9px;
+}
+
+.channel-storage-body > button {
+	line-height: 10px;
+
+	outline : none;
+    border-color: rgb(99, 99, 99);
+    background-color: rgb(97, 0, 0);
+	margin-top: 15px;
+    margin-bottom: 15px;
+	margin-left: 120px;
+	border-radius: 7px;
+	display: block;
+	color: #fff;
+	width: 160px;
+	font-size: 20px;
+    line-height: 50px;
+}
+
+.channel-storage-group > button.active {
+	border-color: rgb(17, 0, 255);
+}
+
+
+.storage-list {
+	list-style-type:none;
+}
+
+.storage-list > .item {
+	margin-bottom: 5px;
+	margin-right: 40px;
+	background-color: rgb(43, 42, 42);
+	border-color: rgb(94, 94, 94);
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 7px;
+	line-height: 30px;
+	text-align: center;
+	font-size: 120%;
+}

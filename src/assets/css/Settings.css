@@ -85,5 +85,20 @@ input[type=text] {
     outline: 0;
 }
 
+.settings-cancel-button {
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    left: calc(50% - 90px);
+    font-size: 1.1em;
+    width: 180px;
+    line-height: 300%;
+    background: rgb(54, 54, 54);
+    color: white;
+    font-family: 'Roboto Condensed', sans-serif;
+    border-radius: 16px;
+    border-width: 0;
+    outline: 0;
+}
 
 

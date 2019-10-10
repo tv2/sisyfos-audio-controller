@@ -3,8 +3,11 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { OscMixerConnection } from '../utils/OscMixerConnection';
 import { MidiMixerConnection } from '../utils/MidiMixerConnection';
+import { QlClMixerConnection } from './QlClMixerConnection';
+import { SSLMixerConnection } from './SSLMixerConnection';
 import { EmberMixerConnection } from './EmberMixerConnection';
 import { CasparCGConnection } from './CasparCGConnection';
+import { IChannel } from '../reducers/channelsReducer';
 
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
 // The lower the more CPU
@@ -16,6 +19,7 @@ export class MixerGenericConnection {
     mixerProtocol: IMixerProtocolGeneric;
     mixerConnection: any;
     timer: any;
+    fadeActiveTimer: any;
 
     constructor() {
         this.updateOutLevels = this.updateOutLevels.bind(this);
@@ -34,28 +38,39 @@ export class MixerGenericConnection {
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
         if (this.mixerProtocol.protocol === 'OSC') {
             this.mixerConnection = new OscMixerConnection(this.mixerProtocol as IMixerProtocol);
+        } else if (this.mixerProtocol.protocol === 'QLCL') {
+            this.mixerConnection = new QlClMixerConnection(this.mixerProtocol as IMixerProtocol);
         } else if (this.mixerProtocol.protocol === 'MIDI') {
             this.mixerConnection = new MidiMixerConnection(this.mixerProtocol as IMixerProtocol);
         } else if (this.mixerProtocol.protocol === 'CasparCG') {
             this.mixerConnection = new CasparCGConnection(this.mixerProtocol as ICasparCGMixerGeometry);
         } else if (this.mixerProtocol.protocol === 'EMBER') {
             this.mixerConnection = new EmberMixerConnection(this.mixerProtocol as IMixerProtocol);
+        } else if (this.mixerProtocol.protocol === 'SSL') {
+            this.mixerConnection = new SSLMixerConnection(this.mixerProtocol as IMixerProtocol);
         }
 
         //Setup timers for fade in & out
         this.timer = new Array(this.store.channels[0].channel.length);
+        this.fadeActiveTimer = new Array(this.store.channels[0].channel.length);
     }
 
     updateOutLevels() {
-        this.store.channels[0].channel.map((channel: any, index: number) => {
-            this.fadeInOut(index, this.store.settings[0].fadeTime);
-            this.mixerConnection.updateOutLevel(index);
+        this.store.faders[0].fader.map((channel: any, index: number) => {
+            this.updateOutLevel(index);
         });
     }
 
-    updateOutLevel(channelIndex: number, fadeTime: number = this.store.settings[0].fadeTime) {
-        this.fadeInOut(channelIndex, fadeTime);
-        this.mixerConnection.updateOutLevel(channelIndex);
+    updateOutLevel(faderIndex: number, fadeTime: number = this.store.settings[0].fadeTime) {
+        this.store.channels[0].channel.map((channel: IChannel, index: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.fadeInOut(index, fadeTime);
+                //this.mixerConnection.updateOutLevel(index);
+            }
+        })
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemoteFaderState(faderIndex, this.store.faders[0].fader[faderIndex].faderLevel)
+        }
     }
 
 
@@ -73,30 +88,43 @@ export class MixerGenericConnection {
         }
     }
 
-    fadeInOut (channelIndex: number, fadeTime: number){
-        //Clear Old timer or set Fade to active:
-        if (this.store.channels[0].channel[channelIndex].fadeActive) {
-            clearInterval(this.timer[channelIndex]);
-        } else {
+    delayedFadeActiveDisable (channelIndex: number) {
+        this.fadeActiveTimer[channelIndex] = setTimeout( ()=>{
             window.storeRedux.dispatch({
                 type:'FADE_ACTIVE',
                 channel: channelIndex,
-                active: true
-            });
-        }
+                active: false
+            })
+        },
+            this.store.settings[0].protocolLatency
+        )
+    }
 
-        if (this.store.channels[0].channel[channelIndex].pgmOn) {
-            this.fadeUp(channelIndex, fadeTime);
+    fadeInOut (channelIndex: number, fadeTime: number){
+        let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader
+        //Clear Old timer or set Fade to active:
+        if (this.store.channels[0].channel[channelIndex].fadeActive) {
+            clearInterval(this.fadeActiveTimer[channelIndex]);
+            clearInterval(this.timer[channelIndex]);
+        } 
+        window.storeRedux.dispatch({
+            type:'FADE_ACTIVE',
+            channel: channelIndex,
+            active: true
+        });
+        
+        if (this.store.faders[0].fader[faderIndex].pgmOn || this.store.faders[0].fader[faderIndex].voOn) {
+            this.fadeUp(channelIndex, fadeTime, faderIndex);
         } else {
             this.fadeDown(channelIndex, fadeTime);
         }
     }
 
-    fadeUp(channelIndex: number, fadeTime: number) {
+    fadeUp(channelIndex: number, fadeTime: number, faderIndex: number) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
-        let targetVal = this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].zero;
-        if (this.mixerProtocol.mode === "master") {
-            targetVal = parseFloat(this.store.channels[0].channel[channelIndex].faderLevel);
+        let targetVal = parseFloat(this.store.faders[0].fader[faderIndex].faderLevel);
+        if (this.store.faders[0].fader[faderIndex].voOn) {
+            targetVal = targetVal * (100-parseFloat(this.store.settings[0].voLevel))/100 
         }
         const step: number = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
@@ -106,9 +134,9 @@ export class MixerGenericConnection {
             this.timer[channelIndex] = setInterval(() => {
                 outputLevel += step;
                 dispatchTrigger += step;
-                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
-
+                
                 if (dispatchTrigger > dispatchResolution) {
+                    this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
                     window.storeRedux.dispatch({
                         type:'SET_OUTPUT_LEVEL',
                         channel: channelIndex,
@@ -127,11 +155,7 @@ export class MixerGenericConnection {
                         channel: channelIndex,
                         level: outputLevel
                     });
-                    window.storeRedux.dispatch({
-                        type:'FADE_ACTIVE',
-                        channel: channelIndex,
-                        active: false
-                    });
+                    this.delayedFadeActiveDisable(channelIndex);
                     return true;
                 }
             }, FADE_INOUT_SPEED);
@@ -160,11 +184,7 @@ export class MixerGenericConnection {
                         channel: channelIndex,
                         level: outputLevel
                     });
-                    window.storeRedux.dispatch({
-                        type:'FADE_ACTIVE',
-                        channel: channelIndex,
-                        active: false
-                    });
+                    this.delayedFadeActiveDisable(channelIndex);
                     return true;
                 }
 
@@ -202,11 +222,7 @@ export class MixerGenericConnection {
                     channel: channelIndex,
                     level: outputLevel
                 });
-                window.storeRedux.dispatch({
-                    type:'FADE_ACTIVE',
-                    channel: channelIndex,
-                    active: false
-                });
+                this.delayedFadeActiveDisable(channelIndex);
                 return true;
             }
 

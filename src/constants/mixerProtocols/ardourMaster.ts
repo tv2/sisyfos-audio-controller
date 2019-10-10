@@ -19,9 +19,9 @@ export const ArdourMaster: IMixerProtocol = {
     pingTime: 9500,
     initializeCommands: [
         {
-            mixerMessage: "/strip/list",
-            value: "",
-            type: "",
+            mixerMessage: "/set_surface/feedback",
+            value: "135",
+            type: "i",
             min: 0,
             max: 1,
             zero: 0.75
