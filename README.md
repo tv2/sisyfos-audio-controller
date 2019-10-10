@@ -1,16 +1,29 @@
 # Sisyfos Audio Controller
 
-## Audiomixer control build with the logic from a videomixer.
+## Audiomixer control build for intelligent automation.
 
 You use the fader for the level, and PGM on/off for fade-in/out.
-TAKE crossfades between PGM & PST:
-<img src="Docs/pix/ProducersAudioMixer01.png">
+TAKE NEXT crossfades from NEXT to PGM
+
+It´s fast to see what faders are on-are, and whther they are PGM level or Voice over level
+<img src="Docs/pix/ProducersAudioMixerNext.png">
+
+### Routing of Faders to Channels
+Routing of Faders to multiple channels or a single channel are possible. This way Sisyfos can control some or all channels on a mixer. And a single fader can be used for E.G. a 5.1 (on 6 mono faders)
+
+<img src="Docs/pix/ProducersAudioMixerRouting.png">
+
+### Load/Save Routing
+Routing setups can be stored in STORAGE. So it´s possible to have different Routings dependent of what setup the Audio mixer is using.
+
+<img src="Docs/pix/ProducersAudioMixerStorage.png">
 
 
-### Snaps takes preset into PST:
+
+### When Automation mode is Disabled in settings - snaps takes preset into PST/NEXT:
 
 
-<img src="Docs/pix/ProducersAudioMixer02.png">
+<img src="Docs/pix/ProducersAudioMixerSnaps.png">
 
 
 
