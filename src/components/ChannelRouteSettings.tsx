@@ -112,6 +112,17 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
             detail: 'This will reassign all Faders 1:1 to Channels',
         };
         let response = dialog.showMessageBoxSync(options)
+        if (response === 0) {
+            this.props.fader.forEach((fader: any, index: number) => {
+                if (this.props.channel.length > index) {
+                    this.props.dispatch({
+                        type: 'SET_ASSIGNED_FADER',
+                        channel: index,
+                        faderNumber: index
+                    });
+                }
+            })
+        }
         return true
     }
 
