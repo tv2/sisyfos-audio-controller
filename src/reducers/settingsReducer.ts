@@ -21,6 +21,7 @@ export interface ISettings {
     numberOfFaders: number,
     numberOfSnaps: number,
     fadeTime: number,  // Default fade time for PGM ON - OFF
+    voFadeTime: number, // Default fade time for VO ON - OFF
     voLevel: number,  // Relative level of PGM in %
     autoResetLevel: number, // Autoreset before pgm on, if level is lower than in %
     automationMode: boolean, 
@@ -51,7 +52,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         voLevel: 20,
         autoResetLevel: 10,
         automationMode: true,
-        fadeTime: 60, //Time in ms
+        fadeTime: 60,
+        voFadeTime: 200, 
         showPfl: false
     },
 ];
