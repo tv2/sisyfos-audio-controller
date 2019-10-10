@@ -326,7 +326,12 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     %
                 </label>
                 <br/>
-
+                <label className="settings-input-field">
+                    AUTORESET LEVEL :
+                    <input name="autoResetLevel" type="text" value={this.state.settings.autoResetLevel} onChange={this.handleChange} />
+                    %
+                </label>
+                <br/>
                 <label className="settings-input-field">
                     PROTOCOL LATENCY :
                     <input name="protocolLatency" type="text" value={this.state.settings.protocolLatency} onChange={this.handleChange} />

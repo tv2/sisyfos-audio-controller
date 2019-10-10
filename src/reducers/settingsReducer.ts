@@ -11,7 +11,7 @@ export interface ISettings {
     localOscPort: number,
     deviceIp: string,
     devicePort: number,
-    protocolLatency: number,
+    protocolLatency: number, // If a protocol has latency and feedback, the amount of time before enabling receiving data from channel again
     enableRemoteFader: boolean,
     mixerMidiInputPort: string,
     mixerMidiOutputPort: string,
@@ -20,9 +20,10 @@ export interface ISettings {
     numberOfChannelsInType: Array<number>,
     numberOfFaders: number,
     numberOfSnaps: number,
-    fadeTime: number,
-    voLevel: number,
-    automationMode: boolean,
+    fadeTime: number,  // Default fade time for PGM ON - OFF
+    voLevel: number,  // Relative level of PGM in %
+    autoResetLevel: number, // Autoreset before pgm on, if level is lower than in %
+    automationMode: boolean, 
     showPfl: boolean
 }
 
@@ -48,6 +49,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         numberOfFaders: 8,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         voLevel: 20,
+        autoResetLevel: 10,
         automationMode: true,
         fadeTime: 60, //Time in ms
         showPfl: false
