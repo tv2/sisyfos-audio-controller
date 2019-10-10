@@ -61,7 +61,15 @@ export class MixerGenericConnection {
         });
     }
 
-    updateOutLevel(faderIndex: number, fadeTime: number = this.store.settings[0].fadeTime) {
+    updateOutLevel(faderIndex: number, fadeTime: number = -1) {
+        if (fadeTime === -1) {
+            if (this.store.faders[0].fader[faderIndex].voOn) {
+                fadeTime = this.store.settings[0].voFadeTime
+            } else {
+                fadeTime = this.store.settings[0].fadeTime
+            }
+        }
+
         this.store.channels[0].channel.map((channel: IChannel, index: number) => {
             if (faderIndex === channel.assignedFader) {
                 this.fadeInOut(index, fadeTime);
