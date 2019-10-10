@@ -63,10 +63,10 @@ export class MixerGenericConnection {
 
     updateOutLevel(faderIndex: number, fadeTime: number = -1) {
         if (fadeTime === -1) {
-            if (this.store.faders[0].fader[faderIndex].pgmOn) {
-                fadeTime = this.store.settings[0].fadeTime
-            } else if (this.store.faders[0].fader[faderIndex].voOn) {
+            if (this.store.faders[0].fader[faderIndex].voOn) {
                 fadeTime = this.store.settings[0].voFadeTime
+            } else {
+                fadeTime = this.store.settings[0].fadeTime
             }
         }
 
