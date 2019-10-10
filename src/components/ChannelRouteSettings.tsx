@@ -141,7 +141,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
         }
         else {
             return (
-                <div className="channel-settings-body">
+                <div className="channel-route-body">
                     <h2>{this.props.label || ("FADER " + (this.faderIndex + 1))}</h2>
                     <button 
                         className="close"
