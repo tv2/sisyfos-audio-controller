@@ -143,10 +143,18 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
             return (
                 <div className="channel-settings-body">
                     <h2>{this.props.label || ("FADER " + (this.faderIndex + 1))}</h2>
-                    <button className="close" onClick={() => this.handleClose()}>X</button>
-
-                    <button onClick={() => this.handleClearRouting()}>CLEAR ALL</button>
-                    <button onClick={() => this.handle11Routing()}>ROUTE 1:1</button>
+                    <button 
+                        className="close"
+                        onClick={() => this.handleClose()}
+                    >X</button>
+                    <button 
+                        className="button"
+                        onClick={() => this.handleClearRouting()}
+                    >CLEAR ALL</button>
+                    <button 
+                        className="button"
+                        onClick={() => this.handle11Routing()}
+                    >ROUTE 1:1</button>
                     <hr />
                     {this.props.channel.map((channel: any, index: number) => {
                         return <h4 key={index}>
