@@ -159,9 +159,10 @@
     width: 460px;
     margin-top: 260px;
     transform: translate(-160px, 0px) rotate(270deg);
-
     /*do same for other browsers if required*/
     background-color: rgb(39, 39, 39);
+
+    -webkit-overflow-scrolling: touch;
 }
 
 .channel-body.with-snaps .channel-volume-slider {

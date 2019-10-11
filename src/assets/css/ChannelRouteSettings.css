@@ -1,4 +1,4 @@
-.channel-settings-body {
+.channel-route-body {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -16,7 +16,7 @@
 	color: #fff;
 }
 
-.channel-settings-body > h2 {
+.channel-route-body > h2 {
 	border-bottom: 1px solid #999;
 	margin: 0;
 	padding: 10px 0;
@@ -26,7 +26,7 @@
 }
 
 
-.channel-settings-body > h4 {
+.channel-route-body > h4 {
 	margin: 0;
 	margin-left: 40px;
 	padding: 0px 0;
@@ -35,7 +35,7 @@
 	font-size: 110%;
 }
 
-.channel-settings-body > .close {
+.channel-route-body > .close {
 	position: absolute;
 	outline : none;
     border-color: rgb(99, 99, 99);
@@ -47,32 +47,22 @@
 	height: 50px;
 	font-size: 30px;
 	line-height: 50px;
-	top: 9px;
+	top: -5px;
 	right: 9px;
 }
 
-.channel-settings-group {
-	border-bottom: 1px solid #999;
-}
-
-.channel-settings-group > button {
+.channel-route-body > button {
 	line-height: 10px;
-
 	outline : none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
-    margin-right: auto;
+    margin-right: 10px;
 	margin-top: 15px;
     margin-bottom: 15px;
-	margin-left: auto;
+	margin-left: 10px;
 	border-radius: 7px;
-	display: block;
 	color: #fff;
-	width: 90%;
-	font-size: 30px;
+	width: 34%;
+	font-size: 10px;
     line-height: 50px;
-}
-
-.channel-settings-group > button.active {
-	border-color: rgb(17, 0, 255);
 }

@@ -61,7 +61,15 @@ export class MixerGenericConnection {
         });
     }
 
-    updateOutLevel(faderIndex: number, fadeTime: number = this.store.settings[0].fadeTime) {
+    updateOutLevel(faderIndex: number, fadeTime: number = -1) {
+        if (fadeTime === -1) {
+            if (this.store.faders[0].fader[faderIndex].voOn) {
+                fadeTime = this.store.settings[0].voFadeTime
+            } else {
+                fadeTime = this.store.settings[0].fadeTime
+            }
+        }
+
         this.store.channels[0].channel.map((channel: IChannel, index: number) => {
             if (faderIndex === channel.assignedFader) {
                 this.fadeInOut(index, fadeTime);
@@ -123,6 +131,19 @@ export class MixerGenericConnection {
     fadeUp(channelIndex: number, fadeTime: number, faderIndex: number) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
         let targetVal = parseFloat(this.store.faders[0].fader[faderIndex].faderLevel);
+
+        // Reset targetVal if it´s lower than AutoReset threshold:
+        if (targetVal < (this.store.settings[0].autoResetLevel/100) 
+            && this.store.channels[0].channel[channelIndex].outputLevel === this.mixerProtocol.fader.min
+        ) {
+            targetVal = this.mixerProtocol.fader.zero
+            window.storeRedux.dispatch({
+                type:'SET_FADER_LEVEL',
+                channel: faderIndex,
+                level: targetVal
+            });
+        }
+
         if (this.store.faders[0].fader[faderIndex].voOn) {
             targetVal = targetVal * (100-parseFloat(this.store.settings[0].voLevel))/100 
         }

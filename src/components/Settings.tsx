@@ -316,8 +316,15 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    FADE TIME IN ms :
+                    FADE TIME :
                     <input name="fadeTime" type="text" value={this.state.settings.fadeTime} onChange={this.handleChange} />
+                     ms
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    VOICE OVER FADE TIME :
+                    <input name="voFadeTime" type="text" value={this.state.settings.voFadeTime} onChange={this.handleChange} />
+                    ms
                 </label>
                 <br/>
                 <label className="settings-input-field">
@@ -326,7 +333,12 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     %
                 </label>
                 <br/>
-
+                <label className="settings-input-field">
+                    AUTORESET LEVEL :
+                    <input name="autoResetLevel" type="text" value={this.state.settings.autoResetLevel} onChange={this.handleChange} />
+                    %
+                </label>
+                <br/>
                 <label className="settings-input-field">
                     PROTOCOL LATENCY :
                     <input name="protocolLatency" type="text" value={this.state.settings.protocolLatency} onChange={this.handleChange} />
