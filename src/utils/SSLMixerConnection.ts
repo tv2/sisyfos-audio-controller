@@ -249,6 +249,10 @@ export class SSLMixerConnection {
         );
     }
 
+    updateNextAux(faderIndex: number) {
+        return true
+    } 
+
     updateChannelName(channelIndex: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;

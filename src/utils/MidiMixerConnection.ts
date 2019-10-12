@@ -172,6 +172,10 @@ return true;
         }
     }
 
+    updateNextAux(faderIndex: number) {
+        return true
+    } 
+
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         this.sendOutMessage(

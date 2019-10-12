@@ -81,9 +81,12 @@ export class MixerGenericConnection {
         }
     }
 
-
     updatePflState(channelIndex: number) {
         this.mixerConnection.updatePflState(channelIndex);
+    }
+
+    updateNextAux(faderIndex: number) {
+        this.mixerConnection.updateNextAux(faderIndex)
     }
 
     updateChannelName(channelIndex: number) {

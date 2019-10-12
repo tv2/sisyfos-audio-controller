@@ -288,6 +288,9 @@ export class CasparCGConnection {
         }
     }
 
+    updateNextAux(faderIndex: number) {
+        return true
+    } 
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         if (channelIndex > this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL.length - 1) {

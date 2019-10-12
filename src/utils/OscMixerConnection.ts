@@ -253,6 +253,11 @@ export class OscMixerConnection {
         }
     }
 
+    updateNextAux(faderIndex: number) {
+        return true
+    } 
+
+    
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
