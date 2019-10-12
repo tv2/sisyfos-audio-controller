@@ -22,11 +22,11 @@ export const SSLSystemT: IMixerProtocol = {
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: "f1 06 00 80 00 00 {channel} {level}", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: "f1 06 00 80 00 {channel} {level}", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [emptyMixerMessage()],
-            PFL_ON: [{ mixerMessage: "f1 05 00 80 05 00 {channel} 01", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
-            PFL_OFF: [{ mixerMessage: "f1 05 00 80 05 00 {channel} 00", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
-            AUX_SEND: [emptyMixerMessage()],
+            PFL_ON: [{ mixerMessage: "f1 05 00 80 05 {channel} 01", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+            PFL_OFF: [{ mixerMessage: "f1 05 00 80 05 {channel} 00", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+            AUX_SEND: [{ mixerMessage: "f1 06 00 80 00 {channel} {level}", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
         },
     }],
     fader: {
