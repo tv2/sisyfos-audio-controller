@@ -54,7 +54,7 @@ export class SSLMixerConnection {
                             this.sendOutRequest(item.mixerMessage, index);
                         });
                     } else {
-                        this.sendOutLevelMessage(item.mixerMessage, 0, item.value, item.type);
+                        this.sendOutLevelMessage(item.mixerMessage, 0, item.value);
                     }
                 });
             })
