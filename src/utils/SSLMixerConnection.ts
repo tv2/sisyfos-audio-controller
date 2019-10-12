@@ -170,7 +170,7 @@ export class SSLMixerConnection {
     }
 
 
-    sendOutLevelMessage(sslMessage: string, channelIndex: number, value: string | number, type: string) {
+    sendOutLevelMessage(sslMessage: string, channelIndex: number, value: string | number) {
         let valueNumber: number
         if (typeof value === 'string') {
             value = parseFloat(value)
@@ -180,8 +180,13 @@ export class SSLMixerConnection {
             (valueNumber & 0x0000ff00) >> 8,
             (valueNumber & 0x000000ff),
         ])
+
+        let channelByte = new Uint8Array([
+            (channelIndex & 0x0000ff00) >> 8,
+            (channelIndex & 0x000000ff),
+        ])
         
-        sslMessage = sslMessage.replace('{channel}', ('0' + channelIndex.toString(16).slice(-2)))
+        sslMessage = sslMessage.replace('{channel}', ('0' + channelByte[0].toString(16)).slice(-2) + ' ' + ('0' + channelByte[1].toString(16)).slice(-2))
         sslMessage = sslMessage.replace('{level}', ('0' + valueByte[0].toString(16)).slice(-2) + ' ' + ('0' + valueByte[1].toString(16)).slice(-2) + ' ')
         sslMessage = sslMessage + this.calculate_checksum8(sslMessage.slice(9))
         let a = sslMessage.split(' ')
@@ -191,10 +196,13 @@ export class SSLMixerConnection {
         this.SSLConnection.write(buf)
     }
 
-
     sendOutRequest(sslMessage: string, channelIndex: number) {
         //let sslMessage = 'f1 06 00 80 00 00 {channel} {level}'
-        sslMessage = sslMessage.replace('{channel}', ('0' + channelIndex.toString(16).slice(-2)))
+        let channelByte = new Uint8Array([
+            (channelIndex & 0x0000ff00) >> 8,
+            (channelIndex & 0x000000ff),
+        ])
+        sslMessage = sslMessage.replace('{channel}', ('0' + channelByte[0].toString(16)).slice(-2) + ' ' + ('0' + channelByte[1].toString(16)).slice(-2))
         sslMessage = sslMessage + ' ' + this.calculate_checksum8(sslMessage.slice(9))
         let a = sslMessage.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
@@ -217,8 +225,7 @@ export class SSLMixerConnection {
         this.sendOutLevelMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex,
-            this.store.channels[0].channel[channelIndex].outputLevel,
-            "f"
+            this.store.channels[0].channel[channelIndex].outputLevel
         );
     }
 
@@ -244,25 +251,29 @@ export class SSLMixerConnection {
         this.sendOutLevelMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex,
-            String(outputLevel),
-            "f"
+            String(outputLevel)
         );
     }
 
-    updateNextAux(faderIndex: number) {
-        return true
+    updateNextAux(channelIndex: number, level: number) {
+        this.sendOutLevelMessage(
+            this.mixerProtocol.channelTypes[0].toMixer.AUX_SEND[0].mixerMessage,
+            channelIndex + 128,
+            level
+        );
     } 
 
     updateChannelName(channelIndex: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         let channelName = this.store.faders[0].fader[channelIndex].label;
+        /*
         this.sendOutLevelMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
             channelTypeIndex,
-            channelName,
-            "s"
+            channelName
         );
+        */
     }
 }
 

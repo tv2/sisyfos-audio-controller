@@ -219,7 +219,7 @@ export class QlClMixerConnection {
         }
     }
 
-    updateNextAux(faderIndex: number) {
+    updateNextAux(channelIndex: number, level: number) {
         return true
     } 
 

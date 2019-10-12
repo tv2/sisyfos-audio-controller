@@ -203,7 +203,7 @@ export class EmberMixerConnection {
         }
     }
 
-    updateNextAux(faderIndex: number) {
+    updateNextAux(channelIndex: number, level: number) {
         return true
     } 
 

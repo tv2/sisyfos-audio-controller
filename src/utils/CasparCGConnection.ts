@@ -288,7 +288,7 @@ export class CasparCGConnection {
         }
     }
 
-    updateNextAux(faderIndex: number) {
+    updateNextAux(channelIndex: number, level: number) {
         return true
     } 
 

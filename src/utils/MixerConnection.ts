@@ -70,9 +70,10 @@ export class MixerGenericConnection {
             }
         }
 
-        this.store.channels[0].channel.map((channel: IChannel, index: number) => {
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
             if (faderIndex === channel.assignedFader) {
-                this.fadeInOut(index, fadeTime);
+                this.updateNextAux(faderIndex, channelIndex)
+                this.fadeInOut(channelIndex, fadeTime);
                 //this.mixerConnection.updateOutLevel(index);
             }
         })
@@ -85,8 +86,14 @@ export class MixerGenericConnection {
         this.mixerConnection.updatePflState(channelIndex);
     }
 
-    updateNextAux(faderIndex: number) {
-        this.mixerConnection.updateNextAux(faderIndex)
+    updateNextAux(faderIndex: number, channelIndex: number) {
+        let level = 0
+        if (this.store.faders[0].fader[faderIndex].pstOn) {
+            level = this.store.faders[0].fader[faderIndex].faderLevel
+        } else if (this.store.faders[0].fader[faderIndex].pstVoOn) {
+            level = this.store.faders[0].fader[faderIndex].faderLevel
+        }
+        this.mixerConnection.updateNextAux(channelIndex, level)
     }
 
     updateChannelName(channelIndex: number) {
