@@ -14,7 +14,6 @@ export class SSLMixerConnection {
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutLevelMessage = this.sendOutLevelMessage.bind(this);
-        this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
         this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
@@ -118,18 +117,6 @@ export class SSLMixerConnection {
                 console.log("Error : ", error);
                 console.log("Lost SCP connection");
             });
-    }
-
-    pingMixerCommand() {
-        //Ping OSC mixer if mixerProtocol needs it.
-        this.mixerProtocol.pingCommand.map((command) => {
-            this.sendOutLevelMessage(
-                command.mixerMessage,
-                0,
-                command.value,
-                command.type
-            );
-        });
     }
 
     checkSSLCommand(message: string, command: string) {
