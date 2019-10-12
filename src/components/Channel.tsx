@@ -92,7 +92,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             type:'TOGGLE_PST',
             channel: this.channelIndex
         });
-        window.mixerGenericConnection.updateOutLevel(this.channelIndex);
+        window.mixerGenericConnection.updateNextAux(this.channelIndex);
     }
 
     handlePfl() {
