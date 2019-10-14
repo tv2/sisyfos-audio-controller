@@ -55,9 +55,16 @@ export class MixerGenericConnection {
         this.fadeActiveTimer = new Array(this.store.channels[0].channel.length);
     }
 
+    updateFadeToBlack() {
+        this.store.faders[0].fader.map((channel: any, index: number) => {
+            this.updateOutLevel(index);
+        });
+    }
+
     updateOutLevels() {
         this.store.faders[0].fader.map((channel: any, index: number) => {
             this.updateOutLevel(index);
+            this.updateNextAux(index);
         });
     }
 
@@ -70,10 +77,9 @@ export class MixerGenericConnection {
             }
         }
 
-        this.store.channels[0].channel.map((channel: IChannel, index: number) => {
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
             if (faderIndex === channel.assignedFader) {
-                this.fadeInOut(index, fadeTime);
-                //this.mixerConnection.updateOutLevel(index);
+                this.fadeInOut(channelIndex, fadeTime);
             }
         })
         if (window.huiRemoteConnection) {
@@ -81,9 +87,22 @@ export class MixerGenericConnection {
         }
     }
 
-
     updatePflState(channelIndex: number) {
         this.mixerConnection.updatePflState(channelIndex);
+    }
+
+    updateNextAux(faderIndex: number) {
+        let level = 0
+        if (this.store.faders[0].fader[faderIndex].pstOn) {
+            level = this.store.faders[0].fader[faderIndex].faderLevel
+        } else if (this.store.faders[0].fader[faderIndex].pstVoOn) {
+            level = this.store.faders[0].fader[faderIndex].faderLevel * (100-parseFloat(this.store.settings[0].voLevel))/100 
+        }
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateNextAux(channelIndex, level)
+            }
+        })
     }
 
     updateChannelName(channelIndex: number) {
@@ -110,6 +129,12 @@ export class MixerGenericConnection {
 
     fadeInOut (channelIndex: number, fadeTime: number){
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader
+        if (!this.store.faders[0].fader[faderIndex].pgmOn 
+            && !this.store.faders[0].fader[faderIndex].voOn
+            && this.store.channels[0].channel[channelIndex].outputLevel === 0
+        ) {
+            return               
+        }
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
             clearInterval(this.fadeActiveTimer[channelIndex]);

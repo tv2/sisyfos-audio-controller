@@ -30,7 +30,7 @@ const defaultFadersReducerState = (numberOfFaders: number) => {
 
         for (let index=0; index < numberOfFaders; index++) {
             defaultObj[0].fader[index] = ({
-                faderLevel: 0,
+                faderLevel: 0.75,
                 label: "",
                 pgmOn: false,
                 voOn: false,

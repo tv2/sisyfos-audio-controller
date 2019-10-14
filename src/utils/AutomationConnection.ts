@@ -90,7 +90,7 @@ export class AutomationConnection {
                         pstOn: false
                     });
                 }
-                window.mixerGenericConnection.updateOutLevel(ch-1);
+                window.mixerGenericConnection.updateNextAux(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[2];
@@ -135,7 +135,7 @@ export class AutomationConnection {
                     window.storeRedux.dispatch({
                         type:'FADE_TO_BLACK'
                 });
-                window.mixerGenericConnection.updateOutLevels();
+                window.mixerGenericConnection.updateFadeToBlack();
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CLEAR_PST)) {
                     window.storeRedux.dispatch({
