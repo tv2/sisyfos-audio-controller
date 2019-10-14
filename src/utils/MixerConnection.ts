@@ -55,6 +55,12 @@ export class MixerGenericConnection {
         this.fadeActiveTimer = new Array(this.store.channels[0].channel.length);
     }
 
+    updateFadeToBlack() {
+        this.store.faders[0].fader.map((channel: any, index: number) => {
+            this.updateOutLevel(index);
+        });
+    }
+
     updateOutLevels() {
         this.store.faders[0].fader.map((channel: any, index: number) => {
             this.updateOutLevel(index);
@@ -74,7 +80,6 @@ export class MixerGenericConnection {
         this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
             if (faderIndex === channel.assignedFader) {
                 this.fadeInOut(channelIndex, fadeTime);
-                //this.mixerConnection.updateOutLevel(index);
             }
         })
         if (window.huiRemoteConnection) {
@@ -124,6 +129,12 @@ export class MixerGenericConnection {
 
     fadeInOut (channelIndex: number, fadeTime: number){
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader
+        if (!this.store.faders[0].fader[faderIndex].pgmOn 
+            && !this.store.faders[0].fader[faderIndex].voOn
+            && this.store.channels[0].channel[channelIndex].outputLevel === 0
+        ) {
+            return               
+        }
         //Clear Old timer or set Fade to active:
         if (this.store.channels[0].channel[channelIndex].fadeActive) {
             clearInterval(this.fadeActiveTimer[channelIndex]);

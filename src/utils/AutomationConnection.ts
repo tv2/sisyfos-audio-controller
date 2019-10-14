@@ -135,7 +135,7 @@ export class AutomationConnection {
                     window.storeRedux.dispatch({
                         type:'FADE_TO_BLACK'
                 });
-                window.mixerGenericConnection.updateOutLevels();
+                window.mixerGenericConnection.updateFadeToBlack();
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CLEAR_PST)) {
                     window.storeRedux.dispatch({
