@@ -4,7 +4,7 @@ import * as ClassNames from 'classnames';
 import { connect } from "react-redux";
 import VuMeter from './VuMeter';
 import { Store } from 'redux';
-import Slider from 'rc-slider'
+import ReactSlider from 'react-slider'
 
 
 //assets:
@@ -138,37 +138,16 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     fader() {
         return (
-            <Slider className="channel-volume-fader"
+            <ReactSlider 
+                className="channel-volume-fader"
+                thumbClassName="channel-volume-thumb"
+                trackClassName="channel-volume-track"
+                orientation="vertical"
                 min={0}
                 max={1}
-                step={0.001}
+                step={0.01}
                 value= {this.props.faderLevel}
-                vertical
-                reverse
-                railStyle={{
-                    marginLeft: 73,
-                    backgroundColor: "grey",
-                    width: 5,
-                    height: 400
-                }}
-/*                trackStyle={{
-                    marginLeft: 70,
-                    marginTop: -400,
-                    background: "yellow",
-                    width: 10,
-                    height: 400
-                }}
-                */
-                handleStyle={{
-                    height: 48,
-                    width: 48,
-                    marginLeft: 50,
-                    marginTop: -440,
-                    borderRadius: 10,
-                    backgroundImage: "linear-gradient(#2f2f2f 0px,#2f2f2f 730px, rgb(0, 0, 0) 1px, #2f2f2f 740px, #2f2f2f 100%)",
-                    border: 0
-                }}
-                onChange={event => {
+                onChange={(event: any) => {
                     this.handleLevel(event);
                 }}
             />

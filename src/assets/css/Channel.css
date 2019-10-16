@@ -245,7 +245,26 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .channel-volume-fader {
+    width: 40px;
     height: 400px;
-    width: 100px;
-    margin-top: 55px;
+    margin-left: 40px;
+    margin-top: 60px;
 }
+
+.channel-volume-thumb {
+    width: 46px;
+    height: 70px;
+    color: red;
+    border-color: #c5c2c2;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8px;
+    background: linear-gradient(to top, #3a3a3a 0%, #c2c2c2 20%, #919191 50%, #00a 1px, #919191 52%, #c2c2c2 80%, #3a3a3a 100%);
+}
+
+.channel-volume-track {
+    width: 40px;
+    height: 400px;
+    color: #00a;
+}
+
