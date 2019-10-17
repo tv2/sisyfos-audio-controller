@@ -21,8 +21,9 @@
 .channel-pgm-button {
     outline : none;
     -moz-outline : none;
-    margin-left: 10px;
-    margin-top: 260px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 40px;
     color: white;
     height: 90px;
     width: 80px;
@@ -41,7 +42,8 @@
 .channel-vo-button {
     outline : none;
     -moz-outline : none;
-    margin-left: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
     margin-top: 5px;
     color: white;
     height: 90px;
@@ -60,7 +62,8 @@
 .channel-pst-button {
     outline : none;
     -moz-outline : none;
-    margin-left: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
     margin-top: 30px;
     color: white;
     height: 90px;
@@ -83,7 +86,8 @@
 .channel-pfl-button {
     outline : none;
     -moz-outline : none;
-    margin-left: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
     margin-top: 5px;
     color: white;
     height: 90px;
@@ -155,66 +159,10 @@
 }
 
 
-.channel-volume-slider {
-    width: 460px;
-    margin-top: 260px;
-    transform: translate(-160px, 0px) rotate(270deg);
-    /*do same for other browsers if required*/
-    background-color: rgb(39, 39, 39);
-
-    -webkit-overflow-scrolling: touch;
-}
-
-.channel-body.with-snaps .channel-volume-slider {
+.channel-body.with-snaps {
     width: 220px;
     margin-top: 140px;
     transform: translate(-40px, 0) rotate(270deg);
-}
-
-input[type=range] {
-    -webkit-appearance: none;
-}
-
-input[type=range]:focus {
-    outline: none;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 10px;
-    cursor: pointer;
-    box-shadow: 2px 2px 2px #222222, 0px 0px 2px #2f2f2f;
-    background: #424242;
-    border-radius: 5px;
-    border: 1px solid black;
-}
-
-input[type=range]::-webkit-slider-thumb {
-    box-shadow: 1px 1px 1px #111111, 0px 0px 1px #1e1e1e;
-    border: 1px solid #aaa;
-    height: 50px;
-    width: 70px;
-    border-radius: 8px;
-    background: linear-gradient(to left, #3a3a3a 0%, #c2c2c2 20%, #919191 50%, #00a 1px, #919191 52%, #c2c2c2 80%, #3a3a3a 100%);
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -21px;
-    position: relative;
-}
-
-input[color-pgm=pgm-on]::-webkit-slider-thumb {
-    border: 1px solid rgb(253, 60, 60);
-    background: linear-gradient(to left, #3a1d1d 0%, #c04d4d 20%, #811919 50%, #00a 1px, #8a2626 52%, #bd5151 80%, #411f1f 100%);
-}
-
-input[color-vo=vo-on]::-webkit-slider-thumb {
-    border: 1px solid rgb(252, 255, 86);
-    background: linear-gradient(to left, #353006 0%, #c59327 20%, #856b14 50%, #00a 1px, #866724 52%, #cca22d 80%, #463b0a 100%);
-}
-
-
-input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #000000;
 }
 
 .channel-settings {
@@ -243,3 +191,30 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .channel-body.with-snaps .vumeter-body {
     height: 230px;
 }
+
+.channel-volume-fader {
+    width: 10px;
+    height: 420px;
+    margin-left: 55px;
+    margin-top: 60px;
+    border-width: 0px;
+    border-style: solid;
+    border-radius: 8px;
+    background-color: rgb(17, 17, 17);
+}
+
+.channel-volume-thumb {
+    margin-left: -19px;
+    width: 45px;
+    height: 70px;
+    background-color: red;
+    border-color: #c5c2c2;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8px;
+    background: linear-gradient(to top, #3a3a3a 0%, #c2c2c2 20%, #919191 50%, #00a 1px, #919191 52%, #c2c2c2 80%, #3a3a3a 100%);
+}
+
+:focus {
+    outline: 0;
+    }

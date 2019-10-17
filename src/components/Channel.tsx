@@ -4,6 +4,8 @@ import * as ClassNames from 'classnames';
 import { connect } from "react-redux";
 import VuMeter from './VuMeter';
 import { Store } from 'redux';
+import ReactSlider from 'react-slider'
+
 
 //assets:
 import '../assets/css/Channel.css';
@@ -110,11 +112,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         this.props.dispatch({
             type:'SET_FADER_LEVEL',
             channel: this.channelIndex,
-            level: parseFloat(event.target.value)
+            level: parseFloat(event)
         });
         window.mixerGenericConnection.updateOutLevel(this.channelIndex);
         if (window.huiRemoteConnection) {
-            window.huiRemoteConnection.updateRemoteFaderState(this.channelIndex, event.target.value)
+            window.huiRemoteConnection.updateRemoteFaderState(this.channelIndex, event)
         }
     }
 
@@ -136,24 +138,16 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     fader() {
         return (
-            <input className="channel-volume-slider"
-                id="typeinp"
-                type="range"
-                color-pgm = {this.props.pgmOn ? 'pgm-on' : ''}
-                color-vo = {this.props.voOn ? 'vo-on' : ''}
-
-                min={this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage != 'none' ?
-                    this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].min
-                    : this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].min
-                }
-                max={this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage != 'none' ?
-                    this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].max
-                    : this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].max
-                }
-                step={this.mixerProtocol.fader.step}
+            <ReactSlider 
+                className="channel-volume-fader"
+                thumbClassName="channel-volume-thumb"
+                orientation="vertical"
+                invert
+                min={0}
+                max={1}
+                step={0.01}
                 value= {this.props.faderLevel}
-                onChange={event => {
-                    event.preventDefault();
+                onChange={(event: any) => {
                     this.handleLevel(event);
                 }}
             />
