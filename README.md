@@ -36,6 +36,10 @@ yarn start
 ```
 
 ## Settings:
+### Show PFL Controls:
+As NEXT has been implemented, and PFL usually only work on on channel at a time, the PFL is only working correctly on 1:1 routed setups (And with the CasparCG protocol)
+
+
 (Mixer presets are stored in MixerProtocolPresets.js)
 ### Following preset name are possible:
 * CasparCG
