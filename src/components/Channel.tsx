@@ -141,8 +141,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             <ReactSlider 
                 className="channel-volume-fader"
                 thumbClassName="channel-volume-thumb"
-                trackClassName="channel-volume-track"
                 orientation="vertical"
+                invert
                 min={0}
                 max={1}
                 step={0.01}
