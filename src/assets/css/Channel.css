@@ -218,3 +218,9 @@
 :focus {
     outline: 0;
     }
+
+.channel-zero-indicator {
+    position: absolute;
+   top: 153px;
+   left: 37px; 
+}

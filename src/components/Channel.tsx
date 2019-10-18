@@ -279,6 +279,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     "with-pfl": this.props.showPfl,
                 })}>
                 {this.channelSettings()}
+                <h4 className="channel-zero-indicator">_____</h4>
                 {this.fader()}
                 <VuMeter channelIndex = {this.channelIndex}/>
                 <br/>
