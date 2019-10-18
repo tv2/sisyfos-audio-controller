@@ -8,14 +8,14 @@ export const SSLSystemT: IMixerProtocol = {
     leadingZeros: false,
     pingCommand: [emptyMixerMessage()],
     pingTime: 0,
-    initializeCommands: [{ mixerMessage: "f1 04 00 80 00 00 {channel}", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+    initializeCommands: [{ mixerMessage: "f1 04 00 00 00 {channel}", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //PgmChange 0 - ignores this command
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'f1 06 ff 80 00 00 {channel} {level}', value: 0, type: '', min: 0, max: 1, zero: 0.75}],            //PgmChange 0 - ignores this command
-            CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],                   //PgmChange 0 - ignores this command
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()], // Handled by SSLMixerconnection
+            CHANNEL_OUT_GAIN: [emptyMixerMessage()],    // Handled by SSLMixerconnection
+    CHANNEL_VU: [emptyMixerMessage()],                   // Not implemented in SSL Automation protocol yet
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],

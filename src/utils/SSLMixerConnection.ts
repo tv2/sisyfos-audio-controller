@@ -64,6 +64,7 @@ export class SSLMixerConnection {
                 for (let index=1; index<data.length; index++) {
                     if (data[index] === 241) {
                         buffers.push(data.slice(lastIndex, index - 1))
+                        lastIndex = index
                     } 
                 }
                 if (buffers.length === 0) {
