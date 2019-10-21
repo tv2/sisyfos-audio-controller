@@ -137,10 +137,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     fader() {
+        let thumb = 'channel-volume-thumb' + (this.props.pgmOn ? '-color-pgm' : '') +  (this.props.voOn ? '-color-vo' : '')
         return (
             <ReactSlider 
                 className="channel-volume-fader"
-                thumbClassName="channel-volume-thumb"
+                thumbClassName = { thumb }
                 orientation="vertical"
                 invert
                 min={0}

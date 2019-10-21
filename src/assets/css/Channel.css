@@ -204,16 +204,32 @@
 }
 
 .channel-volume-thumb {
-    margin-left: -19px;
-    width: 45px;
-    height: 70px;
-    background-color: red;
-    border-color: #c5c2c2;
-    border-width: 1px;
-    border-style: solid;
+    margin-left: -21px;
+    width: 49px;
+    height: 75px;
+    border: 1px solid #c5c2c2;
     border-radius: 8px;
-    background: linear-gradient(to top, #3a3a3a 0%, #c2c2c2 20%, #919191 50%, #00a 1px, #919191 52%, #c2c2c2 80%, #3a3a3a 100%);
+    background: linear-gradient(to top, #3a3a3a 0%, #c2c2c2 20%, hsl(0, 0%, 57%) 50%, #00a 1px, #919191 52%, #c2c2c2 80%, #3a3a3a 100%);
 }
+
+.channel-volume-thumb-color-pgm {
+    margin-left: -21px;
+    width: 49px;
+    height: 75px;
+    border: 1px solid rgb(253, 60, 60);
+    border-radius: 8px;
+    background: linear-gradient(to top, #3a1d1d 0%, #c04d4d 20%, #811919 50%, #00a 1px, #8a2626 52%, #bd5151 80%, #411f1f 100%);
+}
+
+.channel-volume-thumb-color-vo {
+    margin-left: -21px;
+    width: 49px;
+    height: 75px;
+    border: 1px solid rgb(252, 255, 86);
+    border-radius: 8px;
+    background: linear-gradient(to top, #353006 0%, #c59327 20%, #856b14 50%, #00a 1px, #866724 52%, #cca22d 80%, #463b0a 100%);
+}
+
 
 :focus {
     outline: 0;
