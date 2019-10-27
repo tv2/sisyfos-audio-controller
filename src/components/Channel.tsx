@@ -22,12 +22,14 @@ interface IChannelInjectProps {
     channelType: number,
     channelTypeIndex: number,
     showChannel: boolean,
+    showChanStrip: boolean,
     faderLevel: number,
     label: string,
     snapOn: boolean[],
     mixerProtocol: string,
     showSnaps: boolean,
     automationMode: boolean,
+    offtubeMode: boolean,
     showPfl: boolean
 }
 
@@ -136,6 +138,13 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         });
     }
 
+    handleShowChanStrip() {
+        this.props.dispatch({
+            type: 'TOGGLE_SHOW_CHAN_STRIP',
+            channel: this.channelIndex
+        });
+    }
+
     fader() {
         let thumb = 'channel-volume-thumb' + (this.props.pgmOn ? '-color-pgm' : '') +  (this.props.voOn ? '-color-vo' : '')
         return (
@@ -212,6 +221,18 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         )
     }
 
+    chanStripButton = () => {
+        return (
+            <button
+                className={ClassNames("channel-chan-strip-button", {
+                    'on': this.props.showChanStrip
+                })}
+                onClick={event => {
+                    this.handleShowChanStrip();
+                }}
+            >CH STRIP</button>
+        )
+    }
 
     pflButton = () => {
         return (
@@ -293,7 +314,20 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     </React.Fragment>
                     : null
                 }
-                {this.pstButton()}
+                {this.props.offtubeMode ?
+                    <React.Fragment>
+                        {this.chanStripButton()}
+                        <br/>
+                    </React.Fragment>
+                    : null
+                }
+                {this.props.offtubeMode ?
+                    null :
+                    <React.Fragment>
+                        {this.pstButton()}
+                        <br/>
+                    </React.Fragment>
+                }
                 <br />
                 {this.props.showPfl ?
                     <React.Fragment>
@@ -332,7 +366,9 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         snapOn: state.faders[0].fader[props.channelIndex].snapOn.map((item: number) => {return item}),
         mixerProtocol: state.settings[0].mixerProtocol,
         automationMode: state.settings[0].automationMode,
+        offtubeMode: state.settings[0].offtubeMode,
         showSnaps: state.settings[0].showSnaps,
+        showChanStrip: state.settings[0].showChanStrip,
         showPfl: state.settings[0].showPfl
     }
 }

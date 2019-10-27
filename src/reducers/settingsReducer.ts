@@ -4,6 +4,7 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 export interface ISettings {
     showSnaps: boolean,
     showSettings: boolean,
+    showChanStrip: number,
     showOptions: number | false,
     showStorage: boolean,
     mixerProtocol: string,
@@ -24,7 +25,8 @@ export interface ISettings {
     voFadeTime: number, // Default fade time for VO ON - OFF
     voLevel: number,  // Relative level of PGM in %
     autoResetLevel: number, // Autoreset before pgm on, if level is lower than in %
-    automationMode: boolean, 
+    automationMode: boolean,
+    offtubeMode: boolean,
     showPfl: boolean
 }
 
@@ -33,6 +35,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
     {
         showSnaps: false,
         showSettings: false,
+        showChanStrip: -1,
         showOptions: false,
         showStorage: false,
         mixerProtocol: "genericMidi",
@@ -52,6 +55,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         voLevel: 20,
         autoResetLevel: 10,
         automationMode: true,
+        offtubeMode: false,
         fadeTime: 60,
         voFadeTime: 200, 
         showPfl: false
@@ -64,6 +68,9 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
     switch (action.type) {
         case 'TOGGLE_SHOW_SETTINGS':
             nextState[0].showSettings = !nextState[0].showSettings;
+            return nextState;
+        case 'TOGGLE_SHOW_CHAN_STRIP':
+            nextState[0].showChanStrip = action.channel;
             return nextState;
         case 'TOGGLE_SHOW_OPTION':
             nextState[0].showOptions = typeof nextState[0].showOptions === 'number' ? false : action.channel;
