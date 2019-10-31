@@ -233,10 +233,10 @@ export class SSLMixerConnection {
         }
     }
 
-    updateMuteState(channelIndex: number, level: number) {
+    updateMuteState(channelIndex: number, muteOn: boolean) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        if (this.store.faders[0].fader[channelIndex].muteOn === true) {
+        if (muteOn === true) {
             this.sendOutRequest(
                 this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_ON[0].mixerMessage,
                 channelTypeIndex

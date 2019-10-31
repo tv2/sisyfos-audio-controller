@@ -94,7 +94,7 @@ export class MixerGenericConnection {
     updateMuteState(faderIndex: number) {
         this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
             if (faderIndex === channel.assignedFader) {
-                this.mixerConnection.updateMuteState(channelIndex)
+                this.mixerConnection.updateMuteState(channelIndex, this.store.faders[0].fader[faderIndex].muteOn)
             }
         })
     }

@@ -253,7 +253,7 @@ export class OscMixerConnection {
         }
     }
 
-    updateMuteState(channelIndex: number, level: number) {
+    updateMuteState(channelIndex: number, muteOn: boolean) {
         return true
     } 
 
