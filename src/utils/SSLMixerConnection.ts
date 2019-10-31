@@ -233,6 +233,10 @@ export class SSLMixerConnection {
         }
     }
 
+    updateMuteState(channelIndex: number, level: number) {
+        return true
+    } 
+
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;

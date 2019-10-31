@@ -114,10 +114,10 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             type:'TOGGLE_MUTE',
             channel: this.channelIndex
         });
-//        window.mixerGenericConnection.updatePflState(this.channelIndex);
-//        if (window.huiRemoteConnection) {
-//            window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
-//        }
+        window.mixerGenericConnection.updateMuteState(this.channelIndex);
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+        }
     }
 
     handleLevel(event: any) {

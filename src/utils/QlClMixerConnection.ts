@@ -219,6 +219,10 @@ export class QlClMixerConnection {
         }
     }
 
+    updateMuteState(channelIndex: number, level: number) {
+        return true
+    } 
+    
     updateNextAux(channelIndex: number, level: number) {
         return true
     } 
