@@ -123,18 +123,18 @@
     margin-left: 32px;
     margin-right: 3px;
     margin-top: 3px;
-    color: rgb(109, 109, 109);
+    color: rgb(88, 88, 88);
     height: 30px;
     width: 53px;
     font-size: 85%;
     background-color: rgb(44, 40, 40);
     border-radius: 7px;
-    border-color: rgb(99, 99, 99);
+    border-color: rgb(83, 83, 83);
 }
 
 
 .channel-mute-button.on {
-    background-color: rgb(104, 25, 25);
+    background-color: rgb(121, 27, 27);
     color: rgb(165, 165, 165);
 }
 
