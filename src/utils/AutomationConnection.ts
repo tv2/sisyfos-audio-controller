@@ -92,6 +92,23 @@ export class AutomationConnection {
                 }
                 window.mixerGenericConnection.updateNextAux(ch-1);
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .CHANNEL_MUTE)){
+                let ch = message.address.split("/")[2];
+                if (message.args[0] === 1) {
+                    window.storeRedux.dispatch({
+                        type:'SET_MUTE',
+                        channel: ch - 1,
+                        muteOn: true
+                    });
+                } else {
+                    window.storeRedux.dispatch({
+                        type:'SET_MUTE',
+                        channel: ch - 1,
+                        pstOn: false
+                    });
+                }
+                window.mixerGenericConnection.updateMuteState(ch-1);
+            } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
@@ -200,6 +217,16 @@ export class AutomationConnection {
                     this.automationProtocol.toAutomation.STATE_CHANNEL_PST,
                     ch,
                     this.store.channels[0].channel[ch-1].pstOn,
+                    "i",
+                    info
+                );
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .STATE_CHANNEL_MUTE)) {
+                let ch = message.address.split("/")[3];
+                this.sendOutMessage(
+                    this.automationProtocol.toAutomation.STATE_CHANNEL_MUTE,
+                    ch,
+                    this.store.channels[0].channel[ch-1].muteOn,
                     "i",
                     info
                 );

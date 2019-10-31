@@ -110,6 +110,8 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /ch/1/mix/pgm - integer: { 0, 1 or 2 } - float { fadetime in ms }
 #### Set channel to PST:
 /ch/1/mix/pst - integer: { 0, 1 or 2 } (the integer defines: 0 - Off, 1 - Pgm On, 2 - Voice Over)
+#### Mute channel:
+/ch/1/mute - integer: { 0, 1 } (the integer defines: 0 - Mute off, 1 - Mute On)
 #### Set channel faderlevel:
 /ch/1/mix/faderlevel - float {between 0 and 1}
 #### Set channel label:
@@ -134,6 +136,8 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
 #### Get state channel faderlevel:
 /state/ch/1/mix/faderlevel - float {between 0 and 1}
+#### get state channel Mute:
+/state/ch/1/mute - returns mute state integer { 0 or 1 }
 #### Get state group PGM:
 /state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
 #### get state group PST:
