@@ -2,7 +2,7 @@
     color: white;
     background: linear-gradient(#2f2f2f 0px,#2f2f2f 730px, rgb(0, 0, 0) 1px, #2f2f2f 740px, #2f2f2f 100%);
     margin: 4px;
-    border-radius: 10px;
+    border-radius: 7px;
     max-width: 100px;
     position: relative;
 }
@@ -124,7 +124,7 @@
     margin-right: 3px;
     margin-top: 3px;
     color: rgb(88, 88, 88);
-    height: 30px;
+    height: 50px;
     width: 53px;
     font-size: 85%;
     background-color: rgb(44, 40, 40);
