@@ -57,7 +57,8 @@ if (geometry) {
                 CHANNEL_VU: [emptyMixerMessage()],
                 CHANNEL_NAME: [emptyMixerMessage()],
                 PFL: [emptyMixerMessage()],
-                AUX_SEND: [emptyMixerMessage()],
+				AUX_SEND: [emptyMixerMessage()],
+				CHANNEL_MUTE: [emptyMixerMessage()]
             },
             toMixer: {
                 CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
@@ -65,7 +66,8 @@ if (geometry) {
                 CHANNEL_NAME: [emptyMixerMessage()],
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
-                AUX_SEND: [emptyMixerMessage()],
+				AUX_SEND: [emptyMixerMessage()],
+				CHANNEL_MUTE: [emptyMixerMessage()]
             },
         }]
 	}

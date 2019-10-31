@@ -51,6 +51,7 @@ export const MidasMaster: IMixerProtocol = {
             CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
@@ -59,6 +60,7 @@ export const MidasMaster: IMixerProtocol = {
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
     }],
     fader: {

@@ -36,6 +36,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             }],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
@@ -59,6 +60,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
     },
     {
@@ -85,6 +87,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             }],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
@@ -108,6 +111,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
     },
     {
@@ -134,6 +138,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             }],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
@@ -157,6 +162,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
     }],
     fader: {

@@ -19,6 +19,7 @@ export const YamahaQL1: IMixerProtocol = {
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
@@ -27,6 +28,7 @@ export const YamahaQL1: IMixerProtocol = {
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
     }],
     fader: {

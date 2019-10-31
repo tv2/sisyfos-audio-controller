@@ -19,6 +19,7 @@ export const GenericMidi: IMixerProtocol = {
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [{ mixerMessage: "39", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
@@ -27,6 +28,7 @@ export const GenericMidi: IMixerProtocol = {
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE: [emptyMixerMessage()]
         },
     }],
     fader: {
