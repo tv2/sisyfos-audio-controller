@@ -19,7 +19,7 @@ export const SSLSystemT: IMixerProtocol = {
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
-            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_ON: [{ mixerMessage: "f1 04 00 01 00 {channel}", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {

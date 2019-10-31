@@ -72,17 +72,14 @@ export class SSLMixerConnection {
                 }
 
                 buffers.forEach((buffer) => {
-                    if (buffer[1] !== 6) {
+                    if (buffer[1] < 5) {
                         let commandHex = buffer.toString('hex')
                         console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
-                    } else if (buffer[1] === 6) {
-
+                    } else if (buffer[1] === 6 && buffer[2] === 255) {
+                        // Receive faderlevel:
                         let commandHex = buffer.toString('hex')
                         let channel = buffer[6]
                         let value = buffer.readUInt16BE(7)/1024
-                        console.log('Receive Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
-//                        console.log('Buffer Channel: ', channel)
-//                        console.log('Buffer Value: ', value)
                         
                         let assignedFader = 1 + this.store.channels[0].channel[channel].assignedFader
                         if (!this.store.channels[0].channel[channel].fadeActive
@@ -111,6 +108,29 @@ export class SSLMixerConnection {
                             }
                             
                         }
+                        
+                    } else if (buffer[1] === 5 && buffer[2] === 255) {
+                        let commandHex = buffer.toString('hex')
+                        let channel = buffer[6]
+                        let value: boolean = buffer === 1 ? true : false
+                        console.log('Receive Buffer Channel On/off: ', this.formatHexWithSpaces(commandHex, ' ', 2))
+                        
+                        let assignedFaderIndex = this.store.channels[0].channel[channel].assignedFader
+
+                        window.storeRedux.dispatch({
+                            type: 'SET_MUTE',
+                            channel: assignedFaderIndex,
+                            muteOn: value
+                        });
+                        
+                        if (window.huiRemoteConnection) {
+                            window.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                        }
+                        this.store.channels[0].channel.map((channel: any, index: number) => {
+                            if (channel.assignedFader === assignedFaderIndex) {
+                                this.updateMuteState(index, this.store.faders[0].fader[assignedFaderIndex].muteOn);
+                            }
+                        })
                     }
                 })    
             })
