@@ -45,6 +45,9 @@ export class SSLMixerConnection {
       }
 
     setupMixerConnection() {
+        // Return command was an acknowledge:
+        let lastWasAck = false
+
         this.SSLConnection
             .on("ready", () => {
                 console.log("Receiving state of desk");
@@ -68,15 +71,13 @@ export class SSLMixerConnection {
                     } 
                 }
                 if (buffers.length === 0) {
-                    buffers.push(data)
+                    buffers.push(data)  
                 }
 
                 buffers.forEach((buffer) => {
-                    if (buffer[1] < 5) {
-                        let commandHex = buffer.toString('hex')
-                        console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
-                    } else if (buffer[1] === 6 && buffer[2] === 255) {
-                        // Receive faderlevel:
+                    if (buffer[1] === 6 && buffer[2] === 255 && !lastWasAck) {
+                        lastWasAck = false
+                        // FADERLEVEL:
                         let commandHex = buffer.toString('hex')
                         let channel = buffer[6]
                         let value = buffer.readUInt16BE(7)/1024
@@ -109,13 +110,15 @@ export class SSLMixerConnection {
                             
                         }
                         
-                    } else if (buffer[1] === 5 && buffer[2] === 255) {
+                    } else if (buffer[1] === 5 && buffer[2] === 255 && !lastWasAck) {
+                        lastWasAck = false
+                        // MUTE ON/OFF 
                         let commandHex = buffer.toString('hex')
-                        let channel = buffer[6]
-                        let value: boolean = buffer === 1 ? true : false
+                        let channelIndex = buffer[6]
+                        let value: boolean = buffer[7] === 0 ? true : false
                         console.log('Receive Buffer Channel On/off: ', this.formatHexWithSpaces(commandHex, ' ', 2))
                         
-                        let assignedFaderIndex = this.store.channels[0].channel[channel].assignedFader
+                        let assignedFaderIndex = this.store.channels[0].channel[channelIndex].assignedFader
 
                         window.storeRedux.dispatch({
                             type: 'SET_MUTE',
@@ -127,10 +130,18 @@ export class SSLMixerConnection {
                             window.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
                         }
                         this.store.channels[0].channel.map((channel: any, index: number) => {
-                            if (channel.assignedFader === assignedFaderIndex) {
+                            if (channel.assignedFader === assignedFaderIndex && index !== channelIndex) {
                                 this.updateMuteState(index, this.store.faders[0].fader[assignedFaderIndex].muteOn);
                             }
                         })
+                    } else {
+                        let commandHex = buffer.toString('hex')
+                        console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
+                    }
+                    if (buffer[0] === 4) {
+                        lastWasAck = true
+                    }  else {
+                        lastWasAck = false
                     }
                 })    
             })
