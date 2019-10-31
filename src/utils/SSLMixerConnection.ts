@@ -234,7 +234,19 @@ export class SSLMixerConnection {
     }
 
     updateMuteState(channelIndex: number, level: number) {
-        return true
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        if (this.store.faders[0].fader[channelIndex].muteOn === true) {
+            this.sendOutRequest(
+                this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_ON[0].mixerMessage,
+                channelTypeIndex
+            );
+        } else {
+            this.sendOutRequest(
+                this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_OFF[0].mixerMessage,
+                channelTypeIndex
+            );
+        }
     } 
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {

@@ -19,7 +19,8 @@ export const ReaperMaster: IMixerProtocol = {
             CHANNEL_NAME: [{ mixerMessage: '/track/{channel}/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
-            CHANNEL_MUTE: [emptyMixerMessage()]
+            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
@@ -42,7 +43,8 @@ export const ReaperMaster: IMixerProtocol = {
                 zero: 0.75
             }],
             AUX_SEND: [emptyMixerMessage()],
-            CHANNEL_MUTE: [emptyMixerMessage()]
+            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
     },
     {
@@ -58,7 +60,8 @@ export const ReaperMaster: IMixerProtocol = {
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
-            CHANNEL_MUTE: [emptyMixerMessage()]
+            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
@@ -67,7 +70,8 @@ export const ReaperMaster: IMixerProtocol = {
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
-            CHANNEL_MUTE: [emptyMixerMessage()]
+            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
     }],
     fader: {

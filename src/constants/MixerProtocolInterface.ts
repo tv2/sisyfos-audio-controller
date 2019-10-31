@@ -34,7 +34,8 @@ export interface IChannelTypes {
         CHANNEL_NAME: Array<IMixerMessageProtocol>
         PFL: Array<IMixerMessageProtocol>
         AUX_SEND: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
     },
     toMixer: {
         CHANNEL_FADER_LEVEL: Array<IMixerMessageProtocol>,
@@ -43,7 +44,8 @@ export interface IChannelTypes {
         PFL_ON: Array<IMixerMessageProtocol>,
         PFL_OFF: Array<IMixerMessageProtocol>
         AUX_SEND: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
     }
 }
 
