@@ -7,6 +7,10 @@
     position: relative;
 }
 
+.channel-body.mute-on {
+    background: linear-gradient(#202020 0px,#202020 730px, rgb(0, 0, 0) 1px, #2f2f2f 740px, #2f2f2f 100%);
+}  
+
 .channel-name {
     margin-top: 10px;
     text-align: center;
@@ -33,9 +37,13 @@
     border-color: rgb(99, 99, 99);
 }
 
-
 .channel-pgm-button.on {
     background-color: red;
+}
+
+.channel-pgm-button.mute {
+    background-color: rgb(37, 37, 37);
+    color: rgb(117, 117, 117);
 }
 
 
@@ -57,6 +65,11 @@
 
 .channel-vo-button.on {
     background-color: rgb(207, 135, 1);
+}
+
+.channel-vo-button.mute {
+    background-color: rgb(36, 36, 36);
+    color: rgb(117, 117, 117);
 }
 
 .channel-pst-button {
@@ -102,6 +115,26 @@
     animation: 2s pfl-active-flash;
     animation-direction: normal;
     animation-iteration-count: infinite;
+}
+
+.channel-mute-button {
+    outline : none;
+    -moz-outline : none;
+    margin-left: 32px;
+    margin-right: 3px;
+    margin-top: 3px;
+    color: rgb(165, 165, 165);
+    height: 30px;
+    width: 53px;
+    font-size: 85%;
+    background-color: rgb(65, 49, 49);
+    border-radius: 7px;
+    border-color: rgb(99, 99, 99);
+}
+
+
+.channel-mute-button.on {
+    background-color: rgb(104, 25, 25);
 }
 
 .channel-body.with-snaps .channel-pgm-button, .channel-body.with-snaps .channel-pst-button, .channel-body.with-snaps .channel-pfl-button {
@@ -196,7 +229,7 @@
     width: 10px;
     height: 420px;
     margin-left: 55px;
-    margin-top: 60px;
+    margin-top: 20px;
     border-width: 0px;
     border-style: solid;
     border-radius: 8px;
@@ -230,6 +263,14 @@
     background: linear-gradient(to top, #353006 0%, #c59327 20%, #856b14 50%, #00a 1px, #866724 52%, #cca22d 80%, #463b0a 100%);
 }
 
+.channel-volume-thumb-color-mute {
+    margin-left: -21px;
+    width: 49px;
+    height: 75px;
+    border: 1px solid rgb(85, 85, 85);
+    border-radius: 8px;
+    background: linear-gradient(to top, #111111 0%, #252525 20%, #2b2b2b 50%, rgb(88, 88, 88) 1px, #292929 52%, #222222 80%, #222222 100%);
+}
 
 :focus {
     outline: 0;

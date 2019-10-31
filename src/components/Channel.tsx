@@ -19,6 +19,7 @@ interface IChannelInjectProps {
     pstOn: boolean,
     pstVoOn: boolean,
     pflOn: boolean,
+    muteOn: boolean,
     channelType: number,
     channelTypeIndex: number,
     showChannel: boolean,
@@ -108,6 +109,17 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         }
     }
 
+    handleMute() {
+        this.props.dispatch({
+            type:'TOGGLE_MUTE',
+            channel: this.channelIndex
+        });
+//        window.mixerGenericConnection.updatePflState(this.channelIndex);
+//        if (window.huiRemoteConnection) {
+//            window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+//        }
+    }
+
     handleLevel(event: any) {
         this.props.dispatch({
             type:'SET_FADER_LEVEL',
@@ -138,6 +150,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     fader() {
         let thumb = 'channel-volume-thumb' + (this.props.pgmOn ? '-color-pgm' : '') +  (this.props.voOn ? '-color-vo' : '')
+        if (this.props.muteOn) {
+            thumb = 'channel-volume-thumb-color-mute'
+        }
         return (
             <ReactSlider 
                 className="channel-volume-fader"
@@ -155,12 +170,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         )
     }
 
+
     pgmButton = () => {
         return (
 
             <button
                 className={ClassNames("channel-pgm-button", {
-                    'on': this.props.pgmOn
+                    'on': this.props.pgmOn,
+                    'mute': this.props.muteOn
                 })}
                 onClick={event => {
                     this.handlePgm();
@@ -177,7 +194,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
             <button
                 className={ClassNames("channel-vo-button", {
-                    'on': this.props.voOn
+                    'on': this.props.voOn,
+                    'mute': this.props.muteOn,
                 })}
                 onClick={event => {
                     this.handleVo();
@@ -226,6 +244,22 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         )
     }
 
+    muteButton = () => {
+        return (
+            <button
+                className={ClassNames("channel-mute-button", {
+                    'on': this.props.muteOn
+                })}
+                onClick={event => {
+                    this.handleMute();
+                }}
+            >
+            MUTE
+            </button>
+        )
+    }
+
+
     snapButton = (snapIndex: number) => {
         if (this.props.showSnaps) {
             return (
@@ -273,12 +307,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             null
             :
             <div
-                /*style={{backgroundColor: this.mixerProtocol.channelTypes[this.props.channelType].channelTypeColor}}*/
                 className={
                     ClassNames("channel-body", {
                     "with-snaps": this.props.showSnaps,
                     "with-pfl": this.props.showPfl,
+                    "mute-on": this.props.muteOn
                 })}>
+                {this.muteButton()}
+                <br/>
                 {this.channelSettings()}
                 <h4 className="channel-zero-indicator">_____</h4>
                 {this.fader()}
@@ -324,6 +360,7 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         pstOn: state.faders[0].fader[props.channelIndex].pstOn,
         pstVoOn: state.faders[0].fader[props.channelIndex].pstVoOn,
         pflOn: state.faders[0].fader[props.channelIndex].pflOn,
+        muteOn: state.faders[0].fader[props.channelIndex].muteOn,
         showChannel: state.faders[0].fader[props.channelIndex].showChannel,
         faderLevel: state.faders[0].fader[props.channelIndex].faderLevel,
         channelType: 0, /*state.channels[0].channel[props.channelIndex].channelType, */
