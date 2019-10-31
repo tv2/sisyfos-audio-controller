@@ -15,10 +15,12 @@ export const SSLSystemT: IMixerProtocol = {
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()], // Handled by SSLMixerconnection
             CHANNEL_OUT_GAIN: [emptyMixerMessage()],    // Handled by SSLMixerconnection
-    CHANNEL_VU: [emptyMixerMessage()],                   // Not implemented in SSL Automation protocol yet
+            CHANNEL_VU: [emptyMixerMessage()],          // Not implemented in SSL Automation protocol yet
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
@@ -27,6 +29,8 @@ export const SSLSystemT: IMixerProtocol = {
             PFL_ON: [{ mixerMessage: "f1 05 00 80 05 {channel} 01", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             PFL_OFF: [{ mixerMessage: "f1 05 00 80 05 {channel} 00", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             AUX_SEND: [{ mixerMessage: "f1 06 00 80 00 {channel} {level}", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_MUTE_ON: [{ mixerMessage: "f1 05 00 80 01 {channel} 00", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_MUTE_OFF: [{ mixerMessage: "f1 05 00 80 01 {channel} 01", value: 0, type: '', min: 0, max: 1, zero: 0.75}]
         },
     }],
     fader: {

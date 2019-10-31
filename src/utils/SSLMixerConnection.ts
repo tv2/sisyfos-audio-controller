@@ -233,6 +233,22 @@ export class SSLMixerConnection {
         }
     }
 
+    updateMuteState(channelIndex: number, muteOn: boolean) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        if (muteOn === true) {
+            this.sendOutRequest(
+                this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_ON[0].mixerMessage,
+                channelTypeIndex
+            );
+        } else {
+            this.sendOutRequest(
+                this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_OFF[0].mixerMessage,
+                channelTypeIndex
+            );
+        }
+    } 
+
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;

@@ -13,6 +13,7 @@ export interface IFader {
     pstOn: boolean,
     pstVoOn: boolean,
     pflOn: boolean,
+    muteOn: boolean,
     showChannel: boolean,
     snapOn: Array<boolean>,
 }
@@ -37,6 +38,7 @@ const defaultFadersReducerState = (numberOfFaders: number) => {
                 pstOn: false,
                 pstVoOn: false,
                 pflOn: false,
+                muteOn: false,
                 showChannel: true,
                 snapOn: [],
             });
@@ -92,7 +94,7 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
             nextState[0].fader[action.channel].voOn = !nextState[0].fader[action.channel].voOn;
             nextState[0].fader[action.channel].pgmOn = false;
             return nextState;
-            case 'SET_VO': //channel
+        case 'SET_VO': //channel
             nextState[0].fader[action.channel].voOn = !!action.voOn;
             nextState[0].fader[action.channel].pgmOn = false;
             return nextState;
@@ -121,6 +123,12 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
             return nextState;
         case 'SET_PFL': //channel
             nextState[0].fader[action.channel].pflOn = !!action.pflOn;
+            return nextState;
+        case 'TOGGLE_MUTE': //channel
+            nextState[0].fader[action.channel].muteOn = !nextState[0].fader[action.channel].muteOn;
+            return nextState;
+        case 'SET_MUTE': //channel
+            nextState[0].fader[action.channel].muteOn = !!action.muteOn;
             return nextState;
         case 'SHOW_CHANNEL': //channel // showChannel
             nextState[0].fader[action.channel].showChannel = !!action.showChannel;
