@@ -91,8 +91,12 @@ export class MixerGenericConnection {
         this.mixerConnection.updatePflState(channelIndex);
     }
 
-    updateMuteState(channelIndex: number) {
-        this.mixerConnection.updateMuteState(channelIndex);
+    updateMuteState(faderIndex: number) {
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateMuteState(channelIndex)
+            }
+        })
     }
 
     updateNextAux(faderIndex: number) {
