@@ -19,6 +19,7 @@ export interface IAutomationProtocol {
         CHANNEL_PST_ON_OFF: string,
         CHANNEL_FADER_LEVEL: string,
         CHANNEL_VISIBLE: string,
+        CHANNEL_MUTE: string,
         X_MIX: string,
         SET_LABEL: string,
         FADE_TO_BLACK: string,
@@ -27,6 +28,7 @@ export interface IAutomationProtocol {
         STATE_CHANNEL_PGM: string,
         STATE_CHANNEL_PST: string,
         STATE_CHANNEL_FADER_LEVEL: string,
+        STATE_CHANNEL_MUTE: string,
         STATE_FULL: string
         PING: string
     },
@@ -34,6 +36,7 @@ export interface IAutomationProtocol {
         STATE_CHANNEL_PGM: string,
         STATE_CHANNEL_PST: string,
         STATE_CHANNEL_FADER_LEVEL: string,
+        STATE_CHANNEL_MUTE: string,
         STATE_FULL: string,
         PONG: string
     },
@@ -71,6 +74,7 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
             CHANNEL_PST_ON_OFF: '/ch/{value1}/pst',
             CHANNEL_FADER_LEVEL: '/ch/{value1}/faderlevel',
             CHANNEL_VISIBLE: '/ch/{value1}/visible',
+            CHANNEL_MUTE: '/ch/{value1}/mute',
             X_MIX: '/take',
             SET_LABEL: '/ch/{value1}/label',
             FADE_TO_BLACK: '/fadetoblack',
@@ -79,6 +83,7 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
             STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
             STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
+            STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
             STATE_FULL: '/state/full',
             PING: '/ping/{value1}'
         },
@@ -86,6 +91,7 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
             STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
             STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
+            STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
             STATE_FULL: '/state/full',
             PONG: '/pong'
         },

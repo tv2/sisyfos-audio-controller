@@ -37,6 +37,8 @@ export const LawoClient: IMixerProtocol = {
             }],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [{
@@ -68,6 +70,8 @@ export const LawoClient: IMixerProtocol = {
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         }
     }],
     fader: {

@@ -45,6 +45,9 @@ export class SSLMixerConnection {
       }
 
     setupMixerConnection() {
+        // Return command was an acknowledge:
+        let lastWasAck = false
+
         this.SSLConnection
             .on("ready", () => {
                 console.log("Receiving state of desk");
@@ -68,21 +71,16 @@ export class SSLMixerConnection {
                     } 
                 }
                 if (buffers.length === 0) {
-                    buffers.push(data)
+                    buffers.push(data)  
                 }
 
                 buffers.forEach((buffer) => {
-                    if (buffer[1] !== 6) {
-                        let commandHex = buffer.toString('hex')
-                        console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
-                    } else if (buffer[1] === 6) {
-
+                    if (buffer[1] === 6 && buffer[2] === 255 && !lastWasAck) {
+                        lastWasAck = false
+                        // FADERLEVEL:
                         let commandHex = buffer.toString('hex')
                         let channel = buffer[6]
                         let value = buffer.readUInt16BE(7)/1024
-                        console.log('Receive Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
-//                        console.log('Buffer Channel: ', channel)
-//                        console.log('Buffer Value: ', value)
                         
                         let assignedFader = 1 + this.store.channels[0].channel[channel].assignedFader
                         if (!this.store.channels[0].channel[channel].fadeActive
@@ -111,6 +109,39 @@ export class SSLMixerConnection {
                             }
                             
                         }
+                        
+                    } else if (buffer[1] === 5 && buffer[2] === 255 && !lastWasAck) {
+                        lastWasAck = false
+                        // MUTE ON/OFF 
+                        let commandHex = buffer.toString('hex')
+                        let channelIndex = buffer[6]
+                        let value: boolean = buffer[7] === 0 ? true : false
+                        console.log('Receive Buffer Channel On/off: ', this.formatHexWithSpaces(commandHex, ' ', 2))
+                        
+                        let assignedFaderIndex = this.store.channels[0].channel[channelIndex].assignedFader
+
+                        window.storeRedux.dispatch({
+                            type: 'SET_MUTE',
+                            channel: assignedFaderIndex,
+                            muteOn: value
+                        });
+                        
+                        if (window.huiRemoteConnection) {
+                            window.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                        }
+                        this.store.channels[0].channel.map((channel: any, index: number) => {
+                            if (channel.assignedFader === assignedFaderIndex && index !== channelIndex) {
+                                this.updateMuteState(index, this.store.faders[0].fader[assignedFaderIndex].muteOn);
+                            }
+                        })
+                    } else {
+                        let commandHex = buffer.toString('hex')
+                        console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
+                    }
+                    if (buffer[0] === 4) {
+                        lastWasAck = true
+                    }  else {
+                        lastWasAck = false
                     }
                 })    
             })
@@ -232,6 +263,22 @@ export class SSLMixerConnection {
             );
         }
     }
+
+    updateMuteState(channelIndex: number, muteOn: boolean) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        if (muteOn === true) {
+            this.sendOutRequest(
+                this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_ON[0].mixerMessage,
+                channelTypeIndex
+            );
+        } else {
+            this.sendOutRequest(
+                this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_OFF[0].mixerMessage,
+                channelTypeIndex
+            );
+        }
+    } 
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
