@@ -11,10 +11,6 @@
     background: linear-gradient(#202020 0px,#202020 730px, rgb(0, 0, 0) 1px, #2f2f2f 740px, #2f2f2f 100%);
 }  
 
-.channel-name {
-    margin-top: 10px;
-    text-align: center;
-}
 .channel-gain-label {
     color: #777777;
     font-size: 0.8em;
@@ -27,7 +23,7 @@
     -moz-outline : none;
     margin-left: 3px;
     margin-right: 3px;
-    margin-top: 40px;
+    margin-top: 25px;
     color: white;
     height: 90px;
     width: 80px;
@@ -120,16 +116,16 @@
 .channel-mute-button {
     outline : none;
     -moz-outline : none;
-    margin-left: 32px;
+    margin-left: 3px;
     margin-right: 3px;
-    margin-top: 3px;
-    color: rgb(88, 88, 88);
+    margin-top: 5px;
+    color: rgb(109, 108, 108);
     height: 50px;
-    width: 53px;
+    width: 80px;
     font-size: 85%;
-    background-color: rgb(44, 40, 40);
+    background-color: rgb(44, 44, 44);
     border-radius: 7px;
-    border-color: rgb(83, 83, 83);
+    border-color: rgb(109, 108, 108);
 }
 
 
@@ -200,8 +196,6 @@
 }
 
 .channel-settings {
-    position: absolute;
-    top: 5px;
     left: -3px;
     background: none;
     border: none;
@@ -220,6 +214,20 @@
     width: 25px;
     height: 25px;
     fill: rgb(99, 99, 99);
+}
+
+.channel-strip-button {
+    outline : none;
+    -moz-outline : none;
+    margin-left: 3px;
+    margin-right: 3px;
+    color: white;
+    height: 30px;
+    width: 80px;
+    font-size: 105%;
+    background-color: rgba(39, 39, 39, 0.308);
+    border-radius: 7px;
+    border-color: rgba(99, 99, 99, 0.301);
 }
 
 .channel-body.with-snaps .vumeter-body {
@@ -278,6 +286,7 @@
     }
 
 .channel-zero-indicator {
+    color: rgb(119, 119, 119);
     position: absolute;
    top: 153px;
    left: 37px; 

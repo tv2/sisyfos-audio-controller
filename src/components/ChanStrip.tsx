@@ -32,8 +32,15 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         return true;
     }
 
-    handleClearRouting() {
-        return true
+    handleShowRoutingOptions() {
+        this.props.dispatch({
+            type: 'TOGGLE_SHOW_OPTION',
+            channel: this.faderIndex
+        });
+        this.props.dispatch({
+            type: 'TOGGLE_SHOW_CHAN_STRIP',
+            channel: -1
+        });
     }
 
     handle11Routing() {
@@ -60,8 +67,8 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 >X</button>
                 <button 
                     className="button"
-                    onClick={() => this.handleClearRouting()}
-                >NOTHING</button>
+                    onClick={() => this.handleShowRoutingOptions()}
+                >ROUTING</button>
                 <button 
                     className="button"
                     onClick={() => this.handle11Routing()}
