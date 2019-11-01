@@ -28,10 +28,6 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         this.mixerProtocol = MixerProtocolPresets[this.props.selectedProtocol];
     }
 
-    handleAssignChannel(channel: number, event: any) {
-        return true;
-    }
-
     handleShowRoutingOptions() {
         this.props.dispatch({
             type: 'TOGGLE_SHOW_OPTION',
@@ -41,10 +37,6 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
             type: 'TOGGLE_SHOW_CHAN_STRIP',
             channel: -1
         });
-    }
-
-    handle11Routing() {
-        return true
     }
 
     handleClose = () => {
@@ -69,10 +61,6 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     className="button"
                     onClick={() => this.handleShowRoutingOptions()}
                 >ROUTING</button>
-                <button 
-                    className="button"
-                    onClick={() => this.handle11Routing()}
-                >NOTHING ELSE</button>
                 <hr />
             </div>
         )
