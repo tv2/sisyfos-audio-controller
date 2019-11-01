@@ -337,7 +337,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                         <br/>
                     </React.Fragment>
                 }
-                <br />
                 {this.props.showPfl ?
                     <React.Fragment>
                         {this.pflButton()}
