@@ -361,6 +361,16 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
+                    OFFTUBE MODE:
+                    <input
+                        type="checkbox"
+                        name="offtubeMode"
+                        checked={this.state.settings.offtubeMode}
+                        onChange={this.handleChange}
+                    />
+                </label>
+                <br/>
+                <label className="settings-input-field">
                     SHOW PFL CONTROLS:
                     <input
                         type="checkbox"

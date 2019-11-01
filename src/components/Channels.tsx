@@ -6,16 +6,19 @@ import '../assets/css/Channels.css';
 import { Store } from 'redux';
 import { IAppProps } from './App';
 import ChannelRouteSettings from './ChannelRouteSettings';
+import ChanStrip from './ChanStrip'
 const { dialog } = require('electron').remote;
 
 
 class Channels extends React.Component<IAppProps & Store> {
     constructor(props: any) {
         super(props);
+        this.props.store.settings[0].showChanStrip = -1
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
-        return this.props.store.settings[0].showOptions !== nextProps.store.settings[0].showOptions;
+        return this.props.store.settings[0].showOptions !== nextProps.store.settings[0].showOptions 
+        || this.props.store.settings[0].showChanStrip !== nextProps.store.settings[0].showChanStrip;
     }
 
 
@@ -108,7 +111,12 @@ class Channels extends React.Component<IAppProps & Store> {
             {(typeof this.props.store.settings[0].showOptions === 'number') ?
                 <ChannelRouteSettings faderIndex={this.props.store.settings[0].showOptions}/>
                 :
-                ""
+                null
+            }
+            {(this.props.store.settings[0].showChanStrip >= 0) ?
+                <ChanStrip faderIndex={this.props.store.settings[0].showChanStrip}/>
+                :
+                null
             }
             {this.props.store.faders[0].fader.map((none: any, index: number) => {
                 return <Channel
@@ -119,7 +127,8 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             <br/>
             <div className="channels-mix-body">
-            {this.props.store.settings[0].automationMode ?
+            {(this.props.store.settings[0].automationMode ||
+                  this.props.store.settings[0].offtubeMode) ?
                     null 
                     : <React.Fragment>
                         {<button
@@ -164,7 +173,8 @@ class Channels extends React.Component<IAppProps & Store> {
                 </button>}
                 <br />
 
-                {this.props.store.settings[0].automationMode ?
+                {(this.props.store.settings[0].automationMode ||
+                  this.props.store.settings[0].offtubeMode) ?
                     null 
                     : <React.Fragment>
                         <div className="channels-snap-mix-body">
