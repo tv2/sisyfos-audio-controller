@@ -122,7 +122,7 @@
     color: rgb(109, 108, 108);
     height: 50px;
     width: 80px;
-    font-size: 85%;
+    font-size: 90%;
     background-color: rgb(44, 44, 44);
     border-radius: 7px;
     border-color: rgb(109, 108, 108);
@@ -130,8 +130,8 @@
 
 
 .channel-mute-button.on {
-    background-color: rgb(121, 27, 27);
-    color: rgb(165, 165, 165);
+    background-color: rgb(168, 168, 168);
+    color: rgb(48, 48, 48);
 }
 
 .channel-body.with-snaps .channel-pgm-button, .channel-body.with-snaps .channel-pst-button, .channel-body.with-snaps .channel-pfl-button {
