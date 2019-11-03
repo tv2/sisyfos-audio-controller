@@ -38,7 +38,7 @@
 }
 
 .channel-pgm-button.mute {
-    background-color: rgb(37, 37, 37);
+    opacity: 0.3;
     color: rgb(117, 117, 117);
 }
 
@@ -64,7 +64,7 @@
 }
 
 .channel-vo-button.mute {
-    background-color: rgb(36, 36, 36);
+    opacity: 0.3;
     color: rgb(117, 117, 117);
 }
 
@@ -277,9 +277,9 @@
     margin-left: -21px;
     width: 49px;
     height: 75px;
-    border: 1px solid rgb(85, 85, 85);
+    border: 1px solid rgb(58, 58, 58);
     border-radius: 8px;
-    background: linear-gradient(to top, #111111 0%, #252525 20%, #2b2b2b 50%, rgb(88, 88, 88) 1px, #292929 52%, #222222 80%, #222222 100%);
+    background: linear-gradient(to top, #111111 0%, #252525 20%, #2b2b2b 50%, rgb(56, 56, 56) 1px, #292929 52%, #222222 80%, #222222 100%);
 }
 
 :focus {
