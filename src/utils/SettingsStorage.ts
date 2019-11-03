@@ -2,6 +2,9 @@
 const fs = require('fs');
 const electron = require('electron');
 const folder = electron.remote.app.getPath('userData');
+import { 
+    SET_COMPLETE_CH_STATE
+} from '../reducers/channelActions'
 
 
 export const loadSettings = (storeRedux: any) => {
@@ -34,7 +37,7 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
                 numberOfTypeChannels: numberOfFaders
             });
             window.storeRedux.dispatch({
-                type:'SET_COMPLETE_CH_STATE',
+                type:SET_COMPLETE_CH_STATE,
                 allState: stateFromFile.channelState,
                 numberOfTypeChannels: numberOfChannels
             });
@@ -54,7 +57,7 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
                 numberOfTypeChannels: numberOfFaders
             });
             window.storeRedux.dispatch({
-                type:'SET_COMPLETE_CH_STATE',
+                type:SET_COMPLETE_CH_STATE,
                 allState: stateChannelSnapshot,
                 numberOfTypeChannels: numberOfChannels
             });

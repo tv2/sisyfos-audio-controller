@@ -8,6 +8,7 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol, ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
 import { IChannel } from '../reducers/channelsReducer';
+import { SET_PRIVATE } from  '../reducers/channelActions'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -89,7 +90,7 @@ export class CasparCGConnection {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
                             window.storeRedux.dispatch({
-                                type: 'SET_PRIVATE',
+                                type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'producer',
                                 value: message.args[0]
@@ -99,7 +100,7 @@ export class CasparCGConnection {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
                             window.storeRedux.dispatch({
-                                type: 'SET_PRIVATE',
+                                type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'channel_layout',
                                 value: message.args[0]
@@ -109,7 +110,7 @@ export class CasparCGConnection {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
                             window.storeRedux.dispatch({
-                                type: 'SET_PRIVATE',
+                                type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'file_path',
                                 value: message.args[0].low

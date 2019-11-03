@@ -7,6 +7,7 @@ import { IMixerProtocol } from '../constants/MixerProtocolInterface';
 import { behringerMeter } from './productSpecific/behringer';
 import { midasMeter } from './productSpecific/midas';
 import { IStore } from '../reducers/indexReducer';
+import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
 
 export class OscMixerConnection {
     store: IStore;
@@ -82,7 +83,7 @@ export class OscMixerConnection {
                     this.store.channels[0].channel.map((channel: any, index: number) => {
                         if (channel.assignedFader === assignedFader - 1) {
                             window.storeRedux.dispatch({
-                                type:'SET_OUTPUT_LEVEL',
+                                type:SET_OUTPUT_LEVEL,
                                 channel: index,
                                 level: message.args[0]
                             });

@@ -5,6 +5,7 @@ import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
+import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
 
 export class MidiMixerConnection {
     store: any;
@@ -136,7 +137,7 @@ return true;
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
             window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
+                type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel
             });

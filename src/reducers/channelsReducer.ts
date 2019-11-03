@@ -1,4 +1,14 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
+import { 
+    SET_OUTPUT_LEVEL,
+    SET_VU_LEVEL,
+    SET_ALL_VU_LEVELS,
+    SET_ASSIGNED_FADER,
+    SET_COMPLETE_CH_STATE,
+    SET_OPTION,
+    SET_PRIVATE,
+    FADE_ACTIVE
+} from './channelActions'
 
 export interface IChannels {
     channel: Array<IChannel>,
@@ -53,15 +63,10 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
     }];
 
     switch(action.type) {
-        case 'SET_OUTPUT_LEVEL': //channel:  level:
+        case SET_OUTPUT_LEVEL: //channel:  level:
             nextState[0].channel[action.channel].outputLevel = parseFloat(action.level);
             return nextState;
-        case 'SET_VU_LEVEL': //channel:  level:
-            if (typeof nextState[0].vuMeters[action.channel] !== 'undefined') {
-                nextState[0].vuMeters[action.channel].vuVal = parseFloat(action.level);
-            }
-            return nextState;
-        case 'SET_COMPLETE_CH_STATE': //allState  //numberOfChannels
+        case SET_COMPLETE_CH_STATE: //allState  //numberOfChannels
             nextState = defaultChannelsReducerState(action.numberOfTypeChannels);
             if (action.allState.channel.length == nextState[0].channel.length) {
                 action.allState.channel.map((channel: any, index: number) => {
@@ -71,22 +76,19 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
                 });
             }
             return nextState;
-        case 'FADE_ACTIVE':
+        case FADE_ACTIVE:
             nextState[0].channel[action.channel].fadeActive = !!action.active;
             return nextState;
-        case 'SET_ALL_VU_LEVELS': //channel:  level:
-            nextState[0].vuMeters = action.vuMeters;
-            return nextState;
-        case 'SET_ASSIGNED_FADER': //channel:  faderNumber:
+        case SET_ASSIGNED_FADER: //channel:  faderNumber:
             nextState[0].channel[action.channel].assignedFader = action.faderNumber
             return nextState;
-        case 'SET_PRIVATE':
+        case SET_PRIVATE:
             if (!nextState[0].channel[action.channel].private) {
                 nextState[0].channel[action.channel].private = {};
             }
             nextState[0].channel[action.channel].private![action.tag] = action.value;
             return nextState;
-        case 'SET_OPTION':
+        case SET_OPTION:
             console.log(action);
             window.mixerGenericConnection.updateChannelSettings(action.channel, action.prop, action.option);
             return nextState;

@@ -6,6 +6,7 @@ import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import CcgChannelSettings from './CcgChannelSettings';
+import { SET_ASSIGNED_FADER } from '../reducers/channelActions'
 const { dialog } = require('electron').remote;
 
 interface IChannelSettingsInjectProps {
@@ -73,7 +74,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
             }
         }
         this.props.dispatch({
-            type: 'SET_ASSIGNED_FADER',
+            type: SET_ASSIGNED_FADER,
             channel: channel,
             faderNumber: faderAssign
         });
@@ -93,7 +94,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
         if (response === 0) {
             this.props.channel.forEach((channel: any, index: number) => {
                 this.props.dispatch({
-                    type: 'SET_ASSIGNED_FADER',
+                    type: SET_ASSIGNED_FADER,
                     channel: index,
                     faderNumber: -1
                 });
@@ -116,7 +117,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
             this.props.fader.forEach((fader: any, index: number) => {
                 if (this.props.channel.length > index) {
                     this.props.dispatch({
-                        type: 'SET_ASSIGNED_FADER',
+                        type: SET_ASSIGNED_FADER,
                         channel: index,
                         faderNumber: index
                     });

@@ -3,8 +3,10 @@ import * as os from 'os'; // Used to display (log) network addresses on local ma
 import * as net from 'net'
 
 //Utils:
-import { IMixerProtocol } from '../constants/MixerProtocolInterface';
-import { IStore } from '../reducers/indexReducer';
+import { IMixerProtocol } from '../constants/MixerProtocolInterface'
+import { IStore } from '../reducers/indexReducer'
+import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
+
 
 export class QlClMixerConnection {
     store: IStore;
@@ -186,7 +188,7 @@ export class QlClMixerConnection {
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
             window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
+                type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel
             });
