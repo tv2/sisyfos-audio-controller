@@ -1,8 +1,5 @@
-import * as DEFAULTS from '../constants/DEFAULTS';
 import { 
     SET_OUTPUT_LEVEL,
-    SET_VU_LEVEL,
-    SET_ALL_VU_LEVELS,
     SET_ASSIGNED_FADER,
     SET_COMPLETE_CH_STATE,
     SET_OPTION,
