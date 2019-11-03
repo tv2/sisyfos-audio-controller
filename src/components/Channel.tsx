@@ -31,7 +31,7 @@ interface IChannelInjectProps {
     showSnaps: boolean,
     automationMode: boolean,
     offtubeMode: boolean,
-    showPfl: boolean
+    showPfl: boolean,
 }
 
 interface IChannelProps {
@@ -66,6 +66,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             nextProps.mixerProtocol != this.props.mixerProtocol ||
             nextProps.showSnaps != this.props.showSnaps ||
             nextProps.showPfl != this.props.showPfl ||
+            nextProps.showChanStrip != this.props.showChanStrip ||
             snapChanged
         )
     }
@@ -337,7 +338,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                         <br/>
                     </React.Fragment>
                 }
-                <br />
                 {this.props.showPfl ?
                     <React.Fragment>
                         {this.pflButton()}
@@ -382,7 +382,7 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         offtubeMode: state.settings[0].offtubeMode,
         showSnaps: state.settings[0].showSnaps,
         showChanStrip: state.settings[0].showChanStrip,
-        showPfl: state.settings[0].showPfl
+        showPfl: state.settings[0].showPfl,
     }
 }
 

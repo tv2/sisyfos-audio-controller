@@ -1,9 +1,9 @@
 .vumeter-body {
     position: absolute;
     top: 50px;
-    width: 30px;
-    margin-top: 10px;
-    margin-left: 2px;
+    width: 24px;
+    margin-top: 15px;
+    margin-left: 5px;
     background-color: black;
     border-radius: 7px;
     height: 430px;
@@ -12,7 +12,7 @@
 .vumeter-canvas {
     position: absolute;
     width: 10px;
-    margin-left: 10px;
+    margin-left: 6px;
     bottom: 0;
     height: 100%;
 }
