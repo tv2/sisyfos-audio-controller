@@ -12,7 +12,7 @@ import {
     SET_PGM,
     SET_PST,
     SET_PST_VO,
-    SET_SNAP,
+    TOGGLE_SNAP,
     SET_VO,
     SET_VU_LEVEL,
     SHOW_CHANNEL,
@@ -158,7 +158,7 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
         case SHOW_CHANNEL: //channel // showChannel
             nextState[0].fader[action.channel].showChannel = !!action.showChannel;
             return nextState;
-        case SET_SNAP: //channel //snapIndex
+        case TOGGLE_SNAP: //channel //snapIndex
             nextState[0].fader[action.channel].snapOn[action.snapIndex] = !nextState[0].fader[action.channel].snapOn[action.snapIndex];
             return nextState;
         case X_MIX: //none

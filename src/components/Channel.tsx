@@ -18,7 +18,7 @@ import {
     TOGGLE_PST,
     TOGGLE_PFL,
     TOGGLE_MUTE,
-    SET_SNAP
+    TOGGLE_SNAP
 } from '../reducers/faderActions'
 import { 
     TOGGLE_SHOW_CHAN_STRIP,
@@ -150,7 +150,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handleSnap(snapIndex: number) {
         this.props.dispatch({
-            type: SET_SNAP,
+            type: TOGGLE_SNAP,
             channel: this.channelIndex,
             snapIndex: snapIndex
         });
