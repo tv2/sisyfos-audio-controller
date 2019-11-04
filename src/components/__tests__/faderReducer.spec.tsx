@@ -1,4 +1,5 @@
 import indexReducer from  '../../reducers/indexReducer'
+import { IVuMeters, IFaders } from  '../../reducers/fadersReducer'
 import { 
   SET_FADER_LEVEL,
   SET_PGM,
@@ -125,6 +126,16 @@ describe('Test redux actions', () => {
       type: SET_PST_VO,
       channel: 0,
       pstVoOn: true
+    })).toEqual(parsedInitialStore)
+  })
+
+  it('should return the new SET_VU_LEVEL state on fader', () => {
+    let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
+    parsedInitialStore.faders[0].vuMeters[0].vuVal = 0.75
+    expect(indexReducer(undefined, {
+      type: SET_VU_LEVEL,
+      channel: 0,
+      level: 0.75
     })).toEqual(parsedInitialStore)
   })
 
@@ -333,17 +344,66 @@ describe('Test redux actions', () => {
       finalState.faders[0].fader[i].pstOn = true
     }
 
-    // SECIOND X_MIX:
+    // SECOND X_MIX:
     expect(indexReducer(newState, {
       type: X_MIX
     })).toEqual(finalState)
   })
 
-  /*
-  SET_VU_LEVEL,
-  SHOW_CHANNEL,
-  SNAP_RECALL,
-  SET_ALL_VU_LEVELS,
-  SET_COMPLETE_FADER_STATE
-  */
+   /**
+   * TEST SHOW_CHANNEL:
+   */
+  it('should HIDE ch 10 and return the new SHOW_CHANNEL state on faders', () => {
+    let parsedFullStore = JSON.parse(parsedFullStoreJSON)
+    let newState = JSON.parse(parsedFullStoreJSON)
+    
+    newState.faders[0].fader[10].showChannel = false
+    expect(indexReducer(parsedFullStore, {
+      type: SHOW_CHANNEL,
+      channel: 10,
+      showChannel: false
+    })).toEqual(newState)
+  })
+
+    /**
+   * TEST SET_ALL_VU_LEVELS:
+   */
+  it('should return the new SET_ALL_VU_LEVELS state on faders', () => {
+    let parsedFullStore = JSON.parse(parsedFullStoreJSON)
+    let newState = JSON.parse(parsedFullStoreJSON)
+    let vuMeters: IVuMeters[] = []
+    for (let i=0; i<24; i++) {
+      vuMeters.push({
+        vuVal: 0.75
+      })
+      newState.faders[0].vuMeters[i].vuVal = 0.75
+    }
+
+    expect(indexReducer(parsedFullStore, {
+      type: SET_ALL_VU_LEVELS,
+      vuMeters: vuMeters
+    })).toEqual(newState)
+  })
+
+   /**
+   * TEST SET_COMPLETE_FADER_STATE:
+   */
+  it('should return the new SET_COMPLETE_FADER_STATE state on faders', () => {
+    let parsedFullStore = JSON.parse(parsedFullStoreJSON)
+    let newState = JSON.parse(parsedFullStoreJSON)
+    let faders: IFaders[] = []
+    for (let i=0; i<24; i++) {
+      faders.push(
+        parsedFullStore.faders[0].fader[i]
+      )
+    }
+
+    expect(indexReducer(parsedFullStore, {
+      type: SET_COMPLETE_FADER_STATE,
+      numberOfTypeChannels: 24,
+      allState: { 
+        fader: faders 
+      }
+    })).toEqual(newState)
+  })
 })

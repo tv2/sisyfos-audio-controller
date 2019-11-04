@@ -43,7 +43,7 @@ export interface IFader {
     snapOn: Array<boolean>,
 }
 
-interface IVuMeters {
+export interface IVuMeters {
     vuVal: number
 }
 
