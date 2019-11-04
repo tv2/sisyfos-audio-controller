@@ -98,8 +98,7 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
                     nextState[0].mixerProtocol = 'genericMidi';
                 }
             return nextState;
-
         default:
-        return nextState;
+            return nextState;
     }
 };

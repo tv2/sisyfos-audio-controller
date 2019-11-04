@@ -610,7 +610,7 @@
                 {
                     "channelType": 0,
                     "channelTypeIndex": 3,
-                    "assignedFader": 2,
+                    "assignedFader": 3,
                     "fadeActive": false,
                     "outputLevel": 0
                 },
