@@ -1,12 +1,16 @@
 import indexReducer from  '../../reducers/indexReducer'
+import { SET_FADER_LEVEL } from '../../reducers/faderActions'
 
-describe('Test Reducers', () => {
+let fs = require('fs')
+let parsedInitialSettings = JSON.parse(fs.readFileSync('src/components/__tests__/__mocks__/parsedInitialSettings.json'))
+
+
+describe('Test initialize store', () => {
     it('should return the initial state', () => {
-        expect(indexReducer(TODO: ***).toEqual([
-          {
-            text: 'Use Redux',
-            completed: false,
-            id: 0
-          }
-        ])
+      // ** Uncomment to update initial settings state:
+      // let data = indexReducer(undefined, {type: ''})
+      // fs.writeFileSync('src/components/__tests__/__mocks__/parsedInitialSettings.json', JSON.stringify(data))
+
+        expect(indexReducer(undefined, {type: ''})).toEqual(parsedInitialSettings)
+    })
 })
