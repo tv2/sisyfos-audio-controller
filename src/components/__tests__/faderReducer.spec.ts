@@ -32,7 +32,7 @@ const parsedFullStoreJSON = fs.readFileSync('src/components/__tests__/__mocks__/
 
 describe('Test initialize store', () => {
   let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
-    it('should return the initial state', () => {
+    it('should return the initial state of the whoæe Store', () => {
       // ** Uncomment to update initial settings state:
       // let data = indexReducer(undefined, {type: ''})
       // fs.writeFileSync('src/components/__tests__/__mocks__/parsedInitialStore-UPDATE.json', JSON.stringify(data))
@@ -41,12 +41,12 @@ describe('Test initialize store', () => {
     })
 })
 
-describe('Test redux actions', () => {
+describe('Test redux faderReducer actions', () => {
   /**
    * TEST INITIAL STORE:
    */
 
-  it('should return the new fader level on fader', () => {
+  it('should return the new fader level state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].faderLevel = 0.5
     expect(indexReducer(undefined, {
@@ -59,7 +59,7 @@ describe('Test redux actions', () => {
   /**
    * TEST ALL SET REDUX ACTIONS
    */
-  it('should return the new pgmOn state on fader', () => {
+  it('should return the new pgmOn state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].pgmOn = true
     expect(indexReducer(undefined, {
@@ -69,7 +69,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new voOn state on fader', () => {
+  it('should return the new voOn state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].voOn = true
     expect(indexReducer(undefined, {
@@ -79,7 +79,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new PST state on fader', () => {
+  it('should return the new PST state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].pstOn = true
     expect(indexReducer(undefined, {
@@ -89,7 +89,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new PFL state on fader', () => {
+  it('should return the new PFL state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].pflOn = true
     expect(indexReducer(undefined, {
@@ -99,7 +99,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new MUTE state on fader', () => {
+  it('should return the new MUTE state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].muteOn = true
     expect(indexReducer(undefined, {
@@ -109,7 +109,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new Channel label state on fader', () => {
+  it('should return the new Channel label state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].label = 'NEW LABEL'
     expect(indexReducer(undefined, {
@@ -119,7 +119,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new PST VO state on fader', () => {
+  it('should return the new PST VO state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].pstVoOn = true
     expect(indexReducer(undefined, {
@@ -129,7 +129,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new SET_VU_LEVEL state on fader', () => {
+  it('should return the new SET_VU_LEVEL state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].vuMeters[0].vuVal = 0.75
     expect(indexReducer(undefined, {
@@ -143,7 +143,7 @@ describe('Test redux actions', () => {
    * TEST ALL TOGGLE ACTIONS
    */
 
-  it('should return the new SNAP state on fader', () => {
+  it('should return the new SNAP state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].snapOn[0] = true
     expect(indexReducer(undefined, {
@@ -153,7 +153,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new TOGGLE pgmOn state on fader', () => {
+  it('should return the new TOGGLE pgmOn state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].pgmOn = true
     expect(indexReducer(undefined, {
@@ -163,7 +163,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new TOGGLE VoOn state on fader', () => {
+  it('should return the new TOGGLE VoOn state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].voOn = true
     expect(indexReducer(undefined, {
@@ -173,7 +173,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new TOGGLE_PST state on fader', () => {
+  it('should return the new TOGGLE_PST state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].pstOn = true
     expect(indexReducer(undefined, {
@@ -183,7 +183,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new TOGGLE_PFL state on fader', () => {
+  it('should return the new TOGGLE_PFL state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].pflOn = true
     expect(indexReducer(undefined, {
@@ -193,7 +193,7 @@ describe('Test redux actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  it('should return the new TOGGLE_MUTE state on fader', () => {
+  it('should return the new TOGGLE_MUTE state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].muteOn = true
     expect(indexReducer(undefined, {
