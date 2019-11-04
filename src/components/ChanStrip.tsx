@@ -5,6 +5,10 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
+import { 
+    TOGGLE_SHOW_CHAN_STRIP,
+    TOGGLE_SHOW_OPTION
+ } from '../reducers/settingsActions'
 
 interface IChanStripInjectProps {
     label: string,
@@ -30,18 +34,18 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
 
     handleShowRoutingOptions() {
         this.props.dispatch({
-            type: 'TOGGLE_SHOW_OPTION',
+            type: TOGGLE_SHOW_OPTION,
             channel: this.faderIndex
         });
         this.props.dispatch({
-            type: 'TOGGLE_SHOW_CHAN_STRIP',
+            type: TOGGLE_SHOW_CHAN_STRIP,
             channel: -1
         });
     }
 
     handleClose = () => {
         this.props.dispatch({
-            type: 'TOGGLE_SHOW_CHAN_STRIP',
+            type: TOGGLE_SHOW_CHAN_STRIP,
             channel: -1
         });
     }

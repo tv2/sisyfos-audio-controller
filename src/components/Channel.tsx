@@ -20,6 +20,10 @@ import {
     TOGGLE_MUTE,
     SET_SNAP
 } from '../reducers/faderActions'
+import { 
+    TOGGLE_SHOW_CHAN_STRIP,
+    TOGGLE_SHOW_OPTION
+} from '../reducers/settingsActions'
 
 interface IChannelInjectProps {
     pgmOn: boolean,
@@ -154,14 +158,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handleShowOptions() {
         this.props.dispatch({
-            type: 'TOGGLE_SHOW_OPTION',
+            type: TOGGLE_SHOW_OPTION,
             channel: this.channelIndex
         });
     }
 
     handleShowChanStrip() {
         this.props.dispatch({
-            type: 'TOGGLE_SHOW_CHAN_STRIP',
+            type: TOGGLE_SHOW_CHAN_STRIP,
             channel: this.channelIndex
         });
     }

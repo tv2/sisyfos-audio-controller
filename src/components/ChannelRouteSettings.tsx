@@ -7,6 +7,7 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import CcgChannelSettings from './CcgChannelSettings';
 import { SET_ASSIGNED_FADER } from '../reducers/channelActions'
+import { TOGGLE_SHOW_OPTION } from '../reducers/settingsActions'
 const { dialog } = require('electron').remote;
 
 interface IChannelSettingsInjectProps {
@@ -129,7 +130,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
 
     handleClose = () => {
         this.props.dispatch({
-            type: 'TOGGLE_SHOW_OPTION',
+            type: TOGGLE_SHOW_OPTION,
             channel: this.faderIndex
         });
     }

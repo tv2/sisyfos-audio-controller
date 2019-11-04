@@ -5,6 +5,8 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import * as fs from 'fs'
 import * as electron from 'electron'
+import { TOGGLE_SHOW_STORAGE } from '../reducers/settingsActions'
+
 const { dialog } = require('electron').remote;
 
 interface IStorageProps {
@@ -39,7 +41,7 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
 
 	handleClose = () => {
 		this.props.dispatch({
-			type: 'TOGGLE_SHOW_STORAGE'
+			type: TOGGLE_SHOW_STORAGE
 		});
     }
     

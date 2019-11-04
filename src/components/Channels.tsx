@@ -10,6 +10,11 @@ import {
     CLEAR_PST,
     SNAP_RECALL
 } from  '../reducers/faderActions'
+import {
+    TOGGLE_SHOW_SETTINGS,
+    TOGGLE_SHOW_SNAPS,
+    TOGGLE_SHOW_STORAGE
+} from '../reducers/settingsActions'
 import { IAppProps } from './App';
 import ChannelRouteSettings from './ChannelRouteSettings';
 import ChanStrip from './ChanStrip'
@@ -58,20 +63,20 @@ class Channels extends React.Component<IAppProps & Store> {
 
     handleShowSnaps() {
         this.props.dispatch({
-            type:'TOGGLE_SHOW_SNAPS',
+            type: TOGGLE_SHOW_SNAPS,
         });
     }
 
 
     handleShowSettings() {
         this.props.dispatch({
-            type:'TOGGLE_SHOW_SETTINGS',
+            type: TOGGLE_SHOW_SETTINGS,
         });
     }
 
     handleShowStorage() {
         this.props.dispatch({
-            type:'TOGGLE_SHOW_STORAGE',
+            type: TOGGLE_SHOW_STORAGE,
         });
     }
 

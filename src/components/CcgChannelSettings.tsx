@@ -7,6 +7,7 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { IStore } from '../reducers/indexReducer';
 import { SET_OPTION } from  '../reducers/channelActions'
+import { TOGGLE_SHOW_OPTION } from '../reducers/settingsActions'
 
 interface IChannelSettingsInjectProps {
 	label: string,
@@ -42,7 +43,7 @@ class CcgChannelSettings extends React.PureComponent<IChannelProps & IChannelSet
 
 	handleClose = () => {
 		this.props.dispatch({
-			type: 'TOGGLE_SHOW_OPTION',
+			type: TOGGLE_SHOW_OPTION,
 			channel: this.channelIndex
 		});
 	}
