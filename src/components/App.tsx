@@ -44,6 +44,10 @@ class App extends React.Component<IAppProps> {
             this.numberOfChannels.push(this.props.store.settings[0].numberOfChannelsInType[index]);
         });
         this.loadSnapshotSettings(this.settingsPath + '/default.shot', true)
+        // ** UNCOMMENT TO DUMP A FULL STORE:
+        // const fs = require('fs')
+        // fs.writeFileSync('src/components/__tests__/__mocks__/parsedFullStore-UPDATE.json', JSON.stringify(window.storeRedux.getState()))
+
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
