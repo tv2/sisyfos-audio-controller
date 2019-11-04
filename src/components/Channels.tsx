@@ -4,6 +4,17 @@ import { connect } from "react-redux";
 import Channel from './Channel';
 import '../assets/css/Channels.css';
 import { Store } from 'redux';
+import { 
+    X_MIX,
+    NEXT_MIX,
+    CLEAR_PST,
+    SNAP_RECALL
+} from  '../reducers/faderActions'
+import {
+    TOGGLE_SHOW_SETTINGS,
+    TOGGLE_SHOW_SNAPS,
+    TOGGLE_SHOW_STORAGE
+} from '../reducers/settingsActions'
 import { IAppProps } from './App';
 import ChannelRouteSettings from './ChannelRouteSettings';
 import ChanStrip from './ChanStrip'
@@ -25,11 +36,11 @@ class Channels extends React.Component<IAppProps & Store> {
     handleMix() {
         if (this.props.store.settings[0].automationMode) {
             this.props.dispatch({
-                type:'NEXT_MIX'
+                type: NEXT_MIX
             });
         } else {
             this.props.dispatch({
-                type:'X_MIX'
+                type: X_MIX
             });
         }
         window.mixerGenericConnection.updateOutLevels();
@@ -37,14 +48,14 @@ class Channels extends React.Component<IAppProps & Store> {
 
     handleClearAllPst() {
         this.props.dispatch({
-            type:'CLEAR_PST'
+            type: CLEAR_PST
         });
         window.mixerGenericConnection.updateOutLevels();
     }
 
     handleSnapMix(snapIndex: number) {
         this.props.dispatch({
-            type:'SNAP_RECALL',
+            type: SNAP_RECALL,
             snapIndex: snapIndex
         });
         window.mixerGenericConnection.updateOutLevels();
@@ -52,20 +63,20 @@ class Channels extends React.Component<IAppProps & Store> {
 
     handleShowSnaps() {
         this.props.dispatch({
-            type:'TOGGLE_SHOW_SNAPS',
+            type: TOGGLE_SHOW_SNAPS,
         });
     }
 
 
     handleShowSettings() {
         this.props.dispatch({
-            type:'TOGGLE_SHOW_SETTINGS',
+            type: TOGGLE_SHOW_SETTINGS,
         });
     }
 
     handleShowStorage() {
         this.props.dispatch({
-            type:'TOGGLE_SHOW_STORAGE',
+            type: TOGGLE_SHOW_STORAGE,
         });
     }
 

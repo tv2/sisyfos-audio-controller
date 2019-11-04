@@ -3,6 +3,12 @@ import { DeviceTree, QualifiedParameter } from 'emberplus';
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
+import { 
+    SET_VU_LEVEL, 
+    SET_FADER_LEVEL, 
+    SET_CHANNEL_LABEL 
+} from '../reducers/faderActions'
+
 
 export class EmberMixerConnection {
     store: IStore;
@@ -70,7 +76,7 @@ export class EmberMixerConnection {
 /*
                 .CHANNEL_VU)){
                     window.storeRedux.dispatch({
-                        type:'SET_VU_LEVEL',
+                        type:SET_VU_LEVEL,
                         channel: ch - 1,
                         level: message.args[0]
                     });
@@ -101,7 +107,7 @@ export class EmberMixerConnection {
                     && !this.store.channels[0].channel[ch - 1].fadeActive
                     &&  node.contents.value > this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].min) {
                     window.storeRedux.dispatch({
-                        type:'SET_FADER_LEVEL',
+                        type: SET_FADER_LEVEL,
                         channel: ch-1,
                         level: node.contents.value
                     });
@@ -120,7 +126,7 @@ export class EmberMixerConnection {
         .then((node: any) => {
             this.emberConnection.subscribe(node, (() => {
                 window.storeRedux.dispatch({
-                    type:'SET_CHANNEL_LABEL',
+                    type: SET_CHANNEL_LABEL,
                     channel: ch-1,
                     level: node.contents.value
                 });

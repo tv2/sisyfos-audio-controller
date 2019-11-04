@@ -3,8 +3,17 @@ import * as os from 'os'; // Used to display (log) network addresses on local ma
 import * as net from 'net'
 
 //Utils:
-import { IMixerProtocol } from '../constants/MixerProtocolInterface';
-import { IStore } from '../reducers/indexReducer';
+import { IMixerProtocol } from '../constants/MixerProtocolInterface'
+import { IStore } from '../reducers/indexReducer'
+import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
+import { 
+    SET_VU_LEVEL, 
+    SET_FADER_LEVEL,
+    SET_CHANNEL_LABEL,
+    TOGGLE_PGM
+} from '../reducers/faderActions'
+
+
 
 export class QlClMixerConnection {
     store: IStore;
@@ -59,7 +68,7 @@ export class QlClMixerConnection {
                             let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
                             let mixerValue = parseInt(mixerValues[6])
                             window.storeRedux.dispatch({
-                                type: 'SET_VU_LEVEL',
+                                type: SET_VU_LEVEL,
                                 channel: assignedFader,
                                 level: mixerValue
                         }
@@ -75,13 +84,13 @@ export class QlClMixerConnection {
                         if (!this.store.channels[0].channel[ch - 1].fadeActive
                             && faderLevel > this.mixerProtocol.fader.min) {
                             window.storeRedux.dispatch({
-                                type: 'SET_FADER_LEVEL',
+                                type: SET_FADER_LEVEL,
                                 channel: assignedFader - 1,
                                 level: faderLevel
                             });
                             if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                                 window.storeRedux.dispatch({
-                                    type: 'TOGGLE_PGM',
+                                    type: TOGGLE_PGM,
                                     channel: assignedFader - 1
                                 });
                             }
@@ -102,7 +111,7 @@ export class QlClMixerConnection {
                         .CHANNEL_NAME[0].mixerMessage)) {
                         let ch = message.split("/")[this.cmdChannelIndex];
                         window.storeRedux.dispatch({
-                            type: 'SET_CHANNEL_LABEL',
+                            type: SET_CHANNEL_LABEL,
                             channel: this.store.channels[0].channel[ch - 1].assignedFader,
                             label: message.args[0]
                         });
@@ -186,7 +195,7 @@ export class QlClMixerConnection {
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
             window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
+                type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel
             });

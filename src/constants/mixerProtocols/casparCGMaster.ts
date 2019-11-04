@@ -16,7 +16,7 @@ try {
 		geometry = inputObj
 	}
 } catch (e) {
-	console.error('Could not open CasparCG Audio geometry file', e)
+	console.log('CasparCG Audio geometry file has not been created')
 }
 
 let CasparCGMasterObject: ICasparCGMixerGeometry | undefined = undefined

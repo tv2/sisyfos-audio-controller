@@ -12,6 +12,7 @@ import '../assets/css/Settings.css';
 import { MixerProtocolPresets, MixerProtocolList } from '../constants/MixerProtocolPresets';
 import { any } from 'prop-types';
 import { ISettings } from '../reducers/settingsReducer';
+import { SHOW_CHANNEL } from '../reducers/faderActions'
 import { Store } from 'redux';
 import { ChangeEvent } from 'react';
 
@@ -153,7 +154,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
 
     handleShowChannel = (index: number, event: any) => {
         this.props.dispatch({
-            type:'SHOW_CHANNEL',
+            type: SHOW_CHANNEL,
             channel: index,
             showChannel: event.target.checked
         });
@@ -162,7 +163,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     handleShowAllChannels = () => {
         this.props.store.channels[0].channel.map((channel: any, index: number) => {
             this.props.dispatch({
-                type:'SHOW_CHANNEL',
+                type: SHOW_CHANNEL,
                 channel: index,
                 showChannel: true
             });
@@ -173,7 +174,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     handleHideAllChannels = () => {
         this.props.store.channels[0].channel.map((channel: any, index: number) => {
             this.props.dispatch({
-                type:'SHOW_CHANNEL',
+                type: SHOW_CHANNEL,
                 channel: index,
                 showChannel: false
             });

@@ -3,8 +3,15 @@ import * as os from 'os'; // Used to display (log) network addresses on local ma
 import * as net from 'net'
 
 //Utils:
-import { IMixerProtocol } from '../constants/MixerProtocolInterface';
-import { IStore } from '../reducers/indexReducer';
+import { IMixerProtocol } from '../constants/MixerProtocolInterface'
+import { IStore } from '../reducers/indexReducer'
+import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
+import { 
+    SET_FADER_LEVEL,
+    TOGGLE_PGM,
+    SET_MUTE
+ } from  '../reducers/faderActions'
+
 
 export class SSLMixerConnection {
     store: IStore;
@@ -86,13 +93,13 @@ export class SSLMixerConnection {
                         if (!this.store.channels[0].channel[channel].fadeActive
                             && value > this.mixerProtocol.fader.min) {
                             window.storeRedux.dispatch({
-                                type: 'SET_FADER_LEVEL',
+                                type: SET_FADER_LEVEL,
                                 channel: assignedFader - 1,
                                 level: value
                             });
                             if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                                 window.storeRedux.dispatch({
-                                    type: 'TOGGLE_PGM',
+                                    type: TOGGLE_PGM,
                                     channel: assignedFader - 1
                                 });
                             }
@@ -121,7 +128,7 @@ export class SSLMixerConnection {
                         let assignedFaderIndex = this.store.channels[0].channel[channelIndex].assignedFader
 
                         window.storeRedux.dispatch({
-                            type: 'SET_MUTE',
+                            type: SET_MUTE,
                             channel: assignedFaderIndex,
                             muteOn: value
                         });
@@ -236,7 +243,7 @@ export class SSLMixerConnection {
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
             window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
+                type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel
             });

@@ -10,8 +10,20 @@ import ReactSlider from 'react-slider'
 //assets:
 import '../assets/css/Channel.css';
 import { MixerProtocolPresets} from '../constants/MixerProtocolPresets';
-import { IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
-import { any, number } from 'prop-types';
+import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
+import { 
+    SET_FADER_LEVEL, 
+    TOGGLE_PGM,
+    TOGGLE_VO,
+    TOGGLE_PST,
+    TOGGLE_PFL,
+    TOGGLE_MUTE,
+    TOGGLE_SNAP
+} from '../reducers/faderActions'
+import { 
+    TOGGLE_SHOW_CHAN_STRIP,
+    TOGGLE_SHOW_OPTION
+} from '../reducers/settingsActions'
 
 interface IChannelInjectProps {
     pgmOn: boolean,
@@ -73,7 +85,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handlePgm() {
         this.props.dispatch({
-            type:'TOGGLE_PGM',
+            type: TOGGLE_PGM,
             channel: this.channelIndex
         });
         window.mixerGenericConnection.updateOutLevel(this.channelIndex);
@@ -84,7 +96,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handleVo() {
         this.props.dispatch({
-            type:'TOGGLE_VO',
+            type: TOGGLE_VO,
             channel: this.channelIndex
         });
         window.mixerGenericConnection.updateOutLevel(this.channelIndex);
@@ -95,7 +107,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handlePst() {        
         this.props.dispatch({
-            type:'TOGGLE_PST',
+            type: TOGGLE_PST,
             channel: this.channelIndex
         });
         window.mixerGenericConnection.updateNextAux(this.channelIndex);
@@ -103,7 +115,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handlePfl() {
         this.props.dispatch({
-            type:'TOGGLE_PFL',
+            type: TOGGLE_PFL,
             channel: this.channelIndex
         });
         window.mixerGenericConnection.updatePflState(this.channelIndex);
@@ -114,7 +126,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handleMute() {
         this.props.dispatch({
-            type:'TOGGLE_MUTE',
+            type: TOGGLE_MUTE,
             channel: this.channelIndex
         });
         window.mixerGenericConnection.updateMuteState(this.channelIndex);
@@ -125,7 +137,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handleLevel(event: any) {
         this.props.dispatch({
-            type:'SET_FADER_LEVEL',
+            type: SET_FADER_LEVEL,
             channel: this.channelIndex,
             level: parseFloat(event)
         });
@@ -138,7 +150,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handleSnap(snapIndex: number) {
         this.props.dispatch({
-            type:'SET_SNAP',
+            type: TOGGLE_SNAP,
             channel: this.channelIndex,
             snapIndex: snapIndex
         });
@@ -146,14 +158,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handleShowOptions() {
         this.props.dispatch({
-            type: 'TOGGLE_SHOW_OPTION',
+            type: TOGGLE_SHOW_OPTION,
             channel: this.channelIndex
         });
     }
 
     handleShowChanStrip() {
         this.props.dispatch({
-            type: 'TOGGLE_SHOW_CHAN_STRIP',
+            type: TOGGLE_SHOW_CHAN_STRIP,
             channel: this.channelIndex
         });
     }

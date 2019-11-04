@@ -5,6 +5,14 @@ import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
+import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
+import { 
+    SET_VU_LEVEL, 
+    SET_FADER_LEVEL, 
+    SET_CHANNEL_LABEL,
+    TOGGLE_PGM
+} from '../reducers/faderActions'
+
 
 export class MidiMixerConnection {
     store: any;
@@ -46,13 +54,13 @@ export class MidiMixerConnection {
                     let ch = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
                     let faderChannel = 1 + this.store.channels[0].channel[ch - 1].assignedFader
                     window.storeRedux.dispatch({
-                        type:'SET_FADER_LEVEL',
+                        type: SET_FADER_LEVEL,
                         channel: faderChannel - 1,
                         level: message.data[2]
                     });
                     if (!this.store.faders[0].fader[faderChannel - 1].pgmOn) {
                         window.storeRedux.dispatch({
-                            type:'TOGGLE_PGM',
+                            type: TOGGLE_PGM,
                             channel: this.store.channels[0].channel[ch - 1].assignedFader -1
                         });
                     }
@@ -84,7 +92,7 @@ export class MidiMixerConnection {
                 } else {
                     let ch = message.address.split("/")[2];
                     window.storeRedux.dispatch({
-                        type:'SET_VU_LEVEL',
+                        type:SET_VU_LEVEL,
                         channel: ch - 1,
                         level: message.args[0]
                     });
@@ -95,7 +103,7 @@ export class MidiMixerConnection {
             ) {
                     let ch = message.address.split("/")[2];
                     window.storeRedux.dispatch({
-                        type:'SET_CHANNEL_LABEL',
+                        type: SET_CHANNEL_LABEL,
                         channel: ch - 1,
                         label: message.args[0]
                     });
@@ -136,7 +144,7 @@ return true;
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
             window.storeRedux.dispatch({
-                type:'SET_OUTPUT_LEVEL',
+                type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel
             });

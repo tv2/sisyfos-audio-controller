@@ -1,6 +1,11 @@
 //Node Modules:
 import os from 'os'; // Used to display (log) network addresses on local machine
 import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
+import { 
+    SET_FADER_LEVEL, 
+    TOGGLE_PGM,
+    TOGGLE_PFL
+} from  '../reducers/faderActions'
 
 //Utils:
 import { IRemoteProtocol,
@@ -64,7 +69,7 @@ export class HuiMidiRemoteConnection {
                     //Fader changed:
                     console.log("Received Fader message (" + message.data + ").");
                     window.storeRedux.dispatch({
-                        type:'SET_FADER_LEVEL',
+                        type: SET_FADER_LEVEL,
                         channel: message.data[1],
                         level: this.convertFromRemoteLevel(message.data[2])
                     });
@@ -79,7 +84,7 @@ export class HuiMidiRemoteConnection {
                     } else if (message.data[2] && message.data[2] === 65) {
                         //SELECT button - toggle PGM ON/OFF
                         window.storeRedux.dispatch({
-                            type:'TOGGLE_PGM',
+                            type: TOGGLE_PGM,
                             channel: this.activeHuiChannel
                         });
                         window.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
@@ -87,7 +92,7 @@ export class HuiMidiRemoteConnection {
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
                         window.storeRedux.dispatch({
-                            type:'TOGGLE_PFL',
+                            type: TOGGLE_PFL,
                             channel: this.activeHuiChannel
                         });
                         window.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);

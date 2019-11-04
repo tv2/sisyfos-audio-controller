@@ -6,6 +6,7 @@ import App from './components/App';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider} from 'react-redux';
 import indexReducer from './reducers/indexReducer';
+import { UPDATE_SETTINGS } from './reducers/settingsActions'
 
 //Utils:
 import { loadSettings } from './utils/SettingsStorage';
@@ -27,7 +28,7 @@ window.storeRedux = storeRedux;
 
 
 storeRedux.dispatch({
-    type:'UPDATE_SETTINGS',
+    type:UPDATE_SETTINGS,
     settings: loadSettings(storeRedux.getState())
 });
 

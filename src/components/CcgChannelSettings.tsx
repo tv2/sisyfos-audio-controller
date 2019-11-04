@@ -6,6 +6,8 @@ import { IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/Mixe
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { IStore } from '../reducers/indexReducer';
+import { SET_OPTION } from  '../reducers/channelActions'
+import { TOGGLE_SHOW_OPTION } from '../reducers/settingsActions'
 
 interface IChannelSettingsInjectProps {
 	label: string,
@@ -32,7 +34,7 @@ class CcgChannelSettings extends React.PureComponent<IChannelProps & IChannelSet
 
 	handleOption = (prop: string, option: string) => {
 		this.props.dispatch({
-			type: 'SET_OPTION',
+			type: SET_OPTION,
 			channel: this.channelIndex,
 			prop,
 			option
@@ -41,7 +43,7 @@ class CcgChannelSettings extends React.PureComponent<IChannelProps & IChannelSet
 
 	handleClose = () => {
 		this.props.dispatch({
-			type: 'TOGGLE_SHOW_OPTION',
+			type: TOGGLE_SHOW_OPTION,
 			channel: this.channelIndex
 		});
 	}
