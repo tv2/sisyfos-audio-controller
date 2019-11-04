@@ -271,6 +271,7 @@ describe('Test redux actions', () => {
       })).toEqual(newState)
     }
 
+    // Generate Expected NEXT_MIX:
     parsedFullStore = JSON.parse(parsedFullStoreJSON)
     for (let i=10; i<14; i++) {
       parsedFullStore.faders[0].fader[i].voOn = true
@@ -284,13 +285,64 @@ describe('Test redux actions', () => {
     })).toEqual(parsedFullStore)
   })
   
+    /**
+   * TEST X_MIX:
+   */
+  it('should SET PST_VO ch 10-14 and set PST ch 6-8 and return the new X_MIX state on faders twice', () => {
+    let parsedFullStore = JSON.parse(parsedFullStoreJSON)
+    let newState = JSON.parse(parsedFullStoreJSON)
+    
+    for (let i=10; i<14; i++) {
+      newState.faders[0].fader[i].pstVoOn = true
+      expect(indexReducer(parsedFullStore, {
+        type: SET_PST_VO,
+        channel: i,
+        pstVoOn: true
+      })).toEqual(newState)
+    }
+
+    for (let i=6; i<8; i++) {
+      newState.faders[0].fader[i].pstOn = true
+      expect(indexReducer(parsedFullStore, {
+        type: SET_PST,
+        channel: i,
+        pstOn: true
+      })).toEqual(newState)
+    }
+
+    // Generate Expected NEXT_MIX:
+    parsedFullStore = JSON.parse(parsedFullStoreJSON)
+    for (let i=10; i<14; i++) {
+      parsedFullStore.faders[0].fader[i].voOn = true
+    }
+    for (let i=6; i<8; i++) {
+      parsedFullStore.faders[0].fader[i].pgmOn = true
+    }
+
+    // First X_MIX:
+    expect(indexReducer(newState, {
+      type: X_MIX
+    })).toEqual(parsedFullStore)
+
+    // SETUP Expected for second X_MIX:
+    let finalState = JSON.parse(parsedFullStoreJSON)
+    for (let i=10; i<14; i++) {
+      finalState.faders[0].fader[i].pstVoOn = true
+    }
+    for (let i=6; i<8; i++) {
+      finalState.faders[0].fader[i].pstOn = true
+    }
+
+    // SECIOND X_MIX:
+    expect(indexReducer(newState, {
+      type: X_MIX
+    })).toEqual(finalState)
+  })
 
   /*
   SET_VU_LEVEL,
   SHOW_CHANNEL,
   SNAP_RECALL,
-  NEXT_MIX,
-  X_MIX,
   SET_ALL_VU_LEVELS,
   SET_COMPLETE_FADER_STATE
   */
