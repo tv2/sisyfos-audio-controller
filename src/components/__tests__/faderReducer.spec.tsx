@@ -9,8 +9,6 @@ import {
   SET_CHANNEL_LABEL,
   SET_PST_VO,
   TOGGLE_SNAP,
-  SET_ALL_VU_LEVELS,
-  SET_COMPLETE_FADER_STATE,
   TOGGLE_MUTE,
   TOGGLE_PFL,
   TOGGLE_PGM,
@@ -22,7 +20,9 @@ import {
   SHOW_CHANNEL,
   SNAP_RECALL,
   NEXT_MIX,
-  X_MIX
+  X_MIX,
+  SET_ALL_VU_LEVELS,
+  SET_COMPLETE_FADER_STATE
 } from '../../reducers/faderActions'
 
 let fs = require('fs')
@@ -127,6 +127,56 @@ describe('Test redux actions', () => {
       type: TOGGLE_SNAP,
       channel: 0,
       snapIndex: 0
+    })).toEqual(parsedInitialStore)
+  })
+
+  it('should return the new TOGGLE pgmOn state on fader', () => {
+    let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
+    parsedInitialStore.faders[0].fader[0].pgmOn = true
+    expect(indexReducer(undefined, {
+      type: TOGGLE_PGM,
+      channel: 0,
+      pgmOn: true
+    })).toEqual(parsedInitialStore)
+  })
+
+  it('should return the new TOGGLE VoOn state on fader', () => {
+    let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
+    parsedInitialStore.faders[0].fader[0].voOn = true
+    expect(indexReducer(undefined, {
+      type: TOGGLE_VO,
+      channel: 0,
+      voOn: true
+    })).toEqual(parsedInitialStore)
+  })
+
+  it('should return the new TOGGLE_PST state on fader', () => {
+    let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
+    parsedInitialStore.faders[0].fader[0].pstOn = true
+    expect(indexReducer(undefined, {
+      type: TOGGLE_PST,
+      channel: 0,
+      pstOn: true
+    })).toEqual(parsedInitialStore)
+  })
+
+  it('should return the new TOGGLE_PFL state on fader', () => {
+    let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
+    parsedInitialStore.faders[0].fader[0].pflOn = true
+    expect(indexReducer(undefined, {
+      type: TOGGLE_PFL,
+      channel: 0,
+      pflOn: true
+    })).toEqual(parsedInitialStore)
+  })
+
+  it('should return the new TOGGLE_MUTE state on fader', () => {
+    let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
+    parsedInitialStore.faders[0].fader[0].muteOn = true
+    expect(indexReducer(undefined, {
+      type: TOGGLE_MUTE,
+      channel: 0,
+      muteOn: true
     })).toEqual(parsedInitialStore)
   })
 })
