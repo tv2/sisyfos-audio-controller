@@ -30,22 +30,11 @@ let fs = require('fs')
 const parsedInitialStoreJSON = fs.readFileSync('src/components/__tests__/__mocks__/parsedInitialStore.json')
 const parsedFullStoreJSON = fs.readFileSync('src/components/__tests__/__mocks__/parsedFullStore.json')
 
-describe('Test initialize store', () => {
-  let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
-    it('should return the initial state of the whoæe Store', () => {
-      // ** Uncomment to update initial settings state:
-      // let data = indexReducer(undefined, {type: ''})
-      // fs.writeFileSync('src/components/__tests__/__mocks__/parsedInitialStore-UPDATE.json', JSON.stringify(data))
 
-        expect(indexReducer(undefined, {type: ''})).toEqual(parsedInitialStore)
-    })
-})
-
-describe('Test redux faderReducer actions', () => {
+describe('Test redux faderReducers actions', () => {
   /**
-   * TEST INITIAL STORE:
+   * TEST ALL SET ACTIONS
    */
-
   it('should return the new fader level state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].faderLevel = 0.5
@@ -56,9 +45,6 @@ describe('Test redux faderReducer actions', () => {
     })).toEqual(parsedInitialStore)
   })
 
-  /**
-   * TEST ALL SET REDUX ACTIONS
-   */
   it('should return the new pgmOn state on faders', () => {
     let parsedInitialStore = JSON.parse(parsedInitialStoreJSON)
     parsedInitialStore.faders[0].fader[0].pgmOn = true
