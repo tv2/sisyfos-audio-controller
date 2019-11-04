@@ -8,6 +8,13 @@ import { behringerMeter } from './productSpecific/behringer';
 import { midasMeter } from './productSpecific/midas';
 import { IStore } from '../reducers/indexReducer';
 import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
+import { 
+    SET_VU_LEVEL, 
+    SET_FADER_LEVEL,
+    SET_CHANNEL_LABEL,
+    TOGGLE_PGM 
+} from '../reducers/faderActions'
+
 
 export class OscMixerConnection {
     store: IStore;
@@ -61,7 +68,7 @@ export class OscMixerConnection {
                 } else {
                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
-                        type:'SET_VU_LEVEL',
+                        type:SET_VU_LEVEL,
                         channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         level: message.args[0]
                     });
@@ -72,7 +79,7 @@ export class OscMixerConnection {
                 let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
 
                 window.storeRedux.dispatch({
-                    type:'SET_FADER_LEVEL',
+                    type: SET_FADER_LEVEL,
                     channel: assignedFader - 1,
                     level: message.args[0]
                 });
@@ -94,7 +101,7 @@ export class OscMixerConnection {
 
                 if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                     window.storeRedux.dispatch({
-                        type:'TOGGLE_PGM',
+                        type: TOGGLE_PGM,
                         channel: assignedFader - 1
                     });
                 }
@@ -111,13 +118,13 @@ export class OscMixerConnection {
                     &&  message.args[0] > this.mixerProtocol.fader.min)
                 {
                     window.storeRedux.dispatch({
-                        type:'SET_FADER_LEVEL',
+                        type: SET_FADER_LEVEL,
                         channel: assignedFader - 1,
                         level: message.args[0]
                     });
                     if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                         window.storeRedux.dispatch({
-                            type:'TOGGLE_PGM',
+                            type: TOGGLE_PGM,
                             channel: assignedFader -1
                         });
                     }
@@ -131,7 +138,7 @@ export class OscMixerConnection {
                 .CHANNEL_NAME[0].mixerMessage)) {
                                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     window.storeRedux.dispatch({
-                        type:'SET_CHANNEL_LABEL',
+                        type: SET_CHANNEL_LABEL,
                         channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         label: message.args[0]
                     });

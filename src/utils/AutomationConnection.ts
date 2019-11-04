@@ -5,6 +5,21 @@ import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded
 //Utils:
 import { IAutomationProtocol, AutomationPresets } from '../constants/AutomationPresets';
 import { IFader } from '../reducers/fadersReducer';
+import { 
+    SET_FADER_LEVEL, 
+    SET_CHANNEL_LABEL,
+    SET_PGM,
+    SET_VO,
+    SET_PST,
+    SET_PST_VO,
+    SET_MUTE,
+    SHOW_CHANNEL,
+    X_MIX,
+    FADE_TO_BLACK,
+    CLEAR_PST,
+    SNAP_RECALL
+} from '../reducers/faderActions'
+
 
 const AUTOMATION_OSC_PORT = 5255;
 export class AutomationConnection {
@@ -45,19 +60,19 @@ export class AutomationConnection {
                 let ch = message.address.split("/")[2];
                 if (message.args[0] === 1) {
                     window.storeRedux.dispatch({
-                        type:'SET_PGM',
+                        type: SET_PGM,
                         channel: ch - 1,
                         pgmOn: true
                     });
                 } else if (message.args[0] === 2) {
                     window.storeRedux.dispatch({
-                        type:'SET_VO',
+                        type: SET_VO,
                         channel: ch - 1,
                         voOn: true
                     });
                 } else {
                     window.storeRedux.dispatch({
-                        type:'SET_PGM',
+                        type: SET_PGM,
                         channel: ch - 1,
                         pgmOn: false
                     });
@@ -73,19 +88,19 @@ export class AutomationConnection {
                 let ch = message.address.split("/")[2];
                 if (message.args[0] === 1) {
                     window.storeRedux.dispatch({
-                        type:'SET_PST',
+                        type: SET_PST,
                         channel: ch - 1,
                         pstOn: true
                     });
                 } else if (message.args[0] === 2) {
                     window.storeRedux.dispatch({
-                        type:'SET_PST_VO',
+                        type: SET_PST_VO,
                         channel: ch - 1,
                         pstVoOn: true
                     });
                 } else {
                     window.storeRedux.dispatch({
-                        type:'SET_PST',
+                        type: SET_PST,
                         channel: ch - 1,
                         pstOn: false
                     });
@@ -96,13 +111,13 @@ export class AutomationConnection {
                 let ch = message.address.split("/")[2];
                 if (message.args[0] === 1) {
                     window.storeRedux.dispatch({
-                        type:'SET_MUTE',
+                        type: SET_MUTE,
                         channel: ch - 1,
                         muteOn: true
                     });
                 } else {
                     window.storeRedux.dispatch({
-                        type:'SET_MUTE',
+                        type: SET_MUTE,
                         channel: ch - 1,
                         pstOn: false
                     });
@@ -112,7 +127,7 @@ export class AutomationConnection {
                 .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
-                    type:'SET_FADER_LEVEL',
+                    type: SET_FADER_LEVEL,
                     channel: ch - 1,
                     level: message.args[0]
                 });
@@ -121,14 +136,14 @@ export class AutomationConnection {
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
                 window.storeRedux.dispatch({
-                    type:'SNAP_RECALL',
+                    type: SNAP_RECALL,
                     snapIndex: snapNumber -1
                 });
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SET_LABEL)) {
                     let ch = message.address.split("/")[2];
                     window.storeRedux.dispatch({
-                        type:'SET_CHANNEL_LABEL',
+                        type: SET_CHANNEL_LABEL,
                         channel: ch -1,
                         label: message.args[0]
                     });
@@ -136,54 +151,54 @@ export class AutomationConnection {
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .X_MIX)) {
                 window.storeRedux.dispatch({
-                    type:'X_MIX'
+                    type: X_MIX
                 });
                 window.mixerGenericConnection.updateOutLevels();
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_VISIBLE)){
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
-                    type:'SHOW_CHANNEL',
+                    type: SHOW_CHANNEL,
                     channel: ch - 1,
                     showChannel: message.args[0]===1 ? true : false
                 });
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .FADE_TO_BLACK)) {
                     window.storeRedux.dispatch({
-                        type:'FADE_TO_BLACK'
+                        type: FADE_TO_BLACK
                 });
                 window.mixerGenericConnection.updateFadeToBlack();
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CLEAR_PST)) {
                     window.storeRedux.dispatch({
-                        type:'CLEAR_PST'
+                        type: CLEAR_PST
                 });
                 window.mixerGenericConnection.updateOutLevels();
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
                 window.storeRedux.dispatch({
-                    type:'SNAP_RECALL',
+                    type: SNAP_RECALL,
                     snapIndex: snapNumber -1
                 });
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .X_MIX)) {
                 window.storeRedux.dispatch({
-                    type:'X_MIX'
+                    type: X_MIX
                 });
                 window.mixerGenericConnection.updateOutLevels();
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_VISIBLE)){
                 let ch = message.address.split("/")[2];
                 window.storeRedux.dispatch({
-                    type:'SHOW_CHANNEL',
+                    type: SHOW_CHANNEL,
                     channel: ch - 1,
                     showChannel: message.args[0]===1 ? true : false
                 });
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                     .FADE_TO_BLACK)) {
                     window.storeRedux.dispatch({
-                        type:'FADE_TO_BLACK'
+                        type: FADE_TO_BLACK
                     });
                     window.mixerGenericConnection.updateOutLevels();
             // Get state from Producers Audio Mixer:

@@ -1,4 +1,6 @@
 import * as DEFAULTS from '../../constants/DEFAULTS';
+import { SET_VU_LEVEL } from '../../reducers/faderActions'
+
 
 export const behringerMeter = (message: any) => {
     const store = window.storeRedux.getState();
@@ -11,7 +13,7 @@ export const behringerMeter = (message: any) => {
 
     for (let i=0; i < store.settings[0].numberOfChannelsInType[0]; i++) {
         window.storeRedux.dispatch({
-            type:'SET_VU_LEVEL',
+            type:SET_VU_LEVEL,
             channel: i,
             level: (dataview.getInt16(2*(i+2) , true) + 8000)/8000
         });

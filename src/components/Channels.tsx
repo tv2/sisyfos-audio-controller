@@ -4,6 +4,12 @@ import { connect } from "react-redux";
 import Channel from './Channel';
 import '../assets/css/Channels.css';
 import { Store } from 'redux';
+import { 
+    X_MIX,
+    NEXT_MIX,
+    CLEAR_PST,
+    SNAP_RECALL
+} from  '../reducers/faderActions'
 import { IAppProps } from './App';
 import ChannelRouteSettings from './ChannelRouteSettings';
 import ChanStrip from './ChanStrip'
@@ -25,11 +31,11 @@ class Channels extends React.Component<IAppProps & Store> {
     handleMix() {
         if (this.props.store.settings[0].automationMode) {
             this.props.dispatch({
-                type:'NEXT_MIX'
+                type: NEXT_MIX
             });
         } else {
             this.props.dispatch({
-                type:'X_MIX'
+                type: X_MIX
             });
         }
         window.mixerGenericConnection.updateOutLevels();
@@ -37,14 +43,14 @@ class Channels extends React.Component<IAppProps & Store> {
 
     handleClearAllPst() {
         this.props.dispatch({
-            type:'CLEAR_PST'
+            type: CLEAR_PST
         });
         window.mixerGenericConnection.updateOutLevels();
     }
 
     handleSnapMix(snapIndex: number) {
         this.props.dispatch({
-            type:'SNAP_RECALL',
+            type: SNAP_RECALL,
             snapIndex: snapIndex
         });
         window.mixerGenericConnection.updateOutLevels();

@@ -6,6 +6,11 @@ import * as net from 'net'
 import { IMixerProtocol } from '../constants/MixerProtocolInterface'
 import { IStore } from '../reducers/indexReducer'
 import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
+import { 
+    SET_FADER_LEVEL,
+    TOGGLE_PGM,
+    SET_MUTE
+ } from  '../reducers/faderActions'
 
 
 export class SSLMixerConnection {
@@ -88,13 +93,13 @@ export class SSLMixerConnection {
                         if (!this.store.channels[0].channel[channel].fadeActive
                             && value > this.mixerProtocol.fader.min) {
                             window.storeRedux.dispatch({
-                                type: 'SET_FADER_LEVEL',
+                                type: SET_FADER_LEVEL,
                                 channel: assignedFader - 1,
                                 level: value
                             });
                             if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                                 window.storeRedux.dispatch({
-                                    type: 'TOGGLE_PGM',
+                                    type: TOGGLE_PGM,
                                     channel: assignedFader - 1
                                 });
                             }
@@ -123,7 +128,7 @@ export class SSLMixerConnection {
                         let assignedFaderIndex = this.store.channels[0].channel[channelIndex].assignedFader
 
                         window.storeRedux.dispatch({
-                            type: 'SET_MUTE',
+                            type: SET_MUTE,
                             channel: assignedFaderIndex,
                             muteOn: value
                         });

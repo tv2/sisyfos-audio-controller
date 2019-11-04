@@ -2,9 +2,8 @@
 const fs = require('fs');
 const electron = require('electron');
 const folder = electron.remote.app.getPath('userData');
-import { 
-    SET_COMPLETE_CH_STATE
-} from '../reducers/channelActions'
+import { SET_COMPLETE_CH_STATE } from '../reducers/channelActions'
+import { SET_COMPLETE_FADER_STATE } from  '../reducers/faderActions'
 
 
 export const loadSettings = (storeRedux: any) => {
@@ -32,12 +31,12 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
         const stateFromFile = JSON.parse(fs.readFileSync(fileName));
         if (loadAll) {
             window.storeRedux.dispatch({
-                type:'SET_COMPLETE_FADER_STATE',
+                type:SET_COMPLETE_FADER_STATE,
                 allState: stateFromFile.faderState,
                 numberOfTypeChannels: numberOfFaders
             });
             window.storeRedux.dispatch({
-                type:SET_COMPLETE_CH_STATE,
+                type: SET_COMPLETE_CH_STATE,
                 allState: stateFromFile.channelState,
                 numberOfTypeChannels: numberOfChannels
             });
@@ -52,7 +51,7 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
             })
 
             window.storeRedux.dispatch({
-                type:'SET_COMPLETE_FADER_STATE',
+                type: SET_COMPLETE_FADER_STATE,
                 allState: stateSnapshot,
                 numberOfTypeChannels: numberOfFaders
             });

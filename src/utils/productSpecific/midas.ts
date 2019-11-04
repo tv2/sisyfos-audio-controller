@@ -1,4 +1,5 @@
 import * as DEFAULTS from '../../constants/DEFAULTS';
+import { SET_ALL_VU_LEVELS } from  '../../reducers/faderActions'
 
 export const midasMeter = (message: any) => {
     const store = window.storeRedux.getState();
@@ -14,7 +15,7 @@ export const midasMeter = (message: any) => {
         vuMeters.push({vuVal : dataview.getFloat32(4*i+headerData , true)});
     }
     window.storeRedux.dispatch({
-        type:'SET_ALL_VU_LEVELS',
+        type: SET_ALL_VU_LEVELS,
         vuMeters: vuMeters
     });
 

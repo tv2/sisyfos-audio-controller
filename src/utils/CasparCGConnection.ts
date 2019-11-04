@@ -9,6 +9,7 @@ import { IMixerProtocol, ICasparCGMixerGeometry, ICasparCGChannelLayerPair } fro
 import { IStore } from '../reducers/indexReducer';
 import { IChannel } from '../reducers/channelsReducer';
 import { SET_PRIVATE } from  '../reducers/channelActions'
+import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../reducers/faderActions'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -77,7 +78,7 @@ export class CasparCGConnection {
                 const index = this.checkOscCommand(message.address, this.oscCommandMap.CHANNEL_VU)
                 if (index !== undefined && message.args) {
                     window.storeRedux.dispatch({
-                        type: 'SET_VU_LEVEL',
+                        type: SET_VU_LEVEL,
                         channel: index,
                         // CCG returns "produced" audio levels, before the Volume mixer transform
                         // We therefore want to premultiply this to show useful information about audio levels
@@ -138,7 +139,7 @@ export class CasparCGConnection {
         if (this.mixerProtocol.channelLabels) {
             this.mixerProtocol.channelLabels.forEach((label, channelIndex) => {
                 window.storeRedux.dispatch({
-                    type: 'SET_CHANNEL_LABEL',
+                    type: SET_CHANNEL_LABEL,
                     channel: channelIndex,
                     label
                 });

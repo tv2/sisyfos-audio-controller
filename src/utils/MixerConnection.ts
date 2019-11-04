@@ -9,6 +9,7 @@ import { EmberMixerConnection } from './EmberMixerConnection';
 import { CasparCGConnection } from './CasparCGConnection';
 import { IChannel } from '../reducers/channelsReducer';
 import { SET_OUTPUT_LEVEL, FADE_ACTIVE } from '../reducers/channelActions'
+import { SET_FADER_LEVEL } from  '../reducers/faderActions'
 
 
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
@@ -173,7 +174,7 @@ export class MixerGenericConnection {
         ) {
             targetVal = this.mixerProtocol.fader.zero
             window.storeRedux.dispatch({
-                type:'SET_FADER_LEVEL',
+                type: SET_FADER_LEVEL,
                 channel: faderIndex,
                 level: targetVal
             });
