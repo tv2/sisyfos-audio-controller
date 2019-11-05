@@ -48,7 +48,7 @@
         "@types/react-test-renderer": "^16.9.1",
         "casparcg-connection": "^4.7.0",
         "classnames": "^2.2.6",
-        "emberplus": "https://github.com/olzzon/tv-automation-emberplus-connection.git",
+        "emberplus": "https://github.com/nrkno/tv-automation-emberplus-connection.git",
         "osc": "https://github.com/olzzon/tv2-osc.js-no-serialport.git",
         "react": "^16.10.1",
         "react-dom": "^16.10.1",
@@ -86,6 +86,8 @@
         "style-loader": "^1.0.0",
         "ts-jest": "^24.1.0",
         "ts-loader": "^6.2.0",
+        "ts-node": "^8.4.1",
+        "typescript-babel-jest": "^1.0.6",
         "webpack": "^4.41.0",
         "webpack-cli": "^3.3.9",
         "webpack-dev-server": "^3.8.1"

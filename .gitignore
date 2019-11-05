@@ -6,6 +6,7 @@ builds/
 #################################
 .tmp/
 dist/
+coverage/
 node_modules/
 *.compiled.*
 yarn.lock
