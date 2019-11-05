@@ -33,11 +33,6 @@
     ],
     "channels": [
         {
-            "vuMeters": [
-                {
-                    "vuVal": 0
-                }
-            ],
             "channel": [
                 {
                     "channelType": 0,
