@@ -8,8 +8,7 @@ import {
 } from './channelActions'
 
 export interface IChannels {
-    channel: Array<IChannel>,
-    vuMeters: Array<IVuMeters>,
+    channel: Array<IChannel>
 }
 
 export interface IChannel {
@@ -23,14 +22,9 @@ export interface IChannel {
     }
 }
 
-interface IVuMeters {
-    vuVal: number
-}
-
 const defaultChannelsReducerState = (numberOfTypeChannels: Array<number>) => {
     let defaultObj: Array<IChannels> = [{
-        channel: [],
-        vuMeters: [],
+        channel: []
     }];
 
     let totalNumberOfChannels = 0;
@@ -43,9 +37,6 @@ const defaultChannelsReducerState = (numberOfTypeChannels: Array<number>) => {
                 fadeActive: false,
                 outputLevel: 0.0,
             });
-            defaultObj[0].vuMeters.push({
-                vuVal: 0.0
-            });
             totalNumberOfChannels ++;
         }
     })
@@ -55,8 +46,7 @@ const defaultChannelsReducerState = (numberOfTypeChannels: Array<number>) => {
 export const channels = ((state = defaultChannelsReducerState([1]), action: any): Array<IChannels> => {
 
     let nextState = [{
-        vuMeters: [...state[0].vuMeters],
-        channel: [...state[0].channel],
+        channel: [...state[0].channel]
     }];
 
     switch(action.type) {
