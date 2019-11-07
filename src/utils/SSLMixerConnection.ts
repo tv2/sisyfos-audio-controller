@@ -117,7 +117,7 @@ export class SSLMixerConnection {
                             
                         }
                         
-                    } else if (buffer[1] === 5 && buffer[2] === 255 && !lastWasAck) {
+                    } else if (buffer[1] === 5 && buffer[2] === 255 && buffer[4] === 1 && !lastWasAck) {
                         lastWasAck = false
                         // MUTE ON/OFF 
                         let commandHex = buffer.toString('hex')
