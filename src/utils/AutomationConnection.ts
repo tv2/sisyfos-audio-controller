@@ -59,12 +59,14 @@ export class AutomationConnection {
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
                 if (message.args[0] === 1) {
+                    window.mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
                     window.storeRedux.dispatch({
                         type: SET_PGM,
                         channel: ch - 1,
                         pgmOn: true
                     });
                 } else if (message.args[0] === 2) {
+                    window.mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
                     window.storeRedux.dispatch({
                         type: SET_VO,
                         channel: ch - 1,

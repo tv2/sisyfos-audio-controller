@@ -144,20 +144,20 @@ export class OscMixerConnection {
                     } else if (this.store.faders[0].fader[assignedFaderIndex].pgmOn 
                             || this.store.faders[0].fader[assignedFaderIndex].voOn)
                         {
-                            window.storeRedux.dispatch({
-                                type: SET_FADER_LEVEL,
-                                channel: assignedFaderIndex,
-                                level: message.args[0]
-                            });
-                            this.store.channels[0].channel.forEach((item, index) => {
-                                if (item.assignedFader === assignedFaderIndex) {
-                                    window.storeRedux.dispatch({
-                                        type: SET_OUTPUT_LEVEL,
-                                        channel: index,
-                                        level: message.args[0]
-                                    });
-                                }
-                            })
+                        window.storeRedux.dispatch({
+                            type: SET_FADER_LEVEL,
+                            channel: assignedFaderIndex,
+                            level: message.args[0]
+                        });
+                        this.store.channels[0].channel.forEach((item, index) => {
+                            if (item.assignedFader === assignedFaderIndex) {
+                                window.storeRedux.dispatch({
+                                    type: SET_OUTPUT_LEVEL,
+                                    channel: index,
+                                    level: message.args[0]
+                                });
+                            }
+                        })
                     }
                     if (window.huiRemoteConnection) {
                         window.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, message.args[0]);

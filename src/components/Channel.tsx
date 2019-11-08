@@ -84,6 +84,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handlePgm() {
+        window.mixerGenericConnection.checkForAutoResetThreshold(this.channelIndex)
         this.props.dispatch({
             type: TOGGLE_PGM,
             channel: this.channelIndex
@@ -95,6 +96,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handleVo() {
+        window.mixerGenericConnection.checkForAutoResetThreshold(this.channelIndex)
         this.props.dispatch({
             type: TOGGLE_VO,
             channel: this.channelIndex

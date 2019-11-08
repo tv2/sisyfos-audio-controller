@@ -84,42 +84,59 @@ export class SSLMixerConnection {
                 buffers.forEach((buffer) => {
                     if (buffer[1] === 6 && buffer[2] === 255 && !lastWasAck) {
                         lastWasAck = false
-                        // FADERLEVEL:
+                        // FADERLEVEL COMMAND:
                         let commandHex = buffer.toString('hex')
                         let channel = buffer[6]
                         let value = buffer.readUInt16BE(7)/1024
                         
-                        let assignedFader = 1 + this.store.channels[0].channel[channel].assignedFader
-                        if (!this.store.channels[0].channel[channel].fadeActive
-                            && value > this.mixerProtocol.fader.min) {
-                            window.storeRedux.dispatch({
-                                type: SET_FADER_LEVEL,
-                                channel: assignedFader - 1,
-                                level: value
-                            });
-                            if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
+                        let assignedFaderIndex = this.store.channels[0].channel[channel].assignedFader
+                        if (!this.store.channels[0].channel[channel].fadeActive) {    
+                            if (value > this.mixerProtocol.fader.min + (this.mixerProtocol.fader.max * this.store.settings[0].autoResetLevel / 100)) {
                                 window.storeRedux.dispatch({
-                                    type: TOGGLE_PGM,
-                                    channel: assignedFader - 1
+                                    type: SET_FADER_LEVEL,
+                                    channel: assignedFaderIndex,
+                                    level: value
                                 });
-                            }
-                            
-                            if (window.huiRemoteConnection) {
-                                window.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, value);
-                            }
-                            if (this.store.faders[0].fader[assignedFader - 1].pgmOn) {
-                                this.store.channels[0].channel.map((channel: any, index: number) => {
-                                    if (channel.assignedFader === assignedFader - 1) {
-                                        this.updateOutLevel(index);
+                                if (!this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
+                                    window.storeRedux.dispatch({
+                                        type: TOGGLE_PGM,
+                                        channel: assignedFaderIndex
+                                    });
+                                }
+                                
+                                if (window.huiRemoteConnection) {
+                                    window.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                                }
+                                if (this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
+                                    this.store.channels[0].channel.map((channel: any, index: number) => {
+                                        if (channel.assignedFader === assignedFaderIndex) {
+                                            this.updateOutLevel(index);
+                                        }
+                                    })
+                                }
+                            } else if (this.store.faders[0].fader[assignedFaderIndex].pgmOn 
+                                || this.store.faders[0].fader[assignedFaderIndex].voOn)
+                            {
+                                window.storeRedux.dispatch({
+                                    type: SET_FADER_LEVEL,
+                                    channel: assignedFaderIndex,
+                                    level: value
+                                });
+                                this.store.channels[0].channel.forEach((item, index) => {
+                                    if (item.assignedFader === assignedFaderIndex) {
+                                        window.storeRedux.dispatch({
+                                            type: SET_OUTPUT_LEVEL,
+                                            channel: index,
+                                            level: value
+                                        });
                                     }
                                 })
                             }
-                            
                         }
                         
                     } else if (buffer[1] === 5 && buffer[2] === 255 && buffer[4] === 1 && !lastWasAck) {
                         lastWasAck = false
-                        // MUTE ON/OFF 
+                        // MUTE ON/OFF COMMAND
                         let commandHex = buffer.toString('hex')
                         let channelIndex = buffer[6]
                         let value: boolean = buffer[7] === 0 ? true : false

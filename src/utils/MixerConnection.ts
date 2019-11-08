@@ -58,6 +58,18 @@ export class MixerGenericConnection {
         this.fadeActiveTimer = new Array(this.store.channels[0].channel.length);
     }
 
+
+    checkForAutoResetThreshold(channel: number) {
+        if (this.store.faders[0].fader[channel].faderLevel <= this.mixerProtocol.fader.min + (this.mixerProtocol.fader.max * this.store.settings[0].autoResetLevel / 100)) {
+            window.storeRedux.dispatch({
+                type: SET_FADER_LEVEL,
+                channel: channel,
+                level: this.mixerProtocol.fader.zero
+            })
+        }
+    }
+
+
     updateFadeToBlack() {
         this.store.faders[0].fader.map((channel: any, index: number) => {
             this.updateOutLevel(index);
@@ -167,18 +179,6 @@ export class MixerGenericConnection {
     fadeUp(channelIndex: number, fadeTime: number, faderIndex: number) {
         let outputLevel = parseFloat(this.store.channels[0].channel[channelIndex].outputLevel);
         let targetVal = parseFloat(this.store.faders[0].fader[faderIndex].faderLevel);
-
-        // Reset targetVal if it´s lower than AutoReset threshold:
-        if (targetVal < (this.store.settings[0].autoResetLevel/100) 
-            && this.store.channels[0].channel[channelIndex].outputLevel === this.mixerProtocol.fader.min
-        ) {
-            targetVal = this.mixerProtocol.fader.zero
-            window.storeRedux.dispatch({
-                type: SET_FADER_LEVEL,
-                channel: faderIndex,
-                level: targetVal
-            });
-        }
 
         if (this.store.faders[0].fader[faderIndex].voOn) {
             targetVal = targetVal * (100-parseFloat(this.store.settings[0].voLevel))/100 
