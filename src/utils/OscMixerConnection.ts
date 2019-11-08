@@ -112,28 +112,57 @@ export class OscMixerConnection {
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_OUT_GAIN[0].mixerMessage)){
                 let ch = message.address.split("/")[this.cmdChannelIndex];
-                let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
+                let assignedFaderIndex = this.store.channels[0].channel[ch - 1].assignedFader
+
+
                 if (this.mixerProtocol.mode === 'master'
-                    && !this.store.channels[0].channel[ch - 1].fadeActive
-                    &&  message.args[0] > this.mixerProtocol.fader.min)
-                {
-                    window.storeRedux.dispatch({
-                        type: SET_FADER_LEVEL,
-                        channel: assignedFader - 1,
-                        level: message.args[0]
-                    });
-                    if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
+                    && !this.store.channels[0].channel[ch - 1].fadeActive)
+                    {                    
+                    if  (message.args[0] > this.mixerProtocol.fader.min + (this.mixerProtocol.fader.max * this.store.settings[0].autoResetLevel / 100)) {
                         window.storeRedux.dispatch({
-                            type: TOGGLE_PGM,
-                            channel: assignedFader -1
+                            type: SET_FADER_LEVEL,
+                            channel: assignedFaderIndex,
+                            level: message.args[0]
                         });
+                        this.store.channels[0].channel.forEach((item, index) => {
+                            if (item.assignedFader === assignedFaderIndex) {
+                                window.storeRedux.dispatch({
+                                    type: SET_OUTPUT_LEVEL,
+                                    channel: index,
+                                    level: message.args[0]
+                                });
+                            }
+                        })
+                        if (!this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
+                            if (message.args[0] > this.mixerProtocol.fader.min) {
+                                window.storeRedux.dispatch({
+                                    type: TOGGLE_PGM,
+                                    channel: assignedFaderIndex
+                                });
+                            }
+                        }
+                    } else if (this.store.faders[0].fader[assignedFaderIndex].pgmOn 
+                            || this.store.faders[0].fader[assignedFaderIndex].voOn)
+                        {
+                            window.storeRedux.dispatch({
+                                type: SET_FADER_LEVEL,
+                                channel: assignedFaderIndex,
+                                level: message.args[0]
+                            });
+                            this.store.channels[0].channel.forEach((item, index) => {
+                                if (item.assignedFader === assignedFaderIndex) {
+                                    window.storeRedux.dispatch({
+                                        type: SET_OUTPUT_LEVEL,
+                                        channel: index,
+                                        level: message.args[0]
+                                    });
+                                }
+                            })
                     }
-
                     if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, message.args[0]);
+                        window.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, message.args[0]);
                     }
-
-                }
+                } 
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_NAME[0].mixerMessage)) {
                                     let ch = message.address.split("/")[this.cmdChannelIndex];
