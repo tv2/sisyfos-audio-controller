@@ -218,6 +218,9 @@ export class SSLMixerConnection {
         if (typeof value === 'string') {
             value = parseFloat(value)
         }
+        if (value < 0) { 
+            value = 0
+        }
         valueNumber = value * 1024
         let valueByte = new Uint8Array([
             (valueNumber & 0x0000ff00) >> 8,
