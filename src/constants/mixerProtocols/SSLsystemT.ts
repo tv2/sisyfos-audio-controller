@@ -8,7 +8,7 @@ export const SSLSystemT: IMixerProtocol = {
     leadingZeros: false,
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],
-    pingTime: 0,
+    pingTime: 5000,
     initializeCommands: [{ mixerMessage: "f1 04 00 00 00 {channel}", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
     channelTypes: [{
         channelTypeName: 'CH',
