@@ -1,5 +1,4 @@
 import { ArdourMaster } from './mixerProtocols/ardourMaster';
-import { Reaper } from './mixerProtocols/reaper';
 import { ReaperMaster } from './mixerProtocols/reaperMaster';
 import { BehringerXrMaster } from './mixerProtocols/behringerXrMaster';
 import { MidasMaster } from './mixerProtocols/midasMaster';
