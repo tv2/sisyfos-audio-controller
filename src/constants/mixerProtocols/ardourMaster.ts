@@ -16,6 +16,16 @@ export const ArdourMaster: IMixerProtocol = {
             zero: 0.75
         }
     ],
+    pingResponseCommand: [
+        {
+            mixerMessage: "/strip/list",
+            value: "",
+            type: "",
+            min: 0,
+            max: 1,
+            zero: 0.75
+        }
+    ],
     pingTime: 9500,
     initializeCommands: [
         {

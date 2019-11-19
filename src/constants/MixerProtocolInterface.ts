@@ -20,6 +20,7 @@ export interface IMixerProtocolGeneric {
 export interface IMixerProtocol extends IMixerProtocolGeneric{
     leadingZeros: boolean,
     pingCommand: Array<IMixerMessageProtocol>,
+    pingResponseCommand: Array<IMixerMessageProtocol>,
     pingTime: number,
     initializeCommands: Array<IMixerMessageProtocol>,
 }

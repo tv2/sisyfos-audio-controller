@@ -20,6 +20,12 @@ export const BehringerXrMaster: IMixerProtocol = {
             type: "s", min: 0, max: 1, zero: 0.75
         }
     ],
+    pingResponseCommand: [
+        {
+            mixerMessage: "/xremote", value: 0,
+            type: "f", min: 0, max: 1, zero: 0.75
+        },
+    ],
     pingTime: 9500,
     initializeCommands: [
         {

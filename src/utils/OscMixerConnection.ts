@@ -21,6 +21,7 @@ export class OscMixerConnection {
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
     oscConnection: any;
+    mixerOnlineTimer: any;
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
@@ -186,6 +187,10 @@ export class OscMixerConnection {
             }
         })
         .on('error', (error: any) => {
+            window.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: false
+            });
             console.log("Error : ", error);
             console.log("Lost OSC connection");
         });
@@ -205,8 +210,8 @@ export class OscMixerConnection {
     }
 
     pingMixerCommand() {
-        //Ping OSC mixer if mixerProtocol needs it.
-        this.mixerProtocol.pingCommand.map((command) => {
+         //Ping OSC mixer if mixerProtocol needs it.
+         this.mixerProtocol.pingCommand.map((command) => {
             this.sendOutMessage(
                 command.mixerMessage,
                 0,
@@ -214,6 +219,12 @@ export class OscMixerConnection {
                 command.type
             );
         });
+        this.mixerOnlineTimer = setTimeout(() => {
+            window.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: false
+            });
+        }, this.mixerProtocol.pingTime)
     }
 
     checkOscCommand(message: string, command: string) {
