@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { connect } from "react-redux";
+//@ts-ignore
+import * as ClassNames from 'classnames';
 
 import Channel from './Channel';
 import '../assets/css/Channels.css';
@@ -29,7 +31,8 @@ class Channels extends React.Component<IAppProps & Store> {
 
     public shouldComponentUpdate(nextProps: IAppProps) {
         return this.props.store.settings[0].showOptions !== nextProps.store.settings[0].showOptions 
-        || this.props.store.settings[0].showChanStrip !== nextProps.store.settings[0].showChanStrip;
+        || this.props.store.settings[0].showChanStrip !== nextProps.store.settings[0].showChanStrip
+        || this.props.store.settings[0].mixerOnline !== nextProps.store.settings[0].mixerOnline;
     }
 
 
@@ -138,6 +141,13 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             <br/>
             <div className="channels-mix-body">
+            <button
+                className={
+                    ClassNames("channels-show-mixer-online", {
+                    "connected": this.props.store.settings[0].mixerOnline
+                })}
+            >MIXER ONLINE</button>
+            
             {(this.props.store.settings[0].automationMode ||
                   this.props.store.settings[0].offtubeMode) ?
                     null 

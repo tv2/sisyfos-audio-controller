@@ -11,6 +11,7 @@ import {
     TOGGLE_PGM,
     SET_MUTE
  } from  '../reducers/faderActions'
+import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
 
 
 export class SSLMixerConnection {
@@ -25,6 +26,11 @@ export class SSLMixerConnection {
         this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
             this.store = window.storeRedux.getState();
+        });
+
+        window.storeRedux.dispatch({
+            type: SET_MIXER_ONLINE,
+            mixerOnline: false
         });
 
         this.mixerProtocol = mixerProtocol;
@@ -57,6 +63,10 @@ export class SSLMixerConnection {
 
         this.SSLConnection
             .on("ready", () => {
+                window.storeRedux.dispatch({
+                    type: SET_MIXER_ONLINE,
+                    mixerOnline: true
+                });
                 console.log("Receiving state of desk");
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes("{channel}")) {

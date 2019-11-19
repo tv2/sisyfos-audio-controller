@@ -12,9 +12,9 @@ import {
     SET_VU_LEVEL, 
     SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
-    TOGGLE_PGM 
+    TOGGLE_PGM
 } from '../reducers/faderActions'
-
+import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
 
 export class OscMixerConnection {
     store: IStore;
@@ -29,6 +29,12 @@ export class OscMixerConnection {
         this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
             this.store = window.storeRedux.getState();
+        });
+
+
+        window.storeRedux.dispatch({
+            type: SET_MIXER_ONLINE,
+            mixerOnline: false
         });
 
         this.mixerProtocol = mixerProtocol;
@@ -48,6 +54,11 @@ export class OscMixerConnection {
         this.oscConnection
         .on("ready", () => {
             console.log("Receiving state of desk");
+            window.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: true
+            });
+            
             this.mixerProtocol.initializeCommands.map((item) => {
                 if (item.mixerMessage.includes("{channel}")) {
                     this.store.channels[0].channel.map((channel: any, index: any) => {
