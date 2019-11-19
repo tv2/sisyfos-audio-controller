@@ -7,7 +7,8 @@ export const ReaperMaster: IMixerProtocol = {
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],
-    pingTime: 0,  //Bypass ping when pingTime is zero
+    pingResponseCommand: [emptyMixerMessage()],
+    pingTime: 0,  //Set to value to get MixerOnline status 
     initializeCommands: [emptyMixerMessage()],
     channelTypes: [{
         channelTypeName: 'CH',

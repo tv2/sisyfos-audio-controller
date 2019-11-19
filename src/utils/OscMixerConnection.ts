@@ -12,15 +12,16 @@ import {
     SET_VU_LEVEL, 
     SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
-    TOGGLE_PGM 
+    TOGGLE_PGM
 } from '../reducers/faderActions'
-
+import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
 
 export class OscMixerConnection {
     store: IStore;
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
     oscConnection: any;
+    mixerOnlineTimer: any;
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
@@ -29,6 +30,12 @@ export class OscMixerConnection {
         this.store = window.storeRedux.getState();
         const unsubscribe = window.storeRedux.subscribe(() => {
             this.store = window.storeRedux.getState();
+        });
+
+
+        window.storeRedux.dispatch({
+            type: SET_MIXER_ONLINE,
+            mixerOnline: false
         });
 
         this.mixerProtocol = mixerProtocol;
@@ -48,6 +55,11 @@ export class OscMixerConnection {
         this.oscConnection
         .on("ready", () => {
             console.log("Receiving state of desk");
+            window.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: true
+            });
+            
             this.mixerProtocol.initializeCommands.map((item) => {
                 if (item.mixerMessage.includes("{channel}")) {
                     this.store.channels[0].channel.map((channel: any, index: any) => {
@@ -59,6 +71,11 @@ export class OscMixerConnection {
             });
         })
         .on('message', (message: any) => {
+            clearTimeout(this.mixerOnlineTimer)
+            window.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: true
+            });
             if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_VU[0].mixerMessage)){
                 if (this.store.settings[0].mixerProtocol.includes('behringer')) {
@@ -175,6 +192,10 @@ export class OscMixerConnection {
             }
         })
         .on('error', (error: any) => {
+            window.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: false
+            });
             console.log("Error : ", error);
             console.log("Lost OSC connection");
         });
@@ -194,8 +215,8 @@ export class OscMixerConnection {
     }
 
     pingMixerCommand() {
-        //Ping OSC mixer if mixerProtocol needs it.
-        this.mixerProtocol.pingCommand.map((command) => {
+         //Ping OSC mixer if mixerProtocol needs it.
+         this.mixerProtocol.pingCommand.map((command) => {
             this.sendOutMessage(
                 command.mixerMessage,
                 0,
@@ -203,6 +224,12 @@ export class OscMixerConnection {
                 command.type
             );
         });
+        this.mixerOnlineTimer = setTimeout(() => {
+            window.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: false
+            });
+        }, this.mixerProtocol.pingTime)
     }
 
     checkOscCommand(message: string, command: string) {

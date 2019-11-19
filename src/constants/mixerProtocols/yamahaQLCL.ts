@@ -7,6 +7,7 @@ export const YamahaQLCL: IMixerProtocol = {
                     //client (use feedback from mixers fader level)
     leadingZeros: false,
     pingCommand: [emptyMixerMessage()],
+    pingResponseCommand: [emptyMixerMessage()],
     pingTime: 0,
     initializeCommands: [emptyMixerMessage()],
     channelTypes: [{

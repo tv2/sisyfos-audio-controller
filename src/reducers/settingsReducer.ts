@@ -7,6 +7,7 @@ import {
     TOGGLE_SHOW_SNAPS,
     TOGGLE_SHOW_STORAGE,
     UPDATE_SETTINGS,
+    SET_MIXER_ONLINE
 } from  '../reducers/settingsActions'
 
 export interface ISettings {
@@ -35,7 +36,8 @@ export interface ISettings {
     autoResetLevel: number, // Autoreset before pgm on, if level is lower than in %
     automationMode: boolean,
     offtubeMode: boolean,
-    showPfl: boolean
+    showPfl: boolean,
+    mixerOnline: boolean
 }
 
 
@@ -66,7 +68,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         offtubeMode: false,
         fadeTime: 60,
         voFadeTime: 200, 
-        showPfl: false
+        showPfl: false,
+        mixerOnline: false
     },
 ];
 
@@ -88,6 +91,9 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             return nextState;
         case TOGGLE_SHOW_SNAPS:
             nextState[0].showSnaps = !nextState[0].showSnaps;
+            return nextState;
+        case SET_MIXER_ONLINE:
+            nextState[0].mixerOnline = action.mixerOnline;
             return nextState;
         case UPDATE_SETTINGS:
             nextState[0] = action.settings;
