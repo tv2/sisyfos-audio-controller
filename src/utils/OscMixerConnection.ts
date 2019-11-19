@@ -71,6 +71,11 @@ export class OscMixerConnection {
             });
         })
         .on('message', (message: any) => {
+            clearTimeout(this.mixerOnlineTimer)
+            window.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: true
+            });
             if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_VU[0].mixerMessage)){
                 if (this.store.settings[0].mixerProtocol.includes('behringer')) {
