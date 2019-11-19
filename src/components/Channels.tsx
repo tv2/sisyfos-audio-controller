@@ -70,6 +70,10 @@ class Channels extends React.Component<IAppProps & Store> {
         });
     }
 
+    handleReconnect() {
+        location.reload();
+    }
+
 
     handleShowSettings() {
         this.props.dispatch({
@@ -90,7 +94,7 @@ class Channels extends React.Component<IAppProps & Store> {
             message: 'Stores the current state of Sisyfos - including Fader-Channel Routing',
         };
         let response = dialog.showSaveDialogSync(options)
-        if (response = 'save') {
+        if (response === 'save') {
             console.log('SAVING CURRENT STATE')
         }
     }
@@ -146,7 +150,10 @@ class Channels extends React.Component<IAppProps & Store> {
                     ClassNames("channels-show-mixer-online", {
                     "connected": this.props.store.settings[0].mixerOnline
                 })}
-            >MIXER ONLINE</button>
+                onClick={() => {
+                    this.handleReconnect();
+                }}
+            >{this.props.store.settings[0].mixerOnline ? 'MIXER ONLINE' : 'RECONNECT'}</button>
             
             {(this.props.store.settings[0].automationMode ||
                   this.props.store.settings[0].offtubeMode) ?
