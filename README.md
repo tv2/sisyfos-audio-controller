@@ -147,4 +147,4 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 
 ## Check connectivity
 /ping/{value}
-_In response to a ping, sisyfos will reply with /pong and the provided value_
+_In response to a ping, sisyfos will reply with /pong and the provided value OR 'offline' if Audiomixer is not connected_

@@ -259,8 +259,8 @@ export class AutomationConnection {
                 );
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .PING)) {
-                let pingValue = message.address.split("/")[2];
-
+                let pingValue = this.store.settings[0].mixerOnline ? message.address.split("/")[2] : 'offline';
+                
                 this.sendOutMessage(
                     this.automationProtocol.toAutomation.PONG,
                     0,
