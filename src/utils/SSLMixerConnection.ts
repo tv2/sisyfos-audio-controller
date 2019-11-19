@@ -1,5 +1,4 @@
 //Node Modules:
-import * as os from 'os'; // Used to display (log) network addresses on local machine
 import * as net from 'net'
 
 //Utils:
@@ -19,6 +18,7 @@ export class SSLMixerConnection {
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
     SSLConnection: any;
+    mixerOnlineTimer: any;
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutLevelMessage = this.sendOutLevelMessage.bind(this);
@@ -79,6 +79,12 @@ export class SSLMixerConnection {
                 });
             })
             .on('data', (data: any) => {
+                clearTimeout(this.mixerOnlineTimer)
+                window.storeRedux.dispatch({
+                    type: SET_MIXER_ONLINE,
+                    mixerOnline: true
+                });
+                
                 let buffers = []
                 let lastIndex = 0
                 for (let index=1; index<data.length; index++) {
@@ -183,7 +189,28 @@ export class SSLMixerConnection {
                 console.log("Error : ", error);
                 console.log("Lost SCP connection");
             });
+
+        //Ping OSC mixer to get mixerOnlineState
+        let oscTimer = setInterval(
+            () => {
+                this.pingMixerCommand();
+            },
+            this.mixerProtocol.pingTime
+        );
     }
+
+    pingMixerCommand() {
+        //Ping OSC mixer if mixerProtocol needs it.
+        this.mixerProtocol.pingCommand.map((command) => {
+           this.sendOutPingRequest();
+       });
+       this.mixerOnlineTimer = setTimeout(() => {
+           window.storeRedux.dispatch({
+               type: SET_MIXER_ONLINE,
+               mixerOnline: false
+           });
+       }, this.mixerProtocol.pingTime)
+   }
 
     checkSSLCommand(message: string, command: string) {
         if (!message) return false
@@ -259,6 +286,16 @@ export class SSLMixerConnection {
             (channelIndex & 0x000000ff),
         ])
         sslMessage = sslMessage.replace('{channel}', ('0' + channelByte[0].toString(16)).slice(-2) + ' ' + ('0' + channelByte[1].toString(16)).slice(-2))
+        sslMessage = sslMessage + ' ' + this.calculate_checksum8(sslMessage.slice(9))
+        let a = sslMessage.split(' ')
+        let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
+        
+        console.log("Send HEX: ", sslMessage) 
+        this.SSLConnection.write(buf)
+    }
+
+    sendOutPingRequest() {
+        let sslMessage = 'f1 02 00 07 00'
         sslMessage = sslMessage + ' ' + this.calculate_checksum8(sslMessage.slice(9))
         let a = sslMessage.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
