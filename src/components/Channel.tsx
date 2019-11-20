@@ -243,7 +243,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             >
             {this.props.automationMode ? 
                 <React.Fragment>
-                    NEXT
+                    CUE NEXT
                 </React.Fragment>
                 :
                 <React.Fragment>

@@ -126,7 +126,8 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
         case TOGGLE_PST: //channel
             if (nextState[0].fader[action.channel].pstOn) {
                 nextState[0].fader[action.channel].pstOn = false;
-                nextState[0].fader[action.channel].pstVoOn = true;
+                // Disable toggle to pstVoOn, to enable change pstVoOn: true here:
+                nextState[0].fader[action.channel].pstVoOn = false;
             } else if (nextState[0].fader[action.channel].pstVoOn) {
                 nextState[0].fader[action.channel].pstOn = false;
                 nextState[0].fader[action.channel].pstVoOn = false;
