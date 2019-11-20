@@ -210,8 +210,8 @@ export class AutomationConnection {
                     this.automationProtocol.toAutomation.STATE_FULL,
                     0,
                     JSON.stringify({
-                        channel: this.store.faders[0].fader.map(({ faderLevel, pgmOn, pstOn }: IFader) => ({
-                            faderLevel, pgmOn, pstOn
+                        channel: this.store.faders[0].fader.map(({ faderLevel, pgmOn, pstOn, showChannel }: IFader) => ({
+                            faderLevel, pgmOn, pstOn, showChannel
                         }))
                     }),
                     "s",
