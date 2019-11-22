@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import ReactSlider from 'react-slider'
 
 import '../assets/css/ChanStrip.css';
@@ -10,13 +10,15 @@ import {
     TOGGLE_SHOW_CHAN_STRIP,
     TOGGLE_SHOW_OPTION
  } from '../reducers/settingsActions'
+import { IFader } from '../reducers/fadersReducer'
+import { SET_FADER_LEVEL } from '../reducers/faderActions'
 
 interface IChanStripInjectProps {
     label: string,
     selectedProtocol: string,
     numberOfChannelsInType: Array<number>,
     channel: Array<any>
-    fader: Array<any>
+    fader: Array<IFader>
 }
 
 interface IChanStripProps {
@@ -24,7 +26,6 @@ interface IChanStripProps {
 }
 
 class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectProps & Store> {
-    faderIndex: number;
     mixerProtocol: IMixerProtocolGeneric;
 
     constructor(props: any) {
@@ -50,11 +51,23 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         });
     }
 
+    handleLevel(event: any) {
+        this.props.dispatch({
+            type: SET_FADER_LEVEL,
+            channel: this.props.faderIndex,
+            level: parseFloat(event)
+        });
+        window.mixerGenericConnection.updateOutLevel(this.props.faderIndex);
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemoteFaderState(this.props.faderIndex, event)
+        }
+    }
 
-    fader(parameterName: string) {
+
+    threshold() {
         return (
             <div className="parameter-text">
-                {parameterName}
+                Threshold
                 <ReactSlider 
                     className="chan-strip-fader"
                     thumbClassName = "chan-strip-thumb"
@@ -63,7 +76,102 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     min={0}
                     max={1}
                     step={0.01}
-                    value= {this.props.fader[this.props.faderIndex].faderLevel}
+                    value= {this.props.fader[this.props.faderIndex].threshold}
+                    onChange={(event: any) => {
+                    }}
+                />
+            </div>
+        )
+    }
+    ratio() {
+        return (
+            <div className="parameter-text">
+                Ratio
+                <ReactSlider 
+                    className="chan-strip-fader"
+                    thumbClassName = "chan-strip-thumb"
+                    orientation = "vertical"
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].ratio}
+                    onChange={(event: any) => {
+                    }}
+                />
+            </div>
+        )
+    }
+    low() {
+        return (
+            <div className="parameter-text">
+                Low
+                <ReactSlider 
+                    className="chan-strip-fader"
+                    thumbClassName = "chan-strip-thumb"
+                    orientation = "vertical"
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].low}
+                    onChange={(event: any) => {
+                    }}
+                />
+            </div>
+        )
+    }
+    mid() {
+        return (
+            <div className="parameter-text">
+                Mid
+                <ReactSlider 
+                    className="chan-strip-fader"
+                    thumbClassName = "chan-strip-thumb"
+                    orientation = "vertical"
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].mid}
+                    onChange={(event: any) => {
+                    }}
+                />
+            </div>
+        )
+    }
+    high() {
+        return (
+            <div className="parameter-text">
+                High
+                <ReactSlider 
+                    className="chan-strip-fader"
+                    thumbClassName = "chan-strip-thumb"
+                    orientation = "vertical"
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].high}
+                    onChange={(event: any) => {
+                    }}
+                />
+            </div>
+        )
+    }
+    monitor(monitor: number, monitorName: string) {
+        return (
+            <div className="parameter-text">
+                {monitorName}
+                <ReactSlider 
+                    className="chan-strip-fader"
+                    thumbClassName = "chan-strip-thumb"
+                    orientation = "vertical"
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].monitor[monitor]}
                     onChange={(event: any) => {
                     }}
                 />
@@ -85,24 +193,24 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     COMPRESSOR
                 </div>
                 <div className="vertical-line"></div>
-                {this.fader('Threshold')}
-                {this.fader('Ratio')}
+                {this.threshold()}
+                {this.ratio()}
                 <div className="vertical-line"></div>
                 <div className="vertical">
                     EQ
                 </div>
                 <div className="vertical-line"></div>
-                {this.fader('Low')}
-                {this.fader('Mid')}
-                {this.fader('High')}
+                {this.low()}
+                {this.mid()}
+                {this.high()}
                 <div className="vertical-line"></div>
                 <div className="vertical">
                     MONITOR
                 </div>
                 <div className="vertical-line"></div>
-                {this.fader('IT')}
-                {this.fader('EXT SPK 1')}
-                {this.fader('EXT SPK 2')}
+                {this.monitor(0, 'IT')}
+                {this.monitor(1, 'SPK EXT 1')}
+                {this.monitor(2, 'SPK EXT 2')}
                 <div className="vertical-line"></div>
                 <div className="vertical">
                 
