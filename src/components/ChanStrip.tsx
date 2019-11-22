@@ -29,14 +29,13 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
 
     constructor(props: any) {
         super(props);
-        this.faderIndex = this.props.faderIndex;
         this.mixerProtocol = MixerProtocolPresets[this.props.selectedProtocol];
     }
 
     handleShowRoutingOptions() {
         this.props.dispatch({
             type: TOGGLE_SHOW_OPTION,
-            channel: this.faderIndex
+            channel: this.props.faderIndex
         });
         this.props.dispatch({
             type: TOGGLE_SHOW_CHAN_STRIP,
@@ -64,7 +63,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     min={0}
                     max={1}
                     step={0.01}
-                    value= {this.props.fader[this.faderIndex].faderLevel}
+                    value= {this.props.fader[this.props.faderIndex].faderLevel}
                     onChange={(event: any) => {
                     }}
                 />
@@ -77,7 +76,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
             <div className="chan-strip-body">
                 <h2>
                     CHANNEL STRIP: 
-                    {this.props.label || ("FADER " + (this.faderIndex + 1))}</h2>
+                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}</h2>
                 <button 
                     className="close"
                     onClick={() => this.handleClose()}

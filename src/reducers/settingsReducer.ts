@@ -81,7 +81,12 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             nextState[0].showSettings = !nextState[0].showSettings;
             return nextState;
         case TOGGLE_SHOW_CHAN_STRIP:
-            nextState[0].showChanStrip = action.channel;
+            if (nextState[0].showChanStrip !== action.channel) {
+                nextState[0].showChanStrip = action.channel;
+            }
+            else {
+                nextState[0].showChanStrip = -1;
+            }
             return nextState;
         case TOGGLE_SHOW_OPTION:
             nextState[0].showOptions = typeof nextState[0].showOptions === 'number' ? false : action.channel;
