@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactSlider from 'react-slider'
 
 import '../assets/css/ChanStrip.css';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
@@ -50,22 +51,118 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         });
     }
 
+
+    threshold() {
+        return (
+            <ReactSlider 
+                className="chan-strip-fader"
+                thumbClassName = "chan-strip-thumb"
+                orientation = "vertical"
+                invert
+                min={0}
+                max={1}
+                step={0.01}
+                value= {this.props.fader[this.faderIndex].faderLevel}
+                onChange={(event: any) => {
+                }}
+            />
+        )
+    }
+
+    ratio() {
+        return (
+            <ReactSlider 
+                className="chan-strip-fader"
+                thumbClassName = "chan-strip-thumb"
+                orientation = "vertical"
+                invert
+                min={0}
+                max={1}
+                step={0.01}
+                value= {this.props.fader[this.faderIndex].faderLevel}
+                onChange={(event: any) => {
+                }}
+            />
+        )
+    }
+    low() {
+        return (
+            <ReactSlider 
+                className="chan-strip-fader"
+                thumbClassName = "chan-strip-thumb"
+                orientation = "vertical"
+                invert
+                min={0}
+                max={1}
+                step={0.01}
+                value= {this.props.fader[this.faderIndex].faderLevel}
+                onChange={(event: any) => {
+                }}
+            />
+        )
+    }
+    mid() {
+        return (
+            <ReactSlider 
+                className="chan-strip-fader"
+                thumbClassName = "chan-strip-thumb"
+                orientation = "vertical"
+                invert
+                min={0}
+                max={1}
+                step={0.01}
+                value= {this.props.fader[this.faderIndex].faderLevel}
+                onChange={(event: any) => {
+                }}
+            />
+        )
+    }
+    high() {
+        return (
+            <ReactSlider 
+                className="chan-strip-fader"
+                thumbClassName = "chan-strip-thumb"
+                orientation = "vertical"
+                invert
+                min={0}
+                max={1}
+                step={0.01}
+                value= {this.props.fader[this.faderIndex].faderLevel}
+                onChange={(event: any) => {
+                }}
+            />
+        )
+    }
+
     render() {
         return (
             <div className="chan-strip-body">
                 <h2>
-                    CHANNEL STRIP 
-                    <br/>
+                    CHANNEL STRIP: 
                     {this.props.label || ("FADER " + (this.faderIndex + 1))}</h2>
                 <button 
                     className="close"
                     onClick={() => this.handleClose()}
                 >X</button>
+                <div className="vertical">
+                    COMPRESSOR
+                </div>
+                <div className="vertical-line"></div>
+                {this.threshold()}
+                {this.ratio()}
+                <div className="vertical-line"></div>
+                <div className="vertical">
+                    EQ
+                </div>
+                <div className="vertical-line"></div>
+                {this.low()}
+                {this.mid()}
+                {this.high()}
+                <div className="vertical-line"></div>
                 <button 
                     className="button"
                     onClick={() => this.handleShowRoutingOptions()}
                 >ROUTING</button>
-                <hr />
             </div>
         )
     }

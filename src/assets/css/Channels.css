@@ -1,4 +1,5 @@
 .channels-body {
+    margin-top: 250px;
     display: flex;
     flex-direction: row;
     background-color: black;
