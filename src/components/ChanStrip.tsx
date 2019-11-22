@@ -11,7 +11,7 @@ import {
     TOGGLE_SHOW_OPTION
  } from '../reducers/settingsActions'
 import { IFader } from '../reducers/fadersReducer'
-import { SET_FADER_LEVEL } from '../reducers/faderActions'
+import { SET_FADER_LEVEL, SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from '../reducers/faderActions'
 
 interface IChanStripInjectProps {
     label: string,
@@ -51,9 +51,9 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         });
     }
 
-    handleLevel(event: any) {
+    handleThreshold(event: any) {
         this.props.dispatch({
-            type: SET_FADER_LEVEL,
+            type: SET_FADER_THRESHOLD,
             channel: this.props.faderIndex,
             level: parseFloat(event)
         });
@@ -78,10 +78,23 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     step={0.01}
                     value= {this.props.fader[this.props.faderIndex].threshold}
                     onChange={(event: any) => {
+                        this.handleThreshold(event)
                     }}
                 />
             </div>
         )
+    }
+
+    handleRatio(event: any) {
+        this.props.dispatch({
+            type: SET_FADER_RATIO,
+            channel: this.props.faderIndex,
+            level: parseFloat(event)
+        });
+        window.mixerGenericConnection.updateOutLevel(this.props.faderIndex);
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemoteFaderState(this.props.faderIndex, event)
+        }
     }
     ratio() {
         return (
@@ -97,10 +110,23 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     step={0.01}
                     value= {this.props.fader[this.props.faderIndex].ratio}
                     onChange={(event: any) => {
+                        this.handleRatio(event)
                     }}
                 />
             </div>
         )
+    }
+
+    handleLow(event: any) {
+        this.props.dispatch({
+            type: SET_FADER_LOW,
+            channel: this.props.faderIndex,
+            level: parseFloat(event)
+        });
+        window.mixerGenericConnection.updateOutLevel(this.props.faderIndex);
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemoteFaderState(this.props.faderIndex, event)
+        }
     }
     low() {
         return (
@@ -116,10 +142,23 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     step={0.01}
                     value= {this.props.fader[this.props.faderIndex].low}
                     onChange={(event: any) => {
+                        this.handleLow(event)
                     }}
                 />
             </div>
         )
+    }
+
+    handleMid(event: any) {
+        this.props.dispatch({
+            type: SET_FADER_MID,
+            channel: this.props.faderIndex,
+            level: parseFloat(event)
+        });
+        window.mixerGenericConnection.updateOutLevel(this.props.faderIndex);
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemoteFaderState(this.props.faderIndex, event)
+        }
     }
     mid() {
         return (
@@ -135,10 +174,23 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     step={0.01}
                     value= {this.props.fader[this.props.faderIndex].mid}
                     onChange={(event: any) => {
+                        this.handleMid(event)
                     }}
                 />
             </div>
         )
+    }
+
+    handleHigh(event: any) {
+        this.props.dispatch({
+            type: SET_FADER_HIGH,
+            channel: this.props.faderIndex,
+            level: parseFloat(event)
+        });
+        window.mixerGenericConnection.updateOutLevel(this.props.faderIndex);
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemoteFaderState(this.props.faderIndex, event)
+        }
     }
     high() {
         return (
@@ -154,11 +206,13 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     step={0.01}
                     value= {this.props.fader[this.props.faderIndex].high}
                     onChange={(event: any) => {
+                        this.handleHigh(event)
                     }}
                 />
             </div>
         )
     }
+    
     monitor(monitor: number, monitorName: string) {
         return (
             <div className="parameter-text">
@@ -205,12 +259,14 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 {this.high()}
                 <div className="vertical-line"></div>
                 <div className="vertical">
-                    MONITOR
+                    MONITOR MIX
                 </div>
                 <div className="vertical-line"></div>
                 {this.monitor(0, 'IT')}
-                {this.monitor(1, 'SPK EXT 1')}
-                {this.monitor(2, 'SPK EXT 2')}
+                {this.monitor(1, 'KOMM 1')}
+                {this.monitor(2, 'KOMM 2')}
+                {this.monitor(3, 'KOMM 3')}
+                {this.monitor(4, 'KOMM 4')}
                 <div className="vertical-line"></div>
                 <div className="vertical">
                 
