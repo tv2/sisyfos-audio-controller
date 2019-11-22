@@ -36,6 +36,13 @@
 	font-size: 140%;
 }
 
+.chan-strip-body > .parameter-text {
+	text-align: center;
+	margin-top: 10px;
+	line-height: 10px;
+	font-size: 105%;
+}
+
 .chan-strip-body > .vertical-line {
 	background-color:rgb(124, 124, 124);
 	height: 100vh;
@@ -81,7 +88,7 @@
 	height: 200px;
 	margin-left: 45px;
 	margin-right: 40px;
-    margin-top: 20px;
+    margin-top: 10px;
     border-width: 0px;
     border-style: solid;
     border-radius: 8px;
