@@ -38,6 +38,12 @@ export const LawoClient: IMixerProtocol = {
             }],
             PFL: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            THRESHOLD: [emptyMixerMessage()],
+            RATIO: [emptyMixerMessage()],
+            LOW: [emptyMixerMessage()],
+            MIX: [emptyMixerMessage()],
+            HIGH: [emptyMixerMessage()],
+            MONITOR: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
@@ -71,6 +77,12 @@ export const LawoClient: IMixerProtocol = {
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
             AUX_SEND: [emptyMixerMessage()],
+            THRESHOLD: [emptyMixerMessage()],
+            RATIO: [emptyMixerMessage()],
+            LOW: [emptyMixerMessage()],
+            MIX: [emptyMixerMessage()],
+            HIGH: [emptyMixerMessage()],
+            MONITOR: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         }

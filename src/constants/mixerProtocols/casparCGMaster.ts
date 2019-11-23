@@ -58,7 +58,13 @@ if (geometry) {
                 CHANNEL_NAME: [emptyMixerMessage()],
                 PFL: [emptyMixerMessage()],
 				AUX_SEND: [emptyMixerMessage()],
-				CHANNEL_MUTE_ON: [emptyMixerMessage()],
+				THRESHOLD: [emptyMixerMessage()],
+            RATIO: [emptyMixerMessage()],
+            LOW: [emptyMixerMessage()],
+            MIX: [emptyMixerMessage()],
+            HIGH: [emptyMixerMessage()],
+            MONITOR: [emptyMixerMessage()],
+            CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
             },
             toMixer: {
@@ -68,7 +74,13 @@ if (geometry) {
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
 				AUX_SEND: [emptyMixerMessage()],
-				CHANNEL_MUTE_ON: [emptyMixerMessage()],
+				THRESHOLD: [emptyMixerMessage()],
+            RATIO: [emptyMixerMessage()],
+            LOW: [emptyMixerMessage()],
+            MIX: [emptyMixerMessage()],
+            HIGH: [emptyMixerMessage()],
+            MONITOR: [emptyMixerMessage()],
+            CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
             },
         }]
