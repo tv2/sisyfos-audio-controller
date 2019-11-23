@@ -27,7 +27,8 @@ import {
     SET_FADER_RATIO,
     SET_FADER_LOW,
     SET_FADER_MID,
-    SET_FADER_HIGH
+    SET_FADER_HIGH,
+    SET_FADER_MONITOR
 } from '../reducers/faderActions'
 
 export interface IFaders {
@@ -80,7 +81,7 @@ const defaultFadersReducerState = (numberOfFaders: number) => {
                 high: 0.75,
                 threshold: 0.75,
                 ratio: 0.75,
-                monitor: [0.75, 0.75, 0.75, 0.75, 0.75],
+                monitor: [0, 0, 0, 0, 0],
                 showChannel: true,
                 snapOn: [],
             });
@@ -133,7 +134,11 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
         case SET_FADER_HIGH: //channel:  level:
             nextState[0].fader[action.channel].high = parseFloat(action.level);
             return nextState;
-                                                                                        
+        case SET_FADER_MONITOR: //channel:  level:
+            if (nextState[0].fader[action.channel].monitor.length > action.index) {
+                nextState[0].fader[action.channel].monitor[action.index] = parseFloat(action.level);
+            }
+            return nextState;
         case SET_ALL_VU_LEVELS: //channel:  level:
             nextState[0].vuMeters = action.vuMeters;
             return nextState;

@@ -11,7 +11,7 @@ import {
     TOGGLE_SHOW_OPTION
  } from '../reducers/settingsActions'
 import { IFader } from '../reducers/fadersReducer'
-import { SET_FADER_LEVEL, SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from '../reducers/faderActions'
+import { SET_FADER_LEVEL, SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH, SET_FADER_MONITOR } from '../reducers/faderActions'
 
 interface IChanStripInjectProps {
     label: string,
@@ -19,6 +19,7 @@ interface IChanStripInjectProps {
     numberOfChannelsInType: Array<number>,
     channel: Array<any>
     fader: Array<IFader>
+    offtubeMode: boolean
 }
 
 interface IChanStripProps {
@@ -212,8 +213,20 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
             </div>
         )
     }
-    
-    monitor(monitor: number, monitorName: string) {
+
+    handleMonitorLevel(event: any, monitorIndex: number) {
+        this.props.dispatch({
+            type: SET_FADER_MONITOR,
+            channel: this.props.faderIndex,
+            index: monitorIndex,
+            level: parseFloat(event)
+        });
+        window.mixerGenericConnection.updateOutLevel(this.props.faderIndex);
+        if (window.huiRemoteConnection) {
+            window.huiRemoteConnection.updateRemoteFaderState(this.props.faderIndex, event)
+        }
+    }
+    monitor(monitorIndex: number, monitorName: string) {
         return (
             <div className="parameter-text">
                 {monitorName}
@@ -225,24 +238,17 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     min={0}
                     max={1}
                     step={0.01}
-                    value= {this.props.fader[this.props.faderIndex].monitor[monitor]}
+                    value= {this.props.fader[this.props.faderIndex].monitor[monitorIndex]}
                     onChange={(event: any) => {
+                        this.handleMonitorLevel(event, monitorIndex)
                     }}
                 />
             </div>
         )
     }
-
-    render() {
+    parameters() {
         return (
-            <div className="chan-strip-body">
-                <h2>
-                    CHANNEL STRIP: 
-                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}</h2>
-                <button 
-                    className="close"
-                    onClick={() => this.handleClose()}
-                >X</button>
+            <React.Fragment>
                 <div className="vertical">
                     COMPRESSOR
                 </div>
@@ -259,7 +265,8 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 {this.high()}
                 <div className="vertical-line"></div>
                 <div className="vertical">
-                    MONITOR MIX
+                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
+                    {" MONITOR MIX"}
                 </div>
                 <div className="vertical-line"></div>
                 {this.monitor(0, 'IT')}
@@ -269,8 +276,24 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 {this.monitor(4, 'KOMM 4')}
                 <div className="vertical-line"></div>
                 <div className="vertical">
-                
                 </div>
+            </React.Fragment>
+        )
+    }
+
+    render() {
+        return (
+            <div className="chan-strip-body">
+                <h2>
+                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}</h2>
+                <button 
+                    className="close"
+                    onClick={() => this.handleClose()}
+                >X</button>
+                {this.props.offtubeMode ?
+                    this.parameters() 
+                    : null
+                }
                 <div className="vertical-line"></div>
                 <button 
                     className="button"
@@ -289,6 +312,7 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
         numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
         channel: state.channels[0].channel,
         fader: state.faders[0].fader,
+        offtubeMode: state.settings[0].offtubeMode
     }
 }
 
