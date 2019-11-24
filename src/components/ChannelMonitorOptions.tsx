@@ -9,7 +9,7 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import CcgChannelSettings from './CcgChannelSettings';
 import { SET_ASSIGNED_FADER } from '../reducers/channelActions'
-import { TOGGLE_SHOW_OPTION } from '../reducers/settingsActions'
+import { TOGGLE_SHOW_OPTION, TOGGLE_SHOW_MONITOR_OPTIONS } from '../reducers/settingsActions'
 const { dialog } = require('electron').remote;
 
 interface IChannelSettingsInjectProps {
@@ -132,57 +132,53 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IChannel
 
     handleClose = () => {
         this.props.dispatch({
-            type: TOGGLE_SHOW_OPTION,
+            type: TOGGLE_SHOW_MONITOR_OPTIONS,
             channel: this.faderIndex
         });
     }
 
     render() {
-        if (this.props.selectedProtocol.includes("caspar")) {
-            return (
-                <CcgChannelSettings channelIndex={this.props.faderIndex} />
-            )
-        }
-        else {
-            return (
-                <div className="channel-route-body">
-                    <h2>{this.props.label || ("FADER " + (this.faderIndex + 1))}</h2>
-                    <button 
-                        className="close"
-                        onClick={() => this.handleClose()}
-                    >X</button>
-                    <button 
-                        className="button"
-                        onClick={() => this.handleClearRouting()}
-                    >CLEAR MONITOR</button>
-                    <button 
-                        className="button"
-                        onClick={() => this.handle11Routing()}
-                    >ROUTE 1:1</button>
-                    <hr />
-                    {this.props.channel.map((channel: any, index: number) => {
-                        return <div 
-                            key={index}
-                            className={ClassNames("channel-route-text", {
-                                'checked': this.props.channel[index].assignedFader === this.faderIndex
-                            })}
-                            >
-                            {(" Channel " + (index + 1) + " : ")}
-                            <input
-                                type="checkbox"
-                                checked={this.props.channel[index].assignedFader === this.faderIndex}
-                                onChange={(event) => this.handleAssignChannel(index, event)}
-                            />
-                            {this.props.channel[index].assignedFader >= 0
-                                ? ("   (Fader " + (this.props.channel[index].assignedFader + 1) + ")")
-                                : ' (not assigned)'}
-                        </div>
-                    })
-                    }
-                </div>
-            )
-        }
+        return (
+            <div className="channel-route-body">
+                <h2>MONITOR ROUTE</h2>
+                <h2>{this.props.label || ("FADER " + (this.faderIndex + 1))}</h2>
+                <button 
+                    className="close"
+                    onClick={() => this.handleClose()}
+                >X</button>
+                <button 
+                    className="button"
+                    onClick={() => this.handleClearRouting()}
+                >CLEAR MONITOR</button>
+                <button 
+                    className="button"
+                    onClick={() => this.handle11Routing()}
+                >ROUTE 1:1</button>
+                <hr />
+                {this.props.channel.map((channel: any, index: number) => {
+                    return <div 
+                        key={index}
+                        className={ClassNames("channel-route-text", {
+                            'checked': this.props.channel[index].assignedFader === this.faderIndex
+                        })}
+                        >
+                        {(" Channel " + (index + 1) + " : ")}
+                        <input
+                            type="checkbox"
+                            checked={this.props.channel[index].assignedFader === this.faderIndex}
+                            onChange={(event) => this.handleAssignChannel(index, event)}
+                        />
+                        {this.props.channel[index].assignedFader >= 0
+                            ? ("Monitor this")
+                            : null
+                        }
+                    </div>
+                })
+                }
+            </div>
+        )
     }
+
 }
 
 const mapStateToProps = (state: any, props: any): IChannelSettingsInjectProps => {

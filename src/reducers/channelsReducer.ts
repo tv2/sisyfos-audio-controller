@@ -4,7 +4,8 @@ import {
     SET_COMPLETE_CH_STATE,
     SET_OPTION,
     SET_PRIVATE,
-    FADE_ACTIVE
+    FADE_ACTIVE,
+    SET_AUX_LEVEL
 } from './channelActions'
 
 export interface IChannels {
@@ -17,6 +18,7 @@ export interface IChannel {
     assignedFader: number,
     fadeActive: boolean,
     outputLevel: number,
+    auxLevel: number[],
     private?: {
         [key: string]: string
     }
@@ -36,6 +38,7 @@ const defaultChannelsReducerState = (numberOfTypeChannels: Array<number>) => {
                 assignedFader: totalNumberOfChannels,
                 fadeActive: false,
                 outputLevel: 0.0,
+                auxLevel: []
             });
             totalNumberOfChannels ++;
         }
@@ -68,6 +71,9 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
             return nextState;
         case SET_ASSIGNED_FADER: //channel:  faderNumber:
             nextState[0].channel[action.channel].assignedFader = action.faderNumber
+            return nextState;
+        case SET_AUX_LEVEL: //channel:  auxIndex: level:
+            nextState[0].channel[action.channel].auxLevel[action.auxIndex] = parseFloat(action.level);
             return nextState;
         case SET_PRIVATE:
             if (!nextState[0].channel[action.channel].private) {

@@ -33,6 +33,7 @@ class Channels extends React.Component<IAppProps & Store> {
     public shouldComponentUpdate(nextProps: IAppProps) {
         return this.props.store.settings[0].showOptions !== nextProps.store.settings[0].showOptions 
         || this.props.store.settings[0].showChanStrip !== nextProps.store.settings[0].showChanStrip
+        || this.props.store.settings[0].showMonitorOptions !== nextProps.store.settings[0].showMonitorOptions
         || this.props.store.settings[0].mixerOnline !== nextProps.store.settings[0].mixerOnline;
     }
 
