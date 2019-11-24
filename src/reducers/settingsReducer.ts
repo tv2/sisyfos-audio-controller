@@ -7,7 +7,8 @@ import {
     TOGGLE_SHOW_SNAPS,
     TOGGLE_SHOW_STORAGE,
     UPDATE_SETTINGS,
-    SET_MIXER_ONLINE
+    SET_MIXER_ONLINE,
+    TOGGLE_SHOW_MONITOR_OPTIONS
 } from  '../reducers/settingsActions'
 
 export interface ISettings {
@@ -15,6 +16,7 @@ export interface ISettings {
     showSettings: boolean,
     showChanStrip: number,
     showOptions: number | false,
+    showMonitorOptions: number,
     showStorage: boolean,
     mixerProtocol: string,
     localIp: string,
@@ -47,6 +49,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showSettings: false,
         showChanStrip: -1,
         showOptions: false,
+        showMonitorOptions: -1,
         showStorage: false,
         mixerProtocol: "genericMidi",
         localIp: "0.0.0.0",
@@ -88,6 +91,14 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
                 nextState[0].showChanStrip = -1;
             }
             return nextState;
+        case TOGGLE_SHOW_MONITOR_OPTIONS:
+                    if (nextState[0].showMonitorOptions !== action.channel) {
+                        nextState[0].showMonitorOptions = action.channel;
+                    }
+                    else {
+                        nextState[0].showMonitorOptions = -1;
+                    }
+                    return nextState;
         case TOGGLE_SHOW_OPTION:
             nextState[0].showOptions = typeof nextState[0].showOptions === 'number' ? false : action.channel;
             return nextState;

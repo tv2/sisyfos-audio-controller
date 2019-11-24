@@ -8,7 +8,8 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { 
     TOGGLE_SHOW_CHAN_STRIP,
-    TOGGLE_SHOW_OPTION
+    TOGGLE_SHOW_OPTION,
+    TOGGLE_SHOW_MONITOR_OPTIONS
  } from '../reducers/settingsActions'
 import { IFader } from '../reducers/fadersReducer'
 import { SET_FADER_LEVEL, SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH, SET_FADER_MONITOR } from '../reducers/faderActions'
@@ -37,6 +38,17 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     handleShowRoutingOptions() {
         this.props.dispatch({
             type: TOGGLE_SHOW_OPTION,
+            channel: this.props.faderIndex
+        });
+        this.props.dispatch({
+            type: TOGGLE_SHOW_CHAN_STRIP,
+            channel: -1
+        });
+    }
+
+    handleShowMonitorOptions() {
+        this.props.dispatch({
+            type: TOGGLE_SHOW_MONITOR_OPTIONS,
             channel: this.props.faderIndex
         });
         this.props.dispatch({
@@ -295,7 +307,11 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 <button 
                     className="button"
                     onClick={() => this.handleShowRoutingOptions()}
-                >ROUTING</button>
+                >CHANNEL ROUTING</button>
+                <button 
+                    className="button"
+                    onClick={() => this.handleShowMonitorOptions()}
+                >MONITOR ROUTING</button>
             </div>
         )
     }

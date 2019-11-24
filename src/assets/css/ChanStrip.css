@@ -74,14 +74,14 @@
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
     margin-right: 10px;
-	margin-top: 70px;
+	margin-top: 120px;
     margin-bottom: 40px;
 	margin-left: 50px;
 	border-radius: 7px;
 	color: #fff;
 	width: 130px;
 	font-size: 105%;
-    line-height: 50px;
+    line-height: 30px;
 }
 
 .chan-strip-fader {

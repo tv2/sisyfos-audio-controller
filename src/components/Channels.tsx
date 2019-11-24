@@ -20,6 +20,7 @@ import {
 import { IAppProps } from './App';
 import ChannelRouteSettings from './ChannelRouteSettings';
 import ChanStrip from './ChanStrip'
+import ChannelMonitorOptions from './ChannelMonitorOptions';
 const { dialog } = require('electron').remote;
 
 
@@ -133,6 +134,11 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             {(this.props.store.settings[0].showChanStrip >= 0) ?
                 <ChanStrip faderIndex={this.props.store.settings[0].showChanStrip}/>
+                :
+                null
+            }
+            {(this.props.store.settings[0].showMonitorOptions >= 0) ?
+                <ChannelMonitorOptions faderIndex={this.props.store.settings[0].showMonitorOptions}/>
                 :
                 null
             }

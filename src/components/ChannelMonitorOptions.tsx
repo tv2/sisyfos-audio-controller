@@ -2,7 +2,7 @@ import React from 'react';
 //@ts-ignore
 import * as ClassNames from 'classnames';
 
-import '../assets/css/ChannelRouteSettings.css';
+import '../assets/css/ChannelMonitorOptions.css';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
@@ -24,7 +24,7 @@ interface IChannelProps {
     faderIndex: number
 }
 
-class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelSettingsInjectProps & Store> {
+class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IChannelSettingsInjectProps & Store> {
     faderIndex: number;
     mixerProtocol: IMixerProtocolGeneric;
 
@@ -154,7 +154,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                     <button 
                         className="button"
                         onClick={() => this.handleClearRouting()}
-                    >CLEAR ALL</button>
+                    >CLEAR MONITOR</button>
                     <button 
                         className="button"
                         onClick={() => this.handle11Routing()}
@@ -195,4 +195,4 @@ const mapStateToProps = (state: any, props: any): IChannelSettingsInjectProps =>
     }
 }
 
-export default connect<any, IChannelSettingsInjectProps>(mapStateToProps)(ChannelRouteSettings) as any;
+export default connect<any, IChannelSettingsInjectProps>(mapStateToProps)(ChannelMonitorOptions) as any;
