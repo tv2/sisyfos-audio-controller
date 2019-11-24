@@ -323,7 +323,20 @@ export class OscMixerConnection {
 
     updateNextAux(channelIndex: number, level: number) {
         return true
-    } 
+    }
+
+    updateThreshold(channelIndex: number, level: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let thr = this.mixerProtocol.channelTypes[channelType].toMixer.THRESHOLD[0]
+        level = level * (thr.max-thr.min) + thr.min
+        this.sendOutMessage(
+            this.mixerProtocol.channelTypes[channelType].toMixer.THRESHOLD[0].mixerMessage,
+            channelTypeIndex+1,
+            level,
+            "f"
+        );
+    }
 
     
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {

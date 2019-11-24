@@ -37,7 +37,7 @@ export const LawoClient: IMixerProtocol = {
 
             }],
             PFL: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            NEXT_SEND: [emptyMixerMessage()],
             THRESHOLD: [emptyMixerMessage()],
             RATIO: [emptyMixerMessage()],
             LOW: [emptyMixerMessage()],
@@ -76,7 +76,7 @@ export const LawoClient: IMixerProtocol = {
             }],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            NEXT_SEND: [emptyMixerMessage()],
             THRESHOLD: [emptyMixerMessage()],
             RATIO: [emptyMixerMessage()],
             LOW: [emptyMixerMessage()],

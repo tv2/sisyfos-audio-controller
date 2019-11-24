@@ -58,10 +58,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
             channel: this.props.faderIndex,
             level: parseFloat(event)
         });
-        window.mixerGenericConnection.updateOutLevel(this.props.faderIndex);
-        if (window.huiRemoteConnection) {
-            window.huiRemoteConnection.updateRemoteFaderState(this.props.faderIndex, event)
-        }
+        window.mixerGenericConnection.updateThreshold(this.props.faderIndex);
     }
 
 

@@ -366,7 +366,7 @@ export class SSLMixerConnection {
 
     updateNextAux(channelIndex: number, level: number) {
         this.sendOutLevelMessage(
-            this.mixerProtocol.channelTypes[0].toMixer.AUX_SEND[0].mixerMessage,
+            this.mixerProtocol.channelTypes[0].toMixer.NEXT_SEND[0].mixerMessage,
             channelIndex + 128,
             level
         );

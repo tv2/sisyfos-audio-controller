@@ -59,13 +59,18 @@ export const MidasMaster: IMixerProtocol = {
             CHANNEL_VU: [{ mixerMessage: '/meters/1', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
-            THRESHOLD: [emptyMixerMessage()],
-            RATIO: [emptyMixerMessage()],
-            LOW: [emptyMixerMessage()],
+            NEXT_SEND: [emptyMixerMessage()],
+            THRESHOLD: [{ mixerMessage: '/ch/{channel}/dyn/thr', value: 0, type: 'f', min: -60000, max: 0, zero: -60000}],
+            //    // /ch/[01...32]/dyn/thr   [‐60.000, 0.000, 0.500]
+            RATIO: [emptyMixerMessage()],     // /ch/[01...32]/dyn/ratio   
+            //int with value [0...11] representing
+            //{1.1, 1.3, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 7.0, 10, 20, 100}
+            LOW: [emptyMixerMessage()], // /ch/[01...32]/eq/[1...4]/g
+            //   [‐15.000, 15.000, 0.250]
             MIX: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            MONITOR: [emptyMixerMessage()], // /ch/[01...32]/mix/[01...16]/level
+            //   [‐90.0...10.0 (+10 dB), 161]
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
@@ -75,13 +80,18 @@ export const MidasMaster: IMixerProtocol = {
             CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
-            THRESHOLD: [emptyMixerMessage()],
-            RATIO: [emptyMixerMessage()],
-            LOW: [emptyMixerMessage()],
+            NEXT_SEND: [emptyMixerMessage()],
+            THRESHOLD: [{ mixerMessage: '/ch/{channel}/dyn/thr', value: 0, type: 'f', min: -60000, max: 0, zero: -60000}],
+            //    // /ch/[01...32]/dyn/thr   [‐60.000, 0.000, 0.500]
+            RATIO: [emptyMixerMessage()],     // /ch/[01...32]/dyn/ratio   
+            //int with value [0...11] representing
+            //{1.1, 1.3, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 7.0, 10, 20, 100}
+            LOW: [emptyMixerMessage()], // /ch/[01...32]/eq/[1...4]/g
+            //   [‐15.000, 15.000, 0.250]
             MIX: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            MONITOR: [emptyMixerMessage()], // /ch/[01...32]/mix/[01...16]/level
+            //   [‐90.0...10.0 (+10 dB), 161]
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },

@@ -19,7 +19,7 @@ export const GenericMidi: IMixerProtocol = {
             CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            NEXT_SEND: [emptyMixerMessage()],
             THRESHOLD: [emptyMixerMessage()],
             RATIO: [emptyMixerMessage()],
             LOW: [emptyMixerMessage()],
@@ -35,7 +35,7 @@ export const GenericMidi: IMixerProtocol = {
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
-            AUX_SEND: [emptyMixerMessage()],
+            NEXT_SEND: [emptyMixerMessage()],
             THRESHOLD: [emptyMixerMessage()],
             RATIO: [emptyMixerMessage()],
             LOW: [emptyMixerMessage()],
