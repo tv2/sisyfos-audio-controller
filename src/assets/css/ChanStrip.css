@@ -37,7 +37,9 @@
 	font-size: 140%;
 }
 
-.chan-strip-body > .parameter-text {
+.chan-strip-body > .monitor-sends {
+	list-style-type: none;
+	display: flex;
 	text-align: center;
 	margin-top: 10px;
 	line-height: 10px;
