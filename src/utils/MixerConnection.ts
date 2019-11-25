@@ -137,6 +137,15 @@ export class MixerGenericConnection {
         })
     }
 
+    updateAuxLevel(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].threshold
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                // this.mixerConnection.updateThreshold(channelIndex, level)
+            }
+        })
+    }
+
     updateChannelName(channelIndex: number) {
         this.mixerConnection.updateChannelName(channelIndex);
     }

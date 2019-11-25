@@ -13,6 +13,7 @@ import {
  } from '../reducers/settingsActions'
 import { IFader } from '../reducers/fadersReducer'
 import { SET_FADER_LEVEL, SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH, SET_FADER_MONITOR } from '../reducers/faderActions'
+import { SET_AUX_LEVEL } from '../reducers/channelActions';
 
 interface IChanStripInjectProps {
     label: string,
@@ -28,11 +29,13 @@ interface IChanStripProps {
 }
 
 class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectProps & Store> {
-    mixerProtocol: IMixerProtocolGeneric;
+    mixerProtocol: IMixerProtocolGeneric
+    auxSendIndex: number
 
     constructor(props: any) {
         super(props);
         this.mixerProtocol = MixerProtocolPresets[this.props.selectedProtocol];
+        this.auxSendIndex = this.props.fader[this.props.faderIndex].monitor - 1
     }
 
     handleShowRoutingOptions() {
@@ -223,19 +226,17 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         )
     }
 
-    handleMonitorLevel(event: any, monitorIndex: number) {
+    handleMonitorLevel(event: any, channelIndex: number) {
         this.props.dispatch({
-            type: SET_FADER_MONITOR,
-            channel: this.props.faderIndex,
-            index: monitorIndex,
+            type: SET_AUX_LEVEL,
+            channel: channelIndex,
+            auxIndex: this.auxSendIndex,
             level: parseFloat(event)
         });
-        window.mixerGenericConnection.updateOutLevel(this.props.faderIndex);
-        if (window.huiRemoteConnection) {
-            window.huiRemoteConnection.updateRemoteFaderState(this.props.faderIndex, event)
-        }
+        window.mixerGenericConnection.updateAuxLevel(this.props.channel[channelIndex].assignedFader);
     }
-    monitor(monitorIndex: number, monitorName: string) {
+    monitor(channelIndex: number) {
+        let monitorName = this.props.fader[this.props.channel[channelIndex].assignedFader].label
         return (
             <div className="parameter-text">
                 {monitorName}
@@ -247,9 +248,9 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     min={0}
                     max={1}
                     step={0.01}
-                    value= {this.props.fader[this.props.faderIndex].monitor[monitorIndex]}
+                    value= {this.props.channel[channelIndex].auxLevel[this.auxSendIndex]}
                     onChange={(event: any) => {
-                        this.handleMonitorLevel(event, monitorIndex)
+                        this.handleMonitorLevel(event, channelIndex)
                     }}
                 />
             </div>
@@ -278,11 +279,11 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     {" MONITOR MIX"}
                 </div>
                 <div className="vertical-line"></div>
-                {this.monitor(0, 'IT')}
-                {this.monitor(1, 'KOMM 1')}
-                {this.monitor(2, 'KOMM 2')}
-                {this.monitor(3, 'KOMM 3')}
-                {this.monitor(4, 'KOMM 4')}
+                {this.props.channel.map((ch: any, index: number) => {
+                    if (ch.auxLevel[this.auxSendIndex] >= 0) {
+                        return this.monitor(index)
+                    } 
+                })}
                 <div className="vertical-line"></div>
                 <div className="vertical">
                 </div>

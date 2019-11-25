@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 //@ts-ignore
 import * as ClassNames from 'classnames';
 
@@ -7,12 +7,12 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import CcgChannelSettings from './CcgChannelSettings';
-import { SET_ASSIGNED_FADER } from '../reducers/channelActions'
-import { TOGGLE_SHOW_OPTION, TOGGLE_SHOW_MONITOR_OPTIONS } from '../reducers/settingsActions'
+import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from '../reducers/channelActions'
+import { TOGGLE_SHOW_MONITOR_OPTIONS } from '../reducers/settingsActions'
+import { SET_FADER_MONITOR } from '../reducers/faderActions';
 const { dialog } = require('electron').remote;
 
-interface IChannelSettingsInjectProps {
+interface IMonitorSettingsInjectProps {
     label: string,
     selectedProtocol: string,
     numberOfChannelsInType: Array<number>,
@@ -24,7 +24,7 @@ interface IChannelProps {
     faderIndex: number
 }
 
-class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IChannelSettingsInjectProps & Store> {
+class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitorSettingsInjectProps & Store> {
     faderIndex: number;
     mixerProtocol: IMixerProtocolGeneric;
 
@@ -35,40 +35,28 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IChannel
     }
 
     handleAssignChannel(channel: number, event: any) {
-        let faderAssign = this.faderIndex
-        let assignedFader = this.props.channel[channel].assignedFader
-        let assignedFaderLabel = (assignedFader >= 0)
-            ? this.props.fader[assignedFader].label
-            : 'undefined'
-        assignedFaderLabel = (assignedFaderLabel === '')
-            ? String(assignedFader + 1)
-            : assignedFaderLabel
-
+        let monitorAssign = 0;
         if (event.target.checked === false) {
             const options = {
                 type: 'question',
                 buttons: ['Yes', 'Cancel'],
                 defaultId: 1,
-                title: 'Unlock Channel',
-                message: 'Unbind Channel ' + String(channel + 1) + ' from Fader ' + String(this.faderIndex + 1),
+                title: 'Remove monitoring',
+                message: 'Remove monitoring on ' + String(channel + 1),
             };
             let response = dialog.showMessageBoxSync(options)
             if (response === 1) {
                 return true
             }
-
-            faderAssign = -1
+            monitorAssign = -1
         } else {
-            let detail = (assignedFader < 0) ? 'NOT CURRENTLY ASSIGNED'
-                : 'CHANNEL ' + String(channel + 1) + ' IS CURRENTLY CONNECTED TO FADER ' + String(assignedFaderLabel)
-
+            monitorAssign = 0
             const options = {
                 type: 'question',
                 buttons: ['Yes', 'Cancel'],
                 defaultId: 1,
-                title: 'Unlock Channel',
-                message: 'Bind Channel ' + String(channel + 1) + ' to Fader ' + String(this.faderIndex + 1) + '?',
-                detail: detail,
+                title: 'Monitor Channel',
+                message: 'Enable monitoring of Channel ' + String(channel + 1) + '?',
             };
             let response = dialog.showMessageBoxSync(options)
 
@@ -77,14 +65,15 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IChannel
             }
         }
         this.props.dispatch({
-            type: SET_ASSIGNED_FADER,
+            type: SET_AUX_LEVEL,
             channel: channel,
-            faderNumber: faderAssign
+            auxIndex: this.props.fader[this.faderIndex].monitor - 1,
+            level: monitorAssign
         });
         return true;
     }
 
-    handleClearRouting() {
+    handleClearMonitorRouting() {
         const options = {
             type: 'question',
             buttons: ['Yes', 'Cancel'],
@@ -106,29 +95,14 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IChannel
         return true
     }
 
-    handle11Routing() {
-        const options = {
-            type: 'question',
-            buttons: ['Yes', 'Cancel'],
-            defaultId: 1,
-            title: 'WARNING',
-            message: 'WARNING!!!!!',
-            detail: 'This will reassign all Faders 1:1 to Channels',
-        };
-        let response = dialog.showMessageBoxSync(options)
-        if (response === 0) {
-            this.props.fader.forEach((fader: any, index: number) => {
-                if (this.props.channel.length > index) {
-                    this.props.dispatch({
-                        type: SET_ASSIGNED_FADER,
-                        channel: index,
-                        faderNumber: index
-                    });
-                }
-            })
-        }
-        return true
+    handleSetAux = (event: ChangeEvent<HTMLInputElement>) => {
+        this.props.dispatch({
+            type: SET_FADER_MONITOR,
+            channel: this.faderIndex,
+            auxIndex: parseFloat(event.target.value)
+        });
     }
+
 
     handleClose = () => {
         this.props.dispatch({
@@ -139,7 +113,7 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IChannel
 
     render() {
         return (
-            <div className="channel-route-body">
+            <div className="channel-monitor-body">
                 <h2>MONITOR ROUTE</h2>
                 <h2>{this.props.label || ("FADER " + (this.faderIndex + 1))}</h2>
                 <button 
@@ -148,27 +122,31 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IChannel
                 >X</button>
                 <button 
                     className="button"
-                    onClick={() => this.handleClearRouting()}
-                >CLEAR MONITOR</button>
-                <button 
-                    className="button"
-                    onClick={() => this.handle11Routing()}
-                >ROUTE 1:1</button>
+                    onClick={() => this.handleClearMonitorRouting()}
+                >CLEAR ALL</button>
+                <hr/>
+                <label className="input">
+                    MONITOR AUX SEND :
+                </label>
+                <input className="input-field"
+                    value={this.props.fader[this.faderIndex].monitor} 
+                    onChange={(event) => this.handleSetAux(event)}
+                />
                 <hr />
                 {this.props.channel.map((channel: any, index: number) => {
                     return <div 
                         key={index}
-                        className={ClassNames("channel-route-text", {
-                            'checked': this.props.channel[index].assignedFader === this.faderIndex
+                        className={ClassNames("channel-monitor-text", {
+                            'checked': this.props.channel[index].auxLevel[this.props.fader[this.faderIndex].monitor - 1] >= 0 || false
                         })}
                         >
                         {(" Channel " + (index + 1) + " : ")}
                         <input
                             type="checkbox"
-                            checked={this.props.channel[index].assignedFader === this.faderIndex}
+                            checked={this.props.channel[index].auxLevel[this.props.fader[this.faderIndex].monitor - 1] >= 0}
                             onChange={(event) => this.handleAssignChannel(index, event)}
                         />
-                        {this.props.channel[index].assignedFader >= 0
+                        {this.props.channel[index].auxLevel[this.props.fader[this.faderIndex].monitor - 1] >= 0
                             ? ("Monitor this")
                             : null
                         }
@@ -181,7 +159,7 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IChannel
 
 }
 
-const mapStateToProps = (state: any, props: any): IChannelSettingsInjectProps => {
+const mapStateToProps = (state: any, props: any): IMonitorSettingsInjectProps => {
     return {
         label: state.faders[0].fader[props.faderIndex].label,
         selectedProtocol: state.settings[0].mixerProtocol,
@@ -191,4 +169,4 @@ const mapStateToProps = (state: any, props: any): IChannelSettingsInjectProps =>
     }
 }
 
-export default connect<any, IChannelSettingsInjectProps>(mapStateToProps)(ChannelMonitorOptions) as any;
+export default connect<any, IMonitorSettingsInjectProps>(mapStateToProps)(ChannelMonitorOptions) as any;

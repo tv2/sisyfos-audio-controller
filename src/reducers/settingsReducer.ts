@@ -31,6 +31,8 @@ export interface ISettings {
     remoteFaderMidiOutputPort: string,
     numberOfChannelsInType: Array<number>,
     numberOfFaders: number,
+    numberOfAux: number,
+    nextSendAux: number,
     numberOfSnaps: number,
     fadeTime: number,  // Default fade time for PGM ON - OFF
     voFadeTime: number, // Default fade time for VO ON - OFF
@@ -64,6 +66,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         remoteFaderMidiOutputPort: "",
         numberOfChannelsInType: [8],
         numberOfFaders: 8,
+        numberOfAux: 0,
+        nextSendAux: -1,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         voLevel: 20,
         autoResetLevel: 10,

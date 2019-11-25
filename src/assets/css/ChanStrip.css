@@ -46,7 +46,7 @@
 
 .chan-strip-body > .vertical-line {
 	background-color:rgb(124, 124, 124);
-	height: 100vh;
+	height: 100%;
 	width: 4px;
 	margin-left: 10px;
 	margin-right: 10px;

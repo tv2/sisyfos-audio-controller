@@ -136,14 +136,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         );
     }
 
-    handleNumberOfFaders = (event: any) => {
-        let settingsCopy= Object.assign({}, this.state.settings);
-        settingsCopy.numberOfFaders = parseInt(event.target.value);
-        this.setState(
-            {settings: settingsCopy}
-        );
-    }
-
     handleNumberOfChannels = (index: number, event: any) => {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.numberOfChannelsInType[index] = parseInt(event.target.value);
@@ -297,12 +289,12 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 />
                 <br/>
                 <label className="settings-input-field">
-                    LOCAL IP :
+                    LOCAL MIXER IP:
                     <input name="localIp" type="text" value={this.state.settings.localIp} onChange={this.handleChange} />
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    LOCAL PORT :
+                    LOCAL MIXER PORT :
                     <input name="localOscPort" type="text" value={this.state.settings.localOscPort} onChange={this.handleChange} />
                 </label>
                 <br/>
@@ -347,9 +339,18 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <br/>
                 <label className="settings-input-field">
                     NUMBER OF FADERS :
-                    <input name="numberOfFaders" type="text" value={this.state.settings.numberOfFaders} onChange={this.handleNumberOfFaders} />
+                    <input name="numberOfFaders" type="text" value={this.state.settings.numberOfFaders} onChange={this.handleChange} />
                 </label>
                 <br/>
+                <label className="settings-input-field">
+                    NUMBER OF AUX :
+                    <input name="numberOfAux" type="text" value={this.state.settings.numberOfAux} onChange={this.handleChange} />
+                </label>
+                <br/>
+                <label className="settings-input-field">
+                    NEXT SEND AUX NR.:
+                    <input name="nextSendAux" type="text" value={this.state.settings.nextSendAux} onChange={this.handleChange} />
+                </label>
                 <br/>
                 <label className="settings-input-field">
                     AUTOMATION MODE:
