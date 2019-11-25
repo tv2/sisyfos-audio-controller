@@ -81,7 +81,7 @@ const defaultFadersReducerState = (numberOfFaders: number) => {
                 high: 0.75,
                 threshold: 0.75,
                 ratio: 0.75,
-                monitor: (index + 1),
+                monitor: (index + 1), // route fader - aux 1:1 as default
                 showChannel: true,
                 snapOn: [],
             });
