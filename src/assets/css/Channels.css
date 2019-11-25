@@ -1,9 +1,9 @@
 .channels-body {
-    margin-top: 250px;
     display: flex;
     flex-direction: row;
     background-color: black;
     min-height: 760px;
+    margin-top: 22vh;
 }
 
 .channels-mix-body {

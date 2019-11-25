@@ -81,7 +81,7 @@ const defaultFadersReducerState = (numberOfFaders: number) => {
                 high: 0.75,
                 threshold: 0.75,
                 ratio: 0.75,
-                monitor: -1,
+                monitor: (index + 1),
                 showChannel: true,
                 snapOn: [],
             });
