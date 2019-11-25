@@ -259,14 +259,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         return (
             <React.Fragment>
                 <div className="vertical">
-                    COMPRESSOR
+                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
+                    {" COMPRESSOR"}
                 </div>
                 <div className="vertical-line"></div>
                 {this.threshold()}
                 {this.ratio()}
                 <div className="vertical-line"></div>
                 <div className="vertical">
-                    EQ
+                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
+                    {" EQUALIZER"}
                 </div>
                 <div className="vertical-line"></div>
                 {this.low()}
@@ -295,8 +297,6 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     render() {
         return (
             <div className="chan-strip-body">
-                <h2>
-                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}</h2>
                 <button 
                     className="close"
                     onClick={() => this.handleClose()}
@@ -305,15 +305,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     this.parameters() 
                     : null
                 }
-                <div className="vertical-line"></div>
-                <button 
-                    className="button"
-                    onClick={() => this.handleShowRoutingOptions()}
-                >CHANNEL ROUTING</button>
-                <button 
-                    className="button"
-                    onClick={() => this.handleShowMonitorOptions()}
-                >MONITOR ROUTING</button>
+                <div className="settings-buttons">
+                    <button 
+                        className="button"
+                        onClick={() => this.handleShowRoutingOptions()}
+                        >CHANNEL ROUTING</button>
+                    <button 
+                        className="button"
+                        onClick={() => this.handleShowMonitorOptions()}
+                        >MONITOR ROUTING</button>
+                </div>
             </div>
         )
     }
