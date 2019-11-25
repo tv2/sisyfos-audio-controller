@@ -302,15 +302,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     render() {
         return (
             <div className="chan-strip-body">
-                <button 
-                    className="close"
-                    onClick={() => this.handleClose()}
-                >X</button>
                 {this.props.offtubeMode ?
                     this.parameters() 
                     : null
                 }
                 <div className="settings-buttons">
+                    <button 
+                        className="close"
+                        onClick={() => this.handleClose()}
+                    >X</button>
+                    <div className="vertical-line"></div>
                     <button 
                         className="button"
                         onClick={() => this.handleShowRoutingOptions()}

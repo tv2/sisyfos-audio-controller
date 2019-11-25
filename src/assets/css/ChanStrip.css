@@ -53,8 +53,18 @@
 	margin-right: 10px;
 }
 
-.chan-strip-body > .close {
-	position: absolute;
+
+.chan-strip-body > .settings-buttons {
+	background-color:  rgb(31, 31, 31);
+	position: fixed;
+	z-index: 2;
+	top: 9px;
+	height: 240px;
+	width: 140px;
+	right: 5px;
+}
+
+.settings-buttons > .close {
 	outline : none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
@@ -65,15 +75,7 @@
 	height: 50px;
 	font-size: 30px;
 	line-height: 50px;
-	top: 9px;
-	right: 9px;
-}
-
-.chan-strip-body > .settings-buttons {
-	position: absolute;
-	top: 80px;
-	width: 140px;
-	right: 9px;
+	margin-left: 50px;
 }
 
 .settings-buttons > button {
