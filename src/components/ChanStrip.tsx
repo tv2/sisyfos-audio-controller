@@ -235,7 +235,9 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         window.mixerGenericConnection.updateAuxLevel(this.props.channel[channelIndex].assignedFader);
     }
     monitor(channelIndex: number) {
-        let monitorName = this.props.fader[this.props.channel[channelIndex].assignedFader].label
+        let faderIndex = this.props.channel[channelIndex].assignedFader
+        if (faderIndex === -1) return null
+        let monitorName = this.props.fader[faderIndex].label
         if (monitorName === '') {
             monitorName = 'Fader ' + String(this.props.channel[channelIndex].assignedFader + 1)
         }
