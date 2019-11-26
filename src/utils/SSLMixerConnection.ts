@@ -371,6 +371,25 @@ export class SSLMixerConnection {
             level
         );
     } 
+    updateThreshold(channelIndex: number, level: number) {
+        return true
+    }
+    updateRatio(channelIndex: number, level: number) {        
+        return true
+
+    }
+    updateLow(channelIndex: number, level: number) {
+         return true
+    }
+    updateMid(channelIndex: number, level: number) {
+        return true
+    }
+    updateHigh(channelIndex: number, level: number) {
+        return true
+    }
+    updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {
+        return true
+    }
 
     updateChannelName(channelIndex: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
