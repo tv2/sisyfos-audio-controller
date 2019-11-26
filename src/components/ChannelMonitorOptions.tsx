@@ -80,15 +80,38 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
             defaultId: 1,
             title: 'WARNING',
             message: 'WARNING!!!!!',
-            detail: 'This will remove all Fader-Channel assignments',
+            detail: 'This will remove all monitor assignments to Aux :' + String(this.props.fader[this.faderIndex].monitor),
         };
         let response = dialog.showMessageBoxSync(options)
         if (response === 0) {
             this.props.channel.forEach((channel: any, index: number) => {
                 this.props.dispatch({
-                    type: SET_ASSIGNED_FADER,
+                    type: SET_AUX_LEVEL,
                     channel: index,
-                    faderNumber: -1
+                    auxIndex: this.props.fader[this.faderIndex].monitor - 1,
+                    level: -1
+                });
+            })
+        }
+        return true
+    }
+
+    handleMixMinusRouting() {
+        const options = {
+            type: 'question',
+            buttons: ['Yes', 'Cancel'],
+            defaultId: 1,
+            title: 'WARNING',
+            message: 'Send all channels to Aux: ' + String(this.props.fader[this.faderIndex].monitor)
+        };
+        let response = dialog.showMessageBoxSync(options)
+        if (response === 0) {
+            this.props.channel.forEach((channel: any, index: number) => {
+                this.props.dispatch({
+                    type: SET_AUX_LEVEL,
+                    channel: index,
+                    auxIndex: this.props.fader[this.faderIndex].monitor - 1,
+                    level: 0
                 });
             })
         }
@@ -124,6 +147,10 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
                     className="button"
                     onClick={() => this.handleClearMonitorRouting()}
                 >CLEAR ALL</button>
+                <button 
+                    className="button"
+                    onClick={() => this.handleMixMinusRouting()}
+                >ASSIGN ALL</button>
                 <hr/>
                 <label className="input">
                     MONITOR AUX SEND :
