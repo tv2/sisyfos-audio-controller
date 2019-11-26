@@ -171,10 +171,9 @@ export class MixerGenericConnection {
 
     updateAuxLevel(faderIndex: number) {
         let audSendIndex = this.store.faders[0].fader[faderIndex].monitor - 1
-        let level = 0
         this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
-            if (faderIndex === channel.assignedFader) {
-                this.mixerConnection.updateAuxLevel(channelIndex, level)
+            if (channel.auxLevel[audSendIndex] > -1) {
+                this.mixerConnection.updateAuxLevel(channelIndex, audSendIndex, channel.auxLevel[audSendIndex])
             }
         })
     }

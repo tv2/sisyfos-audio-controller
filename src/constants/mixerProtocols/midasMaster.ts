@@ -61,16 +61,11 @@ export const MidasMaster: IMixerProtocol = {
             PFL: [emptyMixerMessage()],
             NEXT_SEND: [emptyMixerMessage()],
             THRESHOLD: [{ mixerMessage: '/ch/{channel}/dyn/thr', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
-            //    // /ch/[01...32]/dyn/thr   [‐60.000, 0.000, 0.500]
             RATIO: [{ mixerMessage: '/ch/{channel}/dyn/ratio', value: 0, type: 'f', min: 0, max: 1, zero: 0}],  
-            //int with value [0...11] representing
-            //{1.1, 1.3, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 7.0, 10, 20, 100}
             LOW: [{ mixerMessage: '/ch/{channel}/eq/2/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
-            //   [‐15.000, 15.000, 0.250]
             MID: [{ mixerMessage: '/ch/{channel}/eq/3/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             HIGH: [{ mixerMessage: '/ch/{channel}/eq/4/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
-            MONITOR: [emptyMixerMessage()], // /ch/[01...32]/mix/[01...16]/level
-            //   [‐90.0...10.0 (+10 dB), 161]
+            MONITOR: [{mixerMessage: '/ch/{channel}/mix/{argument1}/level', value: 0, type: 'f', min: 0, max: 1, zero: 0}], 
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
@@ -82,17 +77,11 @@ export const MidasMaster: IMixerProtocol = {
             PFL_OFF: [emptyMixerMessage()],
             NEXT_SEND: [emptyMixerMessage()],
             THRESHOLD: [{ mixerMessage: '/ch/{channel}/dyn/thr', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
-            //    // /ch/[01...32]/dyn/thr   [‐60.000, 0.000, 0.500]
             RATIO: [{ mixerMessage: '/ch/{channel}/dyn/ratio', value: 0, type: 'f', min: 0, max: 1, zero: 0}], 
-            //int with value [0...11] representing
-            //{1.1, 1.3, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 7.0, 10, 20, 100}
             LOW: [{ mixerMessage: '/ch/{channel}/eq/2/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
-            // /ch/[01...32]/eq/[1...4]/g
-            //   [‐15.000, 15.000, 0.250]
             MID: [{ mixerMessage: '/ch/{channel}/eq/3/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             HIGH: [{ mixerMessage: '/ch/{channel}/eq/4/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
-            MONITOR: [emptyMixerMessage()], // /ch/[01...32]/mix/[01...16]/level
-            //   [‐90.0...10.0 (+10 dB), 161]
+            MONITOR: [{mixerMessage: '/ch/{channel}/mix/{argument1}/level', value: 0, type: 'f', min: 0, max: 1, zero: 0}], 
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },

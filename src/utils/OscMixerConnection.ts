@@ -385,14 +385,15 @@ export class OscMixerConnection {
             "f"
         );
     }
-    updateAuxSendLevel(channelIndex: number, level: number) {
+    updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {
         let channelType = this.store.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         let auxSend = this.mixerProtocol.channelTypes[channelType].toMixer.MONITOR[0]
+        let message = auxSend.mixerMessage.replace('{argument1}', String(auxSendIndex))
+
         level = level * (auxSend.max-auxSend.min) + auxSend.min
         this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.THRESHOLD[0].mixerMessage,
-            channelTypeIndex+1,
+            message,
+            this.store.channels[0].channel[channelIndex].channelTypeIndex+1,
             level,
             "f"
         );
