@@ -115,7 +115,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
             auxIndex: this.props.auxSendIndex,
             level: parseFloat(event)
         });
-        window.mixerGenericConnection.updateAuxLevel(this.props.channel[channelIndex].assignedFader);
+        window.mixerGenericConnection.updateAuxLevel(this.props.channel[channelIndex].assignedFader - 1);
     }
 
 
