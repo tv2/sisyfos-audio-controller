@@ -172,7 +172,7 @@ export class MixerGenericConnection {
     updateAuxLevel(channelIndex: number, auxSendIndex: number) {
         let channel = this.store.channels[0].channel[channelIndex]
         if (channel.auxLevel[auxSendIndex] > -1) {
-            this.mixerConnection.updateAuxLevel(channelIndex, auxSendIndex, channel[channelIndex].auxLevel[auxSendIndex])
+            this.mixerConnection.updateAuxLevel(channelIndex, auxSendIndex, channel.auxLevel[auxSendIndex])
         }
     }
 
