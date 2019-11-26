@@ -67,7 +67,7 @@ export const MidasMaster: IMixerProtocol = {
             //{1.1, 1.3, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 7.0, 10, 20, 100}
             LOW: [{ mixerMessage: '/ch/{channel}/eq/2/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             //   [‐15.000, 15.000, 0.250]
-            MIX: [{ mixerMessage: '/ch/{channel}/eq/3/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
+            MID: [{ mixerMessage: '/ch/{channel}/eq/3/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             HIGH: [{ mixerMessage: '/ch/{channel}/eq/4/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             MONITOR: [emptyMixerMessage()], // /ch/[01...32]/mix/[01...16]/level
             //   [‐90.0...10.0 (+10 dB), 161]
@@ -89,7 +89,7 @@ export const MidasMaster: IMixerProtocol = {
             LOW: [{ mixerMessage: '/ch/{channel}/eq/2/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             // /ch/[01...32]/eq/[1...4]/g
             //   [‐15.000, 15.000, 0.250]
-            MIX: [{ mixerMessage: '/ch/{channel}/eq/3/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
+            MID: [{ mixerMessage: '/ch/{channel}/eq/3/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             HIGH: [{ mixerMessage: '/ch/{channel}/eq/4/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             MONITOR: [emptyMixerMessage()], // /ch/[01...32]/mix/[01...16]/level
             //   [‐90.0...10.0 (+10 dB), 161]

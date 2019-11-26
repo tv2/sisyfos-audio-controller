@@ -136,12 +136,45 @@ export class MixerGenericConnection {
             }
         })
     }
-
-    updateAuxLevel(faderIndex: number) {
-        let level = this.store.faders[0].fader[faderIndex].threshold
+    updateRatio(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].ratio
         this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
             if (faderIndex === channel.assignedFader) {
-                // this.mixerConnection.updateThreshold(channelIndex, level)
+                this.mixerConnection.updateRatio(channelIndex, level)
+            }
+        })
+    }
+    updateLow(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].low
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateLow(channelIndex, level)
+            }
+        })
+    }
+    updateMid(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].mid
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateMid(channelIndex, level)
+            }
+        })
+    }
+    updateHigh(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].high
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateHigh(channelIndex, level)
+            }
+        })
+    }
+
+    updateAuxLevel(faderIndex: number) {
+        let audSendIndex = this.store.faders[0].fader[faderIndex].monitor - 1
+        let level = 0
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateAuxLevel(channelIndex, level)
             }
         })
     }
