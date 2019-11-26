@@ -262,7 +262,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     }
     parameters() {
         return (
-            <React.Fragment>
+            <div className="parameters">
                 <div className="vertical">
                     {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
                     {" COMPRESSOR"}
@@ -295,7 +295,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 <div className="vertical-line"></div>
                 <div className="vertical">
                 </div>
-            </React.Fragment>
+            </div>
         )
     }
 

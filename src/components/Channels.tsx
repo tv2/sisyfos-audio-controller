@@ -28,6 +28,7 @@ class Channels extends React.Component<IAppProps & Store> {
     constructor(props: any) {
         super(props);
         this.props.store.settings[0].showChanStrip = -1
+        this.props.store.settings[0].showMonitorOptions = -1
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {

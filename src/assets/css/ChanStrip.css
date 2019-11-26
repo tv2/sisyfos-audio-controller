@@ -12,12 +12,24 @@
 	border-width: 4px;
 	border-radius: 8px;
 	text-align: left;
+	color: #fff;
+}
+
+.chan-strip-body > .parameters {
+	position: fixed;
+	display: flex;
+	top: 5px;
+	left: 2px;
+	width: 1880px;
+	overflow: auto;
+    height: 240px;
+	text-align: left;
 	z-index: 2;
 
 	color: #fff;
 }
 
-.chan-strip-body > .vertical {
+.parameters > .vertical {
 	transform: rotate(180deg);
 	text-align: right;
 	writing-mode: vertical-rl;
@@ -28,24 +40,7 @@
 	line-height: 30px;
 	font-size: 140%;
 }
-.chan-strip-body > .parameter-text {
-	list-style-type: none;
-	text-align: center;
-	margin-top: 10px;
-	line-height: 10px;
-	font-size: 100%;
-}
-
-.chan-strip-body > .monitor-sends {
-	list-style-type: none;
-	display: flex;
-	text-align: center;
-	margin-top: 10px;
-	line-height: 10px;
-	font-size: 95%;
-}
-
-.chan-strip-body > .vertical-line {
+.parameters > .vertical-line {
 	background-color:rgb(70, 70, 70);
 	height: 100%;
 	width: 4px;
@@ -53,6 +48,23 @@
 	margin-right: 10px;
 }
 
+.parameters > .parameter-text {
+	list-style-type: none;
+	text-align: center;
+	margin-top: 15px;
+	line-height: 10px;
+	font-size: 100%;
+}
+
+.parameters > .monitor-sends {
+	list-style-type: none;
+	display: flex;
+	text-align: center;
+	margin-top: 15px;
+	margin-left: 1px;
+	line-height: 10px;
+	font-size: 95%;
+}
 
 .chan-strip-body > .settings-buttons {
 	background-color:  rgb(31, 31, 31);
@@ -93,8 +105,8 @@
 .chan-strip-fader {
     width: 10px;
 	height: 200px;
-	margin-left: 45px;
-	margin-right: 40px;
+	margin-left: 35px;
+	margin-right: 30px;
     margin-top: 10px;
     border-width: 0px;
     border-style: solid;
@@ -104,7 +116,7 @@
 
 .chan-strip-thumb {
     margin-left: -20px;
-    width: 55px;
+    width: 45px;
     height: 49px;
     border: 1px solid #c5c2c2;
     border-radius: 8px;
