@@ -169,13 +169,11 @@ export class MixerGenericConnection {
         })
     }
 
-    updateAuxLevel(faderIndex: number) {
-        let audSendIndex = this.store.faders[0].fader[faderIndex].monitor - 1
-        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
-            if (channel.auxLevel[audSendIndex] > -1) {
-                this.mixerConnection.updateAuxLevel(channelIndex, audSendIndex, channel.auxLevel[audSendIndex])
-            }
-        })
+    updateAuxLevel(channelIndex: number, auxSendIndex: number) {
+        let channel = this.store.channels[0].channel[channelIndex]
+        if (channel.auxLevel[auxSendIndex] > -1) {
+            this.mixerConnection.updateAuxLevel(channelIndex, auxSendIndex, channel[channelIndex].auxLevel[auxSendIndex])
+        }
     }
 
     updateChannelName(channelIndex: number) {
