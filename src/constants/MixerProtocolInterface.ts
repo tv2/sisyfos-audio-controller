@@ -64,8 +64,8 @@ export interface IChannelTypes {
 
 interface IMixerMessageProtocol {
     mixerMessage: string,
-    value: any,
-    type: string,
+    value?: any,
+    type?: string,
     min: number,
     max: number,
     zero: number
