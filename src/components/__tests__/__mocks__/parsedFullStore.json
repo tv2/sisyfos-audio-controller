@@ -77,56 +77,20 @@
             ],
             "fader": [
                 {
-                    "faderLevel": 0.76,
-                    "label": "SERV A",
+                    "faderLevel": 0.75,
+                    "label": "",
                     "pgmOn": false,
                     "voOn": false,
                     "pstOn": false,
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.76,
-                    "label": "LIVE 1",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.66,
-                    "label": "LIVE 12 og 15",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 1,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -148,153 +112,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.7,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.79,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.77,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.69,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.77,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.74,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.72,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 2,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -316,6 +139,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 3,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -337,6 +166,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 4,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -358,6 +193,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 5,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -379,6 +220,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 6,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -400,6 +247,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 7,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -421,6 +274,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 8,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -442,6 +301,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 9,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -463,6 +328,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 10,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -484,6 +355,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 11,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -505,6 +382,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 12,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -526,6 +409,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 13,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -547,6 +436,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 14,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -568,6 +463,255 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 15,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 16,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 17,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 18,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 19,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 20,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 21,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 22,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 23,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 24,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -591,560 +735,192 @@
                     "channelTypeIndex": 0,
                     "assignedFader": 0,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 1,
                     "assignedFader": 1,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 2,
                     "assignedFader": 2,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 3,
                     "assignedFader": 3,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 4,
                     "assignedFader": 4,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 5,
                     "assignedFader": 5,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 6,
                     "assignedFader": 6,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 7,
                     "assignedFader": 7,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 8,
                     "assignedFader": 8,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 9,
                     "assignedFader": 9,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 10,
                     "assignedFader": 10,
                     "fadeActive": false,
-                    "outputLevel": 0.72
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 11,
                     "assignedFader": 11,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 12,
                     "assignedFader": 12,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 13,
                     "assignedFader": 13,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 14,
                     "assignedFader": 14,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 15,
                     "assignedFader": 15,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 16,
                     "assignedFader": 16,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 17,
                     "assignedFader": 17,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 18,
                     "assignedFader": 18,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 19,
                     "assignedFader": 19,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 20,
                     "assignedFader": 20,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 21,
                     "assignedFader": 21,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 22,
                     "assignedFader": 22,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
                     "channelTypeIndex": 23,
                     "assignedFader": 23,
                     "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 24,
-                    "assignedFader": 24,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 25,
-                    "assignedFader": 25,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 26,
-                    "assignedFader": 26,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 27,
-                    "assignedFader": 27,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 28,
-                    "assignedFader": 28,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 29,
-                    "assignedFader": 29,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 30,
-                    "assignedFader": 30,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 31,
-                    "assignedFader": 31,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 32,
-                    "assignedFader": 32,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 33,
-                    "assignedFader": 33,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 34,
-                    "assignedFader": 34,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 35,
-                    "assignedFader": 35,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 36,
-                    "assignedFader": 36,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 37,
-                    "assignedFader": 37,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 38,
-                    "assignedFader": 38,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 39,
-                    "assignedFader": 39,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 40,
-                    "assignedFader": 40,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 41,
-                    "assignedFader": 41,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 42,
-                    "assignedFader": 42,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 43,
-                    "assignedFader": 43,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 44,
-                    "assignedFader": 44,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 45,
-                    "assignedFader": 45,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 46,
-                    "assignedFader": 46,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 47,
-                    "assignedFader": 47,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 48,
-                    "assignedFader": 48,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 49,
-                    "assignedFader": 49,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 50,
-                    "assignedFader": 50,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 51,
-                    "assignedFader": 51,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 52,
-                    "assignedFader": 52,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 53,
-                    "assignedFader": 53,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 54,
-                    "assignedFader": 54,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 55,
-                    "assignedFader": 55,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 56,
-                    "assignedFader": 56,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 57,
-                    "assignedFader": 57,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 58,
-                    "assignedFader": 58,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 59,
-                    "assignedFader": 59,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 60,
-                    "assignedFader": 60,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 61,
-                    "assignedFader": 61,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 62,
-                    "assignedFader": 62,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 63,
-                    "assignedFader": 63,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 64,
-                    "assignedFader": 64,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 65,
-                    "assignedFader": 65,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 66,
-                    "assignedFader": 66,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 67,
-                    "assignedFader": 67,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 68,
-                    "assignedFader": 68,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 69,
-                    "assignedFader": 69,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 70,
-                    "assignedFader": 70,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 71,
-                    "assignedFader": 71,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 72,
-                    "assignedFader": 72,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 73,
-                    "assignedFader": 73,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 74,
-                    "assignedFader": 74,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 75,
-                    "assignedFader": 75,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 76,
-                    "assignedFader": 76,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 77,
-                    "assignedFader": 77,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 78,
-                    "assignedFader": 78,
-                    "fadeActive": false,
-                    "outputLevel": 0
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 79,
-                    "assignedFader": 79,
-                    "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 }
             ]
         }
@@ -1153,30 +929,36 @@
         {
             "showSnaps": false,
             "showSettings": false,
+            "showChanStrip": -1,
             "showOptions": false,
-            "mixerProtocol": "sslSystemT",
-            "localIp": "127.0.0.1",
-            "localOscPort": "8000",
-            "deviceIp": "tcp://0.tcp.ngrok.io",
-            "devicePort": "12573",
+            "showMonitorOptions": -1,
+            "showStorage": false,
+            "mixerProtocol": "genericMidi",
+            "localIp": "0.0.0.0",
+            "localOscPort": 1234,
+            "deviceIp": "0.0.0.0",
+            "devicePort": 10024,
+            "protocolLatency": 20,
             "enableRemoteFader": false,
+            "mixerMidiInputPort": "",
+            "mixerMidiOutputPort": "",
             "remoteFaderMidiInputPort": "",
             "remoteFaderMidiOutputPort": "",
             "numberOfChannelsInType": [
-                80
+                24
             ],
+            "numberOfFaders": "24",
+            "numberOfAux": "10",
+            "nextSendAux": "10",
             "numberOfSnaps": 8,
-            "fadeTime": "60",
-            "showPfl": false,
-            "protocolLatency": "500",
-            "numberOfFaders": 24,
-            "voLevel": "30",
+            "voLevel": 20,
+            "autoResetLevel": 10,
             "automationMode": true,
-            "showStorage": false,
-            "autoResetLevel": "10",
-            "voFadeTime": "400",
             "offtubeMode": false,
-            "showChanStrip": -1
+            "fadeTime": 60,
+            "voFadeTime": 200,
+            "showPfl": false,
+            "mixerOnline": false
         }
     ]
 }

@@ -3,16 +3,23 @@
     flex-direction: row;
     background-color: black;
     min-height: 760px;
-    margin-top: 25vh;
+    margin-top: 22vh;
 }
 
 .channels-mix-body {
-    max-width: 100px;
-    min-height: 800px;
+    position: fixed;
+    z-index: 2;
+    right: -4px;
+    padding-right: 0px;
+    width: 100px;
+    min-height: 899px;
     color: white;
-    background-color: #2f2f2f;
+    background: linear-gradient(#2f2f2f 0px,#2f2f2f 730px, rgb(0, 0, 0) 1px, #2f2f2f 740px, #2f2f2f 100%);
     margin: 4px;
-    border-radius: 10px;
+    border-radius: 9px;
+    border-color: rgb(80, 80, 80);
+    border-style: solid;
+    border-width: 1px;
 }
 
 .channels-show-mixer-online {

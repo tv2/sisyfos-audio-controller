@@ -7,7 +7,8 @@ import {
     TOGGLE_SHOW_SNAPS,
     TOGGLE_SHOW_STORAGE,
     UPDATE_SETTINGS,
-    SET_MIXER_ONLINE
+    SET_MIXER_ONLINE,
+    TOGGLE_SHOW_MONITOR_OPTIONS
 } from  '../reducers/settingsActions'
 
 export interface ISettings {
@@ -15,6 +16,7 @@ export interface ISettings {
     showSettings: boolean,
     showChanStrip: number,
     showOptions: number | false,
+    showMonitorOptions: number,
     showStorage: boolean,
     mixerProtocol: string,
     localIp: string,
@@ -29,6 +31,8 @@ export interface ISettings {
     remoteFaderMidiOutputPort: string,
     numberOfChannelsInType: Array<number>,
     numberOfFaders: number,
+    numberOfAux: number,
+    nextSendAux: number,
     numberOfSnaps: number,
     fadeTime: number,  // Default fade time for PGM ON - OFF
     voFadeTime: number, // Default fade time for VO ON - OFF
@@ -47,6 +51,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showSettings: false,
         showChanStrip: -1,
         showOptions: false,
+        showMonitorOptions: -1,
         showStorage: false,
         mixerProtocol: "genericMidi",
         localIp: "0.0.0.0",
@@ -61,6 +66,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         remoteFaderMidiOutputPort: "",
         numberOfChannelsInType: [8],
         numberOfFaders: 8,
+        numberOfAux: 0,
+        nextSendAux: -1,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         voLevel: 20,
         autoResetLevel: 10,
@@ -81,8 +88,21 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             nextState[0].showSettings = !nextState[0].showSettings;
             return nextState;
         case TOGGLE_SHOW_CHAN_STRIP:
-            nextState[0].showChanStrip = action.channel;
+            if (nextState[0].showChanStrip !== action.channel) {
+                nextState[0].showChanStrip = action.channel;
+            }
+            else {
+                nextState[0].showChanStrip = -1;
+            }
             return nextState;
+        case TOGGLE_SHOW_MONITOR_OPTIONS:
+                    if (nextState[0].showMonitorOptions !== action.channel) {
+                        nextState[0].showMonitorOptions = action.channel;
+                    }
+                    else {
+                        nextState[0].showMonitorOptions = -1;
+                    }
+                    return nextState;
         case TOGGLE_SHOW_OPTION:
             nextState[0].showOptions = typeof nextState[0].showOptions === 'number' ? false : action.channel;
             return nextState;

@@ -34,7 +34,13 @@ export interface IChannelTypes {
         CHANNEL_VU: Array<IMixerMessageProtocol>,
         CHANNEL_NAME: Array<IMixerMessageProtocol>
         PFL: Array<IMixerMessageProtocol>
-        AUX_SEND: Array<IMixerMessageProtocol>
+        NEXT_SEND: Array<IMixerMessageProtocol>
+        THRESHOLD: Array<IMixerMessageProtocol>
+        RATIO: Array<IMixerMessageProtocol>
+        LOW: Array<IMixerMessageProtocol>
+        MID: Array<IMixerMessageProtocol>
+        HIGH: Array<IMixerMessageProtocol>
+        MONITOR: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
     },
@@ -44,7 +50,13 @@ export interface IChannelTypes {
         CHANNEL_NAME: Array<IMixerMessageProtocol>,
         PFL_ON: Array<IMixerMessageProtocol>,
         PFL_OFF: Array<IMixerMessageProtocol>
-        AUX_SEND: Array<IMixerMessageProtocol>
+        NEXT_SEND: Array<IMixerMessageProtocol>
+        THRESHOLD: Array<IMixerMessageProtocol>
+        RATIO: Array<IMixerMessageProtocol>
+        LOW: Array<IMixerMessageProtocol>
+        MID: Array<IMixerMessageProtocol>
+        HIGH: Array<IMixerMessageProtocol>
+        MONITOR: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
     }

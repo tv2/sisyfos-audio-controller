@@ -323,7 +323,83 @@ export class OscMixerConnection {
 
     updateNextAux(channelIndex: number, level: number) {
         return true
-    } 
+    }
+
+    updateThreshold(channelIndex: number, level: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let thr = this.mixerProtocol.channelTypes[channelType].toMixer.THRESHOLD[0]
+        level = level * (thr.max-thr.min) + thr.min
+        this.sendOutMessage(
+            thr.mixerMessage,
+            channelTypeIndex+1,
+            level,
+            "f"
+        );
+    }
+    updateRatio(channelIndex: number, level: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let ratio = this.mixerProtocol.channelTypes[channelType].toMixer.RATIO[0]
+        level = level * (ratio.max-ratio.min) + ratio.min
+        this.sendOutMessage(
+            ratio.mixerMessage,
+            channelTypeIndex+1,
+            level,
+            "f"
+        );
+    }
+    updateLow(channelIndex: number, level: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let low = this.mixerProtocol.channelTypes[channelType].toMixer.LOW[0]
+        level = level * (low.max-low.min) + low.min
+        this.sendOutMessage(
+            low.mixerMessage,
+            channelTypeIndex+1,
+            level,
+            "f"
+        );
+    }
+    updateMid(channelIndex: number, level: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let mid = this.mixerProtocol.channelTypes[channelType].toMixer.MID[0]
+        level = level * (mid.max-mid.min) + mid.min
+        this.sendOutMessage(
+            mid.mixerMessage,
+            channelTypeIndex+1,
+            level,
+            "f"
+        );
+    }
+    updateHigh(channelIndex: number, level: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let high = this.mixerProtocol.channelTypes[channelType].toMixer.HIGH[0]
+        level = level * (high.max-high.min) + high.min
+        this.sendOutMessage(
+            high.mixerMessage,
+            channelTypeIndex+1,
+            level,
+            "f"
+        );
+    }
+    updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {
+        let channelType = this.store.channels[0].channel[channelIndex].channelType;
+        let channel = this.store.channels[0].channel[channelIndex].channelTypeIndex+1
+        let auxSendCmd = this.mixerProtocol.channelTypes[channelType].toMixer.MONITOR[0]
+        let auxSendNumber = this.mixerProtocol.leadingZeros ? ("0"+String(auxSendIndex + 1)).slice(-2) : String(auxSendIndex + 1);
+        let message = auxSendCmd.mixerMessage.replace('{argument1}', auxSendNumber)
+
+        level = level * (auxSendCmd.max-auxSendCmd.min) + auxSendCmd.min
+        this.sendOutMessage(
+            message,
+            channel,
+            level,
+            "f"
+        );
+    }
 
     
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {

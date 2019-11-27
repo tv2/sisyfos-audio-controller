@@ -16,6 +16,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 1,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -39,7 +45,8 @@
                     "channelTypeIndex": 0,
                     "assignedFader": 0,
                     "fadeActive": false,
-                    "outputLevel": 0
+                    "outputLevel": 0,
+                    "auxLevel": []
                 }
             ]
         }
@@ -50,6 +57,7 @@
             "showSettings": false,
             "showChanStrip": -1,
             "showOptions": false,
+            "showMonitorOptions": -1,
             "showStorage": false,
             "mixerProtocol": "genericMidi",
             "localIp": "0.0.0.0",
@@ -66,6 +74,8 @@
                 8
             ],
             "numberOfFaders": 8,
+            "numberOfAux": 0,
+            "nextSendAux": -1,
             "numberOfSnaps": 8,
             "voLevel": 20,
             "autoResetLevel": 10,
@@ -73,7 +83,8 @@
             "offtubeMode": false,
             "fadeTime": 60,
             "voFadeTime": 200,
-            "showPfl": false
+            "showPfl": false,
+            "mixerOnline": false
         }
     ]
 }

@@ -345,13 +345,10 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     </React.Fragment>
                     : null
                 }
-                {this.props.offtubeMode ?
-                    null :
-                    <React.Fragment>
-                        {this.pstButton()}
-                        <br/>
-                    </React.Fragment>
-                }
+                <React.Fragment>
+                    {this.pstButton()}
+                    <br/>
+                </React.Fragment>
                 {this.props.showPfl ?
                     <React.Fragment>
                         {this.pflButton()}
@@ -363,8 +360,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     {this.chanStripButton()}
                     <br/>
                 </React.Fragment>
-                <div className="channel-name">
-                </div>
                 <div className="channel-snap-body">
                     {this.props.snapOn
                         .map((none: any, index: number) => {

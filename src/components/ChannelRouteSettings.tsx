@@ -1,4 +1,6 @@
 import React from 'react';
+//@ts-ignore
+import * as ClassNames from 'classnames';
 
 import '../assets/css/ChannelRouteSettings.css';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
@@ -159,7 +161,12 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                     >ROUTE 1:1</button>
                     <hr />
                     {this.props.channel.map((channel: any, index: number) => {
-                        return <h4 key={index}>
+                        return <div 
+                            key={index}
+                            className={ClassNames("channel-route-text", {
+                                'checked': this.props.channel[index].assignedFader === this.faderIndex
+                            })}
+                            >
                             {(" Channel " + (index + 1) + " : ")}
                             <input
                                 type="checkbox"
@@ -169,7 +176,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                             {this.props.channel[index].assignedFader >= 0
                                 ? ("   (Fader " + (this.props.channel[index].assignedFader + 1) + ")")
                                 : ' (not assigned)'}
-                        </h4>
+                        </div>
                     })
                     }
                 </div>

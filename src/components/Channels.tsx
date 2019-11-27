@@ -20,6 +20,7 @@ import {
 import { IAppProps } from './App';
 import ChannelRouteSettings from './ChannelRouteSettings';
 import ChanStrip from './ChanStrip'
+import ChannelMonitorOptions from './ChannelMonitorOptions';
 const { dialog } = require('electron').remote;
 
 
@@ -27,11 +28,13 @@ class Channels extends React.Component<IAppProps & Store> {
     constructor(props: any) {
         super(props);
         this.props.store.settings[0].showChanStrip = -1
+        this.props.store.settings[0].showMonitorOptions = -1
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
         return this.props.store.settings[0].showOptions !== nextProps.store.settings[0].showOptions 
         || this.props.store.settings[0].showChanStrip !== nextProps.store.settings[0].showChanStrip
+        || this.props.store.settings[0].showMonitorOptions !== nextProps.store.settings[0].showMonitorOptions
         || this.props.store.settings[0].mixerOnline !== nextProps.store.settings[0].mixerOnline;
     }
 
@@ -136,6 +139,11 @@ class Channels extends React.Component<IAppProps & Store> {
                 :
                 null
             }
+            {(this.props.store.settings[0].showMonitorOptions >= 0) ?
+                <ChannelMonitorOptions faderIndex={this.props.store.settings[0].showMonitorOptions}/>
+                :
+                null
+            }
             {this.props.store.faders[0].fader.map((none: any, index: number) => {
                 return <Channel
                             channelIndex = {index}
@@ -145,17 +153,17 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             <br/>
             <div className="channels-mix-body">
-            <button
-                className={
-                    ClassNames("channels-show-mixer-online", {
-                    "connected": this.props.store.settings[0].mixerOnline
-                })}
-                onClick={() => {
-                    this.handleReconnect();
-                }}
-            >{this.props.store.settings[0].mixerOnline ? 'MIXER ONLINE' : 'RECONNECT'}</button>
-            
-            {(this.props.store.settings[0].automationMode ||
+                <button
+                    className={
+                        ClassNames("channels-show-mixer-online", {
+                        "connected": this.props.store.settings[0].mixerOnline
+                    })}
+                    onClick={() => {
+                        this.handleReconnect();
+                    }}
+                >{this.props.store.settings[0].mixerOnline ? 'MIXER ONLINE' : 'RECONNECT'}</button>
+                
+                {(this.props.store.settings[0].automationMode ||
                   this.props.store.settings[0].offtubeMode) ?
                     null 
                     : <React.Fragment>

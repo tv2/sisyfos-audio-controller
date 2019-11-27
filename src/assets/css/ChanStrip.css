@@ -1,42 +1,83 @@
 .chan-strip-body {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 400px;
+	position: fixed;
+	display: flex;
+	top: 5px;
+	left: 0px;
+	right: 0px;
 	overflow: auto;
-    max-height: 90vh;
+    height: 240px;
     background-color: rgb(31, 31, 31);
-    border-color: rgb(124, 124, 124);
+    border-color: rgb(70, 70, 70);
     border-style: solid;
-    border-width: 4px;
+	border-width: 4px;
+	border-radius: 8px;
+	text-align: left;
+	color: #fff;
+}
+
+.chan-strip-body > .parameters {
+	position: fixed;
+	display: flex;
+	top: 5px;
+	left: 2px;
+	width: 1880px;
+	overflow: auto;
+    height: 240px;
 	text-align: left;
 	z-index: 2;
 
 	color: #fff;
 }
 
-.chan-strip-body > h2 {
-	border-bottom: 1px solid #999;
-	margin: 0;
-	padding: 10px 0;
-	line-height: 50px;
+.parameters > .vertical {
+	transform: rotate(180deg);
+	text-align: right;
+	writing-mode: vertical-rl;
+	text-orientation: right;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 50px;
+	line-height: 30px;
+	font-size: 140%;
+}
+.parameters > .vertical-line {
+	background-color:rgb(70, 70, 70);
+	height: 100%;
+	width: 4px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.parameters > .parameter-text {
+	list-style-type: none;
 	text-align: center;
-
+	margin-top: 15px;
+	line-height: 10px;
+	font-size: 100%;
 }
 
-
-.chan-strip-body > h4 {
-	margin: 0;
-	margin-left: 40px;
-	padding: 0px 0;
-	line-height: 20px;
-	text-align: left;
-	font-size: 110%;
+.parameters > .monitor-sends {
+	list-style-type: none;
+	display: flex;
+	text-align: center;
+	margin-top: 15px;
+	margin-left: 1px;
+	padding: 0px;
+	line-height: 10px;
+	font-size: 95%;
 }
 
-.chan-strip-body > .close {
-	position: absolute;
+.chan-strip-body > .settings-buttons {
+	background-color:  rgb(31, 31, 31);
+	position: fixed;
+	z-index: 2;
+	top: 9px;
+	height: 240px;
+	width: 140px;
+	right: 15px;
+}
+
+.settings-buttons > .close {
 	outline : none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
@@ -47,22 +88,38 @@
 	height: 50px;
 	font-size: 30px;
 	line-height: 50px;
-	top: -5px;
-	right: 9px;
+	margin-left: 50px;
 }
 
-.chan-strip-body > button {
-	line-height: 10px;
+.settings-buttons > button {
 	outline : none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
-    margin-right: 10px;
-	margin-top: 15px;
-    margin-bottom: 15px;
-	margin-left: 10px;
 	border-radius: 7px;
-	color: #fff;
-	width: 34%;
+	margin-top: 10px;
+	width: 130px;
 	font-size: 105%;
-    line-height: 50px;
+	line-height: 30px;
+	color: #fff;
+}
+
+.chan-strip-fader {
+    width: 10px;
+	height: 200px;
+	margin-left: 35px;
+	margin-right: 30px;
+    margin-top: 10px;
+    border-width: 0px;
+    border-style: solid;
+    border-radius: 8px;
+    background-color: rgb(17, 17, 17);
+}
+
+.chan-strip-thumb {
+    margin-left: -20px;
+    width: 45px;
+    height: 49px;
+    border: 1px solid #c5c2c2;
+    border-radius: 8px;
+    background: linear-gradient(to top, #3a3a3a 0%, #c2c2c2 20%, hsl(0, 0%, 57%) 50%, #00a 1px, #919191 52%, #c2c2c2 80%, #3a3a3a 100%);
 }

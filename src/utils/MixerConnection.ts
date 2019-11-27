@@ -128,6 +128,54 @@ export class MixerGenericConnection {
         })
     }
 
+    updateThreshold(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].threshold
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateThreshold(channelIndex, level)
+            }
+        })
+    }
+    updateRatio(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].ratio
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateRatio(channelIndex, level)
+            }
+        })
+    }
+    updateLow(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].low
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateLow(channelIndex, level)
+            }
+        })
+    }
+    updateMid(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].mid
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateMid(channelIndex, level)
+            }
+        })
+    }
+    updateHigh(faderIndex: number) {
+        let level = this.store.faders[0].fader[faderIndex].high
+        this.store.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateHigh(channelIndex, level)
+            }
+        })
+    }
+
+    updateAuxLevel(channelIndex: number, auxSendIndex: number) {
+        let channel = this.store.channels[0].channel[channelIndex]
+        if (channel.auxLevel[auxSendIndex] > -1) {
+            this.mixerConnection.updateAuxLevel(channelIndex, auxSendIndex, channel.auxLevel[auxSendIndex])
+        }
+    }
+
     updateChannelName(channelIndex: number) {
         this.mixerConnection.updateChannelName(channelIndex);
     }

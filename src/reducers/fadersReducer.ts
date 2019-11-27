@@ -22,7 +22,13 @@ import {
     TOGGLE_PGM,
     TOGGLE_PST,
     TOGGLE_VO,
-    X_MIX
+    X_MIX,
+    SET_FADER_THRESHOLD,
+    SET_FADER_RATIO,
+    SET_FADER_LOW,
+    SET_FADER_MID,
+    SET_FADER_HIGH,
+    SET_FADER_MONITOR
 } from '../reducers/faderActions'
 
 export interface IFaders {
@@ -39,6 +45,12 @@ export interface IFader {
     pstVoOn: boolean,
     pflOn: boolean,
     muteOn: boolean,
+    low: number,
+    mid: number,
+    high: number,
+    threshold: number,
+    ratio: number,
+    monitor: number,
     showChannel: boolean,
     snapOn: Array<boolean>,
 }
@@ -64,6 +76,12 @@ const defaultFadersReducerState = (numberOfFaders: number) => {
                 pstVoOn: false,
                 pflOn: false,
                 muteOn: false,
+                low: 0.75,
+                mid: 0.75,
+                high: 0.75,
+                threshold: 0.75,
+                ratio: 0.75,
+                monitor: (index + 1), // route fader - aux 1:1 as default
                 showChannel: true,
                 snapOn: [],
             });
@@ -100,6 +118,24 @@ export const faders = ((state = defaultFadersReducerState(1), action: any): Arra
             return nextState;
         case SET_FADER_LEVEL: //channel:  level:
             nextState[0].fader[action.channel].faderLevel = parseFloat(action.level);
+            return nextState;
+        case SET_FADER_THRESHOLD: //channel:  level:
+            nextState[0].fader[action.channel].threshold = parseFloat(action.level);
+            return nextState;
+        case SET_FADER_RATIO: //channel:  level:
+            nextState[0].fader[action.channel].ratio = parseFloat(action.level);
+            return nextState;
+        case SET_FADER_LOW: //channel:  level:
+            nextState[0].fader[action.channel].low = parseFloat(action.level);
+            return nextState;
+        case SET_FADER_MID: //channel:  level:
+            nextState[0].fader[action.channel].mid = parseFloat(action.level);
+            return nextState;
+        case SET_FADER_HIGH: //channel:  level:
+            nextState[0].fader[action.channel].high = parseFloat(action.level);
+            return nextState;
+        case SET_FADER_MONITOR: //channel:  auxIndex:
+            nextState[0].fader[action.channel].monitor = action.auxIndex;
             return nextState;
         case SET_ALL_VU_LEVELS: //channel:  level:
             nextState[0].vuMeters = action.vuMeters;
