@@ -156,13 +156,14 @@ export class OscMixerConnection {
                     if (commandPart === '{channel}') {
                         ch = parseFloat(messageArray[index])
                     } else if (commandPart === '{argument}') {
-                        auxIndex = parseFloat(messageArray[index])
+                        auxIndex = parseFloat(messageArray[index]) - 1
                     }
                 })
 
                 window.storeRedux.dispatch({
                     type: SET_AUX_LEVEL,
                     channel: ch - 1,
+                    auxIndex: auxIndex,
                     level: message.args[0]
                 });
  
