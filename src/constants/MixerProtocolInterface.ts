@@ -31,34 +31,34 @@ export interface IChannelTypes {
     fromMixer: {
         CHANNEL_FADER_LEVEL?: Array<IMixerMessageProtocol>,
         CHANNEL_OUT_GAIN: Array<IMixerMessageProtocol>,
-        CHANNEL_VU: Array<IMixerMessageProtocol>,
+        CHANNEL_VU?: Array<IMixerMessageProtocol>,
         CHANNEL_NAME: Array<IMixerMessageProtocol>
-        PFL: Array<IMixerMessageProtocol>
-        NEXT_SEND: Array<IMixerMessageProtocol>
-        THRESHOLD: Array<IMixerMessageProtocol>
-        RATIO: Array<IMixerMessageProtocol>
-        LOW: Array<IMixerMessageProtocol>
-        MID: Array<IMixerMessageProtocol>
-        HIGH: Array<IMixerMessageProtocol>
-        MONITOR: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
+        PFL?: Array<IMixerMessageProtocol>
+        NEXT_SEND?: Array<IMixerMessageProtocol>
+        THRESHOLD?: Array<IMixerMessageProtocol>
+        RATIO?: Array<IMixerMessageProtocol>
+        LOW?: Array<IMixerMessageProtocol>
+        MID?: Array<IMixerMessageProtocol>
+        HIGH?: Array<IMixerMessageProtocol>
+        MONITOR?: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
     },
     toMixer: {
         CHANNEL_FADER_LEVEL?: Array<IMixerMessageProtocol>,
         CHANNEL_OUT_GAIN: Array<IMixerMessageProtocol>,
         CHANNEL_NAME: Array<IMixerMessageProtocol>,
-        PFL_ON: Array<IMixerMessageProtocol>,
-        PFL_OFF: Array<IMixerMessageProtocol>
-        NEXT_SEND: Array<IMixerMessageProtocol>
-        THRESHOLD: Array<IMixerMessageProtocol>
-        RATIO: Array<IMixerMessageProtocol>
-        LOW: Array<IMixerMessageProtocol>
-        MID: Array<IMixerMessageProtocol>
-        HIGH: Array<IMixerMessageProtocol>
-        MONITOR: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
+        PFL_ON?: Array<IMixerMessageProtocol>,
+        PFL_OFF?: Array<IMixerMessageProtocol>
+        NEXT_SEND?: Array<IMixerMessageProtocol>
+        THRESHOLD?: Array<IMixerMessageProtocol>
+        RATIO?: Array<IMixerMessageProtocol>
+        LOW?: Array<IMixerMessageProtocol>
+        MID?: Array<IMixerMessageProtocol>
+        HIGH?: Array<IMixerMessageProtocol>
+        MONITOR?: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
     }
 }
 
