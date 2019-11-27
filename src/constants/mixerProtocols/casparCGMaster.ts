@@ -63,7 +63,7 @@ if (geometry) {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
             },
@@ -79,7 +79,7 @@ if (geometry) {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
             },

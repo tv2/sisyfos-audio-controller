@@ -25,7 +25,7 @@ export const SSLSystemT: IMixerProtocol = {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [{ mixerMessage: "f1 04 00 01 00 {channel}", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
@@ -41,7 +41,7 @@ export const SSLSystemT: IMixerProtocol = {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [{ mixerMessage: "f1 05 00 80 01 {channel} 00", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             CHANNEL_MUTE_OFF: [{ mixerMessage: "f1 05 00 80 01 {channel} 01", value: 0, type: '', min: 0, max: 1, zero: 0.75}]
         },

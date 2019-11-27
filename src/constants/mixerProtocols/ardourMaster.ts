@@ -52,7 +52,7 @@ export const ArdourMaster: IMixerProtocol = {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
@@ -68,7 +68,7 @@ export const ArdourMaster: IMixerProtocol = {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
     }
