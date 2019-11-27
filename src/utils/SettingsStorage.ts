@@ -43,11 +43,17 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
         } else {
             stateChannelSnapshot.channel = stateChannelSnapshot.channel.map((channel: any, index: number) => {
                 if (index < numberOfFaders) {
+                    channel.auxLevel = stateFromFile.channelState.channel[index].auxLevel || []
                     channel.assignedFader = stateFromFile.channelState.channel[index].assignedFader
                 } else {
                     channel.assignedFader = -1
                 }
                 return channel
+            })
+
+            stateSnapshot.fader = stateSnapshot.fader.map((fader: any, index: number) => {
+                fader.monitor = stateFromFile.faderState.fader[index].monitor || -1
+                return fader
             })
 
             window.storeRedux.dispatch({
