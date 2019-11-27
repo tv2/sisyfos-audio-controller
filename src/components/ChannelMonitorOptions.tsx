@@ -7,9 +7,10 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from '../reducers/channelActions'
+import { SET_AUX_LEVEL } from '../reducers/channelActions'
 import { TOGGLE_SHOW_MONITOR_OPTIONS } from '../reducers/settingsActions'
 import { SET_FADER_MONITOR } from '../reducers/faderActions';
+import { ISettings } from '../reducers/settingsReducer';
 const { dialog } = require('electron').remote;
 
 interface IMonitorSettingsInjectProps {
@@ -18,6 +19,7 @@ interface IMonitorSettingsInjectProps {
     numberOfChannelsInType: Array<number>,
     channel: Array<any>
     fader: Array<any>
+    settings: ISettings
 }
 
 interface IChannelProps {
@@ -119,10 +121,14 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
     }
 
     handleSetAux = (event: ChangeEvent<HTMLInputElement>) => {
+        let value = parseFloat(event.target.value)
+        if (value >= this.props.settings.numberOfAux) {
+            value = -1
+        }
         this.props.dispatch({
             type: SET_FADER_MONITOR,
             channel: this.faderIndex,
-            auxIndex: parseFloat(event.target.value)
+            auxIndex: value
         });
     }
 
@@ -193,6 +199,7 @@ const mapStateToProps = (state: any, props: any): IMonitorSettingsInjectProps =>
         numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
         channel: state.channels[0].channel,
         fader: state.faders[0].fader,
+        settings: state.settings[0]
     }
 }
 
