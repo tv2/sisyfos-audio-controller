@@ -222,18 +222,18 @@ export class OscMixerConnection {
         if (message === command) return true;
         let messageArray: string[] = message.split('/')
         let commandArray: string[] = command.split('/')
+        let status: boolean = true
 
         commandArray.forEach((commandPart: string, index: number) => {
             if (commandPart === '{channel}') {
-                if (typeof(parseFloat(messageArray[index])) !== 'number') { return false }
+                if (typeof(parseFloat(messageArray[index])) !== 'number') { status = false }
             } else if (commandPart === '{argument}') {
-                if (typeof(parseFloat(messageArray[index])) !== 'number') { return false }
+                if (typeof(parseFloat(messageArray[index])) !== 'number') { status = false }
             } else if (commandPart !== messageArray[index]) {
-                return false
+                status = false
             }            
         })
-
-        return true
+        return status
     }
 
     sendOutMessage(oscMessage: string, channel: number, value: string | number, type: string) {
