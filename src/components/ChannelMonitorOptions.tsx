@@ -121,8 +121,8 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
     }
 
     handleSetAux = (event: ChangeEvent<HTMLInputElement>) => {
-        let value = parseFloat(event.target.value)
-        if (value >= this.props.settings.numberOfAux) {
+        let value = parseFloat(event.target.value) || -1
+        if (value > this.props.settings.numberOfAux || value < 0) {
             value = -1
         }
         this.props.dispatch({
