@@ -153,17 +153,17 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             <br/>
             <div className="channels-mix-body">
-            <button
-                className={
-                    ClassNames("channels-show-mixer-online", {
-                    "connected": this.props.store.settings[0].mixerOnline
-                })}
-                onClick={() => {
-                    this.handleReconnect();
-                }}
-            >{this.props.store.settings[0].mixerOnline ? 'MIXER ONLINE' : 'RECONNECT'}</button>
-            
-            {(this.props.store.settings[0].automationMode ||
+                <button
+                    className={
+                        ClassNames("channels-show-mixer-online", {
+                        "connected": this.props.store.settings[0].mixerOnline
+                    })}
+                    onClick={() => {
+                        this.handleReconnect();
+                    }}
+                >{this.props.store.settings[0].mixerOnline ? 'MIXER ONLINE' : 'RECONNECT'}</button>
+                
+                {(this.props.store.settings[0].automationMode ||
                   this.props.store.settings[0].offtubeMode) ?
                     null 
                     : <React.Fragment>

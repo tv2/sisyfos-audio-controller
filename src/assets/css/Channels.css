@@ -7,11 +7,12 @@
 }
 
 .channels-mix-body {
-    position: sticky;
+    position: fixed;
     z-index: 2;
-    right: -2px;
-    max-width: 100px;
-    min-height: 800px;
+    right: -4px;
+    padding-right: 0px;
+    width: 100px;
+    min-height: 76vh;
     color: white;
     background: linear-gradient(#2f2f2f 0px,#2f2f2f 730px, rgb(0, 0, 0) 1px, #2f2f2f 740px, #2f2f2f 100%);
     margin: 4px;
