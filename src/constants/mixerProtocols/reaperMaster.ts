@@ -25,7 +25,7 @@ export const ReaperMaster: IMixerProtocol = {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
@@ -55,7 +55,7 @@ export const ReaperMaster: IMixerProtocol = {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
@@ -78,7 +78,7 @@ export const ReaperMaster: IMixerProtocol = {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
@@ -94,7 +94,7 @@ export const ReaperMaster: IMixerProtocol = {
             LOW: [emptyMixerMessage()],
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
-            MONITOR: [emptyMixerMessage()],
+            AUX_LEVEL: [emptyMixerMessage()],
             CHANNEL_MUTE_ON: [emptyMixerMessage()],
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },

@@ -40,7 +40,7 @@ export interface IChannelTypes {
         LOW: Array<IMixerMessageProtocol>
         MID: Array<IMixerMessageProtocol>
         HIGH: Array<IMixerMessageProtocol>
-        MONITOR: Array<IMixerMessageProtocol>
+        AUX_LEVEL: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
     },
@@ -56,7 +56,7 @@ export interface IChannelTypes {
         LOW: Array<IMixerMessageProtocol>
         MID: Array<IMixerMessageProtocol>
         HIGH: Array<IMixerMessageProtocol>
-        MONITOR: Array<IMixerMessageProtocol>
+        AUX_LEVEL: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
     }
