@@ -73,26 +73,11 @@
                 },
                 {
                     "vuVal": 0
-                },
-                {
-                    "vuVal": 0
-                },
-                {
-                    "vuVal": 0
-                },
-                {
-                    "vuVal": 0
-                },
-                {
-                    "vuVal": 0
-                },
-                {
-                    "vuVal": 0
                 }
             ],
             "fader": [
                 {
-                    "faderLevel": 0.42,
+                    "faderLevel": 0.75,
                     "label": "",
                     "pgmOn": false,
                     "voOn": false,
@@ -119,7 +104,7 @@
                     ]
                 },
                 {
-                    "faderLevel": 0.76,
+                    "faderLevel": 0.75,
                     "label": "",
                     "pgmOn": false,
                     "voOn": false,
@@ -132,7 +117,7 @@
                     "high": 0.75,
                     "threshold": 0.75,
                     "ratio": 0.75,
-                    "monitor": 1,
+                    "monitor": 2,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -146,7 +131,7 @@
                     ]
                 },
                 {
-                    "faderLevel": 0.76,
+                    "faderLevel": 0.75,
                     "label": "",
                     "pgmOn": false,
                     "voOn": false,
@@ -159,7 +144,7 @@
                     "high": 0.75,
                     "threshold": 0.75,
                     "ratio": 0.75,
-                    "monitor": 10,
+                    "monitor": 3,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -375,7 +360,7 @@
                     "high": 0.75,
                     "threshold": 0.75,
                     "ratio": 0.75,
-                    "monitor": null,
+                    "monitor": 11,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -456,7 +441,7 @@
                     "high": 0.75,
                     "threshold": 0.75,
                     "ratio": 0.75,
-                    "monitor": 9,
+                    "monitor": 14,
                     "showChannel": true,
                     "snapOn": [
                         false,
@@ -738,141 +723,6 @@
                         false,
                         false
                     ]
-                },
-                {
-                    "faderLevel": 0.75,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "low": 0.75,
-                    "mid": 0.75,
-                    "high": 0.75,
-                    "threshold": 0.75,
-                    "ratio": 0.75,
-                    "monitor": 25,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.75,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "low": 0.75,
-                    "mid": 0.75,
-                    "high": 0.75,
-                    "threshold": 0.75,
-                    "ratio": 0.75,
-                    "monitor": 26,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.75,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "low": 0.75,
-                    "mid": 0.75,
-                    "high": 0.75,
-                    "threshold": 0.75,
-                    "ratio": 0.75,
-                    "monitor": 27,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.75,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "low": 0.75,
-                    "mid": 0.75,
-                    "high": 0.75,
-                    "threshold": 0.75,
-                    "ratio": 0.75,
-                    "monitor": 28,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
-                },
-                {
-                    "faderLevel": 0.75,
-                    "label": "",
-                    "pgmOn": false,
-                    "voOn": false,
-                    "pstOn": false,
-                    "pstVoOn": false,
-                    "pflOn": false,
-                    "muteOn": false,
-                    "low": 0.75,
-                    "mid": 0.75,
-                    "high": 0.75,
-                    "threshold": 0.75,
-                    "ratio": 0.75,
-                    "monitor": 29,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
                 }
             ]
         }
@@ -886,16 +736,7 @@
                     "assignedFader": 0,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        0,
-                        -1,
-                        null,
-                        0,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -903,16 +744,7 @@
                     "assignedFader": 1,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -920,16 +752,7 @@
                     "assignedFader": 2,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        0.51,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -937,16 +760,7 @@
                     "assignedFader": 3,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        0.36,
-                        -1,
-                        null,
-                        null,
-                        0.56,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -954,16 +768,7 @@
                     "assignedFader": 4,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0,
-                        0.82,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -971,16 +776,7 @@
                     "assignedFader": 5,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -988,16 +784,7 @@
                     "assignedFader": 6,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        0.79,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1005,16 +792,7 @@
                     "assignedFader": 7,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        0,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1022,16 +800,7 @@
                     "assignedFader": 8,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1039,16 +808,7 @@
                     "assignedFader": 9,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1056,16 +816,7 @@
                     "assignedFader": 10,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1073,16 +824,7 @@
                     "assignedFader": 11,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1090,16 +832,7 @@
                     "assignedFader": 12,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1107,16 +840,7 @@
                     "assignedFader": 13,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1124,16 +848,7 @@
                     "assignedFader": 14,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1141,16 +856,7 @@
                     "assignedFader": 15,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        0,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1158,16 +864,7 @@
                     "assignedFader": 16,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1175,16 +872,7 @@
                     "assignedFader": 17,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1192,16 +880,7 @@
                     "assignedFader": 18,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1209,16 +888,7 @@
                     "assignedFader": 19,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1226,16 +896,7 @@
                     "assignedFader": 20,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1243,16 +904,7 @@
                     "assignedFader": 21,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1260,16 +912,7 @@
                     "assignedFader": 22,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 },
                 {
                     "channelType": 0,
@@ -1277,101 +920,7 @@
                     "assignedFader": 23,
                     "fadeActive": false,
                     "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 24,
-                    "assignedFader": 24,
-                    "fadeActive": false,
-                    "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 25,
-                    "assignedFader": 25,
-                    "fadeActive": false,
-                    "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        0.79,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 26,
-                    "assignedFader": 26,
-                    "fadeActive": false,
-                    "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        0.7,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 27,
-                    "assignedFader": 27,
-                    "fadeActive": false,
-                    "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        0.53,
-                        -1,
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0
-                    ]
-                },
-                {
-                    "channelType": 0,
-                    "channelTypeIndex": 28,
-                    "assignedFader": 28,
-                    "fadeActive": false,
-                    "outputLevel": 0,
-                    "auxLevel": [
-                        null,
-                        null,
-                        -1,
-                        null,
-                        0,
-                        -1,
-                        null,
-                        0
-                    ]
+                    "auxLevel": []
                 }
             ]
         }
@@ -1380,34 +929,36 @@
         {
             "showSnaps": false,
             "showSettings": false,
+            "showChanStrip": -1,
             "showOptions": false,
-            "mixerProtocol": "midasMaster",
-            "localIp": "127.0.0.1",
-            "localOscPort": "10023",
-            "deviceIp": "192.168.0.95",
-            "devicePort": "10023",
+            "showMonitorOptions": -1,
+            "showStorage": false,
+            "mixerProtocol": "genericMidi",
+            "localIp": "0.0.0.0",
+            "localOscPort": 1234,
+            "deviceIp": "0.0.0.0",
+            "devicePort": 10024,
+            "protocolLatency": 20,
             "enableRemoteFader": false,
+            "mixerMidiInputPort": "",
+            "mixerMidiOutputPort": "",
             "remoteFaderMidiInputPort": "",
             "remoteFaderMidiOutputPort": "",
             "numberOfChannelsInType": [
-                29
+                24
             ],
-            "numberOfSnaps": 8,
-            "fadeTime": "120",
-            "showPfl": false,
-            "protocolLatency": "500",
-            "numberOfFaders": "29",
-            "voLevel": "30",
-            "automationMode": true,
-            "showStorage": false,
-            "autoResetLevel": "20",
-            "voFadeTime": "280",
-            "offtubeMode": true,
-            "showChanStrip": -1,
-            "mixerOnline": false,
+            "numberOfFaders": "24",
             "numberOfAux": "10",
-            "nextSendAux": "8",
-            "showMonitorOptions": -1
+            "nextSendAux": "10",
+            "numberOfSnaps": 8,
+            "voLevel": 20,
+            "autoResetLevel": 10,
+            "automationMode": true,
+            "offtubeMode": false,
+            "fadeTime": 60,
+            "voFadeTime": 200,
+            "showPfl": false,
+            "mixerOnline": false
         }
     ]
 }

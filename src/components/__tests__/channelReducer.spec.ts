@@ -61,11 +61,12 @@ describe('Test redux channelReducer actions', () => {
         let parsedFullStore = JSON.parse(parsedFullStoreJSON)
         let nextState = JSON.parse(parsedFullStoreJSON)
         let channels: IChannel[] = []
-        for (let i=0; i<80; i++) {
+        for (let i=0; i<24; i++) {
             channels.push({
                 channelType: 0,
                 channelTypeIndex: i,
                 assignedFader: i,
+                auxLevel: [],
                 fadeActive: false,
                 outputLevel: 0.75
             })
@@ -74,7 +75,7 @@ describe('Test redux channelReducer actions', () => {
         expect(indexReducer(parsedFullStore, {
           type: SET_COMPLETE_CH_STATE,
           allState: {channel: channels},
-          numberOfTypeChannels: [80]
+          numberOfTypeChannels: [24]
         })).toEqual(nextState)
       })
 })
