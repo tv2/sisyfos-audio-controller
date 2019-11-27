@@ -29,7 +29,7 @@ export interface IChannelTypes {
     channelTypeName: string,
     channelTypeColor: string,
     fromMixer: {
-        CHANNEL_FADER_LEVEL: Array<IMixerMessageProtocol>,
+        CHANNEL_FADER_LEVEL?: Array<IMixerMessageProtocol>,
         CHANNEL_OUT_GAIN: Array<IMixerMessageProtocol>,
         CHANNEL_VU: Array<IMixerMessageProtocol>,
         CHANNEL_NAME: Array<IMixerMessageProtocol>
@@ -45,7 +45,7 @@ export interface IChannelTypes {
         CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
     },
     toMixer: {
-        CHANNEL_FADER_LEVEL: Array<IMixerMessageProtocol>,
+        CHANNEL_FADER_LEVEL?: Array<IMixerMessageProtocol>,
         CHANNEL_OUT_GAIN: Array<IMixerMessageProtocol>,
         CHANNEL_NAME: Array<IMixerMessageProtocol>,
         PFL_ON: Array<IMixerMessageProtocol>,
