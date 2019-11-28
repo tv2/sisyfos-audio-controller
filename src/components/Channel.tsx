@@ -38,17 +38,17 @@ interface IChannelInjectProps {
 }
 
 interface IChannelProps {
-    channelIndex: number
+    faderIndex: number
 }
 
 
 class Channel extends React.Component<IChannelProps & IChannelInjectProps & Store> {
     mixerProtocol: IMixerProtocolGeneric;
-    channelIndex: number;
+    faderIndex: number;
 
     constructor(props: any) {
         super(props);
-        this.channelIndex = this.props.channelIndex;
+        this.faderIndex = this.props.faderIndex;
         this.mixerProtocol = MixerProtocolPresets[this.props.settings.mixerProtocol] || MixerProtocolPresets.genericMidi;
     }
 
@@ -75,68 +75,68 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handlePgm() {
-        window.mixerGenericConnection.checkForAutoResetThreshold(this.channelIndex)
+        window.mixerGenericConnection.checkForAutoResetThreshold(this.faderIndex)
         this.props.dispatch({
             type: TOGGLE_PGM,
-            channel: this.channelIndex
+            channel: this.faderIndex
         });
-        window.mixerGenericConnection.updateOutLevel(this.channelIndex);
+        window.mixerGenericConnection.updateOutLevel(this.faderIndex);
         if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+                        window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
         }
     }
 
     handleVo() {
-        window.mixerGenericConnection.checkForAutoResetThreshold(this.channelIndex)
+        window.mixerGenericConnection.checkForAutoResetThreshold(this.faderIndex)
         this.props.dispatch({
             type: TOGGLE_VO,
-            channel: this.channelIndex
+            channel: this.faderIndex
         });
-        window.mixerGenericConnection.updateOutLevel(this.channelIndex);
+        window.mixerGenericConnection.updateOutLevel(this.faderIndex);
         if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+                        window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
         }
     }
 
     handlePst() {        
         this.props.dispatch({
             type: TOGGLE_PST,
-            channel: this.channelIndex
+            channel: this.faderIndex
         });
-        window.mixerGenericConnection.updateNextAux(this.channelIndex);
+        window.mixerGenericConnection.updateNextAux(this.faderIndex);
     }
 
     handlePfl() {
         this.props.dispatch({
             type: TOGGLE_PFL,
-            channel: this.channelIndex
+            channel: this.faderIndex
         });
-        window.mixerGenericConnection.updatePflState(this.channelIndex);
+        window.mixerGenericConnection.updatePflState(this.faderIndex);
         if (window.huiRemoteConnection) {
-            window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+            window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
         }
     }
 
     handleMute() {
         this.props.dispatch({
             type: TOGGLE_MUTE,
-            channel: this.channelIndex
+            channel: this.faderIndex
         });
-        window.mixerGenericConnection.updateMuteState(this.channelIndex);
+        window.mixerGenericConnection.updateMuteState(this.faderIndex);
         if (window.huiRemoteConnection) {
-            window.huiRemoteConnection.updateRemotePgmPstPfl(this.channelIndex);
+            window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
         }
     }
 
     handleLevel(event: any) {
         this.props.dispatch({
             type: SET_FADER_LEVEL,
-            channel: this.channelIndex,
+            channel: this.faderIndex,
             level: parseFloat(event)
         });
-        window.mixerGenericConnection.updateOutLevel(this.channelIndex);
+        window.mixerGenericConnection.updateOutLevel(this.faderIndex);
         if (window.huiRemoteConnection) {
-            window.huiRemoteConnection.updateRemoteFaderState(this.channelIndex, event)
+            window.huiRemoteConnection.updateRemoteFaderState(this.faderIndex, event)
         }
     }
 
@@ -144,7 +144,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     handleSnap(snapIndex: number) {
         this.props.dispatch({
             type: TOGGLE_SNAP,
-            channel: this.channelIndex,
+            channel: this.faderIndex,
             snapIndex: snapIndex
         });
     }
@@ -152,14 +152,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     handleShowOptions() {
         this.props.dispatch({
             type: TOGGLE_SHOW_OPTION,
-            channel: this.channelIndex
+            channel: this.faderIndex
         });
     }
 
     handleShowChanStrip() {
         this.props.dispatch({
             type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: this.channelIndex
+            channel: this.faderIndex
         });
     }
 
@@ -198,7 +198,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     this.handlePgm();
                 }}
             >
-                {this.props.fader.label != "" ? this.props.fader.label : ("CH " + (this.channelIndex + 1)) }
+                {this.props.fader.label != "" ? this.props.fader.label : ("CH " + (this.faderIndex + 1)) }
             </button>
         )
     }
@@ -325,7 +325,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 <br/>
                 <h4 className="channel-zero-indicator">_____</h4>
                 {this.fader()}
-                <VuMeter channelIndex = {this.channelIndex}/>
+                <VuMeter faderIndex = {this.faderIndex}/>
                 <br/>
                 {this.pgmButton()}
                 <br/>
@@ -366,11 +366,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
         channels: state.channels[0].channel,
-        fader: state.faders[0].fader[props.channelIndex],
+        fader: state.faders[0].fader[props.faderIndex],
         settings: state.settings[0],
-        channelType: 0, /*state.channels[0].channel[props.channelIndex].channelType, */
-        channelTypeIndex: props.channelIndex ,/* state.channels[0].channel[props.channelIndex].channelTypeIndex, */
-        snapOn: state.faders[0].fader[props.channelIndex].snapOn.map((item: number) => {return item}),
+        channelType: 0, /* TODO: state.channels[0].channel[props.channelIndex].channelType, */
+        channelTypeIndex: props.faderIndex ,/* TODO: state.channels[0].channel[props.channelIndex].channelTypeIndex, */
+        snapOn: state.faders[0].fader[props.faderIndex].snapOn.map((item: number) => {return item}),
     }
 }
 

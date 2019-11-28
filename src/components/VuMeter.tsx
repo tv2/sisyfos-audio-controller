@@ -15,7 +15,7 @@ export interface IVuMeterInjectedProps {
 }
 
 interface IVuMeterProps {
-    channelIndex: number
+    faderIndex: number
 }
 
 export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
@@ -162,7 +162,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
 const mapStateToProps = (state: any, props: any): IVuMeterInjectedProps => {
     return {
-        vuVal: state.faders[0].vuMeters[props.channelIndex].vuVal,
+        vuVal: state.faders[0].vuMeters[props.faderIndex].vuVal,
         mixerProtocol: state.settings[0].mixerProtocol,
         showSnaps: state.settings[0].showSnaps
     }

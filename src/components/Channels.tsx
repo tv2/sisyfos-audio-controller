@@ -146,7 +146,7 @@ class Channels extends React.Component<IAppProps & Store> {
             }
             {this.props.store.faders[0].fader.map((none: any, index: number) => {
                 return <Channel
-                            channelIndex = {index}
+                            faderIndex = {index}
                             key={index}
                         />
                 })
