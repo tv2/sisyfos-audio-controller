@@ -24,26 +24,17 @@ import {
     TOGGLE_SHOW_CHAN_STRIP,
     TOGGLE_SHOW_OPTION
 } from '../reducers/settingsActions'
+import { IFader } from '../reducers/fadersReducer';
+import { IChannels } from '../reducers/channelsReducer';
+import { ISettings } from '../reducers/settingsReducer';
 
 interface IChannelInjectProps {
-    pgmOn: boolean,
-    voOn: boolean,
-    pstOn: boolean,
-    pstVoOn: boolean,
-    pflOn: boolean,
-    muteOn: boolean,
+    channels: IChannels 
+    fader: IFader
+    settings: ISettings
     channelType: number,
     channelTypeIndex: number,
-    showChannel: boolean,
-    showChanStrip: boolean,
-    faderLevel: number,
-    label: string,
     snapOn: boolean[],
-    mixerProtocol: string,
-    showSnaps: boolean,
-    automationMode: boolean,
-    offtubeMode: boolean,
-    showPfl: boolean,
 }
 
 interface IChannelProps {
@@ -58,7 +49,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     constructor(props: any) {
         super(props);
         this.channelIndex = this.props.channelIndex;
-        this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol] || MixerProtocolPresets.genericMidi;
+        this.mixerProtocol = MixerProtocolPresets[this.props.settings.mixerProtocol] || MixerProtocolPresets.genericMidi;
     }
 
     public shouldComponentUpdate(nextProps: IChannelInjectProps) {
@@ -69,16 +60,16 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             }
         })
         return (
-            nextProps.pgmOn != this.props.pgmOn ||
-            nextProps.pstOn != this.props.pstOn ||
-            nextProps.pflOn != this.props.pflOn ||
-            nextProps.showChannel != this.props.showChannel ||
-            nextProps.faderLevel != this.props.faderLevel ||
-            nextProps.label != this.props.label ||
-            nextProps.mixerProtocol != this.props.mixerProtocol ||
-            nextProps.showSnaps != this.props.showSnaps ||
-            nextProps.showPfl != this.props.showPfl ||
-            nextProps.showChanStrip != this.props.showChanStrip ||
+            nextProps.fader.pgmOn != this.props.fader.pgmOn ||
+            nextProps.fader.pstOn != this.props.fader.pstOn ||
+            nextProps.fader.pflOn != this.props.fader.pflOn ||
+            nextProps.fader.showChannel != this.props.fader.showChannel ||
+            nextProps.fader.faderLevel != this.props.fader.faderLevel ||
+            nextProps.fader.label != this.props.fader.label ||
+            nextProps.settings.mixerProtocol != this.props.settings.mixerProtocol ||
+            nextProps.settings.showSnaps != this.props.settings.showSnaps ||
+            nextProps.settings.showPfl != this.props.settings.showPfl ||
+            nextProps.settings.showChanStrip != this.props.settings.showChanStrip ||
             snapChanged
         )
     }
@@ -173,8 +164,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     fader() {
-        let thumb = 'channel-volume-thumb' + (this.props.pgmOn ? '-color-pgm' : '') +  (this.props.voOn ? '-color-vo' : '')
-        if (this.props.muteOn) {
+        let thumb = 'channel-volume-thumb' + (this.props.fader.pgmOn ? '-color-pgm' : '') +  (this.props.fader.voOn ? '-color-vo' : '')
+        if (this.props.fader.muteOn) {
             thumb = 'channel-volume-thumb-color-mute'
         }
         return (
@@ -186,7 +177,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 min={0}
                 max={1}
                 step={0.01}
-                value= {this.props.faderLevel}
+                value= {this.props.fader.faderLevel}
                 onChange={(event: any) => {
                     this.handleLevel(event);
                 }}
@@ -200,14 +191,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
             <button
                 className={ClassNames("channel-pgm-button", {
-                    'on': this.props.pgmOn,
-                    'mute': this.props.muteOn
+                    'on': this.props.fader.pgmOn,
+                    'mute': this.props.fader.muteOn
                 })}
                 onClick={event => {
                     this.handlePgm();
                 }}
             >
-                {this.props.label != "" ? this.props.label : ("CH " + (this.channelIndex + 1)) }
+                {this.props.fader.label != "" ? this.props.fader.label : ("CH " + (this.channelIndex + 1)) }
             </button>
         )
     }
@@ -218,8 +209,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
             <button
                 className={ClassNames("channel-vo-button", {
-                    'on': this.props.voOn,
-                    'mute': this.props.muteOn,
+                    'on': this.props.fader.voOn,
+                    'mute': this.props.fader.muteOn,
                 })}
                 onClick={event => {
                     this.handleVo();
@@ -234,14 +225,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         return (
             <button
                 className={ClassNames("channel-pst-button", {
-                    'on': this.props.pstOn,
-                    'vo': this.props.pstVoOn
+                    'on': this.props.fader.pstOn,
+                    'vo': this.props.fader.pstVoOn
                 })}
                 onClick={event => {
                     this.handlePst();
                 }}
             >
-            {this.props.automationMode ? 
+            {this.props.settings.automationMode ? 
                 <React.Fragment>
                     CUE NEXT
                 </React.Fragment>
@@ -258,13 +249,13 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         return (
             <button
                 className={ClassNames("channel-strip-button", {
-                    'on': this.props.showChanStrip
+                    'on': this.props.settings.showChanStrip
                 })}
                 onClick={event => {
                     this.handleShowChanStrip();
                 }}
             >
-            {this.props.label != "" ? this.props.label : (this.mixerProtocol.channelTypes[this.props.channelType].channelTypeName + " " + (this.props.channelTypeIndex + 1)) }
+            {this.props.fader.label != "" ? this.props.fader.label : (this.mixerProtocol.channelTypes[this.props.channelType].channelTypeName + " " + (this.props.channelTypeIndex + 1)) }
             </button>
         )
     }
@@ -273,7 +264,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         return (
             <button
                 className={ClassNames("channel-pfl-button", {
-                    'on': this.props.pflOn
+                    'on': this.props.fader.pflOn
                 })}
                 onClick={event => {
                     this.handlePfl();
@@ -286,7 +277,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         return (
             <button
                 className={ClassNames("channel-mute-button", {
-                    'on': this.props.muteOn
+                    'on': this.props.fader.muteOn
                 })}
                 onClick={event => {
                     this.handleMute();
@@ -299,7 +290,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
 
     snapButton = (snapIndex: number) => {
-        if (this.props.showSnaps) {
+        if (this.props.settings.showSnaps) {
             return (
                 <div key={snapIndex} className="channel-snap-line">
                     <button
@@ -320,15 +311,15 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     render() {
         return (
-        this.props.showChannel === false ?
+        this.props.fader.showChannel === false ?
             null
             :
             <div
                 className={
                     ClassNames("channel-body", {
-                    "with-snaps": this.props.showSnaps,
-                    "with-pfl": this.props.showPfl,
-                    "mute-on": this.props.muteOn
+                    "with-snaps": this.props.settings.showSnaps,
+                    "with-pfl": this.props.settings.showPfl,
+                    "mute-on": this.props.fader.muteOn
                 })}>
                 {this.muteButton()}
                 <br/>
@@ -338,7 +329,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 <br/>
                 {this.pgmButton()}
                 <br/>
-                {this.props.automationMode ?
+                {this.props.settings.automationMode ?
                     <React.Fragment>
                         {this.voButton()}
                         <br />
@@ -349,7 +340,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     {this.pstButton()}
                     <br/>
                 </React.Fragment>
-                {this.props.showPfl ?
+                {this.props.settings.showPfl ?
                     <React.Fragment>
                         {this.pflButton()}
                         <br />
@@ -374,24 +365,12 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
-        pgmOn: state.faders[0].fader[props.channelIndex].pgmOn,
-        voOn: state.faders[0].fader[props.channelIndex].voOn,
-        pstOn: state.faders[0].fader[props.channelIndex].pstOn,
-        pstVoOn: state.faders[0].fader[props.channelIndex].pstVoOn,
-        pflOn: state.faders[0].fader[props.channelIndex].pflOn,
-        muteOn: state.faders[0].fader[props.channelIndex].muteOn,
-        showChannel: state.faders[0].fader[props.channelIndex].showChannel,
-        faderLevel: state.faders[0].fader[props.channelIndex].faderLevel,
+        channels: state.channels[0].channel,
+        fader: state.faders[0].fader[props.channelIndex],
+        settings: state.settings[0],
         channelType: 0, /*state.channels[0].channel[props.channelIndex].channelType, */
         channelTypeIndex: props.channelIndex ,/* state.channels[0].channel[props.channelIndex].channelTypeIndex, */
-        label: state.faders[0].fader[props.channelIndex].label,
         snapOn: state.faders[0].fader[props.channelIndex].snapOn.map((item: number) => {return item}),
-        mixerProtocol: state.settings[0].mixerProtocol,
-        automationMode: state.settings[0].automationMode,
-        offtubeMode: state.settings[0].offtubeMode,
-        showSnaps: state.settings[0].showSnaps,
-        showChanStrip: state.settings[0].showChanStrip,
-        showPfl: state.settings[0].showPfl,
     }
 }
 
