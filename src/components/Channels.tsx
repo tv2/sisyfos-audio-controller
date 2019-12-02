@@ -17,30 +17,37 @@ import {
     TOGGLE_SHOW_SNAPS,
     TOGGLE_SHOW_STORAGE
 } from '../reducers/settingsActions'
-import { IAppProps } from './App';
 import ChannelRouteSettings from './ChannelRouteSettings';
 import ChanStrip from './ChanStrip'
 import ChannelMonitorOptions from './ChannelMonitorOptions';
+import { IChannels } from '../reducers/channelsReducer';
+import { IFader } from '../reducers/fadersReducer';
+import { ISettings } from '../reducers/settingsReducer';
 const { dialog } = require('electron').remote;
 
+interface IChannelsInjectProps {
+    channels: IChannels 
+    faders: IFader[]
+    settings: ISettings
+}
 
-class Channels extends React.Component<IAppProps & Store> {
+class Channels extends React.Component<IChannelsInjectProps & Store> {
     constructor(props: any) {
         super(props);
-        this.props.store.settings[0].showChanStrip = -1
-        this.props.store.settings[0].showMonitorOptions = -1
+        this.props.settings.showChanStrip = -1
+        this.props.settings.showMonitorOptions = -1
     }
 
-    public shouldComponentUpdate(nextProps: IAppProps) {
-        return this.props.store.settings[0].showOptions !== nextProps.store.settings[0].showOptions 
-        || this.props.store.settings[0].showChanStrip !== nextProps.store.settings[0].showChanStrip
-        || this.props.store.settings[0].showMonitorOptions !== nextProps.store.settings[0].showMonitorOptions
-        || this.props.store.settings[0].mixerOnline !== nextProps.store.settings[0].mixerOnline;
+    public shouldComponentUpdate(nextProps: IChannelsInjectProps) {
+        return this.props.settings.showOptions !== nextProps.settings.showOptions 
+        || this.props.settings.showChanStrip !== nextProps.settings.showChanStrip
+        || this.props.settings.showMonitorOptions !== nextProps.settings.showMonitorOptions
+        || this.props.settings.mixerOnline !== nextProps.settings.mixerOnline;
     }
 
 
     handleMix() {
-        if (this.props.store.settings[0].automationMode) {
+        if (this.props.settings.automationMode) {
             this.props.dispatch({
                 type: NEXT_MIX
             });
@@ -129,24 +136,24 @@ class Channels extends React.Component<IAppProps & Store> {
     render() {
         return (
         <div className="channels-body">
-            {(typeof this.props.store.settings[0].showOptions === 'number') ?
-                <ChannelRouteSettings faderIndex={this.props.store.settings[0].showOptions}/>
+            {(typeof this.props.settings.showOptions === 'number') ?
+                <ChannelRouteSettings faderIndex={this.props.settings.showOptions}/>
                 :
                 null
             }
-            {(this.props.store.settings[0].showChanStrip >= 0) ?
-                <ChanStrip faderIndex={this.props.store.settings[0].showChanStrip}/>
+            {(this.props.settings.showChanStrip >= 0) ?
+                <ChanStrip faderIndex={this.props.settings.showChanStrip}/>
                 :
                 null
             }
-            {(this.props.store.settings[0].showMonitorOptions >= 0) ?
-                <ChannelMonitorOptions faderIndex={this.props.store.settings[0].showMonitorOptions}/>
+            {(this.props.settings.showMonitorOptions >= 0) ?
+                <ChannelMonitorOptions faderIndex={this.props.settings.showMonitorOptions}/>
                 :
                 null
             }
-            {this.props.store.faders[0].fader.map((none: any, index: number) => {
+            {this.props.faders.map((none: any, index: number) => {
                 return <Channel
-                            channelIndex = {index}
+                            faderIndex = {index}
                             key={index}
                         />
                 })
@@ -156,15 +163,15 @@ class Channels extends React.Component<IAppProps & Store> {
                 <button
                     className={
                         ClassNames("channels-show-mixer-online", {
-                        "connected": this.props.store.settings[0].mixerOnline
+                        "connected": this.props.settings.mixerOnline
                     })}
                     onClick={() => {
                         this.handleReconnect();
                     }}
-                >{this.props.store.settings[0].mixerOnline ? 'MIXER ONLINE' : 'RECONNECT'}</button>
+                >{this.props.settings.mixerOnline ? 'MIXER ONLINE' : 'RECONNECT'}</button>
                 
-                {(this.props.store.settings[0].automationMode ||
-                  this.props.store.settings[0].offtubeMode) ?
+                {(this.props.settings.automationMode ||
+                  this.props.settings.offtubeMode) ?
                     null 
                     : <React.Fragment>
                         {<button
@@ -209,8 +216,8 @@ class Channels extends React.Component<IAppProps & Store> {
                 </button>}
                 <br />
 
-                {(this.props.store.settings[0].automationMode ||
-                  this.props.store.settings[0].offtubeMode) ?
+                {(this.props.settings.automationMode ||
+                  this.props.settings.offtubeMode) ?
                     null 
                     : <React.Fragment>
                         <div className="channels-snap-mix-body">
@@ -232,10 +239,12 @@ class Channels extends React.Component<IAppProps & Store> {
 }
 
 
-const mapStateToProps = (state: any): IAppProps => {
+const mapStateToProps = (state: any):  IChannelsInjectProps => {
     return {
-        store: state
+        channels: state.channels[0].channel,
+        faders: state.faders[0].fader,
+        settings: state.settings[0]
     }
 }
 
-export default connect<IAppProps, any, any>(mapStateToProps)(Channels);
+export default connect<IChannelsInjectProps, any, any>(mapStateToProps)(Channels);
