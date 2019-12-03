@@ -3,11 +3,10 @@ import React from 'react';
 import '../assets/css/RoutingStorage.css';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import * as fs from 'fs'
-import * as electron from 'electron'
 import { TOGGLE_SHOW_STORAGE } from '../reducers/settingsActions'
 
-const { dialog } = require('electron').remote;
+// Node modules:
+const fs = window.fs
 
 interface IStorageProps {
     load: any
@@ -24,7 +23,7 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         this.load = this.props.load
         this.save = this.props.save
 
-        this.path = electron.remote.app.getPath('userData');
+        this.path = window.getPath('userData');
 
         this.updateFilelist()
 
@@ -55,7 +54,7 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
             title: 'Save Current Setup',
             message: 'Stores the current state of Sisyfos - including Fader-Channel Routing',
         };
-        let response = dialog.showSaveDialogSync(options)
+        let response = window.dialog.showSaveDialogSync(options)
         if (response) {
             console.log('SAVING THIS FILE :', response)
             this.save(response)
@@ -71,7 +70,7 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
             title: 'Load Routing',
             message: 'Load "' + event.target.textContent + '" Routing',
         };
-        let response = dialog.showMessageBoxSync(options)
+        let response = window.dialog.showMessageBoxSync(options)
         if (!response) {
             console.log('Loading files')
             this.load(this.path + '/' + event.target.textContent, false)

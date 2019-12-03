@@ -36,7 +36,7 @@ class App extends React.Component<IAppProps> {
         if (this.props.store.settings[0].enableRemoteFader){
             (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         }
-        this.settingsPath = electron.remote.app.getPath('userData');
+        this.settingsPath = window.getPath('userData');
 
         this.snapShopStoreTimer();
         let selectedProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];

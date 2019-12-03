@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import '../assets/css/VuMeter.css';
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { IMixerProtocol, IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
-import { any } from 'prop-types';
+import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 
 export interface IVuMeterInjectedProps {
     showSnaps: boolean

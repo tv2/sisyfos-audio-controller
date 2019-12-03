@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import CcgChannelSettings from './CcgChannelSettings';
 import { SET_ASSIGNED_FADER } from '../reducers/channelActions'
 import { TOGGLE_SHOW_OPTION } from '../reducers/settingsActions'
-const { dialog } = require('electron').remote;
 
 interface IChannelSettingsInjectProps {
     label: string,
@@ -52,7 +51,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                 title: 'Unlock Channel',
                 message: 'Unbind Channel ' + String(channel + 1) + ' from Fader ' + String(this.faderIndex + 1),
             };
-            let response = dialog.showMessageBoxSync(options)
+            let response = window.dialog.showMessageBoxSync(options)
             if (response === 1) {
                 return true
             }
@@ -70,7 +69,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                 message: 'Bind Channel ' + String(channel + 1) + ' to Fader ' + String(this.faderIndex + 1) + '?',
                 detail: detail,
             };
-            let response = dialog.showMessageBoxSync(options)
+            let response = window.dialog.showMessageBoxSync(options)
 
             if (response === 1) {
                 return true
@@ -93,7 +92,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
             message: 'WARNING!!!!!',
             detail: 'This will remove all Fader-Channel assignments',
         };
-        let response = dialog.showMessageBoxSync(options)
+        let response = window.dialog.showMessageBoxSync(options)
         if (response === 0) {
             this.props.channel.forEach((channel: any, index: number) => {
                 this.props.dispatch({
@@ -115,7 +114,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
             message: 'WARNING!!!!!',
             detail: 'This will reassign all Faders 1:1 to Channels',
         };
-        let response = dialog.showMessageBoxSync(options)
+        let response = window.dialog.showMessageBoxSync(options)
         if (response === 0) {
             this.props.fader.forEach((fader: any, index: number) => {
                 if (this.props.channel.length > index) {

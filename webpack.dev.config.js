@@ -10,17 +10,14 @@ module.exports = {
     module: {
         rules: [
         {
-            test: /\.css$/,
-            use: [
-                { loader: 'style-loader' },
-                { loader: 'css-loader' },
-                { loader: 'postcss-loader' }
-            ],
-            include: defaultInclude
+            test:/\.css$/,
+            use:['style-loader', 'css-loader']
         },
         {
             test: /\.(tsx?|ts)$/,
-            use: [{ loader: 'babel-loader' }],
+            use: [
+                { loader: 'babel-loader' }
+            ],
             include: defaultInclude
         },
         {
@@ -38,16 +35,17 @@ module.exports = {
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
-    target: 'electron-renderer',
+    target: 'web',
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Sisyfos Audio Controller'
+            template: './src/index.ejs',
+            inject: true
         }),
         new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('development')
         })
     ],
-    devtool: 'cheap-source-map',
+    devtool: 'inline-source-map',
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
         stats: {
@@ -64,5 +62,8 @@ module.exports = {
         .on('close', code => process.exit(0))
         .on('error', spawnError => console.error(spawnError))
         }
-    }
+    },
+    externals: {
+        fs: require("fs"),
+    },
 }

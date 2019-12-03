@@ -1,6 +1,5 @@
 //Node Modules:
-import * as os from 'os'; // Used to display (log) network addresses on local machine
-import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
+import WebMidi from 'webmidi';
 
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';

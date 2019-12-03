@@ -1,6 +1,5 @@
 //Node Modules:
-import os from 'os'; // Used to display (log) network addresses on local machine
-import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
+import WebMidi from 'webmidi';
 import { 
     SET_FADER_LEVEL, 
     TOGGLE_PGM,
@@ -10,10 +9,8 @@ import {
 //Utils:
 import { IRemoteProtocol,
     RemoteFaderPresets,
-    IMidiSendMessage,
-    MidiSendTypes,
-    IMidiReceiveMessage,
-    MidiReceiveTypes } from '../constants/RemoteFaderPresets';
+    MidiReceiveTypes 
+} from '../constants/RemoteFaderPresets';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 export class HuiMidiRemoteConnection {

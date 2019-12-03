@@ -1,6 +1,5 @@
 //Node Modules:
-import os from 'os'; // Used to display (log) network addresses on local machine
-import osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
+const osc = window.osc
 
 //Utils:
 import { IAutomationProtocol, AutomationPresets } from '../constants/AutomationPresets';

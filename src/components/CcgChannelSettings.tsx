@@ -2,10 +2,9 @@ import React from 'react';
 
 import '../assets/css/CcgChannelSettings.css';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
+import { ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { IStore } from '../reducers/indexReducer';
 import { SET_OPTION } from  '../reducers/channelActions'
 import { TOGGLE_SHOW_OPTION } from '../reducers/settingsActions'
 

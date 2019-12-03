@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from "react-redux";
 import Select from 'react-select';
-import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
+import WebMidi from 'webmidi';
 import { IAppProps } from './App';
 
 

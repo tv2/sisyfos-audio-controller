@@ -1,7 +1,7 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 import path from 'path';
 import os from 'os';
-import fs from 'fs';
+const fs = window.fs
 
 export const LawoClient: IMixerProtocol = {
     protocol: 'EMBER',

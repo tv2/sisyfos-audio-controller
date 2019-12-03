@@ -32,7 +32,8 @@ function createWindow() {
     // frame: false,
     show: false,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: false,
+      preload: path.join(__dirname, 'preload.js')
     }
   })
 

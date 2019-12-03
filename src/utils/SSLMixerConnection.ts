@@ -1,5 +1,5 @@
 //Node Modules:
-import * as net from 'net'
+const net = window.net
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface'

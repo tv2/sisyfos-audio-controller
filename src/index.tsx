@@ -11,12 +11,20 @@ import { UPDATE_SETTINGS } from './reducers/settingsActions'
 //Utils:
 import { loadSettings } from './utils/SettingsStorage';
 
+
 declare global {
     interface Window {
         storeRedux: any
         mixerGenericConnection: any
         automationConnection: any
         huiRemoteConnection: any
+        fs: any
+        osc: any
+        net: any
+        emberplus: any
+        casparcgconnection: any
+        dialog: any
+        getPath: any
     }
 }
 

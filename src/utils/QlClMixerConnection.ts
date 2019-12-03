@@ -1,6 +1,5 @@
 //Node Modules:
-import * as os from 'os'; // Used to display (log) network addresses on local machine
-import * as net from 'net'
+const net = window.net
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface'

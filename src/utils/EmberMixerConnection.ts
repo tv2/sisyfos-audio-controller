@@ -1,10 +1,10 @@
-import { DeviceTree, QualifiedParameter } from 'emberplus';
+import { remote } from 'electron'
+const DeviceTree = window.emberplus
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
 import { 
-    SET_VU_LEVEL, 
     SET_FADER_LEVEL, 
     SET_CHANNEL_LABEL 
 } from '../reducers/faderActions'

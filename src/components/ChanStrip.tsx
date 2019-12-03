@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import ReactSlider from 'react-slider'
 
 import '../assets/css/ChanStrip.css';
@@ -12,7 +12,7 @@ import {
     TOGGLE_SHOW_MONITOR_OPTIONS
  } from '../reducers/settingsActions'
 import { IFader } from '../reducers/fadersReducer'
-import { SET_FADER_LEVEL, SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH, SET_FADER_MONITOR } from '../reducers/faderActions'
+import { SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from '../reducers/faderActions'
 import { SET_AUX_LEVEL } from '../reducers/channelActions';
 
 interface IChanStripInjectProps {

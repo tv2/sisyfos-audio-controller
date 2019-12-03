@@ -1,7 +1,9 @@
+// Node Modules:
+import { remote } from 'electron'
+const fs = window.fs
+const folder = window.getPath('userData');
 
-const fs = require('fs');
-const electron = require('electron');
-const folder = electron.remote.app.getPath('userData');
+// Redux:
 import { SET_COMPLETE_CH_STATE } from '../reducers/channelActions'
 import { SET_COMPLETE_FADER_STATE } from  '../reducers/faderActions'
 

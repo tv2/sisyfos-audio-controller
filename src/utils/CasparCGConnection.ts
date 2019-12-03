@@ -1,11 +1,9 @@
 //Node Modules:
-import * as os from 'os'; // Used to display (log) network addresses on local machine
-import { CasparCG } from 'casparcg-connection';
-import * as osc from 'osc';
+const osc = window.osc
+const CasparCG = window.casparcgconnection
 
 //Utils:
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { IMixerProtocol, ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolInterface';
+import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
 import { IChannel } from '../reducers/channelsReducer';
 import { SET_PRIVATE } from  '../reducers/channelActions'
@@ -27,8 +25,8 @@ const OSC_PATH_PRODUCER_CHANNEL_LAYOUT = /\/channel\/(\d+)\/stage\/layer\/(\d+)\
 export class CasparCGConnection {
     store: IStore;
     mixerProtocol: ICasparCGMixerGeometry;
-    connection: CasparCG;
-    oscClient: osc.UDPPort | undefined;
+    connection: any;
+    oscClient: any;
     oscCommandMap: { [key: string]: CommandChannelMap } = {};
 
     constructor(mixerProtocol: ICasparCGMixerGeometry) {
@@ -74,7 +72,7 @@ export class CasparCGConnection {
             .on('ready', () => {
                 console.log("Receiving state of mixer");
             })
-            .on('message', (message: osc.OSCMessage) => {
+            .on('message', (message: any) => {
                 const index = this.checkOscCommand(message.address, this.oscCommandMap.CHANNEL_VU)
                 if (index !== undefined && message.args) {
                     window.storeRedux.dispatch({
@@ -178,7 +176,7 @@ export class CasparCGConnection {
     private syncCommand = Promise.resolve()
     controlVolume = (channel: number, layer: number, value: number) => {
         this.syncCommand = this.syncCommand.then(() =>
-            this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e) => {
+            this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e: any) => {
                 console.error('Failed to send command', e);
             })
         ).then(() => { })
@@ -221,7 +219,7 @@ export class CasparCGConnection {
             return Promise.reject('Unknown operation');
         }).then(() => {
 
-        }).catch((e) => {
+        }).catch((e: any) => {
             console.error('Failed to change channel setting', e);
         })
     }
