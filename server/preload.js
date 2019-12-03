@@ -13,6 +13,7 @@ global.emberplus = remote.require('emberplus')
 global.casparcgconnection = remote.require('casparcg-connection')
 global.dialog = dialog
 global.getPath = getPath
+//global.SettingsStorage = './utils/SettingsStorage.ts'
 
 
 console.log('PreLoad executed')

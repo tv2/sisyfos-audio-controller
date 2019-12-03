@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      // Target latest version of ECMAScript.
+      "target": "esnext",
+      // Search under node_modules for non-relative imports.
+      "moduleResolution": "node",
+      // Process & infer types from .js files.
+      "allowJs": false,
+      // Enable strictest settings like strictNullChecks & noImplicitAny.
+      "strict": false,
+      // Disallow features that require cross-file information for emit.
+      "isolatedModules": false,
+      // Import non-ES modules as default imports.
+      "esModuleInterop": true,
+      // Check for "any" while converting to TS this can be turned off.
+      "noImplicitAny": false,
+      "module": "commonjs",
+      "outDir": "../dist/server/"
+    },
+    "include": [
+      "*"
+  ]
+}
