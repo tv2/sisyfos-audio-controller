@@ -29,7 +29,7 @@ function createWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: false,
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, '/../../preload.js')
     }
   })
 

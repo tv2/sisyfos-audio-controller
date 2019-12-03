@@ -25,7 +25,7 @@
         "npm": ">=5.0.0",
         "yarn": ">=1.0.0"
     },
-    "main": "server/main.js",
+    "main": "dist/server/main.js",
     "scripts": {
         "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
         "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
