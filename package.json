@@ -29,8 +29,8 @@
     "scripts": {
         "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
         "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
-        "build": "yarn tsc && webpack --config webpack.build.config.js --mode production",
-        "build-now": "webpack --config webpack.build.config.js --mode production",
+        "build": "yarn tsc -p server/tsconfig.json && yarn tsc && webpack --config webpack.build.config.js --mode development",
+        "build-now": "yarn tsc -p server/tsconfig.json && webpack --config webpack.build.config.js --mode production",
         "package": "yarn run build",
         "postpackage": "electron-packager --overwrite ./ --out=./builds --overwrite",
         "package-linux": "electron-packager . sisyfos-audio-controller --overwrite --asar --platform=linux --arch=x64  --prune=true --out=builds",

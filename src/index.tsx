@@ -25,9 +25,9 @@ declare global {
         casparcgconnection: any
         dialog: any
         getPath: any
+        ipcRenderer: any
     }
 }
-
 
 const storeRedux = createStore(
     indexReducer

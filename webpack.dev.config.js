@@ -36,6 +36,10 @@ module.exports = {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
     target: 'web',
+    output: {
+        // NB: Can also be "window", etc.
+        libraryTarget: "var"
+      },
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.ejs',

@@ -31,11 +31,16 @@ module.exports = {
   },
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ]
-},
-  target: 'electron-renderer',
+  },
+  output: {
+    // NB: Can also be "window", etc.
+    libraryTarget: "var"
+  },
+  target: 'web',
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Sisyfos Audio Controller'
+      template: './src/index.ejs',
+      inject: true
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
@@ -46,5 +51,8 @@ module.exports = {
     children: false,
     chunks: false,
     modules: false
+  },
+  externals: {
+    fs: require("fs"),
   }
 }

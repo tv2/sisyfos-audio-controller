@@ -1,7 +1,7 @@
 // Node Modules:
-import { remote } from 'electron'
+import { app } from 'electron'
 const fs = require('fs')
-const folder = remote.app.getPath('userData');
+const folder = app.getPath('userData');
 
 // Redux:
 import { SET_COMPLETE_CH_STATE } from '../../src/reducers/channelActions'
@@ -9,6 +9,7 @@ import { SET_COMPLETE_FADER_STATE } from  '../../src/reducers/faderActions'
 
 
 export const loadSettings = (storeRedux: any) => {
+    console.log('SETTINGS IS LOADING')
     let settingsInterface = storeRedux.settings[0];
     try {
         const settingsFromFile = JSON.parse(fs.readFileSync(folder + "/settings.json"));

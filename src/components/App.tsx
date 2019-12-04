@@ -38,6 +38,13 @@ class App extends React.Component<IAppProps> {
         }
         this.settingsPath = window.getPath('userData');
 
+        window.ipcRenderer.on('to-renderer', (
+            (event: any, payload: any) => { 
+                console.log('Data received', payload)
+            })
+        )
+        window.ipcRenderer.send('from-renderer', 'Data to main process');
+
         this.snapShopStoreTimer();
         let selectedProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
         selectedProtocol.channelTypes.forEach((item, index) => {

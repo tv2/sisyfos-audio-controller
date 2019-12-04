@@ -1,7 +1,8 @@
 'use strict'
 
 // Import parts of electron to use
-const { app, BrowserWindow } = require('electron')
+import { app, BrowserWindow, ipcMain } from 'electron'
+import { MainThreadHandlers } from './startServerSide'
 const path = require('path')
 const url = require('url')
 
@@ -19,8 +20,21 @@ if (process.platform === 'win32') {
   app.commandLine.appendSwitch('force-device-scale-factor', '1')
 }
 
+
+
+console.log('Get ready for receiving ipc messages')
+
+// Event handler for incoming messages
+ipcMain.on('from-renderer', (event, arg) => {
+  console.log('MAIN RECEIVE :', arg)
+
+  // Event emitter for sending asynchronous messages
+  event.reply('to-renderer', 'response from main thread')
+})
+
 function createWindow() {
-  // Create the browser window.
+
+  // Define the browser window.
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 955,
@@ -51,7 +65,15 @@ function createWindow() {
     })
   }
 
+
   mainWindow.loadURL(indexPath)
+
+  // initiate 
+  mainWindow.webContents.on('did-finish-load', () => {
+    let mainHandler = new MainThreadHandlers
+
+    mainWindow.webContents.send('to-renderer', 'Message to renderer - Main window ready to show')
+  })
 
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
