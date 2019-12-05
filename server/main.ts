@@ -67,13 +67,10 @@ function createWindow() {
 
 
   mainWindow.loadURL(indexPath)
-
   // initiate 
   mainWindow.webContents.on('did-finish-load', () => {
-    let mainHandler = new MainThreadHandlers
-
-    mainWindow.webContents.send('to-renderer', 'Message to renderer - Main window ready to show')
-  })
+      let mainHandler = new MainThreadHandlers(mainWindow.webContents);
+  });
 
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {
