@@ -2,6 +2,7 @@ import { createStore } from 'redux'
 import indexReducer from './reducers/indexReducer';
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import { loadSettings } from './utils/SettingsStorage'
+import { MainApp } from './components/MainApp'
 
 export class MainThreadHandlers {
     webContents: any
@@ -9,29 +10,32 @@ export class MainThreadHandlers {
 
     constructor(webContents: any) {
         this. webContents = webContents
-        const storeRedux = createStore(
+        global.storeRedux = createStore(
             indexReducer
         );
-        // @ts-ignore
-        global.storeRedux = storeRedux;
         
         
-        storeRedux.dispatch({
+        global.storeRedux.dispatch({
             type:UPDATE_SETTINGS,
-            settings: loadSettings(storeRedux.getState())
+            settings: loadSettings(global.storeRedux.getState())
         });
         //Get redux store:
-        this.store = storeRedux.getState();
-        const unsubscribe = storeRedux.subscribe(() => {
-            this.store = storeRedux.getState();
+        this.store = global.storeRedux.getState();
+        const unsubscribe = global.storeRedux.subscribe(() => {
+            this.store = global.storeRedux.getState();
         });
-        this.ipcHandler()
     }
 
     ipcHandler() {
-          // initiate 
+        // initiate 
+        this.webContents.on('get-settings', (
+            (event: any, payload: any) => { 
+                console.log('Data received', payload)
+                event.reply('get-settings', loadSettings(this.store.getState()))
+            })
+        )
+        this.webContents.send('get-settings', 'Start up ipcHandlers')
         this.webContents.send('to-renderer', 'Start up ipcHandlers')
-        this.webContents.send('settings', this.store.settings[0])
-        
+        let app = new MainApp(this.webContents)
     }
 }

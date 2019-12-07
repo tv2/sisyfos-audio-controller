@@ -32,14 +32,14 @@ export const saveSettings = (settings: any) => {
 export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any, numberOfChannels: Array<number>, numberOfFaders: number, fileName: string, loadAll: boolean) => {
     try {
         const stateFromFile = JSON.parse(fs.readFileSync(fileName));
-        /*
+        
         if (loadAll) {
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type:SET_COMPLETE_FADER_STATE,
                 allState: stateFromFile.faderState,
                 numberOfTypeChannels: numberOfFaders
             });
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type: SET_COMPLETE_CH_STATE,
                 allState: stateFromFile.channelState,
                 numberOfTypeChannels: numberOfChannels
@@ -60,18 +60,18 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
                 return fader
             })
 
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type: SET_COMPLETE_FADER_STATE,
                 allState: stateSnapshot,
                 numberOfTypeChannels: numberOfFaders
             });
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type:SET_COMPLETE_CH_STATE,
                 allState: stateChannelSnapshot,
                 numberOfTypeChannels: numberOfChannels
             });
         }
-        */
+        
     }
     catch (error) {
         console.log("Error loading Snapshot");

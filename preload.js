@@ -5,7 +5,6 @@ const { ipcRenderer } = require('electron')
 const { dialog } = require('electron').remote
 const { getPath } = require('electron').remote.app
 
-
 global.aaaasper = 'IT´s preloaded'
 global.fs = remote.require('fs')
 global.osc = remote.require('osc')
@@ -15,6 +14,7 @@ global.casparcgconnection = remote.require('casparcg-connection')
 global.dialog = dialog
 global.getPath = getPath
 global.ipcRenderer = ipcRenderer
+
 //global.SettingsStorage = './utils/SettingsStorage.ts'
 
 

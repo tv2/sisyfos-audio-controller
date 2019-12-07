@@ -29,6 +29,7 @@ declare global {
     }
 }
 
+
 const storeRedux = createStore(
     indexReducer
 );

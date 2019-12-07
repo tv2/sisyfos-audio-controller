@@ -1,14 +1,20 @@
-'use strict'
-
 // Import parts of electron to use
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { MainThreadHandlers } from './startServerSide'
 const path = require('path')
 const url = require('url')
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow: any
+declare global {
+  namespace NodeJS {
+      interface Global {
+          storeRedux: any
+          mixerGenericConnection: any
+          automationConnection: any
+          huiRemoteConnection: any
+      }
+  }
+}
+
 
 // Keep a reference for dev mode
 let dev = true
@@ -21,21 +27,8 @@ if (process.platform === 'win32') {
 }
 
 
-
-console.log('Get ready for receiving ipc messages')
-
-// Event handler for incoming messages
-ipcMain.on('from-renderer', (event, arg) => {
-  console.log('MAIN RECEIVE :', arg)
-
-  // Event emitter for sending asynchronous messages
-  event.reply('to-renderer', 'response from main thread')
-})
-
-function createWindow() {
-
   // Define the browser window.
-  mainWindow = new BrowserWindow({
+  let mainWindow = new BrowserWindow({
     width: 1024,
     height: 955,
     fullscreen: true,
@@ -46,6 +39,18 @@ function createWindow() {
       preload: path.join(__dirname, '/../../preload.js')
     }
   })
+
+// Event handler for incoming messages
+ipcMain.on('from-renderer', (event, arg) => {
+  console.log('MAIN RECEIVE :', arg)
+
+  // Event emitter for sending asynchronous messages
+  event.reply('to-renderer', 'response from main thread')
+})
+
+let mainHandler = new MainThreadHandlers(mainWindow.webContents);
+
+function createWindow() {
 
   // and load the index.html of the app.
   let indexPath
@@ -69,7 +74,7 @@ function createWindow() {
   mainWindow.loadURL(indexPath)
   // initiate 
   mainWindow.webContents.on('did-finish-load', () => {
-      let mainHandler = new MainThreadHandlers(mainWindow.webContents);
+      mainHandler.ipcHandler()
   });
 
   // Don't show until we are ready and loaded
