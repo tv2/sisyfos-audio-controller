@@ -70,7 +70,7 @@ class App extends React.Component<IAppProps> {
                     faderState: this.props.store.faders[0],
                     channelState: this.props.store.channels[0]
                 }
-                saveSnapshotState(snapshot, this.settingsPath + '/default.shot');
+                //saveSnapshotState(snapshot, this.settingsPath + '/default.shot');
             },
             2000);
     }
@@ -91,7 +91,7 @@ class App extends React.Component<IAppProps> {
             faderState: this.props.store.faders[0],
             channelState: this.props.store.channels[0]
         }
-        saveSnapshotState(snapshot, fileName);
+        //saveSnapshotState(snapshot, fileName);
     }
 
     render() {

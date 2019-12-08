@@ -1,6 +1,7 @@
 // Import parts of electron to use
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { MainThreadHandlers } from './startServerSide'
+import { MainThreadHandlers } from './MainThreadHandler'
+import { MainApp } from './MainApp'
 const path = require('path')
 const url = require('url')
 
@@ -26,7 +27,20 @@ if (process.platform === 'win32') {
   app.commandLine.appendSwitch('force-device-scale-factor', '1')
 }
 
+let mainWindow: any
 
+
+// Event handler for incoming messages
+ipcMain.on('from-renderer', (event, arg) => {
+  console.log('MAIN RECEIVE :', arg)
+
+  // Event emitter for sending asynchronous messages
+  event.reply('to-renderer', 'response from main thread')
+})
+
+
+
+function createWindow() {
   // Define the browser window.
   let mainWindow = new BrowserWindow({
     width: 1024,
@@ -39,19 +53,6 @@ if (process.platform === 'win32') {
       preload: path.join(__dirname, '/../../preload.js')
     }
   })
-
-// Event handler for incoming messages
-ipcMain.on('from-renderer', (event, arg) => {
-  console.log('MAIN RECEIVE :', arg)
-
-  // Event emitter for sending asynchronous messages
-  event.reply('to-renderer', 'response from main thread')
-})
-
-let mainHandler = new MainThreadHandlers(mainWindow.webContents);
-
-function createWindow() {
-
   // and load the index.html of the app.
   let indexPath
 
@@ -70,12 +71,10 @@ function createWindow() {
     })
   }
 
+  let mainHandler = new MainThreadHandlers(mainWindow.webContents);
+  let app = new MainApp(this.webContents)
 
   mainWindow.loadURL(indexPath)
-  // initiate 
-  mainWindow.webContents.on('did-finish-load', () => {
-      mainHandler.ipcHandler()
-  });
 
   // Don't show until we are ready and loaded
   mainWindow.once('ready-to-show', () => {

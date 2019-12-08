@@ -1,10 +1,10 @@
 //Utils:
-import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
-import { MixerGenericConnection } from '../utils/MixerConnection';
-import { AutomationConnection } from '../utils/AutomationConnection';
-import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { webContents } from 'electron';
+import { loadSnapshotState, saveSnapshotState } from './utils/SettingsStorage';
+import { MixerGenericConnection } from './utils/MixerConnection';
+import { AutomationConnection } from './utils/AutomationConnection';
+import { HuiMidiRemoteConnection } from './utils/HuiMidiRemoteConnection';
+import { MixerProtocolPresets } from './constants/MixerProtocolPresets';
+import { app } from 'electron'
 
 export class MainApp {
     numberOfChannels: number[] = []
@@ -13,6 +13,8 @@ export class MainApp {
     store: any
 
     constructor(webContents: any) {
+        console.log('SETTINGS UP STATE')
+
         this.webContents = webContents
 
         //Get redux store:
@@ -21,12 +23,13 @@ export class MainApp {
             this.store = global.storeRedux.getState();
         });
 
+
         global.mixerGenericConnection = new MixerGenericConnection();
         global.automationConnection = new AutomationConnection();
         if (this.store.settings[0].enableRemoteFader){
             global.huiRemoteConnection = new HuiMidiRemoteConnection();
         }
-        this.settingsPath = '' // window.getPath('userData')
+        this.settingsPath = app.getPath('userData')
 
         this.snapShopStoreTimer();
         let selectedProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
@@ -34,7 +37,7 @@ export class MainApp {
             this.numberOfChannels.push(this.store.settings[0].numberOfChannelsInType[index]);
         });
         this.loadSnapshotSettings(this.settingsPath + '/default.shot', true)
-        
+
         // ** UNCOMMENT TO DUMP A FULL STORE:
         //const fs = require('fs')
         //fs.writeFileSync('src/components/__tests__/__mocks__/parsedFullStore-UPDATE.json', JSON.stringify(global.storeRedux.getState()))

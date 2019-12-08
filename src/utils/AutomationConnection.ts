@@ -38,7 +38,7 @@ export class AutomationConnection {
 
         this.oscConnection = new osc.UDPPort({
             localAddress: "0.0.0.0",
-            localPort: AUTOMATION_OSC_PORT
+            localPort: 9999
         });
         this.setupAutomationConnection();
     }
