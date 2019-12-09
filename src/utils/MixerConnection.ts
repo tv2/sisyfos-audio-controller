@@ -1,12 +1,6 @@
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { IMixerProtocol, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
-import { OscMixerConnection } from '../utils/OscMixerConnection';
-import { MidiMixerConnection } from '../utils/MidiMixerConnection';
-import { QlClMixerConnection } from './QlClMixerConnection';
-import { SSLMixerConnection } from './SSLMixerConnection';
-import { EmberMixerConnection } from './EmberMixerConnection';
-import { CasparCGConnection } from './CasparCGConnection';
+import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { IChannel } from '../reducers/channelsReducer';
 import { SET_OUTPUT_LEVEL, FADE_ACTIVE } from '../reducers/channelActions'
 import { SET_FADER_LEVEL } from  '../reducers/faderActions'
@@ -20,7 +14,7 @@ const FADE_DISPATCH_RESOLUTION = 5;
 export class MixerGenericConnection {
     store: any;
     mixerProtocol: IMixerProtocolGeneric;
-    mixerConnection: any;
+    
     timer: any;
     fadeActiveTimer: any;
 
@@ -39,7 +33,6 @@ export class MixerGenericConnection {
 
         // Get mixer protocol
         this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol] || MixerProtocolPresets.genericMidi;
-            this.mixerConnection = new MidiMixerConnection(this.mixerProtocol as IMixerProtocol);
 
         //Setup timers for fade in & out
         this.timer = new Array(this.store.channels[0].channel.length);
@@ -174,7 +167,7 @@ export class MixerGenericConnection {
                 dispatchTrigger += step;
                 
                 if (dispatchTrigger > dispatchResolution) {
-                    this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+                    
                     window.storeRedux.dispatch({
                         type:SET_OUTPUT_LEVEL,
                         channel: channelIndex,
@@ -185,7 +178,7 @@ export class MixerGenericConnection {
 
                 if ( outputLevel <= targetVal){
                     outputLevel = targetVal;
-                    this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+                    
                     clearInterval(this.timer[channelIndex]);
 
                     window.storeRedux.dispatch({
@@ -201,7 +194,7 @@ export class MixerGenericConnection {
             this.timer[channelIndex] = setInterval(() => {
                 outputLevel += step;
                 dispatchTrigger += step;
-                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+                
 
                 if (dispatchTrigger > dispatchResolution) {
                     window.storeRedux.dispatch({
@@ -215,7 +208,7 @@ export class MixerGenericConnection {
 
                 if ( outputLevel >= targetVal ) {
                     outputLevel = targetVal;
-                    this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+                    
                     clearInterval(this.timer[channelIndex]);
                     window.storeRedux.dispatch({
                         type:SET_OUTPUT_LEVEL,
@@ -240,7 +233,7 @@ export class MixerGenericConnection {
         this.timer[channelIndex] = setInterval(() => {
             outputLevel -= step;
             dispatchTrigger += step;
-            this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+            
 
             if (dispatchTrigger > dispatchResolution) {
                 window.storeRedux.dispatch({
@@ -253,7 +246,7 @@ export class MixerGenericConnection {
 
             if ( outputLevel <= min ){
                 outputLevel=min;
-                this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
+                
                 clearInterval(this.timer[channelIndex]);
                 window.storeRedux.dispatch({
                     type:SET_OUTPUT_LEVEL,

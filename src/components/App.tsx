@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from "react-redux";
 import { IStore } from '../reducers/indexReducer';
-import * as electron from 'electron'
 
 
 import '../assets/css/App.css';
@@ -10,9 +9,8 @@ import Settings from './Settings';
 import Storage from './RoutingStorage'
 
 //Utils:
-import { loadSnapshotState, saveSnapshotState } from '../utils/SettingsStorage';
+import { loadSnapshotState } from '../utils/SettingsStorage';
 import { MixerGenericConnection } from '../utils/MixerConnection';
-import { AutomationConnection } from '../utils/AutomationConnection';
 import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
@@ -32,7 +30,6 @@ class App extends React.Component<IAppProps> {
 
     componentWillMount() {
         (window as any).mixerGenericConnection = new MixerGenericConnection();
-        (window as any).automationConnection = new AutomationConnection();
         if (this.props.store.settings[0].enableRemoteFader){
             (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         }
