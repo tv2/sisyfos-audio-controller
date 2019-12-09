@@ -60,7 +60,10 @@ module.exports = {
         before() {
         spawn(
             'electron',
-            ['.'],
+            [
+                '--inspect=0.0.0.0:9393',
+                '.'
+            ],
             { shell: true, env: process.env, stdio: 'inherit' }
         )
         .on('close', code => process.exit(0))
