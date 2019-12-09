@@ -61,7 +61,7 @@ module.exports = {
         spawn(
             'electron',
             [
-                '--inspect=0.0.0.0:9393',
+                '--inspect=127.0.0.1:9229',
                 '.'
             ],
             { shell: true, env: process.env, stdio: 'inherit' }
