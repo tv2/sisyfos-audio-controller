@@ -24,7 +24,6 @@ class App extends React.Component<IAppProps> {
 
     constructor(props: IAppProps) {
         super(props)
-        this.saveSnapshotSettings = this.saveSnapshotSettings.bind(this)
         this.loadSnapshotSettings = this.loadSnapshotSettings.bind(this)
     }
 
@@ -35,14 +34,8 @@ class App extends React.Component<IAppProps> {
         }
         this.settingsPath = window.getPath('userData');
 
-        window.ipcRenderer.on('to-renderer', (
-            (event: any, payload: any) => { 
-                console.log('Data received', payload)
-            })
-        )
-        window.ipcRenderer.send('from-renderer', 'Data to main process');
+        
 
-        this.snapShopStoreTimer();
         let selectedProtocol = MixerProtocolPresets[this.props.store.settings[0].mixerProtocol];
         selectedProtocol.channelTypes.forEach((item, index) => {
             this.numberOfChannels.push(this.props.store.settings[0].numberOfChannelsInType[index]);
@@ -51,6 +44,24 @@ class App extends React.Component<IAppProps> {
         // ** UNCOMMENT TO DUMP A FULL STORE:
         // const fs = require('fs')
         // fs.writeFileSync('src/components/__tests__/__mocks__/parsedFullStore-UPDATE.json', JSON.stringify(window.storeRedux.getState()))
+        this.ipcRendererHandlers()
+        window.ipcRenderer.send('get-store', 'update local store');
+
+    }
+
+    ipcRendererHandlers() {
+        window.ipcRenderer
+        .on('to-renderer', (
+            (event: any, payload: any) => { 
+                console.log('Data received', payload)
+            })
+        )
+        .on('set-store', (
+            (event: any, payload: any) => { 
+                console.log('STORE RECEIVED :', payload)
+                window.storeRedux = payload
+            })
+        )
 
     }
 
@@ -61,16 +72,6 @@ class App extends React.Component<IAppProps> {
         )
     }
 
-    snapShopStoreTimer() {
-        const saveTimer = setInterval(() => {
-                let snapshot = {
-                    faderState: this.props.store.faders[0],
-                    channelState: this.props.store.channels[0]
-                }
-                //saveSnapshotState(snapshot, this.settingsPath + '/default.shot');
-            },
-            2000);
-    }
 
     loadSnapshotSettings(fileName: string, loadAll: boolean) {
         loadSnapshotState(

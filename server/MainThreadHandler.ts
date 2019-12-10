@@ -2,15 +2,14 @@ import { createStore } from 'redux'
 import indexReducer from './reducers/indexReducer';
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import { loadSettings } from './utils/SettingsStorage'
+import { ipcMain } from 'electron';
 
 export class MainThreadHandlers {
-    webContents: any
     store: any
 
-    constructor(webContents: any) {
+    constructor() {
         console.log('Creating MainThreadHandlers')
 
-        this. webContents = webContents
         global.storeRedux = createStore(
             indexReducer
         );
@@ -27,17 +26,16 @@ export class MainThreadHandlers {
         });
     }
 
-    ipcHandler() {
+    ipcMainHandler() {
         console.log('CALLING IPC HANDLER')
 
         // initiate 
-        this.webContents.on('get-settings', (
+        ipcMain.on('get-store', (
             (event: any, payload: any) => { 
                 console.log('Data received', payload)
-                event.reply('get-settings', loadSettings(this.store.getState()))
+                global.mainWindow.webContents.send('set-store', global.storeRedux)
             })
         )
-        this.webContents.send('get-settings', 'Start up ipcHandlers')
-        this.webContents.send('to-renderer', 'Start up ipcHandlers')
+        global.mainWindow.webContents.send('to-renderer', 'Start up ipcHandlers')
     }
 }

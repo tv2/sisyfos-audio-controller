@@ -9,13 +9,10 @@ import { app } from 'electron'
 export class MainApp {
     numberOfChannels: number[] = []
     settingsPath: string = ''
-    webContents: any
     store: any
 
-    constructor(webContents: any) {
+    constructor() {
         console.log('SETTINGS UP STATE')
-
-        this.webContents = webContents
 
         //Get redux store:
         this.store = global.storeRedux.getState();

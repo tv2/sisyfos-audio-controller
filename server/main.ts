@@ -12,6 +12,7 @@ declare global {
           mixerGenericConnection: any
           automationConnection: any
           huiRemoteConnection: any
+          mainWindow: any
       }
   }
 }
@@ -19,6 +20,8 @@ declare global {
 
 // Keep a reference for dev mode
 let dev = true
+let mainThreadHandler: any
+let mainApp: any
 
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
@@ -27,22 +30,9 @@ if (process.platform === 'win32') {
   app.commandLine.appendSwitch('force-device-scale-factor', '1')
 }
 
-let mainWindow: any
-
-
-// Event handler for incoming messages
-ipcMain.on('from-renderer', (event, arg) => {
-  console.log('MAIN RECEIVE :', arg)
-
-  // Event emitter for sending asynchronous messages
-  event.reply('to-renderer', 'response from main thread')
-})
-
-
-
 function createWindow() {
   // Define the browser window.
-  let mainWindow = new BrowserWindow({
+  global.mainWindow = new BrowserWindow({
     width: 1024,
     height: 955,
     fullscreen: true,
@@ -71,34 +61,30 @@ function createWindow() {
     })
   }
 
-  let mainHandler = new MainThreadHandlers(mainWindow.webContents);
-  let app = new MainApp(this.webContents)
-
-  mainWindow.loadURL(indexPath)
-
   // Don't show until we are ready and loaded
-  mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
+  global.mainWindow.once('ready-to-show', () => {
+    global.mainWindow.show()
 
     // Open the DevTools automatically if developing
     if (dev) {
-      mainWindow.webContents.openDevTools()
+      global.mainWindow.webContents.openDevTools()
     }
   })
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null
-  })
+  return indexPath
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', () => {
+  let indexPath = createWindow()
+  
+  mainThreadHandler = new MainThreadHandlers();
+  mainThreadHandler.ipcMainHandler()
+  mainApp = new MainApp()
+
+  global.mainWindow.loadURL(indexPath)
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -112,7 +98,8 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
+  if (global.mainWindow === null) {
     createWindow()
   }
 })
+

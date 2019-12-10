@@ -6,14 +6,13 @@ const { dialog } = require('electron').remote
 const { getPath } = require('electron').remote.app
 
 global.fs = remote.require('fs')
-global.net = remote.require('net')
 global.dialog = dialog
 global.getPath = getPath
 global.ipcRenderer = ipcRenderer
-global.aaaa = 'PRELOAD WAS EXECUTED'
 
 //global.SettingsStorage = './utils/SettingsStorage.ts'
 
+global.aaaa = 'PRELOAD WAS EXECUTED'
 console.log('PreLoad executed')
 
 /*
