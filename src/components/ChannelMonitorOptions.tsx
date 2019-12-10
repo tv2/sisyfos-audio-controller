@@ -3,8 +3,6 @@ import React, { ChangeEvent } from 'react';
 import * as ClassNames from 'classnames';
 
 import '../assets/css/ChannelMonitorOptions.css';
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { SET_AUX_LEVEL } from '../reducers/channelActions'
@@ -27,12 +25,10 @@ interface IChannelProps {
 
 class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitorSettingsInjectProps & Store> {
     faderIndex: number;
-    mixerProtocol: IMixerProtocolGeneric;
 
     constructor(props: any) {
         super(props);
         this.faderIndex = this.props.faderIndex;
-        this.mixerProtocol = MixerProtocolPresets[this.props.selectedProtocol];
     }
 
     handleAssignChannel(channel: number, event: any) {

@@ -29,8 +29,8 @@ export class MainApp {
         this.settingsPath = app.getPath('userData')
 
         this.snapShopStoreTimer();
-        let selectedProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
-        selectedProtocol.channelTypes.forEach((item, index) => {
+        global.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
+        global.mixerProtocol.channelTypes.forEach((item, index) => {
             this.numberOfChannels.push(this.store.settings[0].numberOfChannelsInType[index]);
         });
         this.loadSnapshotSettings(this.settingsPath + '/default.shot', true)

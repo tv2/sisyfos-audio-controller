@@ -7,10 +7,7 @@ import { IAppProps } from './App';
 
 
 //Utils:
-import { saveSettings } from '../utils/SettingsStorage';
 import '../assets/css/Settings.css';
-import { MixerProtocolPresets, MixerProtocolList } from '../constants/MixerProtocolPresets';
-import { any } from 'prop-types';
 import { ISettings } from '../reducers/settingsReducer';
 import { SHOW_CHANNEL } from '../reducers/faderActions'
 import { Store } from 'redux';
@@ -34,14 +31,11 @@ const selectorColorStyles = {
 };
 
 interface IState {
-    settings: ISettings,
-    selectedProtocol: any
+    settings: ISettings
 }
 
 
 class Settings extends React.PureComponent<IAppProps & Store, IState> {
-    mixerProtocolList: any;
-    mixerProtocolPresets: any;
     selectedProtocol: any;
     midiInputPortList: any;
     midiOutputPortList: any;
@@ -50,11 +44,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     constructor(props: any) {
         super(props);
 
-        this.mixerProtocolList = MixerProtocolList;
-        this.mixerProtocolPresets = MixerProtocolPresets;
         this.state = {
             settings: this.props.store.settings[0],
-            selectedProtocol: this.mixerProtocolPresets[this.props.store.settings[0].mixerProtocol]
         };
         //Initialise list of Midi ports:
         this.findMidiPorts();
@@ -130,7 +121,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     handleProtocolChange = (selectedOption: any) => {
         var settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.mixerProtocol = selectedOption.value;
-        this.setState({selectedProtocol: this.mixerProtocolPresets[settingsCopy.mixerProtocol]})
+        window.mixerProtocol = window.mixerProtocolPresets[settingsCopy.mixerProtocol]
         this.setState(
             {settings: settingsCopy}
         );
@@ -177,7 +168,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.showSettings = false;
 
-        saveSettings(settingsCopy);
+        // saveSettings(settingsCopy);
         location.reload();
     }
 
@@ -191,7 +182,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <div className="settings-header">
                     NUMBER OF CHANNELTYPES:
                 </div>
-                {this.state.selectedProtocol.channelTypes.map((item: any, index: number) => {
+                {window.mixerProtocol.channelTypes.map((item: any, index: number) => {
                     return <React.Fragment>
                         <label className="settings-input-field">
                             Number of { item.channelTypeName } :
@@ -283,9 +274,9 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
 
                 <Select
                     styles={selectorColorStyles}
-                    value={{label: this.mixerProtocolPresets[this.state.settings.mixerProtocol].label, value: this.state.settings.mixerProtocol}}
+                    value={{label: window.mixerProtocolPresets[this.state.settings.mixerProtocol].label, value: this.state.settings.mixerProtocol}}
                     onChange={this.handleProtocolChange}
-                    options={this.mixerProtocolList}
+                    options={window.mixerProtocolList}
                 />
                 <br/>
                 <label className="settings-input-field">
@@ -382,7 +373,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     />
                 </label>
                 <br/>
-                {this.state.selectedProtocol.protocol === "MIDI" ? this.renderMixerMidiSettings() : ""}
+                {window.mixerProtocol.protocol === "MIDI" ? this.renderMixerMidiSettings() : ""}
                 <br/>
                 {this.renderChannelTypeSettings()}
                 <br/>

@@ -9,8 +9,6 @@ import ReactSlider from 'react-slider'
 
 //assets:
 import '../assets/css/Channel.css';
-import { MixerProtocolPresets} from '../constants/MixerProtocolPresets';
-import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { 
     SET_FADER_LEVEL, 
     TOGGLE_PGM,
@@ -43,13 +41,11 @@ interface IChannelProps {
 
 
 class Channel extends React.Component<IChannelProps & IChannelInjectProps & Store> {
-    mixerProtocol: IMixerProtocolGeneric;
     faderIndex: number;
 
     constructor(props: any) {
         super(props);
         this.faderIndex = this.props.faderIndex;
-        this.mixerProtocol = MixerProtocolPresets[this.props.settings.mixerProtocol] || MixerProtocolPresets.genericMidi;
     }
 
     public shouldComponentUpdate(nextProps: IChannelInjectProps) {
@@ -255,7 +251,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     this.handleShowChanStrip();
                 }}
             >
-            {this.props.fader.label != "" ? this.props.fader.label : (this.mixerProtocol.channelTypes[this.props.channelType].channelTypeName + " " + (this.props.channelTypeIndex + 1)) }
+            {this.props.fader.label != "" ? this.props.fader.label : (window.mixerProtocol.channelTypes[this.props.channelType].channelTypeName + " " + (this.props.channelTypeIndex + 1)) }
             </button>
         )
     }

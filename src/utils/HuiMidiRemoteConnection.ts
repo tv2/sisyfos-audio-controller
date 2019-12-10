@@ -11,13 +11,11 @@ import { IRemoteProtocol,
     RemoteFaderPresets,
     MidiReceiveTypes 
 } from '../constants/RemoteFaderPresets';
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 export class HuiMidiRemoteConnection {
     store: any;
     remoteProtocol: IRemoteProtocol;
     midiReceiveTypes = MidiReceiveTypes;
-    mixerProtocol: any;
     midiInput: any;
     midiOutput:any;
     activeHuiChannel: number = 0;
@@ -33,7 +31,6 @@ export class HuiMidiRemoteConnection {
         });
 
         this.remoteProtocol = RemoteFaderPresets.hui;
-        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
         if (!this.store.settings[0].enableRemoteFader) {
             return
@@ -109,8 +106,8 @@ export class HuiMidiRemoteConnection {
 
     convertToRemoteLevel(level: number) {
 
-        let oldMin = this.mixerProtocol.fader.min;
-        let oldMax = this.mixerProtocol.fader.max;
+        let oldMin = window.mixerProtocol.fader.min;
+        let oldMax = window.mixerProtocol.fader.max;
         let newMin = this.remoteProtocol.fader.min;
         let newMax = this.remoteProtocol.fader.max;
 
@@ -123,8 +120,8 @@ export class HuiMidiRemoteConnection {
 
         let oldMin = this.remoteProtocol.fader.min;
         let oldMax = this.remoteProtocol.fader.max;
-        let newMin = this.mixerProtocol.fader.min;
-        let newMax = this.mixerProtocol.fader.max;
+        let newMin = window.mixerProtocol.fader.min;
+        let newMax = window.mixerProtocol.fader.max;
 
         let indexLevel = (level/(oldMax-oldMin)) * (newMax-newMin)
         let newLevel = newMin + indexLevel;

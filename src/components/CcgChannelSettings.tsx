@@ -1,7 +1,6 @@
 import React from 'react';
 
 import '../assets/css/CcgChannelSettings.css';
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -25,7 +24,7 @@ class CcgChannelSettings extends React.PureComponent<IChannelProps & IChannelSet
     constructor(props: any) {
         super(props);
 		this.channelIndex = this.props.channelIndex;
-		const protocol = MixerProtocolPresets[this.props.mixerProtocol] as ICasparCGMixerGeometry;
+		const protocol = window.mixerProtocol as ICasparCGMixerGeometry;
 		if (protocol.sourceOptions) {
 			this.mixerProtocol = protocol;
 		}

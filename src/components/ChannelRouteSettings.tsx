@@ -3,8 +3,6 @@ import React from 'react';
 import * as ClassNames from 'classnames';
 
 import '../assets/css/ChannelRouteSettings.css';
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import CcgChannelSettings from './CcgChannelSettings';
@@ -25,12 +23,10 @@ interface IChannelProps {
 
 class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelSettingsInjectProps & Store> {
     faderIndex: number;
-    mixerProtocol: IMixerProtocolGeneric;
 
     constructor(props: any) {
         super(props);
         this.faderIndex = this.props.faderIndex;
-        this.mixerProtocol = MixerProtocolPresets[this.props.selectedProtocol];
     }
 
     handleAssignChannel(channel: number, event: any) {

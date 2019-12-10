@@ -27,15 +27,27 @@ export class MainThreadHandlers {
     }
 
     ipcMainHandler() {
-        console.log('CALLING IPC HANDLER')
+        console.log('SETTING UP IPC MAIN HANDLERS')
 
         // initiate 
-        ipcMain.on('get-store', (
+        ipcMain
+        .on('get-store', (
             (event: any, payload: any) => { 
-                console.log('Data received', payload)
-                global.mainWindow.webContents.send('set-store', global.storeRedux)
+                console.log('Data received : ', payload)
+                global.mainWindow.webContents.send('set-store', global.storeRedux.getState())
             })
         )
-        global.mainWindow.webContents.send('to-renderer', 'Start up ipcHandlers')
+        .on('get-settings', (
+            (event: any, payload: any) => { 
+                console.log('Data received :', payload)
+                global.mainWindow.webContents.send('set-settings', loadSettings(global.storeRedux.getState()))
+            })
+        )
+        .on('get-mixerprotocol', (
+            (event: any, payload: any) => { 
+                console.log('Data received', payload)
+                global.mainWindow.webContents.send('set-mixerprotocol', global.mixerProtocol)
+            })
+        )
     }
 }

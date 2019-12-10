@@ -4,12 +4,9 @@ import { connect } from "react-redux";
 //assets:
 import '../assets/css/VuMeter.css';
 //Utils:
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { IMixerProtocolGeneric } from '../constants/MixerProtocolInterface';
 
 export interface IVuMeterInjectedProps {
     showSnaps: boolean
-    mixerProtocol: string
     vuVal: number
 }
 
@@ -18,7 +15,6 @@ interface IVuMeterProps {
 }
 
 export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
-    mixerProtocol: IMixerProtocolGeneric;
     canvas: HTMLCanvasElement | undefined;
 
     totalPeak: number = 0;
@@ -29,11 +25,10 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     constructor(props: any) {
         super(props);
 
-        this.mixerProtocol = MixerProtocolPresets[this.props.mixerProtocol]  || MixerProtocolPresets.genericMidi;
     }
 
     totalHeight = () => {
-        return (this.props.showSnaps ? 1 : 2) * 200 / (this.mixerProtocol.meter.max - this.mixerProtocol.meter.min);
+        return (this.props.showSnaps ? 1 : 2) * 200 / (window.mixerProtocol.meter.max - window.mixerProtocol.meter.min);
     }
 
     getTotalPeak = () => {
@@ -53,28 +48,28 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
     calcLower = () => {
         let val = this.props.vuVal;
-        if (val >= this.mixerProtocol.meter.test) {
-            val = this.mixerProtocol.meter.test;
+        if (val >= window.mixerProtocol.meter.test) {
+            val = window.mixerProtocol.meter.test;
         }
         return this.totalHeight()*val;
     }
 
     calcMiddle = () => {
         let val = this.props.vuVal;
-        if (val < this.mixerProtocol.meter.test) {
-            val = this.mixerProtocol.meter.test;
-        } else if (val >= this.mixerProtocol.meter.zero) {
-            val = this.mixerProtocol.meter.zero;
+        if (val < window.mixerProtocol.meter.test) {
+            val = window.mixerProtocol.meter.test;
+        } else if (val >= window.mixerProtocol.meter.zero) {
+            val = window.mixerProtocol.meter.zero;
         }
-        return this.totalHeight()*(val-this.mixerProtocol.meter.test)+1;
+        return this.totalHeight()*(val-window.mixerProtocol.meter.test)+1;
     }
 
     calcUpper = () => {
         let val = this.props.vuVal;
-        if (val < this.mixerProtocol.meter.zero) {
-            val = this.mixerProtocol.meter.zero;
+        if (val < window.mixerProtocol.meter.zero) {
+            val = window.mixerProtocol.meter.zero;
         }
-        return this.totalHeight()*(val-this.mixerProtocol.meter.zero)+1;
+        return this.totalHeight()*(val-window.mixerProtocol.meter.zero)+1;
     }
 
     setRef = (el: HTMLCanvasElement) => {
@@ -98,7 +93,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
         if (!context) return
 
-        const range = (this.mixerProtocol.meter.max - this.mixerProtocol.meter.min)
+        const range = (window.mixerProtocol.meter.max - window.mixerProtocol.meter.min)
         context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
 
         // lower part
@@ -107,15 +102,15 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
         // middle part
         context.fillStyle = 'rgb(53, 167, 0)';
-        context.fillRect(0, (this.totalHeight() * (range - this.mixerProtocol.meter.test) - this.calcMiddle()), this.canvas.clientWidth, this.calcMiddle());
+        context.fillRect(0, (this.totalHeight() * (range - window.mixerProtocol.meter.test) - this.calcMiddle()), this.canvas.clientWidth, this.calcMiddle());
 
         // upper part (too high/clip)
         context.fillStyle = 'rgb(206, 0, 0)';
-        context.fillRect(0, (this.totalHeight() * (range - this.mixerProtocol.meter.zero) - this.calcUpper()), this.canvas.clientWidth, this.calcUpper());
+        context.fillRect(0, (this.totalHeight() * (range - window.mixerProtocol.meter.zero) - this.calcUpper()), this.canvas.clientWidth, this.calcUpper());
 
         // windowed peak
         const windowPeak = this.getWindowPeak();
-        if (this.windowPeak < this.mixerProtocol.meter.zero) {
+        if (this.windowPeak < window.mixerProtocol.meter.zero) {
             context.fillStyle = 'rgb(16, 56, 0)';
         } else {
             context.fillStyle = 'rgb(100, 100, 100)';
@@ -123,7 +118,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
         context.fillRect(0, (this.totalHeight() - windowPeak), this.canvas.clientWidth, 2);
 
         // absolute peak
-        if (this.totalPeak < this.mixerProtocol.meter.zero) {
+        if (this.totalPeak < window.mixerProtocol.meter.zero) {
             context.fillStyle = 'rgb(64, 64, 64)';
         } else {
             context.fillStyle = 'rgb(255, 0, 0)';
@@ -162,7 +157,6 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 const mapStateToProps = (state: any, props: any): IVuMeterInjectedProps => {
     return {
         vuVal: state.faders[0].vuMeters[props.faderIndex].vuVal,
-        mixerProtocol: state.settings[0].mixerProtocol,
         showSnaps: state.settings[0].showSnaps
     }
 }

@@ -1,5 +1,4 @@
 import * as DEFAULTS from '../constants/DEFAULTS';
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { 
     TOGGLE_SHOW_CHAN_STRIP,
     TOGGLE_SHOW_OPTION,
@@ -119,7 +118,7 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             nextState[0] = action.settings;
             nextState[0].showOptions = false;
             nextState[0].showStorage = false;
-            if (typeof MixerProtocolPresets[nextState[0].mixerProtocol] === 'undefined')
+            if (typeof window.mixerProtocol === 'undefined')
                 {
                     nextState[0].mixerProtocol = 'genericMidi';
                 }

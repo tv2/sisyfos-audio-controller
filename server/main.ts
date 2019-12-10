@@ -13,6 +13,7 @@ declare global {
           automationConnection: any
           huiRemoteConnection: any
           mainWindow: any
+          mixerProtocol: any
       }
   }
 }
