@@ -9,19 +9,10 @@ import ReactSlider from 'react-slider'
 
 //assets:
 import '../assets/css/Channel.css';
+import { IPC_TOGGLE_PGM, IPC_TOGGLE_VO, IPC_TOGGLE_PST, IPC_TOGGLE_PFL, IPC_TOGGLE_MUTE, IPC_SET_FADERLEVEL, IPC_TOGGLE_SHOW_CH_STRIP } from '../../server/constants/IPC_DISPATCHERS'
 import { 
-    SET_FADER_LEVEL, 
-    TOGGLE_PGM,
-    TOGGLE_VO,
-    TOGGLE_PST,
-    TOGGLE_PFL,
-    TOGGLE_MUTE,
     TOGGLE_SNAP
 } from '../reducers/faderActions'
-import { 
-    TOGGLE_SHOW_CHAN_STRIP,
-    TOGGLE_SHOW_OPTION
-} from '../reducers/settingsActions'
 import { IFader } from '../reducers/fadersReducer';
 import { IChannels } from '../reducers/channelsReducer';
 import { ISettings } from '../reducers/settingsReducer';
@@ -71,69 +62,48 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handlePgm() {
-        window.mixerGenericConnection.checkForAutoResetThreshold(this.faderIndex)
-        this.props.dispatch({
-            type: TOGGLE_PGM,
-            channel: this.faderIndex
-        });
-        window.mixerGenericConnection.updateOutLevel(this.faderIndex);
-        if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
-        }
+        window.ipcRenderer.send( IPC_TOGGLE_PGM, this.faderIndex)
     }
 
     handleVo() {
-        window.mixerGenericConnection.checkForAutoResetThreshold(this.faderIndex)
-        this.props.dispatch({
-            type: TOGGLE_VO,
-            channel: this.faderIndex
-        });
-        window.mixerGenericConnection.updateOutLevel(this.faderIndex);
-        if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
-        }
+        window.ipcRenderer.send( IPC_TOGGLE_VO, this.faderIndex)
     }
 
-    handlePst() {        
-        this.props.dispatch({
-            type: TOGGLE_PST,
-            channel: this.faderIndex
-        });
-        window.mixerGenericConnection.updateNextAux(this.faderIndex);
+    handlePst() {
+        window.ipcRenderer.send( IPC_TOGGLE_PST, this.faderIndex)
     }
 
     handlePfl() {
-        this.props.dispatch({
-            type: TOGGLE_PFL,
-            channel: this.faderIndex
-        });
-        window.mixerGenericConnection.updatePflState(this.faderIndex);
+        window.ipcRenderer.send( IPC_TOGGLE_PFL, this.faderIndex)
+
         if (window.huiRemoteConnection) {
             window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
         }
     }
 
     handleMute() {
-        this.props.dispatch({
-            type: TOGGLE_MUTE,
-            channel: this.faderIndex
-        });
-        window.mixerGenericConnection.updateMuteState(this.faderIndex);
+        window.ipcRenderer.send( IPC_TOGGLE_MUTE, this.faderIndex)
+
         if (window.huiRemoteConnection) {
             window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
         }
     }
 
     handleLevel(event: any) {
-        this.props.dispatch({
-            type: SET_FADER_LEVEL,
-            channel: this.faderIndex,
-            level: parseFloat(event)
-        });
-        window.mixerGenericConnection.updateOutLevel(this.faderIndex);
+        window.ipcRenderer.send( IPC_SET_FADERLEVEL, 
+            {
+                'faderIndex' :this.faderIndex,
+                'level': parseFloat(event)
+            })
+
         if (window.huiRemoteConnection) {
             window.huiRemoteConnection.updateRemoteFaderState(this.faderIndex, event)
         }
+    }
+
+
+    handleShowChanStrip() {
+        window.ipcRenderer.send( IPC_TOGGLE_SHOW_CH_STRIP, this.faderIndex)
     }
 
 
@@ -142,20 +112,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             type: TOGGLE_SNAP,
             channel: this.faderIndex,
             snapIndex: snapIndex
-        });
-    }
-
-    handleShowOptions() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_OPTION,
-            channel: this.faderIndex
-        });
-    }
-
-    handleShowChanStrip() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: this.faderIndex
         });
     }
 

@@ -12,6 +12,7 @@ import {
 import { IFader } from '../reducers/fadersReducer'
 import { SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from '../reducers/faderActions'
 import { SET_AUX_LEVEL } from '../reducers/channelActions';
+import { IPC_TOGGLE_SHOW_OPTION } from '../../server/constants/IPC_DISPATCHERS';
 
 interface IChanStripInjectProps {
     label: string,
@@ -34,14 +35,8 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     }
 
     handleShowRoutingOptions() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_OPTION,
-            channel: this.props.faderIndex
-        });
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: -1
-        });
+        window.ipcRenderer.send( IPC_TOGGLE_SHOW_OPTION, this.props.faderIndex)
+
     }
 
     handleShowMonitorOptions() {

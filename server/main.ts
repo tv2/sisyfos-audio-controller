@@ -81,7 +81,6 @@ app.on('ready', () => {
   let indexPath = createWindow()
   
   mainThreadHandler = new MainThreadHandlers();
-  mainThreadHandler.ipcMainHandler()
   mainApp = new MainApp()
 
   global.mainWindow.loadURL(indexPath)

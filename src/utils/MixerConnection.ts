@@ -12,6 +12,7 @@ export class MixerGenericConnection {
     }
 
     updateOutLevel(faderIndex: number, fadeTime: number = -1) {
+        
     }
 
     updatePflState(channelIndex: number) {

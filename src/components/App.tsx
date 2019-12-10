@@ -27,15 +27,20 @@ class App extends React.Component<IAppProps> {
         if (this.props.store.settings[0].enableRemoteFader){
             (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         }
-        // ** UNCOMMENT TO DUMP A FULL STORE:
-        // const fs = require('fs')
-        // fs.writeFileSync('src/components/__tests__/__mocks__/parsedFullStore-UPDATE.json', JSON.stringify(window.storeRedux.getState()))
+
+        // THIS IS THE BASIC IPC - REDUX IMPLEMENTATION UNTIL A MIDDLEWARE IS
+        // BUILD ON SERVERSIDE:
         let timer = setInterval(() => {
             window.ipcRenderer.send('get-store', 'update local store');
             window.ipcRenderer.send('get-settings', 'update local settings');
             window.ipcRenderer.send('get-mixerprotocol', 'get selected mixerprotocol')
         },
-        1000)
+        100)
+
+        // ** UNCOMMENT TO DUMP A FULL STORE:
+        // const fs = require('fs')
+        // fs.writeFileSync('src/components/__tests__/__mocks__/parsedFullStore-UPDATE.json', JSON.stringify(window.storeRedux.getState()))
+        
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {

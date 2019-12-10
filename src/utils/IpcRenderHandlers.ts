@@ -6,7 +6,7 @@ export const ipcRendererHandlers = () => {
     window.ipcRenderer
     .on('set-store', (
         (event: any, payload: any) => { 
-            console.log('STATE RECEIVED :', payload)
+            // console.log('STATE RECEIVED :', payload)
 
             let numberOfChannels: number[] = []
             window.mixerProtocol.channelTypes.forEach((item: any, index: number) => {
@@ -26,7 +26,7 @@ export const ipcRendererHandlers = () => {
     )
     .on('set-settings', (
         (event: any, payload: any) => { 
-            console.log('SETTINGS RECEIVED :', payload)
+            // console.log('SETTINGS RECEIVED :', payload)
             window.storeRedux.dispatch({
                 type: UPDATE_SETTINGS,
                 settings: payload // loadSettings(storeRedux.getState())
@@ -35,7 +35,7 @@ export const ipcRendererHandlers = () => {
     )
     .on('set-mixerprotocol', (
         (event: any, payload: any) => { 
-            console.log('MIXERPROTOCOL RECEIVED :', payload)
+            // console.log('MIXERPROTOCOL RECEIVED :', payload)
             window.mixerProtocol = payload
         })
     )
