@@ -51,7 +51,13 @@ export class MainThreadHandlers {
         .on('get-mixerprotocol', (
             (event: any, payload: any) => { 
                 console.log('Data received', payload)
-                global.mainWindow.webContents.send('set-mixerprotocol', global.mixerProtocol)
+                global.mainWindow.webContents.send('set-mixerprotocol', 
+                    {
+                        'mixerProtocol': global.mixerProtocol,
+                        'mixerProtocolPresets': global.mixerProtocolPresets,
+                        'mixerProtocolList': global.mixerProtocolList,
+
+                    })
             })
         )
     }

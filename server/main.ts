@@ -2,6 +2,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import { MainThreadHandlers } from './MainThreadHandler'
 import { MainApp } from './MainApp'
+import { MixerProtocolPresets, MixerProtocolList } from './constants/MixerProtocolPresets'
 const path = require('path')
 const url = require('url')
 
@@ -15,11 +16,16 @@ declare global {
           huiRemoteConnection: any
           mainWindow: any
           mixerProtocol: any
+          mixerProtocolPresets: any
+          mixerProtocolList: any
           navigator: any // Workaround for WebMidi
           performance: any // Workaround for WebMidi
       }
   }
 }
+
+global.mixerProtocolPresets = MixerProtocolPresets
+global.mixerProtocolList = MixerProtocolList
 
 // Keep a reference for dev mode
 let dev = true

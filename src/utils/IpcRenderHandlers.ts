@@ -36,8 +36,9 @@ export const ipcRendererHandlers = () => {
     .on('set-mixerprotocol', (
         (event: any, payload: any) => { 
             // console.log('MIXERPROTOCOL RECEIVED :', payload)
-            window.mixerProtocol = payload
+            window.mixerProtocol = payload.mixerProtocol
+            window.mixerProtocolPresets = payload.mixerProtocolPresets
+            window.mixerProtocolList = payload.mixerProtocolList
         })
     )
-
 }
