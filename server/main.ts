@@ -5,6 +5,7 @@ import { MainApp } from './MainApp'
 const path = require('path')
 const url = require('url')
 
+
 declare global {
   namespace NodeJS {
       interface Global {
@@ -14,10 +15,11 @@ declare global {
           huiRemoteConnection: any
           mainWindow: any
           mixerProtocol: any
+          navigator: any // Workaround for WebMidi
+          performance: any // Workaround for WebMidi
       }
   }
 }
-
 
 // Keep a reference for dev mode
 let dev = true

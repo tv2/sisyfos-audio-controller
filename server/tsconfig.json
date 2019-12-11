@@ -15,7 +15,7 @@
       // Check for "any" while converting to TS this can be turned off.
       "noImplicitAny": false,
       "module": "commonjs",
-      "outDir": "../dist/",
+      "outDir": "../dist/server",
     },
     "include": [
       "*"
