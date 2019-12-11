@@ -1,7 +1,7 @@
 import React from 'react';
 
 import '../assets/css/CcgChannelSettings.css';
-import { ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
+import { ICasparCGMixerGeometry } from '../../server/constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { SET_OPTION } from  '../../server/reducers/channelActions'

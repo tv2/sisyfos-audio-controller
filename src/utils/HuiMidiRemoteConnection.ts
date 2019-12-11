@@ -10,7 +10,7 @@ import {
 import { IRemoteProtocol,
     RemoteFaderPresets,
     MidiReceiveTypes 
-} from '../constants/RemoteFaderPresets';
+} from '../../server/constants/RemoteFaderPresets';
 
 export class HuiMidiRemoteConnection {
     store: any;
