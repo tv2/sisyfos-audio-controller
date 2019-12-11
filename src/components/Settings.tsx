@@ -12,6 +12,7 @@ import { ISettings } from '../../server/reducers/settingsReducer';
 import { SHOW_CHANNEL } from '../../server/reducers/faderActions'
 import { Store } from 'redux';
 import { ChangeEvent } from 'react';
+import { IPC_SAVE_SETTINGS } from '../../server/constants/IPC_DISPATCHERS';
 
 
 //Set style for Select dropdown component:
@@ -167,8 +168,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     handleSave = () => {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.showSettings = false;
-
-        // saveSettings(settingsCopy);
+        window.ipcRenderer.send( IPC_SAVE_SETTINGS, settingsCopy)
         location.reload();
     }
 

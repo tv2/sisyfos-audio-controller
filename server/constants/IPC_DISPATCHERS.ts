@@ -11,3 +11,6 @@ export const IPC_TOGGLE_MUTE = 'toggleMute'
 // Controls:
 export const IPC_TOGGLE_SHOW_CH_STRIP = 'toggleShowChStrip'
 export const IPC_TOGGLE_SHOW_OPTION = 'toggleShowOption'
+
+// Div:
+export const IPC_SAVE_SETTINGS = 'saveSettings'

@@ -9,7 +9,7 @@ import { SET_COMPLETE_FADER_STATE } from  '../reducers/faderActions'
 
 
 export const loadSettings = (storeRedux: any) => {
-    console.log('SETTINGS IS LOADING')
+    // console.log('SETTINGS IS LOADING')
     let settingsInterface = storeRedux.settings[0];
     try {
         const settingsFromFile = JSON.parse(fs.readFileSync(folder + "/settings.json"));

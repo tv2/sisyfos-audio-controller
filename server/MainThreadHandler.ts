@@ -1,9 +1,9 @@
 import { createStore } from 'redux'
 import indexReducer from './reducers/indexReducer';
 import { UPDATE_SETTINGS, TOGGLE_SHOW_MONITOR_OPTIONS, TOGGLE_SHOW_OPTION, TOGGLE_SHOW_CHAN_STRIP } from './reducers/settingsActions'
-import { loadSettings } from './utils/SettingsStorage'
+import { loadSettings, saveSettings } from './utils/SettingsStorage'
 import { ipcMain } from 'electron';
-import { IPC_TOGGLE_PGM, IPC_TOGGLE_VO, IPC_TOGGLE_PST, IPC_TOGGLE_PFL, IPC_TOGGLE_MUTE, IPC_SET_FADERLEVEL, IPC_TOGGLE_SHOW_CH_STRIP, IPC_TOGGLE_SHOW_OPTION } from '../server/constants/IPC_DISPATCHERS'
+import { IPC_TOGGLE_PGM, IPC_TOGGLE_VO, IPC_TOGGLE_PST, IPC_TOGGLE_PFL, IPC_TOGGLE_MUTE, IPC_SET_FADERLEVEL, IPC_TOGGLE_SHOW_CH_STRIP, IPC_TOGGLE_SHOW_OPTION, IPC_SAVE_SETTINGS } from '../server/constants/IPC_DISPATCHERS'
 import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 
@@ -34,23 +34,24 @@ export class MainThreadHandlers {
     ipcMainHandlers() {
         console.log('SETTING UP IPC MAIN HANDLERS')
 
-        // initiate 
+        // get-store get-settings and get-mixerprotocol will be replaces with
+        // serverside Redux middleware emitter when moved to Socket IO:
         ipcMain
         .on('get-store', (
             (event: any, payload: any) => { 
-                console.log('Data received : ', payload)
+                //console.log('Data received : ', payload)
                 global.mainWindow.webContents.send('set-store', global.storeRedux.getState())
             })
         )
         .on('get-settings', (
             (event: any, payload: any) => { 
-                console.log('Data received :', payload)
+                //console.log('Data received :', payload)
                 global.mainWindow.webContents.send('set-settings', loadSettings(global.storeRedux.getState()))
             })
         )
         .on('get-mixerprotocol', (
             (event: any, payload: any) => { 
-                console.log('Data received', payload)
+                //console.log('Data received', payload)
                 global.mainWindow.webContents.send('set-mixerprotocol', 
                     {
                         'mixerProtocol': global.mixerProtocol,
@@ -58,6 +59,12 @@ export class MainThreadHandlers {
                         'mixerProtocolList': global.mixerProtocolList,
 
                     })
+            })
+        )
+        .on(IPC_SAVE_SETTINGS, (
+            (event: any, payload: any) => { 
+                console.log('Save settings :', payload)
+                saveSettings(payload)
             })
         )
     }
