@@ -6,7 +6,7 @@ import { ipcRendererHandlers } from './utils/IpcRenderHandlers'
 //Redux:
 import { createStore } from 'redux';
 import { Provider as ReduxProvider} from 'react-redux';
-import indexReducer from './reducers/indexReducer';
+import indexReducer from './../server/reducers/indexReducer';
 
 declare global {
     interface Window {

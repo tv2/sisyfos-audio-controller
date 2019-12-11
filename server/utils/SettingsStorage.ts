@@ -4,8 +4,8 @@ const fs = require('fs')
 const folder = app.getPath('userData');
 
 // Redux:
-import { SET_COMPLETE_CH_STATE } from '../../src/reducers/channelActions'
-import { SET_COMPLETE_FADER_STATE } from  '../../src/reducers/faderActions'
+import { SET_COMPLETE_CH_STATE } from '../reducers/channelActions'
+import { SET_COMPLETE_FADER_STATE } from  '../reducers/faderActions'
 
 
 export const loadSettings = (storeRedux: any) => {

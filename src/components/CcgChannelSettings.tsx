@@ -4,8 +4,8 @@ import '../assets/css/CcgChannelSettings.css';
 import { ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { SET_OPTION } from  '../reducers/channelActions'
-import { TOGGLE_SHOW_OPTION } from '../reducers/settingsActions'
+import { SET_OPTION } from  '../../server/reducers/channelActions'
+import { TOGGLE_SHOW_OPTION } from '../../server/reducers/settingsActions'
 
 interface IChannelSettingsInjectProps {
 	label: string,

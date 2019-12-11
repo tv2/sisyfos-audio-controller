@@ -5,7 +5,7 @@ import { loadSettings } from './utils/SettingsStorage'
 import { ipcMain } from 'electron';
 import { IPC_TOGGLE_PGM, IPC_TOGGLE_VO, IPC_TOGGLE_PST, IPC_TOGGLE_PFL, IPC_TOGGLE_MUTE, IPC_SET_FADERLEVEL, IPC_TOGGLE_SHOW_CH_STRIP, IPC_TOGGLE_SHOW_OPTION } from '../server/constants/IPC_DISPATCHERS'
 import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE } from './reducers/faderActions';
-import { SET_FADER_LEVEL } from '../src/reducers/faderActions';
+import { SET_FADER_LEVEL } from './reducers/faderActions';
 
 export class MainThreadHandlers {
     store: any

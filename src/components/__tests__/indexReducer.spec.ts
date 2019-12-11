@@ -1,4 +1,4 @@
-import indexReducer from  '../../reducers/indexReducer'
+import indexReducer from  '../../../server/reducers/indexReducer'
 
 let fs = require('fs')
 const parsedInitialStoreJSON = fs.readFileSync('src/components/__tests__/__mocks__/parsedInitialStore.json')

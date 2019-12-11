@@ -11,18 +11,18 @@ import {
     NEXT_MIX,
     CLEAR_PST,
     SNAP_RECALL
-} from  '../reducers/faderActions'
+} from  '../../server/reducers/faderActions'
 import {
     TOGGLE_SHOW_SETTINGS,
     TOGGLE_SHOW_SNAPS,
     TOGGLE_SHOW_STORAGE
-} from '../reducers/settingsActions'
+} from '../../server/reducers/settingsActions'
 import ChannelRouteSettings from './ChannelRouteSettings';
 import ChanStrip from './ChanStrip'
 import ChannelMonitorOptions from './ChannelMonitorOptions';
-import { IChannels } from '../reducers/channelsReducer';
-import { IFader } from '../reducers/fadersReducer';
-import { ISettings } from '../reducers/settingsReducer';
+import { IChannels } from '../../server/reducers/channelsReducer';
+import { IFader } from '../../server/reducers/fadersReducer';
+import { ISettings } from '../../server/reducers/settingsReducer';
 
 interface IChannelsInjectProps {
     channels: IChannels 

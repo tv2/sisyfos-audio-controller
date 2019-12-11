@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from "react-redux";
-import { IStore } from '../reducers/indexReducer';
+import { IStore } from '../../server/reducers/indexReducer';
 
 
 import '../assets/css/App.css';

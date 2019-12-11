@@ -8,10 +8,10 @@ import {
     TOGGLE_SHOW_CHAN_STRIP,
     TOGGLE_SHOW_OPTION,
     TOGGLE_SHOW_MONITOR_OPTIONS
- } from '../reducers/settingsActions'
-import { IFader } from '../reducers/fadersReducer'
-import { SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from '../reducers/faderActions'
-import { SET_AUX_LEVEL } from '../reducers/channelActions';
+ } from '../../server/reducers/settingsActions'
+import { IFader } from '../../server/reducers/fadersReducer'
+import { SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from '../../server/reducers/faderActions'
+import { SET_AUX_LEVEL } from '../../server/reducers/channelActions';
 import { IPC_TOGGLE_SHOW_OPTION } from '../../server/constants/IPC_DISPATCHERS';
 
 interface IChanStripInjectProps {

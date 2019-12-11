@@ -3,7 +3,7 @@ import React from 'react';
 import '../assets/css/RoutingStorage.css';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { TOGGLE_SHOW_STORAGE } from '../reducers/settingsActions'
+import { TOGGLE_SHOW_STORAGE } from '../../server/reducers/settingsActions'
 
 // Node modules:
 const fs = window.fs

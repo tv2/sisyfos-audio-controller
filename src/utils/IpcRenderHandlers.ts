@@ -1,6 +1,6 @@
-import { SET_COMPLETE_FADER_STATE } from "../reducers/faderActions";
-import { SET_COMPLETE_CH_STATE } from "../reducers/channelActions";
-import { UPDATE_SETTINGS } from "../reducers/settingsActions";
+import { SET_COMPLETE_FADER_STATE } from "../../server/reducers/faderActions";
+import { SET_COMPLETE_CH_STATE } from "../../server/reducers/channelActions";
+import { UPDATE_SETTINGS } from "../../server/reducers/settingsActions";
 
 export const ipcRendererHandlers = () => {
     window.ipcRenderer

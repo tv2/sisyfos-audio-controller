@@ -8,8 +8,8 @@ import { IAppProps } from './App';
 
 //Utils:
 import '../assets/css/Settings.css';
-import { ISettings } from '../reducers/settingsReducer';
-import { SHOW_CHANNEL } from '../reducers/faderActions'
+import { ISettings } from '../../server/reducers/settingsReducer';
+import { SHOW_CHANNEL } from '../../server/reducers/faderActions'
 import { Store } from 'redux';
 import { ChangeEvent } from 'react';
 

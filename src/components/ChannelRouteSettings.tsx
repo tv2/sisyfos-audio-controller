@@ -6,8 +6,8 @@ import '../assets/css/ChannelRouteSettings.css';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import CcgChannelSettings from './CcgChannelSettings';
-import { SET_ASSIGNED_FADER } from '../reducers/channelActions'
-import { TOGGLE_SHOW_OPTION } from '../reducers/settingsActions'
+import { SET_ASSIGNED_FADER } from '../../server/reducers/channelActions'
+import { TOGGLE_SHOW_OPTION } from '../../server/reducers/settingsActions'
 
 interface IChannelSettingsInjectProps {
     label: string,

@@ -1,12 +1,12 @@
-import indexReducer from  '../../reducers/indexReducer'
+import indexReducer from  '../../../server/reducers/indexReducer'
 import { 
     FADE_ACTIVE,
     SET_ASSIGNED_FADER,
     SET_COMPLETE_CH_STATE,
     SET_OUTPUT_LEVEL,
     SET_PRIVATE,
- } from '../../reducers/channelActions'
-import { IChannel } from '../../reducers/channelsReducer'
+ } from '../../../server/reducers/channelActions'
+import { IChannel } from '../../../server/reducers/channelsReducer'
 
  let fs = require('fs')
 const parsedFullStoreJSON = fs.readFileSync('src/components/__tests__/__mocks__/parsedFullStore.json')

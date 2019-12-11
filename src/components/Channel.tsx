@@ -12,10 +12,10 @@ import '../assets/css/Channel.css';
 import { IPC_TOGGLE_PGM, IPC_TOGGLE_VO, IPC_TOGGLE_PST, IPC_TOGGLE_PFL, IPC_TOGGLE_MUTE, IPC_SET_FADERLEVEL, IPC_TOGGLE_SHOW_CH_STRIP } from '../../server/constants/IPC_DISPATCHERS'
 import { 
     TOGGLE_SNAP
-} from '../reducers/faderActions'
-import { IFader } from '../reducers/fadersReducer';
-import { IChannels } from '../reducers/channelsReducer';
-import { ISettings } from '../reducers/settingsReducer';
+} from '../../server/reducers/faderActions'
+import { IFader } from '../../server/reducers/fadersReducer';
+import { IChannels } from '../../server/reducers/channelsReducer';
+import { ISettings } from '../../server/reducers/settingsReducer';
 
 interface IChannelInjectProps {
     channels: IChannels 
