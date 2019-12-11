@@ -16,6 +16,7 @@ import {
 import { IFader } from '../../server/reducers/fadersReducer';
 import { IChannels } from '../../server/reducers/channelsReducer';
 import { ISettings } from '../../server/reducers/settingsReducer';
+import { TOGGLE_SHOW_CHAN_STRIP } from '../../server/reducers/settingsActions';
 
 interface IChannelInjectProps {
     channels: IChannels 
@@ -103,7 +104,10 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
 
     handleShowChanStrip() {
-        window.ipcRenderer.send( IPC_TOGGLE_SHOW_CH_STRIP, this.faderIndex)
+        this.props.dispatch({
+            type: TOGGLE_SHOW_CHAN_STRIP,
+            channel: this.faderIndex
+        });
     }
 
 

@@ -95,7 +95,7 @@ const defaultFadersReducerState = (numberOfFaders: number) => {
     return defaultObj;
 };
 
-export const faders = ((state = defaultFadersReducerState(1), action: any): Array<IFaders> => {
+export const faders = ((state = defaultFadersReducerState(0), action: any): Array<IFaders> => {
 
     let nextState = [{
         vuMeters: [...state[0].vuMeters],

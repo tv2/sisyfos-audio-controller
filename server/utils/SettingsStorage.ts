@@ -35,14 +35,14 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
         
         if (loadAll) {
             global.storeRedux.dispatch({
-                type:SET_COMPLETE_FADER_STATE,
-                allState: stateFromFile.faderState,
-                numberOfTypeChannels: numberOfFaders
-            });
-            global.storeRedux.dispatch({
                 type: SET_COMPLETE_CH_STATE,
                 allState: stateFromFile.channelState,
                 numberOfTypeChannels: numberOfChannels
+            });
+            global.storeRedux.dispatch({
+                type:SET_COMPLETE_FADER_STATE,
+                allState: stateFromFile.faderState,
+                numberOfTypeChannels: numberOfFaders
             });
         } else {
             stateChannelSnapshot.channel = stateChannelSnapshot.channel.map((channel: any, index: number) => {
@@ -59,17 +59,17 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
                 fader.monitor = stateFromFile.faderState.fader[index].monitor || -1
                 return fader
             })
-
-            global.storeRedux.dispatch({
-                type: SET_COMPLETE_FADER_STATE,
-                allState: stateSnapshot,
-                numberOfTypeChannels: numberOfFaders
-            });
             global.storeRedux.dispatch({
                 type:SET_COMPLETE_CH_STATE,
                 allState: stateChannelSnapshot,
                 numberOfTypeChannels: numberOfChannels
             });
+            global.storeRedux.dispatch({
+                type: SET_COMPLETE_FADER_STATE,
+                allState: stateSnapshot,
+                numberOfTypeChannels: numberOfFaders
+            });
+
         }
         
     }

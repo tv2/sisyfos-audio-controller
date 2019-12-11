@@ -117,8 +117,10 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             return nextState;
         case UPDATE_SETTINGS:
             nextState[0] = action.settings;
-            nextState[0].showOptions = false;
-            nextState[0].showStorage = false;
+            nextState[0].showOptions = state[0].showOptions;
+            nextState[0].showMonitorOptions = state[0].showMonitorOptions;
+            nextState[0].showStorage = state[0].showStorage;
+            nextState[0].showChanStrip = state[0].showChanStrip;
             if (typeof MixerProtocolPresets[nextState[0].mixerProtocol] === 'undefined')
                 {
                     nextState[0].mixerProtocol = 'genericMidi';

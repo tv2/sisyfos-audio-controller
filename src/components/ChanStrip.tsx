@@ -35,7 +35,14 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     }
 
     handleShowRoutingOptions() {
-        window.ipcRenderer.send( IPC_TOGGLE_SHOW_OPTION, this.props.faderIndex)
+        this.props.dispatch({
+            type: TOGGLE_SHOW_OPTION,
+            channel: this.props.faderIndex
+        });
+        this.props.dispatch({
+            type: TOGGLE_SHOW_CHAN_STRIP,
+            channel: -1
+        }); 
 
     }
 
