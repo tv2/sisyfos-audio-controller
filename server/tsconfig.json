@@ -13,7 +13,7 @@
       // Import non-ES modules as default imports.
       "esModuleInterop": true,
       // Check for "any" while converting to TS this can be turned off.
-      "noImplicitAny": false,
+      "noImplicitAny": true,
       "module": "commonjs",
       "outDir": "../dist/server",
     },

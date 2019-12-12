@@ -1,7 +1,6 @@
 const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { spawn } = require('child_process')
 
 // Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
 const defaultInclude = [
@@ -40,10 +39,6 @@ module.exports = {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
     target: 'web',
-    output: {
-        // NB: Can also be "window", etc.
-        libraryTarget: "var"
-      },
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.ejs',
@@ -55,24 +50,14 @@ module.exports = {
     ],
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: path.resolve(__dirname, 'dist'),
-        stats: {
-        colors: true,
-        chunks: false,
-        children: false
-        },
-        before() {
-        spawn(
-            'electron',
-            [
-                '--inspect=127.0.0.1:9229',
-                '.'
-            ],
-            { shell: true, env: process.env, stdio: 'inherit' }
-        )
-        .on('close', code => process.exit(0))
-        .on('error', spawnError => console.error(spawnError))
-        }
+        port: 8080
+        // contentBase: path.resolve(__dirname, 'dist'),
+        // historyApiFallback: true,
+        //stats: {
+        //    colors: true,
+        //    chunks: false,
+        //    children: false
+        //}
     },
     externals: {
         fs: require("fs"),

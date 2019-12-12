@@ -1,4 +1,3 @@
-import { remote } from 'electron'
 const DeviceTree = require('emberplus')
 
 //Utils:

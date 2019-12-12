@@ -47,11 +47,12 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                 title: 'Unlock Channel',
                 message: 'Unbind Channel ' + String(channel + 1) + ' from Fader ' + String(this.faderIndex + 1),
             };
+            /*
             let response = window.dialog.showMessageBoxSync(options)
             if (response === 1) {
                 return true
             }
-
+*/
             faderAssign = -1
         } else {
             let detail = (assignedFader < 0) ? 'NOT CURRENTLY ASSIGNED'
@@ -65,12 +66,15 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                 message: 'Bind Channel ' + String(channel + 1) + ' to Fader ' + String(this.faderIndex + 1) + '?',
                 detail: detail,
             };
+            /*
             let response = window.dialog.showMessageBoxSync(options)
 
             if (response === 1) {
                 return true
             }
+            */
         }
+
         this.props.dispatch({
             type: SET_ASSIGNED_FADER,
             channel: channel,
@@ -88,6 +92,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
             message: 'WARNING!!!!!',
             detail: 'This will remove all Fader-Channel assignments',
         };
+        /*
         let response = window.dialog.showMessageBoxSync(options)
         if (response === 0) {
             this.props.channel.forEach((channel: any, index: number) => {
@@ -98,6 +103,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                 });
             })
         }
+        */
         return true
     }
 
@@ -110,6 +116,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
             message: 'WARNING!!!!!',
             detail: 'This will reassign all Faders 1:1 to Channels',
         };
+        /*
         let response = window.dialog.showMessageBoxSync(options)
         if (response === 0) {
             this.props.fader.forEach((fader: any, index: number) => {
@@ -122,6 +129,7 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
                 }
             })
         }
+        */
         return true
     }
 

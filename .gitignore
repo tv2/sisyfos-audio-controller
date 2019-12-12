@@ -8,8 +8,10 @@ builds/
 dist/
 coverage/
 node_modules/
+public/
 *.compiled.*
 yarn.lock
+
 
 # Folder config file #
 ######################

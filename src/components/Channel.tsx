@@ -63,19 +63,19 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handlePgm() {
-        window.ipcRenderer.send( IPC_TOGGLE_PGM, this.faderIndex)
+        window.socketIoClient.emit( IPC_TOGGLE_PGM, this.faderIndex)
     }
 
     handleVo() {
-        window.ipcRenderer.send( IPC_TOGGLE_VO, this.faderIndex)
+        window.socketIoClient.emit( IPC_TOGGLE_VO, this.faderIndex)
     }
 
     handlePst() {
-        window.ipcRenderer.send( IPC_TOGGLE_PST, this.faderIndex)
+        window.socketIoClient.emit( IPC_TOGGLE_PST, this.faderIndex)
     }
 
     handlePfl() {
-        window.ipcRenderer.send( IPC_TOGGLE_PFL, this.faderIndex)
+        window.socketIoClient.emit( IPC_TOGGLE_PFL, this.faderIndex)
 
         if (window.huiRemoteConnection) {
             window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
@@ -83,7 +83,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handleMute() {
-        window.ipcRenderer.send( IPC_TOGGLE_MUTE, this.faderIndex)
+        window.socketIoClient.emit( IPC_TOGGLE_MUTE, this.faderIndex)
 
         if (window.huiRemoteConnection) {
             window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
@@ -91,7 +91,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handleLevel(event: any) {
-        window.ipcRenderer.send( IPC_SET_FADERLEVEL, 
+        window.socketIoClient.emit( IPC_SET_FADERLEVEL, 
             {
                 'faderIndex' :this.faderIndex,
                 'level': parseFloat(event)

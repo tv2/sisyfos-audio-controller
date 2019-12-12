@@ -41,10 +41,12 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
                 title: 'Remove monitoring',
                 message: 'Remove monitoring on ' + String(channel + 1),
             };
+            /*
             let response = window.dialog.showMessageBoxSync(options)
             if (response === 1) {
                 return true
             }
+            */
             monitorAssign = -1
         } else {
             monitorAssign = 0
@@ -55,11 +57,11 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
                 title: 'Monitor Channel',
                 message: 'Enable monitoring of Channel ' + String(channel + 1) + '?',
             };
-            let response = window.dialog.showMessageBoxSync(options)
+/*            let response = window.dialog.showMessageBoxSync(options)
 
             if (response === 1) {
                 return true
-            }
+            }*/
         }
         this.props.dispatch({
             type: SET_AUX_LEVEL,
@@ -79,6 +81,7 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
             message: 'WARNING!!!!!',
             detail: 'This will remove all monitor assignments to Aux :' + String(this.props.fader[this.faderIndex].monitor),
         };
+        /*
         let response = window.dialog.showMessageBoxSync(options)
         if (response === 0) {
             this.props.channel.forEach((channel: any, index: number) => {
@@ -89,7 +92,7 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
                     level: -1
                 });
             })
-        }
+        }*/
         return true
     }
 
@@ -101,6 +104,7 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
             title: 'WARNING',
             message: 'Send all channels to Aux: ' + String(this.props.fader[this.faderIndex].monitor)
         };
+        /*
         let response = window.dialog.showMessageBoxSync(options)
         if (response === 0) {
             this.props.channel.forEach((channel: any, index: number) => {
@@ -111,7 +115,7 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
                     level: 0
                 });
             })
-        }
+        }*/
         return true
     }
 

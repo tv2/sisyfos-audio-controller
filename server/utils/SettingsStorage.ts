@@ -1,7 +1,6 @@
 // Node Modules:
-import { app } from 'electron'
 const fs = require('fs')
-const folder = app.getPath('userData');
+const path = require('path')
 
 // Redux:
 import { SET_COMPLETE_CH_STATE } from '../reducers/channelActions'
@@ -12,7 +11,7 @@ export const loadSettings = (storeRedux: any) => {
     // console.log('SETTINGS IS LOADING')
     let settingsInterface = storeRedux.settings[0];
     try {
-        const settingsFromFile = JSON.parse(fs.readFileSync(folder + "/settings.json"));
+        const settingsFromFile = JSON.parse(fs.readFileSync(path.resolve("settings.json")));
         return (settingsFromFile);
     }
     catch (error) {
@@ -23,7 +22,7 @@ export const loadSettings = (storeRedux: any) => {
 
 export const saveSettings = (settings: any) => {
     let json = JSON.stringify(settings);
-    fs.writeFile(folder + "/settings.json", json, 'utf8', (error: any)=>{
+    fs.writeFile(path.resolve("settings.json"), json, 'utf8', (error: any)=>{
         console.log(error);
     });
 };

@@ -4,8 +4,7 @@ import { MixerGenericConnection } from './utils/MixerConnection';
 import { AutomationConnection } from './utils/AutomationConnection';
 import { HuiMidiRemoteConnection } from './utils/HuiMidiRemoteConnection';
 import { MixerProtocolPresets } from './constants/MixerProtocolPresets';
-import { app } from 'electron'
-
+const path = require('path')
 export class MainApp {
     numberOfChannels: number[] = []
     settingsPath: string = ''
@@ -26,14 +25,13 @@ export class MainApp {
         if (this.store.settings[0].enableRemoteFader){
             global.huiRemoteConnection = new HuiMidiRemoteConnection();
         }
-        this.settingsPath = app.getPath('userData')
 
         this.snapShopStoreTimer();
         global.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol];
-        global.mixerProtocol.channelTypes.forEach((item, index) => {
+        global.mixerProtocol.channelTypes.forEach((item: any, index: number) => {
             this.numberOfChannels.push(this.store.settings[0].numberOfChannelsInType[index]);
         });
-        this.loadSnapshotSettings(this.settingsPath + '/default.shot', true)
+        this.loadSnapshotSettings(path.resolve('default.shot'), true)
 
         // ** UNCOMMENT TO DUMP A FULL STORE:
         //const fs = require('fs')

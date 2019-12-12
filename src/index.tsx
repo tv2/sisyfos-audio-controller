@@ -1,7 +1,8 @@
-import * as React from 'react';
-import { render } from 'react-dom';
+import React from 'react';
+import ReactDom from 'react-dom';
 import App from './components/App';
-import { ipcRendererHandlers } from './utils/IpcRenderHandlers'
+import { socketIoHandlers } from './utils/SocketIoHandlers'
+import io from 'socket.io-client'
 
 //Redux:
 import { createStore } from 'redux';
@@ -18,9 +19,7 @@ declare global {
         mixerProtocolList: any
         fs: any
         net: any
-        dialog: any
-        getPath: any
-        ipcRenderer: any
+        socketIoClient: any
     }
 }
 
@@ -30,20 +29,19 @@ const storeRedux = createStore(
     indexReducer
 );
 window.storeRedux = storeRedux
+window.socketIoClient = io()
 
-ipcRendererHandlers()
-window.ipcRenderer.send('get-store', 'update local store');
-window.ipcRenderer.send('get-settings', 'update local settings');
-window.ipcRenderer.send('get-mixerprotocol', 'get selected mixerprotocol')
 
-// Since we are using HtmlWebpackPlugin WITHOUT a template, we should create our own root node in the body element before rendering into it
-let root = document.createElement('div');
+console.log('Setting up SocketIO connection')
+socketIoHandlers()
+window.socketIoClient.emit('get-store', 'update local store');
+window.socketIoClient.emit('get-settings', 'update local settings');
+window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
+console.log('SocketIO : ', window.socketIoClient)
 
-root.id = 'root';
-document.body.appendChild(root);
 
-// Now we can render our application into it
-render(
+
+ReactDom.render(
     <ReduxProvider store={storeRedux}>
         <App />
     </ReduxProvider>

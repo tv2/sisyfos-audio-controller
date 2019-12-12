@@ -2,8 +2,8 @@ import { SET_COMPLETE_FADER_STATE } from "../../server/reducers/faderActions";
 import { SET_COMPLETE_CH_STATE } from "../../server/reducers/channelActions";
 import { UPDATE_SETTINGS } from "../../server/reducers/settingsActions";
 
-export const ipcRendererHandlers = () => {
-    window.ipcRenderer
+export const socketIoHandlers = () => {
+    window.socketIoClient
     .on('set-store', (
         (event: any, payload: any) => { 
             // console.log('STATE RECEIVED :', payload)

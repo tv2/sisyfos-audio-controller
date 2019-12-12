@@ -2,7 +2,6 @@ import { createStore } from 'redux'
 import indexReducer from './reducers/indexReducer';
 import { UPDATE_SETTINGS, TOGGLE_SHOW_MONITOR_OPTIONS, TOGGLE_SHOW_OPTION, TOGGLE_SHOW_CHAN_STRIP } from './reducers/settingsActions'
 import { loadSettings, saveSettings } from './utils/SettingsStorage'
-import { ipcMain } from 'electron';
 import { IPC_TOGGLE_PGM, IPC_TOGGLE_VO, IPC_TOGGLE_PST, IPC_TOGGLE_PFL, IPC_TOGGLE_MUTE, IPC_SET_FADERLEVEL, IPC_TOGGLE_SHOW_CH_STRIP, IPC_TOGGLE_SHOW_OPTION, IPC_SAVE_SETTINGS } from '../server/constants/IPC_DISPATCHERS'
 import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
@@ -36,23 +35,23 @@ export class MainThreadHandlers {
 
         // get-store get-settings and get-mixerprotocol will be replaces with
         // serverside Redux middleware emitter when moved to Socket IO:
-        ipcMain
+        global.socketServer
         .on('get-store', (
             (event: any, payload: any) => { 
                 //console.log('Data received : ', payload)
-                global.mainWindow.webContents.send('set-store', global.storeRedux.getState())
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on('get-settings', (
             (event: any, payload: any) => { 
                 //console.log('Data received :', payload)
-                global.mainWindow.webContents.send('set-settings', loadSettings(global.storeRedux.getState()))
+                global.socketServer.emit('set-settings', loadSettings(global.storeRedux.getState()))
             })
         )
         .on('get-mixerprotocol', (
             (event: any, payload: any) => { 
                 //console.log('Data received', payload)
-                global.mainWindow.webContents.send('set-mixerprotocol', 
+                global.socketServer.emit('set-mixerprotocol', 
                     {
                         'mixerProtocol': global.mixerProtocol,
                         'mixerProtocolPresets': global.mixerProtocolPresets,
@@ -70,7 +69,7 @@ export class MainThreadHandlers {
     }
 
     ipcChannelHandlers() {
-        ipcMain
+        global.socketServer
         .on(IPC_TOGGLE_PGM, (
             (event: any, faderIndex: any) => {
                 global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
@@ -135,7 +134,7 @@ export class MainThreadHandlers {
     }
 
     ipcControlHandlers() {
-        ipcMain
+        global.socketServer
         .on(IPC_TOGGLE_SHOW_CH_STRIP, (
             (event: any, faderIndex: any) => {
                 global.storeRedux.dispatch({

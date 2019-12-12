@@ -103,10 +103,12 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             title: 'Save Current Setup',
             message: 'Stores the current state of Sisyfos - including Fader-Channel Routing',
         };
+        /*
         let response = window.dialog.showSaveDialogSync(options)
         if (response === 'save') {
             console.log('SAVING CURRENT STATE')
         }
+        */
     }
 
     loadFile() {
@@ -115,8 +117,10 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             title: 'Load selected file',
             message: 'Loading Fader and Channels state',
         };
+        /*
         let response = window.dialog.showOpenDialogSync(options)
         console.log('LOAD STATE? :', response)
+        */
     }
 
     snapMixButton(snapIndex: number) {

@@ -40,7 +40,7 @@ export class MidiMixerConnection {
 
         this.mixerProtocol = mixerProtocol || MixerProtocolPresets.genericMidi;
 
-        WebMidi.enable((err) => {
+        WebMidi.enable((err: any) => {
 
             if (err) {
                 console.log("WebMidi could not be enabled.", err);
@@ -133,7 +133,7 @@ return true;
 
     pingMixerCommand() {
         //Ping OSC mixer if mixerProtocol needs it.
-        this.mixerProtocol.pingCommand.map((command) => {
+        this.mixerProtocol.pingCommand.map((command: any) => {
             this.sendOutMessage(
                 command.mixerMessage,
                 0,

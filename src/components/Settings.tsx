@@ -168,7 +168,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     handleSave = () => {
         let settingsCopy= Object.assign({}, this.state.settings);
         settingsCopy.showSettings = false;
-        window.ipcRenderer.send( IPC_SAVE_SETTINGS, settingsCopy)
+        window.socketIoClient.emit( IPC_SAVE_SETTINGS, settingsCopy)
         location.reload();
     }
 
