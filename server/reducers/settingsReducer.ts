@@ -73,8 +73,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         autoResetLevel: 10,
         automationMode: true,
         offtubeMode: false,
-        fadeTime: 60,
-        voFadeTime: 200, 
+        fadeTime: 120,
+        voFadeTime: 280, 
         showPfl: false,
         mixerOnline: false
     },
