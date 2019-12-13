@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import App from './components/App';
-import { socketIoHandlers } from './utils/SocketIoHandlers'
+import { socketClientHandlers } from './utils/SocketClientHandlers'
 import io from 'socket.io-client'
 
 //Redux:
@@ -24,6 +24,7 @@ declare global {
 }
 
 
+localStorage.debug = 'socket.io-client:socket';
 
 const storeRedux = createStore(
     indexReducer
@@ -33,11 +34,11 @@ window.socketIoClient = io()
 
 
 console.log('Setting up SocketIO connection')
-socketIoHandlers()
+socketClientHandlers()
 window.socketIoClient.emit('get-store', 'update local store');
 window.socketIoClient.emit('get-settings', 'update local settings');
 window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
-console.log('SocketIO : ', window.socketIoClient)
+window.socketIoClient.emit('a-l-s-o-a-l-i-v-e', 'this is recieved from client');
 
 
 

@@ -25,31 +25,28 @@ export class MainThreadHandlers {
         const unsubscribe = global.storeRedux.subscribe(() => {
             this.store = global.storeRedux.getState();
         });
-        this.ipcMainHandlers()
-        this.ipcChannelHandlers()
-        this.ipcControlHandlers()
     }
 
-    ipcMainHandlers() {
+    socketServerHandlers(socket: any) {
         console.log('SETTING UP IPC MAIN HANDLERS')
 
         // get-store get-settings and get-mixerprotocol will be replaces with
         // serverside Redux middleware emitter when moved to Socket IO:
-        global.socketServer
+        socket
         .on('get-store', (
-            (event: any, payload: any) => { 
+            (payload: any) => { 
                 //console.log('Data received : ', payload)
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on('get-settings', (
-            (event: any, payload: any) => { 
+            (payload: any) => { 
                 //console.log('Data received :', payload)
                 global.socketServer.emit('set-settings', loadSettings(global.storeRedux.getState()))
             })
         )
         .on('get-mixerprotocol', (
-            (event: any, payload: any) => { 
+            (payload: any) => { 
                 //console.log('Data received', payload)
                 global.socketServer.emit('set-mixerprotocol', 
                     {
@@ -61,17 +58,13 @@ export class MainThreadHandlers {
             })
         )
         .on(IPC_SAVE_SETTINGS, (
-            (event: any, payload: any) => { 
+            (payload: any) => { 
                 console.log('Save settings :', payload)
                 saveSettings(payload)
             })
         )
-    }
-
-    ipcChannelHandlers() {
-        global.socketServer
         .on(IPC_TOGGLE_PGM, (
-            (event: any, faderIndex: any) => {
+            (faderIndex: any) => {
                 global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 global.storeRedux.dispatch({
                     type: TOGGLE_PGM,
@@ -81,7 +74,7 @@ export class MainThreadHandlers {
             })
         )
         .on(IPC_TOGGLE_VO, (
-            (event: any, faderIndex: any) => {
+            (faderIndex: any) => {
                 global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 global.storeRedux.dispatch({
                     type: TOGGLE_VO,
@@ -91,7 +84,7 @@ export class MainThreadHandlers {
             })
         )
         .on(IPC_TOGGLE_PST, (
-            (event: any, faderIndex: any) => {
+            (faderIndex: any) => {
                 global.storeRedux.dispatch({
                     type: TOGGLE_PST,
                     channel: faderIndex
@@ -101,7 +94,7 @@ export class MainThreadHandlers {
             })
         )
         .on(IPC_TOGGLE_PFL, (
-            (event: any, faderIndex: any) => {
+            (faderIndex: any) => {
                 global.storeRedux.dispatch({
                     type: TOGGLE_PFL,
                     channel: faderIndex
@@ -111,7 +104,7 @@ export class MainThreadHandlers {
             })
         )
         .on(IPC_TOGGLE_MUTE, (
-            (event: any, faderIndex: any) => {
+            (faderIndex: any) => {
                 global.storeRedux.dispatch({
                     type: TOGGLE_MUTE,
                     channel: faderIndex
@@ -121,7 +114,7 @@ export class MainThreadHandlers {
             })
         )
         .on(IPC_SET_FADERLEVEL, (
-            (event: any, payload: any) => {
+            (payload: any) => {
                 global.storeRedux.dispatch({
                     type: SET_FADER_LEVEL,
                     channel: payload.faderIndex,
@@ -131,12 +124,8 @@ export class MainThreadHandlers {
         
             })
         )
-    }
-
-    ipcControlHandlers() {
-        global.socketServer
         .on(IPC_TOGGLE_SHOW_CH_STRIP, (
-            (event: any, faderIndex: any) => {
+            (faderIndex: any) => {
                 global.storeRedux.dispatch({
                     type: TOGGLE_SHOW_CHAN_STRIP,
                     channel: faderIndex
@@ -144,7 +133,7 @@ export class MainThreadHandlers {
             })
         )
         .on(IPC_TOGGLE_SHOW_OPTION, (
-            (event: any, faderIndex: any) => {
+            (faderIndex: any) => {
                 global.storeRedux.dispatch({
                     type: TOGGLE_SHOW_OPTION,
                     channel: faderIndex

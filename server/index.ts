@@ -35,12 +35,14 @@ server.listen(1176);
 global.mixerProtocolPresets = MixerProtocolPresets
 global.mixerProtocolList = MixerProtocolList
 
-// Keep a reference for dev mode
-let dev = true
 let mainThreadHandler = new MainThreadHandlers();
-let mainApp = new MainApp()
+new MainApp()
 
-/*if (dev && process.argv.indexOf('--noDevServer') === -1) {
+// Keep a reference for dev mode
+/*
+let dev = true
+
+if (dev && process.argv.indexOf('--noDevServer') === -1) {
   indexPath = url.format({
     protocol: 'http:',
     host: 'localhost:8080',
@@ -55,18 +57,15 @@ let mainApp = new MainApp()
 })
 */
 
-//global.socketServer.on('connection', (socket: any) => {
-server.on('connection', (socket: any) => {
-
+server.on('connection', () => {
   app.get('/', (req: any, res: any) => {
     console.log('Path :', path.resolve('../dist/index.html'))
-
     res.sendFile(path.resolve('dist/index.html'))
-  })
-
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data: any) {
-    console.log(data);
   })
 })
 
+global.socketServer.on('connection', ((socket: any) => {
+    console.log('Client connected :', socket.client.id)
+    mainThreadHandler.socketServerHandlers(socket)
+  })
+)

@@ -12,6 +12,7 @@ public/
 *.compiled.*
 yarn.lock
 settings.json
+*.shot
 
 
 # Folder config file #

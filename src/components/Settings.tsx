@@ -4,8 +4,6 @@ import Select from 'react-select';
 import WebMidi from 'webmidi';
 import { IAppProps } from './App';
 
-
-
 //Utils:
 import '../assets/css/Settings.css';
 import { ISettings } from '../../server/reducers/settingsReducer';
@@ -13,7 +11,6 @@ import { SHOW_CHANNEL } from '../../server/reducers/faderActions'
 import { Store } from 'redux';
 import { ChangeEvent } from 'react';
 import { IPC_SAVE_SETTINGS } from '../../server/constants/IPC_DISPATCHERS';
-
 
 //Set style for Select dropdown component:
 const selectorColorStyles = {
