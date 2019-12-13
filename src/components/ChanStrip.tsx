@@ -12,7 +12,6 @@ import {
 import { IFader } from '../../server/reducers/fadersReducer'
 import { SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from '../../server/reducers/faderActions'
 import { SET_AUX_LEVEL } from '../../server/reducers/channelActions';
-import { IPC_TOGGLE_SHOW_OPTION } from '../../server/constants/IPC_DISPATCHERS';
 
 interface IChanStripInjectProps {
     label: string,
