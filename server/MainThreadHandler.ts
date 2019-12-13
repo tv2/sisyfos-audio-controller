@@ -35,7 +35,7 @@ export class MainThreadHandlers {
         socket
         .on('get-store', (
             (payload: any) => { 
-                console.log('Settings initiasl store on :', socket.client.id)
+                console.log('Settings initial store on :', socket.client.id)
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )

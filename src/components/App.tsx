@@ -30,9 +30,13 @@ class App extends React.Component<IAppProps> {
 
         // THIS IS THE BASIC IPC - REDUX IMPLEMENTATION UNTIL A MIDDLEWARE IS
         // BUILD ON SERVERSIDE:
-        window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
-        window.socketIoClient.emit('get-settings', 'update local settings');
-        window.socketIoClient.emit('get-store', 'update local store');
+
+        let timer = setInterval(() => {
+            window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
+            window.socketIoClient.emit('get-store', 'update local store');
+            window.socketIoClient.emit('get-settings', 'update local settings');
+        },
+        200)
 
         // ** UNCOMMENT TO DUMP A FULL STORE:
         // const fs = require('fs')

@@ -38,7 +38,6 @@ socketClientHandlers()
 window.socketIoClient.emit('get-store', 'update local store');
 window.socketIoClient.emit('get-settings', 'update local settings');
 window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
-window.socketIoClient.emit('a-l-s-o-a-l-i-v-e', 'this is recieved from client');
 
 
 
