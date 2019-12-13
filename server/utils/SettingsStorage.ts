@@ -11,9 +11,7 @@ export const loadSettings = (storeRedux: any) => {
     // console.log('SETTINGS IS LOADING')
     let settingsInterface = storeRedux.settings[0];
     try {
-        const settingsFromFile = JSON.parse(fs.readFileSync(path.resolve("settings.json")));
-        console.log('Settings.json file : ', settingsFromFile)
-        return (settingsFromFile);
+        return (JSON.parse(fs.readFileSync(path.resolve("settings.json"))))
     }
     catch (error) {
         saveSettings(settingsInterface);
