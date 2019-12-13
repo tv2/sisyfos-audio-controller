@@ -36,7 +36,7 @@ class App extends React.Component<IAppProps> {
             window.socketIoClient.emit('get-store', 'update local store');
             window.socketIoClient.emit('get-settings', 'update local settings');
         },
-        200)
+        300)
 
         // ** UNCOMMENT TO DUMP A FULL STORE:
         // const fs = require('fs')
