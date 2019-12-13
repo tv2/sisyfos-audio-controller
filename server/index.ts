@@ -32,14 +32,13 @@ global.socketServer = require('socket.io')(server);
 
 server.listen(1176);
 
-// global.mixerProtocolPresets = MixerProtocolPresets
-// global.mixerProtocolList = MixerProtocolList
+global.mixerProtocolPresets = MixerProtocolPresets
+global.mixerProtocolList = MixerProtocolList
 
 // Keep a reference for dev mode
 let dev = true
-let mainThreadHandler: any
-let mainApp: any
-let indexPath: string
+let mainThreadHandler = new MainThreadHandlers();
+let mainApp = new MainApp()
 
 /*if (dev && process.argv.indexOf('--noDevServer') === -1) {
   indexPath = url.format({
@@ -58,8 +57,7 @@ let indexPath: string
 
 //global.socketServer.on('connection', (socket: any) => {
 server.on('connection', (socket: any) => {
-  // mainThreadHandler = new MainThreadHandlers();
-  // mainApp = new MainApp()
+
   app.get('/', (req: any, res: any) => {
     console.log('Path :', path.resolve('../dist/index.html'))
 

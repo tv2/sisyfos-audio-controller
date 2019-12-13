@@ -11,6 +11,7 @@ node_modules/
 public/
 *.compiled.*
 yarn.lock
+settings.json
 
 
 # Folder config file #

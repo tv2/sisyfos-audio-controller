@@ -53,7 +53,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showOptions: false,
         showMonitorOptions: -1,
         showStorage: false,
-        mixerProtocol: "genericMidi",
+        mixerProtocol: "sslSystemT",
         localIp: "0.0.0.0",
         localOscPort: 1234,
         deviceIp: "0.0.0.0",
