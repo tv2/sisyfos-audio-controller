@@ -35,7 +35,7 @@ export class MainThreadHandlers {
         socket
         .on('get-store', (
             (payload: any) => { 
-                //console.log('Data received : ', payload)
+                console.log('Settings initiasl store on :', socket.client.id)
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
@@ -54,13 +54,15 @@ export class MainThreadHandlers {
                         'mixerProtocolPresets': global.mixerProtocolPresets,
                         'mixerProtocolList': global.mixerProtocolList,
 
-                    })
+                    }
+                )
             })
         )
         .on(IPC_SAVE_SETTINGS, (
             (payload: any) => { 
                 console.log('Save settings :', payload)
                 saveSettings(payload)
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(IPC_TOGGLE_PGM, (
@@ -71,6 +73,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updateOutLevel(faderIndex)
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(IPC_TOGGLE_VO, (
@@ -81,6 +84,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updateOutLevel(faderIndex)
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(IPC_TOGGLE_PST, (
@@ -90,7 +94,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updateNextAux(faderIndex);
-        
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(IPC_TOGGLE_PFL, (
@@ -100,7 +104,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updatePflState(faderIndex);
-        
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(IPC_TOGGLE_MUTE, (
@@ -110,7 +114,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updateMuteState(faderIndex);
-        
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(IPC_SET_FADERLEVEL, (
@@ -121,7 +125,7 @@ export class MainThreadHandlers {
                     level: parseFloat(payload.level)
                 });
                 global.mixerGenericConnection.updateOutLevel(payload.faderIndex)
-        
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(IPC_TOGGLE_SHOW_CH_STRIP, (

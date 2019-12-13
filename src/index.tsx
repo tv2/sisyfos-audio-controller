@@ -23,8 +23,8 @@ declare global {
     }
 }
 
-
-localStorage.debug = 'socket.io-client:socket';
+// *** Uncomment to log Socket I/O:
+// localStorage.debug = 'socket.io-client:socket';
 
 const storeRedux = createStore(
     indexReducer

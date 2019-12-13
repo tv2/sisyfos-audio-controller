@@ -268,6 +268,9 @@ export class AutomationConnection {
                     info
                 )
             }
+
+            // TODO: Implement better emit handling so only relevant messages updates clients:
+            global.socketServer.emit('set-store', global.storeRedux.getState())
         })
         .on('error', (error: any) => {
             console.log("Error : ", error);
