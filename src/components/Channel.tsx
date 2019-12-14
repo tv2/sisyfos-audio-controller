@@ -9,7 +9,7 @@ import ReactSlider from 'react-slider'
 
 //assets:
 import '../assets/css/Channel.css';
-import { IPC_TOGGLE_PGM, IPC_TOGGLE_VO, IPC_TOGGLE_PST, IPC_TOGGLE_PFL, IPC_TOGGLE_MUTE, IPC_SET_FADERLEVEL, IPC_TOGGLE_SHOW_CH_STRIP } from '../../server/constants/IPC_DISPATCHERS'
+import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL, SOCKET_TOGGLE_SHOW_CH_STRIP } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_SNAP
 } from '../../server/reducers/faderActions'
@@ -63,19 +63,19 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handlePgm() {
-        window.socketIoClient.emit( IPC_TOGGLE_PGM, this.faderIndex)
+        window.socketIoClient.emit( SOCKET_TOGGLE_PGM, this.faderIndex)
     }
 
     handleVo() {
-        window.socketIoClient.emit( IPC_TOGGLE_VO, this.faderIndex)
+        window.socketIoClient.emit( SOCKET_TOGGLE_VO, this.faderIndex)
     }
 
     handlePst() {
-        window.socketIoClient.emit( IPC_TOGGLE_PST, this.faderIndex)
+        window.socketIoClient.emit( SOCKET_TOGGLE_PST, this.faderIndex)
     }
 
     handlePfl() {
-        window.socketIoClient.emit( IPC_TOGGLE_PFL, this.faderIndex)
+        window.socketIoClient.emit( SOCKET_TOGGLE_PFL, this.faderIndex)
 
         if (window.huiRemoteConnection) {
             window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
@@ -83,7 +83,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handleMute() {
-        window.socketIoClient.emit( IPC_TOGGLE_MUTE, this.faderIndex)
+        window.socketIoClient.emit( SOCKET_TOGGLE_MUTE, this.faderIndex)
 
         if (window.huiRemoteConnection) {
             window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
@@ -91,7 +91,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     handleLevel(event: any) {
-        window.socketIoClient.emit( IPC_SET_FADERLEVEL, 
+        window.socketIoClient.emit( SOCKET_SET_FADERLEVEL, 
             {
                 'faderIndex' :this.faderIndex,
                 'level': parseFloat(event)

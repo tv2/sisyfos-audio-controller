@@ -2,7 +2,7 @@ import { createStore } from 'redux'
 import indexReducer from './reducers/indexReducer';
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import { loadSettings, saveSettings } from './utils/SettingsStorage'
-import { IPC_TOGGLE_PGM, IPC_TOGGLE_VO, IPC_TOGGLE_PST, IPC_TOGGLE_PFL, IPC_TOGGLE_MUTE, IPC_SET_FADERLEVEL, IPC_SAVE_SETTINGS } from '../server/constants/IPC_DISPATCHERS'
+import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL, SOCKET_SAVE_SETTINGS } from './constants/SOCKET_IO_DISPATCHERS'
 import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 
@@ -28,7 +28,7 @@ export class MainThreadHandlers {
     }
 
     socketServerHandlers(socket: any) {
-        console.log('SETTING UP IPC MAIN HANDLERS')
+        console.log('SETTING UP SOCKET IO MAIN HANDLERS')
 
         // get-store get-settings and get-mixerprotocol will be replaces with
         // serverside Redux middleware emitter when moved to Socket IO:
@@ -58,14 +58,14 @@ export class MainThreadHandlers {
                 )
             })
         )
-        .on(IPC_SAVE_SETTINGS, (
+        .on(SOCKET_SAVE_SETTINGS, (
             (payload: any) => { 
                 console.log('Save settings :', payload)
                 saveSettings(payload)
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
-        .on(IPC_TOGGLE_PGM, (
+        .on(SOCKET_TOGGLE_PGM, (
             (faderIndex: any) => {
                 global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 global.storeRedux.dispatch({
@@ -76,7 +76,7 @@ export class MainThreadHandlers {
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
-        .on(IPC_TOGGLE_VO, (
+        .on(SOCKET_TOGGLE_VO, (
             (faderIndex: any) => {
                 global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 global.storeRedux.dispatch({
@@ -87,7 +87,7 @@ export class MainThreadHandlers {
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
-        .on(IPC_TOGGLE_PST, (
+        .on(SOCKET_TOGGLE_PST, (
             (faderIndex: any) => {
                 global.storeRedux.dispatch({
                     type: TOGGLE_PST,
@@ -97,7 +97,7 @@ export class MainThreadHandlers {
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
-        .on(IPC_TOGGLE_PFL, (
+        .on(SOCKET_TOGGLE_PFL, (
             (faderIndex: any) => {
                 global.storeRedux.dispatch({
                     type: TOGGLE_PFL,
@@ -107,7 +107,7 @@ export class MainThreadHandlers {
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
-        .on(IPC_TOGGLE_MUTE, (
+        .on(SOCKET_TOGGLE_MUTE, (
             (faderIndex: any) => {
                 global.storeRedux.dispatch({
                     type: TOGGLE_MUTE,
@@ -117,7 +117,7 @@ export class MainThreadHandlers {
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
-        .on(IPC_SET_FADERLEVEL, (
+        .on(SOCKET_SET_FADERLEVEL, (
             (payload: any) => {
                 global.storeRedux.dispatch({
                     type: SET_FADER_LEVEL,
