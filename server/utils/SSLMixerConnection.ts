@@ -67,6 +67,7 @@ export class SSLMixerConnection {
                     type: SET_MIXER_ONLINE,
                     mixerOnline: true
                 });
+                
                 console.log("Receiving state of desk");
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes("{channel}")) {
@@ -77,6 +78,7 @@ export class SSLMixerConnection {
                         this.sendOutLevelMessage(item.mixerMessage, 0, item.value);
                     }
                 });
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
@@ -148,6 +150,7 @@ export class SSLMixerConnection {
                                     }
                                 })
                             }
+                            global.socketServer.emit('set-store', global.storeRedux.getState())
                         }
                         
                     } else if (buffer[1] === 5 && buffer[2] === 255 && buffer[4] === 1 && !lastWasAck) {
@@ -174,6 +177,7 @@ export class SSLMixerConnection {
                                 this.updateMuteState(index, this.store.faders[0].fader[assignedFaderIndex].muteOn);
                             }
                         })
+                        global.socketServer.emit('set-store', global.storeRedux.getState())
                     } else {
                         let commandHex = buffer.toString('hex')
                         console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
