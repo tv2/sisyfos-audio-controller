@@ -14,6 +14,7 @@ import {
     TOGGLE_PGM
 } from '../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
+import { SOCKET_SET_VU } from '../constants/SOCKET_IO_DISPATCHERS';
 
 export class OscMixerConnection {
     store: IStore;
@@ -89,6 +90,13 @@ export class OscMixerConnection {
                         channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         level: message.args[0]
                     });
+                    global.socketServer.emit(
+                        SOCKET_SET_VU, 
+                        {
+                            faderIndex: this.store.channels[0].channel[ch - 1].assignedFader,
+                            level: message.args[0]
+                        }
+                    )
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_OUT_GAIN[0].mixerMessage)){

@@ -10,3 +10,4 @@ export const SOCKET_TOGGLE_MUTE = 'toggleMute'
 
 // Div:
 export const SOCKET_SAVE_SETTINGS = 'saveSettings'
+export const SOCKET_SET_VU = 'setVu'

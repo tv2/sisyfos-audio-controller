@@ -1,5 +1,6 @@
 import * as DEFAULTS from '../../constants/DEFAULTS';
 import { SET_VU_LEVEL } from '../../reducers/faderActions'
+import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
 
 
 export const behringerMeter = (message: any) => {
@@ -12,11 +13,19 @@ export const behringerMeter = (message: any) => {
     let dataview = new DataView(uint8bytes.buffer);
 
     for (let i=0; i < store.settings[0].numberOfChannelsInType[0]; i++) {
+        let level = (dataview.getInt16(2*(i+2) , true) + 8000)/8000
         global.storeRedux.dispatch({
             type:SET_VU_LEVEL,
             channel: i,
-            level: (dataview.getInt16(2*(i+2) , true) + 8000)/8000
+            level: level
         });
+        global.socketServer.emit(
+            SOCKET_SET_VU, 
+            {
+                faderIndex: store.channels[0].channel[i].assignedFader,
+                level: level
+            }
+        )
     }
 };
 
