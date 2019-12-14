@@ -9,7 +9,7 @@ import ReactSlider from 'react-slider'
 
 //assets:
 import '../assets/css/Channel.css';
-import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL, SOCKET_TOGGLE_SHOW_CH_STRIP } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_SNAP
 } from '../../server/reducers/faderActions'
