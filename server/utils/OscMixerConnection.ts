@@ -54,12 +54,8 @@ export class OscMixerConnection {
         this.oscConnection
         .on("ready", () => {
             console.log("Receiving state of desk");
-            global.storeRedux.dispatch({
-                type: SET_MIXER_ONLINE,
-                mixerOnline: true
-            });
             
-            this.mixerProtocol.initializeCommands.map((item) => {
+            this.mixerProtocol.initializeCommands.forEach((item) => {
                 if (item.mixerMessage.includes("{channel}")) {
                     this.store.channels[0].channel.map((channel: any, index: any) => {
                         this.sendOutRequest(item.mixerMessage,(index +1));
@@ -68,6 +64,11 @@ export class OscMixerConnection {
                     this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
                 }
             });
+            global.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: true
+            });            
+            global.socketServer.emit('set-store', global.storeRedux.getState())
         })
         .on('message', (message: any) => {
             clearTimeout(this.mixerOnlineTimer)

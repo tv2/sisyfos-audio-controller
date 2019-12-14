@@ -78,6 +78,7 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
 
 export const saveSnapshotState = (stateSnapshot: any, fileName: string) => {
     let json = JSON.stringify(stateSnapshot);
+    //console.log('Saving State, in file: ', fileName, 'State :', stateSnapshot)
     fs.writeFile(fileName, json, 'utf8', (error: any)=>{
         //console.log(error);
     });

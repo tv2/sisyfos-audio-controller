@@ -45,7 +45,7 @@ export class MainApp {
                     faderState: this.store.faders[0],
                     channelState: this.store.channels[0]
                 }
-                saveSnapshotState(snapshot, this.settingsPath + '/default.shot');
+                saveSnapshotState(snapshot, path.resolve(this.settingsPath, 'default.shot'))
             },
             2000);
     }
