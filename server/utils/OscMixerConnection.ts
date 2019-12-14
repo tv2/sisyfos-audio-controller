@@ -138,6 +138,8 @@ export class OscMixerConnection {
                             }
                         })
                     }
+                    global.socketServer.emit('set-store', global.storeRedux.getState())
+
                     if (global.huiRemoteConnection) {
                         global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, message.args[0]);
                     }
@@ -165,6 +167,7 @@ export class OscMixerConnection {
                     auxIndex: auxIndex,
                     level: message.args[0]
                 });
+                global.socketServer.emit('set-store', global.storeRedux.getState())
  
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_NAME[0].mixerMessage)) {
@@ -174,6 +177,7 @@ export class OscMixerConnection {
                         channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         label: message.args[0]
                     });
+                global.socketServer.emit('set-store', global.storeRedux.getState())
                 console.log("OSC message: ", message.address);
             }
         })
@@ -182,6 +186,7 @@ export class OscMixerConnection {
                 type: SET_MIXER_ONLINE,
                 mixerOnline: false
             });
+            global.socketServer.emit('set-store', global.storeRedux.getState())
             console.log("Error : ", error);
             console.log("Lost OSC connection");
         });

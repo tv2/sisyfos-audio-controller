@@ -28,16 +28,12 @@ class App extends React.Component<IAppProps> {
             (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
         }
 
-        // THIS IS THE BASIC IPC - REDUX IMPLEMENTATION UNTIL A MIDDLEWARE IS
+        // THIS IS THE BASIC SOCKET - REDUX POLLING IMPLEMENTATION UNTIL A MIDDLEWARE IS
         // BUILD ON SERVERSIDE:
 
-        let timer = setInterval(() => {
             window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
             window.socketIoClient.emit('get-store', 'update local store');
             window.socketIoClient.emit('get-settings', 'update local settings');
-        },
-        300)
-
         // ** UNCOMMENT TO DUMP A FULL STORE:
         // const fs = require('fs')
         // fs.writeFileSync('src/components/__tests__/__mocks__/parsedFullStore-UPDATE.json', JSON.stringify(window.storeRedux.getState()))
