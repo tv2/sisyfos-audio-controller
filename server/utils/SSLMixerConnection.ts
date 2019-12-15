@@ -103,11 +103,13 @@ export class SSLMixerConnection {
                     if (buffer[1] === 6 && buffer[2] === 255 && !lastWasAck) {
                         lastWasAck = false
                         // FADERLEVEL COMMAND:
-                        let commandHex = buffer.toString('hex')
-                        let channel = buffer[6]
-                        let value = buffer.readUInt16BE(7)/1024
+                        try {
+                            
+                       
+                            let commandHex = buffer.toString('hex')
+                            let channel = buffer[6]
+                            let value = buffer.readUInt16BE(7)/1024
 
-                        if (channel < this.store.channels[0].channel.length) {
                             let assignedFaderIndex = this.store.channels[0].channel[channel].assignedFader
                             if (!this.store.channels[0].channel[channel].fadeActive) {    
                                 if (value > this.mixerProtocol.fader.min + (this.mixerProtocol.fader.max * this.store.settings[0].autoResetLevel / 100)) {
@@ -153,6 +155,8 @@ export class SSLMixerConnection {
                                 }
                                 global.socketServer.emit('set-store', global.storeRedux.getState())
                             }
+                        } catch (error) {
+                                console.log('Error translating received message :', error)   
                         } 
                         
                     } else if (buffer[1] === 5 && buffer[2] === 255 && buffer[4] === 1 && !lastWasAck) {
