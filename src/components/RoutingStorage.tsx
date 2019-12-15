@@ -3,8 +3,9 @@ import React from 'react';
 import '../assets/css/RoutingStorage.css';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
+import Popup from 'reactjs-popup'
 import { TOGGLE_SHOW_STORAGE } from '../../server/reducers/settingsActions'
-import { SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_GET_SNAPSHOT_LIST } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import { SOCKET_GET_SNAPSHOT_LIST, SOCKET_LOAD_SNAPSHOT, SOCKET_SAVE_SNAPSHOT } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IStorageProps {
     load: any
@@ -33,39 +34,21 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
     }
     
     saveFile() {
-        const options = {
-            type: 'saveFile',
-            filters: [
-                { name: 'Settings', extensions: ['shot'] }
-              ],
-            title: 'Save Current Setup',
-            message: 'Stores the current state of Sisyfos - including Fader-Channel Routing',
-        };
-        /*
-        let response = window.dialog.showSaveDialogSync(options)
-        if (response) {
-            console.log('SAVING THIS FILE :', response)
-            this.save(response)
+        let fileName = window.prompt('Enter filename :', 'newfile')
+        if (window.confirm('Are you sure you will save ' + fileName + ' as new routing setup?'))
+        {
+            console.log('Saving file')
+            window.socketIoClient.emit(SOCKET_SAVE_SNAPSHOT, fileName + '.shot')
         }
-        */
         this.handleClose()
     }
 
     loadFile(event: any) {
-        const options = {
-            type: 'question',
-            buttons: ['Yes', 'Cancel'],
-            defaultId: 1,
-            title: 'Load Routing',
-            message: 'Load "' + event.target.textContent + '" Routing',
-        };
-        /*
-        let response = window.dialog.showMessageBoxSync(options)
-        if (!response) {
+        if (window.confirm('Are you sure you will load a new routing setup?'))
+        {
             console.log('Loading files')
-            this.load(this.path + '/' + event.target.textContent, false)
+            window.socketIoClient.emit(SOCKET_LOAD_SNAPSHOT, event.target.textContent)
         }
-        */
         this.handleClose()
     }
 
