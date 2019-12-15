@@ -10,6 +10,7 @@ declare global {
   namespace NodeJS {
       interface Global {
           storeRedux: any
+          mainApp: any
           mixerGenericConnection: any
           automationConnection: any
           huiRemoteConnection: any
@@ -36,7 +37,7 @@ global.mixerProtocolPresets = MixerProtocolPresets
 global.mixerProtocolList = MixerProtocolList
 
 let mainThreadHandler = new MainThreadHandlers();
-new MainApp()
+global.mainApp = new MainApp()
 
 // Keep a reference for dev mode
 /*
