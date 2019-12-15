@@ -14,11 +14,12 @@ import {
     SOCKET_RETURN_SNAPSHOT_LIST, 
     SOCKET_LOAD_SNAPSHOT, 
     SOCKET_SAVE_SNAPSHOT,
-    SOCKET_SET_ASSIGNED_FADER
+    SOCKET_SET_ASSIGNED_FADER,
+    SOCKET_SET_AUX_LEVEL
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
-import { SET_ASSIGNED_FADER } from './reducers/channelActions';
+import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
 const path = require('path')
 
 export class MainThreadHandlers {
@@ -114,6 +115,18 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     faderNumber: payload.faderAssign
                 })
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_AUX_LEVEL, (
+            (payload: any) => { 
+                console.log('Set Auxlevel Channel:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_AUX_LEVEL,
+                    channel: payload.channel,
+                    auxIndex: payload.auxIndex,
+                    level: payload.level
+                });                
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
