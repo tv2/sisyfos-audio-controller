@@ -103,55 +103,61 @@ export class SSLMixerConnection {
                     if (buffer[1] === 6 && buffer[2] === 255 && !lastWasAck) {
                         lastWasAck = false
                         // FADERLEVEL COMMAND:
-                        let commandHex = buffer.toString('hex')
-                        let channel = buffer[6]
-                        let value = buffer.readUInt16BE(7)/1024
-                        
-                        let assignedFaderIndex = this.store.channels[0].channel[channel].assignedFader
-                        if (!this.store.channels[0].channel[channel].fadeActive) {    
-                            if (value > this.mixerProtocol.fader.min + (this.mixerProtocol.fader.max * this.store.settings[0].autoResetLevel / 100)) {
-                                global.storeRedux.dispatch({
-                                    type: SET_FADER_LEVEL,
-                                    channel: assignedFaderIndex,
-                                    level: value
-                                });
-                                if (!this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
+                        try {
+                            
+                       
+                            let commandHex = buffer.toString('hex')
+                            let channel = buffer[6]
+                            let value = buffer.readUInt16BE(7)/1024
+
+                            let assignedFaderIndex = this.store.channels[0].channel[channel].assignedFader
+                            if (!this.store.channels[0].channel[channel].fadeActive) {    
+                                if (value > this.mixerProtocol.fader.min + (this.mixerProtocol.fader.max * this.store.settings[0].autoResetLevel / 100)) {
                                     global.storeRedux.dispatch({
-                                        type: TOGGLE_PGM,
-                                        channel: assignedFaderIndex
+                                        type: SET_FADER_LEVEL,
+                                        channel: assignedFaderIndex,
+                                        level: value
                                     });
-                                }
-                                
-                                if (global.huiRemoteConnection) {
-                                    global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
-                                }
-                                if (this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
-                                    this.store.channels[0].channel.map((channel: any, index: number) => {
-                                        if (channel.assignedFader === assignedFaderIndex) {
-                                            this.updateOutLevel(index);
+                                    if (!this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
+                                        global.storeRedux.dispatch({
+                                            type: TOGGLE_PGM,
+                                            channel: assignedFaderIndex
+                                        });
+                                    }
+                                    
+                                    if (global.huiRemoteConnection) {
+                                        global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                                    }
+                                    if (this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
+                                        this.store.channels[0].channel.map((channel: any, index: number) => {
+                                            if (channel.assignedFader === assignedFaderIndex) {
+                                                this.updateOutLevel(index);
+                                            }
+                                        })
+                                    }
+                                } else if (this.store.faders[0].fader[assignedFaderIndex].pgmOn 
+                                    || this.store.faders[0].fader[assignedFaderIndex].voOn)
+                                {
+                                    global.storeRedux.dispatch({
+                                        type: SET_FADER_LEVEL,
+                                        channel: assignedFaderIndex,
+                                        level: value
+                                    });
+                                    this.store.channels[0].channel.forEach((item, index) => {
+                                        if (item.assignedFader === assignedFaderIndex) {
+                                            global.storeRedux.dispatch({
+                                                type: SET_OUTPUT_LEVEL,
+                                                channel: index,
+                                                level: value
+                                            });
                                         }
                                     })
                                 }
-                            } else if (this.store.faders[0].fader[assignedFaderIndex].pgmOn 
-                                || this.store.faders[0].fader[assignedFaderIndex].voOn)
-                            {
-                                global.storeRedux.dispatch({
-                                    type: SET_FADER_LEVEL,
-                                    channel: assignedFaderIndex,
-                                    level: value
-                                });
-                                this.store.channels[0].channel.forEach((item, index) => {
-                                    if (item.assignedFader === assignedFaderIndex) {
-                                        global.storeRedux.dispatch({
-                                            type: SET_OUTPUT_LEVEL,
-                                            channel: index,
-                                            level: value
-                                        });
-                                    }
-                                })
+                                global.socketServer.emit('set-store', global.storeRedux.getState())
                             }
-                            global.socketServer.emit('set-store', global.storeRedux.getState())
-                        }
+                        } catch (error) {
+                                console.log('Error translating received message :', error)   
+                        } 
                         
                     } else if (buffer[1] === 5 && buffer[2] === 255 && buffer[4] === 1 && !lastWasAck) {
                         lastWasAck = false
@@ -172,7 +178,7 @@ export class SSLMixerConnection {
                         if (global.huiRemoteConnection) {
                             global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
                         }
-                        this.store.channels[0].channel.map((channel: any, index: number) => {
+                        this.store.channels[0].channel.forEach((channel: any, index: number) => {
                             if (channel.assignedFader === assignedFaderIndex && index !== channelIndex) {
                                 this.updateMuteState(index, this.store.faders[0].fader[assignedFaderIndex].muteOn);
                             }
