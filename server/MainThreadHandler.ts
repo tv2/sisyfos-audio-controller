@@ -2,9 +2,23 @@ import { createStore } from 'redux'
 import indexReducer from './reducers/indexReducer';
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import { loadSettings, saveSettings, getSnapShotList } from './utils/SettingsStorage'
-import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL, SOCKET_SAVE_SETTINGS, SOCKET_GET_SNAPSHOT_LIST, SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_LOAD_SNAPSHOT, SOCKET_SAVE_SNAPSHOT } from './constants/SOCKET_IO_DISPATCHERS'
+import { 
+    SOCKET_TOGGLE_PGM, 
+    SOCKET_TOGGLE_VO, 
+    SOCKET_TOGGLE_PST, 
+    SOCKET_TOGGLE_PFL, 
+    SOCKET_TOGGLE_MUTE, 
+    SOCKET_SET_FADERLEVEL, 
+    SOCKET_SAVE_SETTINGS, 
+    SOCKET_GET_SNAPSHOT_LIST, 
+    SOCKET_RETURN_SNAPSHOT_LIST, 
+    SOCKET_LOAD_SNAPSHOT, 
+    SOCKET_SAVE_SNAPSHOT,
+    SOCKET_SET_ASSIGNED_FADER
+ } from './constants/SOCKET_IO_DISPATCHERS'
 import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
+import { SET_ASSIGNED_FADER } from './reducers/channelActions';
 const path = require('path')
 
 export class MainThreadHandlers {
@@ -89,6 +103,17 @@ export class MainThreadHandlers {
             (payload: any) => { 
                 console.log('Save settings :', payload)
                 saveSettings(payload)
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_ASSIGNED_FADER, (
+            (payload: any) => { 
+                console.log('Set assigned fader. Channel:', payload.channel, 'Fader :', payload.faderAssign)
+                global.storeRedux.dispatch({
+                    type: SET_ASSIGNED_FADER,
+                    channel: payload.channel,
+                    faderNumber: payload.faderAssign
+                })
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )

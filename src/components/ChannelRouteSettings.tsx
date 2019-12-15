@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import CcgChannelSettings from './CcgChannelSettings';
 import { SET_ASSIGNED_FADER } from '../../server/reducers/channelActions'
 import { TOGGLE_SHOW_OPTION } from '../../server/reducers/settingsActions'
+import { SOCKET_SET_ASSIGNED_FADER } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IChannelSettingsInjectProps {
     label: string,
@@ -30,107 +31,60 @@ class ChannelRouteSettings extends React.PureComponent<IChannelProps & IChannelS
     }
 
     handleAssignChannel(channel: number, event: any) {
-        let faderAssign = this.faderIndex
-        let assignedFader = this.props.channel[channel].assignedFader
-        let assignedFaderLabel = (assignedFader >= 0)
-            ? this.props.fader[assignedFader].label
-            : 'undefined'
-        assignedFaderLabel = (assignedFaderLabel === '')
-            ? String(assignedFader + 1)
-            : assignedFaderLabel
 
         if (event.target.checked === false) {
-            const options = {
-                type: 'question',
-                buttons: ['Yes', 'Cancel'],
-                defaultId: 1,
-                title: 'Unlock Channel',
-                message: 'Unbind Channel ' + String(channel + 1) + ' from Fader ' + String(this.faderIndex + 1),
-            };
-            /*
-            let response = window.dialog.showMessageBoxSync(options)
-            if (response === 1) {
-                return true
+            console.log('Unbinding Channel')
+            if (window.confirm('Unbind Channel ' + String(channel + 1) + ' from Fader ' + String(this.faderIndex + 1))) {
+                window.socketIoClient.emit( 
+                    SOCKET_SET_ASSIGNED_FADER, 
+                    {
+                        channel: channel, 
+                        faderAssign: -1
+                    }
+                )
             }
-*/
-            faderAssign = -1
         } else {
-            let detail = (assignedFader < 0) ? 'NOT CURRENTLY ASSIGNED'
-                : 'CHANNEL ' + String(channel + 1) + ' IS CURRENTLY CONNECTED TO FADER ' + String(assignedFaderLabel)
-
-            const options = {
-                type: 'question',
-                buttons: ['Yes', 'Cancel'],
-                defaultId: 1,
-                title: 'Unlock Channel',
-                message: 'Bind Channel ' + String(channel + 1) + ' to Fader ' + String(this.faderIndex + 1) + '?',
-                detail: detail,
-            };
-            /*
-            let response = window.dialog.showMessageBoxSync(options)
-
-            if (response === 1) {
-                return true
+            console.log('Binding Channel')
+            if (window.confirm('Bind Channel ' + String(channel + 1) + ' to Fader ' + String(this.faderIndex + 1) + '?')) {
+                window.socketIoClient.emit( 
+                    SOCKET_SET_ASSIGNED_FADER, 
+                    {
+                        channel: channel, 
+                        faderAssign: this.faderIndex
+                    }
+                )
             }
-            */
         }
-
-        this.props.dispatch({
-            type: SET_ASSIGNED_FADER,
-            channel: channel,
-            faderNumber: faderAssign
-        });
-        return true;
     }
 
     handleClearRouting() {
-        const options = {
-            type: 'question',
-            buttons: ['Yes', 'Cancel'],
-            defaultId: 1,
-            title: 'WARNING',
-            message: 'WARNING!!!!!',
-            detail: 'This will remove all Fader-Channel assignments',
-        };
-        /*
-        let response = window.dialog.showMessageBoxSync(options)
-        if (response === 0) {
+        if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
             this.props.channel.forEach((channel: any, index: number) => {
-                this.props.dispatch({
-                    type: SET_ASSIGNED_FADER,
-                    channel: index,
-                    faderNumber: -1
-                });
+                window.socketIoClient.emit( 
+                    SOCKET_SET_ASSIGNED_FADER, 
+                    {
+                        channel: index, 
+                        faderAssign: -1
+                    }
+                )
             })
         }
-        */
-        return true
     }
 
     handle11Routing() {
-        const options = {
-            type: 'question',
-            buttons: ['Yes', 'Cancel'],
-            defaultId: 1,
-            title: 'WARNING',
-            message: 'WARNING!!!!!',
-            detail: 'This will reassign all Faders 1:1 to Channels',
-        };
-        /*
-        let response = window.dialog.showMessageBoxSync(options)
-        if (response === 0) {
+        if (window.confirm('Reassign all Faders 1:1 to Channels????')) {
             this.props.fader.forEach((fader: any, index: number) => {
-                if (this.props.channel.length > index) {
-                    this.props.dispatch({
-                        type: SET_ASSIGNED_FADER,
-                        channel: index,
-                        faderNumber: index
-                    });
+                if (this.props.channel.length > index) {                
+                    window.socketIoClient.emit( 
+                        SOCKET_SET_ASSIGNED_FADER, 
+                        {
+                            channel: index, 
+                            faderAssign: index
+                        }
+                    )
                 }
             })
         }
-        */
-        return true
     }
 
     handleClose = () => {
