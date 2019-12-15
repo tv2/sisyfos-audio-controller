@@ -5,7 +5,6 @@ import * as ClassNames from 'classnames';
 import '../assets/css/ChannelMonitorOptions.css';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { SET_AUX_LEVEL } from '../../server/reducers/channelActions'
 import { TOGGLE_SHOW_MONITOR_OPTIONS } from '../../server/reducers/settingsActions'
 import { SET_FADER_MONITOR } from '../../server/reducers/faderActions';
 import { ISettings } from '../../server/reducers/settingsReducer';

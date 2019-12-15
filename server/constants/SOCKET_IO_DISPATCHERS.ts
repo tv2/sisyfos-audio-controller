@@ -9,6 +9,8 @@ export const SOCKET_TOGGLE_VO = 'toggleVo'
 export const SOCKET_TOGGLE_PST = 'togglePst'
 export const SOCKET_TOGGLE_PFL = 'togglePfl'
 export const SOCKET_TOGGLE_MUTE = 'toggleMute'
+export const SOCKET_NEXT_MIX = 'nextMix'
+export const SOCKET_CLEAR_PST = 'clearPst'
 
 // Div:
 export const SOCKET_SAVE_SETTINGS = 'saveSettings'

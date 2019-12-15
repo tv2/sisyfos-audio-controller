@@ -15,9 +15,11 @@ import {
     SOCKET_LOAD_SNAPSHOT, 
     SOCKET_SAVE_SNAPSHOT,
     SOCKET_SET_ASSIGNED_FADER,
-    SOCKET_SET_AUX_LEVEL
+    SOCKET_SET_AUX_LEVEL,
+    SOCKET_NEXT_MIX,
+    SOCKET_CLEAR_PST
  } from './constants/SOCKET_IO_DISPATCHERS'
-import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE } from './reducers/faderActions';
+import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE, NEXT_MIX, CLEAR_PST } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
 const path = require('path')
@@ -127,6 +129,24 @@ export class MainThreadHandlers {
                     auxIndex: payload.auxIndex,
                     level: payload.level
                 });                
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_NEXT_MIX, (
+            () => {
+                global.storeRedux.dispatch({
+                    type: NEXT_MIX
+                });
+                global.mixerGenericConnection.updateOutLevels()
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_CLEAR_PST, (
+            () => {
+                global.storeRedux.dispatch({
+                    type: CLEAR_PST
+                });
+                global.mixerGenericConnection.updateOutLevels()
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )

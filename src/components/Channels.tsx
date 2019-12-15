@@ -7,9 +7,6 @@ import Channel from './Channel';
 import '../assets/css/Channels.css';
 import { Store } from 'redux';
 import { 
-    X_MIX,
-    NEXT_MIX,
-    CLEAR_PST,
     SNAP_RECALL
 } from  '../../server/reducers/faderActions'
 import {
@@ -23,6 +20,7 @@ import ChannelMonitorOptions from './ChannelMonitorOptions';
 import { IChannels } from '../../server/reducers/channelsReducer';
 import { IFader } from '../../server/reducers/fadersReducer';
 import { ISettings } from '../../server/reducers/settingsReducer';
+import { SOCKET_NEXT_MIX, SOCKET_CLEAR_PST } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IChannelsInjectProps {
     channels: IChannels 
@@ -47,23 +45,11 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
 
 
     handleMix() {
-        if (this.props.settings.automationMode) {
-            this.props.dispatch({
-                type: NEXT_MIX
-            });
-        } else {
-            this.props.dispatch({
-                type: X_MIX
-            });
-        }
-        window.mixerGenericConnection.updateOutLevels();
+        window.socketIoClient.emit(SOCKET_NEXT_MIX)
     }
 
     handleClearAllPst() {
-        this.props.dispatch({
-            type: CLEAR_PST
-        });
-        window.mixerGenericConnection.updateOutLevels();
+        window.socketIoClient.emit(SOCKET_CLEAR_PST)
     }
 
     handleSnapMix(snapIndex: number) {
@@ -95,32 +81,6 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         this.props.dispatch({
             type: TOGGLE_SHOW_STORAGE,
         });
-    }
-
-    saveFile() {
-        const options = {
-            type: 'saveFile',
-            title: 'Save Current Setup',
-            message: 'Stores the current state of Sisyfos - including Fader-Channel Routing',
-        };
-        /*
-        let response = window.dialog.showSaveDialogSync(options)
-        if (response === 'save') {
-            console.log('SAVING CURRENT STATE')
-        }
-        */
-    }
-
-    loadFile() {
-        const options = {
-            type: 'loadFile',
-            title: 'Load selected file',
-            message: 'Loading Fader and Channels state',
-        };
-        /*
-        let response = window.dialog.showOpenDialogSync(options)
-        console.log('LOAD STATE? :', response)
-        */
     }
 
     snapMixButton(snapIndex: number) {

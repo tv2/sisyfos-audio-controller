@@ -5,9 +5,6 @@ export class MixerGenericConnection {
     }
 
 
-    updateFadeToBlack() {
-    }
-
     updateOutLevels() {
     }
 
