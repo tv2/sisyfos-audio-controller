@@ -8,6 +8,7 @@ import io from 'socket.io-client'
 import { createStore } from 'redux';
 import { Provider as ReduxProvider} from 'react-redux';
 import indexReducer from './../server/reducers/indexReducer';
+import { SOCKET_GET_SNAPSHOT_LIST } from '../server/constants/SOCKET_IO_DISPATCHERS';
 
 declare global {
     interface Window {
@@ -17,9 +18,8 @@ declare global {
         mixerProtocol: any
         mixerProtocolPresets: any
         mixerProtocolList: any
-        fs: any
-        net: any
         socketIoClient: any
+        snapshotFileList: any
     }
 }
 
@@ -31,6 +31,7 @@ const storeRedux = createStore(
 );
 window.storeRedux = storeRedux
 window.socketIoClient = io()
+window.socketIoClient.emit(SOCKET_GET_SNAPSHOT_LIST)
 
 
 console.log('Setting up SocketIO connection')

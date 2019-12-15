@@ -1,8 +1,8 @@
 import { createStore } from 'redux'
 import indexReducer from './reducers/indexReducer';
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
-import { loadSettings, saveSettings } from './utils/SettingsStorage'
-import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL, SOCKET_SAVE_SETTINGS } from './constants/SOCKET_IO_DISPATCHERS'
+import { loadSettings, saveSettings, getSnapShotList } from './utils/SettingsStorage'
+import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL, SOCKET_SAVE_SETTINGS, SOCKET_GET_SNAPSHOT_LIST, SOCKET_RETURN_SNAPSHOT_LIST } from './constants/SOCKET_IO_DISPATCHERS'
 import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 
@@ -56,6 +56,14 @@ export class MainThreadHandlers {
 
                     }
                 )
+            })
+        )
+        .on(SOCKET_GET_SNAPSHOT_LIST, (
+            () => { 
+                console.log('Get snapshot list')
+                global.socketServer.emit(
+                    SOCKET_RETURN_SNAPSHOT_LIST, 
+                    getSnapShotList())
             })
         )
         .on(SOCKET_SAVE_SETTINGS, (

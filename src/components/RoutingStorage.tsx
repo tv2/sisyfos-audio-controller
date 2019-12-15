@@ -4,16 +4,13 @@ import '../assets/css/RoutingStorage.css';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { TOGGLE_SHOW_STORAGE } from '../../server/reducers/settingsActions'
-
-// Node modules:
-const fs = window.fs
+import { SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_GET_SNAPSHOT_LIST } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IStorageProps {
     load: any
     save: any
 }
 class Storage extends React.PureComponent<IStorageProps & Store> {
-    path: string
     fileList: string[] = []
     load: any
     save: any
@@ -23,19 +20,10 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         this.load = this.props.load
         this.save = this.props.save
 
-        this.path = '' // window.getPath('userData');
-
-        this.updateFilelist()
-
         //Bindings:
         this.ListFiles = this.ListFiles.bind(this)
-        this.updateFilelist = this.updateFilelist.bind(this)
         this.loadFile = this.loadFile.bind(this)
         this.saveFile = this.saveFile.bind(this)
-    }
-
-    updateFilelist() {
-        this.fileList = fs.readdirSync(this.path)
     }
 
 	handleClose = () => {
@@ -47,7 +35,6 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
     saveFile() {
         const options = {
             type: 'saveFile',
-            defaultPath: this.path,
             filters: [
                 { name: 'Settings', extensions: ['shot'] }
               ],
@@ -83,10 +70,8 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
     }
 
     ListFiles(props: any) {
-        const files = props.files.filter((file: string) => { 
-            return file.includes('.shot')
-        })
-        const listItems = files.map((file: string, index: number) => {
+        window.socketIoClient.emit(SOCKET_GET_SNAPSHOT_LIST)
+        const listItems = window.snapshotFileList.map((file: string, index: number) => {
         return (
             <li key={index} onClick={this.loadFile} className="item">
             {file}

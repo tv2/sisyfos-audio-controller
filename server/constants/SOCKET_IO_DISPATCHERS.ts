@@ -11,3 +11,5 @@ export const SOCKET_TOGGLE_MUTE = 'toggleMute'
 // Div:
 export const SOCKET_SAVE_SETTINGS = 'saveSettings'
 export const SOCKET_SET_VU = 'setVu'
+export const SOCKET_GET_SNAPSHOT_LIST = 'getSnapshotList'
+export const SOCKET_RETURN_SNAPSHOT_LIST = 'returnSnapshotList'

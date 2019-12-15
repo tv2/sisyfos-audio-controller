@@ -84,3 +84,12 @@ export const saveSnapshotState = (stateSnapshot: any, fileName: string) => {
     });
 }
 
+export const getSnapShotList = () => {
+    const files = fs.readdirSync(path.resolve()).filter((file: string) => { 
+        if (file.includes('.shot') && file !== 'default.shot') {
+            return true
+        }
+    })
+    return files
+}
+

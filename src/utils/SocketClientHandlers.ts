@@ -1,7 +1,7 @@
 import { SET_COMPLETE_FADER_STATE, SET_VU_LEVEL } from "../../server/reducers/faderActions";
 import { SET_COMPLETE_CH_STATE } from "../../server/reducers/channelActions";
 import { UPDATE_SETTINGS } from "../../server/reducers/settingsActions";
-import { SOCKET_SET_VU } from "../../server/constants/SOCKET_IO_DISPATCHERS";
+import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST } from "../../server/constants/SOCKET_IO_DISPATCHERS";
 
 export const socketClientHandlers = () => {
     window.socketIoClient
@@ -48,11 +48,17 @@ export const socketClientHandlers = () => {
     .on(SOCKET_SET_VU, (
         (payload: any) => { 
             // console.log('MIXERPROTOCOL RECEIVED :', payload)
-            global.storeRedux.dispatch({
+            window.storeRedux.dispatch({
                 type:SET_VU_LEVEL,
                 channel: payload.faderIndex,
                 level: payload.level
             });
+        })
+    )
+    .on(SOCKET_RETURN_SNAPSHOT_LIST, (
+        (payload: any) => { 
+            // console.log('MIXERPROTOCOL RECEIVED :', payload)
+            window.snapshotFileList = payload
         })
     )
 }
