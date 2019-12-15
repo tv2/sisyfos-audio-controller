@@ -4,18 +4,20 @@ import {
     SET_FADER_LEVEL, 
     TOGGLE_PGM,
     TOGGLE_PFL
-} from  '../../server/reducers/faderActions'
+} from  '../reducers/faderActions'
 
 //Utils:
 import { IRemoteProtocol,
     RemoteFaderPresets,
     MidiReceiveTypes 
-} from '../../server/constants/RemoteFaderPresets';
+} from '../constants/RemoteFaderPresets';
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 
 export class HuiMidiRemoteConnection {
     store: any;
     remoteProtocol: IRemoteProtocol;
     midiReceiveTypes = MidiReceiveTypes;
+    mixerProtocol: any;
     midiInput: any;
     midiOutput:any;
     activeHuiChannel: number = 0;
@@ -25,12 +27,13 @@ export class HuiMidiRemoteConnection {
         this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this);
         this.updateRemoteFaderState = this.updateRemoteFaderState.bind(this);
 
-        this.store = window.storeRedux.getState();
-        const unsubscribe = window.storeRedux.subscribe(() => {
-            this.store = window.storeRedux.getState();
+        this.store = global.storeRedux.getState();
+        const unsubscribe = global.storeRedux.subscribe(() => {
+            this.store = global.storeRedux.getState();
         });
 
         this.remoteProtocol = RemoteFaderPresets.hui;
+        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
         if (!this.store.settings[0].enableRemoteFader) {
             return
@@ -62,12 +65,12 @@ export class HuiMidiRemoteConnection {
                 if (message.data[1] < 9) {
                     //Fader changed:
                     console.log("Received Fader message (" + message.data + ").");
-                    window.storeRedux.dispatch({
+                    global.storeRedux.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: message.data[1],
                         level: this.convertFromRemoteLevel(message.data[2])
                     });
-                    window.mixerGenericConnection.updateOutLevel(message.data[1]);
+                    global.mixerGenericConnection.updateOutLevel(message.data[1]);
                     this.updateRemoteFaderState(message.data[1], this.convertFromRemoteLevel(message.data[2]))
                 } else if (message.data[1] = 15) {
                     
@@ -77,19 +80,19 @@ export class HuiMidiRemoteConnection {
                         this.activeHuiChannel = message.data[2];
                     } else if (message.data[2] && message.data[2] === 65) {
                         //SELECT button - toggle PGM ON/OFF
-                        window.storeRedux.dispatch({
+                        global.storeRedux.dispatch({
                             type: TOGGLE_PGM,
                             channel: this.activeHuiChannel
                         });
-                        window.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
+                        global.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
-                        window.storeRedux.dispatch({
+                        global.storeRedux.dispatch({
                             type: TOGGLE_PFL,
                             channel: this.activeHuiChannel
                         });
-                        window.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
+                        global.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     }
                 }
@@ -106,8 +109,8 @@ export class HuiMidiRemoteConnection {
 
     convertToRemoteLevel(level: number) {
 
-        let oldMin = window.mixerProtocol.fader.min;
-        let oldMax = window.mixerProtocol.fader.max;
+        let oldMin = this.mixerProtocol.fader.min;
+        let oldMax = this.mixerProtocol.fader.max;
         let newMin = this.remoteProtocol.fader.min;
         let newMax = this.remoteProtocol.fader.max;
 
@@ -120,8 +123,8 @@ export class HuiMidiRemoteConnection {
 
         let oldMin = this.remoteProtocol.fader.min;
         let oldMax = this.remoteProtocol.fader.max;
-        let newMin = window.mixerProtocol.fader.min;
-        let newMax = window.mixerProtocol.fader.max;
+        let newMin = this.mixerProtocol.fader.min;
+        let newMax = this.mixerProtocol.fader.max;
 
         let indexLevel = (level/(oldMax-oldMin)) * (newMax-newMin)
         let newLevel = newMin + indexLevel;

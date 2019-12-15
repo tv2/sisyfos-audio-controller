@@ -1,10 +1,9 @@
-import { DeviceTree, QualifiedParameter } from 'emberplus';
+const DeviceTree = require('emberplus')
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
 import { 
-    SET_VU_LEVEL, 
     SET_FADER_LEVEL, 
     SET_CHANNEL_LABEL 
 } from '../reducers/faderActions'
@@ -22,9 +21,9 @@ export class EmberMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = window.storeRedux.getState();
-        const unsubscribe = window.storeRedux.subscribe(() => {
-            this.store = window.storeRedux.getState();
+        this.store = global.storeRedux.getState();
+        const unsubscribe = global.storeRedux.subscribe(() => {
+            this.store = global.storeRedux.getState();
         });
 
         this.emberNodeObject = new Array(200);
@@ -75,7 +74,7 @@ export class EmberMixerConnection {
 
 /*
                 .CHANNEL_VU)){
-                    window.storeRedux.dispatch({
+                    global.storeRedux.dispatch({
                         type:SET_VU_LEVEL,
                         channel: ch - 1,
                         level: message.args[0]
@@ -106,13 +105,13 @@ export class EmberMixerConnection {
                 if (!this.store.channels[0].channel[ch-1].fadeActive
                     && !this.store.channels[0].channel[ch - 1].fadeActive
                     &&  node.contents.value > this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].min) {
-                    window.storeRedux.dispatch({
+                    global.storeRedux.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: ch-1,
                         level: node.contents.value
                     });
-                    if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
+                    if (global.huiRemoteConnection) {
+                        global.huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
                     }
                 }
 
@@ -125,7 +124,7 @@ export class EmberMixerConnection {
         this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_NAME[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
         .then((node: any) => {
             this.emberConnection.subscribe(node, (() => {
-                window.storeRedux.dispatch({
+                global.storeRedux.dispatch({
                     type: SET_CHANNEL_LABEL,
                     channel: ch-1,
                     level: node.contents.value

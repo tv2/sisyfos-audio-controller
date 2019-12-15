@@ -1,26 +1,26 @@
 const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { spawn } = require('child_process')
 
 // Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
-const defaultInclude = path.resolve(__dirname, 'src')
+const defaultInclude = [
+    path.resolve(__dirname, 'src'),
+    path.resolve(__dirname, 'server')
+]
+
 
 module.exports = {
     module: {
         rules: [
         {
-            test: /\.css$/,
-            use: [
-                { loader: 'style-loader' },
-                { loader: 'css-loader' },
-                { loader: 'postcss-loader' }
-            ],
-            include: defaultInclude
+            test:/\.css$/,
+            use:['style-loader', 'css-loader']
         },
         {
             test: /\.(tsx?|ts)$/,
-            use: [{ loader: 'babel-loader' }],
+            use: [
+                { loader: 'babel-loader' }
+            ],
             include: defaultInclude
         },
         {
@@ -38,31 +38,28 @@ module.exports = {
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
-    target: 'electron-renderer',
+    target: 'web',
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Sisyfos Audio Controller'
+            template: './src/index.ejs',
+            inject: true
         }),
         new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('development')
         })
     ],
-    devtool: 'cheap-source-map',
+    devtool: 'inline-source-map',
     devServer: {
-        contentBase: path.resolve(__dirname, 'dist'),
-        stats: {
-        colors: true,
-        chunks: false,
-        children: false
-        },
-        before() {
-        spawn(
-            'electron',
-            ['.'],
-            { shell: true, env: process.env, stdio: 'inherit' }
-        )
-        .on('close', code => process.exit(0))
-        .on('error', spawnError => console.error(spawnError))
-        }
-    }
+        port: 8080
+        // contentBase: path.resolve(__dirname, 'dist'),
+        // historyApiFallback: true,
+        //stats: {
+        //    colors: true,
+        //    chunks: false,
+        //    children: false
+        //}
+    },
+    externals: {
+        fs: require("fs"),
+    },
 }

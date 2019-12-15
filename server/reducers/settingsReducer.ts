@@ -53,7 +53,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showOptions: false,
         showMonitorOptions: -1,
         showStorage: false,
-        mixerProtocol: "genericMidi",
+        mixerProtocol: "sslSystemT",
         localIp: "0.0.0.0",
         localOscPort: 1234,
         deviceIp: "0.0.0.0",
@@ -73,8 +73,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         autoResetLevel: 10,
         automationMode: true,
         offtubeMode: false,
-        fadeTime: 60,
-        voFadeTime: 200, 
+        fadeTime: 120,
+        voFadeTime: 280, 
         showPfl: false,
         mixerOnline: false
     },
@@ -117,8 +117,11 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             return nextState;
         case UPDATE_SETTINGS:
             nextState[0] = action.settings;
-            nextState[0].showOptions = false;
-            nextState[0].showStorage = false;
+            nextState[0].showSettings = state[0].showSettings;
+            nextState[0].showOptions = state[0].showOptions;
+            nextState[0].showMonitorOptions = state[0].showMonitorOptions;
+            nextState[0].showStorage = state[0].showStorage;
+            nextState[0].showChanStrip = state[0].showChanStrip;
             if (typeof MixerProtocolPresets[nextState[0].mixerProtocol] === 'undefined')
                 {
                     nextState[0].mixerProtocol = 'genericMidi';

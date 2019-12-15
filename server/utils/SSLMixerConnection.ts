@@ -1,5 +1,5 @@
 //Node Modules:
-import * as net from 'net'
+const net = require('net')
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface'
@@ -23,12 +23,12 @@ export class SSLMixerConnection {
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutLevelMessage = this.sendOutLevelMessage.bind(this);
 
-        this.store = window.storeRedux.getState();
-        const unsubscribe = window.storeRedux.subscribe(() => {
-            this.store = window.storeRedux.getState();
+        this.store = global.storeRedux.getState();
+        const unsubscribe = global.storeRedux.subscribe(() => {
+            this.store = global.storeRedux.getState();
         });
 
-        window.storeRedux.dispatch({
+        global.storeRedux.dispatch({
             type: SET_MIXER_ONLINE,
             mixerOnline: false
         });
@@ -63,10 +63,11 @@ export class SSLMixerConnection {
 
         this.SSLConnection
             .on("ready", () => {
-                window.storeRedux.dispatch({
+                global.storeRedux.dispatch({
                     type: SET_MIXER_ONLINE,
                     mixerOnline: true
                 });
+                
                 console.log("Receiving state of desk");
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes("{channel}")) {
@@ -77,10 +78,11 @@ export class SSLMixerConnection {
                         this.sendOutLevelMessage(item.mixerMessage, 0, item.value);
                     }
                 });
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                window.storeRedux.dispatch({
+                global.storeRedux.dispatch({
                     type: SET_MIXER_ONLINE,
                     mixerOnline: true
                 });
@@ -108,20 +110,20 @@ export class SSLMixerConnection {
                         let assignedFaderIndex = this.store.channels[0].channel[channel].assignedFader
                         if (!this.store.channels[0].channel[channel].fadeActive) {    
                             if (value > this.mixerProtocol.fader.min + (this.mixerProtocol.fader.max * this.store.settings[0].autoResetLevel / 100)) {
-                                window.storeRedux.dispatch({
+                                global.storeRedux.dispatch({
                                     type: SET_FADER_LEVEL,
                                     channel: assignedFaderIndex,
                                     level: value
                                 });
                                 if (!this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
-                                    window.storeRedux.dispatch({
+                                    global.storeRedux.dispatch({
                                         type: TOGGLE_PGM,
                                         channel: assignedFaderIndex
                                     });
                                 }
                                 
-                                if (window.huiRemoteConnection) {
-                                    window.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                                if (global.huiRemoteConnection) {
+                                    global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
                                 }
                                 if (this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
                                     this.store.channels[0].channel.map((channel: any, index: number) => {
@@ -133,14 +135,14 @@ export class SSLMixerConnection {
                             } else if (this.store.faders[0].fader[assignedFaderIndex].pgmOn 
                                 || this.store.faders[0].fader[assignedFaderIndex].voOn)
                             {
-                                window.storeRedux.dispatch({
+                                global.storeRedux.dispatch({
                                     type: SET_FADER_LEVEL,
                                     channel: assignedFaderIndex,
                                     level: value
                                 });
                                 this.store.channels[0].channel.forEach((item, index) => {
                                     if (item.assignedFader === assignedFaderIndex) {
-                                        window.storeRedux.dispatch({
+                                        global.storeRedux.dispatch({
                                             type: SET_OUTPUT_LEVEL,
                                             channel: index,
                                             level: value
@@ -148,6 +150,7 @@ export class SSLMixerConnection {
                                     }
                                 })
                             }
+                            global.socketServer.emit('set-store', global.storeRedux.getState())
                         }
                         
                     } else if (buffer[1] === 5 && buffer[2] === 255 && buffer[4] === 1 && !lastWasAck) {
@@ -160,20 +163,21 @@ export class SSLMixerConnection {
                         
                         let assignedFaderIndex = this.store.channels[0].channel[channelIndex].assignedFader
 
-                        window.storeRedux.dispatch({
+                        global.storeRedux.dispatch({
                             type: SET_MUTE,
                             channel: assignedFaderIndex,
                             muteOn: value
                         });
                         
-                        if (window.huiRemoteConnection) {
-                            window.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                        if (global.huiRemoteConnection) {
+                            global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
                         }
                         this.store.channels[0].channel.map((channel: any, index: number) => {
                             if (channel.assignedFader === assignedFaderIndex && index !== channelIndex) {
                                 this.updateMuteState(index, this.store.faders[0].fader[assignedFaderIndex].muteOn);
                             }
                         })
+                        global.socketServer.emit('set-store', global.storeRedux.getState())
                     } else {
                         let commandHex = buffer.toString('hex')
                         console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
@@ -205,7 +209,7 @@ export class SSLMixerConnection {
            this.sendOutPingRequest();
        });
        this.mixerOnlineTimer = setTimeout(() => {
-           window.storeRedux.dispatch({
+           global.storeRedux.dispatch({
                type: SET_MIXER_ONLINE,
                mixerOnline: false
            });
@@ -309,7 +313,7 @@ export class SSLMixerConnection {
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel

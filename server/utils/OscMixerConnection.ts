@@ -1,6 +1,5 @@
 //Node Modules:
-import * as os from 'os'; // Used to display (log) network addresses on local machine
-import * as osc from 'osc'; //Using OSC fork from PieceMeta/osc.js as it has excluded hardware serialport support and thereby is crossplatform
+const osc = require('osc')
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
@@ -15,6 +14,7 @@ import {
     TOGGLE_PGM
 } from '../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
+import { SOCKET_SET_VU } from '../constants/SOCKET_IO_DISPATCHERS';
 
 export class OscMixerConnection {
     store: IStore;
@@ -27,13 +27,13 @@ export class OscMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = window.storeRedux.getState();
-        const unsubscribe = window.storeRedux.subscribe(() => {
-            this.store = window.storeRedux.getState();
+        this.store = global.storeRedux.getState();
+        const unsubscribe = global.storeRedux.subscribe(() => {
+            this.store = global.storeRedux.getState();
         });
 
 
-        window.storeRedux.dispatch({
+        global.storeRedux.dispatch({
             type: SET_MIXER_ONLINE,
             mixerOnline: false
         });
@@ -55,12 +55,8 @@ export class OscMixerConnection {
         this.oscConnection
         .on("ready", () => {
             console.log("Receiving state of desk");
-            window.storeRedux.dispatch({
-                type: SET_MIXER_ONLINE,
-                mixerOnline: true
-            });
             
-            this.mixerProtocol.initializeCommands.map((item) => {
+            this.mixerProtocol.initializeCommands.forEach((item) => {
                 if (item.mixerMessage.includes("{channel}")) {
                     this.store.channels[0].channel.map((channel: any, index: any) => {
                         this.sendOutRequest(item.mixerMessage,(index +1));
@@ -69,10 +65,15 @@ export class OscMixerConnection {
                     this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
                 }
             });
+            global.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: true
+            });            
+            global.socketServer.emit('set-store', global.storeRedux.getState())
         })
         .on('message', (message: any) => {
             clearTimeout(this.mixerOnlineTimer)
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type: SET_MIXER_ONLINE,
                 mixerOnline: true
             });
@@ -84,11 +85,18 @@ export class OscMixerConnection {
                     midasMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[this.cmdChannelIndex];
-                    window.storeRedux.dispatch({
+                    global.storeRedux.dispatch({
                         type:SET_VU_LEVEL,
                         channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         level: message.args[0]
                     });
+                    global.socketServer.emit(
+                        SOCKET_SET_VU, 
+                        {
+                            faderIndex: this.store.channels[0].channel[ch - 1].assignedFader,
+                            level: message.args[0]
+                        }
+                    )
                 }
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_OUT_GAIN[0].mixerMessage)){
@@ -99,14 +107,14 @@ export class OscMixerConnection {
                 if (!this.store.channels[0].channel[ch - 1].fadeActive)
                     {                    
                     if  (message.args[0] > this.mixerProtocol.fader.min + (this.mixerProtocol.fader.max * this.store.settings[0].autoResetLevel / 100)) {
-                        window.storeRedux.dispatch({
+                        global.storeRedux.dispatch({
                             type: SET_FADER_LEVEL,
                             channel: assignedFaderIndex,
                             level: message.args[0]
                         });
                         this.store.channels[0].channel.forEach((item, index) => {
                             if (item.assignedFader === assignedFaderIndex) {
-                                window.storeRedux.dispatch({
+                                global.storeRedux.dispatch({
                                     type: SET_OUTPUT_LEVEL,
                                     channel: index,
                                     level: message.args[0]
@@ -115,7 +123,7 @@ export class OscMixerConnection {
                         })
                         if (!this.store.faders[0].fader[assignedFaderIndex].pgmOn) {
                             if (message.args[0] > this.mixerProtocol.fader.min) {
-                                window.storeRedux.dispatch({
+                                global.storeRedux.dispatch({
                                     type: TOGGLE_PGM,
                                     channel: assignedFaderIndex
                                 });
@@ -124,14 +132,14 @@ export class OscMixerConnection {
                     } else if (this.store.faders[0].fader[assignedFaderIndex].pgmOn 
                             || this.store.faders[0].fader[assignedFaderIndex].voOn)
                         {
-                        window.storeRedux.dispatch({
+                        global.storeRedux.dispatch({
                             type: SET_FADER_LEVEL,
                             channel: assignedFaderIndex,
                             level: message.args[0]
                         });
                         this.store.channels[0].channel.forEach((item, index) => {
                             if (item.assignedFader === assignedFaderIndex) {
-                                window.storeRedux.dispatch({
+                                global.storeRedux.dispatch({
                                     type: SET_OUTPUT_LEVEL,
                                     channel: index,
                                     level: message.args[0]
@@ -139,8 +147,10 @@ export class OscMixerConnection {
                             }
                         })
                     }
-                    if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, message.args[0]);
+                    global.socketServer.emit('set-store', global.storeRedux.getState())
+
+                    if (global.huiRemoteConnection) {
+                        global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, message.args[0]);
                     }
                 } 
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
@@ -160,29 +170,32 @@ export class OscMixerConnection {
                     }
                 })
 
-                window.storeRedux.dispatch({
+                global.storeRedux.dispatch({
                     type: SET_AUX_LEVEL,
                     channel: ch - 1,
                     auxIndex: auxIndex,
                     level: message.args[0]
                 });
+                global.socketServer.emit('set-store', global.storeRedux.getState())
  
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_NAME[0].mixerMessage)) {
                                     let ch = message.address.split("/")[this.cmdChannelIndex];
-                    window.storeRedux.dispatch({
+                    global.storeRedux.dispatch({
                         type: SET_CHANNEL_LABEL,
                         channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         label: message.args[0]
                     });
+                global.socketServer.emit('set-store', global.storeRedux.getState())
                 console.log("OSC message: ", message.address);
             }
         })
         .on('error', (error: any) => {
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type: SET_MIXER_ONLINE,
                 mixerOnline: false
             });
+            global.socketServer.emit('set-store', global.storeRedux.getState())
             console.log("Error : ", error);
             console.log("Lost OSC connection");
         });
@@ -212,7 +225,7 @@ export class OscMixerConnection {
             );
         });
         this.mixerOnlineTimer = setTimeout(() => {
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type: SET_MIXER_ONLINE,
                 mixerOnline: false
             });

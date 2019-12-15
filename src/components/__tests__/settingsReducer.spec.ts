@@ -1,4 +1,4 @@
-import indexReducer from  '../../reducers/indexReducer'
+import indexReducer from  '../../../server/reducers/indexReducer'
 import {
   TOGGLE_SHOW_CHAN_STRIP,
   TOGGLE_SHOW_OPTION,
@@ -6,8 +6,8 @@ import {
   TOGGLE_SHOW_SNAPS,
   TOGGLE_SHOW_STORAGE,
   UPDATE_SETTINGS
- } from '../../reducers/settingsActions'
-import { ISettings } from '../../reducers/settingsReducer'
+ } from '../../../server/reducers/settingsActions'
+import { ISettings } from '../../../server/reducers/settingsReducer'
 
  let fs = require('fs')
 const parsedFullStoreJSON = fs.readFileSync('src/components/__tests__/__mocks__/parsedFullStore.json')

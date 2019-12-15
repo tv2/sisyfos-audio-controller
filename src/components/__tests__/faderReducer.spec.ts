@@ -1,5 +1,5 @@
-import indexReducer from  '../../reducers/indexReducer'
-import { IVuMeters, IFaders } from  '../../reducers/fadersReducer'
+import indexReducer from  '../../../server/reducers/indexReducer'
+import { IVuMeters, IFaders } from  '../../../server/reducers/fadersReducer'
 import { 
   SET_FADER_LEVEL,
   SET_PGM,
@@ -23,7 +23,7 @@ import {
   X_MIX,
   SET_ALL_VU_LEVELS,
   SET_COMPLETE_FADER_STATE
-} from '../../reducers/faderActions'
+} from '../../../server/reducers/faderActions'
 
 let fs = require('fs')
 const parsedInitialStoreJSON = fs.readFileSync('src/components/__tests__/__mocks__/parsedInitialStore.json')

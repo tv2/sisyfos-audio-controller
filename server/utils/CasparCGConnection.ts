@@ -1,11 +1,9 @@
 //Node Modules:
-import * as os from 'os'; // Used to display (log) network addresses on local machine
-import { CasparCG } from 'casparcg-connection';
-import * as osc from 'osc';
+const osc = require('osc')
+const CasparCG = require('casparcg-connection')
 
 //Utils:
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { IMixerProtocol, ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolInterface';
+import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolInterface';
 import { IStore } from '../reducers/indexReducer';
 import { IChannel } from '../reducers/channelsReducer';
 import { SET_PRIVATE } from  '../reducers/channelActions'
@@ -27,14 +25,14 @@ const OSC_PATH_PRODUCER_CHANNEL_LAYOUT = /\/channel\/(\d+)\/stage\/layer\/(\d+)\
 export class CasparCGConnection {
     store: IStore;
     mixerProtocol: ICasparCGMixerGeometry;
-    connection: CasparCG;
-    oscClient: osc.UDPPort | undefined;
+    connection: any;
+    oscClient: any;
     oscCommandMap: { [key: string]: CommandChannelMap } = {};
 
     constructor(mixerProtocol: ICasparCGMixerGeometry) {
-        this.store = window.storeRedux.getState() as IStore;
-        const unsubscribe = window.storeRedux.subscribe(() => {
-            this.store = window.storeRedux.getState() as IStore;
+        this.store = global.storeRedux.getState() as IStore;
+        const unsubscribe = global.storeRedux.subscribe(() => {
+            this.store = global.storeRedux.getState() as IStore;
         });
 
         this.mixerProtocol = mixerProtocol
@@ -74,10 +72,10 @@ export class CasparCGConnection {
             .on('ready', () => {
                 console.log("Receiving state of mixer");
             })
-            .on('message', (message: osc.OSCMessage) => {
+            .on('message', (message: any) => {
                 const index = this.checkOscCommand(message.address, this.oscCommandMap.CHANNEL_VU)
                 if (index !== undefined && message.args) {
-                    window.storeRedux.dispatch({
+                    global.storeRedux.dispatch({
                         type: SET_VU_LEVEL,
                         channel: index,
                         // CCG returns "produced" audio levels, before the Volume mixer transform
@@ -90,7 +88,7 @@ export class CasparCGConnection {
                     if (m[1] === 'channel' && m[6] === 'producer' && m[7] === 'type') {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
-                            window.storeRedux.dispatch({
+                            global.storeRedux.dispatch({
                                 type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'producer',
@@ -100,7 +98,7 @@ export class CasparCGConnection {
                     } else if (m[1] === 'channel' && m[6] === 'producer' && m[7] === 'channel_layout') {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
-                            window.storeRedux.dispatch({
+                            global.storeRedux.dispatch({
                                 type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'channel_layout',
@@ -110,7 +108,7 @@ export class CasparCGConnection {
                     } else if (m[1] === 'channel' && m[6] === 'file' && m[7] === 'path') {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
-                            window.storeRedux.dispatch({
+                            global.storeRedux.dispatch({
                                 type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'file_path',
@@ -138,7 +136,7 @@ export class CasparCGConnection {
         // Set source labels from geometry definition
         if (this.mixerProtocol.channelLabels) {
             this.mixerProtocol.channelLabels.forEach((label, channelIndex) => {
-                window.storeRedux.dispatch({
+                global.storeRedux.dispatch({
                     type: SET_CHANNEL_LABEL,
                     channel: channelIndex,
                     label
@@ -178,7 +176,7 @@ export class CasparCGConnection {
     private syncCommand = Promise.resolve()
     controlVolume = (channel: number, layer: number, value: number) => {
         this.syncCommand = this.syncCommand.then(() =>
-            this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e) => {
+            this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e: any) => {
                 console.error('Failed to send command', e);
             })
         ).then(() => { })
@@ -221,7 +219,7 @@ export class CasparCGConnection {
             return Promise.reject('Unknown operation');
         }).then(() => {
 
-        }).catch((e) => {
+        }).catch((e: any) => {
             console.error('Failed to change channel setting', e);
         })
     }

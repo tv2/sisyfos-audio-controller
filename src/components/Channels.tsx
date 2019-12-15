@@ -7,23 +7,20 @@ import Channel from './Channel';
 import '../assets/css/Channels.css';
 import { Store } from 'redux';
 import { 
-    X_MIX,
-    NEXT_MIX,
-    CLEAR_PST,
     SNAP_RECALL
-} from  '../reducers/faderActions'
+} from  '../../server/reducers/faderActions'
 import {
     TOGGLE_SHOW_SETTINGS,
     TOGGLE_SHOW_SNAPS,
     TOGGLE_SHOW_STORAGE
-} from '../reducers/settingsActions'
+} from '../../server/reducers/settingsActions'
 import ChannelRouteSettings from './ChannelRouteSettings';
 import ChanStrip from './ChanStrip'
 import ChannelMonitorOptions from './ChannelMonitorOptions';
-import { IChannels } from '../reducers/channelsReducer';
-import { IFader } from '../reducers/fadersReducer';
-import { ISettings } from '../reducers/settingsReducer';
-const { dialog } = require('electron').remote;
+import { IChannels } from '../../server/reducers/channelsReducer';
+import { IFader } from '../../server/reducers/fadersReducer';
+import { ISettings } from '../../server/reducers/settingsReducer';
+import { SOCKET_NEXT_MIX, SOCKET_CLEAR_PST } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IChannelsInjectProps {
     channels: IChannels 
@@ -42,28 +39,17 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         return this.props.settings.showOptions !== nextProps.settings.showOptions 
         || this.props.settings.showChanStrip !== nextProps.settings.showChanStrip
         || this.props.settings.showMonitorOptions !== nextProps.settings.showMonitorOptions
-        || this.props.settings.mixerOnline !== nextProps.settings.mixerOnline;
+        || this.props.settings.mixerOnline !== nextProps.settings.mixerOnline
+        || this.props.faders.length !== nextProps.faders.length;
     }
 
 
     handleMix() {
-        if (this.props.settings.automationMode) {
-            this.props.dispatch({
-                type: NEXT_MIX
-            });
-        } else {
-            this.props.dispatch({
-                type: X_MIX
-            });
-        }
-        window.mixerGenericConnection.updateOutLevels();
+        window.socketIoClient.emit(SOCKET_NEXT_MIX)
     }
 
     handleClearAllPst() {
-        this.props.dispatch({
-            type: CLEAR_PST
-        });
-        window.mixerGenericConnection.updateOutLevels();
+        window.socketIoClient.emit(SOCKET_CLEAR_PST)
     }
 
     handleSnapMix(snapIndex: number) {
@@ -95,28 +81,6 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         this.props.dispatch({
             type: TOGGLE_SHOW_STORAGE,
         });
-    }
-
-    saveFile() {
-        const options = {
-            type: 'saveFile',
-            title: 'Save Current Setup',
-            message: 'Stores the current state of Sisyfos - including Fader-Channel Routing',
-        };
-        let response = dialog.showSaveDialogSync(options)
-        if (response === 'save') {
-            console.log('SAVING CURRENT STATE')
-        }
-    }
-
-    loadFile() {
-        const options = {
-            type: 'loadFile',
-            title: 'Load selected file',
-            message: 'Loading Fader and Channels state',
-        };
-        let response = dialog.showOpenDialogSync(options)
-        console.log('LOAD STATE? :', response)
     }
 
     snapMixButton(snapIndex: number) {

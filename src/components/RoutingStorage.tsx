@@ -3,18 +3,15 @@ import React from 'react';
 import '../assets/css/RoutingStorage.css';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import * as fs from 'fs'
-import * as electron from 'electron'
-import { TOGGLE_SHOW_STORAGE } from '../reducers/settingsActions'
-
-const { dialog } = require('electron').remote;
+import Popup from 'reactjs-popup'
+import { TOGGLE_SHOW_STORAGE } from '../../server/reducers/settingsActions'
+import { SOCKET_GET_SNAPSHOT_LIST, SOCKET_LOAD_SNAPSHOT, SOCKET_SAVE_SNAPSHOT } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IStorageProps {
     load: any
     save: any
 }
 class Storage extends React.PureComponent<IStorageProps & Store> {
-    path: string
     fileList: string[] = []
     load: any
     save: any
@@ -24,19 +21,10 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         this.load = this.props.load
         this.save = this.props.save
 
-        this.path = electron.remote.app.getPath('userData');
-
-        this.updateFilelist()
-
         //Bindings:
         this.ListFiles = this.ListFiles.bind(this)
-        this.updateFilelist = this.updateFilelist.bind(this)
         this.loadFile = this.loadFile.bind(this)
         this.saveFile = this.saveFile.bind(this)
-    }
-
-    updateFilelist() {
-        this.fileList = fs.readdirSync(this.path)
     }
 
 	handleClose = () => {
@@ -46,44 +34,27 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
     }
     
     saveFile() {
-        const options = {
-            type: 'saveFile',
-            defaultPath: this.path,
-            filters: [
-                { name: 'Settings', extensions: ['shot'] }
-              ],
-            title: 'Save Current Setup',
-            message: 'Stores the current state of Sisyfos - including Fader-Channel Routing',
-        };
-        let response = dialog.showSaveDialogSync(options)
-        if (response) {
-            console.log('SAVING THIS FILE :', response)
-            this.save(response)
+        let fileName = window.prompt('Enter filename :', 'newfile')
+        if (window.confirm('Are you sure you will save ' + fileName + ' as new routing setup?'))
+        {
+            console.log('Saving file')
+            window.socketIoClient.emit(SOCKET_SAVE_SNAPSHOT, fileName + '.shot')
         }
         this.handleClose()
     }
 
     loadFile(event: any) {
-        const options = {
-            type: 'question',
-            buttons: ['Yes', 'Cancel'],
-            defaultId: 1,
-            title: 'Load Routing',
-            message: 'Load "' + event.target.textContent + '" Routing',
-        };
-        let response = dialog.showMessageBoxSync(options)
-        if (!response) {
+        if (window.confirm('Are you sure you will load a new routing setup?'))
+        {
             console.log('Loading files')
-            this.load(this.path + '/' + event.target.textContent, false)
+            window.socketIoClient.emit(SOCKET_LOAD_SNAPSHOT, event.target.textContent)
         }
         this.handleClose()
     }
 
     ListFiles(props: any) {
-        const files = props.files.filter((file: string) => { 
-            return file.includes('.shot')
-        })
-        const listItems = files.map((file: string, index: number) => {
+        window.socketIoClient.emit(SOCKET_GET_SNAPSHOT_LIST)
+        const listItems = window.snapshotFileList.map((file: string, index: number) => {
         return (
             <li key={index} onClick={this.loadFile} className="item">
             {file}

@@ -1,6 +1,15 @@
+
+// *** Work around to run Web-midi on nodejs ***
+
+
+// The `web-midi-api` module takes care of importing the `jazz-midi` module (which needs to be
+// installed) and the WebMIDIAPI shim (which is already part of `web-midi-api`).
+global.navigator = require('web-midi-api')
+// WebMidi.js depends on the browser's performance.now() so we fake it with the `performance-now`
+// Node module (which is installed as a dependency of `web-midi-api`).
+if (!global.performance) global.performance = { now: require('performance-now') };
 //Node Modules:
-import * as os from 'os'; // Used to display (log) network addresses on local machine
-import WebMidi, { INoteParam, IMidiChannel } from 'webmidi';
+const WebMidi = require('webmidi')
 
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
@@ -16,7 +25,7 @@ import {
 
 export class MidiMixerConnection {
     store: any;
-    mixerProtocol: IMixerProtocol;
+    mixerProtocol: any;
     midiInput: any;
     midiOutput:any;
 
@@ -24,14 +33,14 @@ export class MidiMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = window.storeRedux.getState();
-        const unsubscribe = window.storeRedux.subscribe(() => {
-            this.store = window.storeRedux.getState();
+        this.store = global.storeRedux.getState();
+        const unsubscribe = global.storeRedux.subscribe(() => {
+            this.store = global.storeRedux.getState();
         });
 
         this.mixerProtocol = mixerProtocol || MixerProtocolPresets.genericMidi;
 
-        WebMidi.enable((err) => {
+        WebMidi.enable((err: any) => {
 
             if (err) {
                 console.log("WebMidi could not be enabled.", err);
@@ -53,19 +62,19 @@ export class MidiMixerConnection {
                     && message.data[1] <= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage) + 24) {
                     let ch = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
                     let faderChannel = 1 + this.store.channels[0].channel[ch - 1].assignedFader
-                    window.storeRedux.dispatch({
+                    global.storeRedux.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: faderChannel - 1,
                         level: message.data[2]
                     });
                     if (!this.store.faders[0].fader[faderChannel - 1].pgmOn) {
-                        window.storeRedux.dispatch({
+                        global.storeRedux.dispatch({
                             type: TOGGLE_PGM,
                             channel: this.store.channels[0].channel[ch - 1].assignedFader -1
                         });
                     }
-                    if (window.huiRemoteConnection) {
-                        window.huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, this.store.faders[0].fader[faderChannel - 1].faderLevel)
+                    if (global.huiRemoteConnection) {
+                        global.huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, this.store.faders[0].fader[faderChannel - 1].faderLevel)
                     }
                     if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {
@@ -91,7 +100,7 @@ export class MidiMixerConnection {
                     behringerMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];
-                    window.storeRedux.dispatch({
+                    global.storeRedux.dispatch({
                         type:SET_VU_LEVEL,
                         channel: ch - 1,
                         level: message.args[0]
@@ -102,7 +111,7 @@ export class MidiMixerConnection {
                 this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_NAME)
             ) {
                     let ch = message.address.split("/")[2];
-                    window.storeRedux.dispatch({
+                    global.storeRedux.dispatch({
                         type: SET_CHANNEL_LABEL,
                         channel: ch - 1,
                         label: message.args[0]
@@ -124,7 +133,7 @@ return true;
 
     pingMixerCommand() {
         //Ping OSC mixer if mixerProtocol needs it.
-        this.mixerProtocol.pingCommand.map((command) => {
+        this.mixerProtocol.pingCommand.map((command: any) => {
             this.sendOutMessage(
                 command.mixerMessage,
                 0,
@@ -143,7 +152,7 @@ return true;
     updateOutLevel(channelIndex: number) {
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel

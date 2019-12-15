@@ -84,7 +84,8 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
         case SET_OPTION:
             console.log(action);
             // TODO: This should be changed, as it´s not the "redux" way of handling it.
-            window.mixerGenericConnection.updateChannelSettings(action.channel, action.prop, action.option);
+            // @ts-ignore
+            global.mixerGenericConnection.updateChannelSettings(action.channel, action.prop, action.option);
             return nextState;
         default:
             return nextState;

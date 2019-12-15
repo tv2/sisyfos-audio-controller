@@ -1,6 +1,5 @@
 //Node Modules:
-import * as os from 'os'; // Used to display (log) network addresses on local machine
-import * as net from 'net'
+const net = require('net')
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface'
@@ -25,9 +24,9 @@ export class QlClMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = window.storeRedux.getState();
-        const unsubscribe = window.storeRedux.subscribe(() => {
-            this.store = window.storeRedux.getState();
+        this.store = global.storeRedux.getState();
+        const unsubscribe = global.storeRedux.subscribe(() => {
+            this.store = global.storeRedux.getState();
         });
 
         this.mixerProtocol = mixerProtocol;
@@ -67,7 +66,7 @@ export class QlClMixerConnection {
                             let ch = parseInt(mixerValues[3])
                             let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
                             let mixerValue = parseInt(mixerValues[6])
-                            window.storeRedux.dispatch({
+                            global.storeRedux.dispatch({
                                 type: SET_VU_LEVEL,
                                 channel: assignedFader,
                                 level: mixerValue
@@ -83,20 +82,20 @@ export class QlClMixerConnection {
                         //let faderLevel = Math.log10((mixerLevel + 32768) / (1000 + 32768))
                         if (!this.store.channels[0].channel[ch - 1].fadeActive
                             && faderLevel > this.mixerProtocol.fader.min) {
-                            window.storeRedux.dispatch({
+                            global.storeRedux.dispatch({
                                 type: SET_FADER_LEVEL,
                                 channel: assignedFader - 1,
                                 level: faderLevel
                             });
                             if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
-                                window.storeRedux.dispatch({
+                                global.storeRedux.dispatch({
                                     type: TOGGLE_PGM,
                                     channel: assignedFader - 1
                                 });
                             }
 
-                            if (window.huiRemoteConnection) {
-                                window.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, faderLevel);
+                            if (global.huiRemoteConnection) {
+                                global.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, faderLevel);
                             }
                             if (this.store.faders[0].fader[assignedFader - 1].pgmOn) {
                                 this.store.channels[0].channel.map((channel: any, index: number) => {
@@ -110,7 +109,7 @@ export class QlClMixerConnection {
                         } /*else if (this.checkSCPCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
                         .CHANNEL_NAME[0].mixerMessage)) {
                         let ch = message.split("/")[this.cmdChannelIndex];
-                        window.storeRedux.dispatch({
+                        global.storeRedux.dispatch({
                             type: SET_CHANNEL_LABEL,
                             channel: this.store.channels[0].channel[ch - 1].assignedFader,
                             label: message.args[0]
@@ -194,7 +193,7 @@ export class QlClMixerConnection {
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
-            window.storeRedux.dispatch({
+            global.storeRedux.dispatch({
                 type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel
