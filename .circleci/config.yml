@@ -19,9 +19,9 @@ jobs:
           command: yarn build
           no_output_timeout: 60m
       - save_cache:
-        key: v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-        paths: 
-          - node_modules
+          key: v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths: 
+            - node_modules
 workflows:
   version: 2
   build:
