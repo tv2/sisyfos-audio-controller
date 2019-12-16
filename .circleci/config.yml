@@ -13,7 +13,7 @@ jobs:
           name: yarn install
           command: yarn install --check-files --frozen-lockfile
           no_output_timeout: 60m
-      - run: yarn validate:dependencies
+      # - run: yarn validate:dependencies
       - run:
           name: yarn build
           command: yarn build
