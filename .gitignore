@@ -10,7 +10,6 @@ coverage/
 node_modules/
 public/
 *.compiled.*
-yarn.lock
 settings.json
 *.shot
 
