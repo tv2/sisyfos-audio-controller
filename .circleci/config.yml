@@ -10,15 +10,15 @@ jobs:
           - v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
           - v1-node-cache-{{ .Branch }}
       - run:
-        name: yarn install
-        command: yarn install --check-files --frozen-lockfile
-        no_output_timeout: 60m
-    - run: yarn validate:dependencies
-    - run:
-        name: yarn build
-        command: yarn build
-        no_output_timeout: 60m
-    - save_cache:
+          name: yarn install
+          command: yarn install --check-files --frozen-lockfile
+          no_output_timeout: 60m
+      - run: yarn validate:dependencies
+      - run:
+          name: yarn build
+          command: yarn build
+          no_output_timeout: 60m
+      - save_cache:
         key: v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
         paths: 
           - node_modules
