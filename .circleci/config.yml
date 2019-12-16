@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: electronuserland/builder:wine
+      - image: circleci/node:12.13.1
     steps:
       - checkout
       - run: yarn && yarn build
@@ -12,3 +12,4 @@ workflows:
   build:
     jobs:
       - build
+  
