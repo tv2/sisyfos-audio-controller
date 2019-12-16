@@ -36,7 +36,9 @@
         "build": "yarn build-server && yarn build-client",
         "unit": "jest",
         "test": "yarn unit",
-        "watch": "jest --watch"
+        "watch": "jest --watch",
+        "validate:dependencies": "yarn audit && yarn license-validate",
+        "license-validate": "node-license-validator -p -d --allow-licenses MIT MIT/X11 BSD BSD-3-Clause BSD-2-Clause ISC Apache Apache-2.0 Unlicense --allow-packages cycle"
     },
     "dependencies": {
         "casparcg-connection": "^4.7.0",
