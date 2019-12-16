@@ -25,11 +25,12 @@
         "npm": ">=5.0.0",
         "yarn": ">=1.0.0"
     },
-    "main": "dist/server/main.js",
+    "main": "dist/index.html",
     "scripts": {
         "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
         "start-client": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development --history-api-fallback",
-        "start-server": "node --inspect -r ts-node/register server/index.ts",
+        "start": "node dist/server/index.js",
+        "start:dev": "node --inspect -r ts-node/register server/index.ts",
         "build-client": "yarn webpack --config webpack.build.config.js --mode production",
         "build-server": "yarn tsc -p server/tsconfig.json",
         "build-now": "yarn tsc -p server/tsconfig.json && webpack --config webpack.build.config.js --mode production",

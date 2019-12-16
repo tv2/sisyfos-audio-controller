@@ -32,7 +32,7 @@ declare global {
 
 const express = require('express')
 var app = express();
-app.use( '/' , express.static(path.join(__dirname ,'/..' ,'dist')))
+app.use( '/' , express.static(path.join(__dirname ,'..')))
 var server = require('http').Server(app);
 global.socketServer = require('socket.io')(server);
 
@@ -66,7 +66,6 @@ if (dev && process.argv.indexOf('--noDevServer') === -1) {
 
 server.on('connection', () => {
   app.get('/', (req: any, res: any) => {
-    console.log('Path :', path.resolve('../dist/index.html'))
     res.sendFile(path.resolve('dist/index.html'))
   })
 })
