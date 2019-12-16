@@ -28,11 +28,12 @@
     "main": "dist/server/main.js",
     "scripts": {
         "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
-        "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development --history-api-fallback",
+        "start-client": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development --history-api-fallback",
         "start-server": "node --inspect -r ts-node/register server/index.ts",
-        "build": "yarn tsc -p server/tsconfig.json && yarn tsc && webpack --config webpack.build.config.js --mode development",
+        "build-client": "yarn webpack --config webpack.build.config.js --mode production",
+        "build-server": "yarn tsc -p server/tsconfig.json",
         "build-now": "yarn tsc -p server/tsconfig.json && webpack --config webpack.build.config.js --mode production",
-        "package": "yarn run build",
+        "build": "yarn build-server && yarn build-client",
         "unit": "jest",
         "test": "yarn unit",
         "watch": "jest --watch"
