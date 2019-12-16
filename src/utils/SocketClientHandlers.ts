@@ -1,6 +1,6 @@
 import { SET_COMPLETE_FADER_STATE, SET_VU_LEVEL } from "../../server/reducers/faderActions";
 import { SET_COMPLETE_CH_STATE } from "../../server/reducers/channelActions";
-import { UPDATE_SETTINGS } from "../../server/reducers/settingsActions";
+import { UPDATE_SETTINGS, SET_MIXER_ONLINE } from "../../server/reducers/settingsActions";
 import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST } from "../../server/constants/SOCKET_IO_DISPATCHERS";
 
 export const socketClientHandlers = () => {
@@ -13,17 +13,22 @@ export const socketClientHandlers = () => {
             if(window.mixerProtocol) {
                 window.mixerProtocol.channelTypes.forEach((item: any, index: number) => {
                     numberOfChannels.push(payload.settings[0].numberOfChannelsInType[index]);
-                });
+                })
                 window.storeRedux.dispatch({
                     type: SET_COMPLETE_CH_STATE,
                     allState: payload.channels[0],
                     numberOfTypeChannels: numberOfChannels
-                });
+                })
                 window.storeRedux.dispatch({
                     type:SET_COMPLETE_FADER_STATE,
                     allState: payload.faders[0],
                     numberOfTypeChannels: payload.settings[0].numberOfFaders
-                });
+                })
+                window.storeRedux.dispatch({
+                    type: SET_MIXER_ONLINE,
+                    mixerOnline: payload.settings[0].mixerOnline
+                })
+
             }
 
         })

@@ -224,6 +224,7 @@ export class OscMixerConnection {
                 command.type
             );
         });
+        global.socketServer.emit('set-store', global.storeRedux.getState())
         this.mixerOnlineTimer = setTimeout(() => {
             global.storeRedux.dispatch({
                 type: SET_MIXER_ONLINE,

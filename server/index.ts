@@ -2,6 +2,12 @@
 import { MainThreadHandlers } from './MainThreadHandler'
 import { MainApp } from './MainApp'
 import { MixerProtocolPresets, MixerProtocolList } from './constants/MixerProtocolPresets'
+import { Store } from 'redux'
+import { MixerGenericConnection } from './utils/MixerConnection';
+import { AutomationConnection } from './utils/AutomationConnection';
+import { IMixerProtocolGeneric } from './constants/MixerProtocolInterface';
+
+
 const path = require('path')
 const url = require('url')
 
@@ -9,15 +15,15 @@ const url = require('url')
 declare global {
   namespace NodeJS {
       interface Global {
-          storeRedux: any
-          mainApp: any
-          mixerGenericConnection: any
-          automationConnection: any
+          storeRedux: Store
+          mainApp: MainApp
+          mixerGenericConnection: MixerGenericConnection
+          automationConnection: AutomationConnection
           huiRemoteConnection: any
           socketServer: any
           mixerProtocol: any
-          mixerProtocolPresets: any
-          mixerProtocolList: any
+          mixerProtocolPresets: { [key: string]: IMixerProtocolGeneric; }
+          mixerProtocolList: {value: string; label: string}[]
           navigator: any // Workaround for WebMidi
           performance: any // Workaround for WebMidi
       }

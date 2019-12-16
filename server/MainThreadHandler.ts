@@ -89,6 +89,7 @@ export class MainThreadHandlers {
             (payload: string) => { 
                 console.log('Load Snapshot')
                 global.mainApp.loadSnapshotSettings(path.resolve(payload), false)
+                global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(SOCKET_SAVE_SNAPSHOT, (
