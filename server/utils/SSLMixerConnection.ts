@@ -12,7 +12,6 @@ import {
  } from  '../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
 
-
 export class SSLMixerConnection {
     store: IStore;
     mixerProtocol: IMixerProtocol;
@@ -200,7 +199,7 @@ export class SSLMixerConnection {
                 console.log("Lost SCP connection");
             });
 
-        //Ping OSC mixer to get mixerOnlineState
+        //Ping mixer to get mixerOnlineState
         let oscTimer = setInterval(
             () => {
                 this.pingMixerCommand();
@@ -211,9 +210,10 @@ export class SSLMixerConnection {
 
     pingMixerCommand() {
         //Ping OSC mixer if mixerProtocol needs it.
-        this.mixerProtocol.pingCommand.map((command) => {
+        this.mixerProtocol.pingCommand.forEach((command) => {
            this.sendOutPingRequest();
        });
+       global.socketServer.emit('set-store', global.storeRedux.getState())
        this.mixerOnlineTimer = setTimeout(() => {
            global.storeRedux.dispatch({
                type: SET_MIXER_ONLINE,
