@@ -27,7 +27,7 @@ Routing setups can be stored in STORAGE. So it´s possible to have different Rou
 
 
 
-### Install:
+### Install: (On linux)
 ```
 docker pull olzzon/sisyfos-audio-controller:develop
 sudo docker run --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller  --network="host" olzzon/sisyfos-audio-controller:develop
