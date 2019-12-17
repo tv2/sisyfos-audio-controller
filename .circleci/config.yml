@@ -18,6 +18,7 @@ jobs:
           name: yarn build
           command: yarn build
           no_output_timeout: 60m
+      # TODO: check dev depencies:
       #- run:
       #    name: yarn install production
       #    command: yarn install --check-files --frozen-lockfile --production --force

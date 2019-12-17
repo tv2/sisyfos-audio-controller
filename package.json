@@ -42,7 +42,7 @@
         "license-validate": "node-license-validator -p -d --allow-licenses MIT MIT/X11 BSD BSD-3-Clause BSD-2-Clause ISC Apache Apache-2.0 Unlicense --allow-packages cycle"
     },
     "dependencies": {
-        "casparcg-connection": "^4.7.0",
+        "casparcg-connection": "^4.9.0",
         "classnames": "^2.2.6",
         "emberplus": "https://github.com/nrkno/tv-automation-emberplus-connection.git",
         "express": "^4.17.1",
