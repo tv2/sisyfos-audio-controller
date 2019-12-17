@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:12.13.1
+      - image: circleci/node:12.13.1-stretch
     steps:
       - checkout
       - restore_cache:
@@ -33,7 +33,7 @@ jobs:
             - .
   publish-tag:
     docker:
-      - image: circleci/node:12.13.1
+      - image: circleci/node:12.13.1-stretch
     steps:
       - setup_remote_docker:
           # docker_layer_caching: true
@@ -65,7 +65,7 @@ jobs:
              fi
   publish-branch:
     docker:
-      - image: circleci/node:12.13.1
+      - image: circleci/node:12.13.1-stretch
     steps:
       - setup_remote_docker:
           # docker_layer_caching: true
