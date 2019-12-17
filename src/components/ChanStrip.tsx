@@ -12,6 +12,7 @@ import {
 import { IFader } from '../../server/reducers/fadersReducer'
 import { SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from '../../server/reducers/faderActions'
 import { SET_AUX_LEVEL } from '../../server/reducers/channelActions';
+import { SOCKET_SET_THRESHOLD, SOCKET_SET_RATIO, SOCKET_SET_LOW, SOCKET_SET_MID, SOCKET_SET_HIGH, SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IChanStripInjectProps {
     label: string,
@@ -64,57 +65,55 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     }
 
     handleThreshold(event: any) {
-        this.props.dispatch({
-            type: SET_FADER_THRESHOLD,
-            channel: this.props.faderIndex,
-            level: parseFloat(event)
-        });
-        window.mixerGenericConnection.updateThreshold(this.props.faderIndex);
+        window.socketIoClient.emit( SOCKET_SET_THRESHOLD, 
+            {
+                channel: this.props.faderIndex,
+                level: parseFloat(event)
+            }
+        )
     }
     handleRatio(event: any) {
-        this.props.dispatch({
-            type: SET_FADER_RATIO,
-            channel: this.props.faderIndex,
-            level: parseFloat(event)
-        });
-        window.mixerGenericConnection.updateRatio(this.props.faderIndex);
+        window.socketIoClient.emit( SOCKET_SET_RATIO, 
+            {
+                channel: this.props.faderIndex,
+                level: parseFloat(event)
+            }
+        )
     }
     handleLow(event: any) {
-        this.props.dispatch({
-            type: SET_FADER_LOW,
-            channel: this.props.faderIndex,
-            level: parseFloat(event)
-        });
-        window.mixerGenericConnection.updateLow(this.props.faderIndex);
-
+        window.socketIoClient.emit( SOCKET_SET_LOW, 
+            {
+                channel: this.props.faderIndex,
+                level: parseFloat(event)
+            }
+        )
     }
     handleMid(event: any) {
-        this.props.dispatch({
-            type: SET_FADER_MID,
-            channel: this.props.faderIndex,
-            level: parseFloat(event)
-        });
-        window.mixerGenericConnection.updateMid(this.props.faderIndex);
-
+        window.socketIoClient.emit( SOCKET_SET_MID, 
+            {
+                channel: this.props.faderIndex,
+                level: parseFloat(event)
+            }
+        )
     }
     handleHigh(event: any) {
-        this.props.dispatch({
-            type: SET_FADER_HIGH,
-            channel: this.props.faderIndex,
-            level: parseFloat(event)
-        });
-        window.mixerGenericConnection.updateHigh(this.props.faderIndex);
+        window.socketIoClient.emit( SOCKET_SET_HIGH, 
+            {
+                channel: this.props.faderIndex,
+                level: parseFloat(event)
+            }
+        )
     }
     handleMonitorLevel(event: any, channelIndex: number) {
-        this.props.dispatch({
-            type: SET_AUX_LEVEL,
-            channel: channelIndex,
-            auxIndex: this.props.auxSendIndex,
-            level: parseFloat(event)
-        });
-        window.mixerGenericConnection.updateAuxLevel(channelIndex, this.props.auxSendIndex);
+        window.socketIoClient.emit( 
+            SOCKET_SET_AUX_LEVEL, 
+            {
+                channel: channelIndex,
+                auxIndex: this.props.auxSendIndex,
+                level: parseFloat(event)
+            }
+        )
     }
-
 
     threshold() {
         return (

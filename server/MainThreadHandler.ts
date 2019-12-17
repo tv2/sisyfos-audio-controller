@@ -17,9 +17,14 @@ import {
     SOCKET_SET_ASSIGNED_FADER,
     SOCKET_SET_AUX_LEVEL,
     SOCKET_NEXT_MIX,
-    SOCKET_CLEAR_PST
+    SOCKET_CLEAR_PST,
+    SOCKET_SET_THRESHOLD,
+    SOCKET_SET_RATIO,
+    SOCKET_SET_LOW,
+    SOCKET_SET_MID,
+    SOCKET_SET_HIGH
  } from './constants/SOCKET_IO_DISPATCHERS'
-import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE, NEXT_MIX, CLEAR_PST } from './reducers/faderActions';
+import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE, NEXT_MIX, CLEAR_PST, SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
 const path = require('path')
@@ -130,6 +135,66 @@ export class MainThreadHandlers {
                     auxIndex: payload.auxIndex,
                     level: payload.level
                 });                
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_THRESHOLD, (
+            (payload: any) => { 
+                console.log('Set Threshold:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_THRESHOLD,
+                    channel: payload.faderIndex,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateThreshold(payload.faderIndex);               
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_RATIO, (
+            (payload: any) => { 
+                console.log('Set Ratio:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_RATIO,
+                    channel: payload.faderIndex,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateRatio(payload.faderIndex);               
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_LOW, (
+            (payload: any) => { 
+                console.log('Set Ratio:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_LOW,
+                    channel: payload.faderIndex,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateLow(payload.faderIndex);               
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_MID, (
+            (payload: any) => { 
+                console.log('Set Ratio:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_MID,
+                    channel: payload.faderIndex,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateMid(payload.faderIndex);               
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_HIGH, (
+            (payload: any) => { 
+                console.log('Set Ratio:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_HIGH,
+                    channel: payload.faderIndex,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateHigh(payload.faderIndex);               
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
