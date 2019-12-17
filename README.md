@@ -29,10 +29,8 @@ Routing setups can be stored in STORAGE. So it´s possible to have different Rou
 
 ### Install:
 ```
-git clone https://github.com/olzzon/producers-audio-mixer.git
-cd producers-audio-mixer
-yarn
-yarn start
+docker pull olzzon/sisyfos-audio-controller:develop
+docker run -p 1176:1176 -p 5255:5255 --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller olzzon/sisyfos-audio-controller:develop
 ```
 
 ## Settings:

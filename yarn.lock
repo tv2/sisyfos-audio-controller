@@ -6680,10 +6680,10 @@ react-select@^3.0.6:
     react-input-autosize "^2.2.2"
     react-transition-group "^2.2.1"
 
-react-slider@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-slider/-/react-slider-1.0.0.tgz#c258616f1c1c135bd7a139b73531dac9280da393"
-  integrity sha512-NPd41T8WBi1SbpqJP7Tj/z3HO5qZDXJ3DJei9pS5IuSYc4mmqt/Vs5pJVivN9+C6AiOti3mjI4++g+/oDXmIlQ==
+react-slider@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-slider/-/react-slider-1.0.1.tgz#4cb212d31c35d804805e31f02ce37771e95d5d45"
+  integrity sha512-SI2anLzeKlFxnntoM93VXrf3ll9uL/TYjIJB6PsQVp4mDVt2VfWyGtMoUvK/ir/PnjuirNtF1pU3cG9XCezfBA==
 
 react-test-renderer@^16.11.0:
   version "16.11.0"
