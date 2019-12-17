@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:12.13.1-stretch
+      - image: circleci/node:12.13.1
     steps:
       - checkout
       - restore_cache:
@@ -27,13 +27,17 @@ jobs:
           key: v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths: 
             - node_modules
+      - save_cache:
+          key: v3-node-cache-{{ .Branch }}
+          paths: 
+            - node_modules
       - persist_to_workspace:
           root: .
           paths:
             - .
   publish-tag:
     docker:
-      - image: circleci/node:12.13.1-stretch
+      - image: circleci/buildpack-deps:stretch
     steps:
       - setup_remote_docker:
           # docker_layer_caching: true
@@ -65,7 +69,7 @@ jobs:
              fi
   publish-branch:
     docker:
-      - image: circleci/node:12.13.1-stretch
+      - image: circleci/buildpack-deps:stretch
     steps:
       - setup_remote_docker:
           # docker_layer_caching: true
