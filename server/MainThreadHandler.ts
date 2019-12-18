@@ -143,10 +143,10 @@ export class MainThreadHandlers {
                 console.log('Set Threshold:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_THRESHOLD,
-                    channel: payload.faderIndex,
+                    channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateThreshold(payload.faderIndex);               
+                global.mixerGenericConnection.updateThreshold(payload.channel);               
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
@@ -155,10 +155,10 @@ export class MainThreadHandlers {
                 console.log('Set Ratio:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_RATIO,
-                    channel: payload.faderIndex,
+                    channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateRatio(payload.faderIndex);               
+                global.mixerGenericConnection.updateRatio(payload.channel);               
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
@@ -167,22 +167,22 @@ export class MainThreadHandlers {
                 console.log('Set Ratio:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_LOW,
-                    channel: payload.faderIndex,
+                    channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateLow(payload.faderIndex);               
+                global.mixerGenericConnection.updateLow(payload.channel);               
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(SOCKET_SET_MID, (
             (payload: any) => { 
-                console.log('Set Ratio:', payload.channel)
+                console.log('Set Ratio:', payload.level, ' On channelIndex :', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_MID,
-                    channel: payload.faderIndex,
+                    channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateMid(payload.faderIndex);               
+                global.mixerGenericConnection.updateMid(payload.channel);               
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
@@ -191,10 +191,10 @@ export class MainThreadHandlers {
                 console.log('Set Ratio:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_HIGH,
-                    channel: payload.faderIndex,
+                    channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateHigh(payload.faderIndex);               
+                global.mixerGenericConnection.updateHigh(payload.channel);               
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
