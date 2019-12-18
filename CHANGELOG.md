@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.1.0...v2.2.0) (2019-12-18)
+
+
+### Features
+
+* mixer online - will restart server. ([fea6b24](https://github.com/olzzon/sisyfos-audio-controller/commit/fea6b24f897ee4a9e0e101fc45b5d1b92ed4227d))
+
+
+### Bug Fixes
+
+* move storage to "storage" folder, to avoid docker conflicts ([7323ed9](https://github.com/olzzon/sisyfos-audio-controller/commit/7323ed9675b57dbff528a54dad93271099bda14d))
+
 ## 2.1.0 (2019-12-18)
 
 
