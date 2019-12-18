@@ -11,7 +11,7 @@ export const loadSettings = (storeRedux: any) => {
     // console.log('SETTINGS IS LOADING')
     let settingsInterface = storeRedux.settings[0];
     try {
-        return (JSON.parse(fs.readFileSync(path.resolve("settings.json"))))
+        return (JSON.parse(fs.readFileSync(path.resolve('storage', 'settings.json'))))
     }
     catch (error) {
         saveSettings(settingsInterface);
@@ -21,7 +21,7 @@ export const loadSettings = (storeRedux: any) => {
 
 export const saveSettings = (settings: any) => {
     let json = JSON.stringify(settings);
-    fs.writeFile(path.resolve("settings.json"), json, 'utf8', (error: any)=>{
+    fs.writeFile(path.resolve('storage', 'settings.json'), json, 'utf8', (error: any)=>{
         console.log(error);
     });
 };
@@ -85,7 +85,7 @@ export const saveSnapshotState = (stateSnapshot: any, fileName: string) => {
 }
 
 export const getSnapShotList = () => {
-    const files = fs.readdirSync(path.resolve()).filter((file: string) => { 
+    const files = fs.readdirSync(path.resolve('storage')).filter((file: string) => { 
         if (file.includes('.shot') && file !== 'default.shot') {
             return true
         }

@@ -31,7 +31,7 @@ export class MainApp {
         global.mixerProtocol.channelTypes.forEach((item: any, index: number) => {
             this.numberOfChannels.push(this.store.settings[0].numberOfChannelsInType[index]);
         });
-        this.loadSnapshotSettings(path.resolve('default.shot'), true)
+        this.loadSnapshotSettings(path.resolve('storage', 'default.shot'), true)
 
         // ** UNCOMMENT TO DUMP A FULL STORE:
         //const fs = require('fs')
@@ -45,7 +45,7 @@ export class MainApp {
                     faderState: this.store.faders[0],
                     channelState: this.store.channels[0]
                 }
-                saveSnapshotState(snapshot, path.resolve(this.settingsPath, 'default.shot'))
+                saveSnapshotState(snapshot, path.resolve(this.settingsPath, 'storage', 'default.shot'))
             },
             2000);
     }

@@ -107,14 +107,14 @@ export class MainThreadHandlers {
         .on(SOCKET_LOAD_SNAPSHOT, (
             (payload: string) => { 
                 console.log('Load Snapshot')
-                global.mainApp.loadSnapshotSettings(path.resolve(payload), false)
+                global.mainApp.loadSnapshotSettings(path.resolve('storage', payload), false)
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
         .on(SOCKET_SAVE_SNAPSHOT, (
             (payload: string) => { 
                 console.log('Save Snapshot')
-                global.mainApp.saveSnapshotSettings(path.resolve(payload))
+                global.mainApp.saveSnapshotSettings(path.resolve('storage', payload))
 
                 global.socketServer.emit(
                     SOCKET_RETURN_SNAPSHOT_LIST, 

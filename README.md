@@ -30,7 +30,8 @@ Routing setups can be stored in STORAGE. So it´s possible to have different Rou
 ### Run as Docker: (On linux)
 ```
 docker pull olzzon/sisyfos-audio-controller:develop
-sudo docker run --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller  --network="host" --restart unless-stopped olzzon/sisyfos-audio-controller:develop
+docker volume create sisyfos-vol
+sudo docker run --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller/storage  --network="host" --restart unless-stopped olzzon/sisyfos-audio-controller:develop
 ```
 
 ### Install Local node host:
