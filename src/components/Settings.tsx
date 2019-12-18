@@ -11,6 +11,7 @@ import { SHOW_CHANNEL } from '../../server/reducers/faderActions'
 import { Store } from 'redux';
 import { ChangeEvent } from 'react';
 import { SOCKET_SAVE_SETTINGS } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import { TOGGLE_SHOW_SETTINGS } from '../../server/reducers/settingsActions';
 
 //Set style for Select dropdown component:
 const selectorColorStyles = {
@@ -170,7 +171,9 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     }
 
     handleCancel = () => {
-        location.reload();
+        this.props.dispatch({
+            type: TOGGLE_SHOW_SETTINGS,
+        });
     }
 
     renderChannelTypeSettings = () => {

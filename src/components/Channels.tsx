@@ -20,7 +20,7 @@ import ChannelMonitorOptions from './ChannelMonitorOptions';
 import { IChannels } from '../../server/reducers/channelsReducer';
 import { IFader } from '../../server/reducers/fadersReducer';
 import { ISettings } from '../../server/reducers/settingsReducer';
-import { SOCKET_NEXT_MIX, SOCKET_CLEAR_PST } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import { SOCKET_NEXT_MIX, SOCKET_CLEAR_PST, SOCKET_RESTART_SERVER } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IChannelsInjectProps {
     channels: IChannels 
@@ -67,7 +67,9 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     }
 
     handleReconnect() {
-        location.reload();
+        if (window.confirm('Are you sure you will restart server?')) {
+            window.socketIoClient.emit(SOCKET_RESTART_SERVER)
+        }
     }
 
 
@@ -124,16 +126,31 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             }
             <br/>
             <div className="channels-mix-body">
+                {this.props.settings.mixerOnline ?
                 <button
                     className={
                         ClassNames("channels-show-mixer-online", {
                         "connected": this.props.settings.mixerOnline
                     })}
                     onClick={() => {
-                        this.handleReconnect();
+                        this.handleReconnect()
                     }}
-                >{this.props.settings.mixerOnline ? 'MIXER ONLINE' : 'RECONNECT'}</button>
-                
+                >
+                    MIXER ONLINE
+                </button>
+                :
+                <button
+                    className={
+                        ClassNames("channels-show-mixer-online", {
+                        "connected": this.props.settings.mixerOnline
+                    })}
+                    onClick={() => {
+                        this.handleReconnect()
+                    }}
+                >
+                    RESTART SERVER
+                </button>
+                }
                 {(this.props.settings.automationMode ||
                   this.props.settings.offtubeMode) ?
                     null 

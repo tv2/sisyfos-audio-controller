@@ -22,9 +22,23 @@ import {
     SOCKET_SET_RATIO,
     SOCKET_SET_LOW,
     SOCKET_SET_MID,
-    SOCKET_SET_HIGH
+    SOCKET_SET_HIGH,
+    SOCKET_RESTART_SERVER
  } from './constants/SOCKET_IO_DISPATCHERS'
-import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE, NEXT_MIX, CLEAR_PST, SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from './reducers/faderActions';
+import { 
+    TOGGLE_PGM, 
+    TOGGLE_VO, 
+    TOGGLE_PST, 
+    TOGGLE_PFL, 
+    TOGGLE_MUTE, 
+    NEXT_MIX, 
+    CLEAR_PST, 
+    SET_FADER_THRESHOLD, 
+    SET_FADER_RATIO, 
+    SET_FADER_LOW, 
+    SET_FADER_MID, 
+    SET_FADER_HIGH 
+} from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
 const path = require('path')
@@ -115,6 +129,11 @@ export class MainThreadHandlers {
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
+        .on(SOCKET_RESTART_SERVER, (
+            () => { 
+                process.exit(0)
+            })
+        )
         .on(SOCKET_SET_ASSIGNED_FADER, (
             (payload: any) => { 
                 console.log('Set assigned fader. Channel:', payload.channel, 'Fader :', payload.faderAssign)
@@ -164,7 +183,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_LOW, (
             (payload: any) => { 
-                console.log('Set Low:', payload.channel)
+                //console.log('Set Low:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_LOW,
                     channel: payload.channel,
@@ -176,7 +195,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_MID, (
             (payload: any) => { 
-                console.log('Set Mid:', payload.level, ' On channelIndex :', payload.channel)
+                //console.log('Set Mid:', payload.level, ' On channelIndex :', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_MID,
                     channel: payload.channel,
@@ -188,7 +207,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_HIGH, (
             (payload: any) => { 
-                console.log('Set High:', payload.channel)
+                //console.log('Set High:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_HIGH,
                     channel: payload.channel,

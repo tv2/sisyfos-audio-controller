@@ -27,11 +27,22 @@ Routing setups can be stored in STORAGE. So it´s possible to have different Rou
 
 
 
-### Install: (On linux)
+### Run as Docker: (On linux)
 ```
 docker pull olzzon/sisyfos-audio-controller:develop
-sudo docker run --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller  --network="host" olzzon/sisyfos-audio-controller:develop
+sudo docker run --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller  --network="host" --restart unless-stopped olzzon/sisyfos-audio-controller:develop
 ```
+
+### Install Local node host:
+(Be aware that a server reload will quit server and you need an external source to restart)
+```
+git clone https://github.com/olzzon/sisyfos-audio-controller.git
+cd sisyfos-audio-controller
+yarn
+yarn build
+yarn start
+```
+
 
 ## Settings:
 ### Show PFL Controls:
