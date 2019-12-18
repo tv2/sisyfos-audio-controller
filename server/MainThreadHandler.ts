@@ -17,9 +17,14 @@ import {
     SOCKET_SET_ASSIGNED_FADER,
     SOCKET_SET_AUX_LEVEL,
     SOCKET_NEXT_MIX,
-    SOCKET_CLEAR_PST
+    SOCKET_CLEAR_PST,
+    SOCKET_SET_THRESHOLD,
+    SOCKET_SET_RATIO,
+    SOCKET_SET_LOW,
+    SOCKET_SET_MID,
+    SOCKET_SET_HIGH
  } from './constants/SOCKET_IO_DISPATCHERS'
-import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE, NEXT_MIX, CLEAR_PST } from './reducers/faderActions';
+import { TOGGLE_PGM, TOGGLE_VO, TOGGLE_PST, TOGGLE_PFL, TOGGLE_MUTE, NEXT_MIX, CLEAR_PST, SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
 const path = require('path')
@@ -123,13 +128,73 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_AUX_LEVEL, (
             (payload: any) => { 
-                console.log('Set Auxlevel Channel:', payload.channel)
+                //console.log('Set Auxlevel Channel:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_AUX_LEVEL,
                     channel: payload.channel,
                     auxIndex: payload.auxIndex,
                     level: payload.level
                 });                
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_THRESHOLD, (
+            (payload: any) => { 
+                //console.log('Set Threshold:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_THRESHOLD,
+                    channel: payload.channel,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateThreshold(payload.channel);               
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_RATIO, (
+            (payload: any) => { 
+                //console.log('Set Ratio:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_RATIO,
+                    channel: payload.channel,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateRatio(payload.channel);               
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_LOW, (
+            (payload: any) => { 
+                console.log('Set Low:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_LOW,
+                    channel: payload.channel,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateLow(payload.channel);               
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_MID, (
+            (payload: any) => { 
+                console.log('Set Mid:', payload.level, ' On channelIndex :', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_MID,
+                    channel: payload.channel,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateMid(payload.channel);               
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_HIGH, (
+            (payload: any) => { 
+                console.log('Set High:', payload.channel)
+                global.storeRedux.dispatch({
+                    type: SET_FADER_HIGH,
+                    channel: payload.channel,
+                    level: payload.level
+                });
+                global.mixerGenericConnection.updateHigh(payload.channel);               
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
