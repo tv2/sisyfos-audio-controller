@@ -1,6 +1,6 @@
 {
     "name": "sisyfos-audio-controller",
-    "version": "2.0.0.beta",
+    "version": "2.1.0",
     "description": "Audio mixer build with the logic from a video mixer",
     "license": "MIT",
     "private": false,
@@ -37,6 +37,8 @@
         "build": "yarn build-server && yarn build-client",
         "unit": "jest",
         "test": "yarn unit",
+        "release": "standard-version",
+        "prepareChangelog": "standard-version --prerelease",
         "watch": "jest --watch",
         "validate:dependencies": "yarn audit && yarn license-validate",
         "license-validate": "node-license-validator -p -d --allow-licenses MIT MIT/X11 BSD BSD-3-Clause BSD-2-Clause ISC Apache Apache-2.0 Unlicense --allow-packages cycle"
@@ -58,6 +60,7 @@
         "redux": "^4.0.4",
         "socket.io": "^2.3.0",
         "socket.io-client": "^2.3.0",
+        "standard-version": "^7.0.1",
         "web-midi-api": "^2.0.6",
         "webmidi": "^2.5.1"
     },
