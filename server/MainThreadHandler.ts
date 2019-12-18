@@ -128,7 +128,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_AUX_LEVEL, (
             (payload: any) => { 
-                console.log('Set Auxlevel Channel:', payload.channel)
+                //console.log('Set Auxlevel Channel:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_AUX_LEVEL,
                     channel: payload.channel,
@@ -140,7 +140,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_THRESHOLD, (
             (payload: any) => { 
-                console.log('Set Threshold:', payload.channel)
+                //console.log('Set Threshold:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_THRESHOLD,
                     channel: payload.channel,
@@ -152,7 +152,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_RATIO, (
             (payload: any) => { 
-                console.log('Set Ratio:', payload.channel)
+                //console.log('Set Ratio:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_RATIO,
                     channel: payload.channel,
@@ -164,7 +164,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_LOW, (
             (payload: any) => { 
-                console.log('Set Ratio:', payload.channel)
+                console.log('Set Low:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_LOW,
                     channel: payload.channel,
@@ -176,7 +176,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_MID, (
             (payload: any) => { 
-                console.log('Set Ratio:', payload.level, ' On channelIndex :', payload.channel)
+                console.log('Set Mid:', payload.level, ' On channelIndex :', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_MID,
                     channel: payload.channel,
@@ -188,7 +188,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_HIGH, (
             (payload: any) => { 
-                console.log('Set Ratio:', payload.channel)
+                console.log('Set High:', payload.channel)
                 global.storeRedux.dispatch({
                     type: SET_FADER_HIGH,
                     channel: payload.channel,
