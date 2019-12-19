@@ -3,6 +3,7 @@
 // Fader Channels:
 export const SOCKET_SET_FADERLEVEL = 'FaderLevel'
 export const SOCKET_SET_ASSIGNED_FADER = 'setAssignedFader'
+export const SOCKET_SET_FADER_MONITOR = 'FaderMonitor'
 export const SOCKET_SET_AUX_LEVEL = 'setAuxLevel'
 export const SOCKET_SET_THRESHOLD = 'setThreshold'
 export const SOCKET_SET_RATIO = 'setRatio'

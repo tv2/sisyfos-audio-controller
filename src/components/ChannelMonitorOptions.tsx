@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { TOGGLE_SHOW_MONITOR_OPTIONS } from '../../server/reducers/settingsActions'
 import { SET_FADER_MONITOR } from '../../server/reducers/faderActions';
 import { ISettings } from '../../server/reducers/settingsReducer';
-import { SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import { SOCKET_SET_AUX_LEVEL, SOCKET_SET_FADER_MONITOR } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IMonitorSettingsInjectProps {
     label: string,
@@ -92,11 +92,13 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
         if (value > this.props.settings.numberOfAux || value < 0) {
             value = -1
         }
-        this.props.dispatch({
-            type: SET_FADER_MONITOR,
-            channel: this.faderIndex,
-            auxIndex: value
-        });
+        window.socketIoClient.emit( 
+            SOCKET_SET_FADER_MONITOR, 
+            {
+                faderIndex: this.faderIndex,
+                auxIndex: value
+            }
+        )
     }
 
 

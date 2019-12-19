@@ -23,7 +23,8 @@ import {
     SOCKET_SET_LOW,
     SOCKET_SET_MID,
     SOCKET_SET_HIGH,
-    SOCKET_RESTART_SERVER
+    SOCKET_RESTART_SERVER,
+    SOCKET_SET_FADER_MONITOR
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_PGM, 
@@ -37,7 +38,8 @@ import {
     SET_FADER_RATIO, 
     SET_FADER_LOW, 
     SET_FADER_MID, 
-    SET_FADER_HIGH 
+    SET_FADER_HIGH, 
+    SET_FADER_MONITOR
 } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
@@ -142,6 +144,16 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     faderNumber: payload.faderAssign
                 })
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_SET_FADER_MONITOR, (
+            (payload: any) => { 
+                global.storeRedux.dispatch({
+                    type: SET_FADER_MONITOR,
+                    channel: payload.faderIndex,
+                    auxIndex: payload.value
+                });
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )
