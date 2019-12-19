@@ -6,12 +6,8 @@ import * as ClassNames from 'classnames';
 import Channel from './Channel';
 import '../assets/css/Channels.css';
 import { Store } from 'redux';
-import { 
-    SNAP_RECALL
-} from  '../../server/reducers/faderActions'
 import {
     TOGGLE_SHOW_SETTINGS,
-    TOGGLE_SHOW_SNAPS,
     TOGGLE_SHOW_STORAGE
 } from '../../server/reducers/settingsActions'
 import ChannelRouteSettings from './ChannelRouteSettings';
@@ -31,7 +27,6 @@ interface IChannelsInjectProps {
 class Channels extends React.Component<IChannelsInjectProps & Store> {
     constructor(props: any) {
         super(props);
-        this.props.settings.showChanStrip = -1
         this.props.settings.showMonitorOptions = -1
     }
 
@@ -43,26 +38,12 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         || this.props.faders.length !== nextProps.faders.length;
     }
 
-
     handleMix() {
         window.socketIoClient.emit(SOCKET_NEXT_MIX)
     }
 
     handleClearAllPst() {
         window.socketIoClient.emit(SOCKET_CLEAR_PST)
-    }
-
-    handleSnapMix(snapIndex: number) {
-        this.props.dispatch({
-            type: SNAP_RECALL,
-            snapIndex: snapIndex
-        });
-    }
-
-    handleShowSnaps() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_SNAPS,
-        });
     }
 
     handleReconnect() {
@@ -82,20 +63,6 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         this.props.dispatch({
             type: TOGGLE_SHOW_STORAGE,
         });
-    }
-
-    snapMixButton(snapIndex: number) {
-        return (
-            <div key={snapIndex} className="channels-snap-mix-line">
-                <button
-                    className="channels-snap-mix-button"
-                    onClick={event => {
-                        this.handleSnapMix(snapIndex);
-                    }}
-                >SNAP {snapIndex + 1 }</button>
-                <br/>
-            </div>
-        )
     }
 
     render() {
@@ -150,20 +117,6 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     RESTART SERVER
                 </button>
                 }
-                {(this.props.settings.automationMode ||
-                  this.props.settings.offtubeMode) ?
-                    null 
-                    : <React.Fragment>
-                        {<button
-                            className="channels-show-snaps-button"
-                            onClick={() => {
-                                this.handleShowSnaps();
-                            }}
-                        >SNAPS
-                        </button>}
-                        <br />
-                    </React.Fragment>
-                }
                 
                 <button
                     className="channels-show-settings-button"
@@ -195,23 +148,6 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 >NEXT TAKE
                 </button>}
                 <br />
-
-                {(this.props.settings.automationMode ||
-                  this.props.settings.offtubeMode) ?
-                    null 
-                    : <React.Fragment>
-                        <div className="channels-snap-mix-body">
-                            {this.snapMixButton(0)}
-                            {this.snapMixButton(1)}
-                            {this.snapMixButton(2)}
-                            {this.snapMixButton(3)}
-                            {this.snapMixButton(4)}
-                            {this.snapMixButton(5)}
-                            {this.snapMixButton(6)}
-                            {this.snapMixButton(7)}
-                        </div>
-                    </React.Fragment>
-                }
             </div>
         </div>
         )

@@ -10,9 +10,6 @@ import ReactSlider from 'react-slider'
 //assets:
 import '../assets/css/Channel.css';
 import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import { 
-    TOGGLE_SNAP
-} from '../../server/reducers/faderActions'
 import { IFader } from '../../server/reducers/fadersReducer';
 import { IChannels } from '../../server/reducers/channelsReducer';
 import { ISettings } from '../../server/reducers/settingsReducer';
@@ -24,7 +21,6 @@ interface IChannelInjectProps {
     settings: ISettings
     channelType: number,
     channelTypeIndex: number,
-    snapOn: boolean[],
 }
 
 interface IChannelProps {
@@ -41,12 +37,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     public shouldComponentUpdate(nextProps: IChannelInjectProps) {
-        let snapChanged: boolean = false;
-        nextProps.snapOn.map((snapOn, index) => {
-            if (snapOn === this.props.snapOn[index]) {
-                snapChanged = true;
-            }
-        })
         return (
             nextProps.fader.pgmOn != this.props.fader.pgmOn ||
             nextProps.fader.pstOn != this.props.fader.pstOn ||
@@ -57,8 +47,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             nextProps.settings.mixerProtocol != this.props.settings.mixerProtocol ||
             nextProps.settings.showSnaps != this.props.settings.showSnaps ||
             nextProps.settings.showPfl != this.props.settings.showPfl ||
-            nextProps.settings.showChanStrip != this.props.settings.showChanStrip ||
-            snapChanged
+            nextProps.settings.showChanStrip != this.props.settings.showChanStrip
         )
     }
 
@@ -94,15 +83,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         this.props.dispatch({
             type: TOGGLE_SHOW_CHAN_STRIP,
             channel: this.faderIndex
-        });
-    }
-
-
-    handleSnap(snapIndex: number) {
-        this.props.dispatch({
-            type: TOGGLE_SNAP,
-            channel: this.faderIndex,
-            snapIndex: snapIndex
         });
     }
 
@@ -231,27 +211,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         )
     }
 
-
-    snapButton = (snapIndex: number) => {
-        if (this.props.settings.showSnaps) {
-            return (
-                <div key={snapIndex} className="channel-snap-line">
-                    <button
-                        className={ClassNames("channel-snap-button", {
-                            'on': this.props.snapOn[snapIndex]
-                        })}
-                        onClick={event => {
-                            this.handleSnap(snapIndex);
-                        }}
-                    >{snapIndex + 1 }</button>
-                    <br/>
-                </div>
-            )
-        } else {
-            return("")
-        }
-    }
-
     render() {
         return (
         this.props.fader.showChannel === false ?
@@ -260,7 +219,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             <div
                 className={
                     ClassNames("channel-body", {
-                    "with-snaps": this.props.settings.showSnaps,
                     "with-pfl": this.props.settings.showPfl,
                     "mute-on": this.props.fader.muteOn
                 })}>
@@ -294,13 +252,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     {this.chanStripButton()}
                     <br/>
                 </React.Fragment>
-                <div className="channel-snap-body">
-                    {this.props.snapOn
-                        .map((none: any, index: number) => {
-                            return this.snapButton(index)
-                        })
-                    }
-                </div>
             </div>
         )
     }
@@ -313,7 +264,6 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         settings: state.settings[0],
         channelType: 0, /* TODO: state.channels[0].channel[props.channelIndex].channelType, */
         channelTypeIndex: props.faderIndex ,/* TODO: state.channels[0].channel[props.channelIndex].channelTypeIndex, */
-        snapOn: state.faders[0].fader[props.faderIndex].snapOn.map((item: number) => {return item}),
     }
 }
 
