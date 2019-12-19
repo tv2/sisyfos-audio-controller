@@ -39,8 +39,10 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     public shouldComponentUpdate(nextProps: IChannelInjectProps) {
         return (
             nextProps.fader.pgmOn != this.props.fader.pgmOn ||
+            nextProps.fader.voOn != this.props.fader.voOn ||
             nextProps.fader.pstOn != this.props.fader.pstOn ||
             nextProps.fader.pflOn != this.props.fader.pflOn ||
+            nextProps.fader.muteOn != this.props.fader.muteOn ||
             nextProps.fader.showChannel != this.props.fader.showChannel ||
             nextProps.fader.faderLevel != this.props.fader.faderLevel ||
             nextProps.fader.label != this.props.fader.label ||
