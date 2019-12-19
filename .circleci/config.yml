@@ -124,12 +124,10 @@ workflows:
             - build
           filters:
             tags:
-              ignore: /.*/
+              ignore: /v.*/
             branches:
               only: 
                 - master
                 - develop
-                # TODO: NEXT ONE IS ONLY TEMPORARY WHILE TESTING:
-                - feat/nodejs
                 - stage
                 - /release\d+/
