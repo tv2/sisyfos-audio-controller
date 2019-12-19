@@ -13,8 +13,6 @@ import { SOCKET_GET_SNAPSHOT_LIST } from '../server/constants/SOCKET_IO_DISPATCH
 declare global {
     interface Window {
         storeRedux: any
-        mixerGenericConnection: any
-        huiRemoteConnection: any
         mixerProtocol: any
         mixerProtocolPresets: any
         mixerProtocolList: any

@@ -57,7 +57,6 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             type: SNAP_RECALL,
             snapIndex: snapIndex
         });
-        window.mixerGenericConnection.updateOutLevels();
     }
 
     handleShowSnaps() {

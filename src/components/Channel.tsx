@@ -76,18 +76,10 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handlePfl() {
         window.socketIoClient.emit( SOCKET_TOGGLE_PFL, this.faderIndex)
-
-        if (window.huiRemoteConnection) {
-            window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
-        }
     }
 
     handleMute() {
         window.socketIoClient.emit( SOCKET_TOGGLE_MUTE, this.faderIndex)
-
-        if (window.huiRemoteConnection) {
-            window.huiRemoteConnection.updateRemotePgmPstPfl(this.faderIndex);
-        }
     }
 
     handleLevel(event: any) {
@@ -96,12 +88,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 'faderIndex' :this.faderIndex,
                 'level': parseFloat(event)
             })
-
-        if (window.huiRemoteConnection) {
-            window.huiRemoteConnection.updateRemoteFaderState(this.faderIndex, event)
-        }
     }
-
 
     handleShowChanStrip() {
         this.props.dispatch({

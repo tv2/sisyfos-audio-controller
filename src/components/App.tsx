@@ -8,10 +8,6 @@ import Channels from './Channels';
 import Settings from './Settings';
 import Storage from './RoutingStorage'
 
-//Utils:
-import { MixerGenericConnection } from '../utils/MixerConnection';
-import { HuiMidiRemoteConnection } from '../utils/HuiMidiRemoteConnection';
-
 export interface IAppProps {
     store: IStore
 }
@@ -23,13 +19,9 @@ class App extends React.Component<IAppProps> {
     }
 
     componentWillMount() {
-        (window as any).mixerGenericConnection = new MixerGenericConnection();
-        if (this.props.store.settings[0].enableRemoteFader){
-            (window as any).huiRemoteConnection = new HuiMidiRemoteConnection();
-        }
-            window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
-            window.socketIoClient.emit('get-store', 'update local store');
-            window.socketIoClient.emit('get-settings', 'update local settings');        
+        window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
+        window.socketIoClient.emit('get-store', 'update local store');
+        window.socketIoClient.emit('get-settings', 'update local settings');        
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
