@@ -152,7 +152,7 @@ export class MainThreadHandlers {
                 global.storeRedux.dispatch({
                     type: SET_FADER_MONITOR,
                     channel: payload.faderIndex,
-                    auxIndex: payload.value
+                    auxIndex: payload.auxIndex
                 });
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
