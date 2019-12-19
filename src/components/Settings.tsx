@@ -225,46 +225,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         )
     }
 
-    renderRemoteControllerSettings = () => {
-        return (
-            <div>
-                <div className="settings-header">
-                    REMOTE CONTROLLER SETTINGS:
-                </div>
-                <label className="settings-input-field">
-                    ENABLE REMOTE CONTROLLER:
-                    <input
-                        type="checkbox"
-                        name="enableRemoteFader"
-                        checked={this.state.settings.enableRemoteFader}
-                        onChange={this.handleChange}
-                    />
-                </label>
-                <br/>
-                <div className="settings-input-field">
-                    Remote Midi Input Port :
-                </div>
-                <Select
-                    styles={selectorColorStyles}
-                    value={{label: this.state.settings.remoteFaderMidiInputPort, value: this.state.settings.remoteFaderMidiInputPort}}
-                    onChange={this.handleRemoteMidiInputPort}
-                    options={this.midiInputPortList}
-                />
-                <br/>
-                <div className="settings-input-field">
-                    Remote Midi Output Port :
-                </div>
-                <Select
-                    styles={selectorColorStyles}
-                    value={{label: this.state.settings.remoteFaderMidiOutputPort, value: this.state.settings.remoteFaderMidiOutputPort}}
-                    onChange={this.handleRemoteMidiOutputPort}
-                    options={this.midiOutputPortList}
-                />
-                <br/>
-            </div>
-        )
-    }
-
     render() {
         return (
             <div className="settings-body">
@@ -376,8 +336,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 {window.mixerProtocol.protocol === "MIDI" ? this.renderMixerMidiSettings() : ""}
                 <br/>
                 {this.renderChannelTypeSettings()}
-                <br/>
-                {this.renderRemoteControllerSettings()}
                 <br/>
                 <button
                     className="settings-cancel-button"
