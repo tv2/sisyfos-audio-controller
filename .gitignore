@@ -10,8 +10,8 @@ coverage/
 node_modules/
 public/
 *.compiled.*
-settings.json
-*.shot
+#settings.json
+#*.shot
 
 
 # Folder config file #
