@@ -238,7 +238,9 @@ export class OscMixerConnection {
         let messageArray: string[] = message.split('/')
         let commandArray: string[] = command.split('/')
         let status: boolean = true
-
+        if (messageArray.length !== commandArray.length) {
+            return false
+        }
         commandArray.forEach((commandPart: string, index: number) => {
             if (commandPart === '{channel}') {
                 if (typeof(parseFloat(messageArray[index])) !== 'number') { status = false }
