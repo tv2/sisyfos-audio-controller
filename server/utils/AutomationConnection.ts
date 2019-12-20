@@ -175,33 +175,6 @@ export class AutomationConnection {
                         type: CLEAR_PST
                 });
                 global.mixerGenericConnection.updateOutLevels();
-            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .SNAP_RECALL)) {
-                let snapNumber = message.address.split("/")[2];
-                global.storeRedux.dispatch({
-                    type: SNAP_RECALL,
-                    snapIndex: snapNumber -1
-                });
-            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .X_MIX)) {
-                global.storeRedux.dispatch({
-                    type: X_MIX
-                });
-                global.mixerGenericConnection.updateOutLevels();
-            } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                .CHANNEL_VISIBLE)){
-                let ch = message.address.split("/")[2];
-                global.storeRedux.dispatch({
-                    type: SHOW_CHANNEL,
-                    channel: ch - 1,
-                    showChannel: message.args[0]===1 ? true : false
-                });
-            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
-                    .FADE_TO_BLACK)) {
-                    global.storeRedux.dispatch({
-                        type: FADE_TO_BLACK
-                    });
-                    global.mixerGenericConnection.updateOutLevels();
             // Get state from Producers Audio Mixer:
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .STATE_FULL)) {
