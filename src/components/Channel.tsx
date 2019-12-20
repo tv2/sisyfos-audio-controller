@@ -9,7 +9,7 @@ import ReactSlider from 'react-slider'
 
 //assets:
 import '../assets/css/Channel.css';
-import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL, SOCKET_TOGGLE_IGNORE } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import { IFader } from '../../server/reducers/fadersReducer';
 import { IChannels } from '../../server/reducers/channelsReducer';
 import { ISettings } from '../../server/reducers/settingsReducer';
@@ -43,6 +43,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             nextProps.fader.pstOn != this.props.fader.pstOn ||
             nextProps.fader.pflOn != this.props.fader.pflOn ||
             nextProps.fader.muteOn != this.props.fader.muteOn ||
+            nextProps.fader.ignoreAutomation != this.props.fader.ignoreAutomation ||
             nextProps.fader.showChannel != this.props.fader.showChannel ||
             nextProps.fader.faderLevel != this.props.fader.faderLevel ||
             nextProps.fader.label != this.props.fader.label ||
@@ -71,6 +72,10 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
 
     handleMute() {
         window.socketIoClient.emit( SOCKET_TOGGLE_MUTE, this.faderIndex)
+    }
+
+    handleIgnore() {
+        window.socketIoClient.emit( SOCKET_TOGGLE_IGNORE, this.faderIndex)
     }
 
     handleLevel(event: any) {
@@ -198,6 +203,22 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         )
     }
 
+
+    ignoreButton = () => {
+        return (
+            <button
+                className={ClassNames("channel-ignore-button", {
+                    'on': this.props.fader.ignoreAutomation
+                })}
+                onClick={event => {
+                    this.handleIgnore();
+                }}
+            >
+            MANUEL
+            </button>
+        )
+    }
+
     muteButton = () => {
         return (
             <button
@@ -222,8 +243,10 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 className={
                     ClassNames("channel-body", {
                     "with-pfl": this.props.settings.showPfl,
-                    "mute-on": this.props.fader.muteOn
+                    "mute-on": this.props.fader.muteOn,
+                    "ignore-on": this.props.fader.ignoreAutomation,
                 })}>
+                {this.ignoreButton()}
                 {this.muteButton()}
                 <br/>
                 <h4 className="channel-zero-indicator">_____</h4>

@@ -57,36 +57,41 @@ export class AutomationConnection {
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
                 let ch = message.address.split("/")[2];
-                if (message.args[0] === 1) {
-                    global.mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
-                    global.storeRedux.dispatch({
-                        type: SET_PGM,
-                        channel: ch - 1,
-                        pgmOn: true
-                    });
-                } else if (message.args[0] === 2) {
-                    global.mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
-                    global.storeRedux.dispatch({
-                        type: SET_VO,
-                        channel: ch - 1,
-                        voOn: true
-                    });
-                } else {
-                    global.storeRedux.dispatch({
-                        type: SET_PGM,
-                        channel: ch - 1,
-                        pgmOn: false
-                    });
+                if (!this.store.faders[0].fader[ch - 1].ignoreAutomation) {
+                    if (message.args[0] === 1) {
+                        global.mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
+                        global.storeRedux.dispatch({
+                            type: SET_PGM,
+                            channel: ch - 1,
+                            pgmOn: true
+                        });
+                    } else if (message.args[0] === 2) {
+                        global.mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
+                        global.storeRedux.dispatch({
+                            type: SET_VO,
+                            channel: ch - 1,
+                            voOn: true
+                        });
+                    } else {
+                        global.storeRedux.dispatch({
+                            type: SET_PGM,
+                            channel: ch - 1,
+                            pgmOn: false
+                        });
+                    }
+
+                    if (message.args.length > 1) {
+                        global.mixerGenericConnection.updateOutLevel(ch-1, parseFloat(message.args[1]));
+                    } else {
+                        global.mixerGenericConnection.updateOutLevel(ch-1);
+                    }
                 }
 
-                if (message.args.length > 1) {
-                    global.mixerGenericConnection.updateOutLevel(ch-1, parseFloat(message.args[1]));
-                } else {
-                    global.mixerGenericConnection.updateOutLevel(ch-1);
-                }
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PST_ON_OFF)){
                 let ch = message.address.split("/")[2];
+                if (!this.store.faders[0].fader[ch - 1].ignoreAutomation) {
+
                 if (message.args[0] === 1) {
                     global.storeRedux.dispatch({
                         type: SET_PST,
@@ -107,9 +112,12 @@ export class AutomationConnection {
                     });
                 }
                 global.mixerGenericConnection.updateNextAux(ch-1);
+            }
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_MUTE)){
                 let ch = message.address.split("/")[2];
+                if (!this.store.faders[0].fader[ch - 1].ignoreAutomation) {
+
                 if (message.args[0] === 1) {
                     global.storeRedux.dispatch({
                         type: SET_MUTE,
@@ -124,15 +132,19 @@ export class AutomationConnection {
                     });
                 }
                 global.mixerGenericConnection.updateMuteState(ch-1);
+            }
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_FADER_LEVEL)){
                 let ch = message.address.split("/")[2];
+                if (!this.store.faders[0].fader[ch - 1].ignoreAutomation) {
+
                 global.storeRedux.dispatch({
                     type: SET_FADER_LEVEL,
                     channel: ch - 1,
                     level: message.args[0]
                 });
                 global.mixerGenericConnection.updateOutLevel(ch-1);
+            }
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];

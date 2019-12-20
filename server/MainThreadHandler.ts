@@ -24,7 +24,8 @@ import {
     SOCKET_SET_MID,
     SOCKET_SET_HIGH,
     SOCKET_RESTART_SERVER,
-    SOCKET_SET_FADER_MONITOR
+    SOCKET_SET_FADER_MONITOR,
+    SOCKET_TOGGLE_IGNORE
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_PGM, 
@@ -39,7 +40,8 @@ import {
     SET_FADER_LOW, 
     SET_FADER_MID, 
     SET_FADER_HIGH, 
-    SET_FADER_MONITOR
+    SET_FADER_MONITOR,
+    IGNORE_AUTOMATION
 } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
@@ -296,6 +298,15 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updateMuteState(faderIndex);
+                global.socketServer.emit('set-store', global.storeRedux.getState())
+            })
+        )
+        .on(SOCKET_TOGGLE_IGNORE, (
+            (faderIndex: any) => {
+                global.storeRedux.dispatch({
+                    type: IGNORE_AUTOMATION,
+                    channel: faderIndex
+                });
                 global.socketServer.emit('set-store', global.storeRedux.getState())
             })
         )

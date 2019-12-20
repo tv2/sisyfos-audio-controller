@@ -16,6 +16,7 @@ import {
     SET_VO,
     SET_VU_LEVEL,
     SHOW_CHANNEL,
+    IGNORE_AUTOMATION,
     SNAP_RECALL,
     TOGGLE_MUTE,
     TOGGLE_PFL,
@@ -52,6 +53,7 @@ export interface IFader {
     ratio: number,
     monitor: number,
     showChannel: boolean,
+    ignoreAutomation: boolean,
     snapOn: Array<boolean>,
 }
 
@@ -83,6 +85,7 @@ const defaultFadersReducerState = (numberOfFaders: number) => {
                 ratio: 0.75,
                 monitor: (index + 1), // route fader - aux 1:1 as default
                 showChannel: true,
+                ignoreAutomation: false,
                 snapOn: [],
             });
             defaultObj[0].vuMeters.push({
@@ -194,6 +197,9 @@ export const faders = ((state = defaultFadersReducerState(0), action: any): Arra
             return nextState;
         case SHOW_CHANNEL: //channel // showChannel
             nextState[0].fader[action.channel].showChannel = !!action.showChannel;
+            return nextState;
+        case IGNORE_AUTOMATION: //channel // ignoreAutomation
+            nextState[0].fader[action.channel].ignoreAutomation = !nextState[0].fader[action.channel].ignoreAutomation
             return nextState;
         case TOGGLE_SNAP: //channel //snapIndex
             nextState[0].fader[action.channel].snapOn[action.snapIndex] = !nextState[0].fader[action.channel].snapOn[action.snapIndex];

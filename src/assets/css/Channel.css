@@ -1,14 +1,18 @@
 .channel-body {
     color: white;
-    background: linear-gradient(#2f2f2f 0px,#2f2f2f 730px, rgb(0, 0, 0) 1px, #2f2f2f 740px, #2f2f2f 100%);
+    background: linear-gradient(#2f2f2f 0px,#2f2f2f 790px, rgb(0, 0, 0) 1px, #2f2f2f 800px, #2f2f2f 100%);
     margin: 4px;
     border-radius: 7px;
-    max-width: 100px;
+    width: 86px;
     position: relative;
 }
 
+.channel-body.ignore-on {
+    background: linear-gradient(#2e375e 0px,#2c3270 790px, rgb(0, 0, 0) 1px, #2c3270 800px, #2e375e 100%);
+}  
+
 .channel-body.mute-on {
-    background: linear-gradient(#202020 0px,#202020 730px, rgb(0, 0, 0) 1px, #2f2f2f 740px, #2f2f2f 100%);
+    background: linear-gradient(#202020 0px,#202020 790px, rgb(0, 0, 0) 1px, #2f2f2f 800px, #2f2f2f 100%);
 }  
 
 .channel-gain-label {
@@ -132,6 +136,27 @@
 .channel-mute-button.on {
     background-color: rgb(168, 168, 168);
     color: rgb(48, 48, 48);
+}
+
+.channel-ignore-button {
+    outline : none;
+    -moz-outline : none;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 5px;
+    color: rgb(109, 108, 108);
+    height: 50px;
+    width: 80px;
+    font-size: 90%;
+    background-color: rgb(44, 44, 44);
+    border-radius: 7px;
+    border-color: rgb(109, 108, 108);
+}
+
+
+.channel-ignore-button.on {
+    background-color: rgb(168, 168, 168);
+    color: rgb(1, 12, 114);
 }
 
 .channel-body.with-snaps .channel-pgm-button, .channel-body.with-snaps .channel-pst-button, .channel-body.with-snaps .channel-pfl-button {
