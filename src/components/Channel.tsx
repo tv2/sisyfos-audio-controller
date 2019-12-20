@@ -214,7 +214,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     this.handleIgnore();
                 }}
             >
-            MANUEL
+            {this.props.fader.ignoreAutomation ? "MANUAL" : "AUTO"}
             </button>
         )
     }
