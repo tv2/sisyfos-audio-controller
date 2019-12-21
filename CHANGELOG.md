@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.2.0...v2.3.0) (2019-12-21)
+
+
+### Features
+
+* Ignore Automation implemented. A "MANUAL" button added in GUI so a fader can ignore commands from Automation ([1399711](https://github.com/olzzon/sisyfos-audio-controller/commit/1399711d9b1558702c5c305dc45b09fe82b2ea48))
+
+
+### Bug Fixes
+
+* assign aux to fader use auxIndex instead of channel ([a9e3232](https://github.com/olzzon/sisyfos-audio-controller/commit/a9e3232b6a3fdeed9a3729aa7b09a1628931010d))
+* avoid clearing meters when setting full state of faders ([cce69f5](https://github.com/olzzon/sisyfos-audio-controller/commit/cce69f5c6da2b8b946f76f49b1f60ec9dbe0a501))
+* double code in AutomationConnection (had double check for X_MIX, Fade_to_black and visible) ([ff8af54](https://github.com/olzzon/sisyfos-audio-controller/commit/ff8af54c81bc4cff3ad8a8c04364e2d76a01ce52))
+* OscMixerConnection - compare whole command length ([876b367](https://github.com/olzzon/sisyfos-audio-controller/commit/876b3679ae772d6f3ebc2ddff608220c48beeeee))
+* Update GUI when state of muteOn and voOn is changed ([52bf3da](https://github.com/olzzon/sisyfos-audio-controller/commit/52bf3da1aa2ad2aa63ec2b03cc7fc6a4a0c97642))
+
 ## [2.2.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.1.0...v2.2.0) (2019-12-18)
 
 
