@@ -43,7 +43,10 @@ yarn
 yarn build
 yarn start
 ```
-
+### Open GUI in browser:
+```
+localhost:1176 (or whatever ip you use for Sisyfos Nodejs/Docker)
+``` 
 
 ## Settings:
 ### Show PFL Controls:
