@@ -5,10 +5,10 @@ jobs:
       - image: circleci/node:12.13.1
     steps:
       - checkout
-      #- restore_cache:
-      #    keys:
-      #      - v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      #      - v1-node-cache-{{ .Branch }}
+      - restore_cache:
+          keys:
+            - v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-node-cache-{{ .Branch }}
       - run:
           name: yarn install
           command: yarn install --check-files #--frozen-lockfile
