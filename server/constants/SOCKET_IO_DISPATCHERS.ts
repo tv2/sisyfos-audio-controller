@@ -27,3 +27,8 @@ export const SOCKET_GET_SNAPSHOT_LIST = 'getSnapshotList'
 export const SOCKET_RETURN_SNAPSHOT_LIST = 'returnSnapshotList'
 export const SOCKET_LOAD_SNAPSHOT = 'loadSnapshot'
 export const SOCKET_SAVE_SNAPSHOT = 'saveSnapshot'
+
+// Store updates:
+export const SOCKET_SET_FULL_STORE = 'setFullStore'
+export const SOCKET_SET_STORE_FADER = 'setStoreFader'
+export const SOCKET_SET_STORE_CHANNEL = 'setStoreChannel'

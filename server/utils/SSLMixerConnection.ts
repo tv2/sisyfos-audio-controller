@@ -77,7 +77,7 @@ export class SSLMixerConnection {
                         this.sendOutLevelMessage(item.mixerMessage, 0, item.value);
                     }
                 });
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                global.mainThreadHandler.updateFullClientStore()
             })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
@@ -152,7 +152,7 @@ export class SSLMixerConnection {
                                         }
                                     })
                                 }
-                                global.socketServer.emit('set-store', global.storeRedux.getState())
+                                global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
                             }
                         } catch (error) {
                                 console.log('Error translating received message :', error)   
@@ -182,7 +182,7 @@ export class SSLMixerConnection {
                                 this.updateMuteState(index, this.store.faders[0].fader[assignedFaderIndex].muteOn);
                             }
                         })
-                        global.socketServer.emit('set-store', global.storeRedux.getState())
+                        global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
                     } else {
                         let commandHex = buffer.toString('hex')
                         console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
@@ -213,7 +213,7 @@ export class SSLMixerConnection {
         this.mixerProtocol.pingCommand.forEach((command) => {
            this.sendOutPingRequest();
        });
-       global.socketServer.emit('set-store', global.storeRedux.getState())
+       global.mainThreadHandler.updateFullClientStore()
        this.mixerOnlineTimer = setTimeout(() => {
            global.storeRedux.dispatch({
                type: SET_MIXER_ONLINE,

@@ -69,7 +69,7 @@ export class OscMixerConnection {
                 type: SET_MIXER_ONLINE,
                 mixerOnline: true
             });            
-            global.socketServer.emit('set-store', global.storeRedux.getState())
+            global.mainThreadHandler.updateFullClientStore()
         })
         .on('message', (message: any) => {
             clearTimeout(this.mixerOnlineTimer)
@@ -147,7 +147,7 @@ export class OscMixerConnection {
                             }
                         })
                     }
-                    global.socketServer.emit('set-store', global.storeRedux.getState())
+                    global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
 
                     if (global.huiRemoteConnection) {
                         global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, message.args[0]);
@@ -176,7 +176,7 @@ export class OscMixerConnection {
                     auxIndex: auxIndex,
                     level: message.args[0]
                 });
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                global.mainThreadHandler.updateFullClientStore()
  
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_NAME[0].mixerMessage)) {
@@ -186,7 +186,7 @@ export class OscMixerConnection {
                         channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         label: message.args[0]
                     });
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                    global.mainThreadHandler.updatePartialStore(this.store.channels[0].channel[ch - 1].assignedFader)
                 console.log("OSC message: ", message.address);
             }
         })
@@ -195,7 +195,7 @@ export class OscMixerConnection {
                 type: SET_MIXER_ONLINE,
                 mixerOnline: false
             });
-            global.socketServer.emit('set-store', global.storeRedux.getState())
+            global.mainThreadHandler.updateFullClientStore()
             console.log("Error : ", error);
             console.log("Lost OSC connection");
         });
@@ -224,7 +224,7 @@ export class OscMixerConnection {
                 command.type
             );
         });
-        global.socketServer.emit('set-store', global.storeRedux.getState())
+        global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
             global.storeRedux.dispatch({
                 type: SET_MIXER_ONLINE,
