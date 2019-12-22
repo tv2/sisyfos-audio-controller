@@ -1,11 +1,11 @@
 import { SET_COMPLETE_FADER_STATE, SET_VU_LEVEL } from "../../server/reducers/faderActions";
 import { SET_COMPLETE_CH_STATE } from "../../server/reducers/channelActions";
 import { UPDATE_SETTINGS, SET_MIXER_ONLINE } from "../../server/reducers/settingsActions";
-import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST } from "../../server/constants/SOCKET_IO_DISPATCHERS";
+import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_SET_FULL_STORE } from "../../server/constants/SOCKET_IO_DISPATCHERS";
 
 export const socketClientHandlers = () => {
     window.socketIoClient
-    .on('set-store', (
+    .on(SOCKET_SET_FULL_STORE, (
         (payload: any) => { 
             // console.log('STATE RECEIVED :', payload)
 

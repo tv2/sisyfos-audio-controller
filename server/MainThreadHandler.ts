@@ -25,7 +25,8 @@ import {
     SOCKET_SET_HIGH,
     SOCKET_RESTART_SERVER,
     SOCKET_SET_FADER_MONITOR,
-    SOCKET_TOGGLE_IGNORE
+    SOCKET_TOGGLE_IGNORE,
+    SOCKET_SET_FULL_STORE
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_PGM, 
@@ -68,6 +69,14 @@ export class MainThreadHandlers {
         });
     }
 
+    updateFullClientStore() {
+        global.socketServer.emit(SOCKET_SET_FULL_STORE, global.storeRedux.getState())
+    }
+
+    updatePartialStore() { //add faderIndex: number
+        global.socketServer.emit(SOCKET_SET_FULL_STORE, global.storeRedux.getState())
+    }
+
     socketServerHandlers(socket: any) {
         console.log('SETTING UP SOCKET IO MAIN HANDLERS')
 
@@ -77,7 +86,7 @@ export class MainThreadHandlers {
         .on('get-store', (
             (payload: any) => { 
                 // console.log('Settings initial store on :', socket.client.id)
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updateFullClientStore()
             })
         )
         .on('get-settings', (
@@ -112,7 +121,7 @@ export class MainThreadHandlers {
             (payload: string) => { 
                 console.log('Load Snapshot')
                 global.mainApp.loadSnapshotSettings(path.resolve('storage', payload), false)
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updateFullClientStore()
             })
         )
         .on(SOCKET_SAVE_SNAPSHOT, (
@@ -130,7 +139,7 @@ export class MainThreadHandlers {
             (payload: any) => { 
                 console.log('Save settings :', payload)
                 saveSettings(payload)
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updateFullClientStore()
             })
         )
         .on(SOCKET_RESTART_SERVER, (
@@ -146,7 +155,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     faderNumber: payload.faderAssign
                 })
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_SET_FADER_MONITOR, (
@@ -156,7 +165,7 @@ export class MainThreadHandlers {
                     channel: payload.faderIndex,
                     auxIndex: payload.auxIndex
                 });
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_SET_AUX_LEVEL, (
@@ -168,7 +177,7 @@ export class MainThreadHandlers {
                     auxIndex: payload.auxIndex,
                     level: payload.level
                 });                
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_SET_THRESHOLD, (
@@ -180,7 +189,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateThreshold(payload.channel);               
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_SET_RATIO, (
@@ -192,7 +201,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateRatio(payload.channel);               
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_SET_LOW, (
@@ -204,7 +213,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateLow(payload.channel);               
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_SET_MID, (
@@ -216,7 +225,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateMid(payload.channel);               
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_SET_HIGH, (
@@ -228,7 +237,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateHigh(payload.channel);               
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_NEXT_MIX, (
@@ -237,7 +246,7 @@ export class MainThreadHandlers {
                     type: NEXT_MIX
                 });
                 global.mixerGenericConnection.updateOutLevels()
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updateFullClientStore()
             })
         )
         .on(SOCKET_CLEAR_PST, (
@@ -246,7 +255,7 @@ export class MainThreadHandlers {
                     type: CLEAR_PST
                 });
                 global.mixerGenericConnection.updateOutLevels()
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updateFullClientStore()
             })
         )
         .on(SOCKET_TOGGLE_PGM, (
@@ -257,7 +266,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updateOutLevel(faderIndex)
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_TOGGLE_VO, (
@@ -268,7 +277,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updateOutLevel(faderIndex)
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_TOGGLE_PST, (
@@ -278,7 +287,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updateNextAux(faderIndex);
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_TOGGLE_PFL, (
@@ -288,7 +297,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updatePflState(faderIndex);
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_TOGGLE_MUTE, (
@@ -298,7 +307,7 @@ export class MainThreadHandlers {
                     channel: faderIndex
                 });
                 global.mixerGenericConnection.updateMuteState(faderIndex);
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_TOGGLE_IGNORE, (
@@ -307,7 +316,7 @@ export class MainThreadHandlers {
                     type: IGNORE_AUTOMATION,
                     channel: faderIndex
                 });
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
         .on(SOCKET_SET_FADERLEVEL, (
@@ -318,7 +327,7 @@ export class MainThreadHandlers {
                     level: parseFloat(payload.level)
                 });
                 global.mixerGenericConnection.updateOutLevel(payload.faderIndex)
-                global.socketServer.emit('set-store', global.storeRedux.getState())
+                this.updatePartialStore()
             })
         )
     }

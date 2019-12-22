@@ -16,6 +16,7 @@ declare global {
   namespace NodeJS {
       interface Global {
           storeRedux: Store
+          mainThreadHandler: MainThreadHandlers
           mainApp: MainApp
           mixerGenericConnection: MixerGenericConnection
           automationConnection: AutomationConnection
@@ -42,7 +43,7 @@ server.listen(1176);
 global.mixerProtocolPresets = MixerProtocolPresets
 global.mixerProtocolList = MixerProtocolList
 
-let mainThreadHandler = new MainThreadHandlers();
+global.mainThreadHandler = new MainThreadHandlers();
 global.mainApp = new MainApp()
 
 // Keep a reference for dev mode
@@ -72,6 +73,6 @@ server.on('connection', () => {
 
 global.socketServer.on('connection', ((socket: any) => {
     console.log('Client connected :', socket.client.id)
-    mainThreadHandler.socketServerHandlers(socket)
+    global.mainThreadHandler.socketServerHandlers(socket)
   })
 )
