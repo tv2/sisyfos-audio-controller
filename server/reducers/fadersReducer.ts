@@ -29,7 +29,8 @@ import {
     SET_FADER_LOW,
     SET_FADER_MID,
     SET_FADER_HIGH,
-    SET_FADER_MONITOR
+    SET_FADER_MONITOR,
+    SET_SINGLE_FADER_STATE
 } from '../reducers/faderActions'
 
 export interface IFaders {
@@ -122,6 +123,9 @@ export const faders = ((state = defaultFadersReducerState(0), action: any): Arra
                     nextState[0].fader[index] = channel;
                 });
             }
+            return nextState;
+        case SET_SINGLE_FADER_STATE: //allState  //numberOfChannels
+            nextState[0].fader[action.faderIndex] = action.state
             return nextState;
         case SET_FADER_LEVEL: //channel:  level:
             nextState[0].fader[action.channel].faderLevel = parseFloat(action.level);

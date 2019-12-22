@@ -5,7 +5,8 @@ import {
     SET_OPTION,
     SET_PRIVATE,
     FADE_ACTIVE,
-    SET_AUX_LEVEL
+    SET_AUX_LEVEL,
+    SET_SINGLE_CH_STATE
 } from './channelActions'
 
 export interface IChannels {
@@ -66,6 +67,9 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
                 });
             }
             return nextState;
+        case SET_SINGLE_CH_STATE: //channelIndex //state
+            nextState[0].channel[action.channelIndex] = action.state
+            return nextState
         case FADE_ACTIVE:
             nextState[0].channel[action.channel].fadeActive = !!action.active;
             return nextState;
