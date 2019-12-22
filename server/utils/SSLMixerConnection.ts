@@ -152,7 +152,7 @@ export class SSLMixerConnection {
                                         }
                                     })
                                 }
-                                global.mainThreadHandler.updateFullClientStore()
+                                global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
                             }
                         } catch (error) {
                                 console.log('Error translating received message :', error)   
@@ -182,7 +182,7 @@ export class SSLMixerConnection {
                                 this.updateMuteState(index, this.store.faders[0].fader[assignedFaderIndex].muteOn);
                             }
                         })
-                        global.mainThreadHandler.updateFullClientStore()
+                        global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
                     } else {
                         let commandHex = buffer.toString('hex')
                         console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))

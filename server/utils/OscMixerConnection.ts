@@ -147,7 +147,7 @@ export class OscMixerConnection {
                             }
                         })
                     }
-                    global.mainThreadHandler.updateFullClientStore()
+                    global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
 
                     if (global.huiRemoteConnection) {
                         global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, message.args[0]);
@@ -186,7 +186,7 @@ export class OscMixerConnection {
                         channel: this.store.channels[0].channel[ch - 1].assignedFader,
                         label: message.args[0]
                     });
-                global.mainThreadHandler.updateFullClientStore()
+                    global.mainThreadHandler.updatePartialStore(this.store.channels[0].channel[ch - 1].assignedFader)
                 console.log("OSC message: ", message.address);
             }
         })
