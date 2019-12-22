@@ -105,19 +105,19 @@ export class MainThreadHandlers {
         // serverside Redux middleware emitter when moved to Socket IO:
         socket
         .on('get-store', (
-            (payload: any) => { 
+            () => { 
                 // console.log('Settings initial store on :', socket.client.id)
                 this.updateFullClientStore()
             })
         )
         .on('get-settings', (
-            (payload: any) => { 
+            () => { 
                 //console.log('Data received :', payload)
                 global.socketServer.emit('set-settings', loadSettings(global.storeRedux.getState()))
             })
         )
         .on('get-mixerprotocol', (
-            (payload: any) => { 
+            () => { 
                 //console.log('Data received', payload)
                 global.socketServer.emit('set-mixerprotocol', 
                     {
@@ -210,7 +210,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateThreshold(payload.channel);               
-                this.updateFullClientStore()
+                this.updatePartialStore(payload.channel)
             })
         )
         .on(SOCKET_SET_RATIO, (
@@ -222,7 +222,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateRatio(payload.channel);               
-                this.updateFullClientStore()
+                this.updatePartialStore(payload.channel)
             })
         )
         .on(SOCKET_SET_LOW, (
@@ -234,7 +234,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateLow(payload.channel);               
-                this.updateFullClientStore()
+                this.updatePartialStore(payload.channel)
             })
         )
         .on(SOCKET_SET_MID, (
@@ -246,7 +246,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateMid(payload.channel);               
-                this.updateFullClientStore()
+                this.updatePartialStore(payload.channel)
             })
         )
         .on(SOCKET_SET_HIGH, (
@@ -258,7 +258,7 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 global.mixerGenericConnection.updateHigh(payload.channel);               
-                this.updateFullClientStore()
+                this.updatePartialStore(payload.channel)
             })
         )
         .on(SOCKET_NEXT_MIX, (
