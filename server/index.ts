@@ -46,25 +46,6 @@ global.mixerProtocolList = MixerProtocolList
 global.mainThreadHandler = new MainThreadHandlers();
 global.mainApp = new MainApp()
 
-// Keep a reference for dev mode
-/*
-let dev = true
-
-if (dev && process.argv.indexOf('--noDevServer') === -1) {
-  indexPath = url.format({
-    protocol: 'http:',
-    host: 'localhost:8080',
-    pathname: 'index.html',
-    slashes: true
-  })
-} else {
-  indexPath = url.format({
-    protocol: 'file:',
-    pathname: path.join(__dirname, 'dist', 'index.html'),
-    slashes: true
-})
-*/
-
 server.on('connection', () => {
   app.get('/', (req: any, res: any) => {
     res.sendFile(path.resolve('dist/index.html'))
