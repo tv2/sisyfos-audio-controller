@@ -28,12 +28,10 @@
     "main": "dist/server/index.js",
     "scripts": {
         "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
-        "start-client": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development --history-api-fallback",
         "start": "node dist/server/index.js",
-        "start:dev": "node --inspect -r ts-node/register server/index.ts",
         "build-client": "yarn webpack --config webpack.build.config.js --mode production",
         "build-server": "yarn tsc -p server/tsconfig.json",
-        "build-now": "yarn tsc -p server/tsconfig.json && webpack --config webpack.build.config.js --mode production",
+        "build-watch": "yarn build-server && yarn webpack --config webpack.build.config.js --watch --mode development",
         "build": "yarn build-server && yarn build-client",
         "unit": "jest",
         "test": "yarn unit",
@@ -93,8 +91,6 @@
         "ts-node": "^8.5.4",
         "typescript": "^3.6.3",
         "webpack": "^4.41.0",
-        "webpack-cli": "^3.3.9",
-        "webpack-dev-middleware": "^3.7.2",
-        "webpack-dev-server": "^3.8.1"
+        "webpack-cli": "^3.3.10"
     }
 }
