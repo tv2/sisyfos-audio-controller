@@ -7,7 +7,6 @@ import { MixerGenericConnection } from './utils/MixerConnection';
 import { AutomationConnection } from './utils/AutomationConnection';
 import { IMixerProtocolGeneric } from './constants/MixerProtocolInterface';
 
-
 const path = require('path')
 const url = require('url')
 
