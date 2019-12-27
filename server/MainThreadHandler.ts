@@ -57,9 +57,6 @@ export class MainThreadHandlers {
     constructor() {
         console.log('Creating MainThreadHandlers')
 
-        // Until everything is converted put it in global:
-        global.storeRedux = store
-
         store.dispatch({
             type:UPDATE_SETTINGS,
             settings: loadSettings(state)

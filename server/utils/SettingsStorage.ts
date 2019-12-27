@@ -1,6 +1,8 @@
 // Node Modules:
 const fs = require('fs')
 const path = require('path')
+import { store, state } from '../reducers/store'
+
 
 // Redux:
 import { SET_COMPLETE_CH_STATE } from '../reducers/channelActions'
@@ -32,12 +34,12 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
         const stateFromFile = JSON.parse(fs.readFileSync(fileName));
         
         if (loadAll) {
-            global.storeRedux.dispatch({
+            store.dispatch({
                 type: SET_COMPLETE_CH_STATE,
                 allState: stateFromFile.channelState,
                 numberOfTypeChannels: numberOfChannels
             });
-            global.storeRedux.dispatch({
+            store.dispatch({
                 type:SET_COMPLETE_FADER_STATE,
                 allState: stateFromFile.faderState,
                 numberOfTypeChannels: numberOfFaders
@@ -57,12 +59,12 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
                 fader.monitor = stateFromFile.faderState.fader[index].monitor || -1
                 return fader
             })
-            global.storeRedux.dispatch({
+            store.dispatch({
                 type:SET_COMPLETE_CH_STATE,
                 allState: stateChannelSnapshot,
                 numberOfTypeChannels: numberOfChannels
             });
-            global.storeRedux.dispatch({
+            store.dispatch({
                 type: SET_COMPLETE_FADER_STATE,
                 allState: stateSnapshot,
                 numberOfTypeChannels: numberOfFaders

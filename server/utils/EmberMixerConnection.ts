@@ -1,4 +1,5 @@
 const DeviceTree = require('emberplus')
+import { store, state } from '../reducers/store'
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
@@ -21,9 +22,9 @@ export class EmberMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = global.storeRedux.getState();
-        const unsubscribe = global.storeRedux.subscribe(() => {
-            this.store = global.storeRedux.getState();
+        this.store = store.getState();
+        const unsubscribe = store.subscribe(() => {
+            this.store = store.getState();
         });
 
         this.emberNodeObject = new Array(200);
@@ -74,7 +75,7 @@ export class EmberMixerConnection {
 
 /*
                 .CHANNEL_VU)){
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type:SET_VU_LEVEL,
                         channel: ch - 1,
                         level: message.args[0]
@@ -105,7 +106,7 @@ export class EmberMixerConnection {
                 if (!this.store.channels[0].channel[ch-1].fadeActive
                     && !this.store.channels[0].channel[ch - 1].fadeActive
                     &&  node.contents.value > this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].min) {
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: ch-1,
                         level: node.contents.value
@@ -124,7 +125,7 @@ export class EmberMixerConnection {
         this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_NAME[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
         .then((node: any) => {
             this.emberConnection.subscribe(node, (() => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_CHANNEL_LABEL,
                     channel: ch-1,
                     level: node.contents.value

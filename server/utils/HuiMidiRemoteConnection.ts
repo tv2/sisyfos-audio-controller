@@ -1,5 +1,7 @@
 //Node Modules:
 import WebMidi from 'webmidi';
+import { store, state } from '../reducers/store'
+
 import { 
     SET_FADER_LEVEL, 
     TOGGLE_PGM,
@@ -27,9 +29,9 @@ export class HuiMidiRemoteConnection {
         this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this);
         this.updateRemoteFaderState = this.updateRemoteFaderState.bind(this);
 
-        this.store = global.storeRedux.getState();
-        const unsubscribe = global.storeRedux.subscribe(() => {
-            this.store = global.storeRedux.getState();
+        this.store = store.getState();
+        const unsubscribe = store.subscribe(() => {
+            this.store = store.getState();
         });
 
         this.remoteProtocol = RemoteFaderPresets.hui;
@@ -65,7 +67,7 @@ export class HuiMidiRemoteConnection {
                 if (message.data[1] < 9) {
                     //Fader changed:
                     console.log("Received Fader message (" + message.data + ").");
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: message.data[1],
                         level: this.convertFromRemoteLevel(message.data[2])
@@ -80,7 +82,7 @@ export class HuiMidiRemoteConnection {
                         this.activeHuiChannel = message.data[2];
                     } else if (message.data[2] && message.data[2] === 65) {
                         //SELECT button - toggle PGM ON/OFF
-                        global.storeRedux.dispatch({
+                        store.dispatch({
                             type: TOGGLE_PGM,
                             channel: this.activeHuiChannel
                         });
@@ -88,7 +90,7 @@ export class HuiMidiRemoteConnection {
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
-                        global.storeRedux.dispatch({
+                        store.dispatch({
                             type: TOGGLE_PFL,
                             channel: this.activeHuiChannel
                         });

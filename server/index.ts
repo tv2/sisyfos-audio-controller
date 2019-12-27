@@ -14,7 +14,6 @@ const url = require('url')
 declare global {
   namespace NodeJS {
       interface Global {
-          storeRedux: Store
           mainThreadHandler: MainThreadHandlers
           mainApp: MainApp
           mixerGenericConnection: MixerGenericConnection

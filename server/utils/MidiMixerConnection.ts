@@ -11,6 +11,8 @@ if (!global.performance) global.performance = { now: require('performance-now') 
 //Node Modules:
 const WebMidi = require('webmidi')
 
+import { store, state } from '../reducers/store'
+
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
@@ -33,9 +35,9 @@ export class MidiMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = global.storeRedux.getState();
-        const unsubscribe = global.storeRedux.subscribe(() => {
-            this.store = global.storeRedux.getState();
+        this.store = store.getState();
+        const unsubscribe = store.subscribe(() => {
+            this.store = store.getState();
         });
 
         this.mixerProtocol = mixerProtocol || MixerProtocolPresets.genericMidi;
@@ -62,13 +64,13 @@ export class MidiMixerConnection {
                     && message.data[1] <= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage) + 24) {
                     let ch = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
                     let faderChannel = 1 + this.store.channels[0].channel[ch - 1].assignedFader
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: faderChannel - 1,
                         level: message.data[2]
                     });
                     if (!this.store.faders[0].fader[faderChannel - 1].pgmOn) {
-                        global.storeRedux.dispatch({
+                        store.dispatch({
                             type: TOGGLE_PGM,
                             channel: this.store.channels[0].channel[ch - 1].assignedFader -1
                         });
@@ -100,7 +102,7 @@ export class MidiMixerConnection {
                     behringerMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type:SET_VU_LEVEL,
                         channel: ch - 1,
                         level: message.args[0]
@@ -111,7 +113,7 @@ export class MidiMixerConnection {
                 this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_NAME)
             ) {
                     let ch = message.address.split("/")[2];
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type: SET_CHANNEL_LABEL,
                         channel: ch - 1,
                         label: message.args[0]
@@ -152,7 +154,7 @@ return true;
     updateOutLevel(channelIndex: number) {
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
-            global.storeRedux.dispatch({
+            store.dispatch({
                 type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel

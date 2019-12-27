@@ -1,5 +1,6 @@
 //Node Modules:
 const net = require('net')
+import { store, state } from '../reducers/store'
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface'
@@ -24,9 +25,9 @@ export class QlClMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = global.storeRedux.getState();
-        const unsubscribe = global.storeRedux.subscribe(() => {
-            this.store = global.storeRedux.getState();
+        this.store = store.getState();
+        const unsubscribe = store.subscribe(() => {
+            this.store = store.getState();
         });
 
         this.mixerProtocol = mixerProtocol;
@@ -66,7 +67,7 @@ export class QlClMixerConnection {
                             let ch = parseInt(mixerValues[3])
                             let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
                             let mixerValue = parseInt(mixerValues[6])
-                            global.storeRedux.dispatch({
+                            store.dispatch({
                                 type: SET_VU_LEVEL,
                                 channel: assignedFader,
                                 level: mixerValue
@@ -82,13 +83,13 @@ export class QlClMixerConnection {
                         //let faderLevel = Math.log10((mixerLevel + 32768) / (1000 + 32768))
                         if (!this.store.channels[0].channel[ch - 1].fadeActive
                             && faderLevel > this.mixerProtocol.fader.min) {
-                            global.storeRedux.dispatch({
+                            store.dispatch({
                                 type: SET_FADER_LEVEL,
                                 channel: assignedFader - 1,
                                 level: faderLevel
                             });
                             if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
-                                global.storeRedux.dispatch({
+                                store.dispatch({
                                     type: TOGGLE_PGM,
                                     channel: assignedFader - 1
                                 });
@@ -109,7 +110,7 @@ export class QlClMixerConnection {
                         } /*else if (this.checkSCPCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
                         .CHANNEL_NAME[0].mixerMessage)) {
                         let ch = message.split("/")[this.cmdChannelIndex];
-                        global.storeRedux.dispatch({
+                        store.dispatch({
                             type: SET_CHANNEL_LABEL,
                             channel: this.store.channels[0].channel[ch - 1].assignedFader,
                             label: message.args[0]
@@ -193,7 +194,7 @@ export class QlClMixerConnection {
         let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
         let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
         if (this.store.faders[0].fader[faderIndex].pgmOn) {
-            global.storeRedux.dispatch({
+            store.dispatch({
                 type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
                 level: this.store.faders[0].fader[faderIndex].faderLevel
