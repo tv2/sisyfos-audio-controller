@@ -7,7 +7,6 @@ import { MixerGenericConnection } from './utils/MixerConnection';
 import { AutomationConnection } from './utils/AutomationConnection';
 import { IMixerProtocolGeneric } from './constants/MixerProtocolInterface';
 
-
 const path = require('path')
 const url = require('url')
 
@@ -15,7 +14,6 @@ const url = require('url')
 declare global {
   namespace NodeJS {
       interface Global {
-          storeRedux: Store
           mainThreadHandler: MainThreadHandlers
           mainApp: MainApp
           mixerGenericConnection: MixerGenericConnection

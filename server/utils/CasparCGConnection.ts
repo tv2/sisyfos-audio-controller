@@ -1,6 +1,7 @@
 //Node Modules:
 const osc = require('osc')
 const CasparCG = require('casparcg-connection')
+import { store, state } from '../reducers/store'
 
 //Utils:
 import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolInterface';
@@ -23,17 +24,12 @@ const OSC_PATH_PRODUCER_FILE_NAME = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/file
 const OSC_PATH_PRODUCER_CHANNEL_LAYOUT = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/channel_layout/
 
 export class CasparCGConnection {
-    store: IStore;
     mixerProtocol: ICasparCGMixerGeometry;
     connection: any;
     oscClient: any;
     oscCommandMap: { [key: string]: CommandChannelMap } = {};
 
     constructor(mixerProtocol: ICasparCGMixerGeometry) {
-        this.store = global.storeRedux.getState() as IStore;
-        const unsubscribe = global.storeRedux.subscribe(() => {
-            this.store = global.storeRedux.getState() as IStore;
-        });
 
         this.mixerProtocol = mixerProtocol
 
@@ -41,8 +37,8 @@ export class CasparCGConnection {
             autoReconnect: true,
             autoReconnectAttempts: 20,
             autoReconnectInterval: 3000,
-            host: this.store.settings[0].deviceIp,
-            port: parseInt(this.store.settings[0].devicePort + ''),
+            host: state.settings[0].deviceIp,
+            port: parseInt(state.settings[0].devicePort + ''),
         })
         console.log("Trying to connect to CasparCG...")
         this.connection.onConnected = () => {
@@ -62,11 +58,11 @@ export class CasparCGConnection {
 
     setupMixerConnection() {
         if (!this.oscClient) {
-            const remotePort = parseInt(this.store.settings[0].devicePort + '') + 1000
+            const remotePort = parseInt(state.settings[0].devicePort + '') + 1000
             this.oscClient = new osc.UDPPort({
-                localAddress: this.store.settings[0].localIp,
+                localAddress: state.settings[0].localIp,
                 localPort: remotePort,
-                remoteAddress: this.store.settings[0].deviceIp,
+                remoteAddress: state.settings[0].deviceIp,
                 remotePort
             })
             .on('ready', () => {
@@ -75,12 +71,12 @@ export class CasparCGConnection {
             .on('message', (message: any) => {
                 const index = this.checkOscCommand(message.address, this.oscCommandMap.CHANNEL_VU)
                 if (index !== undefined && message.args) {
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type: SET_VU_LEVEL,
                         channel: index,
                         // CCG returns "produced" audio levels, before the Volume mixer transform
                         // We therefore want to premultiply this to show useful information about audio levels
-                        level: Math.min(1, message.args[0] * this.store.faders[0].fader[index].faderLevel)
+                        level: Math.min(1, message.args[0] * state.faders[0].fader[index].faderLevel)
                     });
                 } else if (this.mixerProtocol.sourceOptions) {
                     const m = message.address.split('/');
@@ -88,7 +84,7 @@ export class CasparCGConnection {
                     if (m[1] === 'channel' && m[6] === 'producer' && m[7] === 'type') {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
-                            global.storeRedux.dispatch({
+                            store.dispatch({
                                 type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'producer',
@@ -98,7 +94,7 @@ export class CasparCGConnection {
                     } else if (m[1] === 'channel' && m[6] === 'producer' && m[7] === 'channel_layout') {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
-                            global.storeRedux.dispatch({
+                            store.dispatch({
                                 type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'channel_layout',
@@ -108,7 +104,7 @@ export class CasparCGConnection {
                     } else if (m[1] === 'channel' && m[6] === 'file' && m[7] === 'path') {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
-                            global.storeRedux.dispatch({
+                            store.dispatch({
                                 type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'file_path',
@@ -124,11 +120,11 @@ export class CasparCGConnection {
             });
 
             this.oscClient.open();
-            console.log("Listening for status on CasparCG: ", this.store.settings[0].deviceIp, remotePort)
+            console.log("Listening for status on CasparCG: ", state.settings[0].deviceIp, remotePort)
         }
 
         // Restore mixer values to the ones we have internally
-        this.store.faders[0].fader.forEach((channel, index) => {
+        state.faders[0].fader.forEach((channel, index) => {
             this.updateFadeIOLevel(index, channel.faderLevel);
             this.updatePflState(index);
         })
@@ -136,7 +132,7 @@ export class CasparCGConnection {
         // Set source labels from geometry definition
         if (this.mixerProtocol.channelLabels) {
             this.mixerProtocol.channelLabels.forEach((label, channelIndex) => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_CHANNEL_LABEL,
                     channel: channelIndex,
                     label
@@ -231,10 +227,10 @@ export class CasparCGConnection {
     }
 
     updateChannelSetting(channelIndex: number, setting: string, value: string) {
-        if (this.mixerProtocol.sourceOptions && this.store.channels[0].channel[channelIndex].private) {
+        if (this.mixerProtocol.sourceOptions && state.channels[0].channel[channelIndex].private) {
             const pair = this.mixerProtocol.sourceOptions.sources[channelIndex];
-            const producer = this.store.channels[0].channel[channelIndex].private!['producer'];
-            let filePath = String(this.store.channels[0].channel[channelIndex].private!['file_path']);
+            const producer = state.channels[0].channel[channelIndex].private!['producer'];
+            let filePath = String(state.channels[0].channel[channelIndex].private!['file_path']);
             filePath = filePath.replace(/\.[\w\d]+$/, '')
             this.controlChannelSetting(pair.channel, pair.layer, producer, filePath, setting, value);
         }
@@ -245,13 +241,13 @@ export class CasparCGConnection {
             return
         }
 
-        if (this.store.faders[0].fader[channelIndex].pflOn === true) {
+        if (state.faders[0].fader[channelIndex].pflOn === true) {
             // Enable SOLO on this channel on MONITOR
             const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[channelIndex];
-            this.setAllLayers(pairs, this.store.faders[0].fader[channelIndex].faderLevel);
+            this.setAllLayers(pairs, state.faders[0].fader[channelIndex].faderLevel);
 
             // Ensure that all other non-SOLO channels are muted on MONITOR
-            const others = this.store.faders[0].fader
+            const others = state.faders[0].fader
                 .map((i, index) => i.pflOn ? undefined : index)
                 .filter(i => (
                     i !== undefined &&
@@ -263,7 +259,7 @@ export class CasparCGConnection {
             })
         } else {
             // check if any other channels are SOLO
-            const others = this.store.faders[0].fader
+            const others = state.faders[0].fader
                 .map((i, index) => i.pflOn ? index : undefined)
                 .filter(i => (
                     i !== undefined &&
@@ -276,13 +272,13 @@ export class CasparCGConnection {
                 this.setAllLayers(pairs, this.mixerProtocol.fader.min);
             } else {
                 // There are no other SOLO channels, restore MONITOR to match PGM
-                this.store.channels[0].channel.forEach((i, index) => {
+                state.channels[0].channel.forEach((i, index) => {
                     if (index > this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL.length - 1) {
                         return
                     }
 
                     const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[index];
-                    this.setAllLayers(pairs, this.store.channels[0].channel[index].outputLevel);
+                    this.setAllLayers(pairs, state.channels[0].channel[index].outputLevel);
                 })
             }
         }
@@ -323,12 +319,12 @@ export class CasparCGConnection {
         const pgmPairs = this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL[channelIndex]
         this.setAllLayers(pgmPairs, outputLevel)
 
-        const anyPflOn = this.store.faders[0].fader.reduce((memo, i) => memo || i.pflOn, false)
+        const anyPflOn = state.faders[0].fader.reduce((memo, i) => memo || i.pflOn, false)
         // Check if there are no SOLO channels on MONITOR or there are, but this channel is SOLO
-        if (!anyPflOn || (anyPflOn && this.store.faders[0].fader[channelIndex].pflOn)) {
+        if (!anyPflOn || (anyPflOn && state.faders[0].fader[channelIndex].pflOn)) {
             const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[channelIndex];
-            if (this.store.faders[0].fader[channelIndex].pflOn) {
-                this.setAllLayers(pairs, this.store.faders[0].fader[channelIndex].faderLevel);
+            if (state.faders[0].fader[channelIndex].pflOn) {
+                this.setAllLayers(pairs, state.faders[0].fader[channelIndex].faderLevel);
             } else {
                 this.setAllLayers(pairs, outputLevel);
             }

@@ -1,5 +1,5 @@
-import { createStore } from 'redux'
-import indexReducer from './reducers/indexReducer';
+import { store, state } from './reducers/store'
+
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import { loadSettings, saveSettings, getSnapShotList } from './utils/SettingsStorage'
 import { 
@@ -57,27 +57,17 @@ export class MainThreadHandlers {
     constructor() {
         console.log('Creating MainThreadHandlers')
 
-        global.storeRedux = createStore(
-            indexReducer
-        );
-        
-        global.storeRedux.dispatch({
+        store.dispatch({
             type:UPDATE_SETTINGS,
-            settings: loadSettings(global.storeRedux.getState())
-        });
-        //Get redux store:
-        this.store = global.storeRedux.getState();
-        const unsubscribe = global.storeRedux.subscribe(() => {
-            this.store = global.storeRedux.getState();
+            settings: loadSettings(state)
         });
     }
 
     updateFullClientStore() {
-        global.socketServer.emit(SOCKET_SET_FULL_STORE, global.storeRedux.getState())
+        global.socketServer.emit(SOCKET_SET_FULL_STORE, state)
     }
 
     updatePartialStore(faderIndex: number) {
-        let state = global.storeRedux.getState()
         state.faders[0].fader[faderIndex]
         global.socketServer.emit(
             SOCKET_SET_STORE_FADER,
@@ -113,7 +103,7 @@ export class MainThreadHandlers {
         .on('get-settings', (
             () => { 
                 //console.log('Data received :', payload)
-                global.socketServer.emit('set-settings', loadSettings(global.storeRedux.getState()))
+                global.socketServer.emit('set-settings', loadSettings(state))
             })
         )
         .on('get-mixerprotocol', (
@@ -171,7 +161,7 @@ export class MainThreadHandlers {
         .on(SOCKET_SET_ASSIGNED_FADER, (
             (payload: any) => { 
                 console.log('Set assigned fader. Channel:', payload.channel, 'Fader :', payload.faderAssign)
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_ASSIGNED_FADER,
                     channel: payload.channel,
                     faderNumber: payload.faderAssign
@@ -181,7 +171,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_FADER_MONITOR, (
             (payload: any) => { 
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_FADER_MONITOR,
                     channel: payload.faderIndex,
                     auxIndex: payload.auxIndex
@@ -192,7 +182,7 @@ export class MainThreadHandlers {
         .on(SOCKET_SET_AUX_LEVEL, (
             (payload: any) => { 
                 //console.log('Set Auxlevel Channel:', payload.channel)
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_AUX_LEVEL,
                     channel: payload.channel,
                     auxIndex: payload.auxIndex,
@@ -204,7 +194,7 @@ export class MainThreadHandlers {
         .on(SOCKET_SET_THRESHOLD, (
             (payload: any) => { 
                 //console.log('Set Threshold:', payload.channel)
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_FADER_THRESHOLD,
                     channel: payload.channel,
                     level: payload.level
@@ -216,7 +206,7 @@ export class MainThreadHandlers {
         .on(SOCKET_SET_RATIO, (
             (payload: any) => { 
                 //console.log('Set Ratio:', payload.channel)
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_FADER_RATIO,
                     channel: payload.channel,
                     level: payload.level
@@ -228,7 +218,7 @@ export class MainThreadHandlers {
         .on(SOCKET_SET_LOW, (
             (payload: any) => { 
                 //console.log('Set Low:', payload.channel)
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_FADER_LOW,
                     channel: payload.channel,
                     level: payload.level
@@ -240,7 +230,7 @@ export class MainThreadHandlers {
         .on(SOCKET_SET_MID, (
             (payload: any) => { 
                 //console.log('Set Mid:', payload.level, ' On channelIndex :', payload.channel)
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_FADER_MID,
                     channel: payload.channel,
                     level: payload.level
@@ -252,7 +242,7 @@ export class MainThreadHandlers {
         .on(SOCKET_SET_HIGH, (
             (payload: any) => { 
                 //console.log('Set High:', payload.channel)
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_FADER_HIGH,
                     channel: payload.channel,
                     level: payload.level
@@ -263,7 +253,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_NEXT_MIX, (
             () => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: NEXT_MIX
                 });
                 global.mixerGenericConnection.updateOutLevels()
@@ -272,7 +262,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_CLEAR_PST, (
             () => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: CLEAR_PST
                 });
                 global.mixerGenericConnection.updateOutLevels()
@@ -282,7 +272,7 @@ export class MainThreadHandlers {
         .on(SOCKET_TOGGLE_PGM, (
             (faderIndex: any) => {
                 global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: TOGGLE_PGM,
                     channel: faderIndex
                 });
@@ -293,7 +283,7 @@ export class MainThreadHandlers {
         .on(SOCKET_TOGGLE_VO, (
             (faderIndex: any) => {
                 global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: TOGGLE_VO,
                     channel: faderIndex
                 });
@@ -303,7 +293,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_TOGGLE_PST, (
             (faderIndex: any) => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: TOGGLE_PST,
                     channel: faderIndex
                 });
@@ -313,7 +303,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_TOGGLE_PFL, (
             (faderIndex: any) => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: TOGGLE_PFL,
                     channel: faderIndex
                 });
@@ -323,7 +313,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_TOGGLE_MUTE, (
             (faderIndex: any) => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: TOGGLE_MUTE,
                     channel: faderIndex
                 });
@@ -333,7 +323,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_TOGGLE_IGNORE, (
             (faderIndex: any) => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: IGNORE_AUTOMATION,
                     channel: faderIndex
                 });
@@ -342,7 +332,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_FADERLEVEL, (
             (payload: any) => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_FADER_LEVEL,
                     channel: payload.faderIndex,
                     level: parseFloat(payload.level)

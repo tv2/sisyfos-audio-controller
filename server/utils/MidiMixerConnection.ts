@@ -11,6 +11,8 @@ if (!global.performance) global.performance = { now: require('performance-now') 
 //Node Modules:
 const WebMidi = require('webmidi')
 
+import { store, state } from '../reducers/store'
+
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
@@ -33,11 +35,6 @@ export class MidiMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = global.storeRedux.getState();
-        const unsubscribe = global.storeRedux.subscribe(() => {
-            this.store = global.storeRedux.getState();
-        });
-
         this.mixerProtocol = mixerProtocol || MixerProtocolPresets.genericMidi;
 
         WebMidi.enable((err: any) => {
@@ -45,10 +42,10 @@ export class MidiMixerConnection {
             if (err) {
                 console.log("WebMidi could not be enabled.", err);
             }
-            console.log("Connecting Mixer Midi input on port :", this.store.settings[0].mixerMidiInputPort);
-            console.log("Connecting Mixer Midi output on port :", this.store.settings[0].mixerMidiOutputPort);
-            this.midiInput = WebMidi.getInputByName(this.store.settings[0].mixerMidiInputPort);
-            this.midiOutput = WebMidi.getOutputByName(this.store.settings[0].mixerMidiOutputPort);
+            console.log("Connecting Mixer Midi input on port :", state.settings[0].mixerMidiInputPort);
+            console.log("Connecting Mixer Midi output on port :", state.settings[0].mixerMidiOutputPort);
+            this.midiInput = WebMidi.getInputByName(state.settings[0].mixerMidiInputPort);
+            this.midiOutput = WebMidi.getOutputByName(state.settings[0].mixerMidiOutputPort);
 
             this.setupMixerConnection();
         });
@@ -61,24 +58,24 @@ export class MidiMixerConnection {
                 if (message.data[1] >= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
                     && message.data[1] <= parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage) + 24) {
                     let ch = 1 + message.data[1] - parseInt(this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage)
-                    let faderChannel = 1 + this.store.channels[0].channel[ch - 1].assignedFader
-                    global.storeRedux.dispatch({
+                    let faderChannel = 1 + state.channels[0].channel[ch - 1].assignedFader
+                    store.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: faderChannel - 1,
                         level: message.data[2]
                     });
-                    if (!this.store.faders[0].fader[faderChannel - 1].pgmOn) {
-                        global.storeRedux.dispatch({
+                    if (!state.faders[0].fader[faderChannel - 1].pgmOn) {
+                        store.dispatch({
                             type: TOGGLE_PGM,
-                            channel: this.store.channels[0].channel[ch - 1].assignedFader -1
+                            channel: state.channels[0].channel[ch - 1].assignedFader -1
                         });
                     }
                     if (global.huiRemoteConnection) {
-                        global.huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, this.store.faders[0].fader[faderChannel - 1].faderLevel)
+                        global.huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, state.faders[0].fader[faderChannel - 1].faderLevel)
                     }
-                    if (this.store.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
+                    if (state.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {
-                        this.store.channels[0].channel.map((channel: any, index: number) => {
+                        state.channels[0].channel.map((channel: any, index: number) => {
                             if (channel.assignedFader === faderChannel - 1) {
                                 this.updateOutLevel(index);
                             }
@@ -96,11 +93,11 @@ export class MidiMixerConnection {
             if (
                 this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU)
             ) {
-                if (this.store.settings[0].mixerProtocol === 'behringer') {
+                if (state.settings[0].mixerProtocol === 'behringer') {
                     behringerMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type:SET_VU_LEVEL,
                         channel: ch - 1,
                         level: message.args[0]
@@ -111,7 +108,7 @@ export class MidiMixerConnection {
                 this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_NAME)
             ) {
                     let ch = message.address.split("/")[2];
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type: SET_CHANNEL_LABEL,
                         channel: ch - 1,
                         label: message.args[0]
@@ -150,31 +147,31 @@ return true;
     }
 
     updateOutLevel(channelIndex: number) {
-        let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
-        if (this.store.faders[0].fader[faderIndex].pgmOn) {
-            global.storeRedux.dispatch({
+        let faderIndex = state.channels[0].channel[channelIndex].assignedFader;
+        if (state.faders[0].fader[faderIndex].pgmOn) {
+            store.dispatch({
                 type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
-                level: this.store.faders[0].fader[faderIndex].faderLevel
+                level: state.faders[0].fader[faderIndex].faderLevel
             });
         }
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelIndex+1,
-            this.store.channels[0].channel[channelIndex].outputLevel
+            String(state.channels[0].channel[channelIndex].outputLevel)
         );
         /* Client mode is disabled
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_FADER_LEVEL[0].mixerMessage,
             channelIndex+1,
-            this.store.faders[0].fader[channelIndex].faderLevel
+            state.faders[0].fader[channelIndex].faderLevel
         );
         */
     }
 
     updatePflState(channelIndex: number) {
 
-        if (this.store.channels[0].channel[channelIndex].pflOn = true) {
+        if (state.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].mixerMessage,
                 channelIndex+1,
@@ -226,7 +223,7 @@ return true;
 
 
     updateChannelName(channelIndex: number) {
-        let channelName = this.store.channels[0].channel[channelIndex].label;
+        let channelName = state.faders[0].fader[channelIndex].label;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_NAME[0].mixerMessage,
             channelIndex+1,

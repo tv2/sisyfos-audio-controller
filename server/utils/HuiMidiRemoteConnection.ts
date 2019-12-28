@@ -1,5 +1,7 @@
 //Node Modules:
 import WebMidi from 'webmidi';
+import { store, state } from '../reducers/store'
+
 import { 
     SET_FADER_LEVEL, 
     TOGGLE_PGM,
@@ -27,15 +29,10 @@ export class HuiMidiRemoteConnection {
         this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this);
         this.updateRemoteFaderState = this.updateRemoteFaderState.bind(this);
 
-        this.store = global.storeRedux.getState();
-        const unsubscribe = global.storeRedux.subscribe(() => {
-            this.store = global.storeRedux.getState();
-        });
-
         this.remoteProtocol = RemoteFaderPresets.hui;
-        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
+        this.mixerProtocol = MixerProtocolPresets[state.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
-        if (!this.store.settings[0].enableRemoteFader) {
+        if (!state.settings[0].enableRemoteFader) {
             return
         }
 
@@ -44,13 +41,13 @@ export class HuiMidiRemoteConnection {
                 console.log("Remote MidiController connection could not be enabled.", err);
             }
 
-            this.midiInput = WebMidi.getInputByName(this.store.settings[0].remoteFaderMidiInputPort);
-            this.midiOutput = WebMidi.getOutputByName(this.store.settings[0].remoteFaderMidiOutputPort);
+            this.midiInput = WebMidi.getInputByName(state.settings[0].remoteFaderMidiInputPort);
+            this.midiOutput = WebMidi.getOutputByName(state.settings[0].remoteFaderMidiOutputPort);
 
             if (this.midiInput && this.midiOutput ) {
                 console.log("Remote Midi Controller connected on port")
-                console.log("Midi input :", this.store.settings[0].remoteFaderMidiInputPort)
-                console.log("Midi output :", this.store.settings[0].remoteFaderMidiOutputPort)
+                console.log("Midi input :", state.settings[0].remoteFaderMidiInputPort)
+                console.log("Midi output :", state.settings[0].remoteFaderMidiOutputPort)
 
                 this.setupRemoteFaderConnection();
             } else {
@@ -65,7 +62,7 @@ export class HuiMidiRemoteConnection {
                 if (message.data[1] < 9) {
                     //Fader changed:
                     console.log("Received Fader message (" + message.data + ").");
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: message.data[1],
                         level: this.convertFromRemoteLevel(message.data[2])
@@ -80,7 +77,7 @@ export class HuiMidiRemoteConnection {
                         this.activeHuiChannel = message.data[2];
                     } else if (message.data[2] && message.data[2] === 65) {
                         //SELECT button - toggle PGM ON/OFF
-                        global.storeRedux.dispatch({
+                        store.dispatch({
                             type: TOGGLE_PGM,
                             channel: this.activeHuiChannel
                         });
@@ -88,7 +85,7 @@ export class HuiMidiRemoteConnection {
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
-                        global.storeRedux.dispatch({
+                        store.dispatch({
                             type: TOGGLE_PFL,
                             channel: this.activeHuiChannel
                         });
@@ -159,7 +156,7 @@ export class HuiMidiRemoteConnection {
         );
         this.midiOutput.sendControlChange(
             44,
-            1 + (64*this.store.faders[0].fader[channelIndex].pgmOn),
+            1 + (64*(state.faders[0].fader[channelIndex].pgmOn ? 1 : 0)),
             1
         );
 
@@ -171,7 +168,7 @@ export class HuiMidiRemoteConnection {
         );
         this.midiOutput.sendControlChange(
             44,
-            3 + (64*this.store.faders[0].fader[channelIndex].pflOn),
+            3 + (64*(state.faders[0].fader[channelIndex].pflOn ? 1 : 0)),
             1
         );
     }

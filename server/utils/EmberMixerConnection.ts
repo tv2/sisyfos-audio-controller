@@ -1,4 +1,5 @@
 const DeviceTree = require('emberplus')
+import { store, state } from '../reducers/store'
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
@@ -10,7 +11,6 @@ import {
 
 
 export class EmberMixerConnection {
-    store: IStore;
     mixerProtocol: IMixerProtocol;
     emberConnection: any;
     deviceRoot: any;
@@ -21,17 +21,12 @@ export class EmberMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = global.storeRedux.getState();
-        const unsubscribe = global.storeRedux.subscribe(() => {
-            this.store = global.storeRedux.getState();
-        });
-
         this.emberNodeObject = new Array(200);
         this.mixerProtocol = mixerProtocol;
 
         this.emberConnection = new DeviceTree(
-                this.store.settings[0].deviceIp,
-                this.store.settings[0].devicePort
+                state.settings[0].deviceIp,
+                state.settings[0].devicePort
             );
         let deviceRoot: any;
         this.emberConnection.connect()
@@ -57,7 +52,7 @@ export class EmberMixerConnection {
         console.log("Ember Connected");
 
         let ch: number = 1;
-        this.store.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
+        state.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
             for (let channelTypeIndex=0; channelTypeIndex < numberOfChannels ; channelTypeIndex++) {
                 this.subscribeFaderLevel(ch, typeIndex, channelTypeIndex);
                 ch++;
@@ -65,7 +60,7 @@ export class EmberMixerConnection {
         })
 
         ch = 1;
-        this.store.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
+        state.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
             for (let channelTypeIndex=0; channelTypeIndex < numberOfChannels ; channelTypeIndex++) {
                 this.subscribeChannelName(ch, typeIndex, channelTypeIndex);
                 ch++;
@@ -74,7 +69,7 @@ export class EmberMixerConnection {
 
 /*
                 .CHANNEL_VU)){
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type:SET_VU_LEVEL,
                         channel: ch - 1,
                         level: message.args[0]
@@ -102,10 +97,10 @@ export class EmberMixerConnection {
         .then((node: any) => {
             this.emberNodeObject[ch-1] = node;
             this.emberConnection.subscribe(node, (() => {
-                if (!this.store.channels[0].channel[ch-1].fadeActive
-                    && !this.store.channels[0].channel[ch - 1].fadeActive
+                if (!state.channels[0].channel[ch-1].fadeActive
+                    && !state.channels[0].channel[ch - 1].fadeActive
                     &&  node.contents.value > this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].min) {
-                    global.storeRedux.dispatch({
+                    store.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: ch-1,
                         level: node.contents.value
@@ -124,7 +119,7 @@ export class EmberMixerConnection {
         this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_NAME[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
         .then((node: any) => {
             this.emberConnection.subscribe(node, (() => {
-                global.storeRedux.dispatch({
+                store.dispatch({
                     type: SET_CHANNEL_LABEL,
                     channel: ch-1,
                     level: node.contents.value
@@ -177,21 +172,21 @@ export class EmberMixerConnection {
     }
 
     updateOutLevel(channelIndex: number) {
-        let channelType = this.store.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
             this.emberNodeObject[channelIndex],
             channelTypeIndex+1,
-            this.store.channels[0].channel[channelIndex].outputLevel,
+            state.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
     }
 
     updatePflState(channelIndex: number) {
-        let channelType = this.store.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
 
-        if (this.store.faders[0].fader[channelIndex].pflOn === true) {
+        if (state.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].mixerMessage,
                 channelTypeIndex+1,
@@ -238,8 +233,8 @@ export class EmberMixerConnection {
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let channelType = this.store.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
             this.emberNodeObject[channelIndex],
             channelTypeIndex+1,
@@ -249,9 +244,9 @@ export class EmberMixerConnection {
     }
 
     updateChannelName(channelIndex: number) {
-        let channelType = this.store.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        let channelName = this.store.faders[0].fader[channelIndex].label;
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
+        let channelName = state.faders[0].fader[channelIndex].label;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
             channelTypeIndex+1,
