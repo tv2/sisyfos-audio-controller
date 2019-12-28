@@ -29,15 +29,10 @@ export class HuiMidiRemoteConnection {
         this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this);
         this.updateRemoteFaderState = this.updateRemoteFaderState.bind(this);
 
-        this.store = store.getState();
-        const unsubscribe = store.subscribe(() => {
-            this.store = store.getState();
-        });
-
         this.remoteProtocol = RemoteFaderPresets.hui;
-        this.mixerProtocol = MixerProtocolPresets[this.store.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
+        this.mixerProtocol = MixerProtocolPresets[state.settings[0].mixerProtocol]  || MixerProtocolPresets.genericMidi;
 
-        if (!this.store.settings[0].enableRemoteFader) {
+        if (!state.settings[0].enableRemoteFader) {
             return
         }
 
@@ -46,13 +41,13 @@ export class HuiMidiRemoteConnection {
                 console.log("Remote MidiController connection could not be enabled.", err);
             }
 
-            this.midiInput = WebMidi.getInputByName(this.store.settings[0].remoteFaderMidiInputPort);
-            this.midiOutput = WebMidi.getOutputByName(this.store.settings[0].remoteFaderMidiOutputPort);
+            this.midiInput = WebMidi.getInputByName(state.settings[0].remoteFaderMidiInputPort);
+            this.midiOutput = WebMidi.getOutputByName(state.settings[0].remoteFaderMidiOutputPort);
 
             if (this.midiInput && this.midiOutput ) {
                 console.log("Remote Midi Controller connected on port")
-                console.log("Midi input :", this.store.settings[0].remoteFaderMidiInputPort)
-                console.log("Midi output :", this.store.settings[0].remoteFaderMidiOutputPort)
+                console.log("Midi input :", state.settings[0].remoteFaderMidiInputPort)
+                console.log("Midi output :", state.settings[0].remoteFaderMidiOutputPort)
 
                 this.setupRemoteFaderConnection();
             } else {
@@ -161,7 +156,7 @@ export class HuiMidiRemoteConnection {
         );
         this.midiOutput.sendControlChange(
             44,
-            1 + (64*this.store.faders[0].fader[channelIndex].pgmOn),
+            1 + (64*state.faders[0].fader[channelIndex].pgmOn),
             1
         );
 
@@ -173,7 +168,7 @@ export class HuiMidiRemoteConnection {
         );
         this.midiOutput.sendControlChange(
             44,
-            3 + (64*this.store.faders[0].fader[channelIndex].pflOn),
+            3 + (64*(state.faders[0].fader[channelIndex].pflOn ? 1 : 0)),
             1
         );
     }

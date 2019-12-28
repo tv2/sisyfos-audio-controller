@@ -25,22 +25,16 @@ export class QlClMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
 
-        this.store = store.getState();
-        const unsubscribe = store.subscribe(() => {
-            this.store = store.getState();
-        });
-
         this.mixerProtocol = mixerProtocol;
 
         this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.split('/').findIndex(ch => ch === '{channel}');
 
         this.scpConnection = new net.Socket()
-        this.scpConnection.connect(50000, this.store.settings[0].deviceIp, () => {
+        this.scpConnection.connect(50000, state.settings[0].deviceIp, () => {
             console.log('Connected to Yamaha mixer')
 
         }
         );
-        //            remotePort: parseInt(this.store.settings[0].devicePort + '')
         this.setupMixerConnection();
     }
 
@@ -50,7 +44,7 @@ export class QlClMixerConnection {
                 console.log("Receiving state of desk");
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes("{channel}")) {
-                        this.store.channels[0].channel.map((channel: any, index: any) => {
+                        state.channels[0].channel.map((channel: any, index: any) => {
                             this.sendOutRequest(item.mixerMessage, (index + 1));
                         });
                     } else {
@@ -65,7 +59,7 @@ export class QlClMixerConnection {
                         .CHANNEL_VU[0].mixerMessage)) {
                             let mixerValues: string[] = message.split(' ')
                             let ch = parseInt(mixerValues[3])
-                            let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
+                            let assignedFader = 1 + state.channels[0].channel[ch - 1].assignedFader
                             let mixerValue = parseInt(mixerValues[6])
                             store.dispatch({
                                 type: SET_VU_LEVEL,
@@ -77,18 +71,18 @@ export class QlClMixerConnection {
                         .CHANNEL_OUT_GAIN[0].mixerMessage)) {
                         let mixerValues: string[] = message.split(' ')
                         let ch = 1 + parseInt(mixerValues[3])
-                        let assignedFader = 1 + this.store.channels[0].channel[ch - 1].assignedFader
+                        let assignedFader = 1 + state.channels[0].channel[ch - 1].assignedFader
                         let mixerLevel: number = parseFloat(mixerValues[5])
                         let faderLevel =  Math.pow(2, (mixerLevel - 1000) / 2000)
                         //let faderLevel = Math.log10((mixerLevel + 32768) / (1000 + 32768))
-                        if (!this.store.channels[0].channel[ch - 1].fadeActive
+                        if (!state.channels[0].channel[ch - 1].fadeActive
                             && faderLevel > this.mixerProtocol.fader.min) {
                             store.dispatch({
                                 type: SET_FADER_LEVEL,
                                 channel: assignedFader - 1,
                                 level: faderLevel
                             });
-                            if (!this.store.faders[0].fader[assignedFader - 1].pgmOn) {
+                            if (!state.faders[0].fader[assignedFader - 1].pgmOn) {
                                 store.dispatch({
                                     type: TOGGLE_PGM,
                                     channel: assignedFader - 1
@@ -98,8 +92,8 @@ export class QlClMixerConnection {
                             if (global.huiRemoteConnection) {
                                 global.huiRemoteConnection.updateRemoteFaderState(assignedFader - 1, faderLevel);
                             }
-                            if (this.store.faders[0].fader[assignedFader - 1].pgmOn) {
-                                this.store.channels[0].channel.map((channel: any, index: number) => {
+                            if (state.faders[0].fader[assignedFader - 1].pgmOn) {
+                                state.channels[0].channel.map((channel: any, index: number) => {
                                     if (channel.assignedFader === assignedFader - 1) {
                                         this.updateOutLevel(index);
                                     }
@@ -112,7 +106,7 @@ export class QlClMixerConnection {
                         let ch = message.split("/")[this.cmdChannelIndex];
                         store.dispatch({
                             type: SET_CHANNEL_LABEL,
-                            channel: this.store.channels[0].channel[ch - 1].assignedFader,
+                            channel: state.channels[0].channel[ch - 1].assignedFader,
                             label: message.args[0]
                         });
                         console.log("OSC message: ", message);
@@ -190,28 +184,28 @@ export class QlClMixerConnection {
     }
 
     updateOutLevel(channelIndex: number) {
-        let channelType = this.store.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        let faderIndex = this.store.channels[0].channel[channelIndex].assignedFader;
-        if (this.store.faders[0].fader[faderIndex].pgmOn) {
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
+        let faderIndex = state.channels[0].channel[channelIndex].assignedFader;
+        if (state.faders[0].fader[faderIndex].pgmOn) {
             store.dispatch({
                 type:SET_OUTPUT_LEVEL,
                 channel: channelIndex,
-                level: this.store.faders[0].fader[faderIndex].faderLevel
+                level: state.faders[0].fader[faderIndex].faderLevel
             });
         }
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex,
-            this.store.channels[0].channel[channelIndex].outputLevel,
+            state.channels[0].channel[channelIndex].outputLevel,
             "f"
         );
     }
 
     updatePflState(channelIndex: number) {
-        let channelType = this.store.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        if (this.store.faders[0].fader[channelIndex].pflOn === true) {
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
+        if (state.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].mixerMessage,
                 channelTypeIndex,
@@ -256,8 +250,8 @@ export class QlClMixerConnection {
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let channelType = this.store.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex,
@@ -267,9 +261,9 @@ export class QlClMixerConnection {
     }
 
     updateChannelName(channelIndex: number) {
-        let channelType = this.store.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = this.store.channels[0].channel[channelIndex].channelTypeIndex;
-        let channelName = this.store.faders[0].fader[channelIndex].label;
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
+        let channelName = state.faders[0].fader[channelIndex].label;
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
             channelTypeIndex,
