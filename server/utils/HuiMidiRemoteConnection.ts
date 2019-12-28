@@ -156,7 +156,7 @@ export class HuiMidiRemoteConnection {
         );
         this.midiOutput.sendControlChange(
             44,
-            1 + (64*state.faders[0].fader[channelIndex].pgmOn),
+            1 + (64*(state.faders[0].fader[channelIndex].pgmOn ? 1 : 0)),
             1
         );
 

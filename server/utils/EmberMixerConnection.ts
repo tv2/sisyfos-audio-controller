@@ -11,7 +11,6 @@ import {
 
 
 export class EmberMixerConnection {
-    store: IStore;
     mixerProtocol: IMixerProtocol;
     emberConnection: any;
     deviceRoot: any;

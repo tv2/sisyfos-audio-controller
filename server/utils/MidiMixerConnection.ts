@@ -171,7 +171,7 @@ return true;
 
     updatePflState(channelIndex: number) {
 
-        if (state.channels[0].channel[channelIndex].pflOn = true) {
+        if (state.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[0].toMixer.PFL_ON[0].mixerMessage,
                 channelIndex+1,

@@ -15,7 +15,6 @@ import {
 import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
 
 export class SSLMixerConnection {
-    store: IStore;
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
     SSLConnection: any;

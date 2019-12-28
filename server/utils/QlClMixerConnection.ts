@@ -16,7 +16,6 @@ import {
 
 
 export class QlClMixerConnection {
-    store: IStore;
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
     scpConnection: any;

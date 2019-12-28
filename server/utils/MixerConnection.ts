@@ -115,7 +115,7 @@ export class MixerGenericConnection {
         if (state.faders[0].fader[faderIndex].pstOn) {
             level = state.faders[0].fader[faderIndex].faderLevel
         } else if (state.faders[0].fader[faderIndex].pstVoOn) {
-            level = state.faders[0].fader[faderIndex].faderLevel * (100-parseFloat(state.settings[0].voLevel))/100 
+            level = state.faders[0].fader[faderIndex].faderLevel * (100-state.settings[0].voLevel)/100 
         }
         state.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
             if (faderIndex === channel.assignedFader) {
@@ -225,7 +225,7 @@ export class MixerGenericConnection {
         let targetVal = state.faders[0].fader[faderIndex].faderLevel;
 
         if (state.faders[0].fader[faderIndex].voOn) {
-            targetVal = targetVal * (100-parseFloat(state.settings[0].voLevel))/100 
+            targetVal = targetVal * (100-state.settings[0].voLevel)/100 
         }
         const step: number = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;

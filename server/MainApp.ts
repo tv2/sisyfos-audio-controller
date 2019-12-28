@@ -10,7 +10,6 @@ const path = require('path')
 export class MainApp {
     numberOfChannels: number[] = []
     settingsPath: string = ''
-    store: any
 
     constructor() {
         console.log('SETTINGS UP STATE')

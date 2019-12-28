@@ -24,7 +24,6 @@ const OSC_PATH_PRODUCER_FILE_NAME = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/file
 const OSC_PATH_PRODUCER_CHANNEL_LAYOUT = /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/channel_layout/
 
 export class CasparCGConnection {
-    store: IStore;
     mixerProtocol: ICasparCGMixerGeometry;
     connection: any;
     oscClient: any;
