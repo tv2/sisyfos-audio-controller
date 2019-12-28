@@ -16,6 +16,7 @@ export const loadSettings = (storeRedux: any) => {
         return (JSON.parse(fs.readFileSync(path.resolve('storage', 'settings.json'))))
     }
     catch (error) {
+        console.log('Couldn´t read Settings.json file, creating af new')
         saveSettings(settingsInterface);
         return (settingsInterface);
     }
@@ -23,8 +24,11 @@ export const loadSettings = (storeRedux: any) => {
 
 export const saveSettings = (settings: any) => {
     let json = JSON.stringify(settings);
+    if (!fs.existsSync('storage')){
+        fs.mkdirSync('storage');
+    }
     fs.writeFile(path.resolve('storage', 'settings.json'), json, 'utf8', (error: any)=>{
-        console.log(error);
+        console.log('Error writing settings.json file: ', error);
     });
 };
 
