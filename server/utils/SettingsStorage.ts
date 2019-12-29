@@ -85,7 +85,11 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
 export const saveSnapshotState = (stateSnapshot: any, fileName: string) => {
     let json = JSON.stringify(stateSnapshot);
     fs.writeFile(fileName, json, 'utf8', (error: any)=>{
-        logger.error("Error saving Snapshot" + String(error), {})
+        if (error) {
+            logger.error("Error saving Snapshot" + String(error), {})
+        } else {
+            logger.verbose('Snapshot ' + fileName + ' Saved to storage folder', {})
+        }
     });
 }
 

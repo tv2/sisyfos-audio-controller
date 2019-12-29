@@ -29,6 +29,7 @@
     "scripts": {
         "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
         "start": "node dist/server/index.js",
+        "start:dev": "node --inspect dist/server/index.js",
         "build-client": "yarn webpack --config webpack.build.config.js --mode production",
         "build-server": "yarn tsc -p server/tsconfig.json",
         "build-watch": "yarn tsc -p server/tsconfig.json --watch & webpack --config webpack.build.config.js --watch --mode development",
