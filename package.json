@@ -61,7 +61,9 @@
         "socket.io-client": "^2.3.0",
         "standard-version": "^7.0.1",
         "web-midi-api": "^2.0.6",
-        "webmidi": "^2.5.1"
+        "webmidi": "^2.5.1",
+        "winston": "^3.2.1",
+        "winston-elasticsearch": "^0.8.3"
     },
     "devDependencies": {
         "@babel/core": "^7.6.2",

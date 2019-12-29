@@ -5,6 +5,7 @@ import { AutomationConnection } from './utils/AutomationConnection';
 import { HuiMidiRemoteConnection } from './utils/HuiMidiRemoteConnection';
 import { MixerProtocolPresets } from './constants/MixerProtocolPresets';
 import { state } from './reducers/store'
+import { logger } from './utils/logger';
 
 const path = require('path')
 export class MainApp {
@@ -12,7 +13,7 @@ export class MainApp {
     settingsPath: string = ''
 
     constructor() {
-        console.log('SETTINGS UP STATE')
+        logger.info('SETTINGS UP STATE', {})
 
         global.mixerGenericConnection = new MixerGenericConnection();
         global.automationConnection = new AutomationConnection();

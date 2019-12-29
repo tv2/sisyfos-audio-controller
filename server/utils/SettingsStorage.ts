@@ -7,16 +7,16 @@ import { store, state } from '../reducers/store'
 // Redux:
 import { SET_COMPLETE_CH_STATE } from '../reducers/channelActions'
 import { SET_COMPLETE_FADER_STATE } from  '../reducers/faderActions'
+import { logger } from './logger'
 
 
 export const loadSettings = (storeRedux: any) => {
-    // console.log('SETTINGS IS LOADING')
     let settingsInterface = storeRedux.settings[0];
     try {
         return (JSON.parse(fs.readFileSync(path.resolve('storage', 'settings.json'))))
     }
     catch (error) {
-        console.log('Couldn´t read Settings.json file, creating af new')
+        logger.error('Couldn´t read Settings.json file, creating af new', {})
         saveSettings(settingsInterface);
         return (settingsInterface);
     }
@@ -28,7 +28,7 @@ export const saveSettings = (settings: any) => {
         fs.mkdirSync('storage');
     }
     fs.writeFile(path.resolve('storage', 'settings.json'), json, 'utf8', (error: any)=>{
-        console.log('Error writing settings.json file: ', error);
+        logger.error('Error writing settings.json file: ', error);
     });
 };
 
@@ -78,15 +78,14 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
         
     }
     catch (error) {
-        console.log("Error loading Snapshot");
+        logger.error("Error loading Snapshot" + String(error), {})
     }
 };
 
 export const saveSnapshotState = (stateSnapshot: any, fileName: string) => {
     let json = JSON.stringify(stateSnapshot);
-    //console.log('Saving State, in file: ', fileName, 'State :', stateSnapshot)
     fs.writeFile(fileName, json, 'utf8', (error: any)=>{
-        //console.log(error);
+        logger.error("Error saving Snapshot" + String(error), {})
     });
 }
 
