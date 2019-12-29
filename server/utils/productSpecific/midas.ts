@@ -9,7 +9,6 @@ export const midasMeter = (message: any) => {
     const headerData = 4;
     let uint8bytes = Uint8Array.from(message[0]);
     let dataview = new DataView(uint8bytes.buffer);
-    //console.log(dataview);
     let vuMeters = [];
     let numberOfChannels = state.settings[0].numberOfChannelsInType[0];
 

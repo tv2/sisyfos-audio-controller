@@ -12,6 +12,7 @@ import {
     SET_CHANNEL_LABEL,
     TOGGLE_PGM
 } from '../reducers/faderActions'
+import { logger } from './logger'
 
 
 
@@ -30,7 +31,7 @@ export class QlClMixerConnection {
 
         this.scpConnection = new net.Socket()
         this.scpConnection.connect(50000, state.settings[0].deviceIp, () => {
-            console.log('Connected to Yamaha mixer')
+            logger.info('Connected to Yamaha mixer', {})
 
         }
         );
@@ -40,7 +41,7 @@ export class QlClMixerConnection {
     setupMixerConnection() {
         this.scpConnection
             .on("ready", () => {
-                console.log("Receiving state of desk");
+                logger.info("Receiving state of desk", {})
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes("{channel}")) {
                         state.channels[0].channel.map((channel: any, index: any) => {
@@ -108,13 +109,12 @@ export class QlClMixerConnection {
                             channel: state.channels[0].channel[ch - 1].assignedFader,
                             label: message.args[0]
                         });
-                        console.log("OSC message: ", message);
                     }*/
                 })
             })
             .on('error', (error: any) => {
-                console.log("Error : ", error);
-                console.log("Lost SCP connection");
+                logger.error("Error : " + String(error), {})
+                logger.info("Lost SCP connection", {})
             });
 
         //Ping OSC mixer if mixerProtocol needs it.

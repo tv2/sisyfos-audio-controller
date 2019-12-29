@@ -49,13 +49,14 @@ import {
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
 import { IChannel } from './reducers/channelsReducer';
+import { logger } from './utils/logger';
 const path = require('path')
 
 export class MainThreadHandlers {
     store: any
 
     constructor() {
-        console.log('Creating MainThreadHandlers')
+        logger.info('Creating MainThreadHandlers', {})
 
         store.dispatch({
             type:UPDATE_SETTINGS,
@@ -89,26 +90,24 @@ export class MainThreadHandlers {
     }
 
     socketServerHandlers(socket: any) {
-        console.log('SETTING UP SOCKET IO MAIN HANDLERS')
+        logger.info('SETTING UP SOCKET IO MAIN HANDLERS', {})
 
         // get-store get-settings and get-mixerprotocol will be replaces with
         // serverside Redux middleware emitter when moved to Socket IO:
         socket
         .on('get-store', (
             () => { 
-                // console.log('Settings initial store on :', socket.client.id)
+                logger.info('Settings initial store on :' + String(socket.client.id), {})
                 this.updateFullClientStore()
             })
         )
         .on('get-settings', (
             () => { 
-                //console.log('Data received :', payload)
                 global.socketServer.emit('set-settings', loadSettings(state))
             })
         )
         .on('get-mixerprotocol', (
             () => { 
-                //console.log('Data received', payload)
                 global.socketServer.emit('set-mixerprotocol', 
                     {
                         'mixerProtocol': global.mixerProtocol,
@@ -121,7 +120,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_GET_SNAPSHOT_LIST, (
             () => { 
-                console.log('Get snapshot list')
+                logger.info('Get snapshot list', {})
                 global.socketServer.emit(
                     SOCKET_RETURN_SNAPSHOT_LIST, 
                     getSnapShotList()
@@ -130,14 +129,14 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_LOAD_SNAPSHOT, (
             (payload: string) => { 
-                console.log('Load Snapshot')
+                logger.info('Load Snapshot', {})
                 global.mainApp.loadSnapshotSettings(path.resolve('storage', payload), false)
                 this.updateFullClientStore()
             })
         )
         .on(SOCKET_SAVE_SNAPSHOT, (
             (payload: string) => { 
-                console.log('Save Snapshot')
+                logger.info('Save Snapshot', {})
                 global.mainApp.saveSnapshotSettings(path.resolve('storage', payload))
 
                 global.socketServer.emit(
@@ -148,7 +147,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SAVE_SETTINGS, (
             (payload: any) => { 
-                console.log('Save settings :', payload)
+                logger.info('Save settings :' + String(payload), {})
                 saveSettings(payload)
                 this.updateFullClientStore()
             })
@@ -160,7 +159,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_ASSIGNED_FADER, (
             (payload: any) => { 
-                console.log('Set assigned fader. Channel:', payload.channel, 'Fader :', payload.faderAssign)
+                logger.verbose('Set assigned fader. Channel:' + String(payload.channel) + 'Fader :' +String(payload.faderAssign), {})
                 store.dispatch({
                     type: SET_ASSIGNED_FADER,
                     channel: payload.channel,
@@ -181,7 +180,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_AUX_LEVEL, (
             (payload: any) => { 
-                //console.log('Set Auxlevel Channel:', payload.channel)
+                logger.verbose('Set Auxlevel Channel:' + String(payload.channel), {})
                 store.dispatch({
                     type: SET_AUX_LEVEL,
                     channel: payload.channel,
@@ -193,7 +192,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_THRESHOLD, (
             (payload: any) => { 
-                //console.log('Set Threshold:', payload.channel)
+                logger.verbose('Set Threshold:' + String(payload.channel), {})
                 store.dispatch({
                     type: SET_FADER_THRESHOLD,
                     channel: payload.channel,
@@ -205,7 +204,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_RATIO, (
             (payload: any) => { 
-                //console.log('Set Ratio:', payload.channel)
+                logger.verbose('Set Ratio:' + String(payload.channel),{})
                 store.dispatch({
                     type: SET_FADER_RATIO,
                     channel: payload.channel,
@@ -217,7 +216,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_LOW, (
             (payload: any) => { 
-                //console.log('Set Low:', payload.channel)
+                logger.verbose('Set Low:' + String(payload.channel),{})
                 store.dispatch({
                     type: SET_FADER_LOW,
                     channel: payload.channel,
@@ -229,7 +228,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_MID, (
             (payload: any) => { 
-                //console.log('Set Mid:', payload.level, ' On channelIndex :', payload.channel)
+                logger.verbose('Set Mid:' + String(payload.level), {})
                 store.dispatch({
                     type: SET_FADER_MID,
                     channel: payload.channel,
@@ -241,7 +240,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_HIGH, (
             (payload: any) => { 
-                //console.log('Set High:', payload.channel)
+                logger.verbose('Set High:' + String(payload.channel), {})
                 store.dispatch({
                     type: SET_FADER_HIGH,
                     channel: payload.channel,

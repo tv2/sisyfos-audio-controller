@@ -17,6 +17,7 @@ import {
 } from '../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
 import { SOCKET_SET_VU } from '../constants/SOCKET_IO_DISPATCHERS';
+import { logger } from './logger';
 
 export class OscMixerConnection {
     mixerProtocol: IMixerProtocol;
@@ -49,7 +50,7 @@ export class OscMixerConnection {
     setupMixerConnection() {
         this.oscConnection
         .on("ready", () => {
-            console.log("Receiving state of desk");
+            logger.info("Receiving state of desk", {})
             
             this.mixerProtocol.initializeCommands.forEach((item) => {
                 if (item.mixerMessage.includes("{channel}")) {
@@ -182,7 +183,7 @@ export class OscMixerConnection {
                         label: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
-                console.log("OSC message: ", message.address);
+                logger.verbose("OSC message: " + message.address, {})
             }
         })
         .on('error', (error: any) => {
@@ -191,12 +192,12 @@ export class OscMixerConnection {
                 mixerOnline: false
             });
             global.mainThreadHandler.updateFullClientStore()
-            console.log("Error : ", error);
-            console.log("Lost OSC connection");
+            logger.error("Error : " + String(error), {})
+            logger.info("Lost OSC connection", {})
         });
 
         this.oscConnection.open();
-        console.log(`OSC listening on port ` + state.settings[0].localOscPort );
+        logger.info(`OSC listening on port ` + String(state.settings[0].localOscPort ), {})
 
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {

@@ -13,6 +13,7 @@ import {
     SET_MUTE
  } from  '../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
+import { logger } from './logger'
 
 export class SSLMixerConnection {
     mixerProtocol: IMixerProtocol;
@@ -34,7 +35,7 @@ export class SSLMixerConnection {
 
         this.SSLConnection = new net.Socket()
         this.SSLConnection.connect(state.settings[0].devicePort, state.settings[0].deviceIp, () => {
-            console.log('Connected to SSL')
+            logger.info('Connected to SSL', {})
 
         }
         );
@@ -61,7 +62,7 @@ export class SSLMixerConnection {
                     mixerOnline: true
                 });
                 
-                console.log("Receiving state of desk");
+                logger.info("Receiving state of desk", {})
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes("{channel}")) {
                         state.channels[0].channel.map((channel: any, index: any) => {
@@ -149,7 +150,7 @@ export class SSLMixerConnection {
                                 global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
                             }
                         } catch (error) {
-                                console.log('Error translating received message :', error)   
+                                logger.error('Error translating received message :' + String(error), {})
                         } 
                         
                     } else if (buffer[1] === 5 && buffer[2] === 255 && buffer[4] === 1 && !lastWasAck) {
@@ -158,7 +159,7 @@ export class SSLMixerConnection {
                         let commandHex = buffer.toString('hex')
                         let channelIndex = buffer[6]
                         let value: boolean = buffer[7] === 0 ? true : false
-                        console.log('Receive Buffer Channel On/off: ', this.formatHexWithSpaces(commandHex, ' ', 2))
+                        logger.verbose('Receive Buffer Channel On/off: ' + this.formatHexWithSpaces(commandHex, ' ', 2), {})
                         
                         let assignedFaderIndex = state.channels[0].channel[channelIndex].assignedFader
 
@@ -179,7 +180,7 @@ export class SSLMixerConnection {
                         global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
                     } else {
                         let commandHex = buffer.toString('hex')
-                        console.log('Receieve Buffer Hex: ', this.formatHexWithSpaces(commandHex, ' ', 2))
+                        logger.verbose('Receieve Buffer Hex: ' + this.formatHexWithSpaces(commandHex, ' ', 2), {})
                     }
                     if (buffer[0] === 4) {
                         lastWasAck = true
@@ -189,8 +190,8 @@ export class SSLMixerConnection {
                 })    
             })
             .on('error', (error: any) => {
-                console.log("Error : ", error);
-                console.log("Lost SCP connection");
+                logger.error("Error : " + String(error), {})
+                logger.info("Lost SCP connection", {})
             });
 
         //Ping mixer to get mixerOnlineState
@@ -279,7 +280,7 @@ export class SSLMixerConnection {
         let a = sslMessage.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
         
-        console.log("Send HEX: ", sslMessage) 
+        logger.verbose("Send HEX: " + sslMessage, {}) 
         this.SSLConnection.write(buf)
     }
 
@@ -294,7 +295,7 @@ export class SSLMixerConnection {
         let a = sslMessage.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
         
-        console.log("Send HEX: ", sslMessage) 
+        logger.verbose("Send HEX: " + sslMessage, {}) 
         this.SSLConnection.write(buf)
     }
 
@@ -304,7 +305,7 @@ export class SSLMixerConnection {
         let a = sslMessage.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
         
-        console.log("Send HEX: ", sslMessage) 
+        logger.verbose("Send HEX: " + sslMessage, {}) 
         this.SSLConnection.write(buf)
     }
 

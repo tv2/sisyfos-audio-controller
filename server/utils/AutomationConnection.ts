@@ -19,6 +19,7 @@ import {
     CLEAR_PST,
     SNAP_RECALL
 } from '../reducers/faderActions'
+import { logger } from './logger';
 
 
 const AUTOMATION_OSC_PORT = 5255;
@@ -43,11 +44,11 @@ export class AutomationConnection {
         .on("ready", () => {
             this.automationProtocol.initializeCommands.map((item) => {
                 // this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
-                console.log("Listening for Automation via OSC over UDP.");
+                logger.info("Listening for Automation via OSC over UDP.", {})
             });
         })
         .on('message', (message: any, timetag: number | undefined, info: any) => {
-            console.log("RECIEVED AUTOMATION MESSAGE :", message.address, message.args[0]);
+            logger.info("RECIEVED AUTOMATION MESSAGE :" + message.address + message.args[0], {})
             //Set state of Sisyfos:
             if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_PGM_ON_OFF)){
@@ -260,12 +261,12 @@ export class AutomationConnection {
             }
         })
         .on('error', (error: any) => {
-            console.log("Error : ", error);
-            console.log("Lost OSC Automation connection");
+            logger.error("Error : ", error)
+            logger.info("Lost OSC Automation connection", {})
         });
 
         this.oscConnection.open();
-        console.log('OSC Automation listening on port ', AUTOMATION_OSC_PORT);
+        logger.info('OSC Automation listening on port ' + String(AUTOMATION_OSC_PORT), {})
 
     }
 

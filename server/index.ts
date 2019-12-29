@@ -6,6 +6,7 @@ import { Store } from 'redux'
 import { MixerGenericConnection } from './utils/MixerConnection';
 import { AutomationConnection } from './utils/AutomationConnection';
 import { IMixerProtocolGeneric } from './constants/MixerProtocolInterface';
+import { logger } from './utils/logger'
 
 const path = require('path')
 const url = require('url')
@@ -51,7 +52,7 @@ server.on('connection', () => {
 })
 
 global.socketServer.on('connection', ((socket: any) => {
-    console.log('Client connected :', socket.client.id)
+    logger.info('Client connected :' + String(socket.client.id), {})
     global.mainThreadHandler.socketServerHandlers(socket)
   })
 )

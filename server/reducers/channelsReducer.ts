@@ -86,7 +86,6 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
             nextState[0].channel[action.channel].private![action.tag] = action.value;
             return nextState;
         case SET_OPTION:
-            console.log(action);
             // TODO: This should be changed, as it´s not the "redux" way of handling it.
             // @ts-ignore
             global.mixerGenericConnection.updateChannelSettings(action.channel, action.prop, action.option);
