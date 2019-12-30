@@ -2,7 +2,6 @@ import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile, emptyMixerMessage }
 const fs = require('fs')
 import * as os from 'os';
 import * as path from 'path';
-import { logger } from '../../utils/logger';
 
 const CONFIG_FILE_NAME = 'sisyfos-casparcg-geometry.json';
 const geometryFile = path.join(os.homedir(), CONFIG_FILE_NAME);
@@ -17,7 +16,8 @@ try {
 		geometry = inputObj
 	}
 } catch (e) {
-	logger.info('CasparCG Audio geometry file has not been created', {})
+    // Handling a file should be removed from Constants in the future:
+	console.log('CasparCG Audio geometry file has not been created')
 }
 
 let CasparCGMasterObject: ICasparCGMixerGeometry | undefined = undefined
