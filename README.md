@@ -43,6 +43,12 @@ yarn
 yarn build
 yarn start
 ```
+Running Server with Elastic Search: 
+(no args will default to: 0.0.0.0:9200)
+```
+yarn start --loggerIp '192.168.12.12' --loggerPort 9302
+```
+
 ### Open GUI in browser:
 ```
 localhost:1176 (or whatever ip you use for Sisyfos Nodejs/Docker)
