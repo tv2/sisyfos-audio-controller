@@ -2,8 +2,8 @@ const winston = require('winston')
 const Elasticsearch = require('winston-elasticsearch')
 const processArgs = require('minimist')(process.argv.slice(2))
 
-const loggerIp = processArgs.loggerIp || "0.0.0.0"
-const loggerPort = processArgs.loggerPort || 9200
+const loggerIp = process.env.loggerIp || processArgs.loggerIp || "0.0.0.0"
+const loggerPort = process.env.loggerPort || processArgs.loggerPort || 9200
 
 console.log('Elastic Ip :', loggerIp)
 console.log('Elastic Port :', loggerPort)
