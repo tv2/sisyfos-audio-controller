@@ -31,8 +31,11 @@ Routing setups can be stored in STORAGE. So it´s possible to have different Rou
 ```
 docker pull olzzon/sisyfos-audio-controller:develop
 docker volume create sisyfos-vol
-sudo docker run --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller/storage  --network="host" --restart always olzzon/sisyfos-audio-controller:develop
+sudo docker run --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller/storage -e loggerIp='0.0.0.0' -e loggerPort=9300 --network="host" --restart always olzzon/sisyfos-audio-controller:develop
 ```
+Running Docker with Elastic Search: 
+Set env vars: loggerIp=xx.xx.xx.xx and loggerPort=xxxx 
+(no args will default to: 0.0.0.0:9200)
 
 ### Install Local node host:
 (Be aware that a server reload will quit server and you need an external source to restart)
