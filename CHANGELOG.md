@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.3.0...v2.3.1) (2020-01-01)
+
+
+### Bug Fixes
+
+* CI build errors ([d98475f](https://github.com/olzzon/sisyfos-audio-controller/commit/d98475f6b07381504c626f24394b4dbdacffd668))
+* create storage folder if not exists when trying to store settings for the first time ([41dcb09](https://github.com/olzzon/sisyfos-audio-controller/commit/41dcb09236e3768daa19fe64ce70499e769a0e1e))
+* do not use winston logger in contants files as they´re also used on client side ([fb2d847](https://github.com/olzzon/sisyfos-audio-controller/commit/fb2d84756d7330dfdf799f1269793d012ed0a195))
+* remove settings and default.shot from storage folder ([1c63eb2](https://github.com/olzzon/sisyfos-audio-controller/commit/1c63eb21933ce7414a405393b4c0564c80aace6f))
+* remove settings.json from server folder ([3229936](https://github.com/olzzon/sisyfos-audio-controller/commit/3229936a48c39765103204235a40935d92cb07e1))
+
 ## [2.3.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.2.0...v2.3.0) (2019-12-21)
 
 
