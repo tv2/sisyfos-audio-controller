@@ -1,7 +1,7 @@
 //Node Modules:
 const net = require('net')
 import { store, state } from '../reducers/store'
-
+import { huiRemoteConnection } from '../importClasses'
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface'
@@ -119,8 +119,8 @@ export class SSLMixerConnection {
                                         });
                                     }
                                     
-                                    if (global.huiRemoteConnection) {
-                                        global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                                    if (huiRemoteConnection) {
+                                        huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
                                     }
                                     if (state.faders[0].fader[assignedFaderIndex].pgmOn) {
                                         state.channels[0].channel.map((channel: any, index: number) => {
@@ -169,8 +169,8 @@ export class SSLMixerConnection {
                             muteOn: value
                         });
                         
-                        if (global.huiRemoteConnection) {
-                            global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                        if (huiRemoteConnection) {
+                            huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
                         }
                         state.channels[0].channel.forEach((channel: any, index: number) => {
                             if (channel.assignedFader === assignedFaderIndex && index !== channelIndex) {

@@ -1,6 +1,7 @@
 //Node Modules:
 const osc = require('osc')
 import { store, state } from '../reducers/store'
+import { mixerGenericConnection } from '../importClasses'
 
 //Utils:
 import { IAutomationProtocol, AutomationPresets } from '../constants/AutomationPresets';
@@ -55,14 +56,14 @@ export class AutomationConnection {
                 let ch = message.address.split("/")[2];
                 if (!state.faders[0].fader[ch - 1].ignoreAutomation) {
                     if (message.args[0] === 1) {
-                        global.mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
+                        mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
                         store.dispatch({
                             type: SET_PGM,
                             channel: ch - 1,
                             pgmOn: true
                         });
                     } else if (message.args[0] === 2) {
-                        global.mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
+                        mixerGenericConnection.checkForAutoResetThreshold(ch - 1)
                         store.dispatch({
                             type: SET_VO,
                             channel: ch - 1,
@@ -77,9 +78,9 @@ export class AutomationConnection {
                     }
 
                     if (message.args.length > 1) {
-                        global.mixerGenericConnection.updateOutLevel(ch-1, parseFloat(message.args[1]));
+                        mixerGenericConnection.updateOutLevel(ch-1, parseFloat(message.args[1]));
                     } else {
-                        global.mixerGenericConnection.updateOutLevel(ch-1);
+                        mixerGenericConnection.updateOutLevel(ch-1);
                     }
                 }
                 global.mainThreadHandler.updatePartialStore(ch - 1)
@@ -107,7 +108,7 @@ export class AutomationConnection {
                             pstOn: false
                         });
                     }
-                    global.mixerGenericConnection.updateNextAux(ch-1);
+                    mixerGenericConnection.updateNextAux(ch-1);
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                 }
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -128,7 +129,7 @@ export class AutomationConnection {
                             pstOn: false
                         });
                     }
-                    global.mixerGenericConnection.updateMuteState(ch-1)
+                    mixerGenericConnection.updateMuteState(ch-1)
                     global.mainThreadHandler.updatePartialStore(ch - 1)
 
                 }
@@ -142,7 +143,7 @@ export class AutomationConnection {
                         channel: ch - 1,
                         level: message.args[0]
                     });
-                    global.mixerGenericConnection.updateOutLevel(ch-1)
+                    mixerGenericConnection.updateOutLevel(ch-1)
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                 }
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -160,7 +161,7 @@ export class AutomationConnection {
                         channel: ch -1,
                         label: message.args[0]
                     });
-                    global.mixerGenericConnection.updateChannelName(ch-1)
+                    mixerGenericConnection.updateChannelName(ch-1)
                     global.mainThreadHandler.updatePartialStore(ch - 1)
 
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
@@ -168,7 +169,7 @@ export class AutomationConnection {
                 store.dispatch({
                     type: X_MIX
                 });
-                global.mixerGenericConnection.updateOutLevels();
+                mixerGenericConnection.updateOutLevels();
                 global.mainThreadHandler.updateFullClientStore()
             } else if ( this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CHANNEL_VISIBLE)){
@@ -184,14 +185,14 @@ export class AutomationConnection {
                     store.dispatch({
                         type: FADE_TO_BLACK
                 });
-                global.mixerGenericConnection.updateFadeToBlack();
+                mixerGenericConnection.updateFadeToBlack();
                 global.mainThreadHandler.updateFullClientStore()
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .CLEAR_PST)) {
                     store.dispatch({
                         type: CLEAR_PST
                 });
-                global.mixerGenericConnection.updateOutLevels();
+                mixerGenericConnection.updateOutLevels();
                 global.mainThreadHandler.updateFullClientStore()
             // Get state from Producers Audio Mixer:
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation

@@ -1,4 +1,5 @@
 import { store, state } from './reducers/store'
+import { mixerProtocolList, mixerProtocolPresets, mixerGenericConnection } from './importClasses'
 
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import { loadSettings, saveSettings, getSnapShotList } from './utils/SettingsStorage'
@@ -53,7 +54,6 @@ import { logger } from './utils/logger';
 const path = require('path')
 
 export class MainThreadHandlers {
-    store: any
 
     constructor() {
         logger.info('Creating MainThreadHandlers', {})
@@ -111,8 +111,8 @@ export class MainThreadHandlers {
                 global.socketServer.emit('set-mixerprotocol', 
                     {
                         'mixerProtocol': global.mixerProtocol,
-                        'mixerProtocolPresets': global.mixerProtocolPresets,
-                        'mixerProtocolList': global.mixerProtocolList,
+                        'mixerProtocolPresets': mixerProtocolPresets,
+                        'mixerProtocolList': mixerProtocolList,
 
                     }
                 )
@@ -198,7 +198,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateThreshold(payload.channel);               
+                mixerGenericConnection.updateThreshold(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -210,7 +210,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateRatio(payload.channel);               
+                mixerGenericConnection.updateRatio(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -222,7 +222,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateLow(payload.channel);               
+                mixerGenericConnection.updateLow(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -234,7 +234,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateMid(payload.channel);               
+                mixerGenericConnection.updateMid(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -246,7 +246,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateHigh(payload.channel);               
+                mixerGenericConnection.updateHigh(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -255,7 +255,7 @@ export class MainThreadHandlers {
                 store.dispatch({
                     type: NEXT_MIX
                 });
-                global.mixerGenericConnection.updateOutLevels()
+                mixerGenericConnection.updateOutLevels()
                 this.updateFullClientStore()
             })
         )
@@ -264,29 +264,29 @@ export class MainThreadHandlers {
                 store.dispatch({
                     type: CLEAR_PST
                 });
-                global.mixerGenericConnection.updateOutLevels()
+                mixerGenericConnection.updateOutLevels()
                 this.updateFullClientStore()
             })
         )
         .on(SOCKET_TOGGLE_PGM, (
             (faderIndex: any) => {
-                global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
+                mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 store.dispatch({
                     type: TOGGLE_PGM,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updateOutLevel(faderIndex)
+                mixerGenericConnection.updateOutLevel(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
         )
         .on(SOCKET_TOGGLE_VO, (
             (faderIndex: any) => {
-                global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
+                mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 store.dispatch({
                     type: TOGGLE_VO,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updateOutLevel(faderIndex)
+                mixerGenericConnection.updateOutLevel(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
         )
@@ -296,7 +296,7 @@ export class MainThreadHandlers {
                     type: TOGGLE_PST,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updateNextAux(faderIndex);
+                mixerGenericConnection.updateNextAux(faderIndex);
                 this.updatePartialStore(faderIndex)
             })
         )
@@ -306,7 +306,7 @@ export class MainThreadHandlers {
                     type: TOGGLE_PFL,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updatePflState(faderIndex);
+                mixerGenericConnection.updatePflState(faderIndex);
                 this.updatePartialStore(faderIndex)
             })
         )
@@ -316,7 +316,7 @@ export class MainThreadHandlers {
                     type: TOGGLE_MUTE,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updateMuteState(faderIndex);
+                mixerGenericConnection.updateMuteState(faderIndex);
                 this.updatePartialStore(faderIndex)
             })
         )
@@ -336,7 +336,7 @@ export class MainThreadHandlers {
                     channel: payload.faderIndex,
                     level: parseFloat(payload.level)
                 });
-                global.mixerGenericConnection.updateOutLevel(payload.faderIndex)
+                mixerGenericConnection.updateOutLevel(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })
         )

@@ -12,6 +12,8 @@ if (!global.performance) global.performance = { now: require('performance-now') 
 const WebMidi = require('webmidi')
 
 import { store, state } from '../reducers/store'
+import { huiRemoteConnection } from '../importClasses'
+
 
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
@@ -70,8 +72,8 @@ export class MidiMixerConnection {
                             channel: state.channels[0].channel[ch - 1].assignedFader -1
                         });
                     }
-                    if (global.huiRemoteConnection) {
-                        global.huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, state.faders[0].fader[faderChannel - 1].faderLevel)
+                    if (huiRemoteConnection) {
+                        huiRemoteConnection.updateRemoteFaderState(faderChannel - 1, state.faders[0].fader[faderChannel - 1].faderLevel)
                     }
                     if (state.faders[0].fader[faderChannel - 1].pgmOn && this.mixerProtocol.mode === 'master')
                     {

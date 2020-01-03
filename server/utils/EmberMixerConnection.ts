@@ -1,5 +1,6 @@
 const DeviceTree = require('emberplus')
 import { store, state } from '../reducers/store'
+import { huiRemoteConnection } from '../importClasses'
 
 //Utils:
 import { IMixerProtocol } from '../constants/MixerProtocolInterface';
@@ -105,8 +106,8 @@ export class EmberMixerConnection {
                         channel: ch-1,
                         level: node.contents.value
                     });
-                    if (global.huiRemoteConnection) {
-                        global.huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
+                    if (huiRemoteConnection) {
+                        huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
                     }
                 }
 

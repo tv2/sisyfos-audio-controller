@@ -1,6 +1,7 @@
 //Node Modules:
 import WebMidi from 'webmidi';
 import { store, state } from '../reducers/store'
+import { mixerGenericConnection } from '../importClasses'
 
 import { 
     SET_FADER_LEVEL, 
@@ -67,7 +68,7 @@ export class HuiMidiRemoteConnection {
                         channel: message.data[1],
                         level: this.convertFromRemoteLevel(message.data[2])
                     });
-                    global.mixerGenericConnection.updateOutLevel(message.data[1]);
+                    mixerGenericConnection.updateOutLevel(message.data[1]);
                     this.updateRemoteFaderState(message.data[1], this.convertFromRemoteLevel(message.data[2]))
                 } else if (message.data[1] = 15) {
                     
@@ -81,7 +82,7 @@ export class HuiMidiRemoteConnection {
                             type: TOGGLE_PGM,
                             channel: this.activeHuiChannel
                         });
-                        global.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
+                        mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
@@ -89,7 +90,7 @@ export class HuiMidiRemoteConnection {
                             type: TOGGLE_PFL,
                             channel: this.activeHuiChannel
                         });
-                        global.mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
+                        mixerGenericConnection.updateOutLevel(this.activeHuiChannel);
                         this.updateRemotePgmPstPfl(this.activeHuiChannel);
                     }
                 }

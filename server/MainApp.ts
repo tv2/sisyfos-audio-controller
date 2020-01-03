@@ -1,9 +1,8 @@
 //Utils:
 import { loadSnapshotState, saveSnapshotState } from './utils/SettingsStorage';
-import { MixerGenericConnection } from './utils/MixerConnection';
-import { AutomationConnection } from './utils/AutomationConnection';
-import { HuiMidiRemoteConnection } from './utils/HuiMidiRemoteConnection';
-import { MixerProtocolPresets } from './constants/MixerProtocolPresets';
+import { 
+    mixerProtocolPresets,
+} from './importClasses'
 import { state } from './reducers/store'
 import { logger } from './utils/logger';
 
@@ -15,14 +14,8 @@ export class MainApp {
     constructor() {
         logger.info('SETTINGS UP STATE', {})
 
-        global.mixerGenericConnection = new MixerGenericConnection();
-        global.automationConnection = new AutomationConnection();
-        if (state.settings[0].enableRemoteFader){
-            global.huiRemoteConnection = new HuiMidiRemoteConnection();
-        }
-
         this.snapShopStoreTimer();
-        global.mixerProtocol = MixerProtocolPresets[state.settings[0].mixerProtocol];
+        global.mixerProtocol = mixerProtocolPresets[state.settings[0].mixerProtocol];
         global.mixerProtocol.channelTypes.forEach((item: any, index: number) => {
             this.numberOfChannels.push(state.settings[0].numberOfChannelsInType[index]);
         });
