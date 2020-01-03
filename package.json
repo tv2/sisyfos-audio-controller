@@ -37,7 +37,6 @@
         "unit": "jest",
         "test": "yarn unit",
         "release": "standard-version",
-        "release-minor": "standard-version --release-as minor",
         "prepareChangelog": "standard-version --prerelease",
         "watch": "jest --watch",
         "validate:dependencies": "yarn audit && yarn license-validate",
