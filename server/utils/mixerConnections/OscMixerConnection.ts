@@ -1,23 +1,24 @@
 //Node Modules:
 const osc = require('osc')
-import { store, state } from '../reducers/store'
+import { store, state } from '../../reducers/store'
+import { huiRemoteConnection } from '../../mainClasses'
+import { socketServer } from '../../expressHandler'
 
 
 //Utils:
-import { IMixerProtocol } from '../constants/MixerProtocolInterface';
-import { behringerMeter } from './productSpecific/behringer';
-import { midasMeter } from './productSpecific/midas';
-import { IStore } from '../reducers/indexReducer';
-import { SET_OUTPUT_LEVEL, SET_AUX_LEVEL } from '../reducers/channelActions'
+import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
+import { behringerMeter } from './productSpecific/behringer'
+import { midasMeter } from './productSpecific/midas'
+import { SET_OUTPUT_LEVEL, SET_AUX_LEVEL } from '../../reducers/channelActions'
 import { 
     SET_VU_LEVEL, 
     SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
     TOGGLE_PGM
-} from '../reducers/faderActions'
-import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
-import { SOCKET_SET_VU } from '../constants/SOCKET_IO_DISPATCHERS';
-import { logger } from './logger';
+} from '../../reducers/faderActions'
+import { SET_MIXER_ONLINE } from '../../reducers/settingsActions';
+import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
+import { logger } from '../logger';
 
 export class OscMixerConnection {
     mixerProtocol: IMixerProtocol;
@@ -86,7 +87,7 @@ export class OscMixerConnection {
                         channel: state.channels[0].channel[ch - 1].assignedFader,
                         level: message.args[0]
                     });
-                    global.socketServer.emit(
+                    socketServer.emit(
                         SOCKET_SET_VU, 
                         {
                             faderIndex: state.channels[0].channel[ch - 1].assignedFader,
@@ -145,8 +146,8 @@ export class OscMixerConnection {
                     }
                     global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
 
-                    if (global.huiRemoteConnection) {
-                        global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, message.args[0]);
+                    if (huiRemoteConnection) {
+                        huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, message.args[0]);
                     }
                 } 
             } else if ( this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer

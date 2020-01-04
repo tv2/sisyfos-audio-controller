@@ -1,4 +1,7 @@
 import { store, state } from './reducers/store'
+import { mixerProtocolList, mixerProtocolPresets, mixerGenericConnection } from './mainClasses'
+import { SnapshotHandler } from './utils/SnapshotHandler'
+import { socketServer } from './expressHandler'
 
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import { loadSettings, saveSettings, getSnapShotList } from './utils/SettingsStorage'
@@ -53,11 +56,12 @@ import { logger } from './utils/logger';
 const path = require('path')
 
 export class MainThreadHandlers {
-    store: any
+    snapshotHandler: SnapshotHandler
 
     constructor() {
-        logger.info('Creating MainThreadHandlers', {})
+        logger.info('Setting up MainThreadHandlers', {})
 
+        this.snapshotHandler = new SnapshotHandler()
         store.dispatch({
             type:UPDATE_SETTINGS,
             settings: loadSettings(state)
@@ -65,12 +69,12 @@ export class MainThreadHandlers {
     }
 
     updateFullClientStore() {
-        global.socketServer.emit(SOCKET_SET_FULL_STORE, state)
+        socketServer.emit(SOCKET_SET_FULL_STORE, state)
     }
 
     updatePartialStore(faderIndex: number) {
         state.faders[0].fader[faderIndex]
-        global.socketServer.emit(
+        socketServer.emit(
             SOCKET_SET_STORE_FADER,
             {
                 faderIndex: faderIndex,
@@ -79,7 +83,7 @@ export class MainThreadHandlers {
         )
         state.channels[0].channel.forEach((channel: IChannel, index: number) => {
             if (channel.assignedFader === faderIndex) {
-                global.socketServer.emit(
+                socketServer.emit(
                     SOCKET_SET_STORE_CHANNEL, {
                         channelIndex: index,
                         state: channel
@@ -103,16 +107,16 @@ export class MainThreadHandlers {
         )
         .on('get-settings', (
             () => { 
-                global.socketServer.emit('set-settings', loadSettings(state))
+                socketServer.emit('set-settings', loadSettings(state))
             })
         )
         .on('get-mixerprotocol', (
             () => { 
-                global.socketServer.emit('set-mixerprotocol', 
+                socketServer.emit('set-mixerprotocol', 
                     {
-                        'mixerProtocol': global.mixerProtocol,
-                        'mixerProtocolPresets': global.mixerProtocolPresets,
-                        'mixerProtocolList': global.mixerProtocolList,
+                        'mixerProtocol': mixerProtocolPresets[state.settings[0].mixerProtocol],
+                        'mixerProtocolPresets': mixerProtocolPresets,
+                        'mixerProtocolList': mixerProtocolList,
 
                     }
                 )
@@ -121,7 +125,7 @@ export class MainThreadHandlers {
         .on(SOCKET_GET_SNAPSHOT_LIST, (
             () => { 
                 logger.info('Get snapshot list', {})
-                global.socketServer.emit(
+                socketServer.emit(
                     SOCKET_RETURN_SNAPSHOT_LIST, 
                     getSnapShotList()
                 )
@@ -130,16 +134,16 @@ export class MainThreadHandlers {
         .on(SOCKET_LOAD_SNAPSHOT, (
             (payload: string) => { 
                 logger.info('Load Snapshot', {})
-                global.mainApp.loadSnapshotSettings(path.resolve('storage', payload), false)
+                this.snapshotHandler.loadSnapshotSettings(path.resolve('storage', payload), false)
                 this.updateFullClientStore()
             })
         )
         .on(SOCKET_SAVE_SNAPSHOT, (
             (payload: string) => { 
                 logger.info('Save Snapshot', {})
-                global.mainApp.saveSnapshotSettings(path.resolve('storage', payload))
+                this.snapshotHandler.saveSnapshotSettings(path.resolve('storage', payload))
 
-                global.socketServer.emit(
+                socketServer.emit(
                     SOCKET_RETURN_SNAPSHOT_LIST, 
                     getSnapShotList()
                 )
@@ -198,7 +202,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateThreshold(payload.channel);               
+                mixerGenericConnection.updateThreshold(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -210,7 +214,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateRatio(payload.channel);               
+                mixerGenericConnection.updateRatio(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -222,7 +226,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateLow(payload.channel);               
+                mixerGenericConnection.updateLow(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -234,7 +238,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateMid(payload.channel);               
+                mixerGenericConnection.updateMid(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -246,7 +250,7 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     level: payload.level
                 });
-                global.mixerGenericConnection.updateHigh(payload.channel);               
+                mixerGenericConnection.updateHigh(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )
@@ -255,7 +259,7 @@ export class MainThreadHandlers {
                 store.dispatch({
                     type: NEXT_MIX
                 });
-                global.mixerGenericConnection.updateOutLevels()
+                mixerGenericConnection.updateOutLevels()
                 this.updateFullClientStore()
             })
         )
@@ -264,29 +268,29 @@ export class MainThreadHandlers {
                 store.dispatch({
                     type: CLEAR_PST
                 });
-                global.mixerGenericConnection.updateOutLevels()
+                mixerGenericConnection.updateOutLevels()
                 this.updateFullClientStore()
             })
         )
         .on(SOCKET_TOGGLE_PGM, (
             (faderIndex: any) => {
-                global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
+                mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 store.dispatch({
                     type: TOGGLE_PGM,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updateOutLevel(faderIndex)
+                mixerGenericConnection.updateOutLevel(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
         )
         .on(SOCKET_TOGGLE_VO, (
             (faderIndex: any) => {
-                global.mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
+                mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 store.dispatch({
                     type: TOGGLE_VO,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updateOutLevel(faderIndex)
+                mixerGenericConnection.updateOutLevel(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
         )
@@ -296,7 +300,7 @@ export class MainThreadHandlers {
                     type: TOGGLE_PST,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updateNextAux(faderIndex);
+                mixerGenericConnection.updateNextAux(faderIndex);
                 this.updatePartialStore(faderIndex)
             })
         )
@@ -306,7 +310,7 @@ export class MainThreadHandlers {
                     type: TOGGLE_PFL,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updatePflState(faderIndex);
+                mixerGenericConnection.updatePflState(faderIndex);
                 this.updatePartialStore(faderIndex)
             })
         )
@@ -316,7 +320,7 @@ export class MainThreadHandlers {
                     type: TOGGLE_MUTE,
                     channel: faderIndex
                 });
-                global.mixerGenericConnection.updateMuteState(faderIndex);
+                mixerGenericConnection.updateMuteState(faderIndex);
                 this.updatePartialStore(faderIndex)
             })
         )
@@ -336,7 +340,7 @@ export class MainThreadHandlers {
                     channel: payload.faderIndex,
                     level: parseFloat(payload.level)
                 });
-                global.mixerGenericConnection.updateOutLevel(payload.faderIndex)
+                mixerGenericConnection.updateOutLevel(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })
         )

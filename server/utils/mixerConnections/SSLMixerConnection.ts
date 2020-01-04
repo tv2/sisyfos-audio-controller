@@ -1,19 +1,19 @@
 //Node Modules:
 const net = require('net')
-import { store, state } from '../reducers/store'
-
+import { store, state } from '../../reducers/store'
+import { huiRemoteConnection } from '../../mainClasses'
 
 //Utils:
-import { IMixerProtocol } from '../constants/MixerProtocolInterface'
-import { IStore } from '../reducers/indexReducer'
-import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
+import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
+import { IStore } from '../../reducers/indexReducer'
+import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
 import { 
     SET_FADER_LEVEL,
     TOGGLE_PGM,
     SET_MUTE
- } from  '../reducers/faderActions'
-import { SET_MIXER_ONLINE } from '../reducers/settingsActions';
-import { logger } from './logger'
+ } from  '../../reducers/faderActions'
+import { SET_MIXER_ONLINE } from '../../reducers/settingsActions';
+import { logger } from '../logger'
 
 export class SSLMixerConnection {
     mixerProtocol: IMixerProtocol;
@@ -119,8 +119,8 @@ export class SSLMixerConnection {
                                         });
                                     }
                                     
-                                    if (global.huiRemoteConnection) {
-                                        global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                                    if (huiRemoteConnection) {
+                                        huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
                                     }
                                     if (state.faders[0].fader[assignedFaderIndex].pgmOn) {
                                         state.channels[0].channel.map((channel: any, index: number) => {
@@ -169,8 +169,8 @@ export class SSLMixerConnection {
                             muteOn: value
                         });
                         
-                        if (global.huiRemoteConnection) {
-                            global.huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                        if (huiRemoteConnection) {
+                            huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value ? 1 : 0);
                         }
                         state.channels[0].channel.forEach((channel: any, index: number) => {
                             if (channel.assignedFader === assignedFaderIndex && index !== channelIndex) {

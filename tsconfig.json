@@ -22,7 +22,7 @@
       "allowSyntheticDefaultImports": true
     },
     "include": [
-        "src", "server"
+        "client", "server"
     ],
     "exclude": [
       "node_modules",

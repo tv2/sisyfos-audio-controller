@@ -7,7 +7,7 @@ import io from 'socket.io-client'
 //Redux:
 import { createStore } from 'redux';
 import { Provider as ReduxProvider} from 'react-redux';
-import indexReducer from './../server/reducers/indexReducer';
+import indexReducer from '../server/reducers/indexReducer';
 import { SOCKET_GET_SNAPSHOT_LIST } from '../server/constants/SOCKET_IO_DISPATCHERS';
 
 declare global {

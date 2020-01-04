@@ -1,29 +1,23 @@
 //Utils:
-import { loadSnapshotState, saveSnapshotState } from './utils/SettingsStorage';
-import { MixerGenericConnection } from './utils/MixerConnection';
-import { AutomationConnection } from './utils/AutomationConnection';
-import { HuiMidiRemoteConnection } from './utils/HuiMidiRemoteConnection';
-import { MixerProtocolPresets } from './constants/MixerProtocolPresets';
-import { state } from './reducers/store'
-import { logger } from './utils/logger';
+import { loadSnapshotState, saveSnapshotState } from './SettingsStorage';
+import { 
+    mixerProtocolPresets,
+} from '../mainClasses'
+import { state } from '../reducers/store'
+import { logger } from './logger';
 
 const path = require('path')
-export class MainApp {
+export class SnapshotHandler {
     numberOfChannels: number[] = []
     settingsPath: string = ''
 
     constructor() {
         logger.info('SETTINGS UP STATE', {})
 
-        global.mixerGenericConnection = new MixerGenericConnection();
-        global.automationConnection = new AutomationConnection();
-        if (state.settings[0].enableRemoteFader){
-            global.huiRemoteConnection = new HuiMidiRemoteConnection();
-        }
-
         this.snapShopStoreTimer();
-        global.mixerProtocol = MixerProtocolPresets[state.settings[0].mixerProtocol];
-        global.mixerProtocol.channelTypes.forEach((item: any, index: number) => {
+
+        // Count total number of channels:
+        mixerProtocolPresets[state.settings[0].mixerProtocol].channelTypes.forEach((item: any, index: number) => {
             this.numberOfChannels.push(state.settings[0].numberOfChannelsInType[index]);
         });
         this.loadSnapshotSettings(path.resolve('storage', 'default.shot'), true)
