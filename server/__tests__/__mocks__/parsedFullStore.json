@@ -1,0 +1,964 @@
+{
+    "faders": [
+        {
+            "vuMeters": [
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                },
+                {
+                    "vuVal": 0
+                }
+            ],
+            "fader": [
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 1,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 2,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 3,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 4,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 5,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 6,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 7,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 8,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 9,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 10,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 11,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 12,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 13,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 14,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 15,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 16,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 17,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 18,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 19,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 20,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 21,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 22,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 23,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                },
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 24,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                }
+            ]
+        }
+    ],
+    "channels": [
+        {
+            "channel": [
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 0,
+                    "assignedFader": 0,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 1,
+                    "assignedFader": 1,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 2,
+                    "assignedFader": 2,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 3,
+                    "assignedFader": 3,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 4,
+                    "assignedFader": 4,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 5,
+                    "assignedFader": 5,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 6,
+                    "assignedFader": 6,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 7,
+                    "assignedFader": 7,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 8,
+                    "assignedFader": 8,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 9,
+                    "assignedFader": 9,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 10,
+                    "assignedFader": 10,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 11,
+                    "assignedFader": 11,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 12,
+                    "assignedFader": 12,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 13,
+                    "assignedFader": 13,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 14,
+                    "assignedFader": 14,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 15,
+                    "assignedFader": 15,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 16,
+                    "assignedFader": 16,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 17,
+                    "assignedFader": 17,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 18,
+                    "assignedFader": 18,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 19,
+                    "assignedFader": 19,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 20,
+                    "assignedFader": 20,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 21,
+                    "assignedFader": 21,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 22,
+                    "assignedFader": 22,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                },
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 23,
+                    "assignedFader": 23,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                }
+            ]
+        }
+    ],
+    "settings": [
+        {
+            "showSnaps": false,
+            "showSettings": false,
+            "showChanStrip": -1,
+            "showOptions": false,
+            "showMonitorOptions": -1,
+            "showStorage": false,
+            "mixerProtocol": "genericMidi",
+            "localIp": "0.0.0.0",
+            "localOscPort": 1234,
+            "deviceIp": "0.0.0.0",
+            "devicePort": 10024,
+            "protocolLatency": 20,
+            "enableRemoteFader": false,
+            "mixerMidiInputPort": "",
+            "mixerMidiOutputPort": "",
+            "remoteFaderMidiInputPort": "",
+            "remoteFaderMidiOutputPort": "",
+            "numberOfChannelsInType": [
+                24
+            ],
+            "numberOfFaders": "24",
+            "numberOfAux": "10",
+            "nextSendAux": "10",
+            "numberOfSnaps": 8,
+            "voLevel": 20,
+            "autoResetLevel": 10,
+            "automationMode": true,
+            "offtubeMode": false,
+            "fadeTime": 60,
+            "voFadeTime": 200,
+            "showPfl": false,
+            "mixerOnline": false
+        }
+    ]
+}

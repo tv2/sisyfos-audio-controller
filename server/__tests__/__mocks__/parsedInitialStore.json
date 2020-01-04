@@ -1,0 +1,90 @@
+{
+    "faders": [
+        {
+            "vuMeters": [
+                {
+                    "vuVal": 0
+                }
+            ],
+            "fader": [
+                {
+                    "faderLevel": 0.75,
+                    "label": "",
+                    "pgmOn": false,
+                    "voOn": false,
+                    "pstOn": false,
+                    "pstVoOn": false,
+                    "pflOn": false,
+                    "muteOn": false,
+                    "low": 0.75,
+                    "mid": 0.75,
+                    "high": 0.75,
+                    "threshold": 0.75,
+                    "ratio": 0.75,
+                    "monitor": 1,
+                    "showChannel": true,
+                    "snapOn": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
+                }
+            ]
+        }
+    ],
+    "channels": [
+        {
+            "channel": [
+                {
+                    "channelType": 0,
+                    "channelTypeIndex": 0,
+                    "assignedFader": 0,
+                    "fadeActive": false,
+                    "outputLevel": 0,
+                    "auxLevel": []
+                }
+            ]
+        }
+    ],
+    "settings": [
+        {
+            "showSnaps": false,
+            "showSettings": false,
+            "showChanStrip": -1,
+            "showOptions": false,
+            "showMonitorOptions": -1,
+            "showStorage": false,
+            "mixerProtocol": "genericMidi",
+            "localIp": "0.0.0.0",
+            "localOscPort": 1234,
+            "deviceIp": "0.0.0.0",
+            "devicePort": 10024,
+            "protocolLatency": 20,
+            "enableRemoteFader": false,
+            "mixerMidiInputPort": "",
+            "mixerMidiOutputPort": "",
+            "remoteFaderMidiInputPort": "",
+            "remoteFaderMidiOutputPort": "",
+            "numberOfChannelsInType": [
+                8
+            ],
+            "numberOfFaders": 8,
+            "numberOfAux": 0,
+            "nextSendAux": -1,
+            "numberOfSnaps": 8,
+            "voLevel": 20,
+            "autoResetLevel": 10,
+            "automationMode": true,
+            "offtubeMode": false,
+            "fadeTime": 60,
+            "voFadeTime": 200,
+            "showPfl": false,
+            "mixerOnline": false
+        }
+    ]
+}
