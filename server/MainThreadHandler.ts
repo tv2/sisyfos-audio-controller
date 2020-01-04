@@ -190,7 +190,8 @@ export class MainThreadHandlers {
                     channel: payload.channel,
                     auxIndex: payload.auxIndex,
                     level: payload.level
-                });                
+                });  
+                mixerGenericConnection.updateAuxLevel(payload.channel, payload.auxIndex)  
                 this.updateFullClientStore()
             })
         )
