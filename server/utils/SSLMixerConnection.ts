@@ -170,7 +170,7 @@ export class SSLMixerConnection {
                         });
                         
                         if (huiRemoteConnection) {
-                            huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value);
+                            huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value ? 1 : 0);
                         }
                         state.channels[0].channel.forEach((channel: any, index: number) => {
                             if (channel.assignedFader === assignedFaderIndex && index !== channelIndex) {
