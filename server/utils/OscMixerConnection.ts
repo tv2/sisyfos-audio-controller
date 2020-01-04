@@ -1,7 +1,7 @@
 //Node Modules:
 const osc = require('osc')
 import { store, state } from '../reducers/store'
-import { huiRemoteConnection } from '../importClasses'
+import { huiRemoteConnection } from '../mainClasses'
 
 
 //Utils:

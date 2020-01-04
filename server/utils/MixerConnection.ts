@@ -1,5 +1,5 @@
 import { store, state } from '../reducers/store'
-import { huiRemoteConnection } from '../importClasses'
+import { huiRemoteConnection } from '../mainClasses'
 
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';

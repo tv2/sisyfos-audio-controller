@@ -1,5 +1,6 @@
 import { store, state } from './reducers/store'
-import { mixerProtocolList, mixerProtocolPresets, mixerGenericConnection } from './importClasses'
+import { mixerProtocolList, mixerProtocolPresets, mixerGenericConnection } from './mainClasses'
+import { SnapshotHandler } from './utils/SnapshotHandler'
 
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import { loadSettings, saveSettings, getSnapShotList } from './utils/SettingsStorage'
@@ -54,10 +55,12 @@ import { logger } from './utils/logger';
 const path = require('path')
 
 export class MainThreadHandlers {
+    snapshotHandler: SnapshotHandler
 
     constructor() {
-        logger.info('Creating MainThreadHandlers', {})
+        logger.info('Setting up MainThreadHandlers', {})
 
+        this.snapshotHandler = new SnapshotHandler()
         store.dispatch({
             type:UPDATE_SETTINGS,
             settings: loadSettings(state)
@@ -110,7 +113,7 @@ export class MainThreadHandlers {
             () => { 
                 global.socketServer.emit('set-mixerprotocol', 
                     {
-                        'mixerProtocol': global.mixerProtocol,
+                        'mixerProtocol': mixerProtocolPresets[state.settings[0].mixerProtocol],
                         'mixerProtocolPresets': mixerProtocolPresets,
                         'mixerProtocolList': mixerProtocolList,
 
@@ -130,14 +133,14 @@ export class MainThreadHandlers {
         .on(SOCKET_LOAD_SNAPSHOT, (
             (payload: string) => { 
                 logger.info('Load Snapshot', {})
-                global.mainApp.loadSnapshotSettings(path.resolve('storage', payload), false)
+                this.snapshotHandler.loadSnapshotSettings(path.resolve('storage', payload), false)
                 this.updateFullClientStore()
             })
         )
         .on(SOCKET_SAVE_SNAPSHOT, (
             (payload: string) => { 
                 logger.info('Save Snapshot', {})
-                global.mainApp.saveSnapshotSettings(path.resolve('storage', payload))
+                this.snapshotHandler.saveSnapshotSettings(path.resolve('storage', payload))
 
                 global.socketServer.emit(
                     SOCKET_RETURN_SNAPSHOT_LIST, 

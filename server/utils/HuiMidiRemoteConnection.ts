@@ -1,7 +1,7 @@
 //Node Modules:
 import WebMidi from 'webmidi';
 import { store, state } from '../reducers/store'
-import { mixerGenericConnection } from '../importClasses'
+import { mixerGenericConnection } from '../mainClasses'
 
 import { 
     SET_FADER_LEVEL, 

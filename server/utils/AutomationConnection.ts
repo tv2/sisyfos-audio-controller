@@ -1,7 +1,7 @@
 //Node Modules:
 const osc = require('osc')
 import { store, state } from '../reducers/store'
-import { mixerGenericConnection } from '../importClasses'
+import { mixerGenericConnection } from '../mainClasses'
 
 //Utils:
 import { IAutomationProtocol, AutomationPresets } from '../constants/AutomationPresets';

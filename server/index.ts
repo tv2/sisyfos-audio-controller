@@ -1,6 +1,5 @@
 // Import parts of electron to use
 import { MainThreadHandlers } from './MainThreadHandler'
-import { MainApp } from './MainApp'
 import { logger } from './utils/logger'
 
 const path = require('path')
@@ -11,9 +10,7 @@ declare global {
   namespace NodeJS {
       interface Global {
           mainThreadHandler: MainThreadHandlers
-          mainApp: MainApp
           socketServer: any
-          mixerProtocol: any
           navigator: any // Workaround for WebMidi
           performance: any // Workaround for WebMidi
       }
@@ -29,8 +26,7 @@ global.socketServer = require('socket.io')(server);
 
 server.listen(1176);
 
-global.mainThreadHandler = new MainThreadHandlers();
-global.mainApp = new MainApp()
+global.mainThreadHandler = new MainThreadHandlers()
 
 server.on('connection', () => {
   app.get('/', (req: any, res: any) => {

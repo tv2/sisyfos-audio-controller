@@ -12,7 +12,7 @@ if (!global.performance) global.performance = { now: require('performance-now') 
 const WebMidi = require('webmidi')
 
 import { store, state } from '../reducers/store'
-import { huiRemoteConnection } from '../importClasses'
+import { huiRemoteConnection } from '../mainClasses'
 
 
 //Utils:

@@ -1,13 +1,13 @@
 //Utils:
-import { loadSnapshotState, saveSnapshotState } from './utils/SettingsStorage';
+import { loadSnapshotState, saveSnapshotState } from './SettingsStorage';
 import { 
     mixerProtocolPresets,
-} from './importClasses'
-import { state } from './reducers/store'
-import { logger } from './utils/logger';
+} from '../mainClasses'
+import { state } from '../reducers/store'
+import { logger } from './logger';
 
 const path = require('path')
-export class MainApp {
+export class SnapshotHandler {
     numberOfChannels: number[] = []
     settingsPath: string = ''
 
@@ -15,8 +15,9 @@ export class MainApp {
         logger.info('SETTINGS UP STATE', {})
 
         this.snapShopStoreTimer();
-        global.mixerProtocol = mixerProtocolPresets[state.settings[0].mixerProtocol];
-        global.mixerProtocol.channelTypes.forEach((item: any, index: number) => {
+
+        // Count total number of channels:
+        mixerProtocolPresets[state.settings[0].mixerProtocol].channelTypes.forEach((item: any, index: number) => {
             this.numberOfChannels.push(state.settings[0].numberOfChannelsInType[index]);
         });
         this.loadSnapshotSettings(path.resolve('storage', 'default.shot'), true)
