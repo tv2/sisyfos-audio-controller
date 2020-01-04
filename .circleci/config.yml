@@ -18,6 +18,10 @@ jobs:
           name: yarn build
           command: yarn build
           no_output_timeout: 60m
+      - run:
+          name: yarn unit test
+          command: yarn unit
+          no_output_timeout: 60m
       # TODO: check dev depencies:
       #- run:
       #    name: yarn install production
