@@ -1,6 +1,7 @@
 import { store, state } from './reducers/store'
 import { mixerProtocolList, mixerProtocolPresets, mixerGenericConnection } from './mainClasses'
 import { SnapshotHandler } from './utils/SnapshotHandler'
+import { socketServer } from './expressHandler'
 
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import { loadSettings, saveSettings, getSnapShotList } from './utils/SettingsStorage'
@@ -68,12 +69,12 @@ export class MainThreadHandlers {
     }
 
     updateFullClientStore() {
-        global.socketServer.emit(SOCKET_SET_FULL_STORE, state)
+        socketServer.emit(SOCKET_SET_FULL_STORE, state)
     }
 
     updatePartialStore(faderIndex: number) {
         state.faders[0].fader[faderIndex]
-        global.socketServer.emit(
+        socketServer.emit(
             SOCKET_SET_STORE_FADER,
             {
                 faderIndex: faderIndex,
@@ -82,7 +83,7 @@ export class MainThreadHandlers {
         )
         state.channels[0].channel.forEach((channel: IChannel, index: number) => {
             if (channel.assignedFader === faderIndex) {
-                global.socketServer.emit(
+                socketServer.emit(
                     SOCKET_SET_STORE_CHANNEL, {
                         channelIndex: index,
                         state: channel
@@ -106,12 +107,12 @@ export class MainThreadHandlers {
         )
         .on('get-settings', (
             () => { 
-                global.socketServer.emit('set-settings', loadSettings(state))
+                socketServer.emit('set-settings', loadSettings(state))
             })
         )
         .on('get-mixerprotocol', (
             () => { 
-                global.socketServer.emit('set-mixerprotocol', 
+                socketServer.emit('set-mixerprotocol', 
                     {
                         'mixerProtocol': mixerProtocolPresets[state.settings[0].mixerProtocol],
                         'mixerProtocolPresets': mixerProtocolPresets,
@@ -124,7 +125,7 @@ export class MainThreadHandlers {
         .on(SOCKET_GET_SNAPSHOT_LIST, (
             () => { 
                 logger.info('Get snapshot list', {})
-                global.socketServer.emit(
+                socketServer.emit(
                     SOCKET_RETURN_SNAPSHOT_LIST, 
                     getSnapShotList()
                 )
@@ -142,7 +143,7 @@ export class MainThreadHandlers {
                 logger.info('Save Snapshot', {})
                 this.snapshotHandler.saveSnapshotSettings(path.resolve('storage', payload))
 
-                global.socketServer.emit(
+                socketServer.emit(
                     SOCKET_RETURN_SNAPSHOT_LIST, 
                     getSnapShotList()
                 )

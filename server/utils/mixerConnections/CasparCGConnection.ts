@@ -1,14 +1,14 @@
 //Node Modules:
 const osc = require('osc')
 const CasparCG = require('casparcg-connection')
-import { store, state } from '../reducers/store'
+import { store, state } from '../../reducers/store'
 
 //Utils:
-import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../constants/MixerProtocolInterface';
-import { IStore } from '../reducers/indexReducer';
-import { IChannel } from '../reducers/channelsReducer';
-import { SET_PRIVATE } from  '../reducers/channelActions'
-import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../reducers/faderActions'
+import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../../constants/MixerProtocolInterface';
+import { IStore } from '../../reducers/indexReducer';
+import { IChannel } from '../../reducers/channelsReducer';
+import { SET_PRIVATE } from  '../../reducers/channelActions'
+import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../../reducers/faderActions'
 
 interface CommandChannelMap {
     [key: string]: number

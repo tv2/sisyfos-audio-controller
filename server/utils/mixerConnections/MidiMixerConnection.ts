@@ -11,20 +11,20 @@ if (!global.performance) global.performance = { now: require('performance-now') 
 //Node Modules:
 const WebMidi = require('webmidi')
 
-import { store, state } from '../reducers/store'
-import { huiRemoteConnection } from '../mainClasses'
+import { store, state } from '../../reducers/store'
+import { huiRemoteConnection } from '../../mainClasses'
 
 
 //Utils:
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
-import { IMixerProtocol } from '../constants/MixerProtocolInterface';
-import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
+import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets';
+import { IMixerProtocol } from '../../constants/MixerProtocolInterface';
+import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
 import { 
     SET_VU_LEVEL, 
     SET_FADER_LEVEL, 
     SET_CHANNEL_LABEL,
     TOGGLE_PGM
-} from '../reducers/faderActions'
+} from '../../reducers/faderActions'
 
 
 export class MidiMixerConnection {

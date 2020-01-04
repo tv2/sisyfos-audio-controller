@@ -1,20 +1,20 @@
 //Node Modules:
 const net = require('net')
-import { store, state } from '../reducers/store'
-import { huiRemoteConnection } from '../mainClasses'
+import { store, state } from '../../reducers/store'
+import { huiRemoteConnection } from '../../mainClasses'
 
 
 //Utils:
-import { IMixerProtocol } from '../constants/MixerProtocolInterface'
-import { IStore } from '../reducers/indexReducer'
-import { SET_OUTPUT_LEVEL } from '../reducers/channelActions'
+import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
+import { IStore } from '../../reducers/indexReducer'
+import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
 import { 
     SET_VU_LEVEL, 
     SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
     TOGGLE_PGM
-} from '../reducers/faderActions'
-import { logger } from './logger'
+} from '../../reducers/faderActions'
+import { logger } from '../logger'
 
 
 

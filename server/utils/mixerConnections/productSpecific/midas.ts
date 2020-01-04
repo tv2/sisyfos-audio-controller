@@ -1,8 +1,8 @@
-import { store, state } from '../../reducers/store'
+import { store, state } from '../../../reducers/store'
+import { socketServer } from '../../../expressHandler'
 
-import * as DEFAULTS from '../../constants/DEFAULTS';
-import { SET_ALL_VU_LEVELS } from  '../../reducers/faderActions'
-import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
+import { SET_ALL_VU_LEVELS } from  '../../../reducers/faderActions'
+import { SOCKET_SET_VU } from '../../../constants/SOCKET_IO_DISPATCHERS';
 
 export const midasMeter = (message: any) => {
 
@@ -15,7 +15,7 @@ export const midasMeter = (message: any) => {
     for (let i=0; i < numberOfChannels; i++) {
         let level = dataview.getFloat32(4*i+headerData , true)
         vuMeters.push({vuVal : level});
-        global.socketServer.emit(
+        socketServer.emit(
             SOCKET_SET_VU, 
             {
                 faderIndex: state.channels[0].channel[i].assignedFader,

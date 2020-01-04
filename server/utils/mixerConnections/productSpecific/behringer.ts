@@ -1,8 +1,9 @@
-import { store, state } from '../../reducers/store'
+import { store, state } from '../../../reducers/store'
+import { socketServer } from '../../../expressHandler'
 
-import * as DEFAULTS from '../../constants/DEFAULTS';
-import { SET_VU_LEVEL } from '../../reducers/faderActions'
-import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
+import * as DEFAULTS from '../../../constants/DEFAULTS';
+import { SET_VU_LEVEL } from '../../../reducers/faderActions'
+import { SOCKET_SET_VU } from '../../../constants/SOCKET_IO_DISPATCHERS';
 
 
 export const behringerMeter = (message: any) => {
@@ -20,7 +21,7 @@ export const behringerMeter = (message: any) => {
             channel: i,
             level: level
         });
-        global.socketServer.emit(
+        socketServer.emit(
             SOCKET_SET_VU, 
             {
                 faderIndex: state.channels[0].channel[i].assignedFader,

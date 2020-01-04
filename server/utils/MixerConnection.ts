@@ -4,12 +4,12 @@ import { huiRemoteConnection } from '../mainClasses'
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
-import { OscMixerConnection } from '../utils/OscMixerConnection';
-import { MidiMixerConnection } from '../utils/MidiMixerConnection';
-import { QlClMixerConnection } from './QlClMixerConnection';
-import { SSLMixerConnection } from './SSLMixerConnection';
-import { EmberMixerConnection } from './EmberMixerConnection';
-import { CasparCGConnection } from './CasparCGConnection';
+import { OscMixerConnection } from './mixerConnections/OscMixerConnection';
+import { MidiMixerConnection } from './mixerConnections/MidiMixerConnection';
+import { QlClMixerConnection } from './mixerConnections/QlClMixerConnection';
+import { SSLMixerConnection } from './mixerConnections/SSLMixerConnection';
+import { EmberMixerConnection } from './mixerConnections/EmberMixerConnection';
+import { CasparCGConnection } from './mixerConnections/CasparCGConnection';
 import { IChannel } from '../reducers/channelsReducer';
 import { SET_OUTPUT_LEVEL, FADE_ACTIVE } from '../reducers/channelActions'
 import { SET_FADER_LEVEL } from  '../reducers/faderActions'
