@@ -269,7 +269,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 <div className="vertical-line"></div>
                 <div className="vertical">
                     {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
-                    {" MONITOR MIX"}
+                    {" MONITOR MIX MINUS"}
                 </div>
                 <div className="vertical-line"></div>
                 <ul className="monitor-sends">
