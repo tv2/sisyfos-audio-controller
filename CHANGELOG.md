@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.3](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.3.2...v2.3.3) (2020-01-15)
+
+
+### Bug Fixes
+
+* rename Label Monitor Mix to: "{FaderName} Monitor Mix Minus" ([d99a67b](https://github.com/olzzon/sisyfos-audio-controller/commit/d99a67b8499f3d21c14047a5ff612b684287ad0e))
+* update Auxlevel on mixer on changes ([08b832e](https://github.com/olzzon/sisyfos-audio-controller/commit/08b832eba9ac81c1a74e2de9b354103d05247b52))
+
 ### [2.3.2](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.3.1...v2.3.2) (2020-01-04)
 
 ### [2.3.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.3.0...v2.3.1) (2020-01-01)
