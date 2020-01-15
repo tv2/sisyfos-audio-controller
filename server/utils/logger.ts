@@ -10,6 +10,7 @@ console.log('Elastic Port :', loggerPort)
 
 const esTransportOpts = {
   level: 'info',
+  indexPrefix: 'sisyfos',
   clientOpts: { node: 'http://'+ loggerIp + ':' + String(loggerPort) }
 };
 
