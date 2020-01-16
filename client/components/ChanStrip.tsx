@@ -10,8 +10,6 @@ import {
     TOGGLE_SHOW_MONITOR_OPTIONS
  } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
-import { SET_FADER_THRESHOLD, SET_FADER_RATIO, SET_FADER_LOW, SET_FADER_MID, SET_FADER_HIGH } from '../../server/reducers/faderActions'
-import { SET_AUX_LEVEL } from '../../server/reducers/channelActions';
 import { SOCKET_SET_THRESHOLD, SOCKET_SET_RATIO, SOCKET_SET_LOW, SOCKET_SET_MID, SOCKET_SET_HIGH, SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IChanStripInjectProps {
@@ -250,28 +248,26 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     parameters() {
         return (
             <div className="parameters">
-                <div className="vertical">
-                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
-                    {" COMPRESSOR"}
+                <div className="group-text">
+                    {"COMPRESSOR"}
                 </div>
-                <div className="vertical-line"></div>
-                {this.threshold()}
-                {this.ratio()}
-                <div className="vertical-line"></div>
-                <div className="vertical">
-                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
-                    {" EQUALIZER"}
+                <div className="parameter-group">
+                    {this.threshold()}
+                    {this.ratio()}
                 </div>
-                <div className="vertical-line"></div>
-                {this.low()}
-                {this.mid()}
-                {this.high()}
-                <div className="vertical-line"></div>
-                <div className="vertical">
-                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
-                    {" MONITOR MIX MINUS"}
+                <hr/>
+                <div className="group-text">
+                    {"EQUALIZER"}
                 </div>
-                <div className="vertical-line"></div>
+                <div className="parameter-group">
+                    {this.low()}
+                    {this.mid()}
+                    {this.high()}
+                </div>
+                <hr/>
+                <div className="group-text">
+                    {"MONITOR MIX MINUS"}
+                </div>
                 <ul className="monitor-sends">
                     {this.props.channel.map((ch: any, index: number) => {
                         if (ch.auxLevel[this.props.auxSendIndex] >= 0) {
@@ -279,9 +275,6 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                         } 
                     })}
                 </ul>
-                <div className="vertical-line"></div>
-                <div className="vertical">
-                </div>
             </div>
         )
     }
@@ -289,25 +282,32 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     render() {
         return (
             <div className="chan-strip-body">
+                <div className="header">
+                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
+                    <button 
+                            className="close"
+                            onClick={() => this.handleClose()}
+                        >X
+                    </button>
+
+                </div>
+                <div className="header">
+                    <button 
+                        className="button"
+                        onClick={() => this.handleShowRoutingOptions()}
+                        >CHANNEL ROUTING
+                    </button>
+                    <button 
+                        className="button"
+                        onClick={() => this.handleShowMonitorOptions()}
+                        >MONITOR ROUTING
+                    </button>
+                </div>
+                <hr/>
                 {this.props.offtubeMode ?
                     this.parameters() 
                     : null
                 }
-                <div className="settings-buttons">
-                    <button 
-                        className="close"
-                        onClick={() => this.handleClose()}
-                    >X</button>
-                    <div className="vertical-line"></div>
-                    <button 
-                        className="button"
-                        onClick={() => this.handleShowRoutingOptions()}
-                        >CHANNEL ROUTING</button>
-                    <button 
-                        className="button"
-                        onClick={() => this.handleShowMonitorOptions()}
-                        >MONITOR ROUTING</button>
-                </div>
             </div>
         )
     }
