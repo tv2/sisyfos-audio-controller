@@ -9,8 +9,8 @@ export const ArdourMaster: IMixerProtocol = {
     pingCommand: [
         {
             mixerMessage: "/strip/list",
-            value: "",
-            type: "",
+            value: 0,
+            type: "i",
             min: 0,
             max: 1,
             zero: 0.75
@@ -19,8 +19,8 @@ export const ArdourMaster: IMixerProtocol = {
     pingResponseCommand: [
         {
             mixerMessage: "/strip/list",
-            value: "",
-            type: "",
+            value: 0,
+            type: "i",
             min: 0,
             max: 1,
             zero: 0.75
