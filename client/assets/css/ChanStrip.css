@@ -23,6 +23,7 @@
 .chan-strip-body > .parameters {
 	top: 5px;
 	left: 2px;
+	height: 900px;
 	overflow: auto;
 	text-align: center;
 	color: #fff;
@@ -42,6 +43,27 @@
 	text-align: center;
 	line-height: 20px;
 	font-size: 110%;
+}
+
+.zero-eq {
+	width: 63px;
+	height: 2px;
+	margin-left: -68px;
+	margin-top: 111px;
+}
+
+.zero-comp {
+	width: 63px;
+	height: 2px;
+	margin-left: -68px;
+	margin-top: 81px;
+}
+
+.zero-monitor {
+	width: 2px;
+	height: 20px;
+	margin-left: -66px;
+	margin-top: -150px;
 }
 
 .parameters > .parameter-text {

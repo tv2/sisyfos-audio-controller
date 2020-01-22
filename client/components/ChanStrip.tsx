@@ -242,6 +242,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                         this.handleMonitorLevel(event, channelIndex)
                     }}
                 />
+                <p className="zero-monitor">_______</p>
             </li>
         )
     }
@@ -253,7 +254,9 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 </div>
                 <div className="parameter-group">
                     {this.threshold()}
+                    <p className="zero-comp">______</p>
                     {this.ratio()}
+                    <p className="zero-comp">______</p>
                 </div>
                 <hr/>
                 <div className="group-text">
@@ -261,8 +264,11 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 </div>
                 <div className="parameter-group">
                     {this.low()}
+                    <p className="zero-eq">_______</p>
                     {this.mid()}
+                    <p className="zero-eq">_______</p>
                     {this.high()}
+                    <p className="zero-eq">_______</p>
                 </div>
                 <hr/>
                 <div className="group-text">
