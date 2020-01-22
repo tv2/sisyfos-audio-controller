@@ -18,7 +18,7 @@ import {
 } from '../../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions';
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
-import { logger } from '../logger';
+import { logger } from '../logger'
 
 export class OscMixerConnection {
     mixerProtocol: IMixerProtocol;
@@ -52,16 +52,8 @@ export class OscMixerConnection {
         this.oscConnection
         .on("ready", () => {
             logger.info("Receiving state of desk", {})
+            this.initialCommands()
             
-            this.mixerProtocol.initializeCommands.forEach((item) => {
-                if (item.mixerMessage.includes("{channel}")) {
-                    state.channels[0].channel.map((channel: any, index: any) => {
-                        this.sendOutRequest(item.mixerMessage,(index +1));
-                    });
-                } else {
-                    this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
-                }
-            });
             store.dispatch({
                 type: SET_MIXER_ONLINE,
                 mixerOnline: true
@@ -74,6 +66,7 @@ export class OscMixerConnection {
                 type: SET_MIXER_ONLINE,
                 mixerOnline: true
             });
+            logger.verbose("Received OSC message: " + message.address, {})
             if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_VU[0].mixerMessage)){
                 if (state.settings[0].mixerProtocol.includes('behringer')) {
@@ -166,7 +159,7 @@ export class OscMixerConnection {
                         auxIndex = parseFloat(messageArray[index]) - 1
                     }
                 })
-
+                logger.verbose('Aux Message Channel : ' + ch + '  Aux Index :' + auxIndex + ' Level : ' + message.args[0])
                 store.dispatch({
                     type: SET_AUX_LEVEL,
                     channel: ch - 1,
@@ -184,7 +177,8 @@ export class OscMixerConnection {
                         label: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
-                logger.verbose("OSC message: " + message.address, {})
+            } else {
+                logger.verbose("Unknown OSC message: " + message.address, {})
             }
         })
         .on('error', (error: any) => {
@@ -209,6 +203,30 @@ export class OscMixerConnection {
                 this.mixerProtocol.pingTime
             );
         }
+    }
+
+    initialCommands() {
+        this.mixerProtocol.initializeCommands.forEach((item) => {
+            if (item.mixerMessage.includes("{channel}")) {
+                if (item.type === 'aux') {
+                    state.channels[0].channel.forEach((channel: any, index: number) => {
+                        channel.auxLevel.forEach((auxLevel: any, auxIndex: number) => {
+                            setTimeout(() => {
+                                this.sendOutRequestAux(item.mixerMessage, auxIndex +1, state.faders[0].fader[channel.assignedFader].monitor)
+                            },
+                            state.faders[0].fader[channel.assignedFader].monitor * 10 + auxIndex * 100)
+                        })
+                    })
+                } else {
+                    state.channels[0].channel.map((channel: any, index: any) => {
+                        this.sendOutRequest(item.mixerMessage,(index +1));
+                    });
+                }                     
+                
+            } else {
+                this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
+            }
+        });
     }
 
     pingMixerCommand() {
@@ -277,6 +295,22 @@ export class OscMixerConnection {
                 "{channel}",
                 channelString
             );
+        if (message != 'none') {
+            this.oscConnection.send({
+                address: message
+            });
+        }
+    }
+
+    sendOutRequestAux(oscMessage: string, channel: number, auxSend: number) {
+        let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
+        let message = oscMessage.replace(
+            "{channel}",
+            channelString
+        );
+        let auxSendNumber = this.mixerProtocol.leadingZeros ? ("0"+String(auxSend)).slice(-2) : String(auxSend);
+        message = message.replace('{argument}', auxSendNumber)
+        logger.verbose('Initial Aux Message : ' + message)
         if (message != 'none') {
             this.oscConnection.send({
                 address: message
@@ -383,6 +417,7 @@ export class OscMixerConnection {
             "f"
         );
     }
+
     updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {
         let channelType = state.channels[0].channel[channelIndex].channelType;
         let channel = state.channels[0].channel[channelIndex].channelTypeIndex+1

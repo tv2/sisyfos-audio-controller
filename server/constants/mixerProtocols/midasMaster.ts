@@ -48,7 +48,15 @@ export const MidasMaster: IMixerProtocol = {
             min: 0,
             max: 1,
             zero: 0.75
-        }
+        },
+        {
+            mixerMessage: '/ch/{channel}/mix/{argument}/level',
+            value: "",
+            type: "aux",
+            min: 0,
+            max: 1,
+            zero: 0.75
+        },
     ],
     channelTypes: [{
         channelTypeName: 'CH',
