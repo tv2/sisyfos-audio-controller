@@ -31,11 +31,11 @@ Routing setups can be stored in STORAGE. So it´s possible to have different Rou
 ```
 docker pull olzzon/sisyfos-audio-controller:develop
 docker volume create sisyfos-vol
-sudo docker run --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller/storage -e loggerIp='0.0.0.0' -e loggerPort=9300 --network="host" --restart always olzzon/sisyfos-audio-controller:develop
+sudo docker run --mount source=sisyfos-vol,target=/opt/sisyfos-audio-controller/storage -e loggerIp='0.0.0.0' -e loggerPort=9300 -e loggerFileLevel='error' --network="host" --restart always olzzon/sisyfos-audio-controller:develop
 ```
 Running Docker with Elastic Search: 
-Set env vars: loggerIp=xx.xx.xx.xx and loggerPort=xxxx 
-(no args will default to: 0.0.0.0:9200)
+Set env vars: loggerIp=xx.xx.xx.xx and loggerPort=xxxx and loggerLevel='info' if you wish to log to logfile instead of kibana
+(no args will default to: 0.0.0.0:9200 logger level='info')
 
 ### Install Local node host:
 (Be aware that a server reload will quit server and you need an external source to restart)
@@ -44,13 +44,21 @@ git clone https://github.com/olzzon/sisyfos-audio-controller.git
 cd sisyfos-audio-controller
 yarn
 yarn build
-yarn start
+yarn start --loggerFileLevel='info'
 ```
 Running Server with Elastic Search: 
 (no args will default to: 0.0.0.0:9200)
 ```
 yarn start --loggerIp '192.168.12.12' --loggerPort 9302
 ```
+
+### Logger levels:
+When running Sisyfos you can define the log level by:
+loggerLevel (Kibana log level) and loggerFileLevel (local log file level)
+The levels are:
+* error (only error)
+* info (standard info regarding connectiviy and data from Automation protocol etc.)
+* verbose (info level plus: data send and received from Audiomixer)
 
 ### Open GUI in browser:
 ```
