@@ -272,7 +272,8 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 </div>
                 <hr/>
                 <div className="group-text">
-                    {"MONITOR MIX MINUS"}
+                {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
+                    {" - MONITOR MIX MINUS"}
                 </div>
                 <ul className="monitor-sends">
                     {this.props.channel.map((ch: any, index: number) => {
