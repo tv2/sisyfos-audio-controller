@@ -19,7 +19,8 @@ import {
     SET_FADER_RATIO,
     SET_FADER_LO_MID,
     SET_FADER_MID,
-    SET_FADER_HIGH
+    SET_FADER_HIGH,
+    SET_FADER_LOW
 } from '../../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions';
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
@@ -204,7 +205,7 @@ export class OscMixerConnection {
                 .LOW[0].mixerMessage)) {
                     let ch = message.address.split("/")[this.cmdChannelIndex];
                     store.dispatch({
-                        type: SET_FADER_LO_MID,
+                        type: SET_FADER_LOW,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
                         level: message.args[0]
                     });
@@ -265,26 +266,29 @@ export class OscMixerConnection {
     }
 
     initialCommands() {
-        this.mixerProtocol.initializeCommands.forEach((item) => {
-            if (item.mixerMessage.includes("{channel}")) {
-                if (item.type === 'aux') {
-                    state.channels[0].channel.forEach((channel: any, index: number) => {
-                        channel.auxLevel.forEach((auxLevel: any, auxIndex: number) => {
-                            setTimeout(() => {
-                                this.sendOutRequestAux(item.mixerMessage, auxIndex +1, state.faders[0].fader[channel.assignedFader].monitor)
-                            },
-                            state.faders[0].fader[channel.assignedFader].monitor * 10 + auxIndex * 100)
+        this.mixerProtocol.initializeCommands.forEach((item, itemIndex: number) => {
+            setTimeout(() => {
+                if (item.mixerMessage.includes("{channel}")) {
+                    if (item.type === 'aux') {
+                        state.channels[0].channel.forEach((channel: any, index: number) => {
+                            channel.auxLevel.forEach((auxLevel: any, auxIndex: number) => {
+                                setTimeout(() => {
+                                    this.sendOutRequestAux(item.mixerMessage, auxIndex +1, state.faders[0].fader[channel.assignedFader].monitor)
+                                },
+                                state.faders[0].fader[channel.assignedFader].monitor * 10 + auxIndex * 100)
+                            })
                         })
-                    })
+                    } else {
+                        state.channels[0].channel.map((channel: any, index: any) => {
+                            this.sendOutRequest(item.mixerMessage,(index +1));
+                        });
+                    }                     
+                    
                 } else {
-                    state.channels[0].channel.map((channel: any, index: any) => {
-                        this.sendOutRequest(item.mixerMessage,(index +1));
-                    });
-                }                     
-                
-            } else {
-                this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
-            }
+                    this.sendOutMessage(item.mixerMessage, 1, item.value, item.type);
+                }
+            },
+            itemIndex * 100)
         });
     }
 
