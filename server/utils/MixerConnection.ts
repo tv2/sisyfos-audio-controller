@@ -149,6 +149,14 @@ export class MixerGenericConnection {
             }
         })
     }
+    updateLoMid(faderIndex: number) {
+        let level = state.faders[0].fader[faderIndex].mid
+        state.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateLoMid(channelIndex, level)
+            }
+        })
+    }
     updateMid(faderIndex: number) {
         let level = state.faders[0].fader[faderIndex].mid
         state.channels[0].channel.map((channel: IChannel, channelIndex: number) => {

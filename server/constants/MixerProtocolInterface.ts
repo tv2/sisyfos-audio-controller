@@ -38,6 +38,7 @@ export interface IChannelTypes {
         THRESHOLD: Array<IMixerMessageProtocol>
         RATIO: Array<IMixerMessageProtocol>
         LOW: Array<IMixerMessageProtocol>
+        LO_MID: Array<IMixerMessageProtocol>
         MID: Array<IMixerMessageProtocol>
         HIGH: Array<IMixerMessageProtocol>
         AUX_LEVEL: Array<IMixerMessageProtocol>
@@ -54,6 +55,7 @@ export interface IChannelTypes {
         THRESHOLD: Array<IMixerMessageProtocol>
         RATIO: Array<IMixerMessageProtocol>
         LOW: Array<IMixerMessageProtocol>
+        LO_MID: Array<IMixerMessageProtocol>
         MID: Array<IMixerMessageProtocol>
         HIGH: Array<IMixerMessageProtocol>
         AUX_LEVEL: Array<IMixerMessageProtocol>

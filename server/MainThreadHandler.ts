@@ -31,7 +31,8 @@ import {
     SOCKET_TOGGLE_IGNORE,
     SOCKET_SET_FULL_STORE,
     SOCKET_SET_STORE_FADER,
-    SOCKET_SET_STORE_CHANNEL
+    SOCKET_SET_STORE_CHANNEL,
+    SOCKET_SET_LO_MID
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_PGM, 
@@ -47,7 +48,8 @@ import {
     SET_FADER_MID, 
     SET_FADER_HIGH, 
     SET_FADER_MONITOR,
-    IGNORE_AUTOMATION
+    IGNORE_AUTOMATION,
+    SET_FADER_LO_MID
 } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
@@ -228,6 +230,18 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 mixerGenericConnection.updateLow(payload.channel);               
+                this.updatePartialStore(payload.channel)
+            })
+        )
+        .on(SOCKET_SET_LO_MID, (
+            (payload: any) => { 
+                logger.verbose('Set Mid:' + String(payload.level), {})
+                store.dispatch({
+                    type: SET_FADER_LO_MID,
+                    channel: payload.channel,
+                    level: payload.level
+                });
+                mixerGenericConnection.updateLoMid(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )

@@ -27,6 +27,7 @@ import {
     SET_FADER_THRESHOLD,
     SET_FADER_RATIO,
     SET_FADER_LOW,
+    SET_FADER_LO_MID,
     SET_FADER_MID,
     SET_FADER_HIGH,
     SET_FADER_MONITOR,
@@ -48,6 +49,7 @@ export interface IFader {
     pflOn: boolean,
     muteOn: boolean,
     low: number,
+    loMid: number
     mid: number,
     high: number,
     threshold: number,
@@ -80,6 +82,7 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
                 pflOn: false,
                 muteOn: false,
                 low: 0.75,
+                loMid: 0.75,
                 mid: 0.75,
                 high: 0.75,
                 threshold: 0.75,
@@ -138,6 +141,9 @@ export const faders = ((state = defaultFadersReducerState(0), action: any): Arra
             return nextState;
         case SET_FADER_LOW: //channel:  level:
             nextState[0].fader[action.channel].low = parseFloat(action.level);
+            return nextState;
+        case SET_FADER_LO_MID: //channel:  level:
+            nextState[0].fader[action.channel].loMid = parseFloat(action.level);
             return nextState;
         case SET_FADER_MID: //channel:  level:
             nextState[0].fader[action.channel].mid = parseFloat(action.level);

@@ -10,7 +10,7 @@ import {
     TOGGLE_SHOW_MONITOR_OPTIONS
  } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
-import { SOCKET_SET_THRESHOLD, SOCKET_SET_RATIO, SOCKET_SET_LOW, SOCKET_SET_MID, SOCKET_SET_HIGH, SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import { SOCKET_SET_THRESHOLD, SOCKET_SET_RATIO, SOCKET_SET_LOW, SOCKET_SET_LO_MID, SOCKET_SET_MID, SOCKET_SET_HIGH, SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IChanStripInjectProps {
     label: string,
@@ -86,6 +86,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
             }
         )
     }
+
+    handleLoMid(event: any) {
+        window.socketIoClient.emit( SOCKET_SET_LO_MID, 
+            {
+                channel: this.props.faderIndex,
+                level: parseFloat(event)
+            }
+        )
+    }
+
     handleMid(event: any) {
         window.socketIoClient.emit( SOCKET_SET_MID, 
             {
@@ -177,10 +187,31 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         )
     }
 
+    loMid() {
+        return (
+            <div className="parameter-text">
+                Lo-Mid
+                <ReactSlider 
+                    className="chan-strip-fader"
+                    thumbClassName = "chan-strip-thumb"
+                    orientation = "vertical"
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].loMid}
+                    onChange={(event: any) => {
+                        this.handleLoMid(event)
+                    }}
+                />
+            </div>
+        )
+    }
+
     mid() {
         return (
             <div className="parameter-text">
-                Mid
+                Hi-Mid
                 <ReactSlider 
                     className="chan-strip-fader"
                     thumbClassName = "chan-strip-thumb"
@@ -264,6 +295,8 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 </div>
                 <div className="parameter-group">
                     {this.low()}
+                    <p className="zero-eq">_______</p>
+                    {this.loMid()}
                     <p className="zero-eq">_______</p>
                     {this.mid()}
                     <p className="zero-eq">_______</p>

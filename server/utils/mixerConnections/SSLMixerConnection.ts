@@ -386,6 +386,9 @@ export class SSLMixerConnection {
     updateLow(channelIndex: number, level: number) {
          return true
     }
+    updateLoMid(channelIndex: number, level: number) {
+        return true
+    }
     updateMid(channelIndex: number, level: number) {
         return true
     }
