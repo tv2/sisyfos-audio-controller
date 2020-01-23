@@ -396,10 +396,10 @@ export class OscMixerConnection {
     updateLoMid(channelIndex: number, level: number) {
         let channelType = state.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        let mid = this.mixerProtocol.channelTypes[channelType].toMixer.LO_MID[0]
-        level = level * (mid.max-mid.min) + mid.min
+        let loMid = this.mixerProtocol.channelTypes[channelType].toMixer.LO_MID[0]
+        level = level * (loMid.max-loMid.min) + loMid.min
         this.sendOutMessage(
-            mid.mixerMessage,
+            loMid.mixerMessage,
             channelTypeIndex+1,
             level,
             "f"
