@@ -118,20 +118,24 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 </button>
                 }
                 
+                {window.location.search.includes('settings=0') ?
+                null :
                 <button
                     className="channels-show-settings-button"
                     onClick={() => {
                         this.handleShowSettings();
                     }}
                 >SETTINGS</button>
-
+                }
+                {window.location.search.includes('settings=0') ?
+                null :
                 <button
                     className="channels-show-storage-button"
                     onClick={() => {
                         this.handleShowStorage();
                     }}
                 >STORAGE</button>
-
+                }
                 <button
                     className="channels-clear-button"
                     onClick={() => {

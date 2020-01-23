@@ -332,16 +332,22 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
 
                 </div>
                 <div className="header">
-                    <button 
-                        className="button"
-                        onClick={() => this.handleShowRoutingOptions()}
-                        >CHANNEL ROUTING
-                    </button>
-                    <button 
-                        className="button"
-                        onClick={() => this.handleShowMonitorOptions()}
-                        >MONITOR ROUTING
-                    </button>
+                    {window.location.search.includes('settings=0') ?
+                    null :
+                        <button 
+                            className="button"
+                            onClick={() => this.handleShowRoutingOptions()}
+                            >CHANNEL ROUTING
+                        </button>
+                    }
+                    {window.location.search.includes('settings=0') ?
+                        null :
+                        <button 
+                            className="button"
+                            onClick={() => this.handleShowMonitorOptions()}
+                            >MONITOR ROUTING
+                        </button>
+                    }
                 </div>
                 <hr/>
                 {this.props.offtubeMode ?

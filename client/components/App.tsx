@@ -19,6 +19,7 @@ class App extends React.Component<IAppProps> {
     }
 
     componentWillMount() {
+        console.log('http args : ', window.location.search.includes('settings=0'))
         window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
         window.socketIoClient.emit('get-store', 'update local store');
         window.socketIoClient.emit('get-settings', 'update local settings');        
