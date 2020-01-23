@@ -179,7 +179,7 @@ export class OscMixerConnection {
                     store.dispatch({
                         type: SET_CHANNEL_LABEL,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
-                        label: message.args[0]
+                        level: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
@@ -188,7 +188,7 @@ export class OscMixerConnection {
                     store.dispatch({
                         type: SET_FADER_THRESHOLD,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
-                        label: message.args[0]
+                        level: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
@@ -197,7 +197,7 @@ export class OscMixerConnection {
                     store.dispatch({
                         type: SET_FADER_RATIO,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
-                        label: message.args[0]
+                        level: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
@@ -206,7 +206,7 @@ export class OscMixerConnection {
                     store.dispatch({
                         type: SET_FADER_LO_MID,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
-                        label: message.args[0]
+                        level: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
@@ -215,7 +215,7 @@ export class OscMixerConnection {
                     store.dispatch({
                         type: SET_FADER_LO_MID,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
-                        label: message.args[0]
+                        level: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
@@ -224,7 +224,7 @@ export class OscMixerConnection {
                     store.dispatch({
                         type: SET_FADER_MID,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
-                        label: message.args[0]
+                        level: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
@@ -233,7 +233,7 @@ export class OscMixerConnection {
                     store.dispatch({
                         type: SET_FADER_HIGH,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
-                        label: message.args[0]
+                        level: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else {
