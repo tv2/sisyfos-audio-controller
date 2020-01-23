@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.3.3...v2.4.0) (2020-01-23)
+
+
+### Features
+
+* added Low-mid to get 4-band eq instead of 3-band eq ([59542a8](https://github.com/olzzon/sisyfos-audio-controller/commit/59542a83c1ca889696efe29fb4bc0d958567e77b))
+* chan strip zero indicators on eq, comp and monitor mix ([b9ec40e](https://github.com/olzzon/sisyfos-audio-controller/commit/b9ec40e16a2d6ff4c23fd457ff5a6ec4a9f73b87))
+* channel name in header of monitor mix minus ([99c0207](https://github.com/olzzon/sisyfos-audio-controller/commit/99c020743b641209423b924f042c6619c170321e))
+* get eq & comp state from Midas/Behringer X32 - both inital and realtime ([86bd216](https://github.com/olzzon/sisyfos-audio-controller/commit/86bd216d3e2cf4c15e241cdee6445e191f872d7a))
+* individual runtime args for setting log level of kibana and of local log file. ([e978093](https://github.com/olzzon/sisyfos-audio-controller/commit/e978093cae71699393493426b28d5aac450741ae))
+* Midas/Behringer OSC get inital Aux state from mixer ([7bb0741](https://github.com/olzzon/sisyfos-audio-controller/commit/7bb0741c2833274081d6f110d2b56876bcf5c33b))
+* move ch strip to left side ([89756b9](https://github.com/olzzon/sisyfos-audio-controller/commit/89756b9f39d9ec6715a8eac284690d977fa9e31a))
+
+
+### Bug Fixes
+
+* Ardour ping mixewr command didn´t have osc data type ([b84e965](https://github.com/olzzon/sisyfos-audio-controller/commit/b84e965abf679d512eb7333543555485ec84123c))
+* channel-body css didn´t set heigth ([653def0](https://github.com/olzzon/sisyfos-audio-controller/commit/653def0d90f25210a61830aa0ef5f7b517bf0b2f))
+* delay initial state commands to avoid overload of OSC commands to Midas ([443325f](https://github.com/olzzon/sisyfos-audio-controller/commit/443325fc2179b6053271c92548ad64270b61f044))
+* Recived Midas Ratio has value from 0 to 11 and not 0 to 1 ([40afcc5](https://github.com/olzzon/sisyfos-audio-controller/commit/40afcc55d826c0f731f4c64e1f5698b167f0b4aa))
+* typo - dispatch obj with level: instead of label: ([e84abaa](https://github.com/olzzon/sisyfos-audio-controller/commit/e84abaa71671e8d77f0b47a7d6a459fa682717ab))
+* typo - don´t revert dispatch label from level: to label: ([974bec2](https://github.com/olzzon/sisyfos-audio-controller/commit/974bec262d84179a2c3893f979e2ebcdb9f1b715))
+* use .loMid value when updating loMid ([9c61686](https://github.com/olzzon/sisyfos-audio-controller/commit/9c61686a00385076a5764ff20249db50007e3a6d))
+
 ### [2.3.3](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.3.2...v2.3.3) (2020-01-15)
 
 
