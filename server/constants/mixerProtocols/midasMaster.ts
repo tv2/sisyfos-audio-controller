@@ -57,6 +57,54 @@ export const MidasMaster: IMixerProtocol = {
             max: 1,
             zero: 0.75
         },
+        {
+            mixerMessage: '/ch/{channel}/dyn/thr',
+            value: "",
+            type: "s",
+            min: 0,
+            max: 1,
+            zero: 0.75
+        },
+        {
+            mixerMessage: '/ch/{channel}/dyn/ratio',
+            value: "",
+            type: "s",
+            min: 0,
+            max: 1,
+            zero: 0.75
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/1/g',
+            value: "",
+            type: "s",
+            min: 0,
+            max: 1,
+            zero: 0.75
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/2/g',
+            value: "",
+            type: "s",
+            min: 0,
+            max: 1,
+            zero: 0.75
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/3/g',
+            value: "",
+            type: "s",
+            min: 0,
+            max: 1,
+            zero: 0.75
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/4/g',
+            value: "",
+            type: "s",
+            min: 0,
+            max: 1,
+            zero: 0.75
+        },
     ],
     channelTypes: [{
         channelTypeName: 'CH',

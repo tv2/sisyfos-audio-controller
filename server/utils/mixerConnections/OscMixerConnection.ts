@@ -14,7 +14,12 @@ import {
     SET_VU_LEVEL, 
     SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
-    TOGGLE_PGM
+    TOGGLE_PGM,
+    SET_FADER_THRESHOLD,
+    SET_FADER_RATIO,
+    SET_FADER_LO_MID,
+    SET_FADER_MID,
+    SET_FADER_HIGH
 } from '../../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions';
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
@@ -170,9 +175,63 @@ export class OscMixerConnection {
  
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_NAME[0].mixerMessage)) {
-                                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
                     store.dispatch({
                         type: SET_CHANNEL_LABEL,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        label: message.args[0]
+                    });
+                    global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .THRESHOLD[0].mixerMessage)) {
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    store.dispatch({
+                        type: SET_FADER_THRESHOLD,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        label: message.args[0]
+                    });
+                    global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .RATIO[0].mixerMessage)) {
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    store.dispatch({
+                        type: SET_FADER_RATIO,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        label: message.args[0]
+                    });
+                    global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .LOW[0].mixerMessage)) {
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    store.dispatch({
+                        type: SET_FADER_LO_MID,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        label: message.args[0]
+                    });
+                    global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .LO_MID[0].mixerMessage)) {
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    store.dispatch({
+                        type: SET_FADER_LO_MID,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        label: message.args[0]
+                    });
+                    global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .MID[0].mixerMessage)) {
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    store.dispatch({
+                        type: SET_FADER_MID,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        label: message.args[0]
+                    });
+                    global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .HIGH[0].mixerMessage)) {
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    store.dispatch({
+                        type: SET_FADER_HIGH,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
                         label: message.args[0]
                     });
