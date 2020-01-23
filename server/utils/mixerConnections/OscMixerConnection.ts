@@ -180,7 +180,7 @@ export class OscMixerConnection {
                     store.dispatch({
                         type: SET_CHANNEL_LABEL,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
-                        level: message.args[0]
+                        label: message.args[0]
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
