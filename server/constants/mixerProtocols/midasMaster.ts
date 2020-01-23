@@ -117,7 +117,7 @@ export const MidasMaster: IMixerProtocol = {
             PFL: [emptyMixerMessage()],
             NEXT_SEND: [emptyMixerMessage()],
             THRESHOLD: [{ mixerMessage: '/ch/{channel}/dyn/thr', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
-            RATIO: [{ mixerMessage: '/ch/{channel}/dyn/ratio', value: 0, type: 'f', min: 0, max: 1, zero: 0}],  
+            RATIO: [{ mixerMessage: '/ch/{channel}/dyn/ratio', value: 0, type: 'f', min: 0, max: 11, zero: 0}],  
             LOW: [{ mixerMessage: '/ch/{channel}/eq/1/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             LO_MID: [{ mixerMessage: '/ch/{channel}/eq/2/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             MID: [{ mixerMessage: '/ch/{channel}/eq/3/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],

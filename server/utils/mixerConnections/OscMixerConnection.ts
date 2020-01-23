@@ -194,12 +194,14 @@ export class OscMixerConnection {
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .RATIO[0].mixerMessage)) {
-                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    let ch = message.address.split("/")[this.cmdChannelIndex]
+                    let ratio = this.mixerProtocol.channelTypes[0].fromMixer.RATIO[0]
+                    let level = message.args[0] / ((ratio.max-ratio.min) + ratio.min)
                     store.dispatch({
                         type: SET_FADER_RATIO,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
-                        level: message.args[0]
-                    });
+                        level: level
+                    })
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .LOW[0].mixerMessage)) {
