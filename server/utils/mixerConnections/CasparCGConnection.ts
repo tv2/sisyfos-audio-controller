@@ -337,5 +337,9 @@ export class CasparCGConnection {
     updateChannelName(channelIndex: number) {
         //CasparCG does not need Labels.
     }
+
+    injectCommand(command: string[]) {
+        return true
+    }
 }
 

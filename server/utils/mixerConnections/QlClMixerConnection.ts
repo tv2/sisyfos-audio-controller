@@ -275,5 +275,10 @@ export class QlClMixerConnection {
             "s"
         );
     }
+
+    injectCommand(command: string[]) {
+        return true
+    }
+
 }
 

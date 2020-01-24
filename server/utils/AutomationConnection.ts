@@ -147,6 +147,17 @@ export class AutomationConnection {
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                 }
             } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
+                .INJECT_COMMAND)) {
+                    let ch = message.address.split("/")[2];
+                    store.dispatch({
+                        type: SET_CHANNEL_LABEL,
+                        channel: ch -1,
+                        label: message.args[0]
+                    });
+                    mixerGenericConnection.injectCommand(message.args)
+                    global.mainThreadHandler.updatePartialStore(ch - 1)
+
+            } else if (this.checkOscCommand(message.address, this.automationProtocol.fromAutomation
                 .SNAP_RECALL)) {
                 let snapNumber = message.address.split("/")[2];
                 store.dispatch({

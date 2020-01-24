@@ -534,5 +534,10 @@ export class OscMixerConnection {
             "s"
         );
     }
+
+    injectCommand(command: string[]) {
+        return true
+    }
+
 }
 

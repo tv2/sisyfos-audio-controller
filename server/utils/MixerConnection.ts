@@ -185,6 +185,10 @@ export class MixerGenericConnection {
         this.mixerConnection.updateChannelName(channelIndex);
     }
 
+    injectCommand(command: string[]) {
+        this.mixerConnection.injectCommand(command)
+    }
+
     updateChannelSettings(channelIndex: number, setting: string, value: string) {
         if (this.mixerProtocol.protocol === 'CasparCG') {
             this.mixerConnection.updateChannelSetting(channelIndex, setting, value)

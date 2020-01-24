@@ -148,6 +148,9 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 /ch/1/mix/faderlevel - float {between 0 and 1}
 #### Set channel label:
 /ch/1/label - string {name of channel}
+#### Inject Command:
+Pass a command directly from Automation to Audiomixer
+/inject
 #### Crossfade between PGM and PST:
 /take
 #### Set snap 1-xx to PST:

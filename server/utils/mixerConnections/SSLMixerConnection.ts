@@ -411,5 +411,10 @@ export class SSLMixerConnection {
         );
         */
     }
+
+    injectCommand(command: string[]) {
+        return true
+    }
+
 }
 

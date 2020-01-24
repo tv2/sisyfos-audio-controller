@@ -236,5 +236,9 @@ return true;
         );
     }
 
+    injectCommand(command: string[]) {
+        return true
+    }
+
 }
 

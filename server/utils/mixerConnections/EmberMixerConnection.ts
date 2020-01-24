@@ -258,5 +258,10 @@ export class EmberMixerConnection {
             "string"
         );
     }
+
+    injectCommand(command: string[]) {
+        return true
+    }
+
 }
 
