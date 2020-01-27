@@ -5,8 +5,6 @@ import * as ClassNames from 'classnames';
 import '../assets/css/ChannelRouteSettings.css';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import CcgChannelSettings from './CcgChannelSettings';
-import { SET_ASSIGNED_FADER } from '../../server/reducers/channelActions'
 import { TOGGLE_SHOW_OPTION } from '../../server/reducers/settingsActions'
 import { SOCKET_SET_ASSIGNED_FADER } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 

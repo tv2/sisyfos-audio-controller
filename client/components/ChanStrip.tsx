@@ -11,7 +11,7 @@ import {
  } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
 import { SOCKET_SET_THRESHOLD, SOCKET_SET_RATIO, SOCKET_SET_LOW, SOCKET_SET_LO_MID, SOCKET_SET_MID, SOCKET_SET_HIGH, SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS';
-import CcgChannelSettings from './CcgChannelSettings';
+import CcgChannelInputSettings from './CcgChannelSettings';
 
 interface IChanStripInjectProps {
     label: string,
@@ -281,7 +281,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     parameters() {
         if (this.props.selectedProtocol.includes("caspar")) {
             return (
-                <CcgChannelSettings channelIndex={this.props.faderIndex} />
+                <CcgChannelInputSettings channelIndex={this.props.faderIndex} />
             )
         }
         else {

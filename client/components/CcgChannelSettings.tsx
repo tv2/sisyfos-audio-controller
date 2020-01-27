@@ -17,7 +17,7 @@ interface IChannelProps {
 	channelIndex: number
 }
 
-class CcgChannelSettings extends React.PureComponent<IChannelProps & IChannelSettingsInjectProps & Store> {
+class CcgChannelInputSettings extends React.PureComponent<IChannelProps & IChannelSettingsInjectProps & Store> {
     mixerProtocol: ICasparCGMixerGeometry | undefined;
     channelIndex: number;
 
@@ -36,21 +36,13 @@ class CcgChannelSettings extends React.PureComponent<IChannelProps & IChannelSet
 			channel: this.channelIndex,
 			prop,
 			option
-		});
-	}
-
-	handleClose = () => {
-		this.props.dispatch({
-			type: TOGGLE_SHOW_OPTION,
-			channel: this.channelIndex
-		});
+		})
 	}
 
     render() {
         return (
 			<div className="channel-settings-body">
 				<h2>{this.props.label || ("CH " + (this.channelIndex + 1))}</h2>
-				<button className="close" onClick={() => this.handleClose()}>X</button>
 				{this.mixerProtocol &&
 					this.mixerProtocol.sourceOptions &&
 					Object.getOwnPropertyNames(this.mixerProtocol.sourceOptions.options).map(prop => {
@@ -82,4 +74,4 @@ const mapStateToProps = (state: any, props: any): IChannelSettingsInjectProps =>
     }
 }
 
-export default connect<any, IChannelSettingsInjectProps>(mapStateToProps)(CcgChannelSettings) as any;
+export default connect<any, IChannelSettingsInjectProps>(mapStateToProps)(CcgChannelInputSettings) as any;
