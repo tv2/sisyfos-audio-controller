@@ -253,7 +253,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     monitor(channelIndex: number) {
         let faderIndex = this.props.channel[channelIndex].assignedFader
         if (faderIndex === -1) return null
-        let monitorName = this.props.fader[faderIndex].label
+        let monitorName = this.props.fader[faderIndex] ? this.props.fader[faderIndex].label : ''
         if (monitorName === '') {
             monitorName = 'Fader ' + String(this.props.channel[channelIndex].assignedFader + 1)
         }
