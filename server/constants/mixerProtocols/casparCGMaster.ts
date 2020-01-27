@@ -4,7 +4,7 @@ import * as os from 'os';
 import * as path from 'path';
 
 const CONFIG_FILE_NAME = 'sisyfos-casparcg-geometry.json';
-const geometryFile = path.join(os.homedir(), CONFIG_FILE_NAME);
+const geometryFile = path.join('storage', CONFIG_FILE_NAME);
 
 let geometry: ICasparCGMixerGeometryFile | undefined = undefined
 

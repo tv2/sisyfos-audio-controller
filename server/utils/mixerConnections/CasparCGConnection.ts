@@ -1,6 +1,6 @@
 //Node Modules:
 const osc = require('osc')
-const CasparCG = require('casparcg-connection')
+import { CasparCG } from 'casparcg-connection'
 import { store, state } from '../../reducers/store'
 
 //Utils:
@@ -339,7 +339,7 @@ export class CasparCGConnection {
     }
 
     injectCommand(command: string[]) {
-        return true
+        this.connection.createCommand(command[0])
     }
 }
 
