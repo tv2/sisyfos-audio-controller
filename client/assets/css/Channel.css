@@ -97,27 +97,6 @@
     background-color: rgb(163, 106, 0);
 }
 
-.channel-pfl-button {
-    outline : none;
-    -moz-outline : none;
-    margin-left: 3px;
-    margin-right: 3px;
-    margin-top: 5px;
-    color: white;
-    height: 90px;
-    width: 80px;
-    background-color: rgb(9, 0, 59);
-    border-radius: 7px;
-    border-color: rgb(99, 99, 99);
-}
-
-.channel-pfl-button.on {
-    background-color: rgb(17, 0, 255);
-    animation: 2s pfl-active-flash;
-    animation-direction: normal;
-    animation-iteration-count: infinite;
-}
-
 .channel-mute-button {
     outline : none;
     -moz-outline : none;
