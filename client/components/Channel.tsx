@@ -193,7 +193,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     pflButton = () => {
         return (
             <button
-                className={ClassNames("channel-pfl-button", {
+                className={ClassNames("channel-pst-button", {
                     'on': this.props.fader.pflOn
                 })}
                 onClick={event => {
@@ -262,10 +262,13 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     </React.Fragment>
                     : null
                 }
-                <React.Fragment>
-                    {this.pstButton()}
-                    <br/>
-                </React.Fragment>
+                {!this.props.settings.showPfl ?
+                    <React.Fragment>
+                        {this.pstButton()}
+                        <br/>
+                    </React.Fragment>
+                    : null
+                }
                 {this.props.settings.showPfl ?
                     <React.Fragment>
                         {this.pflButton()}

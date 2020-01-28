@@ -11,6 +11,7 @@ import {
  } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
 import { SOCKET_SET_THRESHOLD, SOCKET_SET_RATIO, SOCKET_SET_LOW, SOCKET_SET_LO_MID, SOCKET_SET_MID, SOCKET_SET_HIGH, SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import CcgChannelInputSettings from './CcgChannelSettings';
 
 interface IChanStripInjectProps {
     label: string,
@@ -253,7 +254,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     monitor(channelIndex: number) {
         let faderIndex = this.props.channel[channelIndex].assignedFader
         if (faderIndex === -1) return null
-        let monitorName = this.props.fader[faderIndex].label
+        let monitorName = this.props.fader[faderIndex] ? this.props.fader[faderIndex].label : ''
         if (monitorName === '') {
             monitorName = 'Fader ' + String(this.props.channel[channelIndex].assignedFader + 1)
         }
@@ -278,45 +279,52 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         )
     }
     parameters() {
-        return (
-            <div className="parameters">
-                <div className="group-text">
-                    {"COMPRESSOR"}
+        if (this.props.selectedProtocol.includes("caspar")) {
+            return (
+                <CcgChannelInputSettings channelIndex={this.props.faderIndex} />
+            )
+        }
+        else {
+            return (
+                <div className="parameters">
+                    <div className="group-text">
+                        {"COMPRESSOR"}
+                    </div>
+                    <div className="parameter-group">
+                        {this.threshold()}
+                        <p className="zero-comp">______</p>
+                        {this.ratio()}
+                        <p className="zero-comp">______</p>
+                    </div>
+                    <hr/>
+                    <div className="group-text">
+                        {"EQUALIZER"}
+                    </div>
+                    <div className="parameter-group">
+                        {this.low()}
+                        <p className="zero-eq">_______</p>
+                        {this.loMid()}
+                        <p className="zero-eq">_______</p>
+                        {this.mid()}
+                        <p className="zero-eq">_______</p>
+                        {this.high()}
+                        <p className="zero-eq">_______</p>
+                    </div>
+                    <hr/>
+                    <div className="group-text">
+                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
+                        {" - MONITOR MIX MINUS"}
+                    </div>
+                    <ul className="monitor-sends">
+                        {this.props.channel.map((ch: any, index: number) => {
+                            if (ch.auxLevel[this.props.auxSendIndex] >= 0) {
+                                return this.monitor(index)
+                            } 
+                        })}
+                    </ul>
                 </div>
-                <div className="parameter-group">
-                    {this.threshold()}
-                    <p className="zero-comp">______</p>
-                    {this.ratio()}
-                    <p className="zero-comp">______</p>
-                </div>
-                <hr/>
-                <div className="group-text">
-                    {"EQUALIZER"}
-                </div>
-                <div className="parameter-group">
-                    {this.low()}
-                    <p className="zero-eq">_______</p>
-                    {this.loMid()}
-                    <p className="zero-eq">_______</p>
-                    {this.mid()}
-                    <p className="zero-eq">_______</p>
-                    {this.high()}
-                    <p className="zero-eq">_______</p>
-                </div>
-                <hr/>
-                <div className="group-text">
-                {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
-                    {" - MONITOR MIX MINUS"}
-                </div>
-                <ul className="monitor-sends">
-                    {this.props.channel.map((ch: any, index: number) => {
-                        if (ch.auxLevel[this.props.auxSendIndex] >= 0) {
-                            return this.monitor(index)
-                        } 
-                    })}
-                </ul>
-            </div>
-        )
+            )
+        }
     }
 
     render() {

@@ -4,7 +4,13 @@ import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
-import { loadSettings, saveSettings, getSnapShotList } from './utils/SettingsStorage'
+import { 
+    loadSettings, 
+    saveSettings, 
+    getSnapShotList,
+    getCcgSettingsList,
+    setCcgDefault
+} from './utils/SettingsStorage'
 import { 
     SOCKET_TOGGLE_PGM, 
     SOCKET_TOGGLE_VO, 
@@ -14,7 +20,9 @@ import {
     SOCKET_SET_FADERLEVEL, 
     SOCKET_SAVE_SETTINGS, 
     SOCKET_GET_SNAPSHOT_LIST, 
-    SOCKET_RETURN_SNAPSHOT_LIST, 
+    SOCKET_RETURN_SNAPSHOT_LIST,
+    SOCKET_GET_CCG_LIST,
+    SOCKET_RETURN_CCG_LIST, 
     SOCKET_LOAD_SNAPSHOT, 
     SOCKET_SAVE_SNAPSHOT,
     SOCKET_SET_ASSIGNED_FADER,
@@ -32,7 +40,9 @@ import {
     SOCKET_SET_FULL_STORE,
     SOCKET_SET_STORE_FADER,
     SOCKET_SET_STORE_CHANNEL,
-    SOCKET_SET_LO_MID
+    SOCKET_SET_LO_MID,
+    SOCKET_SET_INPUT_OPTION,
+    SOCKET_SAVE_CCG_FILE
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_PGM, 
@@ -151,6 +161,22 @@ export class MainThreadHandlers {
                 )
             })
         )
+        .on(SOCKET_GET_CCG_LIST, (
+            () => { 
+                logger.info('Get snapshot list', {})
+                socketServer.emit(
+                    SOCKET_RETURN_CCG_LIST, 
+                    getCcgSettingsList()
+                )
+            })
+        )
+        .on(SOCKET_SAVE_CCG_FILE, (
+            (payload: any) => { 
+                logger.info('Set default CCG File :' + String(payload), {})
+                setCcgDefault(payload)
+                this.updateFullClientStore()
+            })
+        )
         .on(SOCKET_SAVE_SETTINGS, (
             (payload: any) => { 
                 logger.info('Save settings :' + String(payload), {})
@@ -182,6 +208,11 @@ export class MainThreadHandlers {
                     auxIndex: payload.auxIndex
                 });
                 this.updateFullClientStore()
+            })
+        )
+        .on(SOCKET_SET_INPUT_OPTION, (
+            (payload: any) => { 
+                mixerGenericConnection.updateChannelSettings(payload.channel, payload.prop, payload.option)
             })
         )
         .on(SOCKET_SET_AUX_LEVEL, (

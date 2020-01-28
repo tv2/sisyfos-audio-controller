@@ -1,7 +1,7 @@
 import { SET_COMPLETE_FADER_STATE, SET_VU_LEVEL, SET_SINGLE_FADER_STATE } from "../../server/reducers/faderActions";
 import { SET_COMPLETE_CH_STATE, SET_SINGLE_CH_STATE } from "../../server/reducers/channelActions";
 import { UPDATE_SETTINGS, SET_MIXER_ONLINE } from "../../server/reducers/settingsActions";
-import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_SET_FULL_STORE, SOCKET_SET_STORE_FADER, SOCKET_SET_STORE_CHANNEL } from "../../server/constants/SOCKET_IO_DISPATCHERS";
+import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_SET_FULL_STORE, SOCKET_SET_STORE_FADER, SOCKET_SET_STORE_CHANNEL, SOCKET_RETURN_CCG_LIST } from "../../server/constants/SOCKET_IO_DISPATCHERS";
 
 export const socketClientHandlers = () => {
     window.socketIoClient
@@ -52,7 +52,6 @@ export const socketClientHandlers = () => {
     )
     .on(SOCKET_SET_STORE_FADER, (
         (payload: any) => { 
-            // console.log('MIXERPROTOCOL RECEIVED :', payload)
             window.storeRedux.dispatch({
                 type:SET_SINGLE_FADER_STATE,
                 faderIndex: payload.faderIndex,
@@ -62,7 +61,6 @@ export const socketClientHandlers = () => {
     )
     .on(SOCKET_SET_STORE_CHANNEL, (
         (payload: any) => { 
-            // console.log('MIXERPROTOCOL RECEIVED :', payload)
             window.storeRedux.dispatch({
                 type:SET_SINGLE_CH_STATE,
                 channelIndex: payload.channelIndex,
@@ -72,7 +70,6 @@ export const socketClientHandlers = () => {
     )
     .on(SOCKET_SET_VU, (
         (payload: any) => { 
-            // console.log('MIXERPROTOCOL RECEIVED :', payload)
             window.storeRedux.dispatch({
                 type:SET_VU_LEVEL,
                 channel: payload.faderIndex,
@@ -82,8 +79,13 @@ export const socketClientHandlers = () => {
     )
     .on(SOCKET_RETURN_SNAPSHOT_LIST, (
         (payload: any) => { 
-            // console.log('MIXERPROTOCOL RECEIVED :', payload)
             window.snapshotFileList = payload
         })
     )
+    .on(SOCKET_RETURN_CCG_LIST, (
+        (payload: any) => { 
+            window.ccgFileList = payload
+        })
+    )
+
 }

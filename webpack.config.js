@@ -55,8 +55,5 @@ module.exports = {
     children: false,
     chunks: false,
     modules: false
-  },
-  externals: {
-    fs: require("fs"),
   }
 }
