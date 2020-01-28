@@ -111,9 +111,14 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
                 <hr/>
                 <h3>LOAD ROUTING :</h3>
                 <this.ListSnapshotFiles/>
-                <hr/>
-                <h3>LOAD CASPARCG :</h3>
-                <this.ListCcgFiles/>
+                {window.ccgFileList.length > 0 ?
+                    <div>
+                        <hr/>
+                        <h3>LOAD CASPARCG :</h3>
+                        <this.ListCcgFiles/>
+                    </div> 
+                    : null
+                }
             </div>
         )
     }
