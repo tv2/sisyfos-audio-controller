@@ -104,9 +104,31 @@ export const getSnapShotList = () => {
 
 export const getCcgSettingsList = () => {
     const files = fs.readdirSync(path.resolve('storage')).filter((file: string) => { 
-        if (file.includes('.ccg')) {
+        if (file.includes('.ccg') && file !== 'default-casparcg.ccg') {
             return true
         }
     })
     return files
+}
+
+export const setCcgDefault = (fileName: string) => {
+    let data: any
+    try {
+        data =  fs.readFileSync(path.join('storage', fileName))
+    }
+    catch (error) {
+        logger.error('Couldn´t read ' + fileName + ' file', {})
+        return
+    }
+    
+    const defaultFile = path.join('storage', 'default-casparcg.ccg')
+    fs.writeFile(defaultFile, data, 'utf8', (error: any)=>{
+        if (error) {
+            logger.error("Error setting default CasparCG setting" + String(error), {})
+        } else {
+            logger.info('CasparCG' + fileName + ' Saved as default CasparCG', {})
+        }
+    });
+
+
 }

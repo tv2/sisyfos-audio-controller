@@ -32,6 +32,7 @@ export const SOCKET_GET_CCG_LIST = 'getCcgList'
 export const SOCKET_RETURN_CCG_LIST = 'returnCcgList'
 export const SOCKET_LOAD_SNAPSHOT = 'loadSnapshot'
 export const SOCKET_SAVE_SNAPSHOT = 'saveSnapshot'
+export const SOCKET_SAVE_CCG_FILE = 'saveCcgFile'
 
 // Store updates:
 export const SOCKET_SET_FULL_STORE = 'setFullStore'

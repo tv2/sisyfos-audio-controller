@@ -12,7 +12,7 @@ public/
 *.compiled.*
 settings.json
 *.shot
-
+*.ccg
 
 # Folder config file #
 ######################

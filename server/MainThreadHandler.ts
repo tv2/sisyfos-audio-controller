@@ -8,7 +8,8 @@ import {
     loadSettings, 
     saveSettings, 
     getSnapShotList,
-    getCcgSettingsList
+    getCcgSettingsList,
+    setCcgDefault
 } from './utils/SettingsStorage'
 import { 
     SOCKET_TOGGLE_PGM, 
@@ -40,7 +41,8 @@ import {
     SOCKET_SET_STORE_FADER,
     SOCKET_SET_STORE_CHANNEL,
     SOCKET_SET_LO_MID,
-    SOCKET_SET_INPUT_OPTION
+    SOCKET_SET_INPUT_OPTION,
+    SOCKET_SAVE_CCG_FILE
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_PGM, 
@@ -166,6 +168,13 @@ export class MainThreadHandlers {
                     SOCKET_RETURN_CCG_LIST, 
                     getCcgSettingsList()
                 )
+            })
+        )
+        .on(SOCKET_SAVE_CCG_FILE, (
+            (payload: any) => { 
+                logger.info('Set default CCG File :' + String(payload), {})
+                setCcgDefault(payload)
+                this.updateFullClientStore()
             })
         )
         .on(SOCKET_SAVE_SETTINGS, (
