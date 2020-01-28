@@ -32,7 +32,8 @@ import {
     SOCKET_SET_FULL_STORE,
     SOCKET_SET_STORE_FADER,
     SOCKET_SET_STORE_CHANNEL,
-    SOCKET_SET_LO_MID
+    SOCKET_SET_LO_MID,
+    SOCKET_SET_INPUT_OPTION
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_PGM, 
@@ -182,6 +183,11 @@ export class MainThreadHandlers {
                     auxIndex: payload.auxIndex
                 });
                 this.updateFullClientStore()
+            })
+        )
+        .on(SOCKET_SET_INPUT_OPTION, (
+            (payload: any) => { 
+                mixerGenericConnection.updateChannelSettings(payload.channel, payload.prop, payload.option)
             })
         )
         .on(SOCKET_SET_AUX_LEVEL, (

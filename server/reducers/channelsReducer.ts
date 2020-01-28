@@ -2,7 +2,6 @@ import {
     SET_OUTPUT_LEVEL,
     SET_ASSIGNED_FADER,
     SET_COMPLETE_CH_STATE,
-    SET_OPTION,
     SET_PRIVATE,
     FADE_ACTIVE,
     SET_AUX_LEVEL,
@@ -84,11 +83,6 @@ export const channels = ((state = defaultChannelsReducerState([1]), action: any)
                 nextState[0].channel[action.channel].private = {};
             }
             nextState[0].channel[action.channel].private![action.tag] = action.value;
-            return nextState;
-        case SET_OPTION:
-            // TODO: This should be changed, as it´s not the "redux" way of handling it.
-            // @ts-ignore
-            // mixerGenericConnection.updateChannelSettings(action.channel, action.prop, action.option);
             return nextState;
         default:
             return nextState;

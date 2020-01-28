@@ -4,8 +4,7 @@ import '../assets/css/CcgChannelSettings.css';
 import { ICasparCGMixerGeometry } from '../../server/constants/MixerProtocolInterface';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import { SET_OPTION } from  '../../server/reducers/channelActions'
-import { TOGGLE_SHOW_OPTION } from '../../server/reducers/settingsActions'
+import { SOCKET_SET_INPUT_OPTION } from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IChannelSettingsInjectProps {
 	label: string,
@@ -19,11 +18,9 @@ interface IChannelProps {
 
 class CcgChannelInputSettings extends React.PureComponent<IChannelProps & IChannelSettingsInjectProps & Store> {
     mixerProtocol: ICasparCGMixerGeometry | undefined;
-    channelIndex: number;
 
     constructor(props: any) {
         super(props);
-		this.channelIndex = this.props.channelIndex;
 		const protocol = window.mixerProtocol as ICasparCGMixerGeometry;
 		if (protocol.sourceOptions) {
 			this.mixerProtocol = protocol;
@@ -31,18 +28,19 @@ class CcgChannelInputSettings extends React.PureComponent<IChannelProps & IChann
 	}
 
 	handleOption = (prop: string, option: string) => {
-		this.props.dispatch({
-			type: SET_OPTION,
-			channel: this.channelIndex,
-			prop,
-			option
-		})
+		window.socketIoClient.emit( SOCKET_SET_INPUT_OPTION, 
+            {
+                channel: this.props.channelIndex,
+				prop: prop,
+				option: option
+            }
+        )
 	}
 
     render() {
         return (
 			<div className="channel-settings-body">
-				<h2>{this.props.label || ("CH " + (this.channelIndex + 1))}</h2>
+				<h2>{this.props.label || ("CH " + (this.props.channelIndex + 1))} INPUT :</h2>
 				{this.mixerProtocol &&
 					this.mixerProtocol.sourceOptions &&
 					Object.getOwnPropertyNames(this.mixerProtocol.sourceOptions.options).map(prop => {
