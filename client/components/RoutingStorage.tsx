@@ -102,7 +102,7 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         return (
             <div className="channel-storage-body">
                 <button className="close" onClick={() => this.handleClose()}>X</button>
-                <h2>ROUTING</h2>
+                <h2>STORAGE</h2>
                 <br/>
                 <h3>SAVE ROUTING :</h3>
                 <button onClick={this.saveFile} className="button">
