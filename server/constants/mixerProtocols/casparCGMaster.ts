@@ -1,5 +1,8 @@
 import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile, emptyMixerMessage } from '../MixerProtocolInterface';
 
+// TODO: This is just template data to avoid error if not loading 
+// default.caspar.ccg from storage folder
+// should be simplified when storage is tested on new installations.
 let geometry: ICasparCGMixerGeometryFile = {
 	"label": "Sofie CasparCG Example",
 	"fromMixer": {
@@ -92,13 +95,15 @@ let CasparCGMasterObject: ICasparCGMixerGeometry | undefined = undefined
 if (geometry) {
 	CasparCGMasterObject = {
 		protocol: 'CasparCG',
-		label: `CasparCG Audio Mixer (${geometry.label})`,
+		label: `CasparCG Audio Mixer`,
 		mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
-		studio: "rk10",
+		studio: "studio0",
 		leadingZeros: false,
 		pingTime: 0,
 		fromMixer: geometry.fromMixer,
 		toMixer: geometry.toMixer,
+		channelLabels: geometry.channelLabels,
+        sourceOptions: geometry.sourceOptions,
 		fader: {
 			min: 0,
 			max: 1.5,
@@ -111,8 +116,6 @@ if (geometry) {
 			zero: 0.75,
 			test: 0.6,
 		},
-		channelLabels: geometry.channelLabels,
-        sourceOptions: geometry.sourceOptions,
         //CHANNELTYES ARE NOT IMPLEMENTED.
         //THIS IS JUST TO AVOID ERRORS AS
         //channelTypes are moved to IMixerProtocolGeneric

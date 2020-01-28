@@ -56,6 +56,15 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         }
         this.handleClose()
     }
+    loadCcgFile(event: any) {
+        if (window.confirm('Are you sure you will load a CasparCG setup?'))
+        {
+            console.log('Loading files')
+            window.socketIoClient.emit(SOCKET_LOAD_SNAPSHOT, event.target.textContent)
+        }
+        this.handleClose()
+    }
+
 
     ListSnapshotFiles() {
         window.socketIoClient.emit(SOCKET_GET_SNAPSHOT_LIST)

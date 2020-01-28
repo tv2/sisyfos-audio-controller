@@ -1,11 +1,12 @@
 //Node Modules:
 const osc = require('osc')
+const fs = require('fs')
+import * as path from 'path';
 import { CasparCG } from 'casparcg-connection'
-import { store, state } from '../../reducers/store'
 
 //Utils:
-import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair } from '../../constants/MixerProtocolInterface';
-import { IStore } from '../../reducers/indexReducer';
+import { store, state } from '../../reducers/store'
+import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair, ICasparCGMixerGeometryFile } from '../../constants/MixerProtocolInterface';
 import { IChannel } from '../../reducers/channelsReducer';
 import { SET_PRIVATE } from  '../../reducers/channelActions'
 import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../../reducers/faderActions'
@@ -32,6 +33,7 @@ export class CasparCGConnection {
     constructor(mixerProtocol: ICasparCGMixerGeometry) {
 
         this.mixerProtocol = mixerProtocol
+        this.injectCasparCGSetting()
 
         this.connection = new CasparCG({
             autoReconnect: true,
@@ -54,6 +56,28 @@ export class CasparCGConnection {
         this.mixerProtocol.fromMixer.CHANNEL_VU.forEach((paths, index) => {
             this.oscCommandMap.CHANNEL_VU[paths[0]] = index
         })
+    }
+
+    injectCasparCGSetting() {
+        const geometryFile = path.join('storage', 'default-casparcg.ccg');
+
+        let geometry: ICasparCGMixerGeometryFile | undefined = undefined
+        try {
+            let inputObj = JSON.parse(fs.readFileSync(geometryFile, {
+                encoding: 'utf-8'
+            }))
+            if (inputObj.toMixer && inputObj.toMixer.PGM_CHANNEL_FADER_LEVEL) {
+                geometry = inputObj
+            }
+        } catch (e) {
+            // Handling a file should be removed from Constants in the future:
+            console.log('CasparCG Audio geometry file has not been created')
+        }
+
+        this.mixerProtocol.fromMixer = geometry.fromMixer
+		this.mixerProtocol.toMixer = geometry.toMixer
+		this.mixerProtocol.channelLabels = geometry.channelLabels
+        this.mixerProtocol.sourceOptions = geometry.sourceOptions
     }
 
     setupMixerConnection() {
