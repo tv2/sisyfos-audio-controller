@@ -58,7 +58,8 @@ class CcgChannelInputSettings extends React.PureComponent<IChannelProps & IChann
 								}) || null}
 							</div>
 						)
-					})}
+					})
+				}
             </div>
         )
     }

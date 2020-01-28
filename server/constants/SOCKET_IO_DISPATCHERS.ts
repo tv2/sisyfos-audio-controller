@@ -28,6 +28,8 @@ export const SOCKET_RESTART_SERVER = 'restartServer'
 export const SOCKET_SET_VU = 'setVu'
 export const SOCKET_GET_SNAPSHOT_LIST = 'getSnapshotList'
 export const SOCKET_RETURN_SNAPSHOT_LIST = 'returnSnapshotList'
+export const SOCKET_GET_CCG_LIST = 'getCcgList'
+export const SOCKET_RETURN_CCG_LIST = 'returnCcgList'
 export const SOCKET_LOAD_SNAPSHOT = 'loadSnapshot'
 export const SOCKET_SAVE_SNAPSHOT = 'saveSnapshot'
 

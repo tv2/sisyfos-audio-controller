@@ -4,7 +4,12 @@ import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
 import { UPDATE_SETTINGS } from './reducers/settingsActions'
-import { loadSettings, saveSettings, getSnapShotList } from './utils/SettingsStorage'
+import { 
+    loadSettings, 
+    saveSettings, 
+    getSnapShotList,
+    getCcgSettingsList
+} from './utils/SettingsStorage'
 import { 
     SOCKET_TOGGLE_PGM, 
     SOCKET_TOGGLE_VO, 
@@ -14,7 +19,9 @@ import {
     SOCKET_SET_FADERLEVEL, 
     SOCKET_SAVE_SETTINGS, 
     SOCKET_GET_SNAPSHOT_LIST, 
-    SOCKET_RETURN_SNAPSHOT_LIST, 
+    SOCKET_RETURN_SNAPSHOT_LIST,
+    SOCKET_GET_CCG_LIST,
+    SOCKET_RETURN_CCG_LIST, 
     SOCKET_LOAD_SNAPSHOT, 
     SOCKET_SAVE_SNAPSHOT,
     SOCKET_SET_ASSIGNED_FADER,
@@ -149,6 +156,15 @@ export class MainThreadHandlers {
                 socketServer.emit(
                     SOCKET_RETURN_SNAPSHOT_LIST, 
                     getSnapShotList()
+                )
+            })
+        )
+        .on(SOCKET_GET_CCG_LIST, (
+            () => { 
+                logger.info('Get snapshot list', {})
+                socketServer.emit(
+                    SOCKET_RETURN_CCG_LIST, 
+                    getCcgSettingsList()
                 )
             })
         )

@@ -3,9 +3,13 @@ import React from 'react';
 import '../assets/css/RoutingStorage.css';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
-import Popup from 'reactjs-popup'
 import { TOGGLE_SHOW_STORAGE } from '../../server/reducers/settingsActions'
-import { SOCKET_GET_SNAPSHOT_LIST, SOCKET_LOAD_SNAPSHOT, SOCKET_SAVE_SNAPSHOT } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import { 
+    SOCKET_GET_SNAPSHOT_LIST, 
+    SOCKET_LOAD_SNAPSHOT, 
+    SOCKET_SAVE_SNAPSHOT,
+    SOCKET_GET_CCG_LIST 
+} from '../../server/constants/SOCKET_IO_DISPATCHERS';
 
 interface IStorageProps {
     load: any
@@ -13,16 +17,17 @@ interface IStorageProps {
 }
 class Storage extends React.PureComponent<IStorageProps & Store> {
     fileList: string[] = []
-    load: any
-    save: any
+    loadSnapshot: any
+    saveSnapshot: any
 
     constructor(props: any) {
         super(props);
-        this.load = this.props.load
-        this.save = this.props.save
+        this.loadSnapshot = this.props.load
+        this.saveSnapshot = this.props.save
 
         //Bindings:
-        this.ListFiles = this.ListFiles.bind(this)
+        this.ListSnapshotFiles = this.ListSnapshotFiles.bind(this)
+        this.ListCcgFiles = this.ListCcgFiles.bind(this)
         this.loadFile = this.loadFile.bind(this)
         this.saveFile = this.saveFile.bind(this)
     }
@@ -52,9 +57,25 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         this.handleClose()
     }
 
-    ListFiles(props: any) {
+    ListSnapshotFiles() {
         window.socketIoClient.emit(SOCKET_GET_SNAPSHOT_LIST)
         const listItems = window.snapshotFileList.map((file: string, index: number) => {
+        return (
+            <li key={index} onClick={this.loadFile} className="item">
+            {file}
+       </li>)
+        }
+        );
+        return (
+          <ul className="storage-list">
+            {listItems}
+            </ul>
+        );
+    }
+
+    ListCcgFiles() {
+        window.socketIoClient.emit(SOCKET_GET_CCG_LIST)
+        const listItems = window.ccgFileList.map((file: string, index: number) => {
         return (
             <li key={index} onClick={this.loadFile} className="item">
             {file}
@@ -80,7 +101,10 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
                 </button>
                 <hr/>
                 <h3>LOAD ROUTING :</h3>
-                <this.ListFiles files = {this.fileList}/>
+                <this.ListSnapshotFiles/>
+                <hr/>
+                <h3>LOAD CASPARCG :</h3>
+                <this.ListCcgFiles/>
             </div>
         )
     }

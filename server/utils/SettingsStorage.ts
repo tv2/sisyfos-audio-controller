@@ -102,3 +102,11 @@ export const getSnapShotList = () => {
     return files
 }
 
+export const getCcgSettingsList = () => {
+    const files = fs.readdirSync(path.resolve('storage')).filter((file: string) => { 
+        if (file.includes('.ccg')) {
+            return true
+        }
+    })
+    return files
+}
