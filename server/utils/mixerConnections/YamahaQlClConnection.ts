@@ -20,7 +20,7 @@ import { logger } from '../logger'
 export class QlClMixerConnection {
     mixerProtocol: IMixerProtocol;
     cmdChannelIndex: number;
-    scpConnection: any;
+    midiConnection: any;
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
@@ -30,8 +30,8 @@ export class QlClMixerConnection {
 
         this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.split('/').findIndex(ch => ch === '{channel}');
 
-        this.scpConnection = new net.Socket()
-        this.scpConnection.connect(50000, state.settings[0].deviceIp, () => {
+        this.midiConnection = new net.Socket()
+        this.midiConnection.connect(50000, state.settings[0].deviceIp, () => {
             logger.info('Connected to Yamaha mixer', {})
 
         }
@@ -40,7 +40,7 @@ export class QlClMixerConnection {
     }
 
     setupMixerConnection() {
-        this.scpConnection
+        this.midiConnection
             .on("ready", () => {
                 logger.info("Receiving state of desk", {})
                 this.mixerProtocol.initializeCommands.map((item) => {
@@ -56,7 +56,8 @@ export class QlClMixerConnection {
             .on('data', (buffer: any) => {
                 let messages: string[] = buffer.toString().split('\n')
                 messages.forEach((message) => {
-                    if (this.checkSCPCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
+                    console.log("Received Message : ", message)
+                    if (this.checkMidiCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
                         .CHANNEL_VU[0].mixerMessage)) {
                             let mixerValues: string[] = message.split(' ')
                             let ch = parseInt(mixerValues[3])
@@ -68,7 +69,7 @@ export class QlClMixerConnection {
                                 level: mixerValue
                         }
                         )
-                    } else if (this.checkSCPCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
+                    } else if (this.checkMidiCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
                         .CHANNEL_OUT_GAIN[0].mixerMessage)) {
                         let mixerValues: string[] = message.split(' ')
                         let ch = 1 + parseInt(mixerValues[3])
@@ -141,7 +142,7 @@ export class QlClMixerConnection {
         });
     }
 
-    checkSCPCommand(message: string, command: string) {
+    checkMidiCommand(message: string, command: string) {
         if (!message) return false
         if (message.slice(0, command.length) === command) return true;
         return false;
@@ -163,8 +164,7 @@ export class QlClMixerConnection {
         command = command.replace('{level}', valueByte[0].toString(16) + ' ' + valueByte[1].toString(16))
         let a = command.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
-        this.scpConnection.write(buf)
-//        this.scpConnection.write(oscMessage + ' ' + (channel - 1) + ' 0 ' + valueNumber.toFixed(0) + '\n');
+        this.midiConnection.write(buf)
     }
 
 
@@ -175,7 +175,7 @@ export class QlClMixerConnection {
             channelString
         );
         if (message != 'none') {
-            this.scpConnection.send({
+            this.midiConnection.send({
                 address: message
             });
         }
@@ -221,7 +221,23 @@ export class QlClMixerConnection {
     }
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
-        return true
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
+        if (muteOn === true) {
+            this.sendOutMessage(
+                this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_ON[0].mixerMessage,
+                channelTypeIndex,
+                '',
+                ''
+            );
+        } else {
+            this.sendOutMessage(
+                this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_OFF[0].mixerMessage,
+                channelTypeIndex,
+                '',
+                ''
+            );
+        }
     } 
     
     updateNextAux(channelIndex: number, level: number) {
