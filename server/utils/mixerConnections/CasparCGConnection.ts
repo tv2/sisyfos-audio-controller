@@ -61,7 +61,7 @@ export class CasparCGConnection {
     injectCasparCGSetting() {
         const geometryFile = path.join('storage', 'default-casparcg.ccg');
 
-        let geometry: ICasparCGMixerGeometryFile | undefined = undefined
+        let geometry: ICasparCGMixerGeometryFile | undefined
         try {
             let inputObj = JSON.parse(fs.readFileSync(geometryFile, {
                 encoding: 'utf-8'
@@ -73,11 +73,12 @@ export class CasparCGConnection {
             // Handling a file should be removed from Constants in the future:
             console.log('CasparCG Audio geometry file has not been created')
         }
-
-        this.mixerProtocol.fromMixer = geometry.fromMixer
-		this.mixerProtocol.toMixer = geometry.toMixer
-		this.mixerProtocol.channelLabels = geometry.channelLabels
-        this.mixerProtocol.sourceOptions = geometry.sourceOptions
+        if (geometry) {
+            this.mixerProtocol.fromMixer = geometry.fromMixer || this.mixerProtocol.fromMixer 
+            this.mixerProtocol.toMixer = geometry.toMixer || this.mixerProtocol.toMixer
+            this.mixerProtocol.channelLabels = geometry.channelLabels || this.mixerProtocol.channelLabels
+            this.mixerProtocol.sourceOptions = geometry.sourceOptions || this.mixerProtocol.sourceOptions
+        }
     }
 
     setupMixerConnection() {
