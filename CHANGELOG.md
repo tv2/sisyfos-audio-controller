@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.4.0...v2.5.0) (2020-01-29)
+
+
+### Features
+
+* CasparCGconnection.ts winston logger support ([4e0a7f0](https://github.com/olzzon/sisyfos-audio-controller/commit/4e0a7f055c3645eead11e567e28cc1c1e30f0858))
+* CCG channelsettings emit action for selecting new channel inputs. ([6f807cd](https://github.com/olzzon/sisyfos-audio-controller/commit/6f807cdda018513fd20418e55e587a4e844140e1))
+* CCG v2 show- PFL in settings replaces CUE NEXT ([9a24def](https://github.com/olzzon/sisyfos-audio-controller/commit/9a24defa5060853656ac46e54d992945bd32d9d8))
+* ccg-v2 - move config files to storage folder. ([53bd70e](https://github.com/olzzon/sisyfos-audio-controller/commit/53bd70e06d76d292cf84c94ff78165cbad25e055))
+* check geometry file for undefined ([b15fbb1](https://github.com/olzzon/sisyfos-audio-controller/commit/b15fbb15f2e02cea8a9ff5896b56ea43db16e151))
+* disable settings in browser by adding localhost:1176/?settings=0 ([f2dc03f](https://github.com/olzzon/sisyfos-audio-controller/commit/f2dc03f77ece5d2522ce54a4f7bb0370153fff8b))
+* load CasparCG settings from Storage menu ([c4e55e6](https://github.com/olzzon/sisyfos-audio-controller/commit/c4e55e6744d33a927b57f2c0e197f2dbe9c7f858))
+* move CasparCG input settings into channelstrip on left side ([7d20317](https://github.com/olzzon/sisyfos-audio-controller/commit/7d20317614a5bb508e29ebf8cd5ab8287f32803b))
+* only show Load CasparCG in Storage menu if there are any .ccg files ([6cda7c0](https://github.com/olzzon/sisyfos-audio-controller/commit/6cda7c0c8c51dda597542c586f6860e0daa92bf7))
+* Preparing CCG - /inject command so it´s possible pass a command directly from Sofie to Audiomixer. ([cb53eb5](https://github.com/olzzon/sisyfos-audio-controller/commit/cb53eb57ac2a322779b3bdecd95be040ea8e1b1e))
+* remove close button in CCG input settings window ([d61dab7](https://github.com/olzzon/sisyfos-audio-controller/commit/d61dab73f52a522e6edd60106f8f714c0db2d50b))
+* remove filehandling from mixerprotocol, include default example ([7918b05](https://github.com/olzzon/sisyfos-audio-controller/commit/7918b0573dd500c858f5e598fb50e373976f4d8e))
+* rename Storage menu to "STORAGE" ([ee917a2](https://github.com/olzzon/sisyfos-audio-controller/commit/ee917a2f9e50a62dba862aa00b609a480df95d7e))
+* set new CasparCG config from Storage Menu is working. ([7eab0b9](https://github.com/olzzon/sisyfos-audio-controller/commit/7eab0b90cc218636a41ffa2c7598661076cebc48))
+* set seperate loglevel for console with loggerConsoleLevel='verbose' updated in Readme.md ([beba900](https://github.com/olzzon/sisyfos-audio-controller/commit/beba90053efcf5c6efe8144ba07f1e7e1e66c17c))
+
+
+### Bug Fixes
+
+* GUI crash for reference to fader label, on fader thats not defined. ([9bc4df7](https://github.com/olzzon/sisyfos-audio-controller/commit/9bc4df7f6f4c2753cb0c3933245a1aec9025ba21))
+* zero indicator on faders was off after new design ([78f48b5](https://github.com/olzzon/sisyfos-audio-controller/commit/78f48b5942a47a4393e490d6fadd0fa1fb558471))
+
 ## [2.4.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.3.3...v2.4.0) (2020-01-23)
 
 
