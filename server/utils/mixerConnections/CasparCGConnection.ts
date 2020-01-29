@@ -10,6 +10,7 @@ import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair, ICasparCGMixerGeomet
 import { IChannel } from '../../reducers/channelsReducer';
 import { SET_PRIVATE } from  '../../reducers/channelActions'
 import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../../reducers/faderActions'
+import { logger } from '../logger'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -42,13 +43,13 @@ export class CasparCGConnection {
             host: state.settings[0].deviceIp,
             port: parseInt(state.settings[0].devicePort + ''),
         })
-        console.log("Trying to connect to CasparCG...")
+        logger.info("Trying to connect to CasparCG...")
         this.connection.onConnected = () => {
-            console.log("CasparCG connected");
+            logger.info("CasparCG connected");
             this.setupMixerConnection();
         }
         this.connection.onDisconnected = () => {
-            console.log("CasparCG disconnected");
+            logger.info("CasparCG disconnected");
         }
         this.connection.connect();
 
@@ -71,7 +72,7 @@ export class CasparCGConnection {
             }
         } catch (e) {
             // Handling a file should be removed from Constants in the future:
-            console.log('CasparCG Audio geometry file has not been created')
+            logger.info('CasparCG Audio geometry file has not been created')
         }
         if (geometry) {
             this.mixerProtocol.fromMixer = geometry.fromMixer || this.mixerProtocol.fromMixer 
@@ -91,7 +92,7 @@ export class CasparCGConnection {
                 remotePort
             })
             .on('ready', () => {
-                console.log("Receiving state of mixer");
+                logger.info("Receiving state of mixer");
             })
             .on('message', (message: any) => {
                 const index = this.checkOscCommand(message.address, this.oscCommandMap.CHANNEL_VU)
@@ -140,12 +141,12 @@ export class CasparCGConnection {
                 }
             })
             .on('error', (error: any) => {
-                console.log("Error : ", error);
-                console.log("Lost OSC connection");
+                logger.error("Error : " + JSON.stringify(error));
+                logger.info("Lost OSC connection");
             });
 
             this.oscClient.open();
-            console.log("Listening for status on CasparCG: ", state.settings[0].deviceIp, remotePort)
+            logger.info("Listening for status on CasparCG: " + state.settings[0].deviceIp + ':' + remotePort)
         }
 
         // Restore mixer values to the ones we have internally
@@ -198,7 +199,7 @@ export class CasparCGConnection {
     controlVolume = (channel: number, layer: number, value: number) => {
         this.syncCommand = this.syncCommand.then(() =>
             this.connection.mixerVolume(channel, layer, value, 0, undefined).catch((e: any) => {
-                console.error('Failed to send command', e);
+                logger.error('Failed to send command' + JSON.stringify(e))
             })
         ).then(() => { })
     }
@@ -241,7 +242,7 @@ export class CasparCGConnection {
         }).then(() => {
 
         }).catch((e: any) => {
-            console.error('Failed to change channel setting', e);
+            logger.error('Failed to change channel setting' + JSON.stringify(e))
         })
     }
 
