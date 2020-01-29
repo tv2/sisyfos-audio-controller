@@ -32,7 +32,7 @@ export const YamahaQLCL: IMixerProtocol = {
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: "set MIXER:Current/InCh/Fader/Level", value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'f0 43 10 3e 19 01 00 37 00 00 00 {channel} 00 00 00 {level} f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],

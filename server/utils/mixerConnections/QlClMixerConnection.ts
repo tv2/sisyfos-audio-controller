@@ -6,7 +6,6 @@ import { huiRemoteConnection } from '../../mainClasses'
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
-import { IStore } from '../../reducers/indexReducer'
 import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
 import { 
     SET_VU_LEVEL, 
@@ -148,7 +147,7 @@ export class QlClMixerConnection {
         return false;
     }
 
-    sendOutMessage(oscMessage: string, channelIndex: number, value: string | number, type: string) {
+    sendOutMessage(message: string, channelIndex: number, value: string | number, type: string) {
         let valueNumber: number
         if (typeof value === 'string') {
             value = parseFloat(value)
@@ -160,9 +159,7 @@ export class QlClMixerConnection {
             (valueNumber & 0x00ff),
         ])
 
-        //f0 43 10 3e 19 01 00 37 00 00 00 00 00 00 00 07 0e f7
-        let command = 'f0 43 10 3e 19 01 00 37 00 00 00 {channel} 00 00 00 {level} f7'
-        command = command.replace('{channel}', channelIndex.toString(16))
+        let command = message.replace('{channel}', channelIndex.toString(16))
         command = command.replace('{level}', valueByte[0].toString(16) + ' ' + valueByte[1].toString(16))
         let a = command.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
