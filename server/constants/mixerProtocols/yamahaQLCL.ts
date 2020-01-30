@@ -36,7 +36,8 @@ export const YamahaQLCL: IMixerProtocol = {
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
             AUX_LEVEL: [emptyMixerMessage()],
-            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_ON: [{ mixerMessage: 'f0 43 10 3e 19 01 00 35 00 00 {channel} 00 00 00 00 00 f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+            // Only MUTE_ON is used as receiver
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {

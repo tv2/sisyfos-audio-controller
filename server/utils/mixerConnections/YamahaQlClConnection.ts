@@ -11,7 +11,8 @@ import {
     SET_VU_LEVEL, 
     SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
-    TOGGLE_PGM
+    TOGGLE_PGM,
+    SET_MUTE
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions'
@@ -97,7 +98,7 @@ export class QlClMixerConnection {
                         )
                     } else if (this.checkMidiCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
                         .CHANNEL_OUT_GAIN[0].mixerMessage)) {
-                        let ch = 1 + parseInt(message[11])
+                        let ch = 1 + (message[11] | message[10] << 8)
                         let assignedFader = 1 + state.channels[0].channel[ch - 1].assignedFader
                         let mixerLevel: number = message[16] | message[15] << 8 // parseFloat(message[16])
                         let faderLevel =  Math.pow(2, (mixerLevel) / 1920) - 1
@@ -130,15 +131,32 @@ export class QlClMixerConnection {
                         }
                         global.mainThreadHandler.updatePartialStore(assignedFader - 1)
 
-                    } /*else if (this.checkSCPCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_NAME[0].mixerMessage)) {
-                        let ch = message.split("/")[this.cmdChannelIndex];
+                    } else if (this.checkMidiCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
+                        .CHANNEL_MUTE_ON[0].mixerMessage)) {
+                        // MUTE ON/OFF COMMAND
+                        let channelIndex = (message[11] | message[10] << 8)
+
+                        let value: boolean = message[16] === 0 ? true : false
+                        logger.verbose('Receive Buffer Channel On/off - Channel ' + String(channelIndex + 1) + ' Val :' + String(message[16]) )
+                        
+                        let assignedFaderIndex = state.channels[0].channel[channelIndex].assignedFader
+
                         store.dispatch({
-                            type: SET_CHANNEL_LABEL,
-                            channel: state.channels[0].channel[ch - 1].assignedFader,
-                            label: message.args[0]
+                            type: SET_MUTE,
+                            channel: assignedFaderIndex,
+                            muteOn: value
                         });
-                    }*/
+                        
+                        if (huiRemoteConnection) {
+                            huiRemoteConnection.updateRemoteFaderState(assignedFaderIndex, value ? 1 : 0);
+                        }
+                        state.channels[0].channel.forEach((channel: any, index: number) => {
+                            if (channel.assignedFader === assignedFaderIndex && index !== channelIndex) {
+                                this.updateMuteState(index, state.faders[0].fader[assignedFaderIndex].muteOn);
+                            }
+                        })
+                        global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
+                    }
                 })
             })
             .on('error', (error: any) => {
