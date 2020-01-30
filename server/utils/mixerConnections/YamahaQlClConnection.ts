@@ -83,7 +83,7 @@ export class QlClMixerConnection {
                 }
 
                 buffers.forEach((message) => {
-                    console.log("Received Midi Message : ", message)
+                    logger.verbose("Received Midi Message : " + message.toString('hex'))
                     if (this.checkMidiCommand(message, this.mixerProtocol.channelTypes[0].fromMixer
                         .CHANNEL_VU[0].mixerMessage)) {
                             let mixerValues: string[] = message.split(' ')
@@ -221,7 +221,7 @@ export class QlClMixerConnection {
         command = command.replace('{level}', valueByte[0].toString(16) + ' ' + valueByte[1].toString(16))
         let a = command.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
-        console.log("Sending Command :", command)
+        logger.verbose("Sending Command :" + command)
         this.midiConnection.write(buf)
     }
 
