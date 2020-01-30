@@ -9,13 +9,22 @@ export const YamahaQLCL: IMixerProtocol = {
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],
     pingTime: 10000,
-    initializeCommands: [emptyMixerMessage()],
+    initializeCommands: [
+        { 
+            mixerMessage: 'f0 43 30 3e 19 01 00 37 00 00 {channel} f7', 
+            value: 0, 
+            type: '', 
+            min: 0, 
+            max: 1, 
+            zero: 0.75
+        }
+    ],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //PgmChange 0 - ignores this command
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'f0 43 10 3e 19 01 00 37 00 00 00 {channel} 00 00 00 {level} f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],            //PgmChange 0 - ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'f0 43 10 3e 19 01 00 37 00 00 {channel} 00 00 00 {level} f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],            //PgmChange 0 - ignores this command
             CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
@@ -32,7 +41,7 @@ export const YamahaQLCL: IMixerProtocol = {
         },
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'f0 43 10 3e 19 01 00 37 00 00 00 {channel} 00 00 00 {level} f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'f0 43 10 3e 19 01 00 37 00 00 {channel} 00 00 00 {level} f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL_ON: [emptyMixerMessage()],
             PFL_OFF: [emptyMixerMessage()],
@@ -44,8 +53,8 @@ export const YamahaQLCL: IMixerProtocol = {
             MID: [emptyMixerMessage()],
             HIGH: [emptyMixerMessage()],
             AUX_LEVEL: [emptyMixerMessage()],
-            CHANNEL_MUTE_ON: [{ mixerMessage: 'f0 43 10 3e 19 01 00 35 00 00 00 {channel} 00 00 00 00 00 f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_MUTE_OFF: [{ mixerMessage: 'f0 43 10 3e 19 01 00 35 00 00 00 {channel} 00 00 00 00 01 f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}]
+            CHANNEL_MUTE_ON: [{ mixerMessage: 'f0 43 10 3e 19 01 00 35 00 00 {channel} 00 00 00 00 00 f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_MUTE_OFF: [{ mixerMessage: 'f0 43 10 3e 19 01 00 35 00 00 {channel} 00 00 00 00 01 f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}]
         },
     }],
     fader: {

@@ -54,12 +54,13 @@ export class QlClMixerConnection {
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes("{channel}")) {
                         state.channels[0].channel.map((channel: any, index: any) => {
-                            this.sendOutRequest(item.mixerMessage, (index + 1));
-                        });
+                            this.sendOutMessage(item.mixerMessage, (index + 1), 0, '')
+                        })
                     } else {
-                        this.sendOutMessage(item.mixerMessage, 0, item.value, item.type);
+                        this.sendOutMessage(item.mixerMessage, 0, item.value, item.type)
                     }
-                });
+                })
+                global.mainThreadHandler.updateFullClientStore()
             })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
@@ -71,8 +72,8 @@ export class QlClMixerConnection {
                 let buffers = []
                 let lastIndex = 0
                 for (let index=1; index<data.length; index++) {
-                    if (data[index] === 241) {
-                        buffers.push(data.slice(lastIndex, index - 1))
+                    if (data[index] === 240) {
+                        buffers.push(data.slice(lastIndex, index))
                         lastIndex = index
                     } 
                 }
@@ -181,7 +182,7 @@ export class QlClMixerConnection {
         return valid
     }
 
-    sendOutMessage(message: string, channelIndex: number, value: string | number, type: string) {
+    sendOutMessage(message: string, channel: number, value: string | number, type: string) {
         let valueNumber: number
         if (typeof value === 'string') {
             value = parseFloat(value)
@@ -193,25 +194,17 @@ export class QlClMixerConnection {
             (valueNumber & 0x00ff),
         ])
 
-        let command = message.replace('{channel}', channelIndex.toString(16))
+        let channelByte = new Uint8Array([
+            (channel & 0xff00) >> 8,
+            (channel & 0x00ff),
+        ])
+
+        let command = message.replace('{channel}', channelByte[0].toString(16) + ' ' + channelByte[1].toString(16))
         command = command.replace('{level}', valueByte[0].toString(16) + ' ' + valueByte[1].toString(16))
         let a = command.split(' ')
         let buf = new Buffer(a.map((val:string) => { return parseInt(val, 16) }))
+        console.log("Sending Command :", command)
         this.midiConnection.write(buf)
-    }
-
-
-    sendOutRequest(oscMessage: string, channel: number) {
-        let channelString = channel.toString();
-        let message = oscMessage.replace(
-            "{channel}",
-            channelString
-        );
-        if (message != 'none') {
-            this.midiConnection.send({
-                address: message
-            });
-        }
     }
 
     updateOutLevel(channelIndex: number) {
