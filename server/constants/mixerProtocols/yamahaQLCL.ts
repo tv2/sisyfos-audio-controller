@@ -8,14 +8,14 @@ export const YamahaQLCL: IMixerProtocol = {
     leadingZeros: false,
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],
-    pingTime: 0,
+    pingTime: 10000,
     initializeCommands: [emptyMixerMessage()],
     channelTypes: [{
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //PgmChange 0 - ignores this command
-            CHANNEL_OUT_GAIN: [{ mixerMessage: 'NOTIFY set MIXER:Current/InCh/Fader/Level', value: 0, type: '', min: -130, max: 10, zero: 1}],            //PgmChange 0 - ignores this command
+            CHANNEL_OUT_GAIN: [{ mixerMessage: 'f0 43 10 3e 19 01 00 37 00 00 00 {channel} 00 00 00 {level} f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],            //PgmChange 0 - ignores this command
             CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
