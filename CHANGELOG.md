@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.5.0...v2.6.0) (2020-01-30)
+
+
+### Features
+
+* QL1 receive fader state working ([d434dd3](https://github.com/olzzon/sisyfos-audio-controller/commit/d434dd32ed89a05ef351f5ac5a2ae0ed7bcf5f8c))
+* QlCl - added mute support FROM Sisyfos ([8793170](https://github.com/olzzon/sisyfos-audio-controller/commit/8793170bba09cec80376531d5b13525fe7f39383))
+* yamaha QL - gain out command moved to protocol instead of hardwired in qlclconnection.ts ([e96f902](https://github.com/olzzon/sisyfos-audio-controller/commit/e96f9026dafb14df48caa2ce1deb8d825d23d14a))
+* Yamaha QL - use Winston logging instead of console.log ([d856e26](https://github.com/olzzon/sisyfos-audio-controller/commit/d856e26432e5ca9289e7fab448ef0d0cb3be9499))
+* yamaha QL1 - get MUTE state (on-off) from mixer ([ce021e9](https://github.com/olzzon/sisyfos-audio-controller/commit/ce021e9e3b5dce95e1eaba6ab2a50fb071705932))
+* yamaha qlcl - inital req of fader levels. - split buffers - 2 byte channel message ([f462841](https://github.com/olzzon/sisyfos-audio-controller/commit/f4628411784c9fb47d3c7349db8d43afe436c65a))
+
 ## [2.5.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.4.0...v2.5.0) (2020-01-29)
 
 
