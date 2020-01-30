@@ -6,7 +6,7 @@ import { MixerProtocolPresets } from '../constants/MixerProtocolPresets';
 import { IMixerProtocol, IMixerProtocolGeneric, ICasparCGMixerGeometry } from '../constants/MixerProtocolInterface';
 import { OscMixerConnection } from './mixerConnections/OscMixerConnection';
 import { MidiMixerConnection } from './mixerConnections/MidiMixerConnection';
-import { QlClMixerConnection } from './mixerConnections/QlClMixerConnection';
+import { QlClMixerConnection } from './mixerConnections/YamahaQlClConnection';
 import { SSLMixerConnection } from './mixerConnections/SSLMixerConnection';
 import { EmberMixerConnection } from './mixerConnections/EmberMixerConnection';
 import { CasparCGConnection } from './mixerConnections/CasparCGConnection';
