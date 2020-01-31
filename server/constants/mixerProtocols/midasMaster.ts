@@ -74,6 +74,14 @@ export const MidasMaster: IMixerProtocol = {
             zero: 0.75
         },
         {
+            mixerMessage: '/ch/{channel}/delay/time',
+            value: "",
+            type: "s",
+            min: 0,
+            max: 1,
+            zero: 0.75
+        },
+        {
             mixerMessage: '/ch/{channel}/eq/1/g',
             value: "",
             type: "s",

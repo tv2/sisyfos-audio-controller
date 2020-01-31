@@ -20,7 +20,8 @@ import {
     SET_FADER_LO_MID,
     SET_FADER_MID,
     SET_FADER_HIGH,
-    SET_FADER_LOW
+    SET_FADER_LOW,
+    SET_FADER_DELAY_TIME
 } from '../../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions';
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
@@ -201,6 +202,17 @@ export class OscMixerConnection {
                         type: SET_FADER_RATIO,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
                         level: level
+                    })
+                    global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .DELAY_TIME[0].mixerMessage)) {
+                    let ch = message.address.split("/")[this.cmdChannelIndex]
+                    let delay = this.mixerProtocol.channelTypes[0].fromMixer.DELAY_TIME[0]
+                    let delayTime = message.args[0] / ((delay.max-delay.min) + delay.min)
+                    store.dispatch({
+                        type: SET_FADER_DELAY_TIME,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        delayTime: delayTime
                     })
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
