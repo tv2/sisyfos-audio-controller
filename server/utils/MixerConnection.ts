@@ -141,6 +141,14 @@ export class MixerGenericConnection {
             }
         })
     }
+    updateDelayTime(faderIndex: number) {
+        let delayTime = state.faders[0].fader[faderIndex].delayTime
+        state.channels[0].channel.map((channel: IChannel, channelIndex: number) => {
+            if (faderIndex === channel.assignedFader) {
+                this.mixerConnection.updateDelayTime(channelIndex, delayTime)
+            }
+        })
+    }
     updateLow(faderIndex: number) {
         let level = state.faders[0].fader[faderIndex].low
         state.channels[0].channel.map((channel: IChannel, channelIndex: number) => {

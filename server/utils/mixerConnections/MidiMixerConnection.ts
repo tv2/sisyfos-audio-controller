@@ -202,6 +202,9 @@ return true;
         return true
 
     }
+    updateDelayTime(channelIndex: number, level: number) {
+         return true
+    }
     updateLow(channelIndex: number, level: number) {
          return true
     }

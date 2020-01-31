@@ -26,6 +26,7 @@ import {
     X_MIX,
     SET_FADER_THRESHOLD,
     SET_FADER_RATIO,
+    SET_FADER_DELAY_TIME,
     SET_FADER_LOW,
     SET_FADER_LO_MID,
     SET_FADER_MID,
@@ -54,6 +55,7 @@ export interface IFader {
     high: number,
     threshold: number,
     ratio: number,
+    delayTime: number
     monitor: number,
     showChannel: boolean,
     ignoreAutomation: boolean,
@@ -87,6 +89,7 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
                 high: 0.75,
                 threshold: 0.75,
                 ratio: 0.75,
+                delayTime: 0,
                 monitor: (index + 1), // route fader - aux 1:1 as default
                 showChannel: true,
                 ignoreAutomation: false,
@@ -138,6 +141,9 @@ export const faders = ((state = defaultFadersReducerState(0), action: any): Arra
             return nextState;
         case SET_FADER_RATIO: //channel:  level:
             nextState[0].fader[action.channel].ratio = parseFloat(action.level);
+            return nextState;
+        case SET_FADER_DELAY_TIME: //channel:  delayTime:
+            nextState[0].fader[action.channel].delayTime = parseFloat(action.delayTime);
             return nextState;
         case SET_FADER_LOW: //channel:  level:
             nextState[0].fader[action.channel].low = parseFloat(action.level);

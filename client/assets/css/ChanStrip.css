@@ -39,6 +39,11 @@
 	color: #fff;
 }
 
+.parameter-group > .horizontal-space {
+	width: 150px;
+	height: 50px;
+}
+
 .parameters > .group-text {
 	text-align: center;
 	line-height: 20px;
