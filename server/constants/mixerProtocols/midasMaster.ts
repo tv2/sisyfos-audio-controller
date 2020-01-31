@@ -132,7 +132,8 @@ export const MidasMaster: IMixerProtocol = {
             MID: [{ mixerMessage: '/ch/{channel}/eq/3/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             HIGH: [{ mixerMessage: '/ch/{channel}/eq/4/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             AUX_LEVEL: [{mixerMessage: '/ch/{channel}/mix/{argument}/level', value: 0, type: 'f', min: 0, max: 1, zero: 0}], 
-            CHANNEL_MUTE_ON: [emptyMixerMessage()],
+            CHANNEL_MUTE_ON: [{ mixerMessage: '/ch/{channel}/mix/on', value: 0, type: 'i', min: 0, max: 1, zero: 0}],
+            // Only MUTE_ON is used as receiver
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
@@ -150,8 +151,8 @@ export const MidasMaster: IMixerProtocol = {
             MID: [{ mixerMessage: '/ch/{channel}/eq/3/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             HIGH: [{ mixerMessage: '/ch/{channel}/eq/4/g', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
             AUX_LEVEL: [{mixerMessage: '/ch/{channel}/mix/{argument}/level', value: 0, type: 'f', min: 0, max: 1, zero: 0}], 
-            CHANNEL_MUTE_ON: [emptyMixerMessage()],
-            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
+            CHANNEL_MUTE_ON: [{ mixerMessage: '/ch/{channel}/mix/on', value: 0, type: 'f', min: 0, max: 1, zero: 0}],
+            CHANNEL_MUTE_OFF: [{ mixerMessage: '/ch/{channel}/mix/on', value: 1, type: 'f', min: 0, max: 1, zero: 0}]
         },
     }],
     fader: {

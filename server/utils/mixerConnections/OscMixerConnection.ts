@@ -21,7 +21,8 @@ import {
     SET_FADER_MID,
     SET_FADER_HIGH,
     SET_FADER_LOW,
-    SET_FADER_DELAY_TIME
+    SET_FADER_DELAY_TIME,
+    SET_MUTE
 } from '../../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions';
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
@@ -182,6 +183,16 @@ export class OscMixerConnection {
                         type: SET_CHANNEL_LABEL,
                         channel: state.channels[0].channel[ch - 1].assignedFader,
                         label: message.args[0]
+                    });
+                    global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .CHANNEL_MUTE_ON[0].mixerMessage)) {
+                    let ch = message.address.split("/")[this.cmdChannelIndex]
+                    let mute = (message.args[0] === 0) ? 1 : 0 
+                    store.dispatch({
+                        type: SET_MUTE,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        muteOn: mute
                     });
                     global.mainThreadHandler.updatePartialStore(state.channels[0].channel[ch - 1].assignedFader)
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
@@ -427,8 +438,25 @@ export class OscMixerConnection {
     }
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
-        return true
-    } 
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex
+        if (muteOn === true) {
+            let mute = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_ON[0]
+            this.sendOutMessage(
+                mute.mixerMessage,
+                channelTypeIndex + 1,
+                mute.value,
+                mute.type
+            )
+        } else {
+            let mute = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_MUTE_OFF[0]
+            this.sendOutMessage(
+                mute.mixerMessage,
+                channelTypeIndex + 1,
+                mute.value,
+                mute.type
+            )
+        }    } 
 
     updateNextAux(channelIndex: number, level: number) {
         return true
