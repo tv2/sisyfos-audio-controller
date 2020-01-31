@@ -220,6 +220,9 @@ export class EmberMixerConnection {
         return true
 
     }
+    updateDelayTime(channelIndex: number, level: number) {
+         return true
+    }
     updateLow(channelIndex: number, level: number) {
          return true
     }

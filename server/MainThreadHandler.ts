@@ -42,7 +42,8 @@ import {
     SOCKET_SET_STORE_CHANNEL,
     SOCKET_SET_LO_MID,
     SOCKET_SET_INPUT_OPTION,
-    SOCKET_SAVE_CCG_FILE
+    SOCKET_SAVE_CCG_FILE,
+    SOCKET_SET_DELAY_TIME
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_PGM, 
@@ -59,7 +60,8 @@ import {
     SET_FADER_HIGH, 
     SET_FADER_MONITOR,
     IGNORE_AUTOMATION,
-    SET_FADER_LO_MID
+    SET_FADER_LO_MID,
+    SET_FADER_DELAY_TIME
 } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
@@ -249,6 +251,18 @@ export class MainThreadHandlers {
                     level: payload.level
                 });
                 mixerGenericConnection.updateRatio(payload.channel);               
+                this.updatePartialStore(payload.channel)
+            })
+        )
+        .on(SOCKET_SET_DELAY_TIME, (
+            (payload: any) => { 
+                logger.verbose('Set Delay:' + String(payload.channel),{})
+                store.dispatch({
+                    type: SET_FADER_DELAY_TIME,
+                    channel: payload.channel,
+                    delayTime: payload.delayTime
+                });
+                mixerGenericConnection.updateDelayTime(payload.channel);               
                 this.updatePartialStore(payload.channel)
             })
         )

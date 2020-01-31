@@ -446,6 +446,18 @@ export class OscMixerConnection {
             "f"
         );
     }
+    updateDelayTime(channelIndex: number, level: number) {
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
+        let delayTime = this.mixerProtocol.channelTypes[channelType].toMixer.DELAY_TIME[0]
+        level = level * (delayTime.max-delayTime.min) + delayTime.min
+        this.sendOutMessage(
+            delayTime.mixerMessage,
+            channelTypeIndex+1,
+            level,
+            "f"
+        )
+    }
     updateLow(channelIndex: number, level: number) {
         let channelType = state.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;

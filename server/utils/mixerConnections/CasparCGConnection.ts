@@ -321,8 +321,11 @@ export class CasparCGConnection {
     updateThreshold(channelIndex: number, level: number) {
         return true
     }
-    updateRatio(channelIndex: number, level: number) {        return true
-
+    updateRatio(channelIndex: number, level: number) {        
+        return true
+    }
+    updateDelayTime(channelIndex: number, level: number) {
+         return true
     }
     updateLow(channelIndex: number, level: number) {
          return true

@@ -10,7 +10,16 @@ import {
     TOGGLE_SHOW_MONITOR_OPTIONS
  } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
-import { SOCKET_SET_THRESHOLD, SOCKET_SET_RATIO, SOCKET_SET_LOW, SOCKET_SET_LO_MID, SOCKET_SET_MID, SOCKET_SET_HIGH, SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import { 
+    SOCKET_SET_THRESHOLD, 
+    SOCKET_SET_RATIO,
+    SOCKET_SET_DELAY_TIME, 
+    SOCKET_SET_LOW, 
+    SOCKET_SET_LO_MID, 
+    SOCKET_SET_MID, 
+    SOCKET_SET_HIGH, 
+    SOCKET_SET_AUX_LEVEL 
+} from '../../server/constants/SOCKET_IO_DISPATCHERS';
 import CcgChannelInputSettings from './CcgChannelSettings';
 
 interface IChanStripInjectProps {
@@ -79,6 +88,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
             }
         )
     }
+
+    handleDelay(event: any) {
+        window.socketIoClient.emit( SOCKET_SET_DELAY_TIME, 
+            {
+                channel: this.props.faderIndex,
+                delayTime: parseFloat(event)
+            }
+        )
+    }
+
     handleLow(event: any) {
         window.socketIoClient.emit( SOCKET_SET_LOW, 
             {
@@ -161,6 +180,27 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     value= {this.props.fader[this.props.faderIndex].ratio}
                     onChange={(event: any) => {
                         this.handleRatio(event)
+                    }}
+                />
+            </div>
+        )
+    }
+
+    delay() {
+        return (
+            <div className="parameter-text">
+                Time ms
+                <ReactSlider 
+                    className="chan-strip-fader"
+                    thumbClassName = "chan-strip-thumb"
+                    orientation = "vertical"
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].delayTime || 0}
+                    onChange={(event: any) => {
+                        this.handleDelay(event)
                     }}
                 />
             </div>
@@ -287,14 +327,25 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         else {
             return (
                 <div className="parameters">
-                    <div className="group-text">
-                        {"COMPRESSOR"}
-                    </div>
+                    <p className="group-text">
+                        COMPRESSOR
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        DELAY
+                    </p>
                     <div className="parameter-group">
                         {this.threshold()}
                         <p className="zero-comp">______</p>
                         {this.ratio()}
                         <p className="zero-comp">______</p>
+                        <p className="horizontal-space"></p>
+                        {this.delay()}
+                        <p className="zero-comp">______</p>
+
                     </div>
                     <hr/>
                     <div className="group-text">

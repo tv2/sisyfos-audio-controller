@@ -37,6 +37,7 @@ export interface IChannelTypes {
         NEXT_SEND: Array<IMixerMessageProtocol>
         THRESHOLD: Array<IMixerMessageProtocol>
         RATIO: Array<IMixerMessageProtocol>
+        DELAY_TIME: Array<IMixerMessageProtocol>
         LOW: Array<IMixerMessageProtocol>
         LO_MID: Array<IMixerMessageProtocol>
         MID: Array<IMixerMessageProtocol>
@@ -54,6 +55,7 @@ export interface IChannelTypes {
         NEXT_SEND: Array<IMixerMessageProtocol>
         THRESHOLD: Array<IMixerMessageProtocol>
         RATIO: Array<IMixerMessageProtocol>
+        DELAY_TIME: Array<IMixerMessageProtocol>
         LOW: Array<IMixerMessageProtocol>
         LO_MID: Array<IMixerMessageProtocol>
         MID: Array<IMixerMessageProtocol>
