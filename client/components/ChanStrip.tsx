@@ -327,7 +327,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         else {
             return (
                 <div className="parameters">
-                    <p className="group-text">
+                    <div className="group-text">
                         COMPRESSOR
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -336,7 +336,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;
                         DELAY
-                    </p>
+                    </div>
                     <div className="parameter-group">
                         {this.threshold()}
                         <p className="zero-comp">______</p>
