@@ -6,26 +6,13 @@ You use the fader for the level, and PGM on/off for fade-in/out.
 TAKE NEXT crossfades from NEXT to PGM
 
 It´s fast to see what faders are on-are, and whther they are PGM level or Voice over level
-<img src="Docs/pix/ProducersAudioMixerNext.png">
+<img src="Docs/pix/sisyfos.png">
 
 ### Routing of Faders to Channels
 Routing of Faders to multiple channels or a single channel are possible. This way Sisyfos can control some or all channels on a mixer. And a single fader can be used for E.G. a 5.1 (on 6 mono faders)
 
-<img src="Docs/pix/ProducersAudioMixerRouting.png">
-
 ### Load/Save Routing
 Routing setups can be stored in STORAGE. So it´s possible to have different Routings dependent of what setup the Audio mixer is using.
-
-<img src="Docs/pix/ProducersAudioMixerStorage.png">
-
-
-
-### When Automation mode is Disabled in settings - snaps takes preset into PST/NEXT:
-
-
-<img src="Docs/pix/ProducersAudioMixerSnaps.png">
-
-
 
 ### Run as Docker: (On linux)
 ```
@@ -78,9 +65,9 @@ As NEXT has been implemented, and PFL usually only work on on channel at a time,
 (Mixer presets are stored in MixerProtocolPresets.js)
 ### Following preset name are possible:
 * CasparCG
-  * copy sisyfos-casparcg-geometry.json from Docs/CasparCG-Example to the root of your user account
+  * use storage/default-casparcg.ccg as template and place you own file in storage folder.
   * base your casparcg.config by the casparcg.config file in the same folder
-  * remember to active OSC in the casparcg.config file
+  * remember to active OSC in the casparcg.config file to it points to Sisyfos
 
 * reaper
   * OSC protocol for control Reaper (reaper.fm)
@@ -94,26 +81,10 @@ As NEXT has been implemented, and PFL usually only work on on channel at a time,
 * SSL System T - Broadcast Mixer
   * SSL Automation Protocol for System T
   * Port 10001
-  * Set Protocol Latency to around 100ms
+  * Set Protocol Latency to around 120ms
 * Midas Master
   * OSC protocol for Midas M32 and Behringer X32
   * Port 10023
-  * The volume change on the Midas/X32 desk is on it´s channel faders.
-* Midas Client
-  * OSC protocol for Midas M32 and Behringer X32
-  * Port 10023
-  * Route ch 1-16 to bus 1-2 and in main turn off main stereo
-  * Set send to Bus 1-2 to Post Fader on all channels
-  * Link Bus 1-2 to stereo and in main turn on main stereo
-  * Send to Bus 1-2 is then used for Fade In-Out
-  * Be aware of post faders mix% issues.
-* Behringer xr client
-  * OSC protocol for Behringer XR12-16-18
-  * Port 10024
-  * Route ch 1-16 to bus 1-2 and in main turn off main stereo
-  * Set send to Bus 1-2 to Post Fader on all channels
-  * Link Bus 1-2 to stereo and in main turn on main stereo
-  * Send to Bus 1-2 is then used for Fade In-Out
 * Behringer xr master
   * OSC protocol for Behringer XR12,16,18
   * Port 10024
@@ -127,11 +98,9 @@ As NEXT has been implemented, and PFL usually only work on on channel at a time,
   * Generic MIDI - still preminilary
   * When using MIDI protocols, the PROTOCOL DELAY setting should be rised to at least 50ms
 * Yamaha QL1
-  * MIDI based Protocol
-  * For now only the 24 first channels are supported.
-  * Set label not supported
-  * When using MIDI protocols, the PROTOCOL DELAY setting should be rised to at least 50ms
-
+  * Ip - MIDI based Protocol
+  * Port 50000
+  * Stable implementation of 2-ways Fader and Mute
 
 
 ## Automation Support:
