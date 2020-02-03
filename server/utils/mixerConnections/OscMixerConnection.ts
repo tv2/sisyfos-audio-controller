@@ -297,10 +297,12 @@ export class OscMixerConnection {
                     if (item.type === 'aux') {
                         state.channels[0].channel.forEach((channel: any, index: number) => {
                             channel.auxLevel.forEach((auxLevel: any, auxIndex: number) => {
+                                if (channel.assignedFader >= 0){
                                 setTimeout(() => {
-                                    this.sendOutRequestAux(item.mixerMessage, auxIndex +1, state.faders[0].fader[channel.assignedFader].monitor)
-                                },
-                                state.faders[0].fader[channel.assignedFader].monitor * 10 + auxIndex * 100)
+                                        this.sendOutRequestAux(item.mixerMessage, auxIndex +1, state.faders[0].fader[channel.assignedFader].monitor)
+                                    },
+                                    state.faders[0].fader[channel.assignedFader].monitor * 10 + auxIndex * 100)
+                                }  
                             })
                         })
                     } else {

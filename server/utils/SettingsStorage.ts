@@ -50,7 +50,7 @@ export const loadSnapshotState = (stateSnapshot: any, stateChannelSnapshot: any,
             });
         } else {
             stateChannelSnapshot.channel = stateChannelSnapshot.channel.map((channel: any, index: number) => {
-                if (index < numberOfFaders) {
+                if (stateFromFile.channelState.channel[index].assignedFader >= 0) {
                     channel.auxLevel = stateFromFile.channelState.channel[index].auxLevel || []
                     channel.assignedFader = stateFromFile.channelState.channel[index].assignedFader
                 } else {
