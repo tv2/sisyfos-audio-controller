@@ -1,7 +1,7 @@
 .chan-strip-body {
 	position: relative;
 	top: 5px;
-	width: 420px;
+	width: 620px;
 	height: 940px;
     background-color: rgb(31, 31, 31);
     border-color: rgb(70, 70, 70);
@@ -13,7 +13,7 @@
 }
 
 .chan-strip-body > .header {
-	margin-left: 20px;
+	margin-left: 40px;
 	margin-top: 10px;
 	width: 420px;
 	font-size: 240%;
@@ -33,7 +33,7 @@
 	display: flex;
 	top: 5px;
 	left: 2px;
-	margin-left: 20px;
+	margin-left: 90px;
 	overflow: auto;
 	text-align: center;
 	color: #fff;
@@ -54,6 +54,7 @@
 	width: 63px;
 	height: 2px;
 	margin-left: -68px;
+	margin-right: 30px;
 	margin-top: 111px;
 }
 
@@ -61,13 +62,14 @@
 	width: 63px;
 	height: 2px;
 	margin-left: -68px;
+	margin-right: 30px;
 	margin-top: 81px;
 }
 
 .zero-monitor {
 	width: 2px;
 	height: 20px;
-	margin-left: -66px;
+	margin-left: 10px;
 	margin-top: -150px;
 }
 
@@ -101,7 +103,7 @@
 	height: 50px;
 	font-size: 30px;
 	margin-top: 5px;
-	left: 350px;
+	left: 550px;
 }
 
 .header > button {

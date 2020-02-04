@@ -334,6 +334,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;
                         DELAY
                     </div>
@@ -344,7 +345,6 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                         <p className="zero-comp">______</p>
                         <p className="horizontal-space"></p>
                         {this.delay()}
-                        <p className="zero-comp">______</p>
 
                     </div>
                     <hr/>
