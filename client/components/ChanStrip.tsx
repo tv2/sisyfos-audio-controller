@@ -379,56 +379,75 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
     }
 
     render() {
-        return (
-            <div className="chan-strip-body">
-                <div className="header">
-                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
-                    <button 
-                            className="close"
-                            onClick={() => this.handleClose()}
-                        >X
-                    </button>
-
-                </div>
-                <div className="header">
-                    {window.location.search.includes('settings=0') ?
-                    null :
+        if (this.props.faderIndex >= 0) {
+            return (
+                <div className="chan-strip-body">
+                    <div className="header">
+                        {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
                         <button 
-                            className="button"
-                            onClick={() => this.handleShowRoutingOptions()}
-                            >CHANNEL ROUTING
+                                className="close"
+                                onClick={() => this.handleClose()}
+                            >X
                         </button>
-                    }
-                    {window.location.search.includes('settings=0') ?
+
+                    </div>
+                    <div className="header">
+                        {window.location.search.includes('settings=0') ?
                         null :
-                        <button 
-                            className="button"
-                            onClick={() => this.handleShowMonitorOptions()}
-                            >MONITOR ROUTING
-                        </button>
+                            <button 
+                                className="button"
+                                onClick={() => this.handleShowRoutingOptions()}
+                                >CHANNEL ROUTING
+                            </button>
+                        }
+                        {window.location.search.includes('settings=0') ?
+                            null :
+                            <button 
+                                className="button"
+                                onClick={() => this.handleShowMonitorOptions()}
+                                >MONITOR ROUTING
+                            </button>
+                        }
+                    </div>
+                    <hr/>
+                    {this.props.offtubeMode ?
+                        this.parameters() 
+                        : null
                     }
                 </div>
-                <hr/>
-                {this.props.offtubeMode ?
-                    this.parameters() 
-                    : null
-                }
-            </div>
-        )
-    }
+            )
+        } else {
+            return (
+                <div className="chan-strip-body">
+                </div>
+            )
+        }
 
+    }
 }
 
 const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
-    return {
-        label: state.faders[0].fader[props.faderIndex].label,
+    let inject: IChanStripInjectProps = {
+        label: '',
         selectedProtocol: state.settings[0].mixerProtocol,
         numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
         channel: state.channels[0].channel,
         fader: state.faders[0].fader,
-        auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,
+        auxSendIndex: -1,
         offtubeMode: state.settings[0].offtubeMode
     }
+    if (props.faderIndex >= 0) {
+        inject = {
+            label: state.faders[0].fader[props.faderIndex].label,
+            selectedProtocol: state.settings[0].mixerProtocol,
+            numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
+            channel: state.channels[0].channel,
+            fader: state.faders[0].fader,
+            auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,
+            offtubeMode: state.settings[0].offtubeMode
+        }
+    } 
+    return inject
 }
 
 export default connect<any, IChanStripInjectProps>(mapStateToProps)(ChanStrip) as any;
