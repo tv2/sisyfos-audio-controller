@@ -5,6 +5,16 @@
     min-height: 760px;
 }
 
+.channels-body > .closedChanStrip {
+    margin-left: -630px;
+    transition: margin 300ms;
+}
+
+.channels-body > .openChanStrip {
+    margin-left: 0px;
+    transition: margin 800ms;
+}
+
 .channels-mix-body {
     position: fixed;
     z-index: 2;

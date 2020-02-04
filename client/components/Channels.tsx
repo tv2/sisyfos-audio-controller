@@ -73,10 +73,14 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 :
                 null
             }
-            {(this.props.settings.showChanStrip >= 0  || this.props.settings.offtubeMode) ?
-                <ChanStrip faderIndex={this.props.settings.showChanStrip}/>
+            {(this.props.settings.showChanStrip >= 0) ?
+                <div className="openChanStrip">
+                    <ChanStrip faderIndex={this.props.settings.showChanStrip}/>
+                </div>
                 :
-                null
+                <div className="closedChanStrip">
+                    <ChanStrip faderIndex={this.props.settings.showChanStrip}/>
+                </div>
             }
             {(this.props.settings.showMonitorOptions >= 0) ?
                 <ChannelMonitorOptions faderIndex={this.props.settings.showMonitorOptions}/>
