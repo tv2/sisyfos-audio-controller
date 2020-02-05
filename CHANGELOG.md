@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.6.0...v2.7.0) (2020-02-05)
+
+
+### Features
+
+* Channelstrip Delay Time generic implementation ([0a5a88c](https://github.com/olzzon/sisyfos-audio-controller/commit/0a5a88ccc3dd3ebbb413d364b084153d7b4cdaf8))
+* chanStrip delaybuttons to fineadjust delay value ([7ee1418](https://github.com/olzzon/sisyfos-audio-controller/commit/7ee1418aa5782999daee8f8dcf95880d436a7de7))
+* chanStrip slide in-out fdrom left ([983cefb](https://github.com/olzzon/sisyfos-audio-controller/commit/983cefb1fd2f3a0906c2d7ab737864ec9900e057))
+* disable label transfer to Midas so Sofie can set userlabels in Sisyfos without interfering with the mixer labels ([0e139eb](https://github.com/olzzon/sisyfos-audio-controller/commit/0e139ebba17c651f5ef7bccd6b7d8e7b84dfc347))
+* Midas receive delayTime state ([de94606](https://github.com/olzzon/sisyfos-audio-controller/commit/de94606eb90d26b74da8160b5a9a3bb2fc5a3a1d))
+* Midas/X32 MUTE button support ([e922d5f](https://github.com/olzzon/sisyfos-audio-controller/commit/e922d5f36c385f81536091649a28ed5f4fab5633))
+* offtube mode, make channelstrip area persistent. ([aebb505](https://github.com/olzzon/sisyfos-audio-controller/commit/aebb505457d7ad58bf510157fd8230b4b341077f))
+* wider chanstrip for support of more aux sends ([f6872db](https://github.com/olzzon/sisyfos-audio-controller/commit/f6872dbcd5eeb5196a41f311fdb7b54b7cfee4b7))
+
+
+### Bug Fixes
+
+* chan strip - GUI compressor - delay header was 3 lines ([de6a733](https://github.com/olzzon/sisyfos-audio-controller/commit/de6a73317ef9eec8c140f3a61f09b34dd7dcc105))
+* loading storage with more channels than faders. (e.g. a fader controlling a 5.1 setup) ([93e10ec](https://github.com/olzzon/sisyfos-audio-controller/commit/93e10ec36cc98f3592b6fb10674ab2e8ee64544d))
+* Midas Delay param is between 0 and 1 not ms time ([e535722](https://github.com/olzzon/sisyfos-audio-controller/commit/e53572212d2e80de350e87c375d74fa2b9b61c70))
+* midas protocol missing DELAY_TIME ([12ac11c](https://github.com/olzzon/sisyfos-audio-controller/commit/12ac11c916096b7e7df3726f3319c04642aab018))
+* Type - Midas - fromMixer didn´t have the correct params ([87540f3](https://github.com/olzzon/sisyfos-audio-controller/commit/87540f3515305ad5c2f84349aa8f2df17cecbe2c))
+
 ## [2.6.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.5.0...v2.6.0) (2020-01-30)
 
 
