@@ -81,6 +81,24 @@
 	font-size: 100%;
 }
 
+.parameter-group > .delayButtons {
+	width: 30px;
+	margin-top: 24px;
+}
+
+.delayButtons > .delayTime {
+	outline : none;
+    -moz-outline : none;
+    color: white;
+    height: 45px;
+    width: 70px;
+    border-color: rgb(71, 71, 71);
+    background-color: rgb(53, 53, 53);
+    margin-left: -50px;
+    margin-top: 5px;
+    border-radius: 7px;
+}
+
 .parameters > .monitor-sends {
 	list-style-type: none;
 	display: flex;

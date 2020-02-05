@@ -98,6 +98,15 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         )
     }
 
+    changeDelay(currentValue: number, addValue: number) {
+        window.socketIoClient.emit( SOCKET_SET_DELAY_TIME, 
+            {
+                channel: this.props.faderIndex,
+                delayTime: currentValue + addValue
+            }
+        )
+    }
+
     handleLow(event: any) {
         window.socketIoClient.emit( SOCKET_SET_LOW, 
             {
@@ -188,22 +197,58 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
 
     delay() {
         return (
-            <div className="parameter-text">
-                Time ms
-                <ReactSlider 
-                    className="chan-strip-fader"
-                    thumbClassName = "chan-strip-thumb"
-                    orientation = "vertical"
-                    invert
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value= {this.props.fader[this.props.faderIndex].delayTime || 0}
-                    onChange={(event: any) => {
-                        this.handleDelay(event)
-                    }}
-                />
-            </div>
+            <React.Fragment>
+                <div className="delayButtons">
+                    <button
+                        className="delayTime"
+                        onClick={() => {
+                            this.changeDelay((this.props.fader[this.props.faderIndex].delayTime || 0), 10/500)
+                        }}
+                    >
+                        +10ms
+                    </button>
+                    <button
+                        className="delayTime"
+                        onClick={() => {
+                            this.changeDelay((this.props.fader[this.props.faderIndex].delayTime || 0), 1/500)
+                        }}
+                    >
+                        +1ms
+                    </button>
+                    <button
+                        className="delayTime"
+                        onClick={() => {
+                            this.changeDelay((this.props.fader[this.props.faderIndex].delayTime || 0), -1/500)
+                        }}
+                    >
+                        -1ms
+                    </button>
+                    <button
+                        className="delayTime"
+                        onClick={() => {
+                            this.changeDelay((this.props.fader[this.props.faderIndex].delayTime || 0), -10/500)
+                        }}
+                    >
+                        -10ms
+                    </button>
+                </div>
+                <div className="parameter-text">
+                    {Math.round(500*(this.props.fader[this.props.faderIndex].delayTime || 0))} ms
+                    <ReactSlider 
+                        className="chan-strip-fader"
+                        thumbClassName = "chan-strip-thumb"
+                        orientation = "vertical"
+                        invert
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value= {this.props.fader[this.props.faderIndex].delayTime || 0}
+                        onChange={(event: any) => {
+                            this.handleDelay(event)
+                        }}
+                    />
+                </div>
+            </React.Fragment>
         )
     }
 
