@@ -5,8 +5,21 @@
 You use the fader for the level, and PGM on/off for fade-in/out.
 TAKE NEXT crossfades from NEXT to PGM
 
-It´s fast to see what faders are on-are, and whther they are PGM level or Voice over level
+It´s fast to see what faders are on-aie, and whether they are PGM level or Voiceover level
+
+### GUI with open channelstrip:
 <img src="Docs/pix/sisyfos.png">
+
+### These are the functions on each channel:
+<img src="Docs/pix/SisyfosChanneldescription.jpg">
+
+### These are the functions on the channelstrip:
+(You open the channelstrip by clicking on the channel label)
+
+<img src="Docs/pix/SisyfosChannelStripdescription.jpg">
+
+
+
 
 ### Routing of Faders to Channels
 Routing of Faders to multiple channels or a single channel are possible. This way Sisyfos can control some or all channels on a mixer. And a single fader can be used for E.G. a 5.1 (on 6 mono faders)
