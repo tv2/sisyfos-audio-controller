@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.8.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.7.1...v2.8.0) (2020-02-11)
+
+
+### Features
+
+* implement Sofie iFrame support ([a96215a](https://github.com/olzzon/sisyfos-audio-controller/commit/a96215a9675de754296f07d3b0bb06378e2fc6e3))
+* Sisyfos inside iFrame. Use window.top !== window.self to chech if it´s running inside something ([76ceca9](https://github.com/olzzon/sisyfos-audio-controller/commit/76ceca9a193ae2025b649bef83a669879eac952e))
+* Sisyfos running in iFrame. Use frameElement instead of checking parent. ([bcc3633](https://github.com/olzzon/sisyfos-audio-controller/commit/bcc3633e016b6b9ea7afaaf702500b92ae4b0ea6))
+
 ### [2.7.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.7.0...v2.7.1) (2020-02-07)
 
 ## [2.7.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.6.0...v2.7.0) (2020-02-05)
