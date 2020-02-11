@@ -34,8 +34,8 @@ class App extends React.Component<IAppProps> {
     }
 
     sendSofieMessage(type: string, payload?: any | '', replyTo?: string | '') {
-        if (!window.parent) return;
-        window.parent.postMessage({
+        if (!window.frameElement) return;
+        window.top.postMessage({
             id: Date.now().toString(),
             replyToId: replyTo,
             type: type,
@@ -44,27 +44,29 @@ class App extends React.Component<IAppProps> {
     }
 
     iFrameFocusHandler() {
-        this.sendSofieMessage('hello')
-        document.addEventListener('click', (e) => {
-            e.preventDefault()
-            this.sendSofieMessage('focus_in')
-        }, true)
-        window.addEventListener('message', (event) => {
-            try {
-                const message = event.data
-                if (!message || !message.type) return;
-                switch (message.type) {
-                    case 'welcome':
-                        console.log('Hosted by: ' + message.payload);
-                        // finish three-way handshake
-                        this.sendSofieMessage('ack', undefined, message.id);
-                        break;
+        if (window.frameElement) {
+            this.sendSofieMessage('hello')
+            document.addEventListener('click', (e) => {
+                e.preventDefault()
+                this.sendSofieMessage('focus_in')
+            }, true)
+            window.addEventListener('message', (event) => {
+                try {
+                    const message = event.data
+                    if (!message || !message.type) return;
+                    switch (message.type) {
+                        case 'welcome':
+                            console.log('Hosted by: ' + message.payload);
+                            // finish three-way handshake
+                            this.sendSofieMessage('ack', undefined, message.id);
+                            break;
 
+                    }
+                } catch (e) {
+                    console.log('Error Sofie API')
                 }
-            } catch (e) {
-                console.log('Error Sofie API')
-            }
-        })
+            })
+    }
     }
 
     render() {
