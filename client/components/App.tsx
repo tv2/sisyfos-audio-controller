@@ -34,7 +34,6 @@ class App extends React.Component<IAppProps> {
     }
 
     sendSofieMessage(type: string, payload?: any | '', replyTo?: string | '') {
-        if (!window.frameElement) return;
         window.top.postMessage({
             id: Date.now().toString(),
             replyToId: replyTo,
@@ -44,7 +43,7 @@ class App extends React.Component<IAppProps> {
     }
 
     iFrameFocusHandler() {
-        if (window.frameElement) {
+        if (window.top !== window.self) {
             this.sendSofieMessage('hello')
             document.addEventListener('click', (e) => {
                 e.preventDefault()
