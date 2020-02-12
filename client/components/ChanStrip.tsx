@@ -1,7 +1,5 @@
 import React from 'react';
-import Nouislider from 'nouislider-react'
-import "nouislider/distribute/nouislider.css"
-
+import ReactSlider from 'react-slider'
 
 import '../assets/css/ChanStrip.css';
 import { Store } from 'redux';
@@ -158,14 +156,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         return (
             <div className="parameter-text">
                 Threshold
-                <Nouislider 
+                <ReactSlider 
                     className="chan-strip-fader"
-
+                    thumbClassName = "chan-strip-thumb"
                     orientation = "vertical"
-                    range={{ min: 0, max: 1 }} 
-                    start={[this.props.fader[this.props.faderIndex].threshold]} 
-                    connect
-                    onSlide={(event: any) => {
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].threshold}
+                    onChange={(event: any) => {
                         this.handleThreshold(event)
                     }}
                 />
@@ -178,14 +178,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         return (
             <div className="parameter-text">
                 Ratio
-                <Nouislider 
+                <ReactSlider 
                     className="chan-strip-fader"
-
+                    thumbClassName = "chan-strip-thumb"
                     orientation = "vertical"
-                    range={{ min: 0, max: 1 }} 
-                    start={[this.props.fader[this.props.faderIndex].ratio]} 
-                    connect
-                    onSlide={(event: any) => {
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].ratio}
+                    onChange={(event: any) => {
                         this.handleRatio(event)
                     }}
                 />
@@ -232,14 +234,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                 </div>
                 <div className="parameter-text">
                     {Math.round(500*(this.props.fader[this.props.faderIndex].delayTime || 0))} ms
-                    <Nouislider 
+                    <ReactSlider 
                         className="chan-strip-fader"
-    
+                        thumbClassName = "chan-strip-thumb"
                         orientation = "vertical"
-                        range={{ min: 0, max: 1 }} 
-                        start={[this.props.fader[this.props.faderIndex].delayTime || 0]} 
-                        connect
-                        onSlide={(event: any) => {
+                        invert
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value= {this.props.fader[this.props.faderIndex].delayTime || 0}
+                        onChange={(event: any) => {
                             this.handleDelay(event)
                         }}
                     />
@@ -252,14 +256,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         return (
             <div className="parameter-text">
                 Low
-                <Nouislider 
+                <ReactSlider 
                     className="chan-strip-fader"
-
+                    thumbClassName = "chan-strip-thumb"
                     orientation = "vertical"
-                    range={{ min: 0, max: 1 }} 
-                    start={[this.props.fader[this.props.faderIndex].low]} 
-                    connect
-                    onSlide={(event: any) => {
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].low}
+                    onChange={(event: any) => {
                         this.handleLow(event)
                     }}
                 />
@@ -271,15 +277,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         return (
             <div className="parameter-text">
                 Lo-Mid
-                <Nouislider 
+                <ReactSlider 
                     className="chan-strip-fader"
-
+                    thumbClassName = "chan-strip-thumb"
                     orientation = "vertical"
-                    
-                    range={{ min: 0, max: 1 }} 
-                    start={[this.props.fader[this.props.faderIndex].loMid]} 
-                    connect
-                    onSlide={(event: any) => {
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].loMid}
+                    onChange={(event: any) => {
                         this.handleLoMid(event)
                     }}
                 />
@@ -291,16 +298,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         return (
             <div className="parameter-text">
                 Hi-Mid
-                <Nouislider 
+                <ReactSlider 
                     className="chan-strip-fader"
-
+                    thumbClassName = "chan-strip-thumb"
                     orientation = "vertical"
-                    
-                    range={{ min: 0, max: 1 }} 
-                    start={[this.props.fader[this.props.faderIndex].mid]} 
-                    connect
-
-                    onSlide={(event: any) => {
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].mid}
+                    onChange={(event: any) => {
                         this.handleMid(event)
                     }}
                 />
@@ -312,16 +319,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         return (
             <div className="parameter-text">
                 High
-                <Nouislider 
+                <ReactSlider 
                     className="chan-strip-fader"
-
+                    thumbClassName = "chan-strip-thumb"
                     orientation = "vertical"
-                    
-                    range={{ min: 0, max: 1 }} 
-                    start={[this.props.fader[this.props.faderIndex].high]} 
-                    connect
-
-                    onSlide={(event: any) => {
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.fader[this.props.faderIndex].high}
+                    onChange={(event: any) => {
                         this.handleHigh(event)
                     }}
                 />
@@ -339,15 +346,16 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         return (
             <li key={channelIndex}>
                 {monitorName}
-                <Nouislider 
+                <ReactSlider 
                     className="chan-strip-fader"
-
+                    thumbClassName = "chan-strip-thumb"
                     orientation = "vertical"
-                    
-                    range={{ min: 0, max: 1 }} 
-                    start={[this.props.channel[channelIndex].auxLevel[this.props.auxSendIndex]]} 
-                    connect
-                    onSlide={(event: any) => {
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value= {this.props.channel[channelIndex].auxLevel[this.props.auxSendIndex]}
+                    onChange={(event: any) => {
                         this.handleMonitorLevel(event, channelIndex)
                     }}
                 />

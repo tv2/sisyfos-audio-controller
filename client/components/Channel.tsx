@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import VuMeter from './VuMeter';
 import { Store } from 'redux';
 import Nouislider from 'nouislider-react'
-import "nouislider/distribute/nouislider.css"
+import '../assets/css/NoUiSlider.css'
 
 //assets:
 import '../assets/css/Channel.css';
@@ -116,19 +116,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             thumb = 'channel-volume-thumb-color-mute'
         }
         return (
-            <ReactSlider 
                 className="channel-volume-fader"
                 thumbClassName = { thumb }
-                orientation="vertical"
-                invert
-                min={0}
-                max={1}
-                step={0.01}
-                value= {this.props.fader.faderLevel}
-                onChange={(event: any) => {
-                    this.handleLevel(event);
-                }}
-            />
         */
     }
 
