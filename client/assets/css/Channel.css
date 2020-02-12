@@ -245,10 +245,9 @@
     height: 420px;
     margin-left: 55px;
     margin-top: 20px;
-    border-width: 0px;
-    border-style: solid;
-    border-radius: 8px;
-    background-color: rgb(17, 17, 17);
+    background-color: rgb(15, 15, 15);
+    border-color: rgba(0,0,0);
+
 }
 
 .channel-volume-thumb {
