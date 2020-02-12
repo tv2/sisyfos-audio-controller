@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.9.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.8.0...v2.9.0) (2020-02-12)
+
+
+### Features
+
+* multitouch - add css file. set animate to false for better multiclient multitouch support ([5ed9596](https://github.com/olzzon/sisyfos-audio-controller/commit/5ed95962a4434986c47f1b5b3c32291ed11904cc))
+* multitouch - added styling, moved ChanStrip params back to single touch (using react-slider) ([313089e](https://github.com/olzzon/sisyfos-audio-controller/commit/313089e4a02fe6c80962b3c8892368d34ec7ebcf))
+* multitouch - move to NoUISlider to support multitouch. ToDo CSS ([b59d230](https://github.com/olzzon/sisyfos-audio-controller/commit/b59d230d887ae100b8bd3d3d0882571171dbdefe))
+* multitouch - supporteded on pgm, vo, mute and auto buttons. ([7921d9b](https://github.com/olzzon/sisyfos-audio-controller/commit/7921d9b227177c36b0e143d759d714b8076731a5))
+
 ## [2.8.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.7.1...v2.8.0) (2020-02-11)
 
 
