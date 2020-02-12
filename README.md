@@ -68,6 +68,8 @@ The levels are:
 localhost:1176 (or whatever ip you use for Sisyfos Nodejs/Docker)
 IF you wan´t to disable settings:
 localhost:1176/?settings=0
+IF you´re using multitouch device:
+localhost:1176/?multitouch=1
 ``` 
 
 ## Settings:
