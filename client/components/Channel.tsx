@@ -102,6 +102,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             <Nouislider 
                 className="channel-volume-fader"
                 orientation="vertical"
+                animate={false}
                 range={{ min: 0, max: 1 }} 
                 start={[this.props.fader.faderLevel]} 
                 connect
