@@ -125,6 +125,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     'mute': this.props.fader.muteOn
                 })}
                 onClick={event => {
+                    if (!window.location.search.includes('multitouch=1')) {
+                        this.handlePgm();
+                    }
+                }}
+                onTouchStart={event => {
                     this.handlePgm();
                 }}
             >
@@ -143,8 +148,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     'mute': this.props.fader.muteOn,
                 })}
                 onClick={event => {
+                    if (!window.location.search.includes('multitouch=1')) {
+                        this.handleVo();
+                    }
+                }}
+                onTouchStart={event => {
                     this.handleVo();
                 }}
+
             >
                 VO
             </button>
@@ -211,6 +222,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     'on': this.props.fader.ignoreAutomation
                 })}
                 onClick={event => {
+                    if (!window.location.search.includes('multitouch=1')) {
+                        this.handleIgnore();
+                    }
+                }}
+                onTouchStart={event => {
                     this.handleIgnore();
                 }}
             >
@@ -226,6 +242,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     'on': this.props.fader.muteOn
                 })}
                 onClick={event => {
+                    if (!window.location.search.includes('multitouch=1')) {
+                        this.handleMute();
+                    }
+                }}
+                onTouchStart={event => {
                     this.handleMute();
                 }}
             >
