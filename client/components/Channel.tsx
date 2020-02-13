@@ -100,7 +100,19 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
         }
         return (
             <Nouislider 
-                className="channel-volume-fader"
+                className={
+                    ClassNames(
+                        {
+                            'channel-volume-fader': true,
+                        },
+                        {
+                            "pgm-on": this.props.fader.pgmOn,
+                            "vo-on": this.props.fader.voOn,
+                            "mute-on": this.props.fader.muteOn,
+                            "ignore-on": this.props.fader.ignoreAutomation,
+                        }
+                    )
+                }
                 orientation="vertical"
                 animate={false}
                 range={{ min: 0, max: 1 }} 
@@ -111,15 +123,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 }}
             />
         )
-        /*
-        let thumb = 'channel-volume-thumb' + (this.props.fader.pgmOn ? '-color-pgm' : '') +  (this.props.fader.voOn ? '-color-vo' : '')
-        if (this.props.fader.muteOn) {
-            thumb = 'channel-volume-thumb-color-mute'
-        }
-        return (
-                className="channel-volume-fader"
-                thumbClassName = { thumb }
-        */
     }
 
 
@@ -137,7 +140,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     }
                 }}
                 onTouchStart={event => {
-                    this.handlePgm();
+                    if (window.location.search.includes('multitouch=1')) {
+                        this.handlePgm()
+                    }
                 }}
             >
                 {this.props.fader.label != "" ? this.props.fader.label : ("CH " + (this.faderIndex + 1)) }
@@ -160,7 +165,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     }
                 }}
                 onTouchStart={event => {
-                    this.handleVo();
+                    if (window.location.search.includes('multitouch=1')) {
+                        this.handleVo()
+                    }
                 }}
 
             >
@@ -234,7 +241,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     }
                 }}
                 onTouchStart={event => {
-                    this.handleIgnore();
+                    if (window.location.search.includes('multitouch=1')) {
+                        this.handleIgnore()
+                    }
                 }}
             >
             {this.props.fader.ignoreAutomation ? "MANUAL" : "AUTO"}
@@ -254,7 +263,9 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     }
                 }}
                 onTouchStart={event => {
-                    this.handleMute();
+                    if (window.location.search.includes('multitouch=1')) {
+                        this.handleMute()
+                    }
                 }}
             >
             MUTE
