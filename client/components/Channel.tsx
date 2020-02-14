@@ -128,15 +128,12 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     'on': this.props.fader.pgmOn,
                     'mute': this.props.fader.muteOn
                 })}
-                onClick={event => {
-                    if (!window.location.search.includes('multitouch=1')) {
-                        this.handlePgm();
-                    }
+                onMouseUp={event => {
+                    this.handlePgm();
                 }}
-                onTouchStart={event => {
-                    if (window.location.search.includes('multitouch=1')) {
-                        this.handlePgm()
-                    }
+                onTouchEnd={event => {
+                    event.preventDefault()
+                    this.handlePgm()
                 }}
             >
                 {this.props.fader.label != "" ? this.props.fader.label : ("CH " + (this.faderIndex + 1)) }
@@ -153,15 +150,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     'on': this.props.fader.voOn,
                     'mute': this.props.fader.muteOn,
                 })}
-                onClick={event => {
-                    if (!window.location.search.includes('multitouch=1')) {
-                        this.handleVo();
-                    }
+                onMouseUp={event => {
+                    this.handleVo();
                 }}
-                onTouchStart={event => {
-                    if (window.location.search.includes('multitouch=1')) {
-                        this.handleVo()
-                    }
+                onTouchEnd={event => {
+                    this.handleVo()
                 }}
 
             >
@@ -229,15 +222,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 className={ClassNames("channel-ignore-button", {
                     'on': this.props.fader.ignoreAutomation
                 })}
-                onClick={event => {
-                    if (!window.location.search.includes('multitouch=1')) {
-                        this.handleIgnore();
-                    }
+                onMouseUp={event => {
+                    this.handleIgnore();
                 }}
-                onTouchStart={event => {
-                    if (window.location.search.includes('multitouch=1')) {
-                        this.handleIgnore()
-                    }
+                onTouchEnd={event => {
+                    this.handleIgnore()
                 }}
             >
             {this.props.fader.ignoreAutomation ? "MANUAL" : "AUTO"}
@@ -251,15 +240,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 className={ClassNames("channel-mute-button", {
                     'on': this.props.fader.muteOn
                 })}
-                onClick={event => {
-                    if (!window.location.search.includes('multitouch=1')) {
-                        this.handleMute();
-                    }
+                onMouseUp={event => {
+                    this.handleMute();
                 }}
-                onTouchStart={event => {
-                    if (window.location.search.includes('multitouch=1')) {
-                        this.handleMute()
-                    }
+                onTouchEnd={event => {
+                    this.handleMute()
                 }}
             >
             MUTE
