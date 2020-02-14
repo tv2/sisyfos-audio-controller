@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.9.3](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.2...v2.9.3) (2020-02-14)
+
+
+### Bug Fixes
+
+* handling of touch on pgm-vo-mute-auto buttons without the need for /?multitouch=1 ([d58fd1b](https://github.com/olzzon/sisyfos-audio-controller/commit/d58fd1b5bebb51659dd1b29057540ca4b2cdb3e9))
+
 ### [2.9.2](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.1...v2.9.2) (2020-02-14)
 
 
