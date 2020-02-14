@@ -33,6 +33,7 @@ export class MixerGenericConnection {
         this.fadeInOut = this.fadeInOut.bind(this);
         this.fadeUp = this.fadeUp.bind(this);
         this.fadeDown = this.fadeDown.bind(this);
+        this.clearTimer = this.clearTimer.bind(this)
 
         // Get mixer protocol
         this.mixerProtocol = MixerProtocolPresets[state.settings[0].mixerProtocol] || MixerProtocolPresets.sslSystemT;
@@ -203,6 +204,10 @@ export class MixerGenericConnection {
         }
     }
 
+    clearTimer(channelIndex: number) {
+        clearInterval(this.timer[channelIndex]);
+    }
+
     delayedFadeActiveDisable (channelIndex: number) {
         this.fadeActiveTimer[channelIndex] = setTimeout( ()=>{
             store.dispatch({
@@ -226,7 +231,7 @@ export class MixerGenericConnection {
         //Clear Old timer or set Fade to active:
         if (state.channels[0].channel[channelIndex].fadeActive) {
             clearInterval(this.fadeActiveTimer[channelIndex]);
-            clearInterval(this.timer[channelIndex]);
+            this.clearTimer(channelIndex)
         } 
         store.dispatch({
             type:FADE_ACTIVE,
@@ -251,6 +256,7 @@ export class MixerGenericConnection {
         const step: number = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
         let dispatchTrigger: number = 0;
+        this.clearTimer(channelIndex)
 
         if (targetVal<outputLevel) {
             this.timer[channelIndex] = setInterval(() => {
@@ -270,7 +276,7 @@ export class MixerGenericConnection {
                 if ( outputLevel <= targetVal){
                     outputLevel = targetVal;
                     this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
-                    clearInterval(this.timer[channelIndex]);
+                    this.clearTimer(channelIndex)
 
                     store.dispatch({
                         type:SET_OUTPUT_LEVEL,
@@ -300,7 +306,7 @@ export class MixerGenericConnection {
                 if ( outputLevel >= targetVal ) {
                     outputLevel = targetVal;
                     this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
-                    clearInterval(this.timer[channelIndex]);
+                    this.clearTimer(channelIndex)
                     store.dispatch({
                         type:SET_OUTPUT_LEVEL,
                         channel: channelIndex,
@@ -321,6 +327,8 @@ export class MixerGenericConnection {
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
         let dispatchTrigger: number = 0;
 
+        this.clearTimer(channelIndex)
+
         this.timer[channelIndex] = setInterval(() => {
             outputLevel -= step;
             dispatchTrigger += step;
@@ -338,7 +346,7 @@ export class MixerGenericConnection {
             if ( outputLevel <= min ){
                 outputLevel=min;
                 this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
-                clearInterval(this.timer[channelIndex]);
+                this.clearTimer(channelIndex)
                 store.dispatch({
                     type:SET_OUTPUT_LEVEL,
                     channel: channelIndex,
