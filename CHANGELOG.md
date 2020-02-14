@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.9.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.0...v2.9.1) (2020-02-14)
+
+
+### Bug Fixes
+
+* color of fader-handle dependent on pgm-vo-mute state ([5796eec](https://github.com/olzzon/sisyfos-audio-controller/commit/5796eeca8209a2f171e8a1cfa4ff9a33d3bdd0b2))
+* don´t toggle both on touch & click if multitouch is off ([1b46a47](https://github.com/olzzon/sisyfos-audio-controller/commit/1b46a47218eaa7f879ebe9c2c0e65bacc7effbbe))
+* Fader level was reversed (1-0 instead of 0-1) ([4932128](https://github.com/olzzon/sisyfos-audio-controller/commit/4932128a2ed394a3105eba71e9d12a2f5d79c088))
+* update fader handle color on state shift ([e149456](https://github.com/olzzon/sisyfos-audio-controller/commit/e14945687690a1b309a1f557d0221e6ce370b597))
+
 ## [2.9.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.8.0...v2.9.0) (2020-02-12)
 
 
