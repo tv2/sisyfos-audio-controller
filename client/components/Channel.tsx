@@ -105,6 +105,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     )
                 }
                 orientation="vertical"
+                direction='rtl'
                 animate={false}
                 range={{ min: 0, max: 1 }} 
                 start={[this.props.fader.faderLevel]} 
