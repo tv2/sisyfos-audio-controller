@@ -94,10 +94,6 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     }
 
     fader() {
-        let thumb = 'channel-volume-thumb' + (this.props.fader.pgmOn ? '-color-pgm' : '') +  (this.props.fader.voOn ? '-color-vo' : '')
-        if (this.props.fader.muteOn) {
-            thumb = 'channel-volume-thumb-color-mute'
-        }
         return (
             <Nouislider 
                 className={
@@ -105,16 +101,11 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                         {
                             'channel-volume-fader': true,
                             "noUi-vertical": true, 
-                            "pgm-on": this.props.fader.pgmOn,
-                            "vo-on": this.props.fader.voOn,
-                            "mute-on": this.props.fader.muteOn,
-                            "ignore-on": this.props.fader.ignoreAutomation,
                         }
                     )
                 }
                 orientation="vertical"
                 animate={false}
-                
                 range={{ min: 0, max: 1 }} 
                 start={[this.props.fader.faderLevel]} 
                 connect
@@ -283,6 +274,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 className={
                     ClassNames("channel-body", {
                     "with-pfl": this.props.settings.showPfl,
+                    "pgm-on": this.props.fader.pgmOn,
+                    "vo-on": this.props.fader.voOn,
                     "mute-on": this.props.fader.muteOn,
                     "ignore-on": this.props.fader.ignoreAutomation,
                 })}>
