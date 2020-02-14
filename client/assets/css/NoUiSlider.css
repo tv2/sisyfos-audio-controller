@@ -133,25 +133,39 @@
   cursor: ns-resize;
 }
 .noUi-handle {
-  border: 1px solid rgb(121, 121, 121);
-  border-radius: 3px;
+  border: 1px solid #c5c2c2;
+  border-radius: 8px;
   background: linear-gradient(to top, #3a3a3a 0%, #c2c2c2 20%, hsl(0, 0%, 57%) 50%, #00a 1px, #919191 52%, #c2c2c2 80%, #3a3a3a 100%);
   cursor: default;
-  box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
 }
+
+.pgm-on .noUi-handle {
+  border: 1px solid rgb(253, 60, 60);
+  background: linear-gradient(to top, #3a1d1d 0%, #c04d4d 20%, #811919 50%, #00a 1px, #8a2626 52%, #bd5151 80%, #411f1f 100%);
+}
+
+.vo-on .noUi-handle {
+  border: 1px solid rgb(252, 255, 86);
+  background: linear-gradient(to top, #353006 0%, #c59327 20%, #856b14 50%, #00a 1px, #866724 52%, #cca22d 80%, #463b0a 100%);
+}
+
+.mute-on .noUi-handle {
+  border: 1px solid rgb(58, 58, 58);
+  background: linear-gradient(to top, #111111 0%, #252525 20%, #2b2b2b 50%, rgb(56, 56, 56) 1px, #292929 52%, #222222 80%, #222222 100%);
+}
+
 .noUi-active {
   box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #DDD, 0 3px 6px -3px #BBB;
 }
 /* Handle stripes;
  */
-.noUi-handle:before,
 .noUi-handle:after {
   content: "";
   display: block;
   position: absolute;
   height: 14px;
   width: 1px;
-  background: #E8E7E6;
+  background: rgba(0, 0, 0, 0);
   left: 14px;
   top: 6px;
 }

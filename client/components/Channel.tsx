@@ -104,8 +104,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     ClassNames(
                         {
                             'channel-volume-fader': true,
-                        },
-                        {
+                            "noUi-vertical": true, 
                             "pgm-on": this.props.fader.pgmOn,
                             "vo-on": this.props.fader.voOn,
                             "mute-on": this.props.fader.muteOn,
@@ -115,12 +114,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 }
                 orientation="vertical"
                 animate={false}
+                
                 range={{ min: 0, max: 1 }} 
                 start={[this.props.fader.faderLevel]} 
                 connect
                 onSlide={(event: any) => {
                     this.handleLevel(event);
                 }}
+                
             />
         )
     }
