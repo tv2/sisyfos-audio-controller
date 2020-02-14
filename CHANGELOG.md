@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.9.2](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.1...v2.9.2) (2020-02-14)
+
+
+### Bug Fixes
+
+* prevent floating point loop on fader level by setting step to 0.01 ([263d016](https://github.com/olzzon/sisyfos-audio-controller/commit/263d0162e4163cd4b866afe88d50601df23ef8c1))
+
 ### [2.9.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.0...v2.9.1) (2020-02-14)
 
 
