@@ -322,7 +322,6 @@ export class OscMixerConnection {
     pingMixerCommand() {
          //Ping OSC mixer if mixerProtocol needs it.
          this.mixerProtocol.pingCommand.map((command) => {
-            logger.verbose('Sending OSC command :' + command.mixerMessage, {})
             this.sendOutMessage(
                 command.mixerMessage,
                 0,
@@ -366,6 +365,7 @@ export class OscMixerConnection {
                 channelString
             );
         if (message != 'none') {
+            logger.verbose('Sending OSC command :' + message, {})
             this.oscConnection.send({
                 address: message,
                 args: [

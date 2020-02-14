@@ -395,6 +395,7 @@ export class MainThreadHandlers {
         )
         .on(SOCKET_SET_FADERLEVEL, (
             (payload: any) => {
+                logger.verbose('Set faderlevel  Channel : ' + String(payload.faderIndex + 1) + '  Level : ' + String(payload.level))
                 store.dispatch({
                     type: SET_FADER_LEVEL,
                     channel: payload.faderIndex,

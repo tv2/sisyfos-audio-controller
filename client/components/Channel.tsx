@@ -109,6 +109,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 animate={false}
                 range={{ min: 0, max: 1 }} 
                 start={[this.props.fader.faderLevel]} 
+                step={0.01}
                 connect
                 onSlide={(event: any) => {
                     this.handleLevel(event);
