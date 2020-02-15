@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.9.4](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.3...v2.9.4) (2020-02-15)
+
+
+### Bug Fixes
+
+* always clear fade timer before setting a new one ([028d666](https://github.com/olzzon/sisyfos-audio-controller/commit/028d66620b81c090d2b12f1c0ffb19bdb0e45f67))
+* avoid crash of Sisyfos when selecting Lawo and Studer premilary protocols ([d130205](https://github.com/olzzon/sisyfos-audio-controller/commit/d13020572f0f83d0b3d7869d6121eaaed9a82b87))
+
 ### [2.9.3](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.2...v2.9.3) (2020-02-14)
 
 
