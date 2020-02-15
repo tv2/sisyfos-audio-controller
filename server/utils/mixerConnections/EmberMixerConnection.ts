@@ -1,14 +1,15 @@
-const DeviceTree = require('emberplus')
+//@ts-ignore
+import { DeviceTree, Ember} from 'emberplus'
 import { store, state } from '../../reducers/store'
 import { huiRemoteConnection } from '../../mainClasses'
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface';
-import { IStore } from '../../reducers/indexReducer';
 import { 
     SET_FADER_LEVEL, 
     SET_CHANNEL_LABEL 
 } from '../../reducers/faderActions'
+import { logger } from '../logger';
 
 
 export class EmberMixerConnection {
@@ -21,36 +22,53 @@ export class EmberMixerConnection {
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
         this.pingMixerCommand = this.pingMixerCommand.bind(this);
-
+        
         this.emberNodeObject = new Array(200);
         this.mixerProtocol = mixerProtocol;
-
+        
+        logger.info("Setting up Ember connection")
         this.emberConnection = new DeviceTree(
-                state.settings[0].deviceIp,
-                state.settings[0].devicePort
-            );
-        let deviceRoot: any;
-        this.emberConnection.connect()
-        .then(() => {
-            console.log("Getting Directory")
-            return this.emberConnection.getDirectory();
-        })
-        .then((r: any) => {
-            console.log("Directory :", r);
-            this.deviceRoot = r;
-            this.emberConnection.expand(r.elements[0])
+            state.settings[0].deviceIp,
+            state.settings[0].devicePort
+        );
+
+        this.emberConnection.on('error', (error: any) => {
+			if (
+				(error.message + '').match(/econnrefused/i) ||
+				(error.message + '').match(/disconnected/i)
+			) {
+				logger.error('Ember connection not establised')
+			} else {
+				logger.error('Ember connection unknown error' + error.message)
+			}
+		})
+		this.emberConnection.on('connected', () => {
+            logger.info('Ember connected')
+            let deviceRoot: any;
+            this.emberConnection.connect()
             .then(() => {
-                this.setupMixerConnection();
+                console.log("Getting Directory")
+                return this.emberConnection.getDirectory();
             })
-        })
-        .catch((e: any) => {
-            console.log(e.stack);
-        });
+            .then((r: any) => {
+                console.log("Directory :", r);
+                this.deviceRoot = r;
+                this.emberConnection.expand(r.elements[0])
+                .then(() => {
+                    this.setupMixerConnection();
+                })
+            })
+            .catch((e: any) => {
+                console.log(e.stack);
+            });
+		})
+		this.emberConnection.on('disconnected', () => {
+            logger.error('Lost Ember connection')
+		})
 
     }
 
     setupMixerConnection() {
-        console.log("Ember Connected");
 
         let ch: number = 1;
         state.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
