@@ -1,5 +1,5 @@
 //@ts-ignore
-import { DeviceTree, Ember} from 'emberplus'
+import { EmberClient } from 'node-emberplus'
 import { store, state } from '../../reducers/store'
 import { huiRemoteConnection } from '../../mainClasses'
 
@@ -27,7 +27,7 @@ export class EmberMixerConnection {
         this.mixerProtocol = mixerProtocol;
         
         logger.info("Setting up Ember connection")
-        this.emberConnection = new DeviceTree(
+        this.emberConnection = new EmberClient(
             state.settings[0].deviceIp,
             state.settings[0].devicePort
         );

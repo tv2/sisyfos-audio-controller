@@ -45,7 +45,7 @@
     "dependencies": {
         "casparcg-connection": "^4.9.0",
         "classnames": "^2.2.6",
-        "emberplus": "https://github.com/nrkno/tv-automation-emberplus-connection.git",
+        "node-emberplus": "https://github.com/dufourgilles/node-emberplus.git",
         "express": "^4.17.1",
         "express-csp-header": "^2.3.2",
         "http": "^0.0.0",
