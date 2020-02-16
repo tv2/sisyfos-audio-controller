@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.9.5](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.4...v2.9.5) (2020-02-16)
+
+
+### Bug Fixes
+
+* add preventDefault in onthouchEnd on vo, mute and auto buttons too ([245352a](https://github.com/olzzon/sisyfos-audio-controller/commit/245352a11e1c1b35a7b8d37711ce66c9e82ae838))
+
 ### [2.9.4](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.3...v2.9.4) (2020-02-15)
 
 
