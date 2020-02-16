@@ -154,6 +154,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     this.handleVo();
                 }}
                 onTouchEnd={event => {
+                    event.preventDefault()
                     this.handleVo()
                 }}
 
@@ -226,6 +227,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     this.handleIgnore();
                 }}
                 onTouchEnd={event => {
+                    event.preventDefault()
                     this.handleIgnore()
                 }}
             >
@@ -244,6 +246,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     this.handleMute();
                 }}
                 onTouchEnd={event => {
+                    event.preventDefault()
                     this.handleMute()
                 }}
             >
