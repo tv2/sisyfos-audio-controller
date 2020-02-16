@@ -41,31 +41,28 @@ export class EmberMixerConnection {
 			} else {
 				logger.error('Ember connection unknown error' + error.message)
 			}
-		})
-		this.emberConnection.on('connected', () => {
-            logger.info('Ember connected')
-            let deviceRoot: any;
-            this.emberConnection.connect()
-            .then(() => {
-                console.log("Getting Directory")
-                return this.emberConnection.getDirectory();
-            })
-            .then((r: any) => {
-                console.log("Directory :", r);
-                this.deviceRoot = r;
-                this.emberConnection.expand(r.elements[0])
-                .then(() => {
-                    this.setupMixerConnection();
-                })
-            })
-            .catch((e: any) => {
-                console.log(e.stack);
-            });
-		})
-		this.emberConnection.on('disconnected', () => {
+        })
+        this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
 		})
-
+        logger.info('Connecting to Ember')
+        let deviceRoot: any;
+        this.emberConnection.connect()
+        .then(() => {
+            console.log("Getting Directory")
+            return this.emberConnection.getDirectory();
+        })
+        .then((r: any) => {
+            console.log("Directory :", r);
+            this.deviceRoot = r;
+            this.emberConnection.expand(r.elements[0])
+            .then(() => {
+                this.setupMixerConnection();
+            })
+        })
+        .catch((e: any) => {
+            console.log(e.stack);
+        });
     }
 
     setupMixerConnection() {
