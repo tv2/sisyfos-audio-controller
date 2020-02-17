@@ -165,13 +165,23 @@ export class EmberMixerConnection {
             channelString
         )
 
-        this.emberConnection.getElementByPath(message)
-        .then((element: any) => {
+        /*this.emberConnection.getElementByPath(message)
+        .then((element: any) => {*/
             this.emberConnection.setValue(
-                element,
+                this.emberNodeObject[channel-1],
                 typeof value === 'number' ? value : parseFloat(value)
             )
+//        })
+        .catch((error: any) => {
+            console.log("Ember Error ", error)
         })
+    }
+
+    sendOutLevelMessage(channel: number, value: number) {
+        this.emberConnection.setValue(
+            this.emberNodeObject[channel-1],
+            value
+        )
         .catch((error: any) => {
             console.log("Ember Error ", error)
         })
@@ -195,13 +205,24 @@ export class EmberMixerConnection {
     updateOutLevel(channelIndex: number) {
         let channelType = state.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        let level = state.channels[0].channel[channelIndex].outputLevel * 100
-        this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
+        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0]
+        let level = (state.channels[0].channel[channelIndex].outputLevel - protocol.min) * (protocol.max - protocol.min)
+        this.sendOutLevelMessage(
             channelTypeIndex+1,
             level,
-            "f"
         );
+    }
+
+    updateFadeIOLevel(channelIndex: number, outputLevel: number) {
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
+        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0]
+        let level = (outputLevel - protocol.min) * (protocol.max - protocol.min)
+
+        this.sendOutLevelMessage(
+            channelTypeIndex+1,
+            level
+        )
     }
 
     updatePflState(channelIndex: number) {
@@ -258,19 +279,6 @@ export class EmberMixerConnection {
     }
     updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {
         return true
-    }
-
-    updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        let level = outputLevel * 100
-
-        this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage,
-            channelTypeIndex+1,
-            String(level),
-            "f"
-        )
     }
 
     updateChannelName(channelIndex: number) {
