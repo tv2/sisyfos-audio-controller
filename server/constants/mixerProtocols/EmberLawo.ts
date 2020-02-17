@@ -47,20 +47,13 @@ export const LawoClient: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
+            CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
                 value: 0,
                 type: 'real',
                 min: 0,
                 max: 100,
-                zero: 75
-            }],
-            CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification',
-                value: 0,
-                type: 'real',
-                min: -200,
-                max: 20,
                 zero: 0
 
             }],
