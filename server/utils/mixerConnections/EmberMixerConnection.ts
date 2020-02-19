@@ -66,7 +66,7 @@ export class EmberMixerConnection {
     }
 
     setupMixerConnection() {
-        logger.info('Ember connection established')
+        logger.info('Ember connection established - setting up subscription of channels')
 
         let ch: number = 1;
         state.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {

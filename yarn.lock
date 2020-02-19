@@ -5836,7 +5836,7 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
-"node-emberplus@https://github.com/dufourgilles/node-emberplus.git":
+"node-emberplus@https://github.com/dufourgilles/node-emberplus.git#master":
   version "2.5.6"
   resolved "https://github.com/dufourgilles/node-emberplus.git#ed89db5468e6dfe7227dbb863761959bd7de28f4"
   dependencies:
