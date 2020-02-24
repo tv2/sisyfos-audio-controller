@@ -1,8 +1,8 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
-export const LawoMC2: IMixerProtocol = {
+export const LawoRuby: IMixerProtocol = {
     protocol: 'EMBER',
-    label: 'Lawo MC2 - NOT IMPLEMENTED',
+    label: 'Lawo Ruby',
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
