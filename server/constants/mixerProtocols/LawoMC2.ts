@@ -16,12 +16,12 @@ export const LawoMC2: IMixerProtocol = {
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
+                mixerMessage: 'Ruby.Sources.${channel}.Fader.Motor dB Value',
                 value: 0,
                 type: 'real',
-                min: 0,
-                max: 100,
-                zero: 75
+                min: -191,
+                max: 9,
+                zero: 0
             }],
             CHANNEL_VU: [emptyMixerMessage()],
             CHANNEL_NAME: [{
@@ -49,11 +49,11 @@ export const LawoMC2: IMixerProtocol = {
         toMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
+                mixerMessage: 'Ruby.Sources.${channel}.Fader.Motor dB Value',
                 value: 0,
                 type: 'real',
-                min: 0,
-                max: 100,
+                min: -191,
+                max: 9,
                 zero: 0
 
             }],
