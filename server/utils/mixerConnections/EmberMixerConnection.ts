@@ -13,8 +13,8 @@ import { logger } from '../logger';
 
 
 export class EmberMixerConnection {
-    mixerProtocol: IMixerProtocol;
-    emberConnection: any;
+    mixerProtocol: IMixerProtocol
+    emberConnection: EmberClient
     deviceRoot: any;
     emberNodeObject: Array<any>;
 
@@ -111,6 +111,7 @@ export class EmberMixerConnection {
         this.emberConnection.getElementByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
         .then((node: any) => {
             this.emberNodeObject[ch-1] = node;
+            /*
             this.emberConnection.subscribe(node, (() => {
                 if (!state.channels[0].channel[ch-1].fadeActive
                     && !state.channels[0].channel[ch - 1].fadeActive
@@ -127,6 +128,7 @@ export class EmberMixerConnection {
 
             })
             )
+            */
         })
     }
 
@@ -167,6 +169,7 @@ export class EmberMixerConnection {
 
         /*this.emberConnection.getElementByPath(message)
         .then((element: any) => {*/
+            console.log('Sending out message : ', message )
             this.emberConnection.setValue(
                 this.emberNodeObject[channel-1],
                 typeof value === 'number' ? value : parseFloat(value)
@@ -178,9 +181,10 @@ export class EmberMixerConnection {
     }
 
     sendOutLevelMessage(channel: number, value: number) {
+        console.log('Sending out Level : ', this.emberNodeObject[channel])
         this.emberConnection.setValue(
             this.emberNodeObject[channel-1],
-            value
+            Math.round(value)
         )
         .catch((error: any) => {
             console.log("Ember Error ", error)

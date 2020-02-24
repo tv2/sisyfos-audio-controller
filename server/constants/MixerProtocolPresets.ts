@@ -3,7 +3,8 @@ import { ReaperMaster } from './mixerProtocols/reaperMaster';
 import { BehringerXrMaster } from './mixerProtocols/behringerXrMaster';
 import { MidasMaster } from './mixerProtocols/midasMaster';
 import { GenericMidi } from './mixerProtocols/genericMidi';
-import { LawoClient } from './mixerProtocols/EmberLawo';
+import { LawoRelayVrx4 } from './mixerProtocols/LawoRelayVrx4';
+import { LawoMC2 } from  './mixerProtocols/LawoMC2'
 import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 import { DMXIS } from './mixerProtocols/DmxIs';
 import { YamahaQLCL } from './mixerProtocols/yamahaQLCL'
@@ -24,7 +25,8 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     behringerxrmaster: BehringerXrMaster,
     midasMaster: MidasMaster,
     genericMidi: GenericMidi,
-    lawoClient: LawoClient,
+    lawoRelayVrx4: LawoRelayVrx4,
+    lawoMC2: LawoMC2,
     dmxis: DMXIS,
     yamahaQlCl: YamahaQLCL,
     sslSystemT: SSLSystemT,
