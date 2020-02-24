@@ -5,6 +5,7 @@ import { MidasMaster } from './mixerProtocols/midasMaster';
 import { GenericMidi } from './mixerProtocols/genericMidi';
 import { LawoRelayVrx4 } from './mixerProtocols/LawoRelayVrx4';
 import { LawoMC2 } from  './mixerProtocols/LawoMC2'
+import { LawoRuby } from  './mixerProtocols/LawoRuby'
 import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 import { DMXIS } from './mixerProtocols/DmxIs';
 import { YamahaQLCL } from './mixerProtocols/yamahaQLCL'
@@ -27,6 +28,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     genericMidi: GenericMidi,
     lawoRelayVrx4: LawoRelayVrx4,
     lawoMC2: LawoMC2,
+    lawoRuby: LawoRuby,
     dmxis: DMXIS,
     yamahaQlCl: YamahaQLCL,
     sslSystemT: SSLSystemT,
