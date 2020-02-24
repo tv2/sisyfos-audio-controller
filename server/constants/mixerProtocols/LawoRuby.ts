@@ -3,8 +3,8 @@ import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 export const LawoRuby: IMixerProtocol = {
     protocol: 'EMBER',
     label: 'Lawo Ruby',
-    mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
-                    //client (use feedback from mixers fader level)
+    mode: "master",
+    FADE_DISPATCH_RESOLUTION: 15,
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],

@@ -3,8 +3,8 @@ import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 export const ArdourMaster: IMixerProtocol = {
     protocol: 'OSC',
     label: 'Ardour DAW - Master Mode',
-    mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
-                    //client (use feedback from mixers fader level)
+    mode: "master",
+    FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false,
     pingCommand: [
         {

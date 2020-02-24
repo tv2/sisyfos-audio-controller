@@ -3,8 +3,8 @@ import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 export const MidasMaster: IMixerProtocol = {
     protocol: 'OSC',
     label: 'Midas M32 / Behringer X32 Master Mode',
-    mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
-                    //client (use feedback from mixers fader level)
+    mode: "master",
+    FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: true,
     pingCommand: [
         {

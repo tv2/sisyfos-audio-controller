@@ -3,8 +3,8 @@ import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 export const YamahaQLCL: IMixerProtocol = {
     protocol: 'QLCL',
     label: 'Yamaha QL/CL',
-    mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
-                    //client (use feedback from mixers fader level)
+    mode: "master",
+    FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false,
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],

@@ -96,7 +96,8 @@ if (geometry) {
 	CasparCGMasterObject = {
 		protocol: 'CasparCG',
 		label: `CasparCG Audio Mixer`,
-		mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
+		mode: "master",
+		FADE_DISPATCH_RESOLUTION: 5,
 		studio: "studio0",
 		leadingZeros: false,
 		pingTime: 0,

@@ -18,7 +18,6 @@ import { SET_FADER_LEVEL } from  '../reducers/faderActions'
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
 // The lower the more CPU
 const FADE_INOUT_SPEED = 3;
-const FADE_DISPATCH_RESOLUTION = 5;
 
 export class MixerGenericConnection {
     store: any;
@@ -254,7 +253,7 @@ export class MixerGenericConnection {
             targetVal = targetVal * (100-state.settings[0].voLevel)/100 
         }
         const step: number = (targetVal-outputLevel)/(fadeTime/FADE_INOUT_SPEED);
-        const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
+        const dispatchResolution: number = this.mixerProtocol.FADE_DISPATCH_RESOLUTION*step;
         let dispatchTrigger: number = 0;
         this.clearTimer(channelIndex)
 
@@ -323,7 +322,7 @@ export class MixerGenericConnection {
     fadeDown(channelIndex: number, fadeTime: number) {
         let outputLevel = state.channels[0].channel[channelIndex].outputLevel;
         const step = (outputLevel)/(fadeTime/FADE_INOUT_SPEED);
-        const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
+        const dispatchResolution: number = this.mixerProtocol.FADE_DISPATCH_RESOLUTION*step;
         let dispatchTrigger: number = 0;
 
         this.clearTimer(channelIndex)
