@@ -14,7 +14,6 @@ export const LawoMC2: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'Ruby.Sources.${channel}.Fader.Motor dB Value',
                 value: 0,
@@ -47,7 +46,6 @@ export const LawoMC2: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'Ruby.Sources.${channel}.Fader.Motor dB Value',
                 value: 0,

@@ -41,7 +41,6 @@ export const ArdourMaster: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/strip/fader/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [{ mixerMessage: '/strip/meter/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [{ mixerMessage: '/strip/name/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
@@ -59,7 +58,6 @@ export const ArdourMaster: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/strip/fader/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [{ mixerMessage: '/strip/name/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [emptyMixerMessage()],

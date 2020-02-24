@@ -123,7 +123,6 @@ if (geometry) {
             channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
                 CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
                 CHANNEL_VU: [emptyMixerMessage()],
                 CHANNEL_NAME: [emptyMixerMessage()],
@@ -141,7 +140,6 @@ if (geometry) {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
             },
             toMixer: {
-                CHANNEL_FADER_LEVEL: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
                 CHANNEL_OUT_GAIN: [{ mixerMessage: 'none', value: 0, type: 'f', min: 0, max: 1.5, zero: 1}],
                 CHANNEL_NAME: [emptyMixerMessage()],
                 PFL_ON: [emptyMixerMessage()],

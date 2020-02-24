@@ -118,7 +118,6 @@ export const MidasMaster: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //'none' ignores this command
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [{ mixerMessage: '/meters/1', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [emptyMixerMessage()], //[{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
@@ -137,7 +136,6 @@ export const MidasMaster: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [emptyMixerMessage()], //[{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [emptyMixerMessage()],

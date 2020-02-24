@@ -14,7 +14,6 @@ export const DMXIS: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#3f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //'none' ignores this command
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/dmxis/ch/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [emptyMixerMessage()],
             CHANNEL_NAME: [emptyMixerMessage()],
@@ -32,7 +31,6 @@ export const DMXIS: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/dmxis/ch/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [{ mixerMessage: '/dmxis/ch/name/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL_ON: [emptyMixerMessage()],

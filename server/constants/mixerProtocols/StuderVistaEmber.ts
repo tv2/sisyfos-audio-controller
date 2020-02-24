@@ -2,7 +2,7 @@ import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
 export const StuderVistaMaster: IMixerProtocol = {
     protocol: 'EMBER',
-    label: 'Studer Vista - master',
+    label: 'Studer Vista - NOT WORKING',
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
@@ -14,7 +14,6 @@ export const StuderVistaMaster: IMixerProtocol = {
         channelTypeName: 'MONO',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
                 value: 0,
@@ -46,7 +45,6 @@ export const StuderVistaMaster: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
                 value: 0,
@@ -83,7 +81,6 @@ export const StuderVistaMaster: IMixerProtocol = {
         channelTypeName: 'ST',
         channelTypeColor: '#3f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'System/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Functions/Fader/Value',
                 value: 0,
@@ -115,7 +112,6 @@ export const StuderVistaMaster: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'System/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Functions/Fader/Value',
                 value: 0,
@@ -152,7 +148,6 @@ export const StuderVistaMaster: IMixerProtocol = {
         channelTypeName: 'Inp X',
         channelTypeColor: '#2f3f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'System/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Functions/Fader/Value',
                 value: 0,
@@ -184,7 +179,6 @@ export const StuderVistaMaster: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
                 mixerMessage: 'System/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Functions/Fader/Value',
                 value: 0,

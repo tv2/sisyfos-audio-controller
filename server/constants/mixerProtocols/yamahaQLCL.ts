@@ -23,7 +23,6 @@ export const YamahaQLCL: IMixerProtocol = {
         channelTypeName: 'CH',
         channelTypeColor: '#2f2f2f',
         fromMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],        //PgmChange 0 - ignores this command
             CHANNEL_OUT_GAIN: [{ mixerMessage: 'f0 43 10 3e 19 01 00 37 00 00 {channel} 00 00 00 {level} f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],            //PgmChange 0 - ignores this command
             CHANNEL_VU: [{ mixerMessage: "0", value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],                   //PgmChange 0 - ignores this command
             CHANNEL_NAME: [emptyMixerMessage()],
@@ -42,7 +41,6 @@ export const YamahaQLCL: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{ mixerMessage: 'f0 43 10 3e 19 01 00 37 00 00 {channel} 00 00 00 {level} f7', value: 0, type: '', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL_ON: [emptyMixerMessage()],
