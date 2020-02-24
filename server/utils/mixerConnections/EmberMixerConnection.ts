@@ -1,5 +1,5 @@
 //@ts-ignore
-import { DeviceTree, Ember} from 'emberplus'
+import { EmberClient } from 'node-emberplus'
 import { store, state } from '../../reducers/store'
 import { huiRemoteConnection } from '../../mainClasses'
 
@@ -13,8 +13,8 @@ import { logger } from '../logger';
 
 
 export class EmberMixerConnection {
-    mixerProtocol: IMixerProtocol;
-    emberConnection: any;
+    mixerProtocol: IMixerProtocol
+    emberConnection: EmberClient
     deviceRoot: any;
     emberNodeObject: Array<any>;
 
@@ -27,7 +27,7 @@ export class EmberMixerConnection {
         this.mixerProtocol = mixerProtocol;
         
         logger.info("Setting up Ember connection")
-        this.emberConnection = new DeviceTree(
+        this.emberConnection = new EmberClient(
             state.settings[0].deviceIp,
             state.settings[0].devicePort
         );
@@ -41,34 +41,32 @@ export class EmberMixerConnection {
 			} else {
 				logger.error('Ember connection unknown error' + error.message)
 			}
-		})
-		this.emberConnection.on('connected', () => {
-            logger.info('Ember connected')
-            let deviceRoot: any;
-            this.emberConnection.connect()
-            .then(() => {
-                console.log("Getting Directory")
-                return this.emberConnection.getDirectory();
-            })
-            .then((r: any) => {
-                console.log("Directory :", r);
-                this.deviceRoot = r;
-                this.emberConnection.expand(r.elements[0])
-                .then(() => {
-                    this.setupMixerConnection();
-                })
-            })
-            .catch((e: any) => {
-                console.log(e.stack);
-            });
-		})
-		this.emberConnection.on('disconnected', () => {
+        })
+        this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
 		})
-
+        logger.info('Connecting to Ember')
+        let deviceRoot: any;
+        this.emberConnection.connect()
+        .then(() => {
+            console.log("Getting Directory")
+            return this.emberConnection.getDirectory();
+        })
+        .then((r: any) => {
+            console.log("Directory :", r);
+            this.deviceRoot = r;
+            this.emberConnection.expand(r.elements[0])
+            .then(() => {
+                this.setupMixerConnection();
+            })
+        })
+        .catch((e: any) => {
+            console.log(e.stack);
+        });
     }
 
     setupMixerConnection() {
+        logger.info('Ember connection established - setting up subscription of channels')
 
         let ch: number = 1;
         state.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
@@ -79,12 +77,14 @@ export class EmberMixerConnection {
         })
 
         ch = 1;
+        /*
         state.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
             for (let channelTypeIndex=0; channelTypeIndex < numberOfChannels ; channelTypeIndex++) {
                 this.subscribeChannelName(ch, typeIndex, channelTypeIndex);
                 ch++;
             }
         })
+        */
 
 /*
                 .CHANNEL_VU)){
@@ -94,11 +94,7 @@ export class EmberMixerConnection {
                         level: message.args[0]
                     });
         */
-        this.emberConnection
-        .on('error', (error: any) => {
-            console.log("Error : ", error);
-            console.log("Lost EMBER connection");
-        });
+
 
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
@@ -112,9 +108,10 @@ export class EmberMixerConnection {
     }
 
     subscribeFaderLevel(ch: number, typeIndex: number, channelTypeIndex: number) {
-        this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
+        this.emberConnection.getElementByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
         .then((node: any) => {
             this.emberNodeObject[ch-1] = node;
+            /*
             this.emberConnection.subscribe(node, (() => {
                 if (!state.channels[0].channel[ch-1].fadeActive
                     && !state.channels[0].channel[ch - 1].fadeActive
@@ -131,6 +128,7 @@ export class EmberMixerConnection {
 
             })
             )
+            */
         })
     }
 
@@ -163,16 +161,34 @@ export class EmberMixerConnection {
 
     sendOutMessage(mixerMessage: string, channel: number, value: string | number, type: string) {
         let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
+        
+        let message = mixerMessage.replace(
+            "{channel}",
+            channelString
+        )
 
-//            this.emberConnection.QualifiedParameter.setValue("1.1.1.1.1.1", 21)
-//            this.emberConnection.getNodeByPath(message)
-//            .then((response: any) => {
-//                console.log("Node object :", response)
-                this.emberConnection.setValue(
-                    mixerMessage,
-                    typeof value === 'number' ? value : parseFloat(value)
-                )
-//            })
+        /*this.emberConnection.getElementByPath(message)
+        .then((element: any) => {*/
+            console.log('Sending out message : ', message )
+            this.emberConnection.setValue(
+                this.emberNodeObject[channel-1],
+                typeof value === 'number' ? value : parseFloat(value)
+            )
+//        })
+        .catch((error: any) => {
+            console.log("Ember Error ", error)
+        })
+    }
+
+    sendOutLevelMessage(channel: number, value: number) {
+        console.log('Sending out Level : ', this.emberNodeObject[channel])
+        this.emberConnection.setValue(
+            this.emberNodeObject[channel-1],
+            Math.round(value)
+        )
+        .catch((error: any) => {
+            console.log("Ember Error ", error)
+        })
     }
 
     sendOutRequest(mixerMessage: string, channel: number) {
@@ -193,12 +209,24 @@ export class EmberMixerConnection {
     updateOutLevel(channelIndex: number) {
         let channelType = state.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        this.sendOutMessage(
-            this.emberNodeObject[channelIndex],
+        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0]
+        let level = (state.channels[0].channel[channelIndex].outputLevel - protocol.min) * (protocol.max - protocol.min)
+        this.sendOutLevelMessage(
             channelTypeIndex+1,
-            state.channels[0].channel[channelIndex].outputLevel,
-            "f"
+            level,
         );
+    }
+
+    updateFadeIOLevel(channelIndex: number, outputLevel: number) {
+        let channelType = state.channels[0].channel[channelIndex].channelType;
+        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
+        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0]
+        let level = (outputLevel - protocol.min) * (protocol.max - protocol.min)
+
+        this.sendOutLevelMessage(
+            channelTypeIndex+1,
+            level
+        )
     }
 
     updatePflState(channelIndex: number) {
@@ -255,17 +283,6 @@ export class EmberMixerConnection {
     }
     updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {
         return true
-    }
-
-    updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        this.sendOutMessage(
-            this.emberNodeObject[channelIndex],
-            channelTypeIndex+1,
-            String(outputLevel),
-            "f"
-        );
     }
 
     updateChannelName(channelIndex: number) {

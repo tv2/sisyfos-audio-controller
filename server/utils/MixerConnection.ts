@@ -58,7 +58,7 @@ export class MixerGenericConnection {
 
 
     checkForAutoResetThreshold(channel: number) {
-        if (state.faders[0].fader[channel].faderLevel <= this.mixerProtocol.fader.min + (this.mixerProtocol.fader.max * state.settings[0].autoResetLevel / 100)) {
+        if (state.faders[0].fader[channel].faderLevel <= state.settings[0].autoResetLevel / 100) {
             store.dispatch({
                 type: SET_FADER_LEVEL,
                 channel: channel,
@@ -322,8 +322,7 @@ export class MixerGenericConnection {
 
     fadeDown(channelIndex: number, fadeTime: number) {
         let outputLevel = state.channels[0].channel[channelIndex].outputLevel;
-        const min = this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0].min;
-        const step = (outputLevel-min)/(fadeTime/FADE_INOUT_SPEED);
+        const step = (outputLevel)/(fadeTime/FADE_INOUT_SPEED);
         const dispatchResolution: number = FADE_DISPATCH_RESOLUTION*step;
         let dispatchTrigger: number = 0;
 
@@ -343,8 +342,8 @@ export class MixerGenericConnection {
                 dispatchTrigger = 0;
             }
 
-            if ( outputLevel <= min ){
-                outputLevel=min;
+            if ( outputLevel <= 0 ){
+                outputLevel=0
                 this.mixerConnection.updateFadeIOLevel(channelIndex, outputLevel);
                 this.clearTimer(channelIndex)
                 store.dispatch({

@@ -1,8 +1,8 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
-export const LawoClient: IMixerProtocol = {
+export const LawoMC2: IMixerProtocol = {
     protocol: 'EMBER',
-    label: 'Lawo Relay VRX4 - client',
+    label: 'Lawo MC2',
     mode: "master", //master (ignores mixers faderlevel, and use faderlevel as gain preset),
                     //client (use feedback from mixers fader level)
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
@@ -16,12 +16,12 @@ export const LawoClient: IMixerProtocol = {
         fromMixer: {
             CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
+                mixerMessage: 'Ruby.Sources.${channel}.Fader.Motor dB Value',
                 value: 0,
                 type: 'real',
-                min: 0,
-                max: 100,
-                zero: 75
+                min: -191,
+                max: 9,
+                zero: 0
             }],
             CHANNEL_VU: [emptyMixerMessage()],
             CHANNEL_NAME: [{
@@ -47,20 +47,13 @@ export const LawoClient: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_FADER_LEVEL: [{
-                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/FaderPosition',
-                value: 0,
-                type: 'real',
-                min: 0,
-                max: 100,
-                zero: 75
-            }],
+            CHANNEL_FADER_LEVEL: [emptyMixerMessage()],
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'R3LAYVRX4/Ex/GUI/FaderSlot_{channel}/Amplification',
+                mixerMessage: 'Ruby.Sources.${channel}.Fader.Motor dB Value',
                 value: 0,
                 type: 'real',
-                min: -200,
-                max: 20,
+                min: -191,
+                max: 9,
                 zero: 0
 
             }],

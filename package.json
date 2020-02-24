@@ -30,6 +30,7 @@
         "prod": "webpack --mode production --config webpack.config.js && electron --noDevServer .",
         "start": "node dist/server/index.js",
         "start:dev": "node --inspect dist/server/index.js",
+        "start:break": "node --inspect-brk dist/server/index.js",
         "build-client": "yarn webpack --config webpack.config.js --mode production",
         "build-server": "yarn tsc -p server/tsconfig.json",
         "build-watch": "yarn tsc -p server/tsconfig.json --watch & webpack --config webpack.config.js --watch --mode development",
@@ -45,7 +46,7 @@
     "dependencies": {
         "casparcg-connection": "^4.9.0",
         "classnames": "^2.2.6",
-        "emberplus": "https://github.com/nrkno/tv-automation-emberplus-connection.git",
+        "node-emberplus": "https://github.com/dufourgilles/node-emberplus.git#master",
         "express": "^4.17.1",
         "express-csp-header": "^2.3.2",
         "http": "^0.0.0",

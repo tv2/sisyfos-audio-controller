@@ -1077,6 +1077,11 @@
   dependencies:
     jest-diff "^24.3.0"
 
+"@types/node@*":
+  version "13.7.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.7.1.tgz#238eb34a66431b71d2aaddeaa7db166f25971a0d"
+  integrity sha512-Zq8gcQGmn4txQEJeiXo/KiLpon8TzAl0kmKH4zdWctPj05nWwp1ClMdAVEloqrQKfaC48PNLdgN/aVaLqUrluA==
+
 "@types/node@^7.0.4":
   version "7.10.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.10.9.tgz#4343e3b009f8cf5e1ed685e36097b74b4101e880"
@@ -1154,6 +1159,13 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/safer-buffer@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/safer-buffer/-/safer-buffer-2.1.0.tgz#8c498815fe00af8f8b23d63eb3fd6fae6ae2ab7a"
+  integrity sha512-04WlrCdOLy1Ejpwc3A7qyZzsH6uqeWoH+XO80V8S8NRubGg+E4FMMM3VAS6jZZ8w+dXki1/5FI5upmMDQlaQsQ==
+  dependencies:
+    "@types/node" "*"
 
 "@types/socket.io-client@^1.4.32":
   version "1.4.32"
@@ -1533,9 +1545,12 @@ asn1.js@^4.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
 
-asn1@evs-broadcast/node-asn1:
-  version "0.5.1"
-  resolved "https://codeload.github.com/evs-broadcast/node-asn1/tar.gz/2fc158464a92e1465523f108295abd54e7ce86db"
+"asn1@github:evs-broadcast/node-asn1":
+  version "0.5.4"
+  resolved "https://codeload.github.com/evs-broadcast/node-asn1/tar.gz/0146823069e479e90595480dc90c72cafa161ba1"
+  dependencies:
+    "@types/safer-buffer" "^2.1.0"
+    safer-buffer "~2.1.0"
 
 asn1@~0.2.3:
   version "0.2.4"
@@ -3117,16 +3132,6 @@ elliptic@^6.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
-
-"emberplus@https://github.com/nrkno/tv-automation-emberplus-connection.git":
-  version "1.7.8"
-  resolved "https://github.com/nrkno/tv-automation-emberplus-connection.git#5590e8ab8c9bbc3fb3d3f82d0fccc1861af11456"
-  dependencies:
-    asn1 evs-broadcast/node-asn1
-    enum "^2.4.0"
-    long "^3.2.0"
-    smart-buffer "^3.0.3"
-    winston-color "^1.0.0"
 
 emoji-regex@^7.0.1:
   version "7.0.3"
@@ -5830,6 +5835,17 @@ no-case@^2.2.0:
   integrity sha512-rmTZ9kz+f3rCvK2TD1Ue/oZlns7OGoIWP4fc3llxxRXlOkHKoWPPWJOfFYpITabSow43QJbRIoHQXtt10VldyQ==
   dependencies:
     lower-case "^1.1.1"
+
+"node-emberplus@https://github.com/dufourgilles/node-emberplus.git#master":
+  version "2.5.6"
+  resolved "https://github.com/dufourgilles/node-emberplus.git#ed89db5468e6dfe7227dbb863761959bd7de28f4"
+  dependencies:
+    asn1 "github:evs-broadcast/node-asn1"
+    enum "^2.4.0"
+    long "^3.2.0"
+    smart-buffer "^3.0.3"
+    winston "^2.1.1"
+    winston-color "^1.0.0"
 
 node-environment-flags@1.0.5:
   version "1.0.5"
