@@ -177,7 +177,7 @@ export class EmberMixerConnection {
 
     sendOutLevelMessage(channel: number, value: number) {
         logger.verbose('Sending out Level: ' + String(value) + ' To Path : ' + JSON.stringify(this.emberNodeObject[channel]))
-        this.emberConnection.setValueWithHacksaw(
+        this.emberConnection.setValueNoAck(
             this.emberNodeObject[channel-1],
             value
         )
