@@ -1,0 +1,30 @@
+.monitor-channel-body {
+    color: white;
+    background: linear-gradient(#2f2f2f 0px,#2f2f2f 790px, rgb(0, 0, 0) 1px, #2f2f2f 800px, #2f2f2f 100%);
+    margin: 4px;
+    border-radius: 7px;
+    width: 86px;
+    height: 90px;
+    position: relative;
+}
+.channel-gain-label {
+    color: #777777;
+    font-size: 0.8em;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.monitor-channel-strip-button {
+    outline : none;
+    -moz-outline : none;
+    margin-left: 3px;
+    margin-top: 5px;
+    margin-right: 3px;
+    color: white;
+    height: 60px;
+    width: 80px;
+    font-size: 105%;
+    background-color: rgba(39, 39, 39, 0.308);
+    border-radius: 7px;
+    border-color: rgba(99, 99, 99, 0.301);
+}

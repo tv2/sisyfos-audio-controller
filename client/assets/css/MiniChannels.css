@@ -1,0 +1,17 @@
+.mini-channels-body {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    height: 400px;
+    width: 100px;
+}
+
+.mini-channels-body > .closedChanStrip {
+    margin-left: 100px;
+    transition: margin 300ms;
+}
+
+.mini-channels-body > .openChanStrip {
+    margin-left: 100px;
+    transition: margin 800ms;
+}
