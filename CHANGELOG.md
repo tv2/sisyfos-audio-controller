@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.10.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.5...v2.10.0) (2020-03-19)
+
+
+### Features
+
+* change emberplus to other repo ([e50b9b7](https://github.com/olzzon/sisyfos-audio-controller/commit/e50b9b7ff0cf967bb451836a31790bb5a3feba9d))
+* ember - make dedicated sendOutLevelMessage instead of a generic one where you have to do a getElementByPath each time ([4034bf5](https://github.com/olzzon/sisyfos-audio-controller/commit/4034bf59f5c06f665ac34ea5376831fb6c883142))
+* Ember - use timeout-hack for better Lawo support ([2b508f2](https://github.com/olzzon/sisyfos-audio-controller/commit/2b508f21b5d958341bda4910b82cdf3804d81f03))
+* Ember connection set up differently ([bc6c6bd](https://github.com/olzzon/sisyfos-audio-controller/commit/bc6c6bd4682a14989c6852928f3869d28ba2451b))
+* Ember Lawo - use master branch on https://github.com/dufourgilles/node-emberplus.git ([54eb20a](https://github.com/olzzon/sisyfos-audio-controller/commit/54eb20a99af4c3baee958f151dc74cdd73b93cc4))
+* FADE_DISPATCH_RESOLUTION constant are moved to protocol to enable fever commands on slow protocols ([18fd425](https://github.com/olzzon/sisyfos-audio-controller/commit/18fd42539789a23a0f4613c6868e73b36fa01a20))
+* lawo-mc - add files for last commit ([e29831f](https://github.com/olzzon/sisyfos-audio-controller/commit/e29831fc05e0c9b5cd8639c460244e1e15a4c091))
+* lawo-mc - create LawoMC protocol. (not configures yet) ([7d963a5](https://github.com/olzzon/sisyfos-audio-controller/commit/7d963a52918203df44a01f63e7d62302005bcd79))
+* Lawo-MC fader level added to protocol. ([ad26a6b](https://github.com/olzzon/sisyfos-audio-controller/commit/ad26a6bff9e27bf5e93657f4d55e6c1de416b8d4))
+* LawoRuby - initial protocol ([d96533d](https://github.com/olzzon/sisyfos-audio-controller/commit/d96533d6f5c1633719b8875b223838283d9cd3c7))
+* minimonitorview - css tweaks ([db5d617](https://github.com/olzzon/sisyfos-audio-controller/commit/db5d617e751f0d3ffb7437eb0f75476cb7707bc1))
+* minimonitorview - label in monitor settings ([60b6a4c](https://github.com/olzzon/sisyfos-audio-controller/commit/60b6a4cf08652764132b59c4d3ae4c622f06a1a9))
+* monitorview - settings in monitor setup, stored server side ([8837fce](https://github.com/olzzon/sisyfos-audio-controller/commit/8837fceeeb29fc007a3740d252a1de33126a77d6))
+
+
+### Bug Fixes
+
+* casparCGMaster protocol should not be able to be undefined (a template is always loaded) ([477549e](https://github.com/olzzon/sisyfos-audio-controller/commit/477549e88b0e7886dd905103df08ebde263b59c3))
+* internal levels are always 0-1 conversion to protocol level must take place in the protocols mixerconnection ([88dd14f](https://github.com/olzzon/sisyfos-audio-controller/commit/88dd14f392f407a229e0fa4163f64b36076b9d79))
+
 ### [2.9.5](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.4...v2.9.5) (2020-02-16)
 
 
