@@ -43,7 +43,9 @@ import {
     SOCKET_SET_LO_MID,
     SOCKET_SET_INPUT_OPTION,
     SOCKET_SAVE_CCG_FILE,
-    SOCKET_SET_DELAY_TIME
+    SOCKET_SET_DELAY_TIME,
+    SOCKET_SHOW_IN_MINI_MONITOR,
+
  } from './constants/SOCKET_IO_DISPATCHERS'
 import { 
     TOGGLE_PGM, 
@@ -61,7 +63,8 @@ import {
     SET_FADER_MONITOR,
     IGNORE_AUTOMATION,
     SET_FADER_LO_MID,
-    SET_FADER_DELAY_TIME
+    SET_FADER_DELAY_TIME,
+    SHOW_IN_MINI_MONITOR
 } from './reducers/faderActions';
 import { SET_FADER_LEVEL } from './reducers/faderActions';
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions';
@@ -208,6 +211,16 @@ export class MainThreadHandlers {
                     type: SET_FADER_MONITOR,
                     channel: payload.faderIndex,
                     auxIndex: payload.auxIndex
+                });
+                this.updateFullClientStore()
+            })
+        )
+        .on(SOCKET_SHOW_IN_MINI_MONITOR, (
+            (payload: any) => { 
+                store.dispatch({
+                    type: SHOW_IN_MINI_MONITOR,
+                    faderIndex: payload.faderIndex,
+                    showInMiniMonitor: payload.showInMiniMonitor
                 });
                 this.updateFullClientStore()
             })

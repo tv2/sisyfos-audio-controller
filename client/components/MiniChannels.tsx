@@ -40,11 +40,15 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     render() {
         return (
         <div className="mini-channels-body">
-            {this.props.faders.map((none: any, index: number) => {
-                return <MiniChannel
+            {this.props.faders.map((fader: IFader, index: number) => {
+                return ((fader.showInMiniMonitor) ? 
+                        <MiniChannel
                             faderIndex = {index}
                             key={index}
                         />
+                        :
+                        null
+                )
                 })
             }
             {(this.props.settings.showChanStrip >= 0) ?

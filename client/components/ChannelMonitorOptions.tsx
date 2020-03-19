@@ -7,7 +7,8 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { TOGGLE_SHOW_MONITOR_OPTIONS } from '../../server/reducers/settingsActions'
 import { ISettings } from '../../server/reducers/settingsReducer';
-import { SOCKET_SET_AUX_LEVEL, SOCKET_SET_FADER_MONITOR } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import { SOCKET_SET_AUX_LEVEL, SOCKET_SET_FADER_MONITOR, SOCKET_SHOW_IN_MINI_MONITOR } from '../../server/constants/SOCKET_IO_DISPATCHERS';
+import { SHOW_IN_MINI_MONITOR } from '../../server/reducers/faderActions';
 
 interface IMonitorSettingsInjectProps {
     label: string,
@@ -86,6 +87,17 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
         }
     }
 
+
+    handleShowInMiniMonitor = (event: ChangeEvent<HTMLInputElement>) => {
+        window.socketIoClient.emit( 
+            SOCKET_SHOW_IN_MINI_MONITOR, 
+            {
+                faderIndex: this.faderIndex,
+                showInMiniMonitor: event.target.checked
+            }
+        )
+    }
+
     handleSetAux = (event: ChangeEvent<HTMLInputElement>) => {
         let value = parseFloat(event.target.value) || -1
         if (value > this.props.settings.numberOfAux || value < 0) {
@@ -133,6 +145,11 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
                     value={this.props.fader[this.faderIndex].monitor} 
                     onChange={(event) => this.handleSetAux(event)}
                 />
+                <input
+                            type="checkbox"
+                            checked={this.props.fader[this.faderIndex].showInMiniMonitor}
+                            onChange={(event) => this.handleShowInMiniMonitor(event)}
+                        />
                 <hr />
                 {this.props.channel.map((channel: any, index: number) => {
                     return <div 

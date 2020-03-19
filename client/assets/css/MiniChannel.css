@@ -26,5 +26,11 @@
     font-size: 105%;
     background-color: rgba(39, 39, 39, 0.308);
     border-radius: 7px;
-    border-color: rgba(99, 99, 99, 0.301);
+    border-color: rgba(77, 77, 77, 0.301);
+}
+
+.monitor-channel-strip-button.on {
+    background-color: rgb(146, 146, 146);
+    border-color: rgba(102, 102, 102, 0.301);
+
 }

@@ -52,7 +52,7 @@ class MiniChannel extends React.Component<IChannelProps & IChannelInjectProps & 
         return (
             <button
                 className={ClassNames("monitor-channel-strip-button", {
-                    'on': this.props.settings.showChanStrip
+                    'on': (this.props.settings.showChanStrip === this.props.channelTypeIndex)
                 })}
                 onClick={event => {
                     this.handleShowChanStrip();
