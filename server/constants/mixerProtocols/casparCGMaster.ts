@@ -90,10 +90,7 @@ let geometry: ICasparCGMixerGeometryFile = {
 	}
 }
 
-let CasparCGMasterObject: ICasparCGMixerGeometry | undefined = undefined
-
-if (geometry) {
-	CasparCGMasterObject = {
+let CasparCGMasterObject: ICasparCGMixerGeometry = {
 		protocol: 'CasparCG',
 		label: `CasparCG Audio Mixer`,
 		mode: "master",
@@ -159,6 +156,5 @@ if (geometry) {
             },
         }]
 	}
-}
 
 export const CasparCGMaster = CasparCGMasterObject

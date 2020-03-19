@@ -33,9 +33,9 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     yamahaQlCl: YamahaQLCL,
     sslSystemT: SSLSystemT,
     studerVistaMaster: StuderVistaMaster,
-}, CasparCGMaster !== undefined ? {
+}, {
     casparCGMaster: CasparCGMaster
-} : {});
+});
 /*
 */
 
