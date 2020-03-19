@@ -7,6 +7,7 @@ import '../assets/css/App.css';
 import Channels from './Channels';
 import Settings from './Settings';
 import Storage from './RoutingStorage'
+import MiniChannels from './MiniChannels';
 
 export interface IAppProps {
     store: IStore
@@ -71,7 +72,8 @@ class App extends React.Component<IAppProps> {
     render() {
         return (
         <div>
-            <Channels />
+            {!window.location.search.includes('minimonitor=1') ? <Channels /> : null }
+            {window.location.search.includes('minimonitor=1') ? <MiniChannels /> : null }
             {this.props.store.settings[0].showStorage ? <Storage/> : null}
             {this.props.store.settings[0].showSettings ? <Settings/> : null}
         </div>

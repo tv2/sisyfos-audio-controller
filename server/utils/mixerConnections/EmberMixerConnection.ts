@@ -75,17 +75,6 @@ export class EmberMixerConnection {
                 ch++;
             }
         })
-
-        ch = 1;
-        /*
-        state.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
-            for (let channelTypeIndex=0; channelTypeIndex < numberOfChannels ; channelTypeIndex++) {
-                this.subscribeChannelName(ch, typeIndex, channelTypeIndex);
-                ch++;
-            }
-        })
-        */
-
 /*
                 .CHANNEL_VU)){
                     store.dispatch({
@@ -108,11 +97,13 @@ export class EmberMixerConnection {
     }
 
     subscribeFaderLevel(ch: number, typeIndex: number, channelTypeIndex: number) {
-        this.emberConnection.getElementByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
+        let command = this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1))
+        this.emberConnection.getElementByPath(command)
         .then((node: any) => {
+            logger.info('Subscription of channel : ' + command)
             this.emberNodeObject[ch-1] = node;
-            /*
             this.emberConnection.subscribe(node, (() => {
+                logger.verbose('Receiving Level from Ch ' + String(ch))
                 if (!state.channels[0].channel[ch-1].fadeActive
                     && !state.channels[0].channel[ch - 1].fadeActive
                     &&  node.contents.value > this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].min) {
@@ -121,6 +112,7 @@ export class EmberMixerConnection {
                         channel: ch-1,
                         level: node.contents.value
                     });
+                    global.mainThreadHandler.updatePartialStore(ch-1)
                     if (huiRemoteConnection) {
                         huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
                     }
@@ -128,8 +120,11 @@ export class EmberMixerConnection {
 
             })
             )
-            */
         })
+        .catch((error: any) => {
+            logger.error(error)
+        })
+
     }
 
     subscribeChannelName(ch: number, typeIndex: number, channelTypeIndex: number) {
@@ -167,24 +162,24 @@ export class EmberMixerConnection {
             channelString
         )
 
-        /*this.emberConnection.getElementByPath(message)
-        .then((element: any) => {*/
-            console.log('Sending out message : ', message )
+        this.emberConnection.getElementByPath(message)
+        .then((element: any) => {
+            logger.verbose('Sending out message : ' + message)
             this.emberConnection.setValue(
                 this.emberNodeObject[channel-1],
                 typeof value === 'number' ? value : parseFloat(value)
             )
-//        })
+        })
         .catch((error: any) => {
             console.log("Ember Error ", error)
         })
     }
 
     sendOutLevelMessage(channel: number, value: number) {
-        console.log('Sending out Level : ', this.emberNodeObject[channel])
-        this.emberConnection.setValue(
+        logger.verbose('Sending out Level: ' + String(value) + ' To Path : ' + JSON.stringify(this.emberNodeObject[channel]))
+        this.emberConnection.setValueNoAck(
             this.emberNodeObject[channel-1],
-            Math.round(value)
+            value
         )
         .catch((error: any) => {
             console.log("Ember Error ", error)

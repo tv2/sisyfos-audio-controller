@@ -1,0 +1,127 @@
+.monitor-chan-strip-body {
+	position: absolute;
+	top: 2px;
+	left: 100px;
+	width: 620px;
+	height: 280px;
+    background-color: rgb(31, 31, 31);
+    border-color: rgb(70, 70, 70);
+    border-style: solid;
+	border-width: 4px;
+	border-radius: 8px;
+	text-align: left;
+	color: #fff;
+}
+
+.monitor-chan-strip-body > .header {
+	margin-left: 40px;
+	margin-top: 10px;
+	width: 420px;
+	font-size: 240%;
+	color: #fff;
+}
+
+.monitor-chan-strip-body > .parameters {
+	margin-top: 5px;
+	top: 5px;
+	left: 2px;
+	height: 900px;
+	overflow: auto;
+	text-align: center;
+	color: #fff;
+}
+
+.parameters > .parameter-group {
+	display: flex;
+	top: 5px;
+	left: 2px;
+	margin-left: 90px;
+	overflow: auto;
+	text-align: center;
+	color: #fff;
+}
+
+.parameter-group > .horizontal-space {
+	width: 150px;
+	height: 50px;
+}
+
+.parameters > .group-text {
+	text-align: center;
+	line-height: 20px;
+	font-size: 110%;
+}
+
+.zero-monitor {
+	width: 2px;
+	height: 20px;
+	margin-left: 10px;
+	margin-top: -150px;
+}
+
+.parameters > .parameter-text {
+	list-style-type: none;
+	text-align: center;
+	margin-top: 15px;
+	line-height: 10px;
+	font-size: 100%;
+}
+
+.parameters > .monitor-sends {
+	list-style-type: none;
+	display: flex;
+	text-align: center;
+	margin-top: 15px;
+	margin-left: 1px;
+	padding: 0px;
+	line-height: 10px;
+	font-size: 95%;
+}
+
+.header > .close {
+	position: fixed;
+	outline : none;
+    border-color: rgb(99, 99, 99);
+    background-color: rgb(27, 27, 27);
+	border-radius: 20px;
+	color: #fff;
+	width: 50px;
+	height: 50px;
+	font-size: 30px;
+	margin-top: 5px;
+	left: 550px;
+}
+
+.header > button {
+	outline : none;
+    border-color: rgb(99, 99, 99);
+    background-color: rgb(27, 27, 27);
+	border-radius: 7px;
+	margin-left: 10px;
+	margin-top: 5px;
+	width: 180px;
+	font-size: 12px;
+	line-height: 40px;
+	color: #fff;
+}
+
+.monitor-chan-strip-fader {
+    width: 10px;
+	height: 200px;
+	margin-left: 35px;
+	margin-right: 30px;
+    margin-top: 10px;
+    border-width: 0px;
+    border-style: solid;
+    border-radius: 8px;
+    background-color: rgb(17, 17, 17);
+}
+
+.monitor-chan-strip-thumb {
+    margin-left: -20px;
+    width: 45px;
+    height: 49px;
+    border: 1px solid #c5c2c2;
+    border-radius: 8px;
+    background: linear-gradient(to top, #3a3a3a 0%, #c2c2c2 20%, hsl(0, 0%, 57%) 50%, #00a 1px, #919191 52%, #c2c2c2 80%, #3a3a3a 100%);
+}

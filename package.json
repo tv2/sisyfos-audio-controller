@@ -46,10 +46,10 @@
     "dependencies": {
         "casparcg-connection": "^4.9.0",
         "classnames": "^2.2.6",
-        "node-emberplus": "https://github.com/dufourgilles/node-emberplus.git#master",
         "express": "^4.17.1",
         "express-csp-header": "^2.3.2",
         "http": "^0.0.0",
+        "node-emberplus": "https://github.com/olzzon/node-emberplus.git#feat/timeout-hack",
         "nouislider-react": "^3.3.7",
         "osc": "https://github.com/olzzon/tv2-osc.js-no-serialport.git",
         "react": "^16.10.1",
