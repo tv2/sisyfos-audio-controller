@@ -19,6 +19,14 @@ It´s fast to see what faders are on-aie, and whether they are PGM level or Voic
 <img src="Docs/pix/SisyfosChannelStripdescription.jpg">
 
 
+### If you need a MiniMonitorView for a client:
+run webpage with 
+```
+localhost/?minimonitor=1
+```
+
+<img src="Docs/pix/minimonitorview.png">
+
 
 
 ### Routing of Faders to Channels
@@ -66,8 +74,14 @@ The levels are:
 ### Open GUI in browser:
 ```
 localhost:1176 (or whatever ip you use for Sisyfos Nodejs/Docker)
+```
 IF you wan´t to disable settings:
+```
 localhost:1176/?settings=0
+```
+To see the MiniMonitorView:
+```
+localhost:1176/?minimonitor=1
 ``` 
 
 ## Settings:
