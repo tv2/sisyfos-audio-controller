@@ -145,6 +145,10 @@ class ChannelMonitorOptions extends React.PureComponent<IChannelProps & IMonitor
                     value={this.props.fader[this.faderIndex].monitor} 
                     onChange={(event) => this.handleSetAux(event)}
                 />
+                <br/>
+                <label className="input">
+                    SHOW IN MINI MONITORVIEW :
+                </label>
                 <input
                             type="checkbox"
                             checked={this.props.fader[this.faderIndex].showInMiniMonitor}
