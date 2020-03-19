@@ -4,14 +4,8 @@
     margin: 4px;
     border-radius: 7px;
     width: 86px;
-    height: 90px;
+    height: 86px;
     position: relative;
-}
-.channel-gain-label {
-    color: #777777;
-    font-size: 0.8em;
-    margin-top: 10px;
-    text-align: center;
 }
 
 .monitor-channel-strip-button {
@@ -21,7 +15,7 @@
     margin-top: 5px;
     margin-right: 3px;
     color: white;
-    height: 60px;
+    height: 80px;
     width: 80px;
     font-size: 105%;
     background-color: rgba(39, 39, 39, 0.308);
