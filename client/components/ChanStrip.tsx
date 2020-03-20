@@ -364,12 +364,7 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
         )
     }
     parameters() {
-        if (this.props.selectedProtocol.includes("caspar")) {
-            return (
-                <CcgChannelInputSettings channelIndex={this.props.faderIndex} />
-            )
-        }
-        else {
+        if (this.props.offtubeMode) {
             return (
                 <div className="parameters">
                     <div className="group-text">
@@ -420,6 +415,8 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                     </ul>
                 </div>
             )
+        } else {
+            return null
         }
     }
 
@@ -455,9 +452,10 @@ class ChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectPr
                         }
                     </div>
                     <hr/>
-                    {this.props.offtubeMode ?
+                    {this.props.selectedProtocol.includes("caspar") ?
+                        <CcgChannelInputSettings channelIndex={this.props.faderIndex} />
+                    :
                         this.parameters() 
-                        : null
                     }
                 </div>
             )
