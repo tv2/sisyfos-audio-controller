@@ -8,7 +8,8 @@ import {
     TOGGLE_SHOW_STORAGE,
     UPDATE_SETTINGS,
     SET_MIXER_ONLINE,
-    TOGGLE_SHOW_MONITOR_OPTIONS
+    TOGGLE_SHOW_MONITOR_OPTIONS,
+    SET_SERVER_ONLINE
 } from  '../reducers/settingsActions'
 
 export interface ISettings {
@@ -41,7 +42,8 @@ export interface ISettings {
     automationMode: boolean,
     offtubeMode: boolean,
     showPfl: boolean,
-    mixerOnline: boolean
+    mixerOnline: boolean,
+    serverOnline: boolean
 }
 
 
@@ -76,7 +78,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         fadeTime: 120,
         voFadeTime: 280, 
         showPfl: false,
-        mixerOnline: false
+        mixerOnline: false,
+        serverOnline: true
     },
 ];
 
@@ -115,6 +118,9 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
         case SET_MIXER_ONLINE:
             nextState[0].mixerOnline = action.mixerOnline;
             return nextState;
+        case SET_SERVER_ONLINE:
+            nextState[0].serverOnline = action.serverOnline;
+            return nextState;
         case UPDATE_SETTINGS:
             nextState[0] = action.settings;
             nextState[0].showSettings = state[0].showSettings;
@@ -122,6 +128,7 @@ export const settings = (state = defaultSettingsReducerState, action: any): Arra
             nextState[0].showMonitorOptions = state[0].showMonitorOptions;
             nextState[0].showStorage = state[0].showStorage;
             nextState[0].showChanStrip = state[0].showChanStrip;
+            nextState[0].serverOnline = state[0].serverOnline;
             if (typeof MixerProtocolPresets[nextState[0].mixerProtocol] === 'undefined')
                 {
                     nextState[0].mixerProtocol = 'genericMidi';
