@@ -72,7 +72,7 @@ export class CasparCGConnection {
             }
         } catch (e) {
             // Handling a file should be removed from Constants in the future:
-            logger.info('CasparCG Audio geometry file has not been created')
+            logger.error('CasparCG Audio geometry file has not been created', e)
         }
         if (geometry) {
             this.mixerProtocol.fromMixer = geometry.fromMixer || this.mixerProtocol.fromMixer 
