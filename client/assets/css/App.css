@@ -11,3 +11,17 @@ body {
     position: relative;
     text-align: center;
 }
+
+.server-offline {
+    position: absolute;
+    top: 30vh;
+    left: 30vw;
+    margin-right: 30vw;
+    color: aliceblue;
+    background-color: rgba(163, 1, 1, 0.65);
+    font-size: 400%;
+    border-radius: 8px;
+    border-width: 4px;
+    border-color: rgba(144, 0, 0, 0.596);
+    z-index: 200;
+}

@@ -314,7 +314,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br/>
                 <label className="settings-input-field">
-                    OFFTUBE MODE:
+                    EQ-COMP-AUX IN CH.STRIP:
                     <input
                         type="checkbox"
                         name="offtubeMode"

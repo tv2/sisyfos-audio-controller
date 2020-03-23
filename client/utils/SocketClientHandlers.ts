@@ -1,10 +1,28 @@
 import { SET_COMPLETE_FADER_STATE, SET_VU_LEVEL, SET_SINGLE_FADER_STATE } from "../../server/reducers/faderActions";
 import { SET_COMPLETE_CH_STATE, SET_SINGLE_CH_STATE } from "../../server/reducers/channelActions";
-import { UPDATE_SETTINGS, SET_MIXER_ONLINE } from "../../server/reducers/settingsActions";
+import { UPDATE_SETTINGS, SET_MIXER_ONLINE, SET_SERVER_ONLINE } from "../../server/reducers/settingsActions";
 import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_SET_FULL_STORE, SOCKET_SET_STORE_FADER, SOCKET_SET_STORE_CHANNEL, SOCKET_RETURN_CCG_LIST } from "../../server/constants/SOCKET_IO_DISPATCHERS";
 
 export const socketClientHandlers = () => {
     window.socketIoClient
+    .on('connect', (
+        () => {
+            window.storeRedux.dispatch({
+                type: SET_SERVER_ONLINE,
+                serverOnline: true
+            })
+            console.log('CONNECTED TO SISYFOS SERVER')
+        }
+    ))
+    .on('disconnect', (
+        () => {
+            window.storeRedux.dispatch({
+                type: SET_SERVER_ONLINE,
+                serverOnline: false
+            })
+            console.log('LOST CONNECTION TO SISYFOS SERVER')
+        }
+    ))
     .on(SOCKET_SET_FULL_STORE, (
         (payload: any) => { 
             // console.log('STATE RECEIVED :', payload)
@@ -28,7 +46,10 @@ export const socketClientHandlers = () => {
                     type: SET_MIXER_ONLINE,
                     mixerOnline: payload.settings[0].mixerOnline
                 })
-
+                window.storeRedux.dispatch({
+                    type: SET_SERVER_ONLINE,
+                    serverOnline: true
+                })
             }
 
         })
