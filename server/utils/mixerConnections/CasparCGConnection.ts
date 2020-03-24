@@ -27,7 +27,7 @@ const OSC_PATH_PRODUCER_CHANNEL_LAYOUT = /\/channel\/(\d+)\/stage\/layer\/(\d+)\
 
 export class CasparCGConnection {
     mixerProtocol: ICasparCGMixerGeometry;
-    connection: any;
+    connection: CasparCG;
     oscClient: any;
     oscCommandMap: { [key: string]: CommandChannelMap } = {};
 
@@ -236,6 +236,22 @@ export class CasparCGConnection {
                             undefined,
                             undefined,
                             value);
+                    case 'route':
+                        return this.connection.playRoute(
+                            channel,
+                            layer,
+                            file,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            undefined,
+                            value,
+                            undefined)
+
                 }
             }
             return Promise.reject('Unknown operation');
