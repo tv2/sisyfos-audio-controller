@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.10.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.10.0...v2.10.1) (2020-03-24)
+
+
+### Bug Fixes
+
+* changed logger.info to logger.error in casparCGConnection ([5541b94](https://github.com/olzzon/sisyfos-audio-controller/commit/5541b9442ccf3d918be4b2ae5c5e977556ba1ea7))
+* Client indicate when server is offline ([5ec04a7](https://github.com/olzzon/sisyfos-audio-controller/commit/5ec04a7bdfd0fe70209505a55257a27cdd47130e))
+* rename "Offtube mode" to "Eq-Comp-Aux in chstrip" ([1b10cb4](https://github.com/olzzon/sisyfos-audio-controller/commit/1b10cb4953dad6f30602ab876aad8229c638db00))
+* show CasparCG source select no matter whether Offtube Mode is selected ([696dfed](https://github.com/olzzon/sisyfos-audio-controller/commit/696dfed45f2a9e280a35d168a54c8cc899213bf7))
+
 ## [2.10.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.9.5...v2.10.0) (2020-03-19)
 
 
