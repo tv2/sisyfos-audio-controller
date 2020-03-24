@@ -75,7 +75,7 @@ export class CasparCGConnection {
             logger.info('CasparCG Audio geometry file has not been created')
         }
         if (geometry) {
-            this.mixerProtocol.fromMixer = geometry.fromMixer || this.mixerProtocol.fromMixer 
+            this.mixerProtocol.fromMixer = geometry.fromMixer || this.mixerProtocol.fromMixer
             this.mixerProtocol.toMixer = geometry.toMixer || this.mixerProtocol.toMixer
             this.mixerProtocol.channelLabels = geometry.channelLabels || this.mixerProtocol.channelLabels
             this.mixerProtocol.sourceOptions = geometry.sourceOptions || this.mixerProtocol.sourceOptions
@@ -309,19 +309,19 @@ export class CasparCGConnection {
             }
         }
     }
-    
+
     updateMuteState(channelIndex: number, muteOn: boolean) {
         return true
-    } 
+    }
 
     updateNextAux(channelIndex: number, level: number) {
         return true
-    } 
+    }
 
     updateThreshold(channelIndex: number, level: number) {
         return true
     }
-    updateRatio(channelIndex: number, level: number) {        
+    updateRatio(channelIndex: number, level: number) {
         return true
     }
     updateDelayTime(channelIndex: number, level: number) {
