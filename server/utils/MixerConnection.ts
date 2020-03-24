@@ -9,6 +9,7 @@ import { MidiMixerConnection } from './mixerConnections/MidiMixerConnection';
 import { QlClMixerConnection } from './mixerConnections/YamahaQlClConnection';
 import { SSLMixerConnection } from './mixerConnections/SSLMixerConnection';
 import { EmberMixerConnection } from './mixerConnections/EmberMixerConnection';
+import { StuderMixerConnection } from './mixerConnections/StuderMixerConnection';
 import { CasparCGConnection } from './mixerConnections/CasparCGConnection';
 import { IChannel } from '../reducers/channelsReducer';
 import { SET_OUTPUT_LEVEL, FADE_ACTIVE } from '../reducers/channelActions'
@@ -46,6 +47,8 @@ export class MixerGenericConnection {
             this.mixerConnection = new CasparCGConnection(this.mixerProtocol as ICasparCGMixerGeometry);
         } else if (this.mixerProtocol.protocol === 'EMBER') {
             this.mixerConnection = new EmberMixerConnection(this.mixerProtocol as IMixerProtocol);
+        } else if (this.mixerProtocol.protocol === 'STUDER') {
+            this.mixerConnection = new StuderMixerConnection(this.mixerProtocol as IMixerProtocol);
         } else if (this.mixerProtocol.protocol === 'SSL') {
             this.mixerConnection = new SSLMixerConnection(this.mixerProtocol as IMixerProtocol);
         }
