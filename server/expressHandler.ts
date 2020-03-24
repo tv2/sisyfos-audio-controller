@@ -14,7 +14,7 @@ server.on('connection', () => {
       res.sendFile(path.resolve('dist/index.html'))
     })
   })
-  
+
 socketServer.on('connection', ((socket: any) => {
       logger.info('Client connected :' + String(socket.client.id), {})
       global.mainThreadHandler.socketServerHandlers(socket)
