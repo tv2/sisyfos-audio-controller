@@ -1,10 +1,10 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
-export const StuderVistaMaster: IMixerProtocol = {
-    protocol: 'EMBER',
-    label: 'Studer Vista - NOT WORKING',
+export const StuderOnAirMaster: IMixerProtocol = {
+    protocol: 'STUDER_ONAIR',
+    label: 'Studer OnAir 3000',
     mode: "master",
-    FADE_DISPATCH_RESOLUTION: 5,
+    FADE_DISPATCH_RESOLUTION: 50,
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],
@@ -18,8 +18,8 @@ export const StuderVistaMaster: IMixerProtocol = {
                 mixerMessage: 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
-                min: -90,
-                max: 10,
+                min: 0,
+                max: 1000,
                 zero: 0
             }],
             CHANNEL_VU: [emptyMixerMessage()],
@@ -46,12 +46,12 @@ export const StuderVistaMaster: IMixerProtocol = {
         },
         toMixer: {
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
+                mixerMessage: '', //controlled from StuderOnAirMixerConnections.ts 'A-4294946012/C-4/C-2/C-1/C-6/P-1/A-3', // 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
-                min: -90,
-                max: 10,
-                zero: 0
+                min: 0,
+                max: 1000,
+                zero: 750
 
             }],
             CHANNEL_NAME: [{
@@ -85,9 +85,9 @@ export const StuderVistaMaster: IMixerProtocol = {
                 mixerMessage: 'System/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
-                min: -90,
-                max: 10,
-                zero: 0
+                min: 0,
+                max: 1000,
+                zero: 750
             }],
             CHANNEL_VU: [emptyMixerMessage()],
             CHANNEL_NAME: [{
@@ -116,9 +116,9 @@ export const StuderVistaMaster: IMixerProtocol = {
                 mixerMessage: 'System/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
-                min: -90,
-                max: 10,
-                zero: 0
+                min: 0,
+                max: 1000,
+                zero: 750
 
             }],
             CHANNEL_NAME: [{
@@ -152,9 +152,9 @@ export const StuderVistaMaster: IMixerProtocol = {
                 mixerMessage: 'System/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
-                min: -90,
-                max: 10,
-                zero: 0
+                min: 0,
+                max: 1000,
+                zero: 750
             }],
             CHANNEL_VU: [emptyMixerMessage()],
             CHANNEL_NAME: [{
@@ -183,8 +183,8 @@ export const StuderVistaMaster: IMixerProtocol = {
                 mixerMessage: 'System/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
-                min: -90,
-                max: 10,
+                min: 0,
+                max: 1000,
                 zero: 0
 
             }],
@@ -213,8 +213,8 @@ export const StuderVistaMaster: IMixerProtocol = {
     }],
     fader: {
         min: 0,
-        max: 100,
-        zero: 70,
+        max: 1000,
+        zero: 750,
         step: 1,
     },
     meter: {

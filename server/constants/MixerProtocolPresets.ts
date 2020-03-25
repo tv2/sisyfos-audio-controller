@@ -16,7 +16,7 @@ interface IMessageProtocol {
     value: any,
     type: string
 }
-import { StuderVistaMaster } from './mixerProtocols/StuderVistaEmber';
+import { StuderOnAirMaster } from './mixerProtocols/StuderOnAirEmber';
 // Interface:
 import { IMixerProtocolGeneric} from './MixerProtocolInterface'
 
@@ -32,7 +32,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     dmxis: DMXIS,
     yamahaQlCl: YamahaQLCL,
     sslSystemT: SSLSystemT,
-    studerVistaMaster: StuderVistaMaster,
+    studerOnAirMaster: StuderOnAirMaster,
 }, {
     casparCGMaster: CasparCGMaster
 });
