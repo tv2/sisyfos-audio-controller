@@ -130,11 +130,12 @@ export class CasparCGConnection {
                     } else if (m[1] === 'channel' && m[6] === 'file' && m[7] === 'path') {
                         const index = this.mixerProtocol.sourceOptions.sources.findIndex(i => i.channel === parseInt(m[2], 10) && i.layer === parseInt(m[5]))
                         if (index >= 0) {
+                            const value = typeof message.args[0] === 'string' ? message.args[0] : message.args[0].low
                             store.dispatch({
                                 type: SET_PRIVATE,
                                 channel: index,
                                 tag: 'file_path',
-                                value: message.args[0].low
+                                value
                             })
                         }
                     }
