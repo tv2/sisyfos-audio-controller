@@ -46,7 +46,7 @@ export const StuderOnAirMaster: IMixerProtocol = {
         },
         toMixer: {
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'A-4294946012/C-4/C-2/C-1/C-6/P-1/A-3', // 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
+                mixerMessage: '', //controlled from StuderOnAirMixerConnections.ts 'A-4294946012/C-4/C-2/C-1/C-6/P-1/A-3', // 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
                 value: 0,
                 type: 'real',
                 min: 0,
