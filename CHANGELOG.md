@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.11.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.10.1...v2.11.0) (2020-03-25)
+
+
+### Features
+
+* Studer OnAir support ([02acbbe](https://github.com/olzzon/sisyfos-audio-controller/commit/02acbbe7343aab2edfb069816e25a060fe51fc95))
+* Studer support - basic level for OnAir3000 ([b7ca75f](https://github.com/olzzon/sisyfos-audio-controller/commit/b7ca75f9cb57ef0f5dd42ce8be8401a381e0d59a))
+* **CasparCG:** adds route producer as source ([7d8aaf2](https://github.com/olzzon/sisyfos-audio-controller/commit/7d8aaf29a992847855e2a3f18262414d796277b0))
+* **Server:** Adds logline on server address on startup ([fe87c65](https://github.com/olzzon/sisyfos-audio-controller/commit/fe87c653fe7e26df5a01038bf44be7710b121076))
+
+
+### Bug Fixes
+
+* comment out unused in studer protocol ([0219964](https://github.com/olzzon/sisyfos-audio-controller/commit/02199645a6ca2a4bbb33724febed68760fbea10c))
+* **CasparCG:** Compatibility between Decklink and Route sources ([4b3c63d](https://github.com/olzzon/sisyfos-audio-controller/commit/4b3c63d3e694f279fe8c6baef56691c21c0d0bbe))
+* **CasparCG:** Compatible with CCG Server 2.1.11.NRK route producer ([a39edcb](https://github.com/olzzon/sisyfos-audio-controller/commit/a39edcb914ec46a653a5758cb0802701f4b777f3))
+* changed logger.info to logger.error in casparCGConnection ([ec1fc67](https://github.com/olzzon/sisyfos-audio-controller/commit/ec1fc670e4a87349577ae52bd94dc5bae7ae621a))
+
 ### [2.10.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.10.0...v2.10.1) (2020-03-24)
 
 
