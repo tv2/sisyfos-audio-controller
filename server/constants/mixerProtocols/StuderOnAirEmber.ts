@@ -1,8 +1,8 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
-export const StuderVistaMaster: IMixerProtocol = {
-    protocol: 'STUDER',
-    label: 'Studer Vista - NOT WORKING',
+export const StuderOnAirMaster: IMixerProtocol = {
+    protocol: 'STUDER_ONAIR',
+    label: 'Studer OnAir 3000',
     mode: "master",
     FADE_DISPATCH_RESOLUTION: 50,
     leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
