@@ -3,6 +3,7 @@ const osc = require('osc')
 const fs = require('fs')
 import * as path from 'path';
 import { CasparCG } from 'casparcg-connection'
+import { socketServer } from '../../expressHandler'
 
 //Utils:
 import { store, state } from '../../reducers/store'
@@ -10,6 +11,7 @@ import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair, ICasparCGMixerGeomet
 import { IChannel } from '../../reducers/channelsReducer';
 import { SET_PRIVATE } from  '../../reducers/channelActions'
 import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../../reducers/faderActions'
+import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
 import { logger } from '../logger'
 
 interface CommandChannelMap {
@@ -100,10 +102,15 @@ export class CasparCGConnection {
                     store.dispatch({
                         type: SET_VU_LEVEL,
                         channel: index,
-                        // CCG returns "produced" audio levels, before the Volume mixer transform
-                        // We therefore want to premultiply this to show useful information about audio levels
-                        level: Math.min(1, message.args[0] * state.faders[0].fader[index].faderLevel)
+                        level: message.args[0]
                     });
+                    socketServer.emit(
+                        SOCKET_SET_VU,
+                        {
+                            faderIndex: index,
+                            level: message.args[0]
+                        }
+                    )
                 } else if (this.mixerProtocol.sourceOptions) {
                     const m = message.address.split('/');
 
