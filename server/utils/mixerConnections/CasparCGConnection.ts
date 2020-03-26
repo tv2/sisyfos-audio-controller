@@ -237,7 +237,7 @@ export class CasparCGConnection {
                             undefined,
                             undefined,
                             value);
-                    case 'layer-route':
+                    case 'layer-producer':
                         return this.connection.playRoute(
                             channel,
                             layer,
