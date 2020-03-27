@@ -170,14 +170,16 @@ export class StuderMixerConnection {
 
     sendOutLevelMessage(channel: number, value: number) {
         let levelMessage: string
+        let channelVal: number
         let channelType = state.channels[0].channel[channel - 1].channelType;
         let channelTypeIndex = state.channels[0].channel[channel - 1].channelTypeIndex;
-        this.mixerProtocol.channelTypes[channelType].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage[0]
 
-        if (channel<10) {
-            levelMessage = this.mixerProtocol.channelTypes[channelType].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage[0]
+        if (channel<25) {
+            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage
+            channelVal = 160 + channelTypeIndex + 1
         } else {
-            levelMessage = this.mixerProtocol.channelTypes[channelType].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage[1]
+            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[1].mixerMessage
+            channelVal = channelTypeIndex + 1
         }
 
         let valueNumber = value
@@ -185,7 +187,6 @@ export class StuderMixerConnection {
             (valueNumber & 0x0000ff00) >> 8,
             (valueNumber & 0x000000ff),
         ])
-        let channelVal = 160 + channelTypeIndex
         let channelByte = new Uint8Array([
             (channelVal & 0x000000ff),
         ])
