@@ -13,6 +13,7 @@ import { SET_PRIVATE } from  '../../reducers/channelActions'
 import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../../reducers/faderActions'
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
 import { logger } from '../logger'
+import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
 
 interface CommandChannelMap {
     [key: string]: number

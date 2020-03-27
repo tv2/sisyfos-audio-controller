@@ -12,7 +12,7 @@ import {
 import { logger } from '../logger';
 
 
-export class StuderOnAirMixerConnection {
+export class StuderMixerConnection {
     mixerProtocol: IMixerProtocol
     emberConnection: EmberClient
     deviceRoot: any;
@@ -169,12 +169,17 @@ export class StuderOnAirMixerConnection {
     }
 
     sendOutLevelMessage(channel: number, value: number) {
-//        logger.verbose('Sending out Level: ' + String(value) + ' To Path : ' + JSON.stringify(this.emberConnection.root))
         let levelMessage: string
-        if (channel<10) {
-            levelMessage = '7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00'
+        let channelVal: number
+        let channelType = state.channels[0].channel[channel - 1].channelType;
+        let channelTypeIndex = state.channels[0].channel[channel - 1].channelTypeIndex;
+
+        if (channel<25) {
+            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage
+            channelVal = 160 + channelTypeIndex + 1
         } else {
-            levelMessage = '7f 8f ff fe d9 5c 80 30 80 bf 83 90 80 00 1e 31 1c a4 1a 31 18 a2 16 31 14 {channel} 12 31 10 a6 0e 31 0c e1 0a 31 08 63 06 02 04 00 00 {level} 00 00 00 00'
+            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[1].mixerMessage
+            channelVal = channelTypeIndex + 1
         }
 
         let valueNumber = value
@@ -182,7 +187,6 @@ export class StuderOnAirMixerConnection {
             (valueNumber & 0x0000ff00) >> 8,
             (valueNumber & 0x000000ff),
         ])
-        let channelVal = 160 + channel
         let channelByte = new Uint8Array([
             (channelVal & 0x000000ff),
         ])
@@ -194,35 +198,6 @@ export class StuderOnAirMixerConnection {
         let buf = new Buffer(hexArray.map((val:string) => { return parseInt(val, 16) }))
         this.emberConnection._client.socket.write(buf)
         console.log("Send HEX: " + levelMessage) 
-
-/*
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {CH} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {LV} 00 00 00 00
-Fader 1 - Maxvol:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a1} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 ca 00 00 00 00
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a1} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 e8 00 00 00 00
-
-Fader 1 - Min vol:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a1} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 00 be 00 00 00 00
-
-Fader 2 - Min vol:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a2} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 48 00 00 00 00
-Fader 2 - Max vol:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a2} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 e8 00 00 00 00
-
-Fader 7:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a9} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 02 12 00 00 00 00
-
-Fader 12:
-7f 8f ff fe d9 5c 80 30 80 bf 83 90 80 00 1e 31 1c a4 1a 31 18 a2 16 31 14 {ac} 12 31 10 a6 0e 31 0c e1 0a 31 08 63 06 02 04 00 00 "00 c8" 00 00 00 00
-
-Fader 23:
-7f 8f ff fe d9 5c 80 30 80 bf 83 90 80 00 1e 31 1c a4 1a 31 18 a2 16 31 14 {b7} 12 31 10 a6 0e 31 0c e1 0a 31 08 63 06 02 04 00 00 "02 94" 00 00 00 00
-
-
-
-
-
-*/
     }
 
     sendOutRequest(mixerMessage: string, channel: number) {

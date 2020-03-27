@@ -198,7 +198,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     this.handleShowChanStrip();
                 }}
             >
-            {this.props.fader.label != "" ? this.props.fader.label : (window.mixerProtocol.channelTypes[this.props.channelType].channelTypeName + " " + (this.props.channelTypeIndex + 1)) }
+            {this.props.fader.label != "" ? this.props.fader.label : ("CH " + (this.faderIndex + 1)) }
             </button>
         )
     }
