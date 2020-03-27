@@ -11,6 +11,7 @@ import { ICasparCGMixerGeometry, ICasparCGChannelLayerPair, ICasparCGMixerGeomet
 import { IChannel } from '../../reducers/channelsReducer';
 import { SET_PRIVATE } from  '../../reducers/channelActions'
 import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../../reducers/faderActions'
+import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
 import { logger } from '../logger'
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
 
@@ -102,15 +103,13 @@ export class CasparCGConnection {
                     store.dispatch({
                         type: SET_VU_LEVEL,
                         channel: index,
-                        // CCG returns "produced" audio levels, before the Volume mixer transform
-                        // We therefore want to premultiply this to show useful information about audio levels
-                        level: Math.min(1, message.args[0] * state.faders[0].fader[index].faderLevel)
+                        level: message.args[0]
                     });
                     socketServer.emit(
-                        SOCKET_SET_VU, 
+                        SOCKET_SET_VU,
                         {
                             faderIndex: index,
-                            level: Math.min(1, message.args[0] * state.faders[0].fader[index].faderLevel)
+                            level: message.args[0]
                         }
                     )
                 } else if (this.mixerProtocol.sourceOptions) {
@@ -246,7 +245,7 @@ export class CasparCGConnection {
                             undefined,
                             undefined,
                             value);
-                    case 'layer-route':
+                    case 'layer-producer':
                         return this.connection.playRoute(
                             channel,
                             layer,

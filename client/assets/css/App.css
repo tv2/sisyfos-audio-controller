@@ -5,6 +5,7 @@ body {
     font-family: sans-serif;
     background-color: black;
     user-select: none;
+    overscroll-behavior: contain;
 }
 
 .App {
