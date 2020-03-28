@@ -49,7 +49,7 @@
         "express": "^4.17.1",
         "express-csp-header": "^3.0.0",
         "http": "^0.0.0",
-        "node-emberplus": "https://github.com/olzzon/node-emberplus.git#feat/timeout-hack",
+        "node-emberplus": "https://github.com/olzzon/node-emberplus.git#feat/export-ber",
         "nouislider-react": "^3.3.7",
         "osc": "https://github.com/olzzon/tv2-osc.js-no-serialport.git",
         "react": "^16.1.1",
