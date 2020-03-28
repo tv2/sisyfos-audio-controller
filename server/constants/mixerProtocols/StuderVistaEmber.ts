@@ -1,7 +1,7 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
 
 export const StuderVistaMaster: IMixerProtocol = {
-    protocol: 'STUDER',
+    protocol: 'VISTA',
     label: 'Studer Vista 1-5-9',
     mode: "master",
     FADE_DISPATCH_RESOLUTION: 50,
@@ -31,22 +31,13 @@ export const StuderVistaMaster: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_OUT_GAIN: [{
-                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00', 
+            CHANNEL_OUT_GAIN: [{ // 7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 {a3} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {05 09 03 c0 06 13 00 00 00 00}
+                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {level}', 
                 value: 0,
                 type: 'real',
-                min: 0,
-                max: 1000,
-                zero: 750
-
-            },
-            {
-                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 bf 83 90 80 00 1e 31 1c a4 1a 31 18 a2 16 31 14 {channel} 12 31 10 a6 0e 31 0c e1 0a 31 08 63 06 02 04 00 00 {level} 00 00 00 00', 
-                value: 0,
-                type: 'real',
-                min: 0,
-                max: 1000,
-                zero: 750
+                min: -90,
+                max: 10,
+                zero: 0
 
             }],
             CHANNEL_NAME: [{
@@ -107,22 +98,13 @@ export const StuderVistaMaster: IMixerProtocol = {
             CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
         toMixer: {
-            CHANNEL_OUT_GAIN: [{
-                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00', 
+            CHANNEL_OUT_GAIN: [{ // 7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a2 19 31 17 b9 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 05 09 03 80 03 05 00 00 00 00
+                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a2 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {level}', 
                 value: 0,
                 type: 'real',
-                min: 0,
-                max: 1000,
-                zero: 750
-
-            },
-            {
-                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 bf 83 90 80 00 1e 31 1c a4 1a 31 18 a2 16 31 14 {channel} 12 31 10 a6 0e 31 0c e1 0a 31 08 63 06 02 04 00 00 {level} 00 00 00 00', 
-                value: 0,
-                type: 'real',
-                min: 0,
-                max: 1000,
-                zero: 750
+                min: -90,
+                max: 10,
+                zero: 0
 
             }],
             CHANNEL_NAME: [{
@@ -184,21 +166,12 @@ export const StuderVistaMaster: IMixerProtocol = {
         },
         toMixer: {
             CHANNEL_OUT_GAIN: [{
-                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00', 
+                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a3 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {level}', 
                 value: 0,
                 type: 'real',
-                min: 0,
-                max: 1000,
-                zero: 750
-
-            },
-            {
-                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 bf 83 90 80 00 1e 31 1c a4 1a 31 18 a2 16 31 14 {channel} 12 31 10 a6 0e 31 0c e1 0a 31 08 63 06 02 04 00 00 {level} 00 00 00 00', 
-                value: 0,
-                type: 'real',
-                min: 0,
-                max: 1000,
-                zero: 750
+                min: -90,
+                max: 10,
+                zero: 0
 
             }],
             CHANNEL_NAME: [{
@@ -225,9 +198,9 @@ export const StuderVistaMaster: IMixerProtocol = {
         },
     }],
     fader: {
-        min: 0,
-        max: 1000,
-        zero: 750,
+        min: -90,
+        max: 10,
+        zero: 0,
         step: 1,
     },
     meter: {
