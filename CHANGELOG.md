@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.12.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.11.0...v2.12.0) (2020-04-02)
+
+
+### Features
+
+* Studer - handle up to 95 channels on OnAir 3000. Prepare Vista handling ([9c50bba](https://github.com/olzzon/sisyfos-audio-controller/commit/9c50bbab7876624130c74d15cfc0233b14c36936))
+* Studer Vista ([baa248e](https://github.com/olzzon/sisyfos-audio-controller/commit/baa248e58deb532b0f62a182692512cb47713c85))
+* Vista 1-5-9 Encoding Mono channels including level (using BER) ([ca05cb3](https://github.com/olzzon/sisyfos-audio-controller/commit/ca05cb317686399aa6e7ca9b26461c4d59824f30))
+* vista support for mono, stereo and 51 channels ([33633e7](https://github.com/olzzon/sisyfos-audio-controller/commit/33633e7bd89ee9cab38bb75c937220a1425ad943))
+
+
+### Bug Fixes
+
+* **CasparCG:** Fixes VU meters for CasparCG ([1899d1f](https://github.com/olzzon/sisyfos-audio-controller/commit/1899d1f6ba0beb8b68012122e176b9d023d1c892))
+* **CasparCG:** Typo fix in ccg route source ([fb0c0f8](https://github.com/olzzon/sisyfos-audio-controller/commit/fb0c0f84cfa7a104e3c50d2af71ea8171a10b962))
+* chan strip refered to channeltype when label was empty ([b996d63](https://github.com/olzzon/sisyfos-audio-controller/commit/b996d632debd657f3871bf482093eba3748ee07e))
+* double import of sockerServer in CasparCGConnection.ts forgot to remove in  merge ([cbc2ebe](https://github.com/olzzon/sisyfos-audio-controller/commit/cbc2ebe2c8bf104c0ff16238b8cd40128e508841))
+* faders should not overlap buttons ([d976aa3](https://github.com/olzzon/sisyfos-audio-controller/commit/d976aa324e6033c32b0d123a1d1bdf54c000137b))
+* prevent scrolling of parent when in an iframe ([bb48c54](https://github.com/olzzon/sisyfos-audio-controller/commit/bb48c54d8bb2d5b8489b8e894188eb705610f7e3))
+* Studer update faders with log scale ([a6e1b24](https://github.com/olzzon/sisyfos-audio-controller/commit/a6e1b241ae99ef080ff7898bd6a06aaaccee11f5))
+* update yarn to support BER in Vista mixer connection ([722dc5d](https://github.com/olzzon/sisyfos-audio-controller/commit/722dc5d3c062cf6c40e700e0fb1c8fe70d85fab3))
+* when dragging a fader mouseUp could trigger other buttons. ([145423e](https://github.com/olzzon/sisyfos-audio-controller/commit/145423e9a02e7ea6942b829eff1c18f6f4164f31))
+
 ## [2.11.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.10.1...v2.11.0) (2020-03-25)
 
 
