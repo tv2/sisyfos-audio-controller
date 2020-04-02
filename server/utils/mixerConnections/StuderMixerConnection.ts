@@ -197,7 +197,7 @@ export class StuderMixerConnection {
         let hexArray = levelMessage.split(' ')
         let buf = new Buffer(hexArray.map((val:string) => { return parseInt(val, 16) }))
         this.emberConnection._client.socket.write(buf)
-        console.log("Send HEX: " + levelMessage) 
+        logger.verbose("Send HEX: " + levelMessage) 
     }
 
     sendOutRequest(mixerMessage: string, channel: number) {
@@ -216,10 +216,14 @@ export class StuderMixerConnection {
     }
 
     updateOutLevel(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0]
-        let level = (state.channels[0].channel[channelIndex].outputLevel - protocol.min) * (protocol.max - protocol.min)
+        let outputlevel = state.channels[0].channel[channelIndex].outputLevel
+        let level = 20 * Math.log((1.3*outputlevel)/0.775)
+        if (level < -90) {
+            level = -90
+        }
+        // console.log('Log level :', level)
+
         this.sendOutLevelMessage(
             channelTypeIndex+1,
             level,
@@ -227,10 +231,12 @@ export class StuderMixerConnection {
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0]
-        let level = (outputLevel - protocol.min) * (protocol.max - protocol.min)
+        let level = 20 * Math.log((1.3*outputLevel)/0.775)
+        if (level < -90) {
+            level = -90
+        }
+        // console.log('Log level :', level)
 
         this.sendOutLevelMessage(
             channelTypeIndex+1,
