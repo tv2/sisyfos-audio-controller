@@ -6,6 +6,7 @@
     width: 86px;
     height: 950px;
     position: relative;
+    touch-action : none;
 }
 
 .channel-body.ignore-on {
