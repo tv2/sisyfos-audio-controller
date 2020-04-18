@@ -55,25 +55,30 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
         if (val >= window.mixerProtocol.meter.test) {
             val = window.mixerProtocol.meter.test
         }
-        return val
+        return this.totalHeight() * val 
     }
 
     calcMiddle = () => {
         let val = this.props.reductionVal
         if (val < window.mixerProtocol.meter.test) {
-            val = window.mixerProtocol.meter.test
+            val = 0
         } else if (val >= window.mixerProtocol.meter.zero) {
-            val = window.mixerProtocol.meter.zero
+            val = window.mixerProtocol.meter.zero - window.mixerProtocol.meter.test
+        } else {
+            val = this.props.reductionVal - window.mixerProtocol.meter.test
         }
-        return val+1
+        return this.totalHeight() * val+1
     }
 
     calcUpper = () => {
         let val = this.props.reductionVal
         if (val < window.mixerProtocol.meter.zero) {
-            val = window.mixerProtocol.meter.zero
+            val = 0
+        } else {
+            val = this.props.reductionVal - window.mixerProtocol.meter.zero
         }
-        return val+1
+
+        return this.totalHeight() * val+1
     }
 
     setRef = (element: HTMLCanvasElement) => {
@@ -122,7 +127,7 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
         } else {
             context.fillStyle = 'rgb(100, 100, 100)'
         }
-        context.fillRect(0, (this.totalHeight() - windowPeak), this.canvas.clientWidth, 2)
+        context.fillRect(0, windowPeak, this.canvas.clientWidth, 2)
 
         // absolute peak
         if (this.totalPeak < window.mixerProtocol.meter.zero) {
@@ -130,7 +135,7 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
         } else {
             context.fillStyle = 'rgb(255, 0, 0)'
         }
-        context.fillRect(0, (this.totalHeight() - this.getTotalPeak()), this.canvas.clientWidth, 2)
+        context.fillRect(0, this.getTotalPeak(), this.canvas.clientWidth, 2)
     }
 
     render() {
