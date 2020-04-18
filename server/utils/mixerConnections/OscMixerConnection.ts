@@ -7,11 +7,11 @@ import { socketServer } from '../../expressHandler'
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
-import { behringerMeter } from './productSpecific/behringer'
+import { behringerMeter, behringerReductionMeter } from './productSpecific/behringer'
 import { midasMeter } from './productSpecific/midas'
 import { SET_OUTPUT_LEVEL, SET_AUX_LEVEL } from '../../reducers/channelActions'
 import { 
-    SET_VU_LEVEL, 
+    SET_VU_LEVEL,
     SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
     TOGGLE_PGM,
@@ -22,10 +22,11 @@ import {
     SET_FADER_HIGH,
     SET_FADER_LOW,
     SET_FADER_DELAY_TIME,
-    SET_MUTE
+    SET_MUTE,
+    SET_VU_REDUCTION_LEVEL
 } from '../../reducers/faderActions'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions';
-import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS';
+import { SOCKET_SET_VU, SOCKET_SET_VU_REDUCTION } from '../../constants/SOCKET_IO_DISPATCHERS';
 import { logger } from '../logger'
 
 export class OscMixerConnection {
@@ -75,6 +76,32 @@ export class OscMixerConnection {
                 mixerOnline: true
             });
             logger.verbose("Received OSC message: " + message.address, {})
+/// ONLY TEST!!!!
+            if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .CHANNEL_VU_REDUCTION[0].mixerMessage)){
+                if (state.settings[0].mixerProtocol.includes('behringer')) {
+                    behringerReductionMeter(message.args);
+                } else if (state.settings[0].mixerProtocol.includes('midas')) {
+                    midasMeter(message.args);
+                } else {
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    store.dispatch({
+                        type:SET_VU_REDUCTION_LEVEL,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        level: message.args[0]
+                    });
+                    socketServer.emit(
+                        SOCKET_SET_VU_REDUCTION, 
+                        {
+                            faderIndex: state.channels[0].channel[ch - 1].assignedFader,
+                            level: message.args[0]
+                        }
+                    )
+                }
+            }
+
+
+
             if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_VU[0].mixerMessage)){
                 if (state.settings[0].mixerProtocol.includes('behringer')) {
@@ -90,6 +117,27 @@ export class OscMixerConnection {
                     });
                     socketServer.emit(
                         SOCKET_SET_VU, 
+                        {
+                            faderIndex: state.channels[0].channel[ch - 1].assignedFader,
+                            level: message.args[0]
+                        }
+                    )
+                }
+            } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
+                .CHANNEL_VU_REDUCTION[0].mixerMessage)){
+                if (state.settings[0].mixerProtocol.includes('behringer')) {
+                    behringerReductionMeter(message.args);
+                } else if (state.settings[0].mixerProtocol.includes('midas')) {
+                    midasMeter(message.args);
+                } else {
+                    let ch = message.address.split("/")[this.cmdChannelIndex];
+                    store.dispatch({
+                        type:SET_VU_REDUCTION_LEVEL,
+                        channel: state.channels[0].channel[ch - 1].assignedFader,
+                        level: message.args[0]
+                    });
+                    socketServer.emit(
+                        SOCKET_SET_VU_REDUCTION, 
                         {
                             faderIndex: state.channels[0].channel[ch - 1].assignedFader,
                             level: message.args[0]

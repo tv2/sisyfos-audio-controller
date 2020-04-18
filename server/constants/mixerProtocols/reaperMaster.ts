@@ -16,6 +16,7 @@ export const ReaperMaster: IMixerProtocol = {
         fromMixer: {
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/track/{channel}/volume', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
             CHANNEL_VU: [{ mixerMessage: '/track/{channel}/vu', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }],
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [{ mixerMessage: '/track/{channel}/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL: [emptyMixerMessage()],
             NEXT_SEND: [emptyMixerMessage()],
@@ -71,6 +72,7 @@ export const ReaperMaster: IMixerProtocol = {
                 { mixerMessage: '/master/vu/L', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 },
                 { mixerMessage: '/master/vu/R', value: 0, type: 'f', min: 0, max: 1, zero: 0.75 }
             ],
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             NEXT_SEND: [emptyMixerMessage()],
