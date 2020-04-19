@@ -23,6 +23,7 @@ export const StuderOnAirMaster: IMixerProtocol = {
                 zero: 0
             }],
             CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [{
                 mixerMessage: 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Channel Attribute/User Label',
                 value: 0,

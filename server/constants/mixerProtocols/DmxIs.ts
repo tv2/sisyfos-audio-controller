@@ -16,6 +16,7 @@ export const DMXIS: IMixerProtocol = {
         fromMixer: {
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/dmxis/ch/{channel}', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             NEXT_SEND: [emptyMixerMessage()],

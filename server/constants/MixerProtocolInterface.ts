@@ -32,6 +32,7 @@ export interface IChannelTypes {
     fromMixer: {
         CHANNEL_OUT_GAIN: Array<IMixerMessageProtocol>,
         CHANNEL_VU: Array<IMixerMessageProtocol>,
+        CHANNEL_VU_REDUCTION: Array<IMixerMessageProtocol>,
         CHANNEL_NAME: Array<IMixerMessageProtocol>
         PFL: Array<IMixerMessageProtocol>
         NEXT_SEND: Array<IMixerMessageProtocol>

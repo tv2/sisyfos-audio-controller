@@ -23,6 +23,7 @@ export const LawoRuby: IMixerProtocol = {
                 zero: 0
             }],
             CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [{
                 mixerMessage: '',
                 value: 0,

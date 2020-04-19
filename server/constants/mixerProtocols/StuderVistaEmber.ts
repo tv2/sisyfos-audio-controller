@@ -16,6 +16,7 @@ export const StuderVistaMaster: IMixerProtocol = {
         fromMixer: {
             CHANNEL_OUT_GAIN: [emptyMixerMessage()],
             CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             NEXT_SEND: [emptyMixerMessage()],
@@ -76,6 +77,7 @@ export const StuderVistaMaster: IMixerProtocol = {
                 zero: 750
             }],
             CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [{
                 mixerMessage: 'System/Mixer/Channels/Inp Stereo/Inp Stereo #{channel}/Functions/Channel Attribute/User Label',
                 value: 0,
@@ -143,6 +145,7 @@ export const StuderVistaMaster: IMixerProtocol = {
                 zero: 750
             }],
             CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [{
                 mixerMessage: 'System/Mixer/Channels/Inp 5_1/Inp 5_1 #{channel}/Functions/Channel Attribute/User Label',
                 value: 0,
