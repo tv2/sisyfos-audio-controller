@@ -16,7 +16,7 @@ export const BehringerXrMaster: IMixerProtocol = {
             type: "s", min: 0, max: 1, zero: 0.75
         },
         {
-            mixerMessage: "/meters", value: "/meters/5",
+            mixerMessage: "/meters", value: "/meters/6",
             type: "s", min: 0, max: 1, zero: 0.75
         }
     ],
@@ -38,7 +38,7 @@ export const BehringerXrMaster: IMixerProtocol = {
         fromMixer: {
             CHANNEL_OUT_GAIN: [{ mixerMessage: '/ch/{channel}/mix/fader', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_VU: [{ mixerMessage: '/meters/1', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-            CHANNEL_VU_REDUCTION: [{ mixerMessage: '/meters/1', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
+            CHANNEL_VU_REDUCTION: [{ mixerMessage: '/meters/6', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             CHANNEL_NAME: [{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
             PFL: [emptyMixerMessage()],
             NEXT_SEND: [emptyMixerMessage()],

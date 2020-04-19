@@ -7,7 +7,7 @@ import { socketServer } from '../../expressHandler'
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
-import { behringerMeter, behringerReductionMeter } from './productSpecific/behringer'
+import { behringerXrMeter, behringerReductionMeter } from './productSpecific/behringerXr'
 import { midasMeter } from './productSpecific/midas'
 import { SET_OUTPUT_LEVEL, SET_AUX_LEVEL } from '../../reducers/channelActions'
 import { 
@@ -76,36 +76,12 @@ export class OscMixerConnection {
                 mixerOnline: true
             });
             logger.verbose("Received OSC message: " + message.address, {})
-/// ONLY TEST!!!!
-            if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
-                .CHANNEL_VU_REDUCTION[0].mixerMessage)){
-                if (state.settings[0].mixerProtocol.includes('behringer')) {
-                    behringerReductionMeter(message.args);
-                } else if (state.settings[0].mixerProtocol.includes('midas')) {
-                    midasMeter(message.args);
-                } else {
-                    let ch = message.address.split("/")[this.cmdChannelIndex];
-                    store.dispatch({
-                        type:SET_VU_REDUCTION_LEVEL,
-                        channel: state.channels[0].channel[ch - 1].assignedFader,
-                        level: message.args[0]
-                    });
-                    socketServer.emit(
-                        SOCKET_SET_VU_REDUCTION, 
-                        {
-                            faderIndex: state.channels[0].channel[ch - 1].assignedFader,
-                            level: message.args[0]
-                        }
-                    )
-                }
-            }
-
 
 
             if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_VU[0].mixerMessage)){
                 if (state.settings[0].mixerProtocol.includes('behringer')) {
-                    behringerMeter(message.args);
+                    behringerXrMeter(message.args);
                 } else if (state.settings[0].mixerProtocol.includes('midas')) {
                     midasMeter(message.args);
                 } else {
