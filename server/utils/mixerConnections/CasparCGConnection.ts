@@ -292,11 +292,11 @@ export class CasparCGConnection {
         }
 
         if (state.faders[0].fader[channelIndex].pflOn === true) {
-            // Enable SOLO on this channel on MONITOR
+            // Enable SOLO on this channel on PFL
             const pairs = this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL[channelIndex];
             this.setAllLayers(pairs, state.faders[0].fader[channelIndex].faderLevel);
 
-            // Ensure that all other non-SOLO channels are muted on MONITOR
+            // Ensure that all other non-SOLO channels are muted on PFL
             const others = state.faders[0].fader
                 .map((i, index) => i.pflOn ? undefined : index)
                 .filter(i => (
@@ -317,11 +317,11 @@ export class CasparCGConnection {
                 )) as number[]
 
             if (others.length > 0) {
-                // other channels are SOLO, mute this channel on MONITOR
+                // other channels are SOLO, mute this channel on PFL
                 const pairs = this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL[channelIndex];
                 this.setAllLayers(pairs, this.mixerProtocol.fader.min);
             } else {
-                // There are no other SOLO channels, restore MONITOR to match PGM
+                // There are no other SOLO channels, restore PFL to match PGM
                 state.channels[0].channel.forEach((i, index) => {
                     if (index > this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL.length - 1) {
                         return
