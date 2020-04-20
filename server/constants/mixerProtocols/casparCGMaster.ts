@@ -16,7 +16,7 @@ let geometry: ICasparCGMixerGeometryFile = {
 		]
 	},
 	"toMixer": {
-		"MONITOR_CHANNEL_FADER_LEVEL": [
+		"PFL_AUX_FADER_LEVEL": [
 			[
 				{ "channel": 2, "layer": 51 }
 			],
