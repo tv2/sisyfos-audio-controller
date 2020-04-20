@@ -339,7 +339,19 @@ export class CasparCGConnection {
     }
 
     updateNextAux(channelIndex: number, level: number) {
-        return true
+        if (channelIndex > this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL.length - 1) {
+            return
+        }
+
+        if (state.faders[0].fader[channelIndex].pstOn === true) {
+            // add this channel to the PST mix
+            const pairs = this.mixerProtocol.toMixer.NEXT_AUX_FADER_LEVEL[channelIndex];
+            this.setAllLayers(pairs, state.faders[0].fader[channelIndex].faderLevel);
+        } else {
+            // mute this channel to the PST mix
+            const pairs = this.mixerProtocol.toMixer.NEXT_AUX_FADER_LEVEL[channelIndex];
+            this.setAllLayers(pairs, this.mixerProtocol.fader.min);
+        }
     }
 
     updateThreshold(channelIndex: number, level: number) {
