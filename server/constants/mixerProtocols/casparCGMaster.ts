@@ -1,6 +1,6 @@
 import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile, emptyMixerMessage } from '../MixerProtocolInterface';
 
-// TODO: This is just template data to avoid error if not loading 
+// TODO: This is just template data to avoid error if not loading
 // default.caspar.ccg from storage folder
 // should be simplified when storage is tested on new installations.
 let geometry: ICasparCGMixerGeometryFile = {
