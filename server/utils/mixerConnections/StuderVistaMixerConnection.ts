@@ -1,23 +1,14 @@
 //@ts-ignore
-import { EmberClient, BER } from 'node-emberplus'
-import { store, state } from '../../reducers/store'
-import { huiRemoteConnection } from '../../mainClasses'
+import { BER } from 'node-emberplus'
+import { state } from '../../reducers/store'
 const net = require('net')
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface';
-import { 
-    SET_FADER_LEVEL, 
-    SET_CHANNEL_LABEL 
-} from '../../reducers/faderActions'
 import { logger } from '../logger';
-
-//const BER = require('asn1').Ber
-//const BER = require('../../../node_modules/node-emberplus/ber.js')
 
 export class StuderVistaMixerConnection {
     mixerProtocol: IMixerProtocol
-    emberConnection: EmberClient
     deviceRoot: any;
     emberNodeObject: Array<any>;
     socket: any
@@ -30,34 +21,7 @@ export class StuderVistaMixerConnection {
         this.mixerProtocol = mixerProtocol;
         
         logger.info("Setting up Ember connection")
-        this.emberConnection = new EmberClient(
-            state.settings[0].deviceIp,
-            state.settings[0].devicePort
-        );
-        /*
-        this.emberConnection.on('error', (error: any) => {
-			if (
-				(error.message + '').match(/econnrefused/i) ||
-				(error.message + '').match(/disconnected/i)
-			) {
-				logger.error('Ember connection not establised')
-			} else {
-				logger.error('Ember connection unknown error' + error.message)
-			}
-        })
-        this.emberConnection.on('disconnected', () => {
-            logger.error('Lost Ember connection')
-		})
-        logger.info('Connecting to Ember')
-        let deviceRoot: any;
-        this.emberConnection.connect()
-        .then(() => {
-            this.setupMixerConnection();
-        })
-        .catch((e: any) => {
-            console.log(e.stack);
-        });
-        */
+
        this.socket = net.createConnection(
             {
                 port: 8087,
@@ -65,53 +29,27 @@ export class StuderVistaMixerConnection {
                 timeout: 20000000
             }, 
             () => {
-                // Disable connect timeout to hand-over to keepalive mechanism
-                // this.socket.setTimeout(20000000);
+
             }
         )
         this.socket.on('data', (data: any) => {
-            console.log('Ember Server data recieved');
-            // this.socket.write(data)
+            // A 2 way respons is to be implemented
+            logger.verbose('Ember Server data recieved')
+        })   
+        .on('end',() => {
+            // When connection disconnected.
+            logger.info('Ember Client socket disconnect. ');
         })
-    
-        // When connection disconnected.
-        this.socket.on('end',() => {
-            console.log('Ember Client socket disconnect. ');
+        .on('error', (err: any) => {
+            logger.error(JSON.stringify(err));
         })
-    
-        this.socket.on('timeout', () => {
-            console.log('Ember Client connection timeout. ');
-        })
-    
-        this.socket.on('error', (err: any) => {
-            console.error(JSON.stringify(err));
-        })
-
-        this.socket.on('connect', () => {
+        .on('connect', () => {
             this.setupMixerConnection()
         })
     }
 
     setupMixerConnection() {
         logger.info('Ember connection established')
-/*
-        let ch: number = 1;
-        state.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
-            for (let channelTypeIndex=0; channelTypeIndex < numberOfChannels ; channelTypeIndex++) {
-                this.subscribeFaderLevel(ch, typeIndex, channelTypeIndex);
-                ch++;
-            }
-        })
-        */
-/*
-                .CHANNEL_VU)){
-                    store.dispatch({
-                        type:SET_VU_LEVEL,
-                        channel: ch - 1,
-                        level: message.args[0]
-                    });
-        */
-
 
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
@@ -125,48 +63,11 @@ export class StuderVistaMixerConnection {
     }
 
     subscribeFaderLevel(ch: number, typeIndex: number, channelTypeIndex: number) {
-        let command = this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1))
-        this.emberConnection.getElementByPath(command)
-        .then((node: any) => {
-            logger.info('Subscription of channel : ' + command)
-            this.emberNodeObject[ch-1] = node;
-            this.emberConnection.subscribe(node, (() => {
-                logger.verbose('Receiving Level from Ch ' + String(ch))
-                if (!state.channels[0].channel[ch-1].fadeActive
-                    && !state.channels[0].channel[ch - 1].fadeActive
-                    &&  node.contents.value > this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_OUT_GAIN[0].min) {
-                    store.dispatch({
-                        type: SET_FADER_LEVEL,
-                        channel: ch-1,
-                        level: node.contents.value
-                    });
-                    global.mainThreadHandler.updatePartialStore(ch-1)
-                    if (huiRemoteConnection) {
-                        huiRemoteConnection.updateRemoteFaderState(ch-1, node.contents.value);
-                    }
-                }
-
-            })
-            )
-        })
-        .catch((error: any) => {
-            logger.error(error)
-        })
-
+        return
     }
 
     subscribeChannelName(ch: number, typeIndex: number, channelTypeIndex: number) {
-        this.emberConnection.getNodeByPath(this.mixerProtocol.channelTypes[typeIndex].fromMixer.CHANNEL_NAME[0].mixerMessage.replace("{channel}", String(channelTypeIndex+1)))
-        .then((node: any) => {
-            this.emberConnection.subscribe(node, (() => {
-                store.dispatch({
-                    type: SET_CHANNEL_LABEL,
-                    channel: ch-1,
-                    level: node.contents.value
-                });
-            })
-            )
-        })
+        return
     }
 
     pingMixerCommand() {
@@ -174,31 +75,12 @@ export class StuderVistaMixerConnection {
             let hexArray = command.mixerMessage.split(' ')
             let buf = new Buffer(hexArray.map((val:string) => { return parseInt(val, 16) }))
             this.socket.write(buf)
-            console.log('WRITING PING TO MIXER')
+            logger.verbose('WRITING PING TO MIXER')
         })
     }
 
     sendOutMessage(mixerMessage: string, channel: number, value: string | number, type: string) {
-        let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
-        
-        let message = mixerMessage.replace(
-            "{channel}",
-            channelString
-        )
-
-/*
-        this.emberConnection.getElementByPath(message)
-        .then((element: any) => {
-            logger.verbose('Sending out message : ' + message)
-            this.emberConnection.setValue(
-                this.emberNodeObject[channel-1],
-                typeof value === 'number' ? value : parseFloat(value)
-            )
-        })
-        .catch((error: any) => {
-            console.log("Ember Error ", error)
-        })
-        */
+        return
     }
 
     sendOutLevelMessage(channel: number, value: number) {
@@ -214,14 +96,13 @@ export class StuderVistaMixerConnection {
             (channelVal & 0x000000ff),
         ])
 
-        console.log('Fader value :', Math.floor(value))
+        logger.verbose('Fader value : ' + Math.floor(value))
         let BERwriter = new BER.Writer()
 
         BERwriter.startSequence();
         BERwriter.writeReal(Math.floor(value));
         BERwriter.endSequence();
 
-        //console.log('BER encoding : ', BERwriter.buffer)
         let bufferString: string = ''
         BERwriter.buffer.forEach((element: any) => {
             bufferString += ('0' + element.toString(16)).slice(-2) + ' '
@@ -236,18 +117,7 @@ export class StuderVistaMixerConnection {
     }
 
     sendOutRequest(mixerMessage: string, channel: number) {
-        let channelString = this.mixerProtocol.leadingZeros ? ("0"+channel).slice(-2) : channel.toString();
-        let message = mixerMessage.replace(
-                "{channel}",
-                channelString
-            );
-        if (message != 'none') {
-/*
-            this.oscConnection.send({
-                address: message
-            });
-*/
-        }
+        return
     }
 
     updateOutLevel(channelIndex: number) {
@@ -277,27 +147,8 @@ export class StuderVistaMixerConnection {
         )
     }
 
-
-
     updatePflState(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-
-        if (state.faders[0].fader[channelIndex].pflOn === true) {
-            this.sendOutMessage(
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].mixerMessage,
-                channelTypeIndex+1,
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].value,
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0].type
-            );
-        } else {
-            this.sendOutMessage(
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].mixerMessage,
-                channelTypeIndex+1,
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].value,
-                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0].type
-            );
-        }
+        return
     }
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
@@ -336,15 +187,7 @@ export class StuderVistaMixerConnection {
     }
 
     updateChannelName(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType;
-        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        let channelName = state.faders[0].fader[channelIndex].label;
-        this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
-            channelTypeIndex+1,
-            channelName,
-            "string"
-        );
+        return
     }
 
     injectCommand(command: string[]) {
