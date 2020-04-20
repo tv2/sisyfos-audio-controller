@@ -2,6 +2,7 @@
 import { EmberClient, BER } from 'node-emberplus'
 import { store, state } from '../../reducers/store'
 import { huiRemoteConnection } from '../../mainClasses'
+const net = require('net')
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface';
@@ -19,6 +20,7 @@ export class StuderVistaMixerConnection {
     emberConnection: EmberClient
     deviceRoot: any;
     emberNodeObject: Array<any>;
+    socket: any
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
@@ -32,6 +34,7 @@ export class StuderVistaMixerConnection {
             state.settings[0].deviceIp,
             state.settings[0].devicePort
         );
+        /*
         this.emberConnection.on('error', (error: any) => {
 			if (
 				(error.message + '').match(/econnrefused/i) ||
@@ -54,11 +57,44 @@ export class StuderVistaMixerConnection {
         .catch((e: any) => {
             console.log(e.stack);
         });
+        */
+       this.socket = net.createConnection(
+            {
+                port: 8087,
+                host: "10.225.15.196",
+                timeout: 20000000
+            }, 
+            () => {
+                // Disable connect timeout to hand-over to keepalive mechanism
+                // this.socket.setTimeout(20000000);
+            }
+        )
+        this.socket.on('data', (data: any) => {
+            console.log('Ember Server data recieved');
+            // this.socket.write(data)
+        })
+    
+        // When connection disconnected.
+        this.socket.on('end',() => {
+            console.log('Ember Client socket disconnect. ');
+        })
+    
+        this.socket.on('timeout', () => {
+            console.log('Ember Client connection timeout. ');
+        })
+    
+        this.socket.on('error', (err: any) => {
+            console.error(JSON.stringify(err));
+        })
+
+        this.socket.on('connect', () => {
+            this.setupMixerConnection()
+        })
     }
 
     setupMixerConnection() {
-        logger.info('Ember connection established - setting up subscription of channels')
-
+        logger.info('Ember connection established')
+/*
         let ch: number = 1;
         state.settings[0].numberOfChannelsInType.forEach((numberOfChannels, typeIndex) => {
             for (let channelTypeIndex=0; channelTypeIndex < numberOfChannels ; channelTypeIndex++) {
@@ -66,6 +102,7 @@ export class StuderVistaMixerConnection {
                 ch++;
             }
         })
+        */
 /*
                 .CHANNEL_VU)){
                     store.dispatch({
@@ -133,16 +170,12 @@ export class StuderVistaMixerConnection {
     }
 
     pingMixerCommand() {
-        //Ping Ember mixer if mixerProtocol needs it.
-        return;
         this.mixerProtocol.pingCommand.map((command) => {
-            this.sendOutMessage(
-                command.mixerMessage,
-                0,
-                command.value,
-                command.type
-            );
-        });
+            let hexArray = command.mixerMessage.split(' ')
+            let buf = new Buffer(hexArray.map((val:string) => { return parseInt(val, 16) }))
+            this.socket.write(buf)
+            console.log('WRITING PING TO MIXER')
+        })
     }
 
     sendOutMessage(mixerMessage: string, channel: number, value: string | number, type: string) {
@@ -194,11 +227,11 @@ export class StuderVistaMixerConnection {
             bufferString += ('0' + element.toString(16)).slice(-2) + ' '
         });
         levelMessage = levelMessage.replace('{channel}', ('0' + channelByte[0].toString(16)).slice(-2))
-        levelMessage = levelMessage.replace('{level}', (bufferString + '00 00 00 00 00').slice(0, 32))
+        levelMessage = levelMessage.replace('{level}', (bufferString + '00 00 00 00 00').slice(3, 35))
 
         let hexArray = levelMessage.split(' ')
         let buf = new Buffer(hexArray.map((val:string) => { return parseInt(val, 16) }))
-        this.emberConnection._client.socket.write(buf)
+        this.socket.write(buf)
         logger.verbose("Send HEX: " + levelMessage) 
     }
 
@@ -218,7 +251,6 @@ export class StuderVistaMixerConnection {
     }
 
     updateOutLevel(channelIndex: number) {
-        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
         let outputlevel = state.channels[0].channel[channelIndex].outputLevel
         let level = 20 * Math.log((1.3*outputlevel)/0.775)
         if (level < -90) {
@@ -227,13 +259,12 @@ export class StuderVistaMixerConnection {
         // console.log('Log level :', level)
 
         this.sendOutLevelMessage(
-            channelTypeIndex+1,
+            channelIndex+1,
             level,
         );
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
         let level = 20 * Math.log((1.3*outputLevel)/0.775)
         if (level < -90) {
             level = -90
@@ -241,7 +272,7 @@ export class StuderVistaMixerConnection {
         // console.log('Log level :', level)
 
         this.sendOutLevelMessage(
-            channelTypeIndex+1,
+            channelIndex+1,
             level
         )
     }
