@@ -128,7 +128,10 @@ As NEXT has been implemented, and PFL usually only work on on channel at a time,
   * Ip - MIDI based Protocol
   * Port 50000
   * Stable implementation of 2-ways Fader and Mute
-* Studer OnAir 3000
+* Studer Vista 1-5-9 (untested)
+  * mono, stereo, 51 channels fader level from Sisyfos TO mixer
+  * No 2 way support for now
+* Studer OnAir 3000 (untested)
   * channel 1 to 24 fader level from Sisyfos TO mixer
   * No 2 way support for now
 

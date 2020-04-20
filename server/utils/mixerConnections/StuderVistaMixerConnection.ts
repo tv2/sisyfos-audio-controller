@@ -1,5 +1,5 @@
 //@ts-ignore
-import { EmberClient } from 'node-emberplus'
+import { EmberClient, BER } from 'node-emberplus'
 import { store, state } from '../../reducers/store'
 import { huiRemoteConnection } from '../../mainClasses'
 
@@ -11,13 +11,14 @@ import {
 } from '../../reducers/faderActions'
 import { logger } from '../logger';
 
+//const BER = require('asn1').Ber
+//const BER = require('../../../node_modules/node-emberplus/ber.js')
 
-export class StuderOnAirMixerConnection {
+export class StuderVistaMixerConnection {
     mixerProtocol: IMixerProtocol
     emberConnection: EmberClient
     deviceRoot: any;
     emberNodeObject: Array<any>;
-
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this);
@@ -31,7 +32,6 @@ export class StuderOnAirMixerConnection {
             state.settings[0].deviceIp,
             state.settings[0].devicePort
         );
-
         this.emberConnection.on('error', (error: any) => {
 			if (
 				(error.message + '').match(/econnrefused/i) ||
@@ -169,60 +169,37 @@ export class StuderOnAirMixerConnection {
     }
 
     sendOutLevelMessage(channel: number, value: number) {
-//        logger.verbose('Sending out Level: ' + String(value) + ' To Path : ' + JSON.stringify(this.emberConnection.root))
         let levelMessage: string
-        if (channel<10) {
-            levelMessage = '7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00'
-        } else {
-            levelMessage = '7f 8f ff fe d9 5c 80 30 80 bf 83 90 80 00 1e 31 1c a4 1a 31 18 a2 16 31 14 {channel} 12 31 10 a6 0e 31 0c e1 0a 31 08 63 06 02 04 00 00 {level} 00 00 00 00'
-        }
+        let channelVal: number
+        let channelType = state.channels[0].channel[channel - 1].channelType;
+        let channelTypeIndex = state.channels[0].channel[channel - 1].channelTypeIndex;
 
-        let valueNumber = value
-        let valueByte = new Uint8Array([
-            (valueNumber & 0x0000ff00) >> 8,
-            (valueNumber & 0x000000ff),
-        ])
-        let channelVal = 160 + channel
+        levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0].mixerMessage
+        channelVal = 160 + channelTypeIndex + 1
+
         let channelByte = new Uint8Array([
             (channelVal & 0x000000ff),
         ])
-        
+
+        console.log('Fader value :', Math.floor(value))
+        let BERwriter = new BER.Writer()
+
+        BERwriter.startSequence();
+        BERwriter.writeReal(Math.floor(value));
+        BERwriter.endSequence();
+
+        //console.log('BER encoding : ', BERwriter.buffer)
+        let bufferString: string = ''
+        BERwriter.buffer.forEach((element: any) => {
+            bufferString += ('0' + element.toString(16)).slice(-2) + ' '
+        });
         levelMessage = levelMessage.replace('{channel}', ('0' + channelByte[0].toString(16)).slice(-2))
-        levelMessage = levelMessage.replace('{level}', ('0' + valueByte[0].toString(16)).slice(-2) + ' ' + ('0' + valueByte[1].toString(16)).slice(-2))
+        levelMessage = levelMessage.replace('{level}', (bufferString + '00 00 00 00 00').slice(0, 32))
 
         let hexArray = levelMessage.split(' ')
         let buf = new Buffer(hexArray.map((val:string) => { return parseInt(val, 16) }))
         this.emberConnection._client.socket.write(buf)
-        console.log("Send HEX: " + levelMessage) 
-
-/*
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {CH} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {LV} 00 00 00 00
-Fader 1 - Maxvol:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a1} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 ca 00 00 00 00
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a1} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 e8 00 00 00 00
-
-Fader 1 - Min vol:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a1} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 00 be 00 00 00 00
-
-Fader 2 - Min vol:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a2} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 48 00 00 00 00
-Fader 2 - Max vol:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a2} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 e8 00 00 00 00
-
-Fader 7:
-7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {a9} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 02 12 00 00 00 00
-
-Fader 12:
-7f 8f ff fe d9 5c 80 30 80 bf 83 90 80 00 1e 31 1c a4 1a 31 18 a2 16 31 14 {ac} 12 31 10 a6 0e 31 0c e1 0a 31 08 63 06 02 04 00 00 "00 c8" 00 00 00 00
-
-Fader 23:
-7f 8f ff fe d9 5c 80 30 80 bf 83 90 80 00 1e 31 1c a4 1a 31 18 a2 16 31 14 {b7} 12 31 10 a6 0e 31 0c e1 0a 31 08 63 06 02 04 00 00 "02 94" 00 00 00 00
-
-
-
-
-
-*/
+        logger.verbose("Send HEX: " + levelMessage) 
     }
 
     sendOutRequest(mixerMessage: string, channel: number) {
@@ -241,10 +218,14 @@ Fader 23:
     }
 
     updateOutLevel(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0]
-        let level = (state.channels[0].channel[channelIndex].outputLevel - protocol.min) * (protocol.max - protocol.min)
+        let outputlevel = state.channels[0].channel[channelIndex].outputLevel
+        let level = 20 * Math.log((1.3*outputlevel)/0.775)
+        if (level < -90) {
+            level = -90
+        }
+        // console.log('Log level :', level)
+
         this.sendOutLevelMessage(
             channelTypeIndex+1,
             level,
@@ -252,16 +233,20 @@ Fader 23:
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType;
         let channelTypeIndex = state.channels[0].channel[channelIndex].channelTypeIndex;
-        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_OUT_GAIN[0]
-        let level = (outputLevel - protocol.min) * (protocol.max - protocol.min)
+        let level = 20 * Math.log((1.3*outputLevel)/0.775)
+        if (level < -90) {
+            level = -90
+        }
+        // console.log('Log level :', level)
 
         this.sendOutLevelMessage(
             channelTypeIndex+1,
             level
         )
     }
+
+
 
     updatePflState(channelIndex: number) {
         let channelType = state.channels[0].channel[channelIndex].channelType;

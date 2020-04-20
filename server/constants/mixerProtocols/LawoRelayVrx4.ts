@@ -23,6 +23,7 @@ export const LawoRelayVrx4: IMixerProtocol = {
                 zero: 75
             }],
             CHANNEL_VU: [emptyMixerMessage()],
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [{
                 mixerMessage: '',
                 value: 0,

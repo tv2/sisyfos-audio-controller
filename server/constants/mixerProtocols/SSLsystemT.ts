@@ -16,6 +16,7 @@ export const SSLSystemT: IMixerProtocol = {
         fromMixer: {
             CHANNEL_OUT_GAIN: [emptyMixerMessage()],    // Handled by SSLMixerconnection
             CHANNEL_VU: [emptyMixerMessage()],          // Not implemented in SSL Automation protocol yet
+            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
             CHANNEL_NAME: [emptyMixerMessage()],
             PFL: [emptyMixerMessage()],
             NEXT_SEND: [emptyMixerMessage()],

@@ -359,7 +359,8 @@ describe('Test redux faderReducers actions', () => {
     let vuMeters: IVuMeters[] = []
     for (let i=0; i<24; i++) {
       vuMeters.push({
-        vuVal: 0.75
+        vuVal: 0.75,
+        reductionVal: 0
       })
       newState.faders[0].vuMeters[i].vuVal = 0.75
     }

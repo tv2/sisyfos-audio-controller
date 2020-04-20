@@ -10,13 +10,14 @@ import { CasparCGMaster } from './mixerProtocols/casparCGMaster';
 import { DMXIS } from './mixerProtocols/DmxIs';
 import { YamahaQLCL } from './mixerProtocols/yamahaQLCL'
 import { SSLSystemT } from './mixerProtocols/SSLsystemT'
+import { StuderOnAirMaster } from './mixerProtocols/StuderOnAirEmber';
+import { StuderVistaMaster } from './mixerProtocols/StuderVistaEmber';
 
 interface IMessageProtocol {
     mixerMessage: string,
     value: any,
     type: string
 }
-import { StuderOnAirMaster } from './mixerProtocols/StuderOnAirEmber';
 // Interface:
 import { IMixerProtocolGeneric} from './MixerProtocolInterface'
 
@@ -33,6 +34,7 @@ export const MixerProtocolPresets: { [key: string]: IMixerProtocolGeneric } = Ob
     yamahaQlCl: YamahaQLCL,
     sslSystemT: SSLSystemT,
     studerOnAirMaster: StuderOnAirMaster,
+    studerVistaMaster: StuderVistaMaster,
 }, {
     casparCGMaster: CasparCGMaster
 });

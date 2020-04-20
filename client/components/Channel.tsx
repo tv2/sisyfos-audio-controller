@@ -128,7 +128,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     'on': this.props.fader.pgmOn,
                     'mute': this.props.fader.muteOn
                 })}
-                onMouseUp={event => {
+                onClick={event => {
+                    event.preventDefault()
                     this.handlePgm();
                 }}
                 onTouchEnd={event => {
@@ -150,14 +151,14 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     'on': this.props.fader.voOn,
                     'mute': this.props.fader.muteOn,
                 })}
-                onMouseUp={event => {
-                    this.handleVo();
+                onClick={event => {
+                    event.preventDefault()
+                    this.handleVo()
                 }}
                 onTouchEnd={event => {
                     event.preventDefault()
                     this.handleVo()
                 }}
-
             >
                 VO
             </button>
@@ -198,7 +199,7 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                     this.handleShowChanStrip();
                 }}
             >
-            {this.props.fader.label != "" ? this.props.fader.label : (window.mixerProtocol.channelTypes[this.props.channelType].channelTypeName + " " + (this.props.channelTypeIndex + 1)) }
+            {this.props.fader.label != "" ? this.props.fader.label : ("CH " + (this.faderIndex + 1)) }
             </button>
         )
     }
@@ -223,7 +224,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 className={ClassNames("channel-ignore-button", {
                     'on': this.props.fader.ignoreAutomation
                 })}
-                onMouseUp={event => {
+                onClick={event => {
+                    event.preventDefault()
                     this.handleIgnore();
                 }}
                 onTouchEnd={event => {
@@ -242,7 +244,8 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
                 className={ClassNames("channel-mute-button", {
                     'on': this.props.fader.muteOn
                 })}
-                onMouseUp={event => {
+                onClick={event => {
+                    event.preventDefault()
                     this.handleMute();
                 }}
                 onTouchEnd={event => {

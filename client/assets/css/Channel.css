@@ -6,6 +6,7 @@
     width: 86px;
     height: 950px;
     position: relative;
+    touch-action : none;
 }
 
 .channel-body.ignore-on {
@@ -28,7 +29,7 @@
     -moz-outline : none;
     margin-left: 3px;
     margin-right: 3px;
-    margin-top: 25px;
+    margin-top: 37px;
     color: white;
     height: 90px;
     width: 80px;
@@ -171,9 +172,9 @@
 
 .channel-volume-fader {
     width: 10px;
-    height: 420px;
+    height: 400px;
     margin-left: 55px;
-    margin-top: 20px;
+    margin-top: 30px;
     background-color: rgb(15, 15, 15);
     border-color: rgba(0,0,0);
 

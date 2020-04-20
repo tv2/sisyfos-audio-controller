@@ -1,7 +1,7 @@
-import { SET_COMPLETE_FADER_STATE, SET_VU_LEVEL, SET_SINGLE_FADER_STATE } from "../../server/reducers/faderActions";
+import { SET_COMPLETE_FADER_STATE, SET_VU_LEVEL, SET_SINGLE_FADER_STATE, SET_VU_REDUCTION_LEVEL } from "../../server/reducers/faderActions";
 import { SET_COMPLETE_CH_STATE, SET_SINGLE_CH_STATE } from "../../server/reducers/channelActions";
 import { UPDATE_SETTINGS, SET_MIXER_ONLINE, SET_SERVER_ONLINE } from "../../server/reducers/settingsActions";
-import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_SET_FULL_STORE, SOCKET_SET_STORE_FADER, SOCKET_SET_STORE_CHANNEL, SOCKET_RETURN_CCG_LIST } from "../../server/constants/SOCKET_IO_DISPATCHERS";
+import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_SET_FULL_STORE, SOCKET_SET_STORE_FADER, SOCKET_SET_STORE_CHANNEL, SOCKET_RETURN_CCG_LIST, SOCKET_SET_VU_REDUCTION } from "../../server/constants/SOCKET_IO_DISPATCHERS";
 
 export const socketClientHandlers = () => {
     window.socketIoClient
@@ -93,6 +93,15 @@ export const socketClientHandlers = () => {
         (payload: any) => { 
             window.storeRedux.dispatch({
                 type:SET_VU_LEVEL,
+                channel: payload.faderIndex,
+                level: payload.level
+            });
+        })
+    )
+    .on(SOCKET_SET_VU_REDUCTION, (
+        (payload: any) => { 
+            window.storeRedux.dispatch({
+                type:SET_VU_REDUCTION_LEVEL,
                 channel: payload.faderIndex,
                 level: payload.level
             });
