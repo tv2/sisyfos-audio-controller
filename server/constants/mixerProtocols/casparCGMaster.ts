@@ -36,6 +36,26 @@ let geometry: ICasparCGMixerGeometryFile = {
 				{ "channel": 2, "layer": 56 }
 			]
 		],
+		"NEXT_AUX_FADER_LEVEL": [
+			[
+				{ "channel": 2, "layer": 51 }
+			],
+			[
+				{ "channel": 2, "layer": 52 }
+			],
+			[
+				{ "channel": 2, "layer": 53 }
+			],
+			[
+				{ "channel": 2, "layer": 54 }
+			],
+			[
+				{ "channel": 2, "layer": 55 }
+			],
+			[
+				{ "channel": 2, "layer": 56 }
+			]
+		],
 		"PGM_CHANNEL_FADER_LEVEL": [
 			[
 				{ "channel": 1, "layer": 51 },
