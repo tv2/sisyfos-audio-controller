@@ -25,7 +25,7 @@ import {
     SET_MUTE,
     SET_VU_REDUCTION_LEVEL
 } from '../../reducers/faderActions'
-import { SET_MIXER_ONLINE } from '../../reducers/settingsActions';
+import { SET_MIXER_ONLINE, TOGGLE_SHOW_CHAN_STRIP } from '../../reducers/settingsActions';
 import { SOCKET_SET_VU, SOCKET_SET_VU_REDUCTION } from '../../constants/SOCKET_IO_DISPATCHERS';
 import { logger } from '../logger'
 
@@ -191,15 +191,16 @@ export class OscMixerConnection {
                         auxIndex = parseFloat(messageArray[index]) - 1
                     }
                 })
-                logger.verbose('Aux Message Channel : ' + ch + '  Aux Index :' + auxIndex + ' Level : ' + message.args[0])
-                store.dispatch({
-                    type: SET_AUX_LEVEL,
-                    channel: ch - 1,
-                    auxIndex: auxIndex,
-                    level: message.args[0]
-                });
-                global.mainThreadHandler.updateFullClientStore()
- 
+                if (state.channels[0].channel[ch-1].auxLevel[auxIndex] > -1) {
+                    logger.verbose('Aux Message Channel : ' + ch + '  Aux Index :' + auxIndex + ' Level : ' + message.args[0])
+                    store.dispatch({
+                        type: SET_AUX_LEVEL,
+                        channel: ch - 1,
+                        auxIndex: auxIndex,
+                        level: message.args[0]
+                    });
+                    global.mainThreadHandler.updateFullClientStore()
+                }
             } else if (this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer
                 .CHANNEL_NAME[0].mixerMessage)) {
                     let ch = message.address.split("/")[this.cmdChannelIndex];
