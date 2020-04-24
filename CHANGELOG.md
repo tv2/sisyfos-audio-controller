@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.13.0...v3.0.0) (2020-04-24)
+
 ## [2.13.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.12.0...v2.13.0) (2020-04-24)
 
 
@@ -15,7 +17,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 ### Bug Fixes
-
+*
 * check if fader exists before requesting from mixer ([8c06344](https://github.com/olzzon/sisyfos-audio-controller/commit/8c06344a57285e215ae282aa872bf40c9963eb30))
 * reduction meter middler and upper rendering ([589d936](https://github.com/olzzon/sisyfos-audio-controller/commit/589d9365aa143c6fe348fd840647f288bda4ad36))
 * update Next Aux level in OSC protocol (behringer, Midas etc.) ([38a6ec7](https://github.com/olzzon/sisyfos-audio-controller/commit/38a6ec7ccff31953413ec273908832f263758d16))
