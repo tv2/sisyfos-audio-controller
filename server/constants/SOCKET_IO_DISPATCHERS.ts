@@ -23,7 +23,6 @@ export const SOCKET_TOGGLE_IGNORE = 'toggleIgnore'
 export const SOCKET_NEXT_MIX = 'nextMix'
 export const SOCKET_CLEAR_PST = 'clearPst'
 
-
 // Div:
 export const SOCKET_SAVE_SETTINGS = 'saveSettings'
 export const SOCKET_RESTART_SERVER = 'restartServer'

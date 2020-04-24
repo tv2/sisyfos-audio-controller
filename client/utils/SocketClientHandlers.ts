@@ -1,121 +1,121 @@
-import { SET_COMPLETE_FADER_STATE, SET_VU_LEVEL, SET_SINGLE_FADER_STATE, SET_VU_REDUCTION_LEVEL } from "../../server/reducers/faderActions";
-import { SET_COMPLETE_CH_STATE, SET_SINGLE_CH_STATE } from "../../server/reducers/channelActions";
-import { UPDATE_SETTINGS, SET_MIXER_ONLINE, SET_SERVER_ONLINE } from "../../server/reducers/settingsActions";
-import { SOCKET_SET_VU, SOCKET_RETURN_SNAPSHOT_LIST, SOCKET_SET_FULL_STORE, SOCKET_SET_STORE_FADER, SOCKET_SET_STORE_CHANNEL, SOCKET_RETURN_CCG_LIST, SOCKET_SET_VU_REDUCTION } from "../../server/constants/SOCKET_IO_DISPATCHERS";
+import {
+    SET_COMPLETE_FADER_STATE,
+    SET_VU_LEVEL,
+    SET_SINGLE_FADER_STATE,
+    SET_VU_REDUCTION_LEVEL,
+} from '../../server/reducers/faderActions'
+import {
+    SET_COMPLETE_CH_STATE,
+    SET_SINGLE_CH_STATE,
+} from '../../server/reducers/channelActions'
+import {
+    UPDATE_SETTINGS,
+    SET_MIXER_ONLINE,
+    SET_SERVER_ONLINE,
+} from '../../server/reducers/settingsActions'
+import {
+    SOCKET_SET_VU,
+    SOCKET_RETURN_SNAPSHOT_LIST,
+    SOCKET_SET_FULL_STORE,
+    SOCKET_SET_STORE_FADER,
+    SOCKET_SET_STORE_CHANNEL,
+    SOCKET_RETURN_CCG_LIST,
+    SOCKET_SET_VU_REDUCTION,
+} from '../../server/constants/SOCKET_IO_DISPATCHERS'
 
 export const socketClientHandlers = () => {
     window.socketIoClient
-    .on('connect', (
-        () => {
+        .on('connect', () => {
             window.storeRedux.dispatch({
                 type: SET_SERVER_ONLINE,
-                serverOnline: true
+                serverOnline: true,
             })
             console.log('CONNECTED TO SISYFOS SERVER')
-        }
-    ))
-    .on('disconnect', (
-        () => {
+        })
+        .on('disconnect', () => {
             window.storeRedux.dispatch({
                 type: SET_SERVER_ONLINE,
-                serverOnline: false
+                serverOnline: false,
             })
             console.log('LOST CONNECTION TO SISYFOS SERVER')
-        }
-    ))
-    .on(SOCKET_SET_FULL_STORE, (
-        (payload: any) => { 
+        })
+        .on(SOCKET_SET_FULL_STORE, (payload: any) => {
             // console.log('STATE RECEIVED :', payload)
 
             let numberOfChannels: number[] = []
-            if(window.mixerProtocol) {
-                window.mixerProtocol.channelTypes.forEach((item: any, index: number) => {
-                    numberOfChannels.push(payload.settings[0].numberOfChannelsInType[index]);
-                })
+            if (window.mixerProtocol) {
+                window.mixerProtocol.channelTypes.forEach(
+                    (item: any, index: number) => {
+                        numberOfChannels.push(
+                            payload.settings[0].numberOfChannelsInType[index]
+                        )
+                    }
+                )
                 window.storeRedux.dispatch({
                     type: SET_COMPLETE_CH_STATE,
                     allState: payload.channels[0],
-                    numberOfTypeChannels: numberOfChannels
+                    numberOfTypeChannels: numberOfChannels,
                 })
                 window.storeRedux.dispatch({
-                    type:SET_COMPLETE_FADER_STATE,
+                    type: SET_COMPLETE_FADER_STATE,
                     allState: payload.faders[0],
-                    numberOfTypeChannels: payload.settings[0].numberOfFaders
+                    numberOfTypeChannels: payload.settings[0].numberOfFaders,
                 })
                 window.storeRedux.dispatch({
                     type: SET_MIXER_ONLINE,
-                    mixerOnline: payload.settings[0].mixerOnline
+                    mixerOnline: payload.settings[0].mixerOnline,
                 })
                 window.storeRedux.dispatch({
                     type: SET_SERVER_ONLINE,
-                    serverOnline: true
+                    serverOnline: true,
                 })
             }
-
         })
-    )
-    .on('set-settings', (
-        (payload: any) => { 
+        .on('set-settings', (payload: any) => {
             // console.log('SETTINGS RECEIVED :', payload)
             window.storeRedux.dispatch({
                 type: UPDATE_SETTINGS,
-                settings: payload // loadSettings(storeRedux.getState())
-            });
+                settings: payload, // loadSettings(storeRedux.getState())
+            })
         })
-    )
-    .on('set-mixerprotocol', (
-        (payload: any) => { 
+        .on('set-mixerprotocol', (payload: any) => {
             // console.log('MIXERPROTOCOL RECEIVED :', payload)
             window.mixerProtocol = payload.mixerProtocol
             window.mixerProtocolPresets = payload.mixerProtocolPresets
             window.mixerProtocolList = payload.mixerProtocolList
         })
-    )
-    .on(SOCKET_SET_STORE_FADER, (
-        (payload: any) => { 
+        .on(SOCKET_SET_STORE_FADER, (payload: any) => {
             window.storeRedux.dispatch({
-                type:SET_SINGLE_FADER_STATE,
+                type: SET_SINGLE_FADER_STATE,
                 faderIndex: payload.faderIndex,
-                state: payload.state
-            });
+                state: payload.state,
+            })
         })
-    )
-    .on(SOCKET_SET_STORE_CHANNEL, (
-        (payload: any) => { 
+        .on(SOCKET_SET_STORE_CHANNEL, (payload: any) => {
             window.storeRedux.dispatch({
-                type:SET_SINGLE_CH_STATE,
+                type: SET_SINGLE_CH_STATE,
                 channelIndex: payload.channelIndex,
-                state: payload.state
-            });
+                state: payload.state,
+            })
         })
-    )
-    .on(SOCKET_SET_VU, (
-        (payload: any) => { 
+        .on(SOCKET_SET_VU, (payload: any) => {
             window.storeRedux.dispatch({
-                type:SET_VU_LEVEL,
+                type: SET_VU_LEVEL,
                 channel: payload.faderIndex,
-                level: payload.level
-            });
+                level: payload.level,
+            })
         })
-    )
-    .on(SOCKET_SET_VU_REDUCTION, (
-        (payload: any) => { 
+        .on(SOCKET_SET_VU_REDUCTION, (payload: any) => {
             window.storeRedux.dispatch({
-                type:SET_VU_REDUCTION_LEVEL,
+                type: SET_VU_REDUCTION_LEVEL,
                 channel: payload.faderIndex,
-                level: payload.level
-            });
+                level: payload.level,
+            })
         })
-    )
-    .on(SOCKET_RETURN_SNAPSHOT_LIST, (
-        (payload: any) => { 
+        .on(SOCKET_RETURN_SNAPSHOT_LIST, (payload: any) => {
             window.snapshotFileList = payload
         })
-    )
-    .on(SOCKET_RETURN_CCG_LIST, (
-        (payload: any) => { 
+        .on(SOCKET_RETURN_CCG_LIST, (payload: any) => {
             window.ccgFileList = payload
         })
-    )
-
 }

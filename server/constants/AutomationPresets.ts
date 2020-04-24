@@ -3,72 +3,70 @@
 //So it´s easy to add new equipment.
 
 export interface IAutomationProtocol {
-    protocol: string,
-    label: string,
-    mode: string,
-    leadingZeros: boolean,
+    protocol: string
+    label: string
+    mode: string
+    leadingZeros: boolean
     initializeCommands: [
         {
-            mixerMessage: string,
-            value: string,
+            mixerMessage: string
+            value: string
             type: string
         }
-    ],
+    ]
     fromAutomation: {
-        CHANNEL_PGM_ON_OFF: string,
-        CHANNEL_PST_ON_OFF: string,
-        CHANNEL_FADER_LEVEL: string,
-        INJECT_COMMAND: string,
-        CHANNEL_VISIBLE: string,
-        CHANNEL_MUTE: string,
-        X_MIX: string,
-        SET_LABEL: string,
-        FADE_TO_BLACK: string,
-        CLEAR_PST: string,
-        SNAP_RECALL: string,
-        STATE_CHANNEL_PGM: string,
-        STATE_CHANNEL_PST: string,
-        STATE_CHANNEL_FADER_LEVEL: string,
-        STATE_CHANNEL_MUTE: string,
+        CHANNEL_PGM_ON_OFF: string
+        CHANNEL_PST_ON_OFF: string
+        CHANNEL_FADER_LEVEL: string
+        INJECT_COMMAND: string
+        CHANNEL_VISIBLE: string
+        CHANNEL_MUTE: string
+        X_MIX: string
+        SET_LABEL: string
+        FADE_TO_BLACK: string
+        CLEAR_PST: string
+        SNAP_RECALL: string
+        STATE_CHANNEL_PGM: string
+        STATE_CHANNEL_PST: string
+        STATE_CHANNEL_FADER_LEVEL: string
+        STATE_CHANNEL_MUTE: string
         STATE_FULL: string
         PING: string
-    },
+    }
     toAutomation: {
-        STATE_CHANNEL_PGM: string,
-        STATE_CHANNEL_PST: string,
-        STATE_CHANNEL_FADER_LEVEL: string,
-        STATE_CHANNEL_MUTE: string,
-        STATE_FULL: string,
+        STATE_CHANNEL_PGM: string
+        STATE_CHANNEL_PST: string
+        STATE_CHANNEL_FADER_LEVEL: string
+        STATE_CHANNEL_MUTE: string
+        STATE_FULL: string
         PONG: string
-    },
+    }
     fader: {
-        min: number,
-        max: number,
-        zero: number,
-        step: number,
-    },
+        min: number
+        max: number
+        zero: number
+        step: number
+    }
     meter: {
-        min: number,
-        max: number,
-        zero: number,
-        test: number,
-    },
+        min: number
+        max: number
+        zero: number
+        test: number
+    }
 }
 
-
 export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
-
     sofie: {
         protocol: 'OSC',
         label: 'Sofie Automation',
-        mode: "client",
+        mode: 'client',
         leadingZeros: true,
         initializeCommands: [
             {
-                mixerMessage: "/info",
-                value: "",
-                type: "f"
-            }
+                mixerMessage: '/info',
+                value: '',
+                type: 'f',
+            },
         ],
         fromAutomation: {
             CHANNEL_PGM_ON_OFF: '/ch/{value1}/pgm',
@@ -87,7 +85,7 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
             STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
             STATE_FULL: '/state/full',
-            PING: '/ping/{value1}'
+            PING: '/ping/{value1}',
         },
         toAutomation: {
             STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
@@ -95,7 +93,7 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
             STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
             STATE_FULL: '/state/full',
-            PONG: '/pong'
+            PONG: '/pong',
         },
         fader: {
             min: 0,
@@ -109,13 +107,14 @@ export const AutomationPresets: { [key: string]: IAutomationProtocol } = {
             zero: 0.75,
             test: 0.6,
         },
-    }
-};
+    },
+}
 
-
-export const AutomationProtocolList = Object.getOwnPropertyNames(AutomationPresets).map((preset) => {
+export const AutomationProtocolList = Object.getOwnPropertyNames(
+    AutomationPresets
+).map((preset) => {
     return {
         value: preset,
-        label: AutomationPresets[preset].label
-    };
-});
+        label: AutomationPresets[preset].label,
+    }
+})

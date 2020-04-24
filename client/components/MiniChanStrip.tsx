@@ -1,19 +1,17 @@
-import React from 'react';
+import React from 'react'
 import ReactSlider from 'react-slider'
 
-import '../assets/css/MiniChanStrip.css';
-import { Store } from 'redux';
-import { connect } from 'react-redux';
+import '../assets/css/MiniChanStrip.css'
+import { Store } from 'redux'
+import { connect } from 'react-redux'
 import { IFader } from '../../server/reducers/fadersReducer'
-import { 
-    SOCKET_SET_AUX_LEVEL 
-} from '../../server/constants/SOCKET_IO_DISPATCHERS';
-import CcgChannelInputSettings from './CcgChannelSettings';
+import { SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import CcgChannelInputSettings from './CcgChannelSettings'
 
 interface IChanStripInjectProps {
-    label: string,
-    selectedProtocol: string,
-    numberOfChannelsInType: Array<number>,
+    label: string
+    selectedProtocol: string
+    numberOfChannelsInType: Array<number>
     channel: Array<any>
     fader: Array<IFader>
     auxSendIndex: number
@@ -24,43 +22,48 @@ interface IChanStripProps {
     faderIndex: number
 }
 
-class MiniChanStrip extends React.PureComponent<IChanStripProps & IChanStripInjectProps & Store> {
-
+class MiniChanStrip extends React.PureComponent<
+    IChanStripProps & IChanStripInjectProps & Store
+> {
     constructor(props: any) {
-        super(props);
+        super(props)
     }
 
-
     handleMonitorLevel(event: any, channelIndex: number) {
-        window.socketIoClient.emit( 
-            SOCKET_SET_AUX_LEVEL, 
-            {
-                channel: channelIndex,
-                auxIndex: this.props.auxSendIndex,
-                level: parseFloat(event)
-            }
-        )
+        window.socketIoClient.emit(SOCKET_SET_AUX_LEVEL, {
+            channel: channelIndex,
+            auxIndex: this.props.auxSendIndex,
+            level: parseFloat(event),
+        })
     }
 
     monitor(channelIndex: number) {
         let faderIndex = this.props.channel[channelIndex].assignedFader
         if (faderIndex === -1) return null
-        let monitorName = this.props.fader[faderIndex] ? this.props.fader[faderIndex].label : ''
+        let monitorName = this.props.fader[faderIndex]
+            ? this.props.fader[faderIndex].label
+            : ''
         if (monitorName === '') {
-            monitorName = 'Fader ' + String(this.props.channel[channelIndex].assignedFader + 1)
+            monitorName =
+                'Fader ' +
+                String(this.props.channel[channelIndex].assignedFader + 1)
         }
         return (
             <li key={channelIndex}>
                 {monitorName}
-                <ReactSlider 
+                <ReactSlider
                     className="monitor-chan-strip-fader"
-                    thumbClassName = "monitor-chan-strip-thumb"
-                    orientation = "vertical"
+                    thumbClassName="monitor-chan-strip-thumb"
+                    orientation="vertical"
                     invert
                     min={0}
                     max={1}
                     step={0.01}
-                    value= {this.props.channel[channelIndex].auxLevel[this.props.auxSendIndex]}
+                    value={
+                        this.props.channel[channelIndex].auxLevel[
+                            this.props.auxSendIndex
+                        ]
+                    }
                     onChange={(event: any) => {
                         this.handleMonitorLevel(event, channelIndex)
                     }}
@@ -70,23 +73,23 @@ class MiniChanStrip extends React.PureComponent<IChanStripProps & IChanStripInje
         )
     }
     parameters() {
-        if (this.props.selectedProtocol.includes("caspar")) {
+        if (this.props.selectedProtocol.includes('caspar')) {
             return (
                 <CcgChannelInputSettings channelIndex={this.props.faderIndex} />
             )
-        }
-        else {
+        } else {
             return (
                 <div className="parameters">
                     <div className="group-text">
-                    {this.props.label || ("FADER " + (this.props.faderIndex + 1))}
-                        {" - MONITOR MIX MINUS"}
+                        {this.props.label ||
+                            'FADER ' + (this.props.faderIndex + 1)}
+                        {' - MONITOR MIX MINUS'}
                     </div>
                     <ul className="monitor-sends">
                         {this.props.channel.map((ch: any, index: number) => {
                             if (ch.auxLevel[this.props.auxSendIndex] >= 0) {
                                 return this.monitor(index)
-                            } 
+                            }
                         })}
                     </ul>
                 </div>
@@ -98,19 +101,12 @@ class MiniChanStrip extends React.PureComponent<IChanStripProps & IChanStripInje
         if (this.props.faderIndex >= 0) {
             return (
                 <div className="monitor-chan-strip-body">
-                    {this.props.offtubeMode ?
-                        this.parameters() 
-                        : null
-                    }
+                    {this.props.offtubeMode ? this.parameters() : null}
                 </div>
             )
         } else {
-            return (
-                <div className="monitor-chan-strip-body">
-                </div>
-            )
+            return <div className="monitor-chan-strip-body"></div>
         }
-
     }
 }
 
@@ -122,7 +118,7 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
         channel: state.channels[0].channel,
         fader: state.faders[0].fader,
         auxSendIndex: -1,
-        offtubeMode: state.settings[0].offtubeMode
+        offtubeMode: state.settings[0].offtubeMode,
     }
     if (props.faderIndex >= 0) {
         inject = {
@@ -132,10 +128,12 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
             channel: state.channels[0].channel,
             fader: state.faders[0].fader,
             auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,
-            offtubeMode: state.settings[0].offtubeMode
+            offtubeMode: state.settings[0].offtubeMode,
         }
-    } 
+    }
     return inject
 }
 
-export default connect<any, IChanStripInjectProps>(mapStateToProps)(MiniChanStrip) as any;
+export default connect<any, IChanStripInjectProps>(mapStateToProps)(
+    MiniChanStrip
+) as any

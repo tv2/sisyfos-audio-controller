@@ -1,39 +1,48 @@
-import * as React from 'react';
+import * as React from 'react'
 //@ts-ignore
-import * as ClassNames from 'classnames';
-import { connect } from "react-redux";
-import VuMeter from './VuMeter';
-import { Store } from 'redux';
+import * as ClassNames from 'classnames'
+import { connect } from 'react-redux'
+import VuMeter from './VuMeter'
+import { Store } from 'redux'
 import Nouislider from 'nouislider-react'
 import '../assets/css/NoUiSlider.css'
 
 //assets:
-import '../assets/css/Channel.css';
-import { SOCKET_TOGGLE_PGM, SOCKET_TOGGLE_VO, SOCKET_TOGGLE_PST, SOCKET_TOGGLE_PFL, SOCKET_TOGGLE_MUTE, SOCKET_SET_FADERLEVEL, SOCKET_TOGGLE_IGNORE } from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import { IFader } from '../../server/reducers/fadersReducer';
-import { IChannels } from '../../server/reducers/channelsReducer';
-import { ISettings } from '../../server/reducers/settingsReducer';
-import { TOGGLE_SHOW_CHAN_STRIP } from '../../server/reducers/settingsActions';
+import '../assets/css/Channel.css'
+import {
+    SOCKET_TOGGLE_PGM,
+    SOCKET_TOGGLE_VO,
+    SOCKET_TOGGLE_PST,
+    SOCKET_TOGGLE_PFL,
+    SOCKET_TOGGLE_MUTE,
+    SOCKET_SET_FADERLEVEL,
+    SOCKET_TOGGLE_IGNORE,
+} from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import { IFader } from '../../server/reducers/fadersReducer'
+import { IChannels } from '../../server/reducers/channelsReducer'
+import { ISettings } from '../../server/reducers/settingsReducer'
+import { TOGGLE_SHOW_CHAN_STRIP } from '../../server/reducers/settingsActions'
 
 interface IChannelInjectProps {
-    channels: IChannels 
+    channels: IChannels
     fader: IFader
     settings: ISettings
-    channelType: number,
-    channelTypeIndex: number,
+    channelType: number
+    channelTypeIndex: number
 }
 
 interface IChannelProps {
     faderIndex: number
 }
 
-
-class Channel extends React.Component<IChannelProps & IChannelInjectProps & Store> {
-    faderIndex: number;
+class Channel extends React.Component<
+    IChannelProps & IChannelInjectProps & Store
+> {
+    faderIndex: number
 
     constructor(props: any) {
-        super(props);
-        this.faderIndex = this.props.faderIndex;
+        super(props)
+        this.faderIndex = this.props.faderIndex
     }
 
     public shouldComponentUpdate(nextProps: IChannelInjectProps) {
@@ -43,119 +52,114 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
             nextProps.fader.pstOn != this.props.fader.pstOn ||
             nextProps.fader.pflOn != this.props.fader.pflOn ||
             nextProps.fader.muteOn != this.props.fader.muteOn ||
-            nextProps.fader.ignoreAutomation != this.props.fader.ignoreAutomation ||
+            nextProps.fader.ignoreAutomation !=
+                this.props.fader.ignoreAutomation ||
             nextProps.fader.showChannel != this.props.fader.showChannel ||
             nextProps.fader.faderLevel != this.props.fader.faderLevel ||
             nextProps.fader.label != this.props.fader.label ||
-            nextProps.settings.mixerProtocol != this.props.settings.mixerProtocol ||
+            nextProps.settings.mixerProtocol !=
+                this.props.settings.mixerProtocol ||
             nextProps.settings.showSnaps != this.props.settings.showSnaps ||
             nextProps.settings.showPfl != this.props.settings.showPfl ||
-            nextProps.settings.showChanStrip != this.props.settings.showChanStrip
+            nextProps.settings.showChanStrip !=
+                this.props.settings.showChanStrip
         )
     }
 
     handlePgm() {
-        window.socketIoClient.emit( SOCKET_TOGGLE_PGM, this.faderIndex)
+        window.socketIoClient.emit(SOCKET_TOGGLE_PGM, this.faderIndex)
     }
 
     handleVo() {
-        window.socketIoClient.emit( SOCKET_TOGGLE_VO, this.faderIndex)
+        window.socketIoClient.emit(SOCKET_TOGGLE_VO, this.faderIndex)
     }
 
     handlePst() {
-        window.socketIoClient.emit( SOCKET_TOGGLE_PST, this.faderIndex)
+        window.socketIoClient.emit(SOCKET_TOGGLE_PST, this.faderIndex)
     }
 
     handlePfl() {
-        window.socketIoClient.emit( SOCKET_TOGGLE_PFL, this.faderIndex)
+        window.socketIoClient.emit(SOCKET_TOGGLE_PFL, this.faderIndex)
     }
 
     handleMute() {
-        window.socketIoClient.emit( SOCKET_TOGGLE_MUTE, this.faderIndex)
+        window.socketIoClient.emit(SOCKET_TOGGLE_MUTE, this.faderIndex)
     }
 
     handleIgnore() {
-        window.socketIoClient.emit( SOCKET_TOGGLE_IGNORE, this.faderIndex)
+        window.socketIoClient.emit(SOCKET_TOGGLE_IGNORE, this.faderIndex)
     }
 
     handleLevel(event: any) {
-        window.socketIoClient.emit( SOCKET_SET_FADERLEVEL, 
-            {
-                'faderIndex' :this.faderIndex,
-                'level': parseFloat(event)
-            })
+        window.socketIoClient.emit(SOCKET_SET_FADERLEVEL, {
+            faderIndex: this.faderIndex,
+            level: parseFloat(event),
+        })
     }
 
     handleShowChanStrip() {
         this.props.dispatch({
             type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: this.faderIndex
-        });
+            channel: this.faderIndex,
+        })
     }
 
     fader() {
         return (
-            <Nouislider 
-                className={
-                    ClassNames(
-                        {
-                            'channel-volume-fader': true,
-                            "noUi-vertical": true, 
-                        }
-                    )
-                }
+            <Nouislider
+                className={ClassNames({
+                    'channel-volume-fader': true,
+                    'noUi-vertical': true,
+                })}
                 orientation="vertical"
-                direction='rtl'
+                direction="rtl"
                 animate={false}
-                range={{ min: 0, max: 1 }} 
-                start={[this.props.fader.faderLevel]} 
+                range={{ min: 0, max: 1 }}
+                start={[this.props.fader.faderLevel]}
                 step={0.01}
                 connect
                 onSlide={(event: any) => {
-                    this.handleLevel(event);
+                    this.handleLevel(event)
                 }}
-                
             />
         )
     }
 
-
     pgmButton = () => {
         return (
-
             <button
-                className={ClassNames("channel-pgm-button", {
-                    'on': this.props.fader.pgmOn,
-                    'mute': this.props.fader.muteOn
+                className={ClassNames('channel-pgm-button', {
+                    on: this.props.fader.pgmOn,
+                    mute: this.props.fader.muteOn,
                 })}
-                onClick={event => {
+                onClick={(event) => {
                     event.preventDefault()
-                    this.handlePgm();
+                    this.handlePgm()
                 }}
-                onTouchEnd={event => {
+                onTouchEnd={(event) => {
                     event.preventDefault()
                     this.handlePgm()
                 }}
             >
-                {this.props.fader.label != "" ? this.props.fader.label : ("CH " + (this.faderIndex + 1)) }
+                {this.props.fader.label != ''
+                    ? this.props.fader.label
+                    : 'CH ' + (this.faderIndex + 1)}
             </button>
         )
     }
 
-
     voButton = () => {
         return (
-
             <button
-                className={ClassNames("channel-vo-button", {
-                    'on': this.props.fader.voOn,
-                    'mute': this.props.fader.muteOn,
+                className={ClassNames('channel-vo-button', {
+                    on: this.props.fader.voOn,
+                    mute: this.props.fader.muteOn,
                 })}
-                onClick={event => {
+                onClick={(event) => {
                     event.preventDefault()
                     this.handleVo()
                 }}
-                onTouchEnd={event => {
+                onTouchEnd={(event) => {
                     event.preventDefault()
                     this.handleVo()
                 }}
@@ -168,23 +172,19 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     pstButton = () => {
         return (
             <button
-                className={ClassNames("channel-pst-button", {
-                    'on': this.props.fader.pstOn,
-                    'vo': this.props.fader.pstVoOn
+                className={ClassNames('channel-pst-button', {
+                    on: this.props.fader.pstOn,
+                    vo: this.props.fader.pstVoOn,
                 })}
-                onClick={event => {
-                    this.handlePst();
+                onClick={(event) => {
+                    this.handlePst()
                 }}
             >
-            {this.props.settings.automationMode ? 
-                <React.Fragment>
-                    CUE NEXT
-                </React.Fragment>
-                :
-                <React.Fragment>
-                    PST
-                </React.Fragment>
-            }
+                {this.props.settings.automationMode ? (
+                    <React.Fragment>CUE NEXT</React.Fragment>
+                ) : (
+                    <React.Fragment>PST</React.Fragment>
+                )}
             </button>
         )
     }
@@ -192,14 +192,16 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     chanStripButton = () => {
         return (
             <button
-                className={ClassNames("channel-strip-button", {
-                    'on': this.props.settings.showChanStrip
+                className={ClassNames('channel-strip-button', {
+                    on: this.props.settings.showChanStrip,
                 })}
-                onClick={event => {
-                    this.handleShowChanStrip();
+                onClick={(event) => {
+                    this.handleShowChanStrip()
                 }}
             >
-            {this.props.fader.label != "" ? this.props.fader.label : ("CH " + (this.faderIndex + 1)) }
+                {this.props.fader.label != ''
+                    ? this.props.fader.label
+                    : 'CH ' + (this.faderIndex + 1)}
             </button>
         )
     }
@@ -207,33 +209,34 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     pflButton = () => {
         return (
             <button
-                className={ClassNames("channel-pst-button", {
-                    'on': this.props.fader.pflOn
+                className={ClassNames('channel-pst-button', {
+                    on: this.props.fader.pflOn,
                 })}
-                onClick={event => {
-                    this.handlePfl();
+                onClick={(event) => {
+                    this.handlePfl()
                 }}
-            >PFL</button>
+            >
+                PFL
+            </button>
         )
     }
-
 
     ignoreButton = () => {
         return (
             <button
-                className={ClassNames("channel-ignore-button", {
-                    'on': this.props.fader.ignoreAutomation
+                className={ClassNames('channel-ignore-button', {
+                    on: this.props.fader.ignoreAutomation,
                 })}
-                onClick={event => {
+                onClick={(event) => {
                     event.preventDefault()
-                    this.handleIgnore();
+                    this.handleIgnore()
                 }}
-                onTouchEnd={event => {
+                onTouchEnd={(event) => {
                     event.preventDefault()
                     this.handleIgnore()
                 }}
             >
-            {this.props.fader.ignoreAutomation ? "MANUAL" : "AUTO"}
+                {this.props.fader.ignoreAutomation ? 'MANUAL' : 'AUTO'}
             </button>
         )
     }
@@ -241,70 +244,64 @@ class Channel extends React.Component<IChannelProps & IChannelInjectProps & Stor
     muteButton = () => {
         return (
             <button
-                className={ClassNames("channel-mute-button", {
-                    'on': this.props.fader.muteOn
+                className={ClassNames('channel-mute-button', {
+                    on: this.props.fader.muteOn,
                 })}
-                onClick={event => {
+                onClick={(event) => {
                     event.preventDefault()
-                    this.handleMute();
+                    this.handleMute()
                 }}
-                onTouchEnd={event => {
+                onTouchEnd={(event) => {
                     event.preventDefault()
                     this.handleMute()
                 }}
             >
-            MUTE
+                MUTE
             </button>
         )
     }
 
     render() {
-        return (
-        this.props.fader.showChannel === false ?
-            null
-            :
+        return this.props.fader.showChannel === false ? null : (
             <div
-                className={
-                    ClassNames("channel-body", {
-                    "with-pfl": this.props.settings.showPfl,
-                    "pgm-on": this.props.fader.pgmOn,
-                    "vo-on": this.props.fader.voOn,
-                    "mute-on": this.props.fader.muteOn,
-                    "ignore-on": this.props.fader.ignoreAutomation,
-                })}>
+                className={ClassNames('channel-body', {
+                    'with-pfl': this.props.settings.showPfl,
+                    'pgm-on': this.props.fader.pgmOn,
+                    'vo-on': this.props.fader.voOn,
+                    'mute-on': this.props.fader.muteOn,
+                    'ignore-on': this.props.fader.ignoreAutomation,
+                })}
+            >
                 {this.ignoreButton()}
                 {this.muteButton()}
-                <br/>
+                <br />
                 <h4 className="channel-zero-indicator">_____</h4>
                 {this.fader()}
-                <VuMeter faderIndex = {this.faderIndex}/>
-                <br/>
+                <VuMeter faderIndex={this.faderIndex} />
+                <br />
                 {this.pgmButton()}
-                <br/>
-                {this.props.settings.automationMode ?
+                <br />
+                {this.props.settings.automationMode ? (
                     <React.Fragment>
                         {this.voButton()}
                         <br />
                     </React.Fragment>
-                    : null
-                }
-                {!this.props.settings.showPfl ?
+                ) : null}
+                {!this.props.settings.showPfl ? (
                     <React.Fragment>
                         {this.pstButton()}
-                        <br/>
+                        <br />
                     </React.Fragment>
-                    : null
-                }
-                {this.props.settings.showPfl ?
+                ) : null}
+                {this.props.settings.showPfl ? (
                     <React.Fragment>
                         {this.pflButton()}
                         <br />
                     </React.Fragment>
-                    : null
-                }
+                ) : null}
                 <React.Fragment>
                     {this.chanStripButton()}
-                    <br/>
+                    <br />
                 </React.Fragment>
             </div>
         )
@@ -316,9 +313,12 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         channels: state.channels[0].channel,
         fader: state.faders[0].fader[props.faderIndex],
         settings: state.settings[0],
-        channelType: 0, /* TODO: state.channels[0].channel[props.channelIndex].channelType, */
-        channelTypeIndex: props.faderIndex ,/* TODO: state.channels[0].channel[props.channelIndex].channelTypeIndex, */
+        channelType: 0 /* TODO: state.channels[0].channel[props.channelIndex].channelType, */,
+        channelTypeIndex:
+            props.faderIndex /* TODO: state.channels[0].channel[props.channelIndex].channelTypeIndex, */,
     }
 }
 
-export default connect<any, IChannelInjectProps, any>(mapStateToProps)(Channel) as any;
+export default connect<any, IChannelInjectProps, any>(mapStateToProps)(
+    Channel
+) as any

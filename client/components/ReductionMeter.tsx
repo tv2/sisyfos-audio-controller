@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { connect } from "react-redux"
+import { connect } from 'react-redux'
 
 //assets:
 import '../assets/css/ReductionMeter.css'
@@ -13,7 +13,9 @@ interface IVuMeterProps {
     faderIndex: number
 }
 
-export class ReductionMeter extends React.Component<IReductionMeterInjectedProps> {
+export class ReductionMeter extends React.Component<
+    IReductionMeterInjectedProps
+> {
     canvas: HTMLCanvasElement | undefined
 
     totalPeak: number = 0
@@ -26,28 +28,32 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
     }
 
     public shouldComponentUpdate(nextProps: IReductionMeterInjectedProps) {
-        return (
-            nextProps.reductionVal != this.props.reductionVal
-        )
+        return nextProps.reductionVal != this.props.reductionVal
     }
 
     totalHeight = () => {
-        return 170 / (window.mixerProtocol.meter.max - window.mixerProtocol.meter.min)
+        return (
+            170 /
+            (window.mixerProtocol.meter.max - window.mixerProtocol.meter.min)
+        )
     }
 
     getTotalPeak = () => {
         if (this.props.reductionVal > this.totalPeak) {
             this.totalPeak = this.props.reductionVal
         }
-        return this.totalHeight()*this.totalPeak
+        return this.totalHeight() * this.totalPeak
     }
 
     getWindowPeak = () => {
-        if (this.props.reductionVal > this.windowPeak || (Date.now() - this.windowLast) > this.WINDOW) {
+        if (
+            this.props.reductionVal > this.windowPeak ||
+            Date.now() - this.windowLast > this.WINDOW
+        ) {
             this.windowPeak = this.props.reductionVal
             this.windowLast = Date.now()
         }
-        return this.totalHeight()*this.windowPeak
+        return this.totalHeight() * this.windowPeak
     }
 
     calcLower = () => {
@@ -55,7 +61,7 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
         if (val >= window.mixerProtocol.meter.test) {
             val = window.mixerProtocol.meter.test
         }
-        return this.totalHeight() * val 
+        return this.totalHeight() * val
     }
 
     calcMiddle = () => {
@@ -63,11 +69,13 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
         if (val < window.mixerProtocol.meter.test) {
             val = 0
         } else if (val >= window.mixerProtocol.meter.zero) {
-            val = window.mixerProtocol.meter.zero - window.mixerProtocol.meter.test
+            val =
+                window.mixerProtocol.meter.zero -
+                window.mixerProtocol.meter.test
         } else {
             val = this.props.reductionVal - window.mixerProtocol.meter.test
         }
-        return this.totalHeight() * val+1
+        return this.totalHeight() * val + 1
     }
 
     calcUpper = () => {
@@ -78,7 +86,7 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
             val = this.props.reductionVal - window.mixerProtocol.meter.zero
         }
 
-        return this.totalHeight() * val+1
+        return this.totalHeight() * val + 1
     }
 
     setRef = (element: HTMLCanvasElement) => {
@@ -94,15 +102,20 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
     paintVuMeter = () => {
         if (!this.canvas) return
 
-        const context = this.canvas.getContext("2d", {
+        const context = this.canvas.getContext('2d', {
             antialias: false,
             stencil: false,
-            preserveDrawingBuffer: true
+            preserveDrawingBuffer: true,
         }) as CanvasRenderingContext2D
 
         if (!context) return
 
-        context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight)
+        context.clearRect(
+            0,
+            0,
+            this.canvas.clientWidth,
+            this.canvas.clientHeight
+        )
 
         // lower part
         context.fillStyle = 'rgb(0, 122, 37)'
@@ -112,7 +125,7 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
         let middle = this.calcMiddle()
         let middleRef = this.totalHeight() * window.mixerProtocol.meter.test
         context.fillStyle = 'rgb(53, 167, 0)'
-        context.fillRect(0, middleRef, this.canvas.clientWidth, middle)// (this.totalHeight() * (range - window.mixerProtocol.meter.test) - this.calcMiddle()), this.canvas.clientWidth, this.calcMiddle())
+        context.fillRect(0, middleRef, this.canvas.clientWidth, middle) // (this.totalHeight() * (range - window.mixerProtocol.meter.test) - this.calcMiddle()), this.canvas.clientWidth, this.calcMiddle())
 
         // upper part (too high/clip)
         let upper = this.calcUpper()
@@ -142,34 +155,37 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
         this.paintVuMeter()
 
         return (
-            <div className="reductionmeter-body"
+            <div
+                className="reductionmeter-body"
                 style={{
-                    "height" : this.totalHeight() + 30
+                    height: this.totalHeight() + 30,
                 }}
                 onClick={this.resetTotalPeak}
             >
                 <canvas
                     className="reductionmeter-canvas"
-                    style={
-                        {
-                            "height": this.totalHeight(),
-                            "top": "10px"
-                        }
-                    }
+                    style={{
+                        height: this.totalHeight(),
+                        top: '10px',
+                    }}
                     height={this.totalHeight()}
                     width={10}
                     ref={this.setRef}
                 ></canvas>
-
             </div>
         )
     }
 }
 
-const mapStateToProps = (state: any, props: any): IReductionMeterInjectedProps => {
+const mapStateToProps = (
+    state: any,
+    props: any
+): IReductionMeterInjectedProps => {
     return {
-        reductionVal: state.faders[0].vuMeters[props.faderIndex].reductionVal
+        reductionVal: state.faders[0].vuMeters[props.faderIndex].reductionVal,
     }
 }
 
-export default connect<IReductionMeterInjectedProps, any, any>(mapStateToProps)(ReductionMeter)
+export default connect<IReductionMeterInjectedProps, any, any>(mapStateToProps)(
+    ReductionMeter
+)
