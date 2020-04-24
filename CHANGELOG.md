@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.13.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.12.0...v2.13.0) (2020-04-24)
+
+
+### Features
+
+* Behringer X32 gain reduction meter ([c0e3469](https://github.com/olzzon/sisyfos-audio-controller/commit/c0e3469a48965542487b0e10e3561c603aabe268))
+* Behringer XR & Midas MR series Gain reduction. (rest of ch strip to be implemented) ([c81a7f4](https://github.com/olzzon/sisyfos-audio-controller/commit/c81a7f417188a082cd6d56f841baf7c707a1ceaa))
+* Behringer XR-Midas MR support mute-eq,comp,aux ([9df30ba](https://github.com/olzzon/sisyfos-audio-controller/commit/9df30bacd3c22050d13ba8352fe26fbc33c19a41))
+* Gain reduction meter & preparing Behringer XR protocol ([17510ab](https://github.com/olzzon/sisyfos-audio-controller/commit/17510abb784eda1cef9b1d328559b07ad0413ef6))
+* Vista 1-5-9 support fader level from Sisyfos on mono, st, and 5.1 channels ([5cf60b4](https://github.com/olzzon/sisyfos-audio-controller/commit/5cf60b4dd3282a4ad88a3feabbb358780fc29fff))
+
+
+### Bug Fixes
+
+* check if fader exists before requesting from mixer ([8c06344](https://github.com/olzzon/sisyfos-audio-controller/commit/8c06344a57285e215ae282aa872bf40c9963eb30))
+* reduction meter middler and upper rendering ([589d936](https://github.com/olzzon/sisyfos-audio-controller/commit/589d9365aa143c6fe348fd840647f288bda4ad36))
+* update Next Aux level in OSC protocol (behringer, Midas etc.) ([38a6ec7](https://github.com/olzzon/sisyfos-audio-controller/commit/38a6ec7ccff31953413ec273908832f263758d16))
+* update Next aux when changing fader level while it´s on ([2480904](https://github.com/olzzon/sisyfos-audio-controller/commit/248090484177d70e665aa42ff26335d9b372ed0a))
+* when receiving aux level, only set it of aux is assigned in sisyfos (to be able to only control the ones that the use should control and not all) ([afcc4cd](https://github.com/olzzon/sisyfos-audio-controller/commit/afcc4cdf6267e05371c27556385fa75a1b31ff85))
+
 ## [2.12.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v2.11.0...v2.12.0) (2020-04-02)
 
 
