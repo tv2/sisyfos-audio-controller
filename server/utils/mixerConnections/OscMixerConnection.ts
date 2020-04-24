@@ -488,7 +488,11 @@ export class OscMixerConnection {
         }    } 
 
     updateNextAux(channelIndex: number, level: number) {
-        return true
+        this.updateAuxLevel(
+            channelIndex,
+            state.settings[0].nextSendAux - 1,
+            level
+        );
     }
 
     updateThreshold(channelIndex: number, level: number) {
