@@ -415,6 +415,7 @@ export class MainThreadHandlers {
                     level: parseFloat(payload.level)
                 });
                 mixerGenericConnection.updateOutLevel(payload.faderIndex)
+                mixerGenericConnection.updateNextAux(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })
         )
