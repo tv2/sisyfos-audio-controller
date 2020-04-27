@@ -183,7 +183,7 @@ export class StuderVistaMixerConnection {
 
     updateOutLevel(channelIndex: number) {
         let outputlevel = state.channels[0].channel[channelIndex].outputLevel
-        let level = 20 * Math.log((1.3 * outputlevel) / 0.775)
+        let level = 40 * Math.log((1.14 * outputlevel) / 0.88)
         if (level < -90) {
             level = -90
         }
@@ -193,7 +193,7 @@ export class StuderVistaMixerConnection {
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let level = 20 * Math.log((1.3 * outputLevel) / 0.775)
+        let level = 40 * Math.log((1.14 * outputLevel) / 0.88)
         if (level < -90) {
             level = -90
         }
@@ -272,7 +272,12 @@ export class StuderVistaMixerConnection {
             ('0' + auxByte[0].toString(16)).slice(-2)
         )
 
-        level = level * (auxSendCmd.max - auxSendCmd.min) + auxSendCmd.min
+        level = 40 * Math.log((1.14 * level) / 0.88)
+        if (level < -80) {
+            level = -90
+        }
+        //level = level * (auxSendCmd.max - auxSendCmd.min) + auxSendCmd.min
+
         this.sendOutMessage(message, channel, level)
     }
 
