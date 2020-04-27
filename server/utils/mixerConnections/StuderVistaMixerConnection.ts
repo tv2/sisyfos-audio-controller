@@ -1,11 +1,14 @@
 //@ts-ignore
 import { BER } from 'node-emberplus'
-import { state } from '../../reducers/store'
+import { store, state } from '../../reducers/store'
 const net = require('net')
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import { logger } from '../logger'
+import { SET_MIXER_ONLINE } from '../../reducers/settingsActions'
+import { socketServer } from '../../expressHandler'
+import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
 
 export class StuderVistaMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -19,6 +22,8 @@ export class StuderVistaMixerConnection {
 
         this.emberNodeObject = new Array(200)
         this.mixerProtocol = mixerProtocol
+
+        this.mixerOnline(false)
 
         logger.info('Setting up Ember connection')
 
@@ -38,9 +43,11 @@ export class StuderVistaMixerConnection {
             .on('end', () => {
                 // When connection disconnected.
                 logger.info('Ember Client socket disconnect. ')
+                this.mixerOnline(false)
             })
             .on('error', (err: any) => {
                 logger.error(JSON.stringify(err))
+                this.mixerOnline(false)
             })
             .on('connect', () => {
                 this.setupMixerConnection()
@@ -50,12 +57,24 @@ export class StuderVistaMixerConnection {
     setupMixerConnection() {
         logger.info('Ember connection established')
 
+        this.mixerOnline(true)
+
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
             let emberTimer = setInterval(() => {
                 this.pingMixerCommand()
             }, this.mixerProtocol.pingTime)
         }
+    }
+
+    mixerOnline(state: boolean) {
+        store.dispatch({
+            type: SET_MIXER_ONLINE,
+            mixerOnline: state,
+        })
+        socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
+            mixerOnline: state,
+        })
     }
 
     subscribeFaderLevel(

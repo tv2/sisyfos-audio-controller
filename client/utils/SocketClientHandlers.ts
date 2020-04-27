@@ -21,6 +21,7 @@ import {
     SOCKET_SET_STORE_CHANNEL,
     SOCKET_RETURN_CCG_LIST,
     SOCKET_SET_VU_REDUCTION,
+    SOCKET_SET_MIXER_ONLINE,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 
 export const socketClientHandlers = () => {
@@ -83,6 +84,12 @@ export const socketClientHandlers = () => {
             window.mixerProtocol = payload.mixerProtocol
             window.mixerProtocolPresets = payload.mixerProtocolPresets
             window.mixerProtocolList = payload.mixerProtocolList
+        })
+        .on(SOCKET_SET_MIXER_ONLINE, (payload: any) => {
+            window.storeRedux.dispatch({
+                type: SET_MIXER_ONLINE,
+                mixerOnline: payload.mixerOnline,
+            })
         })
         .on(SOCKET_SET_STORE_FADER, (payload: any) => {
             window.storeRedux.dispatch({

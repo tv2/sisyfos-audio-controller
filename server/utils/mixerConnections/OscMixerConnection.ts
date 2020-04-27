@@ -34,6 +34,7 @@ import {
 import {
     SOCKET_SET_VU,
     SOCKET_SET_VU_REDUCTION,
+    SOCKET_SET_MIXER_ONLINE,
 } from '../../constants/SOCKET_IO_DISPATCHERS'
 import { logger } from '../logger'
 
@@ -67,24 +68,27 @@ export class OscMixerConnection {
         this.setupMixerConnection()
     }
 
+    mixerOnline(state: boolean) {
+        store.dispatch({
+            type: SET_MIXER_ONLINE,
+            mixerOnline: state,
+        })
+        socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
+            mixerOnline: state,
+        })
+    }
+
     setupMixerConnection() {
         this.oscConnection
             .on('ready', () => {
                 logger.info('Receiving state of desk', {})
                 this.initialCommands()
 
-                store.dispatch({
-                    type: SET_MIXER_ONLINE,
-                    mixerOnline: true,
-                })
+                this.mixerOnline(true)
                 global.mainThreadHandler.updateFullClientStore()
             })
             .on('message', (message: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                store.dispatch({
-                    type: SET_MIXER_ONLINE,
-                    mixerOnline: true,
-                })
                 logger.verbose('Received OSC message: ' + message.address, {})
 
                 if (
@@ -434,12 +438,13 @@ export class OscMixerConnection {
                 }
             })
             .on('error', (error: any) => {
-                store.dispatch({
-                    type: SET_MIXER_ONLINE,
-                    mixerOnline: false,
-                })
+                this.mixerOnline(false)
                 global.mainThreadHandler.updateFullClientStore()
                 logger.error('Error : ' + String(error), {})
+                logger.info('Lost OSC connection', {})
+            })
+            .on('disconnect', () => {
+                this.mixerOnline(false)
                 logger.info('Lost OSC connection', {})
             })
 
