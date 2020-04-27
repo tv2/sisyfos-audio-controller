@@ -75,14 +75,6 @@ export const StuderVistaMaster: IMixerProtocol = {
                 LO_MID: [emptyMixerMessage()],
                 MID: [emptyMixerMessage()],
                 HIGH: [emptyMixerMessage()],
-                /*
-            Ch 1 Aux 1
-            7f 8f ff fe d9 5c 80 30 80 a1 29 31 27 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 a1 15 31 13 a4 11 31 0f a1 0d 31 0b e1 09 31 07 63 05 09 03 80 03 09 00 00 00 00
-            Ch 1 Aux 12
-            7f 8f ff fe d9 5c 80 30 80 a1 29 31 27 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 a1 15 31 13 a4 11 31 0f {ac} 0d 31 0b e1 09 31 07 63 05 09 03 c0 05 29 00 00 00 00
-
-
-            */
                 AUX_LEVEL: [
                     {
                         mixerMessage:
@@ -194,9 +186,39 @@ export const StuderVistaMaster: IMixerProtocol = {
                 LO_MID: [emptyMixerMessage()],
                 MID: [emptyMixerMessage()],
                 HIGH: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
+                AUX_LEVEL: [
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a1 29 31 27 a1 25 31 23 a1 21 31 1f a2 1d 31 1b {channel} 19 31 17 a1 15 31 13 a4 11 31 0f {aux} 0d 31 0b e1 09 31 07 63 {argument}',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_MUTE_ON: [
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a1 23 31 21 a1 1f 31 1d a1 1b 31 19 a2 17 31 15 {channel} 13 31 11 a1 0f 31 0d a2 0b 31 09 e2 07 31 05 63 03 02 01 01 00 00 00 00',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_MUTE_OFF: [
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a1 23 31 21 a1 1f 31 1d a1 1b 31 19 a2 17 31 15 {channel} 13 31 11 a1 0f 31 0d a2 0b 31 09 e2 07 31 05 63 03 02 01 00 00 00 00 00',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
             },
         },
         {
@@ -273,9 +295,39 @@ export const StuderVistaMaster: IMixerProtocol = {
                 LO_MID: [emptyMixerMessage()],
                 MID: [emptyMixerMessage()],
                 HIGH: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
+                AUX_LEVEL: [
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a1 29 31 27 a1 25 31 23 a1 21 31 1f a3 1d 31 1b {channel} 19 31 17 a1 15 31 13 a4 11 31 0f {aux} 0d 31 0b e1 09 31 07 63 {argument}',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_MUTE_ON: [
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a1 23 31 21 a1 1f 31 1d a1 1b 31 19 a3 17 31 15 {channel} 13 31 11 a1 0f 31 0d a2 0b 31 09 e2 07 31 05 63 03 02 01 01 00 00 00 00',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_MUTE_OFF: [
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a1 23 31 21 a1 1f 31 1d a1 1b 31 19 a3 17 31 15 {channel} 13 31 11 a1 0f 31 0d a2 0b 31 09 e2 07 31 05 63 03 02 01 00 00 00 00 00',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
             },
         },
     ],
