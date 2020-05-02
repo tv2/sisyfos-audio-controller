@@ -1,4 +1,4 @@
-// import { HuiMidiRemoteConnection } from './remoteConnections/HuiMidiRemoteConnection'
+import { HuiMidiRemoteConnection } from './remoteConnections/HuiMidiRemoteConnection'
 import { SkaarhojRemoteConnection } from './remoteConnections/SkaarhojRemoteConnection'
 
 export class RemoteConnection {

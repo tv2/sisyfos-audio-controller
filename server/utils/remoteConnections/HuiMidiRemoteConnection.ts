@@ -14,7 +14,7 @@ import {
     IRemoteProtocol,
     RemoteFaderPresets,
     MidiReceiveTypes,
-} from '../../constants/RemoteFaderPresets'
+} from '../../constants/remoteProtocols/HuiRemoteFaderPresets'
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
 
 export class HuiMidiRemoteConnection {

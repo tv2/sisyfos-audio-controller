@@ -1,5 +1,5 @@
 //Node Modules:
-const net = require('net')
+const Net = require('net')
 import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
@@ -13,31 +13,31 @@ import {
 import {
     IRemoteProtocol,
     RemoteFaderPresets,
-    MidiReceiveTypes,
-} from '../../constants/RemoteFaderPresets'
+    RawReceiveTypes,
+} from '../../constants/remoteProtocols/SkaarhojProtocol'
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
 import { logger } from '../logger'
 
 export class SkaarhojRemoteConnection {
     store: any
     remoteProtocol: IRemoteProtocol
-    midiReceiveTypes = MidiReceiveTypes
+    rawReceiveTypes = RawReceiveTypes
     mixerProtocol: any
-    midiInput: any
-    midiOutput: any
-    activeHuiChannel: number = 0
+    rawInput: any
+    rawOutput: any
+    activeRawChannel: number = 0
 
     constructor() {
         this.convertFromRemoteLevel = this.convertFromRemoteLevel.bind(this)
         this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this)
         this.updateRemoteFaderState = this.updateRemoteFaderState.bind(this)
 
-        this.remoteProtocol = RemoteFaderPresets.hui
+        this.remoteProtocol = RemoteFaderPresets.rawPanel
         this.mixerProtocol =
             MixerProtocolPresets[state.settings[0].mixerProtocol] ||
             MixerProtocolPresets.genericMidi
 
-        const server = net.createServer((socket: any) => {
+        const server = Net.createServer((socket: any) => {
             socket.write('Echo server\r\n')
             socket.pipe(socket)
         })
@@ -58,8 +58,8 @@ export class SkaarhojRemoteConnection {
     }
 
     setupRemoteFaderConnection() {
-        this.midiInput.addListener(
-            this.midiReceiveTypes[
+        this.rawInput.addListener(
+            this.rawReceiveTypes[
                 this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type
             ],
             undefined,
@@ -83,33 +83,33 @@ export class SkaarhojRemoteConnection {
                     console.log('Received message (' + message.data + ').')
                     if (message.data[2] < 9) {
                         //Set active channel for next midi message:
-                        this.activeHuiChannel = message.data[2]
+                        this.activeRawChannel = message.data[2]
                     } else if (message.data[2] && message.data[2] === 65) {
                         //SELECT button - toggle PGM ON/OFF
                         store.dispatch({
                             type: TOGGLE_PGM,
-                            channel: this.activeHuiChannel,
+                            channel: this.activeRawChannel,
                         })
                         mixerGenericConnection.updateOutLevel(
-                            this.activeHuiChannel
+                            this.activeRawChannel
                         )
-                        this.updateRemotePgmPstPfl(this.activeHuiChannel)
+                        this.updateRemotePgmPstPfl(this.activeRawChannel)
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
                         store.dispatch({
                             type: TOGGLE_PFL,
-                            channel: this.activeHuiChannel,
+                            channel: this.activeRawChannel,
                         })
                         mixerGenericConnection.updateOutLevel(
-                            this.activeHuiChannel
+                            this.activeRawChannel
                         )
-                        this.updateRemotePgmPstPfl(this.activeHuiChannel)
+                        this.updateRemotePgmPstPfl(this.activeRawChannel)
                     }
                 }
             }
         )
         //for testing:
-        this.midiInput.addListener('noteon', 'all', (error: any) => {
+        this.rawInput.addListener('noteon', 'all', (error: any) => {
             console.log(
                 "Received 'noteon' message (" +
                     error.note.name +
@@ -143,7 +143,7 @@ export class SkaarhojRemoteConnection {
     }
 
     updateRemoteFaderState(channelIndex: number, outputLevel: number) {
-        if (!this.midiOutput) {
+        if (!this.rawOutput) {
             return
         }
         console.log(
@@ -153,30 +153,30 @@ export class SkaarhojRemoteConnection {
             'OutputLevel : ',
             this.convertToRemoteLevel(outputLevel)
         )
-        this.midiOutput.sendControlChange(
+        this.rawOutput.sendControlChange(
             channelIndex,
             this.convertToRemoteLevel(outputLevel),
             1
         )
-        this.midiOutput.sendControlChange(32 + channelIndex, 0, 1)
+        this.rawOutput.sendControlChange(32 + channelIndex, 0, 1)
         this.updateRemotePgmPstPfl(channelIndex)
     }
 
     updateRemotePgmPstPfl(channelIndex: number) {
-        if (!this.midiOutput) {
+        if (!this.rawOutput) {
             return
         }
         //Update SELECT button:
-        this.midiOutput.sendControlChange(12, channelIndex, 1)
-        this.midiOutput.sendControlChange(
+        this.rawOutput.sendControlChange(12, channelIndex, 1)
+        this.rawOutput.sendControlChange(
             44,
             1 + 64 * (state.faders[0].fader[channelIndex].pgmOn ? 1 : 0),
             1
         )
 
         //Update SOLO button:
-        this.midiOutput.sendControlChange(12, channelIndex, 1)
-        this.midiOutput.sendControlChange(
+        this.rawOutput.sendControlChange(12, channelIndex, 1)
+        this.rawOutput.sendControlChange(
             44,
             3 + 64 * (state.faders[0].fader[channelIndex].pflOn ? 1 : 0),
             1

@@ -1,7 +1,3 @@
-//While developing mixer specific settings will be in one file.
-//At first release these will be in seperate files
-//So it´s easy to add new equipment.
-
 export interface IMidiSendMessage {
     message: string
     value: any
