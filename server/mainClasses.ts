@@ -4,7 +4,7 @@ import {
 } from './constants/MixerProtocolPresets'
 import { MixerGenericConnection } from './utils/MixerConnection'
 import { AutomationConnection } from './utils/AutomationConnection'
-import { HuiMidiRemoteConnection } from './utils/HuiMidiRemoteConnection'
+import { RemoteConnection } from './utils/RemoteConnection'
 
 import { state } from './reducers/store'
 let mixerProtocolPresets = MixerProtocolPresets
@@ -12,9 +12,9 @@ let mixerProtocolList = MixerProtocolList
 
 let mixerGenericConnection = new MixerGenericConnection()
 let automationConnection = new AutomationConnection()
-let huiRemoteConnection: HuiMidiRemoteConnection | null = null
+let remoteConnections: RemoteConnection | null = null
 if (state.settings[0].enableRemoteFader) {
-    huiRemoteConnection = new HuiMidiRemoteConnection()
+    remoteConnections = new RemoteConnection()
 }
 
 export {
@@ -22,5 +22,5 @@ export {
     mixerProtocolPresets,
     mixerGenericConnection,
     automationConnection,
-    huiRemoteConnection,
+    remoteConnections,
 }
