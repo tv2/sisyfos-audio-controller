@@ -1,5 +1,5 @@
 //Node Modules:
-import WebMidi from 'webmidi'
+const net = require('net')
 import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
@@ -16,6 +16,7 @@ import {
     MidiReceiveTypes,
 } from '../../constants/RemoteFaderPresets'
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
+import { logger } from '../logger'
 
 export class SkaarhojRemoteConnection {
     store: any
@@ -36,43 +37,24 @@ export class SkaarhojRemoteConnection {
             MixerProtocolPresets[state.settings[0].mixerProtocol] ||
             MixerProtocolPresets.genericMidi
 
-        if (!state.settings[0].enableRemoteFader) {
-            return
-        }
-
-        WebMidi.enable((err) => {
-            if (err) {
-                console.log(
-                    'Remote MidiController connection could not be enabled.',
-                    err
-                )
-            }
-
-            this.midiInput = WebMidi.getInputByName(
-                state.settings[0].remoteFaderMidiInputPort
-            )
-            this.midiOutput = WebMidi.getOutputByName(
-                state.settings[0].remoteFaderMidiOutputPort
-            )
-
-            if (this.midiInput && this.midiOutput) {
-                console.log('Remote Midi Controller connected on port')
-                console.log(
-                    'Midi input :',
-                    state.settings[0].remoteFaderMidiInputPort
-                )
-                console.log(
-                    'Midi output :',
-                    state.settings[0].remoteFaderMidiOutputPort
-                )
-
-                this.setupRemoteFaderConnection()
-            } else {
-                console.log(
-                    'Remote Midi Controller not found or not configured.'
-                )
-            }
+        const server = net.createServer((socket: any) => {
+            socket.write('Echo server\r\n')
+            socket.pipe(socket)
         })
+
+        server.listen(9923, '127.0.0.1')
+        logger.info('Skaarhoj server listening at port 9923')
+
+        server
+            .on('connection', () => {
+                this.setupRemoteFaderConnection()
+            })
+            .on('data', (data: any) => {
+                console.log('Received: ' + data)
+            })
+            .on('close', function () {
+                console.log('Connection closed')
+            })
     }
 
     setupRemoteFaderConnection() {

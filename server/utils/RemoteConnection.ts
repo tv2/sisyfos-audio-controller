@@ -1,16 +1,19 @@
-//Node Modules:
-import { store, state } from '../reducers/store'
-import { HuiMidiRemoteConnection } from './remoteConnections/HuiMidiRemoteConnection'
+// import { HuiMidiRemoteConnection } from './remoteConnections/HuiMidiRemoteConnection'
+import { SkaarhojRemoteConnection } from './remoteConnections/SkaarhojRemoteConnection'
 
 export class RemoteConnection {
     store: any
     remoteConnection: any
 
     constructor() {
-        if (!state.settings[0].enableRemoteFader) {
-            return
+        // HUI SUPPORT IS DISABLED AND SKAARHOJ IS ALWAYS ON
+        // HUI needs to be updated so for now it´s always disabled.
+        this.remoteConnection = new SkaarhojRemoteConnection()
+        /*
+        if (state.settings[0].enableRemoteFader) {
+            this.remoteConnection = new HuiMidiRemoteConnection()
         }
-        this.remoteConnection = new HuiMidiRemoteConnection()
+        */
     }
 
     updateRemoteFaderState(channelIndex: number, outputLevel: number) {
