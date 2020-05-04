@@ -1,21 +1,21 @@
 //Node Modules:
 import WebMidi from 'webmidi'
-import { store, state } from '../reducers/store'
-import { mixerGenericConnection } from '../mainClasses'
+import { store, state } from '../../reducers/store'
+import { mixerGenericConnection } from '../../mainClasses'
 
 import {
     SET_FADER_LEVEL,
     TOGGLE_PGM,
     TOGGLE_PFL,
-} from '../reducers/faderActions'
+} from '../../reducers/faderActions'
 
 //Utils:
 import {
     IRemoteProtocol,
     RemoteFaderPresets,
     MidiReceiveTypes,
-} from '../constants/RemoteFaderPresets'
-import { MixerProtocolPresets } from '../constants/MixerProtocolPresets'
+} from '../../constants/remoteProtocols/HuiRemoteFaderPresets'
+import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
 
 export class HuiMidiRemoteConnection {
     store: any
