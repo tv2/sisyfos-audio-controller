@@ -55,6 +55,7 @@
         ]
     },
     "dependencies": {
+        "asn1": "github:evs-broadcast/node-asn1",
         "casparcg-connection": "^4.9.0",
         "classnames": "^2.2.6",
         "express": "^4.17.1",
