@@ -49,7 +49,7 @@ export class SkaarhojRemoteConnection {
                         } else if (command === 'list') {
                             console.log('Activating Skaarhoj panel')
                             client.write('ActivePanel=1\n')
-                        } else if (command.includes('map=')) {
+                        } else if (command.includes('map=1:')) {
                             // Initialize:
                             console.log('Initializing Skaarhoj remote')
                             state.faders[0].fader.forEach(
@@ -73,8 +73,16 @@ export class SkaarhojRemoteConnection {
                         }
                     })
             })
+            .on('error', function () {
+                if (this.clientList) {
+                    this.clientList.splice(this.clientList.find(client), 1)
+                }
+                console.log('Lost Connection to Skaarhoj panel')
+            })
             .on('close', function () {
-                this.clientList.slice(this.clientList.find(client))
+                if (this.clientList) {
+                    this.clientList.splice(this.clientList.find(client), 1)
+                }
                 console.log('Skaarhoj Connection closed')
             })
     }
