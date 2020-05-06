@@ -84,16 +84,26 @@ export class SkaarhojRemoteConnection {
             command.slice(command.indexOf('#') + 1, command.indexOf('='))
         )
         let event = command.slice(command.indexOf('=') + 1)
-        let level = 0
         if (btnNumber > 6 && btnNumber < 11) {
             let channel = btnNumber - 7
+            let level = state.faders[0].fader[channel].faderLevel
             if (event === 'Enc:1') {
-                level = state.faders[0].fader[channel].faderLevel + 0.01
+                level += 0.01
                 if (level > 1) {
                     level = 1
                 }
+            } else if (event === 'Enc:2') {
+                level += 0.1
+                if (level < 0) {
+                    level = 0
+                }
             } else if (event === 'Enc:-1') {
-                level = state.faders[0].fader[channel].faderLevel - 0.01
+                level -= 0.01
+                if (level < 0) {
+                    level = 0
+                }
+            } else if (event === 'Enc:-2') {
+                level -= 0.1
                 if (level < 0) {
                     level = 0
                 }
