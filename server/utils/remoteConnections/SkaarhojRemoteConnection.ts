@@ -45,11 +45,25 @@ export class SkaarhojRemoteConnection {
                     .split('\n')
                     .forEach((command: string) => {
                         if (command === 'RDY') {
-                            this.setupRemoteFaderConnection(client)
-                            client.write('ready\n')
+                            client.write('ready ok\n')
                         } else if (command === 'list') {
                             console.log('Activating Skaarhoj panel')
                             client.write('ActivePanel=1\n')
+                        } else if (command.includes('map=')) {
+                            // Initialize:
+                            console.log('Initializing Skaarhoj remote')
+                            state.faders[0].fader.forEach(
+                                (fader: any, index: number) => {
+                                    console.log(
+                                        'Initializing skaahoj fader - index:',
+                                        index
+                                    )
+                                    this.updateRemoteFaderState(
+                                        index,
+                                        state.faders[0].fader[index].faderLevel
+                                    )
+                                }
+                            )
                         } else if (command === 'ping') {
                             client.write('pingo\n')
                         } else if (command === 'ack') {
@@ -123,14 +137,7 @@ export class SkaarhojRemoteConnection {
             console.log('Sending command to Skaarhoj :', formattetString)
             client.write(formattetString)
         })
-        /*        this.rawOutput.sendControlChange(
-            channelIndex,
-            this.convertToRemoteLevel(outputLevel),
-            1
-        )
-        this.rawOutput.sendControlChange(32 + channelIndex, 0, 1)
         this.updateRemotePgmPstPfl(channelIndex)
-        */
     }
 
     updateRemotePgmPstPfl(channelIndex: number) {
