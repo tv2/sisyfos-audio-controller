@@ -1,19 +1,14 @@
 //Node Modules:
-const Net = require('net')
+const net = require('net')
 import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
-import {
-    SET_FADER_LEVEL,
-    TOGGLE_PGM,
-    TOGGLE_PFL,
-} from '../../reducers/faderActions'
+import { SET_FADER_LEVEL } from '../../reducers/faderActions'
 
 //Utils:
 import {
     IRemoteProtocol,
     RemoteFaderPresets,
-    RawReceiveTypes,
 } from '../../constants/remoteProtocols/SkaarhojProtocol'
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
 import { logger } from '../logger'
@@ -21,148 +16,125 @@ import { logger } from '../logger'
 export class SkaarhojRemoteConnection {
     store: any
     remoteProtocol: IRemoteProtocol
-    rawReceiveTypes = RawReceiveTypes
     mixerProtocol: any
-    rawInput: any
-    rawOutput: any
-    activeRawChannel: number = 0
+    clientList: any[]
 
     constructor() {
-        this.convertFromRemoteLevel = this.convertFromRemoteLevel.bind(this)
-        this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this)
         this.updateRemoteFaderState = this.updateRemoteFaderState.bind(this)
 
         this.remoteProtocol = RemoteFaderPresets.rawPanel
         this.mixerProtocol =
             MixerProtocolPresets[state.settings[0].mixerProtocol] ||
             MixerProtocolPresets.genericMidi
+        this.clientList = []
 
-        const server = Net.createServer((socket: any) => {
-            socket.write('Echo server\r\n')
-            socket.pipe(socket)
+        const server = net.createServer((client: any) => {
+            this.clientList.push(client)
+            this.setupRemoteFaderConnection(client)
         })
 
-        server.listen(9923, '127.0.0.1')
+        server.listen(9923, '0.0.0.0')
         logger.info('Skaarhoj server listening at port 9923')
+    }
 
-        server
-            .on('connection', () => {
-                this.setupRemoteFaderConnection()
-            })
+    setupRemoteFaderConnection(client: any) {
+        client
             .on('data', (data: any) => {
-                console.log('Received: ' + data)
+                console.log('Skaarhoj Data Received: ' + data.toString())
+                data.toString()
+                    .split('\n')
+                    .forEach((command: string) => {
+                        if (command === 'RDY') {
+                            this.setupRemoteFaderConnection(client)
+                            client.write('ready\n')
+                        } else if (command === 'list') {
+                            console.log('Activating Skaarhoj panel')
+                            client.write('ActivePanel=1\n')
+                        } else if (command === 'ping') {
+                            client.write('pingo\n')
+                        } else if (command === 'ack') {
+                            client.write('ack\n')
+                        } else if (command.substring(0, 4) === 'HWC#') {
+                            this.handleRemoteCommand(command)
+                        }
+                    })
             })
             .on('close', function () {
-                console.log('Connection closed')
+                this.clientList.slice(this.clientList.find(client))
+                console.log('Skaarhoj Connection closed')
             })
     }
 
-    setupRemoteFaderConnection() {
-        this.rawInput.addListener(
-            this.rawReceiveTypes[
-                this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type
-            ],
-            undefined,
-            (message: any) => {
-                if (message.data[1] < 9) {
-                    //Fader changed:
-                    console.log(
-                        'Received Fader message (' + message.data + ').'
-                    )
-                    store.dispatch({
-                        type: SET_FADER_LEVEL,
-                        channel: message.data[1],
-                        level: this.convertFromRemoteLevel(message.data[2]),
-                    })
-                    mixerGenericConnection.updateOutLevel(message.data[1])
-                    this.updateRemoteFaderState(
-                        message.data[1],
-                        this.convertFromRemoteLevel(message.data[2])
-                    )
-                } else if ((message.data[1] = 15)) {
-                    console.log('Received message (' + message.data + ').')
-                    if (message.data[2] < 9) {
-                        //Set active channel for next midi message:
-                        this.activeRawChannel = message.data[2]
-                    } else if (message.data[2] && message.data[2] === 65) {
-                        //SELECT button - toggle PGM ON/OFF
-                        store.dispatch({
-                            type: TOGGLE_PGM,
-                            channel: this.activeRawChannel,
-                        })
-                        mixerGenericConnection.updateOutLevel(
-                            this.activeRawChannel
-                        )
-                        this.updateRemotePgmPstPfl(this.activeRawChannel)
-                    } else if (message.data[2] && message.data[2] === 67) {
-                        //SOLO button - toggle PFL ON/OFF
-                        store.dispatch({
-                            type: TOGGLE_PFL,
-                            channel: this.activeRawChannel,
-                        })
-                        mixerGenericConnection.updateOutLevel(
-                            this.activeRawChannel
-                        )
-                        this.updateRemotePgmPstPfl(this.activeRawChannel)
-                    }
+    handleRemoteCommand(command: string) {
+        let btnNumber = parseInt(
+            command.slice(command.indexOf('#') + 1, command.indexOf('='))
+        )
+        let event = command.slice(command.indexOf('=') + 1)
+        let level = 0
+        if (btnNumber > 6 && btnNumber < 11) {
+            let channel = btnNumber - 7
+            if (event === 'Enc:1') {
+                level = state.faders[0].fader[channel].faderLevel + 0.01
+                if (level > 1) {
+                    level = 1
+                }
+            } else if (event === 'Enc:-1') {
+                level = state.faders[0].fader[channel].faderLevel - 0.01
+                if (level < 0) {
+                    level = 0
                 }
             }
-        )
-        //for testing:
-        this.rawInput.addListener('noteon', 'all', (error: any) => {
-            console.log(
-                "Received 'noteon' message (" +
-                    error.note.name +
-                    error.note.octave +
-                    ').'
-            )
-        })
-    }
-
-    convertToRemoteLevel(level: number) {
-        let oldMin = this.mixerProtocol.fader.min
-        let oldMax = this.mixerProtocol.fader.max
-        let newMin = this.remoteProtocol.fader.min
-        let newMax = this.remoteProtocol.fader.max
-
-        let indexLevel = (level / (oldMax - oldMin)) * (newMax - newMin)
-        let newLevel = newMin + indexLevel
-        return newLevel //convert from mixer min-max to remote min-max
-    }
-
-    convertFromRemoteLevel(level: number) {
-        let oldMin = this.remoteProtocol.fader.min
-        let oldMax = this.remoteProtocol.fader.max
-        let newMin = this.mixerProtocol.fader.min
-        let newMax = this.mixerProtocol.fader.max
-
-        let indexLevel = (level / (oldMax - oldMin)) * (newMax - newMin)
-        let newLevel = newMin + indexLevel
-
-        return newLevel //convert from mixer min-max to remote min-max
+            //Fader changed:
+            console.log('Received Fader ' + channel + ' Level : ' + level)
+            store.dispatch({
+                type: SET_FADER_LEVEL,
+                channel: channel,
+                level: level,
+            })
+            mixerGenericConnection.updateOutLevel(channel)
+            global.mainThreadHandler.updatePartialStore(channel)
+            this.updateRemoteFaderState(channel, level)
+        }
     }
 
     updateRemoteFaderState(channelIndex: number, outputLevel: number) {
-        if (!this.rawOutput) {
-            return
-        }
         console.log(
-            'Send fader update :',
+            'Send fader update - ',
             'Channel index : ',
             channelIndex,
             'OutputLevel : ',
-            this.convertToRemoteLevel(outputLevel)
+            outputLevel
         )
-        this.rawOutput.sendControlChange(
+
+        this.clientList.forEach((client) => {
+            let formatLevel = (outputLevel * 100).toFixed()
+            let formatLabel =
+                state.faders[0].fader[channelIndex].label ||
+                'CH' + String(channelIndex + 1)
+            let formattetString =
+                'HWCt#' +
+                String(channelIndex + 7) +
+                '=' +
+                formatLevel +
+                '|||||' +
+                formatLabel +
+                '\n'
+            // 32767|||||label
+            console.log('Sending command to Skaarhoj :', formattetString)
+            client.write(formattetString)
+        })
+        /*        this.rawOutput.sendControlChange(
             channelIndex,
             this.convertToRemoteLevel(outputLevel),
             1
         )
         this.rawOutput.sendControlChange(32 + channelIndex, 0, 1)
         this.updateRemotePgmPstPfl(channelIndex)
+        */
     }
 
     updateRemotePgmPstPfl(channelIndex: number) {
+        /*
         if (!this.rawOutput) {
             return
         }
@@ -181,5 +153,6 @@ export class SkaarhojRemoteConnection {
             3 + 64 * (state.faders[0].fader[channelIndex].pflOn ? 1 : 0),
             1
         )
+        */
     }
 }
