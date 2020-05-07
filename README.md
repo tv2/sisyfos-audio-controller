@@ -159,10 +159,12 @@ As NEXT has been implemented, and PFL usually only work on on channel at a time,
 ## Skaarhoj panels:
 
 Skaarhoj in RAW panel mode is supported for rotary buttons including labels.
-HWC#1-xx = fader level on Sisyfos
-HWC#81-89 = enabled Monitor sends for Aux mix% on fader 1
-HWC#91-99 = enabled Monitor sends for Aux mix% on fader 2
-HWC#91-99 = enabled Monitor sends for Aux mix% on fader 3
+
+-   HWC#1-xx = fader level on Sisyfos
+-   HWC#81-89 = enabled Monitor sends for Aux mix% on fader 1
+-   HWC#91-99 = enabled Monitor sends for Aux mix% on fader 2
+-   HWC#101-109 = enabled Monitor sends for Aux mix% on fader 3
+
 The monitor sends are the same as those on the Channel Strip.
 
 ## Automation Support:

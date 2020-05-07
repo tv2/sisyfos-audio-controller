@@ -138,6 +138,9 @@ export class SkaarhojRemoteConnection {
     handleAuxLevelCommand(command: string, btnNumber: number) {
         let auxBtnNumber =
             btnNumber - parseInt((btnNumber / 10).toFixed(0)) * 10
+        if (auxBtnNumber > 9) {
+            return
+        }
         let panelNumber = (btnNumber - auxBtnNumber - 70) / 10
         let faderIndex = panelNumber - 1
         let auxSendIndex = state.faders[0].fader[faderIndex].monitor - 1
@@ -201,14 +204,6 @@ export class SkaarhojRemoteConnection {
     }
 
     updateRemoteFaderState(channelIndex: number, outputLevel: number) {
-        console.log(
-            'Send fader update - ',
-            'Channel index : ',
-            channelIndex,
-            'OutputLevel : ',
-            outputLevel
-        )
-
         let formatLevel = (outputLevel * 100).toFixed()
         let formatLabel =
             state.faders[0].fader[channelIndex].label ||
@@ -222,7 +217,7 @@ export class SkaarhojRemoteConnection {
             formatLabel +
             '\n'
         // 32767|||||label
-        console.log('Sending command to Skaarhoj :', formattetString)
+        logger.verbose('Sending command to Skaarhoj :' + formattetString)
         this.clientList.forEach((client) => {
             client.write(formattetString)
         })
@@ -235,13 +230,6 @@ export class SkaarhojRemoteConnection {
     }
 
     updateRemoteAuxPanel(panelNumber: number) {
-        console.log(
-            'Updating Aux Panel number ' +
-                panelNumber +
-                ' (hwc#' +
-                String(panelNumber + 80) +
-                '-x8'
-        )
         let faderIndex = panelNumber - 1
         let auxSendIndex = state.faders[0].fader[faderIndex].monitor - 1
         if (auxSendIndex < 0) {
@@ -249,7 +237,10 @@ export class SkaarhojRemoteConnection {
         }
         let hwButton = panelNumber * 10 + 70 + 1
         state.channels[0].channel.forEach((ch: any, index: number) => {
-            if (ch.auxLevel[auxSendIndex] >= 0) {
+            if (
+                ch.auxLevel[auxSendIndex] >= 0 &&
+                hwButton <= panelNumber * 10 + 70 + 9
+            ) {
                 let formatLevel = (ch.auxLevel[auxSendIndex] * 100).toFixed()
                 let formatLabel =
                     state.faders[0].fader[ch.assignedFader].label ||
@@ -271,25 +262,6 @@ export class SkaarhojRemoteConnection {
     }
 
     updateRemotePgmPstPfl(channelIndex: number) {
-        /*
-        if (!this.rawOutput) {
-            return
-        }
-        //Update SELECT button:
-        this.rawOutput.sendControlChange(12, channelIndex, 1)
-        this.rawOutput.sendControlChange(
-            44,
-            1 + 64 * (state.faders[0].fader[channelIndex].pgmOn ? 1 : 0),
-            1
-        )
-
-        //Update SOLO button:
-        this.rawOutput.sendControlChange(12, channelIndex, 1)
-        this.rawOutput.sendControlChange(
-            44,
-            3 + 64 * (state.faders[0].fader[channelIndex].pflOn ? 1 : 0),
-            1
-        )
-        */
+        return
     }
 }
