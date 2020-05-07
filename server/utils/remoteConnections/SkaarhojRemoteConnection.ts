@@ -12,6 +12,7 @@ import {
 } from '../../constants/remoteProtocols/SkaarhojProtocol'
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
 import { logger } from '../logger'
+import { SET_AUX_LEVEL } from '../../reducers/channelActions'
 
 export class SkaarhojRemoteConnection {
     store: any
@@ -85,6 +86,7 @@ export class SkaarhojRemoteConnection {
                 state.faders[0].fader[hwButton - 1].faderLevel
             )
         }
+        this.updateRemoteAuxPanels()
     }
 
     handleRemoteCommand(command: string) {
@@ -128,7 +130,74 @@ export class SkaarhojRemoteConnection {
             mixerGenericConnection.updateOutLevel(channelIndex)
             global.mainThreadHandler.updatePartialStore(channelIndex)
             this.updateRemoteFaderState(channelIndex, level)
+        } else if (btnNumber > 80) {
+            this.handleAuxLevelCommand(command, btnNumber)
         }
+    }
+
+    handleAuxLevelCommand(command: string, btnNumber: number) {
+        let auxBtnNumber =
+            btnNumber - parseInt((btnNumber / 10).toFixed(0)) * 10
+        let panelNumber = (btnNumber - auxBtnNumber - 70) / 10
+        let faderIndex = auxBtnNumber - 1
+        let auxSendIndex = state.faders[0].fader[faderIndex].monitor - 1
+        if (auxSendIndex < 0) {
+            return
+        }
+        let chIndex = 0
+        let btnIndex = 1
+        state.channels[0].channel.forEach((ch: any, index) => {
+            if (ch.auxLevel[auxSendIndex] >= 0) {
+                if (btnIndex === auxBtnNumber) {
+                    chIndex = index
+                    btnIndex++
+                } else if (btnIndex < auxBtnNumber) {
+                    btnIndex++
+                }
+            }
+        })
+
+        let event = command.slice(command.indexOf('=') + 1)
+        let level = state.channels[0].channel[chIndex].auxLevel[auxSendIndex]
+        if (event === 'Enc:1') {
+            level += 0.01
+            if (level > 1) {
+                level = 1
+            }
+        } else if (event === 'Enc:2') {
+            level += 0.1
+            if (level < 0) {
+                level = 0
+            }
+        } else if (event === 'Enc:-1') {
+            level -= 0.01
+            if (level < 0) {
+                level = 0
+            }
+        } else if (event === 'Enc:-2') {
+            level -= 0.1
+            if (level < 0) {
+                level = 0
+            }
+        }
+        //Fader changed:
+        console.log(
+            'Received Aux Panel ' +
+                String(panelNumber) +
+                'Ch ' +
+                String(chIndex + 1) +
+                ' Level : ' +
+                level
+        )
+        store.dispatch({
+            type: SET_AUX_LEVEL,
+            channel: chIndex,
+            auxIndex: auxSendIndex,
+            level: level,
+        })
+        mixerGenericConnection.updateAuxLevel(chIndex, auxSendIndex + 1)
+        global.mainThreadHandler.updateFullClientStore()
+        this.updateRemoteAuxPanel(panelNumber)
     }
 
     updateRemoteFaderState(channelIndex: number, outputLevel: number) {
@@ -140,24 +209,65 @@ export class SkaarhojRemoteConnection {
             outputLevel
         )
 
+        let formatLevel = (outputLevel * 100).toFixed()
+        let formatLabel =
+            state.faders[0].fader[channelIndex].label ||
+            'CH' + String(channelIndex + 1)
+        let formattetString =
+            'HWCt#' +
+            String(channelIndex + 1) +
+            '=' +
+            formatLevel +
+            '|||||' +
+            formatLabel +
+            '\n'
+        // 32767|||||label
+        console.log('Sending command to Skaarhoj :', formattetString)
         this.clientList.forEach((client) => {
-            let formatLevel = (outputLevel * 100).toFixed()
-            let formatLabel =
-                state.faders[0].fader[channelIndex].label ||
-                'CH' + String(channelIndex + 1)
-            let formattetString =
-                'HWCt#' +
-                String(channelIndex + 1) +
-                '=' +
-                formatLevel +
-                '|||||' +
-                formatLabel +
-                '\n'
-            // 32767|||||label
-            console.log('Sending command to Skaarhoj :', formattetString)
             client.write(formattetString)
         })
-        this.updateRemotePgmPstPfl(channelIndex)
+    }
+
+    updateRemoteAuxPanels() {
+        for (let index = 1; index <= 3; index++) {
+            this.updateRemoteAuxPanel(index)
+        }
+    }
+
+    updateRemoteAuxPanel(panelNumber: number) {
+        console.log(
+            'Updating Aux Panel number ' +
+                panelNumber +
+                ' (hwc#' +
+                String(panelNumber + 80) +
+                '-x8'
+        )
+        let faderIndex = panelNumber - 1
+        let auxSendIndex = state.faders[0].fader[faderIndex].monitor - 1
+        if (auxSendIndex < 0) {
+            return
+        }
+        let hwButton = panelNumber * 10 + 70 + 1
+        state.channels[0].channel.forEach((ch: any, index: number) => {
+            if (ch.auxLevel[auxSendIndex] >= 0) {
+                let formatLevel = (ch.auxLevel[auxSendIndex] * 100).toFixed()
+                let formatLabel =
+                    state.faders[0].fader[ch.assignedFader].label ||
+                    'CH' + String(index + 1)
+                let formattetString =
+                    'HWCt#' +
+                    String(hwButton) +
+                    '=' +
+                    formatLevel +
+                    '|||||' +
+                    formatLabel +
+                    '\n'
+                hwButton++
+                this.clientList.forEach((client) => {
+                    client.write(formattetString)
+                })
+            }
+        })
     }
 
     updateRemotePgmPstPfl(channelIndex: number) {

@@ -267,6 +267,9 @@ export class OscMixerConnection {
                             level: message.args[0],
                         })
                         global.mainThreadHandler.updateFullClientStore()
+                        if (remoteConnections) {
+                            remoteConnections.updateRemoteAuxPanels()
+                        }
                     }
                 } else if (
                     this.checkOscCommand(
