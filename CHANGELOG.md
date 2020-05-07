@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.1.0...v3.2.0) (2020-05-07)
+
+### Features
+
+-   skaahoj - monitor panel mixer ([5390723](https://github.com/olzzon/sisyfos-audio-controller/commit/53907231e71ad27fa1bb30d3c271ea240a252083))
+-   Skaarhoj - abstract remote controllers for other support that HUI ([ee6384e](https://github.com/olzzon/sisyfos-audio-controller/commit/ee6384ef383b8766d8bddb06acbd7a8ea435e236))
+-   Skaarhoj - further refatoring to prepare support ([999aafb](https://github.com/olzzon/sisyfos-audio-controller/commit/999aafbe94c3add38661613c4aceb50168dcb7de))
+-   skaarhoj - mapping used for assigning to faders. hwc[#1](https://github.com/olzzon/sisyfos-audio-controller/issues/1) <> fader 1 etc ([6821c22](https://github.com/olzzon/sisyfos-audio-controller/commit/6821c2257cb29f8ee3075355076a54cb556a04ad))
+-   skaarhoj - set display values on initial connection ([2534b89](https://github.com/olzzon/sisyfos-audio-controller/commit/2534b89d1eade478eb5094b02c370f7406b53587))
+-   skaarhoj init server and load at server startup ([6123142](https://github.com/olzzon/sisyfos-audio-controller/commit/61231420e03cd78f51a845a8c65e176d655e61cd))
+-   skaarhoj monitor mix% control on hwc[#81](https://github.com/olzzon/sisyfos-audio-controller/issues/81)-89 91 101 ([24817b6](https://github.com/olzzon/sisyfos-audio-controller/commit/24817b66577d40becd072f62a2694b2b1656ef2c)), closes [hwc#81-89](https://github.com/olzzon/hwc/issues/81-89)
+-   skaarhoj panel level support on rotary ([93ad7fe](https://github.com/olzzon/sisyfos-audio-controller/commit/93ad7fe3435a555f36a99545dbdec8535c76d72e))
+
+### Bug Fixes
+
+-   adding files for last commit ([331d61a](https://github.com/olzzon/sisyfos-audio-controller/commit/331d61abb49853650e09d16c2eb893537e14981b))
+-   Mixer Online did not turn red when connection was lost - fixed on OSC protocols and on Vista mixer ([52c429d](https://github.com/olzzon/sisyfos-audio-controller/commit/52c429d79574f5c467711389d971a1ca1e5fd2cd))
+-   only allow 9 aux sends pr monitor output - update readme ([316501c](https://github.com/olzzon/sisyfos-audio-controller/commit/316501c3fa742085a66bed86c454c11023ad9bff))
+-   skaarhoj - handling error when lost connection to client ([2393d5f](https://github.com/olzzon/sisyfos-audio-controller/commit/2393d5f3bd0f061fc04b4e76e9bcdeaa97713005))
+-   skaarhoj rotary enc handle fast rotary ([e554b8a](https://github.com/olzzon/sisyfos-audio-controller/commit/e554b8aeb73aafab017537fa2368cd053936d115))
+
 ## [3.1.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.0.0...v3.1.0) (2020-04-27)
 
 ### Features
