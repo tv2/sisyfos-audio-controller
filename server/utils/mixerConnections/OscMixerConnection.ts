@@ -1,7 +1,7 @@
 //Node Modules:
 const osc = require('osc')
 import { store, state } from '../../reducers/store'
-import { huiRemoteConnection } from '../../mainClasses'
+import { remoteConnections } from '../../mainClasses'
 import { socketServer } from '../../expressHandler'
 
 //Utils:
@@ -218,8 +218,8 @@ export class OscMixerConnection {
                             assignedFaderIndex
                         )
 
-                        if (huiRemoteConnection) {
-                            huiRemoteConnection.updateRemoteFaderState(
+                        if (remoteConnections) {
+                            remoteConnections.updateRemoteFaderState(
                                 assignedFaderIndex,
                                 message.args[0]
                             )
@@ -267,6 +267,9 @@ export class OscMixerConnection {
                             level: message.args[0],
                         })
                         global.mainThreadHandler.updateFullClientStore()
+                        if (remoteConnections) {
+                            remoteConnections.updateRemoteAuxPanels()
+                        }
                     }
                 } else if (
                     this.checkOscCommand(

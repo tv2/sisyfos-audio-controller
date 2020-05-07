@@ -1,5 +1,5 @@
 import { store, state } from '../reducers/store'
-import { huiRemoteConnection } from '../mainClasses'
+import { remoteConnections } from '../mainClasses'
 
 //Utils:
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets'
@@ -124,8 +124,8 @@ export class MixerGenericConnection {
                 }
             }
         )
-        if (huiRemoteConnection) {
-            huiRemoteConnection.updateRemoteFaderState(
+        if (remoteConnections) {
+            remoteConnections.updateRemoteFaderState(
                 faderIndex,
                 state.faders[0].fader[faderIndex].faderLevel
             )

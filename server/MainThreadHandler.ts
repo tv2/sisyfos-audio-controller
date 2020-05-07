@@ -3,6 +3,7 @@ import {
     mixerProtocolList,
     mixerProtocolPresets,
     mixerGenericConnection,
+    remoteConnections,
 } from './mainClasses'
 import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
@@ -231,6 +232,7 @@ export class MainThreadHandlers {
                     payload.auxIndex
                 )
                 this.updateFullClientStore()
+                remoteConnections.updateRemoteAuxPanels()
             })
             .on(SOCKET_SET_THRESHOLD, (payload: any) => {
                 logger.verbose('Set Threshold:' + String(payload.channel), {})
