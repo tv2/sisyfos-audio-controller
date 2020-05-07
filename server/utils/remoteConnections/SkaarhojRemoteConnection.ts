@@ -139,7 +139,7 @@ export class SkaarhojRemoteConnection {
         let auxBtnNumber =
             btnNumber - parseInt((btnNumber / 10).toFixed(0)) * 10
         let panelNumber = (btnNumber - auxBtnNumber - 70) / 10
-        let faderIndex = auxBtnNumber - 1
+        let faderIndex = panelNumber - 1
         let auxSendIndex = state.faders[0].fader[faderIndex].monitor - 1
         if (auxSendIndex < 0) {
             return
