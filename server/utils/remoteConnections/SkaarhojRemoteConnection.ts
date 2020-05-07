@@ -49,21 +49,8 @@ export class SkaarhojRemoteConnection {
                         } else if (command === 'list') {
                             console.log('Activating Skaarhoj panel')
                             client.write('ActivePanel=1\n')
-                        } else if (command.includes('map=1:')) {
-                            // Initialize:
-                            console.log('Initializing Skaarhoj remote')
-                            state.faders[0].fader.forEach(
-                                (fader: any, index: number) => {
-                                    console.log(
-                                        'Initializing skaahoj fader - index:',
-                                        index
-                                    )
-                                    this.updateRemoteFaderState(
-                                        index,
-                                        state.faders[0].fader[index].faderLevel
-                                    )
-                                }
-                            )
+                        } else if (command.includes('map=')) {
+                            this.initializeMapping(command)
                         } else if (command === 'ping') {
                             client.write('pingo\n')
                         } else if (command === 'ack') {
@@ -87,14 +74,27 @@ export class SkaarhojRemoteConnection {
             })
     }
 
+    initializeMapping(command: string) {
+        let hwButton = parseInt(command.substring(command.indexOf(':') + 1))
+        // Initialize:
+        console.log('Initializing Skaarhoj remote')
+        if (hwButton <= state.faders[0].fader.length) {
+            console.log('Initializing skaahoj fader - Button:', hwButton)
+            this.updateRemoteFaderState(
+                hwButton - 1,
+                state.faders[0].fader[hwButton - 1].faderLevel
+            )
+        }
+    }
+
     handleRemoteCommand(command: string) {
         let btnNumber = parseInt(
             command.slice(command.indexOf('#') + 1, command.indexOf('='))
         )
         let event = command.slice(command.indexOf('=') + 1)
-        if (btnNumber > 6 && btnNumber < 11) {
-            let channel = btnNumber - 7
-            let level = state.faders[0].fader[channel].faderLevel
+        if (btnNumber <= state.faders[0].fader.length) {
+            let channelIndex = btnNumber - 1
+            let level = state.faders[0].fader[channelIndex].faderLevel
             if (event === 'Enc:1') {
                 level += 0.01
                 if (level > 1) {
@@ -117,15 +117,17 @@ export class SkaarhojRemoteConnection {
                 }
             }
             //Fader changed:
-            console.log('Received Fader ' + channel + ' Level : ' + level)
+            console.log(
+                'Received Fader ' + (channelIndex + 1) + ' Level : ' + level
+            )
             store.dispatch({
                 type: SET_FADER_LEVEL,
-                channel: channel,
+                channel: channelIndex,
                 level: level,
             })
-            mixerGenericConnection.updateOutLevel(channel)
-            global.mainThreadHandler.updatePartialStore(channel)
-            this.updateRemoteFaderState(channel, level)
+            mixerGenericConnection.updateOutLevel(channelIndex)
+            global.mainThreadHandler.updatePartialStore(channelIndex)
+            this.updateRemoteFaderState(channelIndex, level)
         }
     }
 
@@ -145,7 +147,7 @@ export class SkaarhojRemoteConnection {
                 'CH' + String(channelIndex + 1)
             let formattetString =
                 'HWCt#' +
-                String(channelIndex + 7) +
+                String(channelIndex + 1) +
                 '=' +
                 formatLevel +
                 '|||||' +
