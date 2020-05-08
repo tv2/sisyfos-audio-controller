@@ -20,6 +20,10 @@ export class RemoteConnection {
         this.remoteConnection.updateRemoteFaderState(channelIndex, outputLevel)
     }
 
+    updateRemoteAuxPanels() {
+        this.remoteConnection.updateRemoteAuxPanels()
+    }
+
     updateRemotePgmPstPfl(channelIndex: number) {
         this.remoteConnection.updateRemotePgmPstPfl(channelIndex)
     }

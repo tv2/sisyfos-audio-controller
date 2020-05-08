@@ -1,185 +1,267 @@
 //Node Modules:
-const Net = require('net')
+const net = require('net')
 import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
-import {
-    SET_FADER_LEVEL,
-    TOGGLE_PGM,
-    TOGGLE_PFL,
-} from '../../reducers/faderActions'
+import { SET_FADER_LEVEL } from '../../reducers/faderActions'
 
 //Utils:
 import {
     IRemoteProtocol,
     RemoteFaderPresets,
-    RawReceiveTypes,
 } from '../../constants/remoteProtocols/SkaarhojProtocol'
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
 import { logger } from '../logger'
+import { SET_AUX_LEVEL } from '../../reducers/channelActions'
 
 export class SkaarhojRemoteConnection {
     store: any
     remoteProtocol: IRemoteProtocol
-    rawReceiveTypes = RawReceiveTypes
     mixerProtocol: any
-    rawInput: any
-    rawOutput: any
-    activeRawChannel: number = 0
+    clientList: any[]
 
     constructor() {
-        this.convertFromRemoteLevel = this.convertFromRemoteLevel.bind(this)
-        this.convertToRemoteLevel = this.convertToRemoteLevel.bind(this)
         this.updateRemoteFaderState = this.updateRemoteFaderState.bind(this)
 
         this.remoteProtocol = RemoteFaderPresets.rawPanel
         this.mixerProtocol =
             MixerProtocolPresets[state.settings[0].mixerProtocol] ||
             MixerProtocolPresets.genericMidi
+        this.clientList = []
 
-        const server = Net.createServer((socket: any) => {
-            socket.write('Echo server\r\n')
-            socket.pipe(socket)
+        const server = net.createServer((client: any) => {
+            this.clientList.push(client)
+            this.setupRemoteFaderConnection(client)
         })
 
-        server.listen(9923, '127.0.0.1')
+        server.listen(9923, '0.0.0.0')
         logger.info('Skaarhoj server listening at port 9923')
+    }
 
-        server
-            .on('connection', () => {
-                this.setupRemoteFaderConnection()
-            })
+    setupRemoteFaderConnection(client: any) {
+        client
             .on('data', (data: any) => {
-                console.log('Received: ' + data)
+                console.log('Skaarhoj Data Received: ' + data.toString())
+                data.toString()
+                    .split('\n')
+                    .forEach((command: string) => {
+                        if (command === 'RDY') {
+                            client.write('ready ok\n')
+                        } else if (command === 'list') {
+                            console.log('Activating Skaarhoj panel')
+                            client.write('ActivePanel=1\n')
+                        } else if (command.includes('map=')) {
+                            this.initializeMapping(command)
+                        } else if (command === 'ping') {
+                            client.write('pingo\n')
+                        } else if (command === 'ack') {
+                            client.write('ack\n')
+                        } else if (command.substring(0, 4) === 'HWC#') {
+                            this.handleRemoteCommand(command)
+                        }
+                    })
+            })
+            .on('error', function () {
+                if (this.clientList) {
+                    this.clientList.splice(this.clientList.find(client), 1)
+                }
+                console.log('Lost Connection to Skaarhoj panel')
             })
             .on('close', function () {
-                console.log('Connection closed')
+                if (this.clientList) {
+                    this.clientList.splice(this.clientList.find(client), 1)
+                }
+                console.log('Skaarhoj Connection closed')
             })
     }
 
-    setupRemoteFaderConnection() {
-        this.rawInput.addListener(
-            this.rawReceiveTypes[
-                this.remoteProtocol.fromRemote.CHANNEL_FADER_LEVEL.type
-            ],
-            undefined,
-            (message: any) => {
-                if (message.data[1] < 9) {
-                    //Fader changed:
-                    console.log(
-                        'Received Fader message (' + message.data + ').'
-                    )
-                    store.dispatch({
-                        type: SET_FADER_LEVEL,
-                        channel: message.data[1],
-                        level: this.convertFromRemoteLevel(message.data[2]),
-                    })
-                    mixerGenericConnection.updateOutLevel(message.data[1])
-                    this.updateRemoteFaderState(
-                        message.data[1],
-                        this.convertFromRemoteLevel(message.data[2])
-                    )
-                } else if ((message.data[1] = 15)) {
-                    console.log('Received message (' + message.data + ').')
-                    if (message.data[2] < 9) {
-                        //Set active channel for next midi message:
-                        this.activeRawChannel = message.data[2]
-                    } else if (message.data[2] && message.data[2] === 65) {
-                        //SELECT button - toggle PGM ON/OFF
-                        store.dispatch({
-                            type: TOGGLE_PGM,
-                            channel: this.activeRawChannel,
-                        })
-                        mixerGenericConnection.updateOutLevel(
-                            this.activeRawChannel
-                        )
-                        this.updateRemotePgmPstPfl(this.activeRawChannel)
-                    } else if (message.data[2] && message.data[2] === 67) {
-                        //SOLO button - toggle PFL ON/OFF
-                        store.dispatch({
-                            type: TOGGLE_PFL,
-                            channel: this.activeRawChannel,
-                        })
-                        mixerGenericConnection.updateOutLevel(
-                            this.activeRawChannel
-                        )
-                        this.updateRemotePgmPstPfl(this.activeRawChannel)
-                    }
+    initializeMapping(command: string) {
+        let hwButton = parseInt(command.substring(command.indexOf(':') + 1))
+        // Initialize:
+        console.log('Initializing Skaarhoj remote')
+        if (hwButton <= state.faders[0].fader.length) {
+            console.log('Initializing skaahoj fader - Button:', hwButton)
+            this.updateRemoteFaderState(
+                hwButton - 1,
+                state.faders[0].fader[hwButton - 1].faderLevel
+            )
+        }
+        this.updateRemoteAuxPanels()
+    }
+
+    handleRemoteCommand(command: string) {
+        let btnNumber = parseInt(
+            command.slice(command.indexOf('#') + 1, command.indexOf('='))
+        )
+        let event = command.slice(command.indexOf('=') + 1)
+        if (btnNumber <= state.faders[0].fader.length) {
+            let channelIndex = btnNumber - 1
+            let level = state.faders[0].fader[channelIndex].faderLevel
+            if (event === 'Enc:1') {
+                level += 0.01
+                if (level > 1) {
+                    level = 1
+                }
+            } else if (event === 'Enc:2') {
+                level += 0.1
+                if (level < 0) {
+                    level = 0
+                }
+            } else if (event === 'Enc:-1') {
+                level -= 0.01
+                if (level < 0) {
+                    level = 0
+                }
+            } else if (event === 'Enc:-2') {
+                level -= 0.1
+                if (level < 0) {
+                    level = 0
                 }
             }
-        )
-        //for testing:
-        this.rawInput.addListener('noteon', 'all', (error: any) => {
+            //Fader changed:
             console.log(
-                "Received 'noteon' message (" +
-                    error.note.name +
-                    error.note.octave +
-                    ').'
+                'Received Fader ' + (channelIndex + 1) + ' Level : ' + level
             )
+            store.dispatch({
+                type: SET_FADER_LEVEL,
+                channel: channelIndex,
+                level: level,
+            })
+            mixerGenericConnection.updateOutLevel(channelIndex)
+            global.mainThreadHandler.updatePartialStore(channelIndex)
+            this.updateRemoteFaderState(channelIndex, level)
+        } else if (btnNumber > 80) {
+            this.handleAuxLevelCommand(command, btnNumber)
+        }
+    }
+
+    handleAuxLevelCommand(command: string, btnNumber: number) {
+        let auxBtnNumber =
+            btnNumber - parseInt((btnNumber / 10).toFixed(0)) * 10
+        if (auxBtnNumber > 9) {
+            return
+        }
+        let panelNumber = (btnNumber - auxBtnNumber - 70) / 10
+        let faderIndex = panelNumber - 1
+        let auxSendIndex = state.faders[0].fader[faderIndex].monitor - 1
+        if (auxSendIndex < 0) {
+            return
+        }
+        let chIndex = 0
+        let btnIndex = 1
+        state.channels[0].channel.forEach((ch: any, index) => {
+            if (ch.auxLevel[auxSendIndex] >= 0) {
+                if (btnIndex === auxBtnNumber) {
+                    chIndex = index
+                    btnIndex++
+                } else if (btnIndex < auxBtnNumber) {
+                    btnIndex++
+                }
+            }
         })
-    }
 
-    convertToRemoteLevel(level: number) {
-        let oldMin = this.mixerProtocol.fader.min
-        let oldMax = this.mixerProtocol.fader.max
-        let newMin = this.remoteProtocol.fader.min
-        let newMax = this.remoteProtocol.fader.max
-
-        let indexLevel = (level / (oldMax - oldMin)) * (newMax - newMin)
-        let newLevel = newMin + indexLevel
-        return newLevel //convert from mixer min-max to remote min-max
-    }
-
-    convertFromRemoteLevel(level: number) {
-        let oldMin = this.remoteProtocol.fader.min
-        let oldMax = this.remoteProtocol.fader.max
-        let newMin = this.mixerProtocol.fader.min
-        let newMax = this.mixerProtocol.fader.max
-
-        let indexLevel = (level / (oldMax - oldMin)) * (newMax - newMin)
-        let newLevel = newMin + indexLevel
-
-        return newLevel //convert from mixer min-max to remote min-max
+        let event = command.slice(command.indexOf('=') + 1)
+        let level = state.channels[0].channel[chIndex].auxLevel[auxSendIndex]
+        if (event === 'Enc:1') {
+            level += 0.01
+            if (level > 1) {
+                level = 1
+            }
+        } else if (event === 'Enc:2') {
+            level += 0.1
+            if (level < 0) {
+                level = 0
+            }
+        } else if (event === 'Enc:-1') {
+            level -= 0.01
+            if (level < 0) {
+                level = 0
+            }
+        } else if (event === 'Enc:-2') {
+            level -= 0.1
+            if (level < 0) {
+                level = 0
+            }
+        }
+        //Fader changed:
+        console.log(
+            'Received Aux Panel ' +
+                String(panelNumber) +
+                'Ch ' +
+                String(chIndex + 1) +
+                ' Level : ' +
+                level
+        )
+        store.dispatch({
+            type: SET_AUX_LEVEL,
+            channel: chIndex,
+            auxIndex: auxSendIndex,
+            level: level,
+        })
+        mixerGenericConnection.updateAuxLevel(chIndex, auxSendIndex + 1)
+        global.mainThreadHandler.updateFullClientStore()
+        this.updateRemoteAuxPanel(panelNumber)
     }
 
     updateRemoteFaderState(channelIndex: number, outputLevel: number) {
-        if (!this.rawOutput) {
+        let formatLevel = (outputLevel * 100).toFixed()
+        let formatLabel =
+            state.faders[0].fader[channelIndex].label ||
+            'CH' + String(channelIndex + 1)
+        let formattetString =
+            'HWCt#' +
+            String(channelIndex + 1) +
+            '=' +
+            formatLevel +
+            '|||||' +
+            formatLabel +
+            '\n'
+        // 32767|||||label
+        logger.verbose('Sending command to Skaarhoj :' + formattetString)
+        this.clientList.forEach((client) => {
+            client.write(formattetString)
+        })
+    }
+
+    updateRemoteAuxPanels() {
+        for (let index = 1; index <= 3; index++) {
+            this.updateRemoteAuxPanel(index)
+        }
+    }
+
+    updateRemoteAuxPanel(panelNumber: number) {
+        let faderIndex = panelNumber - 1
+        let auxSendIndex = state.faders[0].fader[faderIndex].monitor - 1
+        if (auxSendIndex < 0) {
             return
         }
-        console.log(
-            'Send fader update :',
-            'Channel index : ',
-            channelIndex,
-            'OutputLevel : ',
-            this.convertToRemoteLevel(outputLevel)
-        )
-        this.rawOutput.sendControlChange(
-            channelIndex,
-            this.convertToRemoteLevel(outputLevel),
-            1
-        )
-        this.rawOutput.sendControlChange(32 + channelIndex, 0, 1)
-        this.updateRemotePgmPstPfl(channelIndex)
+        let hwButton = panelNumber * 10 + 70 + 1
+        state.channels[0].channel.forEach((ch: any, index: number) => {
+            if (
+                ch.auxLevel[auxSendIndex] >= 0 &&
+                hwButton <= panelNumber * 10 + 70 + 9
+            ) {
+                let formatLevel = (ch.auxLevel[auxSendIndex] * 100).toFixed()
+                let formatLabel =
+                    state.faders[0].fader[ch.assignedFader].label ||
+                    'CH' + String(index + 1)
+                let formattetString =
+                    'HWCt#' +
+                    String(hwButton) +
+                    '=' +
+                    formatLevel +
+                    '|||||' +
+                    formatLabel +
+                    '\n'
+                hwButton++
+                this.clientList.forEach((client) => {
+                    client.write(formattetString)
+                })
+            }
+        })
     }
 
     updateRemotePgmPstPfl(channelIndex: number) {
-        if (!this.rawOutput) {
-            return
-        }
-        //Update SELECT button:
-        this.rawOutput.sendControlChange(12, channelIndex, 1)
-        this.rawOutput.sendControlChange(
-            44,
-            1 + 64 * (state.faders[0].fader[channelIndex].pgmOn ? 1 : 0),
-            1
-        )
-
-        //Update SOLO button:
-        this.rawOutput.sendControlChange(12, channelIndex, 1)
-        this.rawOutput.sendControlChange(
-            44,
-            3 + 64 * (state.faders[0].fader[channelIndex].pflOn ? 1 : 0),
-            1
-        )
+        return
     }
 }
