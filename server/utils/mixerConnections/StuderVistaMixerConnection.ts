@@ -67,8 +67,6 @@ export class StuderVistaMixerConnection {
     setupMixerConnection() {
         logger.info('Ember connection established')
         this.mixerConnection.on('data', (data: any) => {
-            let berMessage = new BER.Reader(data)
-
             let message: string = ''
             data.forEach((byte: any) => {
                 message = message + byte.toString(16) + ' '
@@ -87,68 +85,68 @@ export class StuderVistaMixerConnection {
                     this.mixerProtocol.channelTypes[0].fromMixer
                         .CHANNEL_OUT_GAIN[0].mixerMessage
                 )
-                let assignedFaderIndex =
-                    state.channels[0].channel[channel - 1].assignedFader
+                if (channel >= 0) {
+                    let assignedFaderIndex =
+                        state.channels[0].channel[channel - 1].assignedFader
 
-                if (!state.channels[0].channel[channel - 1].fadeActive) {
-                    if (
-                        message ||
-                        1 >
-                            this.mixerProtocol.fader.min +
-                                (this.mixerProtocol.fader.max *
-                                    state.settings[0].autoResetLevel) /
-                                    100
-                    ) {
-                        store.dispatch({
-                            type: SET_FADER_LEVEL,
-                            channel: assignedFaderIndex,
-                            level: message,
-                        })
-                        state.channels[0].channel.forEach((item, index) => {
-                            if (item.assignedFader === assignedFaderIndex) {
-                                store.dispatch({
-                                    type: SET_OUTPUT_LEVEL,
-                                    channel: index,
-                                    level: message,
-                                })
+                    if (!state.channels[0].channel[channel - 1].fadeActive) {
+                        if (
+                            value ||
+                            1 > state.settings[0].autoResetLevel / 100
+                        ) {
+                            store.dispatch({
+                                type: SET_FADER_LEVEL,
+                                channel: assignedFaderIndex,
+                                level: value,
+                            })
+                            state.channels[0].channel.forEach((item, index) => {
+                                if (item.assignedFader === assignedFaderIndex) {
+                                    store.dispatch({
+                                        type: SET_OUTPUT_LEVEL,
+                                        channel: index,
+                                        level: value,
+                                    })
+                                }
+                            })
+                            if (
+                                !state.faders[0].fader[assignedFaderIndex].pgmOn
+                            ) {
+                                if (value || 1 > this.mixerProtocol.fader.min) {
+                                    store.dispatch({
+                                        type: TOGGLE_PGM,
+                                        channel: assignedFaderIndex,
+                                    })
+                                }
                             }
-                        })
-                        if (!state.faders[0].fader[assignedFaderIndex].pgmOn) {
-                            if (message || 1 > this.mixerProtocol.fader.min) {
-                                store.dispatch({
-                                    type: TOGGLE_PGM,
-                                    channel: assignedFaderIndex,
-                                })
-                            }
+                        } else if (
+                            state.faders[0].fader[assignedFaderIndex].pgmOn ||
+                            state.faders[0].fader[assignedFaderIndex].voOn
+                        ) {
+                            store.dispatch({
+                                type: SET_FADER_LEVEL,
+                                channel: assignedFaderIndex,
+                                level: value,
+                            })
+                            state.channels[0].channel.forEach((item, index) => {
+                                if (item.assignedFader === assignedFaderIndex) {
+                                    store.dispatch({
+                                        type: SET_OUTPUT_LEVEL,
+                                        channel: index,
+                                        level: value,
+                                    })
+                                }
+                            })
                         }
-                    } else if (
-                        state.faders[0].fader[assignedFaderIndex].pgmOn ||
-                        state.faders[0].fader[assignedFaderIndex].voOn
-                    ) {
-                        store.dispatch({
-                            type: SET_FADER_LEVEL,
-                            channel: assignedFaderIndex,
-                            level: message,
-                        })
-                        state.channels[0].channel.forEach((item, index) => {
-                            if (item.assignedFader === assignedFaderIndex) {
-                                store.dispatch({
-                                    type: SET_OUTPUT_LEVEL,
-                                    channel: index,
-                                    level: message,
-                                })
-                            }
-                        })
-                    }
-                    global.mainThreadHandler.updatePartialStore(
-                        assignedFaderIndex
-                    )
-
-                    if (remoteConnections) {
-                        remoteConnections.updateRemoteFaderState(
-                            assignedFaderIndex,
-                            channel
+                        global.mainThreadHandler.updatePartialStore(
+                            assignedFaderIndex
                         )
+
+                        if (remoteConnections) {
+                            remoteConnections.updateRemoteFaderState(
+                                assignedFaderIndex,
+                                channel
+                            )
+                        }
                     }
                 }
             } else if (
@@ -160,8 +158,8 @@ export class StuderVistaMixerConnection {
             ) {
                 let { channel, value, argument } = this.convertEmberCommand(
                     message,
-                    this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU[0]
-                        .mixerMessage
+                    this.mixerProtocol.channelTypes[0].fromMixer
+                        .CHANNEL_MUTE_ON[0].mixerMessage
                 )
                 let mute = 0 // message === 0 ? 1 : 0
                 store.dispatch({
@@ -227,7 +225,7 @@ export class StuderVistaMixerConnection {
         let value: number = 0
         let argument: string = ''
 
-        // Extract Channel type: (mone, st, 5.1)
+        // Extract Channel type: (mono, st, 5.1)
 
         // Extract Channel number:
         protocolArray.forEach((value: string, index: number) => {
@@ -237,10 +235,23 @@ export class StuderVistaMixerConnection {
             }
         })
         // Extract value:
+        let hexString = messageArray[messageArray.length - 1] //.replace('63','30')
+        let hexVal = hexString.split(' ').slice(3)
+        hexVal = hexVal.slice(0, parseInt(hexVal[1], 16) + 2)
+        let BERreader = new BER.Reader(
+            Buffer.from(
+                hexVal.map((byte) => {
+                    return parseInt(byte, 16)
+                })
+            )
+        )
+        value = BERreader.readReal()
+        value = 0.9 + value / Math.log(10) / 40 // 40 * Math.log((1.14 * value) / 0.88)
+        console.log('Channel :', channel, 'Value :', value)
 
         return {
             channel: channel,
-            value: 0,
+            value: value,
             argument: '',
         }
     }
