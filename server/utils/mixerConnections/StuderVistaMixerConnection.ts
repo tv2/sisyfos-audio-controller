@@ -78,37 +78,14 @@ export class StuderVistaMixerConnection {
             if (
                 this.checkEmberCommand(
                     message,
-                    this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU[0]
-                        .mixerMessage
-                )
-            ) {
-                let { channel, value, argument } = this.convertEmberCommand(
-                    message,
-                    this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU[0]
-                        .mixerMessage
-                )
-                store.dispatch({
-                    type: SET_VU_LEVEL,
-                    channel:
-                        state.channels[0].channel[channel - 1].assignedFader,
-                    level: message,
-                })
-                socketServer.emit(SOCKET_SET_VU, {
-                    faderIndex:
-                        state.channels[0].channel[channel - 1].assignedFader,
-                    level: message,
-                })
-            } else if (
-                this.checkEmberCommand(
-                    message,
                     this.mixerProtocol.channelTypes[0].fromMixer
                         .CHANNEL_OUT_GAIN[0].mixerMessage
                 )
             ) {
                 let { channel, value, argument } = this.convertEmberCommand(
                     message,
-                    this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU[0]
-                        .mixerMessage
+                    this.mixerProtocol.channelTypes[0].fromMixer
+                        .CHANNEL_OUT_GAIN[0].mixerMessage
                 )
                 let assignedFaderIndex =
                     state.channels[0].channel[channel - 1].assignedFader
@@ -177,68 +154,6 @@ export class StuderVistaMixerConnection {
             } else if (
                 this.checkEmberCommand(
                     message,
-                    this.mixerProtocol.channelTypes[0].fromMixer.AUX_LEVEL[0]
-                        .mixerMessage
-                )
-            ) {
-                let { channel, value, argument } = this.convertEmberCommand(
-                    message,
-                    this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU[0]
-                        .mixerMessage
-                )
-                let commandArray: string[] = this.mixerProtocol.channelTypes[0].fromMixer.AUX_LEVEL[0].mixerMessage.split(
-                    '/'
-                )
-                let messageArray: string[] = [] // message.address.split('/')
-                let auxIndex = 0
-
-                commandArray.forEach((commandPart: string, index: number) => {
-                    if (commandPart === '{channel}') {
-                        channel = parseFloat(messageArray[index])
-                    } else if (commandPart === '{argument}') {
-                        auxIndex = parseFloat(messageArray[index]) - 1
-                    }
-                })
-                if (
-                    state.channels[0].channel[channel - 1].auxLevel[auxIndex] >
-                    -1
-                ) {
-                    logger.verbose(
-                        'Aux Message Channel : ' +
-                            channel +
-                            '  Aux Index :' +
-                            auxIndex +
-                            ' Level : ' +
-                            message
-                    )
-                    store.dispatch({
-                        type: SET_AUX_LEVEL,
-                        channel: channel - 1,
-                        auxIndex: auxIndex,
-                        level: message,
-                    })
-                    global.mainThreadHandler.updateFullClientStore()
-                }
-            } else if (
-                this.checkEmberCommand(
-                    message,
-                    this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_NAME[0]
-                        .mixerMessage
-                )
-            ) {
-                let channel = 0 // message.address.split('/')[this.cmdChannelIndex]
-                store.dispatch({
-                    type: SET_CHANNEL_LABEL,
-                    channel:
-                        state.channels[0].channel[channel - 1].assignedFader,
-                    label: message,
-                })
-                global.mainThreadHandler.updatePartialStore(
-                    state.channels[0].channel[channel - 1].assignedFader
-                )
-            } else if (
-                this.checkEmberCommand(
-                    message,
                     this.mixerProtocol.channelTypes[0].fromMixer
                         .CHANNEL_MUTE_ON[0].mixerMessage
                 )
@@ -278,33 +193,53 @@ export class StuderVistaMixerConnection {
             return false
         }
 
-        let messageArray = message.split(' ')
-        let protocolArray = protocolMessage.split(' ')
-        let index = 0
-        let test = protocolArray.every((value: string) => {
-            if (value === '{channel}' || value === '{aux}') {
-                index += 1
-            } else if (value === '{level}') {
-                index += 6
-            } else {
-                if (value === messageArray[index]) {
-                    test = true
+        let messageArray = message.split('31 ')
+        if (messageArray.length > 1) {
+            let protocolArray = protocolMessage.split(' ')
+            let index = 0
+            let test = protocolArray.every((value: string) => {
+                if (value === '{channel}' || value === '{aux}') {
                     index += 1
                 } else {
-                    return false
+                    if (value === messageArray[index + 1].split(' ')[1]) {
+                        test = true
+                        index += 1
+                    } else {
+                        return false
+                    }
                 }
-            }
-            return true
-        })
-        return test
+                return true
+            })
+            return test
+        } else {
+            return false
+        }
     }
 
     convertEmberCommand(
         message: string,
         protocolMessage: string
     ): { channel: number; value: number; argument: string } {
+        let messageArray = message.split('31 ')
+        let protocolArray = protocolMessage.split(' ')
+
+        let channel: number = 0
+        let value: number = 0
+        let argument: string = ''
+
+        // Extract Channel type: (mone, st, 5.1)
+
+        // Extract Channel number:
+        protocolArray.forEach((value: string, index: number) => {
+            if (value === '{channel}') {
+                channel =
+                    parseInt(messageArray[index + 1].split(' ')[1], 16) - 160
+            }
+        })
+        // Extract value:
+
         return {
-            channel: 0,
+            channel: channel,
             value: 0,
             argument: '',
         }

@@ -49,8 +49,7 @@ export const StuderVistaMaster: IMixerProtocol = {
                 */
                 CHANNEL_OUT_GAIN: [
                     {
-                        mixerMessage:
-                            'a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {level}',
+                        mixerMessage: 'a1 a1 a1 {channel} a1 a2',
                         value: 0,
                         type: 'real',
                         min: -90,
