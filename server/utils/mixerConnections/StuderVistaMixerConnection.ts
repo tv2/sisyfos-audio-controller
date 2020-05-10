@@ -89,7 +89,7 @@ export class StuderVistaMixerConnection {
                         value,
                         argument,
                         commandValid,
-                    } = this.convertEmberCommand(
+                    } = this.convertEmberLevelCommand(
                         message,
                         this.mixerProtocol.channelTypes[0].fromMixer
                             .CHANNEL_OUT_GAIN[0].mixerMessage
@@ -176,27 +176,39 @@ export class StuderVistaMixerConnection {
                     )
                 ) {
                     let {
-                        channeltypeIndex: channel,
+                        channeltypeIndex,
                         channelType,
-                        value,
-                        argument,
+                        mute,
                         commandValid,
-                    } = this.convertEmberCommand(
+                    } = this.convertEmberMuteCommand(
                         message,
                         this.mixerProtocol.channelTypes[0].fromMixer
                             .CHANNEL_MUTE_ON[0].mixerMessage
                     )
-                    let mute = 0 // message === 0 ? 1 : 0
-                    store.dispatch({
-                        type: SET_MUTE,
-                        channel:
-                            state.channels[0].channel[channel - 1]
-                                .assignedFader,
-                        muteOn: mute,
-                    })
-                    global.mainThreadHandler.updatePartialStore(
-                        state.channels[0].channel[channel - 1].assignedFader
+                    let channelArrayIndex = 0
+                    let { assignedFader } = state.channels[0].channel.find(
+                        (channel: IChannel, index: number) => {
+                            if (
+                                channel.channelType === channelType &&
+                                channel.channelTypeIndex === channeltypeIndex
+                            ) {
+                                channelArrayIndex = index
+                                return true
+                            }
+                        }
                     )
+                    if (
+                        !state.channels[0].channel[channelArrayIndex].fadeActive
+                    ) {
+                        store.dispatch({
+                            type: SET_MUTE,
+                            channel: assignedFader,
+                            muteOn: mute,
+                        })
+                        global.mainThreadHandler.updatePartialStore(
+                            assignedFader
+                        )
+                    }
                 } else {
                     logger.verbose(
                         'Unknown Vista message message: ' + message,
@@ -247,7 +259,7 @@ export class StuderVistaMixerConnection {
         }
     }
 
-    convertEmberCommand(
+    convertEmberLevelCommand(
         message: string,
         protocolMessage: string
     ): {
@@ -315,6 +327,59 @@ export class StuderVistaMixerConnection {
             channelType: channelType,
             value: value,
             argument: '',
+            commandValid: commandValid,
+        }
+    }
+
+    convertEmberMuteCommand(
+        message: string,
+        protocolMessage: string
+    ): {
+        channeltypeIndex: number
+        channelType: number
+        mute: boolean
+        commandValid: boolean
+    } {
+        let messageArray = message.split('31 ')
+        let protocolArray = protocolMessage.split(' ')
+
+        let channelTypeIndex: number = 0
+        let channelType: number = 0
+        let mute: boolean = false
+        let commandValid: boolean = true
+
+        // Extract Channel number and Channel Type (mono-st-51)
+        protocolArray.forEach((value: string, index: number) => {
+            if (value === '{channel}') {
+                channelTypeIndex =
+                    parseInt(messageArray[index + 1].split(' ')[1], 16) -
+                    160 -
+                    1
+            } else if (value === '{ch-type}') {
+                channelType =
+                    parseInt(messageArray[index + 1].split(' ')[1], 16) -
+                    160 -
+                    1
+            }
+        })
+        // Extract Mute state:
+        mute =
+            parseInt(messageArray[messageArray.length - 1].split(' ')[5]) === 1
+                ? true
+                : false
+
+        console.log(
+            'Channel :',
+            channelTypeIndex,
+            'Channel Type:',
+            channelType,
+            'Mute :',
+            mute
+        )
+        return {
+            channeltypeIndex: channelTypeIndex,
+            channelType: channelType,
+            mute: mute,
             commandValid: commandValid,
         }
     }
