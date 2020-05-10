@@ -25,6 +25,16 @@ export const StuderVistaMaster: IMixerProtocol = {
             max: 10,
             zero: 0,
         },
+        {
+            // Subscribe to Mute state from Studer
+            mixerMessage:
+                '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b {ch-type} 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e2 09 31 08 63 06 02 04 ff ff f4 c0 00 00 00 00',
+            value: 0,
+            type: 'real',
+            min: -90,
+            max: 10,
+            zero: 0,
+        },
     ],
     pingResponseCommand: [emptyMixerMessage()],
     pingTime: 6000, //Bypass ping when pingTime is zero
