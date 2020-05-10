@@ -125,7 +125,7 @@ export class MainThreadHandlers {
                 this.updateFullClientStore()
             })
             .on('get-settings', () => {
-                socketServer.emit('set-settings', loadSettings(state))
+                socketServer.emit('set-settings', state.settings[0])
             })
             .on('get-mixerprotocol', () => {
                 socketServer.emit('set-mixerprotocol', {

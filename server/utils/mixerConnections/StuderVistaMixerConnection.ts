@@ -2,19 +2,34 @@
 import { BER } from 'node-emberplus'
 import { store, state } from '../../reducers/store'
 const net = require('net')
+const BERasn = require('asn1').Ber
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import { logger } from '../logger'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions'
 import { socketServer } from '../../expressHandler'
-import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
+import {
+    SOCKET_SET_MIXER_ONLINE,
+    SOCKET_SET_VU,
+} from '../../constants/SOCKET_IO_DISPATCHERS'
+import {
+    SET_VU_LEVEL,
+    SET_FADER_LEVEL,
+    TOGGLE_PGM,
+    SET_CHANNEL_LABEL,
+    SET_MUTE,
+} from '../../reducers/faderActions'
+import { SET_OUTPUT_LEVEL, SET_AUX_LEVEL } from '../../reducers/channelActions'
+import { remoteConnections } from '../../mainClasses'
+import { IFader } from '../../reducers/fadersReducer'
+import { IChannel } from '../../reducers/channelsReducer'
 
 export class StuderVistaMixerConnection {
     mixerProtocol: IMixerProtocol
     deviceRoot: any
     emberNodeObject: Array<any>
-    socket: any
+    mixerConnection: any
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
@@ -27,19 +42,16 @@ export class StuderVistaMixerConnection {
 
         logger.info('Setting up Ember connection')
 
-        this.socket = net.createConnection(
+        this.mixerConnection = net.createConnection(
             {
-                port: 8087,
-                host: '10.225.15.196',
-                timeout: 20000000,
+                port: parseInt(state.settings[0].devicePort + ''),
+                host: state.settings[0].deviceIp,
+                timeout: 1000,
             },
             () => {}
         )
-        this.socket
-            .on('data', (data: any) => {
-                // A 2 way respons is to be implemented
-                logger.verbose('Ember Server data recieved')
-            })
+
+        this.mixerConnection
             .on('end', () => {
                 // When connection disconnected.
                 logger.info('Ember Client socket disconnect. ')
@@ -56,14 +68,319 @@ export class StuderVistaMixerConnection {
 
     setupMixerConnection() {
         logger.info('Ember connection established')
+        this.mixerConnection.on('data', (data: any) => {
+            let bufferString: string = ''
+            data.forEach((byte: any) => {
+                bufferString = bufferString + byte.toString(16) + ' '
+            })
+            bufferString.split('7f 8f').forEach((message) => {
+                logger.verbose('Received Ember message: ' + message, {})
+                message = '7f 8f' + message
+                if (
+                    this.checkEmberCommand(
+                        message,
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_OUT_GAIN[0].mixerMessage
+                    )
+                ) {
+                    let {
+                        channeltypeIndex,
+                        channelType,
+                        value,
+                        argument,
+                        commandValid,
+                    } = this.convertEmberLevelCommand(
+                        message,
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_OUT_GAIN[0].mixerMessage
+                    )
+                    if (!commandValid) {
+                        return
+                    }
+                    let channelArrayIndex = 0
+                    let { assignedFader } = state.channels[0].channel.find(
+                        (channel: IChannel, index: number) => {
+                            if (
+                                channel.channelType === channelType &&
+                                channel.channelTypeIndex === channeltypeIndex
+                            ) {
+                                channelArrayIndex = index
+                                return true
+                            }
+                        }
+                    )
+                    if (
+                        !state.channels[0].channel[channelArrayIndex].fadeActive
+                    ) {
+                        if (
+                            value ||
+                            1 > state.settings[0].autoResetLevel / 100
+                        ) {
+                            store.dispatch({
+                                type: SET_FADER_LEVEL,
+                                channel: assignedFader,
+                                level: value,
+                            })
+                            state.channels[0].channel.forEach((item, index) => {
+                                if (item.assignedFader === assignedFader) {
+                                    store.dispatch({
+                                        type: SET_OUTPUT_LEVEL,
+                                        channel: index,
+                                        level: value,
+                                    })
+                                }
+                            })
+                            if (!state.faders[0].fader[assignedFader].pgmOn) {
+                                if (value > 0) {
+                                    store.dispatch({
+                                        type: TOGGLE_PGM,
+                                        channel: assignedFader,
+                                    })
+                                }
+                            }
+                        } else if (
+                            state.faders[0].fader[assignedFader].pgmOn ||
+                            state.faders[0].fader[assignedFader].voOn
+                        ) {
+                            store.dispatch({
+                                type: SET_FADER_LEVEL,
+                                channel: assignedFader,
+                                level: value,
+                            })
+                            state.channels[0].channel.forEach((item, index) => {
+                                if (item.assignedFader === assignedFader) {
+                                    store.dispatch({
+                                        type: SET_OUTPUT_LEVEL,
+                                        channel: index,
+                                        level: value,
+                                    })
+                                }
+                            })
+                        }
+                        global.mainThreadHandler.updatePartialStore(
+                            assignedFader
+                        )
+
+                        if (remoteConnections) {
+                            remoteConnections.updateRemoteFaderState(
+                                assignedFader,
+                                value
+                            )
+                        }
+                    }
+                } else if (
+                    this.checkEmberCommand(
+                        message,
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_MUTE_ON[0].mixerMessage
+                    )
+                ) {
+                    let {
+                        channeltypeIndex,
+                        channelType,
+                        mute,
+                        commandValid,
+                    } = this.convertEmberMuteCommand(
+                        message,
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_MUTE_ON[0].mixerMessage
+                    )
+                    let channelArrayIndex = 0
+                    let { assignedFader } = state.channels[0].channel.find(
+                        (channel: IChannel, index: number) => {
+                            if (
+                                channel.channelType === channelType &&
+                                channel.channelTypeIndex === channeltypeIndex
+                            ) {
+                                channelArrayIndex = index
+                                return true
+                            }
+                        }
+                    )
+                    if (
+                        !state.channels[0].channel[channelArrayIndex].fadeActive
+                    ) {
+                        store.dispatch({
+                            type: SET_MUTE,
+                            channel: assignedFader,
+                            muteOn: mute,
+                        })
+                        global.mainThreadHandler.updatePartialStore(
+                            assignedFader
+                        )
+                    }
+                } else {
+                    logger.verbose(
+                        'Unknown Vista message message: ' + message,
+                        {}
+                    )
+                }
+            })
+        })
 
         this.mixerOnline(true)
 
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
+            // Initial ping:
+            this.pingMixerCommand()
+            // Timer ping
             let emberTimer = setInterval(() => {
                 this.pingMixerCommand()
             }, this.mixerProtocol.pingTime)
+        }
+    }
+
+    checkEmberCommand(message: string, protocolMessage: string): boolean {
+        if (protocolMessage === 'none') {
+            return false
+        }
+
+        let messageArray = message.split('31 ')
+        if (messageArray.length > 1) {
+            let protocolArray = protocolMessage.split(' ')
+            let index = 0
+            let test = protocolArray.every((value: string) => {
+                if (value === '{channel}' || value === '{ch-type}') {
+                    index += 1
+                } else {
+                    if (value === messageArray[index + 1].split(' ')[1]) {
+                        test = true
+                        index += 1
+                    } else {
+                        return false
+                    }
+                }
+                return true
+            })
+            return test
+        } else {
+            return false
+        }
+    }
+
+    convertEmberLevelCommand(
+        message: string,
+        protocolMessage: string
+    ): {
+        channeltypeIndex: number
+        channelType: number
+        value: number
+        argument: string
+        commandValid: boolean
+    } {
+        let messageArray = message.split('31 ')
+        let protocolArray = protocolMessage.split(' ')
+
+        let channelTypeIndex: number = 0
+        let channelType: number = 0
+        let value: number = 0
+        let argument: string = ''
+        let commandValid: boolean = true
+
+        // Extract Channel number and Channel Type (mono-st-51)
+        protocolArray.forEach((value: string, index: number) => {
+            if (value === '{channel}') {
+                channelTypeIndex =
+                    parseInt(messageArray[index + 1].split(' ')[1], 16) -
+                    160 -
+                    1
+            } else if (value === '{ch-type}') {
+                channelType =
+                    parseInt(messageArray[index + 1].split(' ')[1], 16) -
+                    160 -
+                    1
+            }
+        })
+        // Extract value:
+        let hexString = messageArray[messageArray.length - 1]
+        if (hexString.length < 14) {
+            // Workaround - Sometimes Studer sends a fader without valid value
+            commandValid = false
+        }
+        let hexVal = hexString.split(' ').slice(3)
+        hexVal = hexVal.slice(0, parseInt(hexVal[1], 16) + 2)
+        let BERreader = new BER.Reader(
+            Buffer.from(
+                hexVal.map((byte) => {
+                    return parseInt(byte, 16)
+                })
+            )
+        )
+        value = BERreader.readReal()
+        value = Math.exp(value / 40) / 1.2954
+        if (value < 0.09) {
+            value = 0
+        }
+        /*
+        console.log(
+            'Channel :',
+            channelTypeIndex,
+            'Channel Type:',
+            channelType,
+            'Value :',
+            value
+        )
+        */
+        return {
+            channeltypeIndex: channelTypeIndex,
+            channelType: channelType,
+            value: value,
+            argument: '',
+            commandValid: commandValid,
+        }
+    }
+
+    convertEmberMuteCommand(
+        message: string,
+        protocolMessage: string
+    ): {
+        channeltypeIndex: number
+        channelType: number
+        mute: boolean
+        commandValid: boolean
+    } {
+        let messageArray = message.split('31 ')
+        let protocolArray = protocolMessage.split(' ')
+
+        let channelTypeIndex: number = 0
+        let channelType: number = 0
+        let mute: boolean = false
+        let commandValid: boolean = true
+
+        // Extract Channel number and Channel Type (mono-st-51)
+        protocolArray.forEach((value: string, index: number) => {
+            if (value === '{channel}') {
+                channelTypeIndex =
+                    parseInt(messageArray[index + 1].split(' ')[1], 16) -
+                    160 -
+                    1
+            } else if (value === '{ch-type}') {
+                channelType =
+                    parseInt(messageArray[index + 1].split(' ')[1], 16) -
+                    160 -
+                    1
+            }
+        })
+        // Extract Mute state:
+        mute =
+            parseInt(messageArray[messageArray.length - 1].split(' ')[5]) === 1
+                ? true
+                : false
+
+        console.log(
+            'Channel :',
+            channelTypeIndex,
+            'Channel Type:',
+            channelType,
+            'Mute :',
+            mute
+        )
+        return {
+            channeltypeIndex: channelTypeIndex,
+            channelType: channelType,
+            mute: mute,
+            commandValid: commandValid,
         }
     }
 
@@ -77,31 +394,53 @@ export class StuderVistaMixerConnection {
         })
     }
 
-    subscribeFaderLevel(
-        ch: number,
-        typeIndex: number,
-        channelTypeIndex: number
-    ) {
-        return
-    }
-
-    subscribeChannelName(
-        ch: number,
-        typeIndex: number,
-        channelTypeIndex: number
-    ) {
-        return
-    }
-
     pingMixerCommand() {
         this.mixerProtocol.pingCommand.map((command) => {
-            let hexArray = command.mixerMessage.split(' ')
-            let buf = new Buffer(
-                hexArray.map((val: string) => {
-                    return parseInt(val, 16)
-                })
-            )
-            this.socket.write(buf)
+            if (command.mixerMessage.includes('{channel}')) {
+                state.faders[0].fader.forEach(
+                    (fader: IFader, index: number) => {
+                        state.channels[0].channel.forEach(
+                            (channel: IChannel) => {
+                                if (channel.assignedFader === index) {
+                                    let message = command.mixerMessage
+                                        .replace(
+                                            '{ch-type}',
+                                            (
+                                                channel.channelType +
+                                                1 +
+                                                160
+                                            ).toString(16)
+                                        )
+                                        .replace(
+                                            '{channel}',
+                                            (
+                                                channel.channelTypeIndex +
+                                                1 +
+                                                160
+                                            ).toString(16)
+                                        )
+                                    let hexArray = message.split(' ')
+                                    let buf = Buffer.from(
+                                        hexArray.map((val: string) => {
+                                            return parseInt(val, 16)
+                                        })
+                                    )
+                                    // console.log('Pinging : ', buf)
+                                    this.mixerConnection.write(buf)
+                                }
+                            }
+                        )
+                    }
+                )
+            } else {
+                let hexArray = command.mixerMessage.split(' ')
+                let buf = Buffer.from(
+                    hexArray.map((val: string) => {
+                        return parseInt(val, 16)
+                    })
+                )
+                this.mixerConnection.write(buf)
+            }
             logger.verbose('WRITING PING TO MIXER')
         })
     }
@@ -149,7 +488,7 @@ export class StuderVistaMixerConnection {
                 return parseInt(val, 16)
             })
         )
-        this.socket.write(buf)
+        this.mixerConnection.write(buf)
         logger.verbose('Send HEX: ' + mixerMessage)
     }
 
@@ -192,7 +531,7 @@ export class StuderVistaMixerConnection {
                 return parseInt(val, 16)
             })
         )
-        this.socket.write(buf)
+        this.mixerConnection.write(buf)
         logger.verbose('Send HEX: ' + levelMessage)
     }
 
@@ -202,7 +541,7 @@ export class StuderVistaMixerConnection {
 
     updateOutLevel(channelIndex: number) {
         let outputlevel = state.channels[0].channel[channelIndex].outputLevel
-        let level = 40 * Math.log((1.14 * outputlevel) / 0.88)
+        let level = 40 * Math.log(1.295 * outputlevel)
         if (level < -90) {
             level = -90
         }
@@ -212,7 +551,7 @@ export class StuderVistaMixerConnection {
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let level = 40 * Math.log((1.14 * outputLevel) / 0.88)
+        let level = 40 * Math.log(1.295 * outputLevel)
         if (level < -90) {
             level = -90
         }
@@ -291,7 +630,7 @@ export class StuderVistaMixerConnection {
             ('0' + auxByte[0].toString(16)).slice(-2)
         )
 
-        level = 40 * Math.log((1.14 * level) / 0.88)
+        level = 40 * Math.log(1.295 * level)
         if (level < -80) {
             level = -90
         }

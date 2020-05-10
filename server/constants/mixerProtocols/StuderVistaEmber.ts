@@ -15,6 +15,26 @@ export const StuderVistaMaster: IMixerProtocol = {
             max: 10,
             zero: 0,
         },
+        {
+            // Subscribe to fader levels from Studer
+            mixerMessage:
+                '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b {ch-type} 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 08 63 06 02 04 ff ff f4 c0 00 00 00 00',
+            value: 0,
+            type: 'real',
+            min: -90,
+            max: 10,
+            zero: 0,
+        },
+        {
+            // Subscribe to Mute state from Studer
+            mixerMessage:
+                '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b {ch-type} 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e2 09 31 08 63 06 02 04 ff ff f4 c0 00 00 00 00',
+            value: 0,
+            type: 'real',
+            min: -90,
+            max: 10,
+            zero: 0,
+        },
     ],
     pingResponseCommand: [emptyMixerMessage()],
     pingTime: 6000, //Bypass ping when pingTime is zero
@@ -24,7 +44,16 @@ export const StuderVistaMaster: IMixerProtocol = {
             channelTypeName: 'MONO',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_OUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_OUT_GAIN: [
+                    {
+                        mixerMessage: 'a1 a1 {ch-type} {channel} a1 a2 e1',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
                 CHANNEL_VU: [emptyMixerMessage()],
                 CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
                 CHANNEL_NAME: [emptyMixerMessage()],
@@ -37,15 +66,46 @@ export const StuderVistaMaster: IMixerProtocol = {
                 LO_MID: [emptyMixerMessage()],
                 MID: [emptyMixerMessage()],
                 HIGH: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
+                AUX_LEVEL: [
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a1 29 31 27 a1 25 31 23 a1 21 31 1f a1 1d 31 1b {channel} 19 31 17 a1 15 31 13 a4 11 31 0f {aux} 0d 31 0b e1 09 31 07 63 {argument}',
+                        //'7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {level}',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_MUTE_ON: [
+                    {
+                        mixerMessage: 'a1 a1 {ch-type} {channel} a1 a2 e2',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_MUTE_OFF: [
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a1 23 31 21 a1 1f 31 1d a1 1b 31 19 a1 17 31 15 {channel} 13 31 11 a1 0f 31 0d a2 0b 31 09 e2 07 31 05 63 03 02 01 00 00 00 00 00',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
             },
             toMixer: {
                 CHANNEL_OUT_GAIN: [
                     {
                         // 7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 {a3} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {05 09 03 c0 06 13 00 00 00 00}
                         mixerMessage:
+                            // 7f 8f ff fe d9 5c 80 30 80 a1 2b 31 29 a1 27 31 25 a1 23 31 21 a1 1f 31 1d a1        1b 31 19 a1 17 31 15 a2 13 31 11 e1 0f 31 d  63 b 9 9 c0 4 1f 4c cc cc cc cc cd 0 0 0 0
                             '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {level}',
                         value: 0,
                         type: 'real',
