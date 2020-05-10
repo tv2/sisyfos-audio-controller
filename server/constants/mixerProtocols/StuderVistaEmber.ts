@@ -16,8 +16,9 @@ export const StuderVistaMaster: IMixerProtocol = {
             zero: 0,
         },
         {
+            // Subscribe to fader levels from Studer
             mixerMessage:
-                '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 a1 15 31 13 a1 11 31 0f a2 0d 00 00 00 00 ',
+                '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b {ch-type} 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 08 63 06 02 04 ff ff f4 c0 00 00 00 00',
             value: 0,
             type: 'real',
             min: -90,
@@ -33,32 +34,9 @@ export const StuderVistaMaster: IMixerProtocol = {
             channelTypeName: 'MONO',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                /*
-                Max mono 2:
-                29a1273125a1233121a11f311da21b3119a1173115a2133111e10f31
-                7f 8f ff fe d9 5c 80 30 80 a1 2b 
-                31 29 a1 27 
-                31 25 a1 23 
-                31 21 a1 1f 
-                31 1d a2 1b 
-                31 19 a1 17 
-                31 15 a2 13 
-                31 11 e1 0f 
-                31 0d 63 0b 09 09 80 02 0d cc cc cc cc cc cd 0 0 0 0
-                Min mono 2:
-                7f 8f ff fe d9 5c 80 30 80 a1 25 
-                31 23 a1 21 
-                31 1f a1 1d 
-                31 1b a1 19 
-                31 17 a2 15 
-                31 13 a1 11 
-                31 0f a2 0d 
-                31 0b e1 09 
-                31 07 63 05 09 03 c0 06 2d 00 00 00 00
-                */
                 CHANNEL_OUT_GAIN: [
                     {
-                        mixerMessage: 'a1 a1 a1 {channel} a1 a2',
+                        mixerMessage: 'a1 a1 {ch-type} {channel} a1 a2',
                         value: 0,
                         type: 'real',
                         min: -90,
@@ -118,6 +96,7 @@ export const StuderVistaMaster: IMixerProtocol = {
                     {
                         // 7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 {a3} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {05 09 03 c0 06 13 00 00 00 00}
                         mixerMessage:
+                            // 7f 8f ff fe d9 5c 80 30 80 a1 2b 31 29 a1 27 31 25 a1 23 31 21 a1 1f 31 1d a1        1b 31 19 a1 17 31 15 a2 13 31 11 e1 0f 31 d  63 b 9 9 c0 4 1f 4c cc cc cc cc cd 0 0 0 0
                             '7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 {channel} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {level}',
                         value: 0,
                         type: 'real',

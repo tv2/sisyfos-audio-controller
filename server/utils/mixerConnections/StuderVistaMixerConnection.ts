@@ -22,6 +22,8 @@ import {
 } from '../../reducers/faderActions'
 import { SET_OUTPUT_LEVEL, SET_AUX_LEVEL } from '../../reducers/channelActions'
 import { remoteConnections } from '../../mainClasses'
+import { IFader } from '../../reducers/fadersReducer'
+import { IChannel } from '../../reducers/channelsReducer'
 
 export class StuderVistaMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -67,126 +69,150 @@ export class StuderVistaMixerConnection {
     setupMixerConnection() {
         logger.info('Ember connection established')
         this.mixerConnection.on('data', (data: any) => {
-            let message: string = ''
+            let bufferString: string = ''
             data.forEach((byte: any) => {
-                message = message + byte.toString(16) + ' '
+                bufferString = bufferString + byte.toString(16) + ' '
             })
-            logger.verbose('Received Ember message: ' + message, {})
-
-            if (
-                this.checkEmberCommand(
-                    message,
-                    this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_OUT_GAIN[0].mixerMessage
-                )
-            ) {
-                let {
-                    channel,
-                    value,
-                    argument,
-                    commandValid,
-                } = this.convertEmberCommand(
-                    message,
-                    this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_OUT_GAIN[0].mixerMessage
-                )
-                if (!commandValid) {
-                    return
-                }
-
-                let assignedFaderIndex =
-                    state.channels[0].channel[channel - 1].assignedFader
-
-                if (!state.channels[0].channel[channel - 1].fadeActive) {
-                    if (value || 1 > state.settings[0].autoResetLevel / 100) {
-                        store.dispatch({
-                            type: SET_FADER_LEVEL,
-                            channel: assignedFaderIndex,
-                            level: value,
-                        })
-                        state.channels[0].channel.forEach((item, index) => {
-                            if (item.assignedFader === assignedFaderIndex) {
-                                store.dispatch({
-                                    type: SET_OUTPUT_LEVEL,
-                                    channel: index,
-                                    level: value,
-                                })
-                            }
-                        })
-                        if (!state.faders[0].fader[assignedFaderIndex].pgmOn) {
-                            if (value || 1 > this.mixerProtocol.fader.min) {
-                                store.dispatch({
-                                    type: TOGGLE_PGM,
-                                    channel: assignedFaderIndex,
-                                })
+            bufferString.split('7f 8f').forEach((message) => {
+                logger.verbose('Received Ember message: ' + message, {})
+                message = '7f 8f' + message
+                if (
+                    this.checkEmberCommand(
+                        message,
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_OUT_GAIN[0].mixerMessage
+                    )
+                ) {
+                    let {
+                        channeltypeIndex,
+                        channelType,
+                        value,
+                        argument,
+                        commandValid,
+                    } = this.convertEmberCommand(
+                        message,
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_OUT_GAIN[0].mixerMessage
+                    )
+                    if (!commandValid) {
+                        return
+                    }
+                    let channelArrayIndex = 0
+                    let { assignedFader } = state.channels[0].channel.find(
+                        (channel: IChannel, index: number) => {
+                            if (
+                                channel.channelType === channelType &&
+                                channel.channelTypeIndex === channeltypeIndex
+                            ) {
+                                channelArrayIndex = index
+                                return true
                             }
                         }
-                    } else if (
-                        state.faders[0].fader[assignedFaderIndex].pgmOn ||
-                        state.faders[0].fader[assignedFaderIndex].voOn
-                    ) {
-                        store.dispatch({
-                            type: SET_FADER_LEVEL,
-                            channel: assignedFaderIndex,
-                            level: value,
-                        })
-                        state.channels[0].channel.forEach((item, index) => {
-                            if (item.assignedFader === assignedFaderIndex) {
-                                store.dispatch({
-                                    type: SET_OUTPUT_LEVEL,
-                                    channel: index,
-                                    level: value,
-                                })
-                            }
-                        })
-                    }
-                    global.mainThreadHandler.updatePartialStore(
-                        assignedFaderIndex
                     )
-
-                    if (remoteConnections) {
-                        remoteConnections.updateRemoteFaderState(
-                            assignedFaderIndex,
-                            channel
+                    if (
+                        !state.channels[0].channel[channelArrayIndex].fadeActive
+                    ) {
+                        if (
+                            value ||
+                            1 > state.settings[0].autoResetLevel / 100
+                        ) {
+                            store.dispatch({
+                                type: SET_FADER_LEVEL,
+                                channel: assignedFader,
+                                level: value,
+                            })
+                            state.channels[0].channel.forEach((item, index) => {
+                                if (item.assignedFader === assignedFader) {
+                                    store.dispatch({
+                                        type: SET_OUTPUT_LEVEL,
+                                        channel: index,
+                                        level: value,
+                                    })
+                                }
+                            })
+                            if (!state.faders[0].fader[assignedFader].pgmOn) {
+                                if (value > 0) {
+                                    store.dispatch({
+                                        type: TOGGLE_PGM,
+                                        channel: assignedFader,
+                                    })
+                                }
+                            }
+                        } else if (
+                            state.faders[0].fader[assignedFader].pgmOn ||
+                            state.faders[0].fader[assignedFader].voOn
+                        ) {
+                            store.dispatch({
+                                type: SET_FADER_LEVEL,
+                                channel: assignedFader,
+                                level: value,
+                            })
+                            state.channels[0].channel.forEach((item, index) => {
+                                if (item.assignedFader === assignedFader) {
+                                    store.dispatch({
+                                        type: SET_OUTPUT_LEVEL,
+                                        channel: index,
+                                        level: value,
+                                    })
+                                }
+                            })
+                        }
+                        global.mainThreadHandler.updatePartialStore(
+                            assignedFader
                         )
+
+                        if (remoteConnections) {
+                            remoteConnections.updateRemoteFaderState(
+                                assignedFader,
+                                value
+                            )
+                        }
                     }
+                } else if (
+                    this.checkEmberCommand(
+                        message,
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_MUTE_ON[0].mixerMessage
+                    )
+                ) {
+                    let {
+                        channeltypeIndex: channel,
+                        channelType,
+                        value,
+                        argument,
+                        commandValid,
+                    } = this.convertEmberCommand(
+                        message,
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_MUTE_ON[0].mixerMessage
+                    )
+                    let mute = 0 // message === 0 ? 1 : 0
+                    store.dispatch({
+                        type: SET_MUTE,
+                        channel:
+                            state.channels[0].channel[channel - 1]
+                                .assignedFader,
+                        muteOn: mute,
+                    })
+                    global.mainThreadHandler.updatePartialStore(
+                        state.channels[0].channel[channel - 1].assignedFader
+                    )
+                } else {
+                    logger.verbose(
+                        'Unknown Vista message message: ' + message,
+                        {}
+                    )
                 }
-            } else if (
-                this.checkEmberCommand(
-                    message,
-                    this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_MUTE_ON[0].mixerMessage
-                )
-            ) {
-                let {
-                    channel,
-                    value,
-                    argument,
-                    commandValid,
-                } = this.convertEmberCommand(
-                    message,
-                    this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_MUTE_ON[0].mixerMessage
-                )
-                let mute = 0 // message === 0 ? 1 : 0
-                store.dispatch({
-                    type: SET_MUTE,
-                    channel:
-                        state.channels[0].channel[channel - 1].assignedFader,
-                    muteOn: mute,
-                })
-                global.mainThreadHandler.updatePartialStore(
-                    state.channels[0].channel[channel - 1].assignedFader
-                )
-            } else {
-                logger.verbose('Unknown Vista message message: ' + message, {})
-            }
+            })
         })
 
         this.mixerOnline(true)
 
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
+            // Initial ping:
+            this.pingMixerCommand()
+            // Timer ping
             let emberTimer = setInterval(() => {
                 this.pingMixerCommand()
             }, this.mixerProtocol.pingTime)
@@ -203,7 +229,7 @@ export class StuderVistaMixerConnection {
             let protocolArray = protocolMessage.split(' ')
             let index = 0
             let test = protocolArray.every((value: string) => {
-                if (value === '{channel}' || value === '{aux}') {
+                if (value === '{channel}' || value === '{ch-type}') {
                     index += 1
                 } else {
                     if (value === messageArray[index + 1].split(' ')[1]) {
@@ -225,7 +251,8 @@ export class StuderVistaMixerConnection {
         message: string,
         protocolMessage: string
     ): {
-        channel: number
+        channeltypeIndex: number
+        channelType: number
         value: number
         argument: string
         commandValid: boolean
@@ -233,17 +260,24 @@ export class StuderVistaMixerConnection {
         let messageArray = message.split('31 ')
         let protocolArray = protocolMessage.split(' ')
 
-        let channel: number = 0
+        let channelTypeIndex: number = 0
+        let channelType: number = 0
         let value: number = 0
         let argument: string = ''
         let commandValid: boolean = true
-        // Extract Channel type: (mono, st, 5.1)
 
-        // Extract Channel number:
+        // Extract Channel number and Channel Type (mono-st-51)
         protocolArray.forEach((value: string, index: number) => {
             if (value === '{channel}') {
-                channel =
-                    parseInt(messageArray[index + 1].split(' ')[1], 16) - 160
+                channelTypeIndex =
+                    parseInt(messageArray[index + 1].split(' ')[1], 16) -
+                    160 -
+                    1
+            } else if (value === '{ch-type}') {
+                channelType =
+                    parseInt(messageArray[index + 1].split(' ')[1], 16) -
+                    160 -
+                    1
             }
         })
         // Extract value:
@@ -262,11 +296,23 @@ export class StuderVistaMixerConnection {
             )
         )
         value = BERreader.readReal()
-        value = Math.exp(value / 40) / 1.2954 // 40 * Math.log((1.14 * value) / 0.88)
-        console.log('Channel :', channel, 'Value :', value)
-        //console.log(hexString)
+        value = Math.exp(value / 40) / 1.2954
+        if (value < 0.09) {
+            value = 0
+        }
+        /*
+        console.log(
+            'Channel :',
+            channelTypeIndex,
+            'Channel Type:',
+            channelType,
+            'Value :',
+            value
+        )
+        */
         return {
-            channel: channel,
+            channeltypeIndex: channelTypeIndex,
+            channelType: channelType,
             value: value,
             argument: '',
             commandValid: commandValid,
@@ -285,13 +331,51 @@ export class StuderVistaMixerConnection {
 
     pingMixerCommand() {
         this.mixerProtocol.pingCommand.map((command) => {
-            let hexArray = command.mixerMessage.split(' ')
-            let buf = Buffer.from(
-                hexArray.map((val: string) => {
-                    return parseInt(val, 16)
-                })
-            )
-            this.mixerConnection.write(buf)
+            if (command.mixerMessage.includes('{channel}')) {
+                state.faders[0].fader.forEach(
+                    (fader: IFader, index: number) => {
+                        state.channels[0].channel.forEach(
+                            (channel: IChannel) => {
+                                if (channel.assignedFader === index) {
+                                    let message = command.mixerMessage
+                                        .replace(
+                                            '{ch-type}',
+                                            (
+                                                channel.channelType +
+                                                1 +
+                                                160
+                                            ).toString(16)
+                                        )
+                                        .replace(
+                                            '{channel}',
+                                            (
+                                                channel.channelTypeIndex +
+                                                1 +
+                                                160
+                                            ).toString(16)
+                                        )
+                                    let hexArray = message.split(' ')
+                                    let buf = Buffer.from(
+                                        hexArray.map((val: string) => {
+                                            return parseInt(val, 16)
+                                        })
+                                    )
+                                    // console.log('Pinging : ', buf)
+                                    this.mixerConnection.write(buf)
+                                }
+                            }
+                        )
+                    }
+                )
+            } else {
+                let hexArray = command.mixerMessage.split(' ')
+                let buf = Buffer.from(
+                    hexArray.map((val: string) => {
+                        return parseInt(val, 16)
+                    })
+                )
+                this.mixerConnection.write(buf)
+            }
             logger.verbose('WRITING PING TO MIXER')
         })
     }
