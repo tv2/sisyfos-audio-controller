@@ -135,12 +135,12 @@ export class StuderVistaMixerConnection {
 
     checkEmberCommand(message: string, protocolMessage: string): boolean {
         let messageArray = message.split('31 ')
-        if (messageArray.length > 1) {
+        if (messageArray.length > 2) {
             let protocolArray = protocolMessage.split(' ')
             let isEqual = protocolArray.every(
                 (value: string, index: number) => {
                     if (
-                        value !== messageArray[index + 1].split(' ')[1] &&
+                        value !== messageArray[index + 1]?.split(' ')[1] &&
                         value !== '{channel}' &&
                         value !== '{ch-type}' &&
                         value !== '{aux}'
