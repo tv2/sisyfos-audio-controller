@@ -184,7 +184,11 @@ export class StuderVistaMixerConnection {
             return
         }
 
-        if (value > state.settings[0].autoResetLevel / 100) {
+        if (
+            value > state.settings[0].autoResetLevel / 100 ||
+            state.faders[0].fader[assignedFader].pgmOn ||
+            state.faders[0].fader[assignedFader].voOn
+        ) {
             store.dispatch({
                 type: SET_FADER_LEVEL,
                 channel: assignedFader,
@@ -207,27 +211,9 @@ export class StuderVistaMixerConnection {
                     })
                 }
             }
-        } else if (
-            state.faders[0].fader[assignedFader].pgmOn ||
-            state.faders[0].fader[assignedFader].voOn
-        ) {
-            store.dispatch({
-                type: SET_FADER_LEVEL,
-                channel: assignedFader,
-                level: value,
-            })
-            state.channels[0].channel.forEach((item, index) => {
-                if (item.assignedFader === assignedFader) {
-                    store.dispatch({
-                        type: SET_OUTPUT_LEVEL,
-                        channel: index,
-                        level: value,
-                    })
-                }
-            })
+            global.mainThreadHandler.updatePartialStore(assignedFader)
+            remoteConnections.updateRemoteFaderState(assignedFader, value)
         }
-        global.mainThreadHandler.updatePartialStore(assignedFader)
-        remoteConnections.updateRemoteFaderState(assignedFader, value)
     }
 
     handleEmberAuxCommand(message: string) {
@@ -370,41 +356,7 @@ export class StuderVistaMixerConnection {
     pingMixerCommand() {
         this.mixerProtocol.pingCommand.map((command) => {
             if (command.mixerMessage.includes('{channel}')) {
-                state.faders[0].fader.forEach(
-                    (fader: IFader, index: number) => {
-                        state.channels[0].channel.forEach(
-                            (channel: IChannel) => {
-                                if (channel.assignedFader === index) {
-                                    let message = command.mixerMessage
-                                        .replace(
-                                            '{ch-type}',
-                                            (
-                                                channel.channelType +
-                                                1 +
-                                                160
-                                            ).toString(16)
-                                        )
-                                        .replace(
-                                            '{channel}',
-                                            (
-                                                channel.channelTypeIndex +
-                                                1 +
-                                                160
-                                            ).toString(16)
-                                        )
-                                    let hexArray = message.split(' ')
-                                    let buf = Buffer.from(
-                                        hexArray.map((val: string) => {
-                                            return parseInt(val, 16)
-                                        })
-                                    )
-                                    // console.log('Pinging : ', buf)
-                                    this.mixerConnection.write(buf)
-                                }
-                            }
-                        )
-                    }
-                )
+                this.pingChannel(command.mixerMessage)
             } else {
                 let hexArray = command.mixerMessage.split(' ')
                 let buf = Buffer.from(
@@ -416,6 +368,53 @@ export class StuderVistaMixerConnection {
             }
             logger.verbose('WRITING PING TO MIXER')
         })
+    }
+
+    pingChannel(mixerMessage: string) {
+        state.faders[0].fader.forEach((fader: IFader, index: number) => {
+            state.channels[0].channel.forEach((channel: IChannel) => {
+                if (channel.assignedFader === index) {
+                    let message = mixerMessage
+                        .replace(
+                            '{ch-type}',
+                            (channel.channelType + 1 + 160).toString(16)
+                        )
+                        .replace(
+                            '{channel}',
+                            (channel.channelTypeIndex + 1 + 160).toString(16)
+                        )
+                    if (message.includes('{aux}')) {
+                        this.pingAuxSend(message)
+                    } else {
+                        let hexArray = message.split(' ')
+                        let buf = Buffer.from(
+                            hexArray.map((val: string) => {
+                                return parseInt(val, 16)
+                            })
+                        )
+                        // console.log('Pinging : ', buf)
+                        this.mixerConnection.write(buf)
+                    }
+                }
+            })
+        })
+    }
+
+    pingAuxSend(message: string) {
+        for (let index = 0; index < state.settings[0].numberOfAux; index++) {
+            let auxMessage = message.replace(
+                '{aux}',
+                (index + 1 + 160).toString(16)
+            )
+            let hexArray = auxMessage.split(' ')
+            let buf = Buffer.from(
+                hexArray.map((val: string) => {
+                    return parseInt(val, 16)
+                })
+            )
+            // console.log('Pinging : ', buf)
+            this.mixerConnection.write(buf)
+        }
     }
 
     sendOutMessage(
