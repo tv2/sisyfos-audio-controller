@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.2.0...v3.3.0) (2020-05-11)
+
+### Features
+
+-   Studer 2-way control - mono - stereo - 51 fader level working ([d2a38b2](https://github.com/olzzon/sisyfos-audio-controller/commit/d2a38b27fec46596a77bf24f297bf1b1f7dfcf48))
+-   Studer fader level return - level values alligned to/from Sisyfos ([68781b1](https://github.com/olzzon/sisyfos-audio-controller/commit/68781b1ef9a1346bc6fe2d6d931b85dd42daa52a))
+-   Vista - 2 way protocol - initial fader level support for mono channels ([d856688](https://github.com/olzzon/sisyfos-audio-controller/commit/d85668819bfbcf48101b2dcd64ec5121ae4076b2))
+-   Vista - 2way MUTE support ([f01291b](https://github.com/olzzon/sisyfos-audio-controller/commit/f01291b451fcce6a7eac8f13de44918ddda89180))
+-   Vista - Aux level 2-way ([ab835d6](https://github.com/olzzon/sisyfos-audio-controller/commit/ab835d6d68a39bdcb57953bf735ea627f6c54443))
+-   vista - get initial mute state ([3f5306e](https://github.com/olzzon/sisyfos-audio-controller/commit/3f5306e74462fc37899acb26ed53b2ceb9524e92))
+-   Vista - receive mixers fader level for mono channels ([f73a981](https://github.com/olzzon/sisyfos-audio-controller/commit/f73a9818429516bf70077eec27a7c565ce4723d5))
+-   vista - subscribe to Aux sends when connecting ([d62dd6d](https://github.com/olzzon/sisyfos-audio-controller/commit/d62dd6da118c5c9cfb2f5751f8b3dd0d9338f24a))
+-   vista preparing 2-way sopport ([6b6ec5a](https://github.com/olzzon/sisyfos-audio-controller/commit/6b6ec5aec7d2fe32ab1994ff78ab65991b1a741f))
+
+### Bug Fixes
+
+-   emit current settings to client and not the stored one. ([a4a1074](https://github.com/olzzon/sisyfos-audio-controller/commit/a4a1074c08f89dc30af2fefe9faa41808ba8bb46))
+-   update all channels in channelReducers->SET_COMPLETE_CH_STATE ([9b3aea7](https://github.com/olzzon/sisyfos-audio-controller/commit/9b3aea760d374320a73cc2efd5a8780bb7d2c00c))
+
 ## [3.2.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.1.0...v3.2.0) (2020-05-07)
 
 ### Features
