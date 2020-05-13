@@ -1,6 +1,6 @@
 import { ICasparCGMixerGeometry, ICasparCGMixerGeometryFile, emptyMixerMessage } from '../MixerProtocolInterface';
 
-// TODO: This is just template data to avoid error if not loading 
+// TODO: This is just template data to avoid error if not loading
 // default.caspar.ccg from storage folder
 // should be simplified when storage is tested on new installations.
 let geometry: ICasparCGMixerGeometryFile = {
@@ -16,7 +16,27 @@ let geometry: ICasparCGMixerGeometryFile = {
 		]
 	},
 	"toMixer": {
-		"MONITOR_CHANNEL_FADER_LEVEL": [
+		"PFL_AUX_FADER_LEVEL": [
+			[
+				{ "channel": 2, "layer": 51 }
+			],
+			[
+				{ "channel": 2, "layer": 52 }
+			],
+			[
+				{ "channel": 2, "layer": 53 }
+			],
+			[
+				{ "channel": 2, "layer": 54 }
+			],
+			[
+				{ "channel": 2, "layer": 55 }
+			],
+			[
+				{ "channel": 2, "layer": 56 }
+			]
+		],
+		"NEXT_AUX_FADER_LEVEL": [
 			[
 				{ "channel": 2, "layer": 51 }
 			],
