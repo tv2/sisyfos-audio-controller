@@ -293,7 +293,7 @@ export class CasparCGConnection {
 
         if (state.faders[0].fader[channelIndex].pflOn === true) {
             // Enable SOLO on this channel on MONITOR
-            const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[channelIndex];
+            const pairs = this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL[channelIndex];
             this.setAllLayers(pairs, state.faders[0].fader[channelIndex].faderLevel);
 
             // Ensure that all other non-SOLO channels are muted on MONITOR
@@ -301,10 +301,10 @@ export class CasparCGConnection {
                 .map((i, index) => i.pflOn ? undefined : index)
                 .filter(i => (
                     i !== undefined &&
-                    i < this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL.length
+                    i < this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL.length
                 )) as number[]
             others.forEach(i => {
-                const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[i];
+                const pairs = this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL[i];
                 this.setAllLayers(pairs, this.mixerProtocol.fader.min);
             })
         } else {
@@ -313,21 +313,21 @@ export class CasparCGConnection {
                 .map((i, index) => i.pflOn ? index : undefined)
                 .filter(i => (
                     i !== undefined &&
-                    i < this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL.length
+                    i < this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL.length
                 )) as number[]
 
             if (others.length > 0) {
-                // other channels are SOLO, mute this channel on MONITOR
-                const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[channelIndex];
+                // other channels are SOLO, mute this channel on PFL
+                const pairs = this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL[channelIndex];
                 this.setAllLayers(pairs, this.mixerProtocol.fader.min);
             } else {
-                // There are no other SOLO channels, restore MONITOR to match PGM
+                // There are no other SOLO channels, restore PFL to match PGM
                 state.channels[0].channel.forEach((i, index) => {
-                    if (index > this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL.length - 1) {
+                    if (index > this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL.length - 1) {
                         return
                     }
 
-                    const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[index];
+                    const pairs = this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL[index];
                     this.setAllLayers(pairs, state.channels[0].channel[index].outputLevel);
                 })
             }
@@ -339,7 +339,19 @@ export class CasparCGConnection {
     }
 
     updateNextAux(channelIndex: number, level: number) {
-        return true
+        if (channelIndex > this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL.length - 1) {
+            return
+        }
+
+        if (state.faders[0].fader[channelIndex].pstOn === true) {
+            // add this channel to the PST mix
+            const pairs = this.mixerProtocol.toMixer.NEXT_AUX_FADER_LEVEL[channelIndex];
+            this.setAllLayers(pairs, state.faders[0].fader[channelIndex].faderLevel);
+        } else {
+            // mute this channel to the PST mix
+            const pairs = this.mixerProtocol.toMixer.NEXT_AUX_FADER_LEVEL[channelIndex];
+            this.setAllLayers(pairs, this.mixerProtocol.fader.min);
+        }
     }
 
     updateThreshold(channelIndex: number, level: number) {
@@ -378,7 +390,7 @@ export class CasparCGConnection {
         const anyPflOn = state.faders[0].fader.reduce((memo, i) => memo || i.pflOn, false)
         // Check if there are no SOLO channels on MONITOR or there are, but this channel is SOLO
         if (!anyPflOn || (anyPflOn && state.faders[0].fader[channelIndex].pflOn)) {
-            const pairs = this.mixerProtocol.toMixer.MONITOR_CHANNEL_FADER_LEVEL[channelIndex];
+            const pairs = this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL[channelIndex];
             if (state.faders[0].fader[channelIndex].pflOn) {
                 this.setAllLayers(pairs, state.faders[0].fader[channelIndex].faderLevel);
             } else {
