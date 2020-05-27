@@ -22,6 +22,7 @@ import {
     SOCKET_RETURN_CCG_LIST,
     SOCKET_SET_VU_REDUCTION,
     SOCKET_SET_MIXER_ONLINE,
+    SOCKET_SET_ALL_VU,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 
 export const socketClientHandlers = () => {
@@ -104,6 +105,24 @@ export const socketClientHandlers = () => {
                 channelIndex: payload.channelIndex,
                 state: payload.state,
             })
+        })
+        .on(SOCKET_SET_ALL_VU, (payload: any) => {
+            payload.vuMeters.forEach((meterLevel: number, index: number) => {
+                window.storeRedux.dispatch({
+                    type: SET_VU_LEVEL,
+                    channel: index,
+                    level: meterLevel,
+                })
+            })
+            payload.vuReductionMeters.forEach(
+                (meterLevel: number, index: number) => {
+                    window.storeRedux.dispatch({
+                        type: SET_VU_REDUCTION_LEVEL,
+                        channel: index,
+                        level: meterLevel,
+                    })
+                }
+            )
         })
         .on(SOCKET_SET_VU, (payload: any) => {
             window.storeRedux.dispatch({
