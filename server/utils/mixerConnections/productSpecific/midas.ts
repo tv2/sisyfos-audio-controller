@@ -36,7 +36,10 @@ export const midasMeter = (message: any) => {
             level: reductionLevel,
         })
         if (
-            vuMeters[state.channels[0].channel[i].assignedFader] === undefined
+            vuMeters[state.channels[0].channel[i].assignedFader] ===
+                undefined ||
+            state.channels[0].channel[i].assignedFader >
+                state.settings[0].numberOfFaders
         ) {
             vuMeters[state.channels[0].channel[i].assignedFader] = level
             vuReductionMeters[
