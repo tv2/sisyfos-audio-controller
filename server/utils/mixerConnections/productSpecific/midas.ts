@@ -12,9 +12,9 @@ export const midasMeter = (message: any) => {
     const DATA_OFFSET = 4
     let uint8bytes = Uint8Array.from(message[0])
     let dataview = new DataView(uint8bytes.buffer)
-    let vuMeters: number[] = new Array(state.settings[0].numberOfFaders)
+    let vuMeters: number[] = new Array(Number(state.settings[0].numberOfFaders))
     let vuReductionMeters: number[] = new Array(
-        state.settings[0].numberOfFaders
+        Number(state.settings[0].numberOfFaders)
     )
     let level: number
     let reductionLevel: number
