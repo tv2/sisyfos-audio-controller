@@ -29,7 +29,7 @@ export const midasMeter = (message: any) => {
         })
 
         vuReductionMeters.push(reductionLevel)
-
+        reductionLevel = 1 - reductionLevel
         store.dispatch({
             type: SET_VU_REDUCTION_LEVEL,
             channel: i,
