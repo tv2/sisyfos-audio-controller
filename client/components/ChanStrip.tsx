@@ -179,7 +179,7 @@ class ChanStrip extends React.PureComponent<
     gainReduction() {
         return (
             <div className="parameter-text">
-                Gain Red.
+                Redution
                 <ReductionMeter faderIndex={this.props.faderIndex} />
             </div>
         )
