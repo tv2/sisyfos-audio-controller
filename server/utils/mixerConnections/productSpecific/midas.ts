@@ -37,8 +37,8 @@ export const midasMeter = (message: any) => {
         })
         if (
             vuMeters[state.channels[0].channel[i].assignedFader] ===
-                undefined ||
-            state.channels[0].channel[i].assignedFader >
+                undefined &&
+            state.channels[0].channel[i].assignedFader <
                 state.settings[0].numberOfFaders
         ) {
             vuMeters[state.channels[0].channel[i].assignedFader] = level
