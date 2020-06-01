@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.3.0...v3.4.0) (2020-06-01)
+
+### Features
+
+-   **casparcg:** adds CasparCG monitoring support for NEXT/PST ([d072336](https://github.com/olzzon/sisyfos-audio-controller/commit/d0723367275b31cc54599068b4eb70e00a6e0a75))
+
+### Bug Fixes
+
+-   metering should come from the first assigned channel (until multi channel metering is available) ([2c01de9](https://github.com/olzzon/sisyfos-audio-controller/commit/2c01de9a7fbd70cbd6bc57a0d9d170b1efccfe92))
+-   Midas - Behringer X32 - emit all meter values in one blob ([e5fd8a9](https://github.com/olzzon/sisyfos-audio-controller/commit/e5fd8a97b5e0b623f1c8bf7ae2a1465fe7069538))
+-   midas - ensure a number when creating new array ([f63003a](https://github.com/olzzon/sisyfos-audio-controller/commit/f63003a78b062a0d437db44ad8d520b5fae91d5d))
+-   midas - wrong logic in checking for unavailble faders ([eb3a178](https://github.com/olzzon/sisyfos-audio-controller/commit/eb3a17850192b44c80133490b2ea755fbb90cb1a))
+-   midas - x32 metering was pr channel not pr assignedFader ([47b54d2](https://github.com/olzzon/sisyfos-audio-controller/commit/47b54d20ada009d2094f543a6f6b1e9715bffe6d))
+-   midas optimize - do not assigned meters for more than number of faders (no matter of assignment) ([711d240](https://github.com/olzzon/sisyfos-audio-controller/commit/711d24070bce22b2c3436ed1c679420545279650))
+-   Reduction meter showed reverse value (max reduction when none, and min when max) ([a1aa3eb](https://github.com/olzzon/sisyfos-audio-controller/commit/a1aa3ebbee84759afaac0e1a7553f5f7debf59b7))
+-   rename Gain red. to "reducition" for fint size/space on Windows machine. ([2601cf7](https://github.com/olzzon/sisyfos-audio-controller/commit/2601cf75a66fdfa3d74f0a26766aa5d31cf6f4a8))
+-   smaller top margin on Reduction meter ([ebf3cc3](https://github.com/olzzon/sisyfos-audio-controller/commit/ebf3cc37a89a473b6b729d849c5040d190361ca1))
+
 ## [3.3.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.2.0...v3.3.0) (2020-05-11)
 
 ### Features
