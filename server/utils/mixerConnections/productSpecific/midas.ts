@@ -24,22 +24,25 @@ export const midasMeter = (message: any) => {
         level = dataview.getFloat32(4 * i + DATA_OFFSET, true)
         reductionLevel = dataview.getFloat32(4 * (i + 64) + DATA_OFFSET, true)
 
-        vuMeters[state.channels[0].channel[i].assignedFader] = level
         store.dispatch({
             type: SET_VU_LEVEL,
             channel: state.channels[0].channel[i].assignedFader,
             level: level,
         })
-
         reductionLevel = 1 - reductionLevel
-        vuReductionMeters[
-            state.channels[0].channel[i].assignedFader
-        ] = reductionLevel
         store.dispatch({
             type: SET_VU_REDUCTION_LEVEL,
             channel: state.channels[0].channel[i].assignedFader,
             level: reductionLevel,
         })
+        if (
+            vuMeters[state.channels[0].channel[i].assignedFader] === undefined
+        ) {
+            vuMeters[state.channels[0].channel[i].assignedFader] = level
+            vuReductionMeters[
+                state.channels[0].channel[i].assignedFader
+            ] = reductionLevel
+        }
     }
     socketServer.emit(SOCKET_SET_ALL_VU, {
         vuMeters: vuMeters,
