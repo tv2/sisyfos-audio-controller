@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { IStore } from '../../server/reducers/indexReducer'
 
 import '../assets/css/App.css'
@@ -7,9 +8,11 @@ import Channels from './Channels'
 import Settings from './Settings'
 import Storage from './RoutingStorage'
 import MiniChannels from './MiniChannels'
+import { withTranslation } from 'react-i18next'
 
 export interface IAppProps {
     store: IStore
+    t: any
 }
 
 class App extends React.Component<IAppProps> {
@@ -88,7 +91,7 @@ class App extends React.Component<IAppProps> {
             <div>
                 {!this.props.store.settings[0].serverOnline ? (
                     <div className="server-offline">
-                        TRYING TO CONNECT TO SISYFOS SERVER
+                        { this.props.t('TRYING TO CONNECT TO SISYFOS SERVER')}
                     </div>
                 ) : null}
                 {!window.location.search.includes('minimonitor=1') ? (
@@ -106,10 +109,11 @@ class App extends React.Component<IAppProps> {
     }
 }
 
-const mapStateToProps = (state: any): IAppProps => {
+const mapStateToProps = (state: any, t: any): IAppProps => {
     return {
         store: state,
+        t: t
     }
 }
 
-export default connect<any, IAppProps>(mapStateToProps)(App) as any
+export default compose(connect<any, IAppProps>(mapStateToProps), withTranslation()) (App) as any
