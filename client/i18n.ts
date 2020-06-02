@@ -18,8 +18,18 @@ i18n.use(LanguageDetector).init({
                 VO: 'STK',
             },
         },
+        nb: {
+            translations: {
+                VO: 'STK',
+            },
+        },
+        sv: {
+            translations: {
+                VO: 'VO',
+            },
+        },
     },
-    whitelist: ['en', 'nn'],
+    whitelist: ['en', 'nn', 'nb', 'sv'],
     fallbackLng: 'en',
     debug: true,
 
