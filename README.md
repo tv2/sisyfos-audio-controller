@@ -260,3 +260,9 @@ Pass a command directly from Automation to Audiomixer
 
 /ping/{value}
 _In response to a ping, sisyfos will reply with /pong and the provided value OR 'offline' if Audiomixer is not connected_
+
+## Localization:
+
+Localization can be found in: /client/i18n.ts
+
+If we end up with a huge amount of translations we move the translations to seperate files, but for now we keep it simple.

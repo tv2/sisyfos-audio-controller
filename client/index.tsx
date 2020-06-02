@@ -13,6 +13,9 @@ import {
     SOCKET_GET_CCG_LIST,
 } from '../server/constants/SOCKET_IO_DISPATCHERS'
 
+import { I18nextProvider } from 'react-i18next'
+import i18n from './i18n'
+
 declare global {
     interface Window {
         storeRedux: any
@@ -42,7 +45,9 @@ window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
 
 ReactDom.render(
     <ReduxProvider store={storeRedux}>
-        <App />
+        <I18nextProvider i18n={i18n}>
+            <App />
+        </I18nextProvider>
     </ReduxProvider>,
     document.getElementById('root')
 )

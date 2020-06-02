@@ -3,7 +3,7 @@ import * as React from 'react'
 import * as ClassNames from 'classnames'
 import { connect } from 'react-redux'
 import VuMeter from './VuMeter'
-import { Store } from 'redux'
+import { Store, compose } from 'redux'
 import Nouislider from 'nouislider-react'
 import '../assets/css/NoUiSlider.css'
 
@@ -22,8 +22,10 @@ import { IFader } from '../../server/reducers/fadersReducer'
 import { IChannels } from '../../server/reducers/channelsReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
 import { TOGGLE_SHOW_CHAN_STRIP } from '../../server/reducers/settingsActions'
+import { withTranslation } from 'react-i18next'
 
 interface IChannelInjectProps {
+    t: any
     channels: IChannels
     fader: IFader
     settings: ISettings
@@ -164,7 +166,7 @@ class Channel extends React.Component<
                     this.handleVo()
                 }}
             >
-                VO
+                {this.props.t('VO')}
             </button>
         )
     }
@@ -181,9 +183,9 @@ class Channel extends React.Component<
                 }}
             >
                 {this.props.settings.automationMode ? (
-                    <React.Fragment>CUE NEXT</React.Fragment>
+                    <React.Fragment>{this.props.t('CUE NEXT')}</React.Fragment>
                 ) : (
-                    <React.Fragment>PST</React.Fragment>
+                    <React.Fragment>{this.props.t('PST')}</React.Fragment>
                 )}
             </button>
         )
@@ -216,7 +218,7 @@ class Channel extends React.Component<
                     this.handlePfl()
                 }}
             >
-                PFL
+                {this.props.t('PFL')}
             </button>
         )
     }
@@ -310,6 +312,7 @@ class Channel extends React.Component<
 
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
+        t: props.t,
         channels: state.channels[0].channel,
         fader: state.faders[0].fader[props.faderIndex],
         settings: state.settings[0],
@@ -319,6 +322,7 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     }
 }
 
-export default connect<any, IChannelInjectProps, any>(mapStateToProps)(
-    Channel
-) as any
+export default compose(
+    connect<any, IChannelInjectProps, any>(mapStateToProps),
+    withTranslation()
+)(Channel) as any
