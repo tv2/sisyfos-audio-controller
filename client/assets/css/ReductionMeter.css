@@ -1,5 +1,4 @@
 .reductionmeter-body {
-    position: relative;
     top: 2px;
     width: 24px;
     margin-top: 15px;
@@ -9,7 +8,6 @@
 }
 
 .reductionmeter-canvas {
-    position: absolute;
     width: 10px;
     margin-left: -5px;
     bottom: 0;
@@ -17,19 +15,16 @@
 }
 
 .reductionmeter-lower-part {
-    position: absolute;
     width: 10px;
     margin-left: 10px;
     background-color: rgb(0, 122, 37);
 }
 .reductionmeter-middle-part {
-    position: absolute;
     width: 10px;
     margin-left: 10px;
     background-color: rgb(53, 167, 0);
 }
 .reductionmeter-upper-part {
-    position: absolute;
     width: 10px;
     margin-left: 10px;
     background-color: rgb(206, 0, 0);
