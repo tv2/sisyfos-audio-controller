@@ -31,6 +31,7 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         //Bindings:
         this.ListSnapshotFiles = this.ListSnapshotFiles.bind(this)
         this.ListCcgFiles = this.ListCcgFiles.bind(this)
+        this.ListPresetFiles = this.ListPresetFiles.bind(this)
         this.loadFile = this.loadFile.bind(this)
         this.saveFile = this.saveFile.bind(this)
     }
@@ -122,7 +123,7 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         const listItems = window.mixerPresetList.map(
             (file: string, index: number) => {
                 return (
-                    <li key={index} onClick={this.loadCcgFile} className="item">
+                    <li key={index} onClick={this.loadMixerPreset} className="item">
                         {file}
                     </li>
                 )
@@ -146,6 +147,13 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
                 <hr />
                 <h3>LOAD ROUTING :</h3>
                 <this.ListSnapshotFiles />
+                {window.mixerPresetList.length > 0 ? (
+                    <div>
+                        <hr />
+                        <h3>LOAD MIXER PRESET :</h3>
+                        <this.ListPresetFiles />
+                    </div>
+                ) : null}
                 {window.ccgFileList.length > 0 ? (
                     <div>
                         <hr />

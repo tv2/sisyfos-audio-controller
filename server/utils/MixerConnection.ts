@@ -83,6 +83,11 @@ export class MixerGenericConnection {
         this.fadeActiveTimer = new Array(state.channels[0].channel.length)
     }
 
+    getPresetFileExtention(): string {
+        console.log('TODO: File extension should be handled pr. mixer type')
+        return 'x32'
+    }
+
     loadMixerPreset(presetName: string) {
         logger.info('Loading Preset :' + presetName)
     }

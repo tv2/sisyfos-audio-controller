@@ -173,7 +173,9 @@ export class MainThreadHandlers {
                 logger.info('Get Preset list', {})
                 socketServer.emit(
                     SOCKET_RETURN_MIXER_PRESET_LIST,
-                    getMixerPresetList()
+                    getMixerPresetList(
+                        mixerGenericConnection.getPresetFileExtention()
+                    )
                 )
             })
             .on(SOCKET_SAVE_CCG_FILE, (payload: any) => {
