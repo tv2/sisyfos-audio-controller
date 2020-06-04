@@ -1,54 +1,61 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface';
+import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
 
 export const StuderOnAirMaster: IMixerProtocol = {
     protocol: 'STUDER',
     label: 'Studer OnAir 3000',
-    mode: "master",
+    presetFileExtension: '',
     FADE_DISPATCH_RESOLUTION: 5,
-    leadingZeros: false,  //some OSC protocols needs channels to be 01, 02 etc.
+    leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],
-    pingTime: 0,  //Bypass ping when pingTime is zero
+    pingTime: 0, //Bypass ping when pingTime is zero
     initializeCommands: [emptyMixerMessage()],
-    channelTypes: [{
-        channelTypeName: 'MONO',
-        channelTypeColor: '#2f2f2f',
-        fromMixer: {
-            CHANNEL_OUT_GAIN: [{
-                mixerMessage: 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
-                value: 0,
-                type: 'real',
-                min: 0,
-                max: 1000,
-                zero: 0
-            }],
-            CHANNEL_VU: [emptyMixerMessage()],
-            CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
-            CHANNEL_NAME: [{
-                mixerMessage: 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Channel Attribute/User Label',
-                value: 0,
-                type: 'real',
-                min: -90,
-                max: 10,
-                zero: 0
-            }],
-            PFL: [emptyMixerMessage()],
-            NEXT_SEND: [emptyMixerMessage()],
-            THRESHOLD: [emptyMixerMessage()],
-            RATIO: [emptyMixerMessage()],
-            DELAY_TIME: [emptyMixerMessage()],
-            LOW: [emptyMixerMessage()],
-            LO_MID: [emptyMixerMessage()],
-            MID: [emptyMixerMessage()],
-            HIGH: [emptyMixerMessage()],
-            AUX_LEVEL: [emptyMixerMessage()],
-            CHANNEL_MUTE_ON: [emptyMixerMessage()],
-            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
-        },
-        // Ch 1: Max level :
-        // 7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a1 14 31 12 a1 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 e8 00 00 00 00
-        // Ch 2: Min level :
-        /*
+    channelTypes: [
+        {
+            channelTypeName: 'MONO',
+            channelTypeColor: '#2f2f2f',
+            fromMixer: {
+                CHANNEL_OUT_GAIN: [
+                    {
+                        mixerMessage:
+                            'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Fader/Value',
+                        value: 0,
+                        type: 'real',
+                        min: 0,
+                        max: 1000,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_VU: [emptyMixerMessage()],
+                CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
+                CHANNEL_NAME: [
+                    {
+                        mixerMessage:
+                            'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Channel Attribute/User Label',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
+                PFL: [emptyMixerMessage()],
+                NEXT_SEND: [emptyMixerMessage()],
+                THRESHOLD: [emptyMixerMessage()],
+                RATIO: [emptyMixerMessage()],
+                DELAY_TIME: [emptyMixerMessage()],
+                LOW: [emptyMixerMessage()],
+                LO_MID: [emptyMixerMessage()],
+                MID: [emptyMixerMessage()],
+                HIGH: [emptyMixerMessage()],
+                AUX_LEVEL: [emptyMixerMessage()],
+                CHANNEL_MUTE_ON: [emptyMixerMessage()],
+                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
+            },
+            // Ch 1: Max level :
+            // 7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a1 14 31 12 a1 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 03 e8 00 00 00 00
+            // Ch 2: Min level :
+            /*
 C1:
 7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a1 14 31 12 a1 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 01 4a 00 00 00 00
 
@@ -145,50 +152,54 @@ CH 96:7f 8f ff fe d9 5c 80 30 80 a4 19 31 17 a1 15 31 13 bf 60 10 31 0e a6 0c 31
 
 */
 
-
-
-        toMixer: {
-            CHANNEL_OUT_GAIN: [{
-                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a1 14 31 12 {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00', // '7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00', 
-                value: 0,
-                type: 'real',
-                min: 0,
-                max: 1000,
-                zero: 750
-
+            toMixer: {
+                CHANNEL_OUT_GAIN: [
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a1 14 31 12 {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00', // '7f 8f ff fe d9 5c 80 30 80 a4 18 31 16 a2 14 31 12 {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00',
+                        value: 0,
+                        type: 'real',
+                        min: 0,
+                        max: 1000,
+                        zero: 750,
+                    },
+                    {
+                        mixerMessage:
+                            '7f 8f ff fe d9 5c 80 30 80 a4 19 31 17 a1 15 31 13 bf {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00',
+                        value: 0,
+                        type: 'real',
+                        min: 0,
+                        max: 1000,
+                        zero: 750,
+                    },
+                ],
+                CHANNEL_NAME: [
+                    {
+                        mixerMessage:
+                            'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Channel Attribute/User Label',
+                        value: 0,
+                        type: 'real',
+                        min: -90,
+                        max: 10,
+                        zero: 0,
+                    },
+                ],
+                PFL_ON: [emptyMixerMessage()],
+                PFL_OFF: [emptyMixerMessage()],
+                NEXT_SEND: [emptyMixerMessage()],
+                THRESHOLD: [emptyMixerMessage()],
+                RATIO: [emptyMixerMessage()],
+                DELAY_TIME: [emptyMixerMessage()],
+                LOW: [emptyMixerMessage()],
+                LO_MID: [emptyMixerMessage()],
+                MID: [emptyMixerMessage()],
+                HIGH: [emptyMixerMessage()],
+                AUX_LEVEL: [emptyMixerMessage()],
+                CHANNEL_MUTE_ON: [emptyMixerMessage()],
+                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
-            {
-                mixerMessage: '7f 8f ff fe d9 5c 80 30 80 a4 19 31 17 a1 15 31 13 bf {channel} 10 31 0e a6 0c 31 0a e1 08 31 06 63 04 02 02 {level} 00 00 00 00', 
-                value: 0,
-                type: 'real',
-                min: 0,
-                max: 1000,
-                zero: 750
-
-            }],
-            CHANNEL_NAME: [{
-                mixerMessage: 'System/Mixer/Channels/Inp Mono/Inp Mono #{channel}/Functions/Channel Attribute/User Label',
-                value: 0,
-                type: 'real',
-                min: -90,
-                max: 10,
-                zero: 0
-            }],
-            PFL_ON: [emptyMixerMessage()],
-            PFL_OFF: [emptyMixerMessage()],
-            NEXT_SEND: [emptyMixerMessage()],
-            THRESHOLD: [emptyMixerMessage()],
-            RATIO: [emptyMixerMessage()],
-            DELAY_TIME: [emptyMixerMessage()],
-            LOW: [emptyMixerMessage()],
-            LO_MID: [emptyMixerMessage()],
-            MID: [emptyMixerMessage()],
-            HIGH: [emptyMixerMessage()],
-            AUX_LEVEL: [emptyMixerMessage()],
-            CHANNEL_MUTE_ON: [emptyMixerMessage()],
-            CHANNEL_MUTE_OFF: [emptyMixerMessage()]
         },
-    }],
+    ],
     fader: {
         min: 0,
         max: 1000,
@@ -200,6 +211,5 @@ CH 96:7f 8f ff fe d9 5c 80 30 80 a4 19 31 17 a1 15 31 13 bf 60 10 31 0e a6 0c 31
         max: 1,
         zero: 0.75,
         test: 0.6,
-    }
+    },
 }
-

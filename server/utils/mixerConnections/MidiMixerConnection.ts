@@ -104,10 +104,7 @@ export class MidiMixerConnection {
                         state.faders[0].fader[faderChannel - 1].faderLevel
                     )
                 }
-                if (
-                    state.faders[0].fader[faderChannel - 1].pgmOn &&
-                    this.mixerProtocol.mode === 'master'
-                ) {
+                if (state.faders[0].fader[faderChannel - 1].pgmOn) {
                     state.channels[0].channel.map(
                         (channel: any, index: number) => {
                             if (channel.assignedFader === faderChannel - 1) {

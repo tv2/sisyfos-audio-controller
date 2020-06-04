@@ -10,6 +10,8 @@ import {
     SOCKET_SAVE_SNAPSHOT,
     SOCKET_GET_CCG_LIST,
     SOCKET_SAVE_CCG_FILE,
+    SOCKET_GET_MIXER_PRESET_LIST,
+    SOCKET_LOAD_MIXER_PRESET,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 
 interface IStorageProps {
@@ -64,11 +66,23 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         }
         this.handleClose()
     }
+
     loadCcgFile(event: any) {
         if (window.confirm('Are you sure you will load a CasparCG setup?')) {
             console.log('Setting default CasparCG file')
             window.socketIoClient.emit(
                 SOCKET_SAVE_CCG_FILE,
+                event.target.textContent
+            )
+        }
+        this.handleClose()
+    }
+
+    loadMixerPreset(event: any) {
+        if (window.confirm('Are you sure you will load a full Mixer setup?')) {
+            console.log('Loading Mixer preset')
+            window.socketIoClient.emit(
+                SOCKET_LOAD_MIXER_PRESET,
                 event.target.textContent
             )
         }
@@ -92,6 +106,20 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
     ListCcgFiles() {
         window.socketIoClient.emit(SOCKET_GET_CCG_LIST)
         const listItems = window.ccgFileList.map(
+            (file: string, index: number) => {
+                return (
+                    <li key={index} onClick={this.loadCcgFile} className="item">
+                        {file}
+                    </li>
+                )
+            }
+        )
+        return <ul className="storage-list">{listItems}</ul>
+    }
+
+    ListPresetFiles() {
+        window.socketIoClient.emit(SOCKET_GET_MIXER_PRESET_LIST)
+        const listItems = window.mixerPresetList.map(
             (file: string, index: number) => {
                 return (
                     <li key={index} onClick={this.loadCcgFile} className="item">
