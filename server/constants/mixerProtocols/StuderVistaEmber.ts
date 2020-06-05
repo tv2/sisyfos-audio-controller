@@ -3,7 +3,8 @@ import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
 export const StuderVistaMaster: IMixerProtocol = {
     protocol: 'VISTA',
     label: 'Studer Vista 1-5-9',
-    presetFileExtension: 'master',
+    presetFileExtension: '',
+    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [
