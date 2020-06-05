@@ -813,12 +813,21 @@ export class OscMixerConnection {
 
     loadMixerPreset(presetName: string) {
         logger.info('Loading preset :', presetName)
-        this.sendOutMessage(
-            this.mixerProtocol.loadPresetCommand[0].mixerMessage,
-            0,
-            0,
-            'i'
-        )
+        if (this.mixerProtocol.presetFileExtension === 'X32') {
+            this.oscConnection.send({
+                address: this.mixerProtocol.loadPresetCommand[0].mixerMessage,
+                args: [
+                    {
+                        type: 's',
+                        value: 'scene',
+                    },
+                    {
+                        type: 'i',
+                        value: 1,
+                    },
+                ],
+            })
+        }
     }
 
     injectCommand(command: string[]) {
