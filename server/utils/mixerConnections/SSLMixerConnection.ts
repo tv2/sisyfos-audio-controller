@@ -527,6 +527,8 @@ export class SSLMixerConnection {
         */
     }
 
+    loadMixerPreset(presetName: string) {}
+
     injectCommand(command: string[]) {
         return true
     }

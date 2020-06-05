@@ -356,6 +356,8 @@ export class StuderMixerConnection {
         )
     }
 
+    loadMixerPreset(presetName: string) {}
+
     injectCommand(command: string[]) {
         return true
     }

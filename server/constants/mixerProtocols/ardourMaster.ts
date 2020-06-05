@@ -4,6 +4,7 @@ export const ArdourMaster: IMixerProtocol = {
     protocol: 'OSC',
     label: 'Ardour DAW - Master Mode',
     presetFileExtension: '',
+    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false,
     pingCommand: [

@@ -4,6 +4,7 @@ export const DMXIS: IMixerProtocol = {
     protocol: 'OSC',
     label: 'DMXIS Light Controller Protocol',
     presetFileExtension: '',
+    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],

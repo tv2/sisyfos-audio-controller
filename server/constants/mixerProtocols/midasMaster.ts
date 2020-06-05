@@ -3,7 +3,8 @@ import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
 export const MidasMaster: IMixerProtocol = {
     protocol: 'OSC',
     label: 'Midas M32 / Behringer X32 Master Mode',
-    presetFileExtension: '',
+    presetFileExtension: 'X32',
+    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: true,
     pingCommand: [

@@ -127,7 +127,10 @@ export const getSnapShotList = () => {
     return files
 }
 
-export const getMixerPresetList = (fileExtension: string) => {
+export const getMixerPresetList = (fileExtension: string): string[] => {
+    if (fileExtension === '') {
+        return []
+    }
     const files = fs
         .readdirSync(path.resolve('storage'))
         .filter((file: string) => {

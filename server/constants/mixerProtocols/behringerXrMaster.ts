@@ -4,6 +4,7 @@ export const BehringerXrMaster: IMixerProtocol = {
     protocol: 'OSC',
     label: 'Behringer XR-series / Midas MR-series',
     presetFileExtension: '',
+    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: true,
     pingCommand: [

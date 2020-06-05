@@ -811,6 +811,16 @@ export class OscMixerConnection {
         )
     }
 
+    loadMixerPreset(presetName: string) {
+        logger.info('Loading preset :', presetName)
+        this.sendOutMessage(
+            this.mixerProtocol.loadPresetCommand[0].mixerMessage,
+            0,
+            0,
+            'i'
+        )
+    }
+
     injectCommand(command: string[]) {
         return true
     }

@@ -105,6 +105,7 @@ let CasparCGMasterObject: ICasparCGMixerGeometry = {
     protocol: 'CasparCG',
     label: `CasparCG Audio Mixer`,
     presetFileExtension: '',
+    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     studio: 'studio0',
     leadingZeros: false,

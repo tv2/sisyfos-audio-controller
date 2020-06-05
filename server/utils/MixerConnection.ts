@@ -84,12 +84,11 @@ export class MixerGenericConnection {
     }
 
     getPresetFileExtention(): string {
-        console.log('TODO: File extension should be handled pr. mixer type')
-        return 'x32'
+        return this.mixerProtocol.presetFileExtension
     }
 
     loadMixerPreset(presetName: string) {
-        logger.info('Loading Preset :' + presetName)
+        this.mixerConnection.loadMixerPreset(presetName)
     }
 
     checkForAutoResetThreshold(channel: number) {

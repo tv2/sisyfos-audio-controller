@@ -23,6 +23,7 @@ import {
     SET_CHANNEL_LABEL,
     TOGGLE_PGM,
 } from '../../reducers/faderActions'
+import { logger } from '../logger'
 
 export class MidiMixerConnection {
     store: any
@@ -269,6 +270,8 @@ export class MidiMixerConnection {
             channelName
         )
     }
+
+    loadMixerPreset(presetName: string) {}
 
     injectCommand(command: string[]) {
         return true

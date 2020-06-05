@@ -4,6 +4,7 @@ export const YamahaQLCL: IMixerProtocol = {
     protocol: 'QLCL',
     label: 'Yamaha QL/CL',
     presetFileExtension: '',
+    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false,
     pingCommand: [emptyMixerMessage()],

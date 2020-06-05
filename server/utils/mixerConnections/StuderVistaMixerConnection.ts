@@ -615,6 +615,8 @@ export class StuderVistaMixerConnection {
         return
     }
 
+    loadMixerPreset(presetName: string) {}
+
     injectCommand(command: string[]) {
         return true
     }
