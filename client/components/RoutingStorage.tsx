@@ -149,18 +149,20 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
                 <h3>LOAD ROUTING :</h3>
                 <this.ListSnapshotFiles />
                 {window.mixerPresetList.length > 0 ? (
-                    <div>
+                    <React.Fragment>
+                        <br />
                         <hr />
                         <h3>LOAD MIXER PRESET :</h3>
                         <this.ListPresetFiles />
-                    </div>
+                    </React.Fragment>
                 ) : null}
                 {window.ccgFileList.length > 0 ? (
-                    <div>
+                    <React.Fragment>
+                        <br />
                         <hr />
                         <h3>LOAD CASPARCG :</h3>
                         <this.ListCcgFiles />
-                    </div>
+                    </React.Fragment>
                 ) : null}
             </div>
         )
