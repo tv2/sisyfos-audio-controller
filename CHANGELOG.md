@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.4.0...v3.5.0) (2020-06-08)
+
+### Features
+
+-   List mixer presets in storage prepared ([67b6435](https://github.com/olzzon/sisyfos-audio-controller/commit/67b643522ab7cec9635b7e2566ca7123115b1239))
+-   load mixer preset - Load scene from X32 ([7f1eb77](https://github.com/olzzon/sisyfos-audio-controller/commit/7f1eb775bcfe00e554e1b5417ece977fd6bb26d5))
+-   load mixer preset - prepared protocols with loadPresetCommand.mixerMessage ([4ffbf3c](https://github.com/olzzon/sisyfos-audio-controller/commit/4ffbf3cb7e53bbf22fc45018def9606fc2027fa1))
+-   load mixer preset - update examples ([53581c3](https://github.com/olzzon/sisyfos-audio-controller/commit/53581c3f3559ec30a53191fa2996648db5a73e90))
+-   load mixer preset - x32 example files added ([260a71d](https://github.com/olzzon/sisyfos-audio-controller/commit/260a71d7085b1f7bc6e75d8e49e1988c193ba821))
+-   Localization - simple localization for Sisyfos ([85a3442](https://github.com/olzzon/sisyfos-audio-controller/commit/85a344214e85dac059e7b2571ec2d66e587afc6f))
+-   localization add nb and sv ([7431031](https://github.com/olzzon/sisyfos-audio-controller/commit/74310318942d436bbb0aa508ed7bba741951fdb4))
+-   mixer-preset-loading working Midas/Behringer X32 preset loading ([a8fe1a9](https://github.com/olzzon/sisyfos-audio-controller/commit/a8fe1a97fe842716adc403bcffd9a9c0f92dbdc0))
+
+### Bug Fixes
+
+-   compressor area in chan strip was scrollable in css. ([55bc40a](https://github.com/olzzon/sisyfos-audio-controller/commit/55bc40af3f8e597217a035f64c923cdad15cbd42))
+-   missing declaration in protocol ([74524c4](https://github.com/olzzon/sisyfos-audio-controller/commit/74524c4b241eebd9385d7f5be3bb3dc5332f1fec))
+-   mixer-preset compare both sides as uppercase ([0617fec](https://github.com/olzzon/sisyfos-audio-controller/commit/0617fec84567bca0e7d71e72dfcd89fb568e7af3))
+-   mixer-preset-list check files as uppercase ([ac97d70](https://github.com/olzzon/sisyfos-audio-controller/commit/ac97d70647b54bc6eeac06af83ee9a3fe2126f65))
+
 ## [3.4.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.3.0...v3.4.0) (2020-06-01)
 
 ### Features
