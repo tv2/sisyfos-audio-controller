@@ -11,6 +11,7 @@ import indexReducer from '../server/reducers/indexReducer'
 import {
     SOCKET_GET_SNAPSHOT_LIST,
     SOCKET_GET_CCG_LIST,
+    SOCKET_GET_MIXER_PRESET_LIST,
 } from '../server/constants/SOCKET_IO_DISPATCHERS'
 
 import { I18nextProvider } from 'react-i18next'
@@ -25,6 +26,7 @@ declare global {
         socketIoClient: any
         snapshotFileList: string[]
         ccgFileList: string[]
+        mixerPresetList: string[]
     }
 }
 
@@ -36,6 +38,7 @@ window.storeRedux = storeRedux
 window.socketIoClient = io()
 window.socketIoClient.emit(SOCKET_GET_SNAPSHOT_LIST)
 window.socketIoClient.emit(SOCKET_GET_CCG_LIST)
+window.socketIoClient.emit(SOCKET_GET_MIXER_PRESET_LIST)
 
 console.log('Setting up SocketIO connection')
 socketClientHandlers()

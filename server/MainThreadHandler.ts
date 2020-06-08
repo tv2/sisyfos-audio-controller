@@ -15,6 +15,7 @@ import {
     getSnapShotList,
     getCcgSettingsList,
     setCcgDefault,
+    getMixerPresetList,
 } from './utils/SettingsStorage'
 import {
     SOCKET_TOGGLE_PGM,
@@ -50,6 +51,9 @@ import {
     SOCKET_SAVE_CCG_FILE,
     SOCKET_SET_DELAY_TIME,
     SOCKET_SHOW_IN_MINI_MONITOR,
+    SOCKET_GET_MIXER_PRESET_LIST,
+    SOCKET_RETURN_MIXER_PRESET_LIST,
+    SOCKET_LOAD_MIXER_PRESET,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
     TOGGLE_PGM,
@@ -162,12 +166,26 @@ export class MainThreadHandlers {
                 )
             })
             .on(SOCKET_GET_CCG_LIST, () => {
-                logger.info('Get snapshot list', {})
+                logger.info('Get CCG settings list', {})
                 socketServer.emit(SOCKET_RETURN_CCG_LIST, getCcgSettingsList())
+            })
+            .on(SOCKET_GET_MIXER_PRESET_LIST, () => {
+                logger.info('Get Preset list', {})
+                socketServer.emit(
+                    SOCKET_RETURN_MIXER_PRESET_LIST,
+                    getMixerPresetList(
+                        mixerGenericConnection.getPresetFileExtention()
+                    )
+                )
             })
             .on(SOCKET_SAVE_CCG_FILE, (payload: any) => {
                 logger.info('Set default CCG File :' + String(payload), {})
                 setCcgDefault(payload)
+                this.updateFullClientStore()
+            })
+            .on(SOCKET_LOAD_MIXER_PRESET, (payload: any) => {
+                logger.info('Set Mixer Preset :' + String(payload), {})
+                mixerGenericConnection.loadMixerPreset(payload)
                 this.updateFullClientStore()
             })
             .on(SOCKET_SAVE_SETTINGS, (payload: any) => {

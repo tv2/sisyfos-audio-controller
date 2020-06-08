@@ -1,7 +1,8 @@
 export interface IMixerProtocolGeneric {
     protocol: string
     label: string
-    mode: string
+    presetFileExtension: string
+    loadPresetCommand: Array<IMixerMessageProtocol>
     FADE_DISPATCH_RESOLUTION: number
     fader: {
         min: number

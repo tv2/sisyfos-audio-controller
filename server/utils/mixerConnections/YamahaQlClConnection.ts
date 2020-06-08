@@ -430,6 +430,8 @@ export class QlClMixerConnection {
         )
     }
 
+    loadMixerPreset(presetName: string) {}
+
     injectCommand(command: string[]) {
         return true
     }

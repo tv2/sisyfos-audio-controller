@@ -331,6 +331,8 @@ export class EmberMixerConnection {
         )
     }
 
+    loadMixerPreset(presetName: string) {}
+
     injectCommand(command: string[]) {
         return true
     }

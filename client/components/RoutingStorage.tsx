@@ -10,6 +10,8 @@ import {
     SOCKET_SAVE_SNAPSHOT,
     SOCKET_GET_CCG_LIST,
     SOCKET_SAVE_CCG_FILE,
+    SOCKET_GET_MIXER_PRESET_LIST,
+    SOCKET_LOAD_MIXER_PRESET,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 
 interface IStorageProps {
@@ -29,6 +31,8 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         //Bindings:
         this.ListSnapshotFiles = this.ListSnapshotFiles.bind(this)
         this.ListCcgFiles = this.ListCcgFiles.bind(this)
+        this.ListPresetFiles = this.ListPresetFiles.bind(this)
+        this.loadMixerPreset = this.loadMixerPreset.bind(this)
         this.loadFile = this.loadFile.bind(this)
         this.saveFile = this.saveFile.bind(this)
     }
@@ -64,11 +68,23 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         }
         this.handleClose()
     }
+
     loadCcgFile(event: any) {
         if (window.confirm('Are you sure you will load a CasparCG setup?')) {
             console.log('Setting default CasparCG file')
             window.socketIoClient.emit(
                 SOCKET_SAVE_CCG_FILE,
+                event.target.textContent
+            )
+        }
+        this.handleClose()
+    }
+
+    loadMixerPreset(event: any) {
+        if (window.confirm('Are you sure you will load a full Mixer setup?')) {
+            console.log('Loading Mixer preset')
+            window.socketIoClient.emit(
+                SOCKET_LOAD_MIXER_PRESET,
                 event.target.textContent
             )
         }
@@ -103,6 +119,20 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         return <ul className="storage-list">{listItems}</ul>
     }
 
+    ListPresetFiles() {
+        window.socketIoClient.emit(SOCKET_GET_MIXER_PRESET_LIST)
+        const listItems = window.mixerPresetList.map(
+            (file: string, index: number) => {
+                return (
+                    <li key={index} onClick={this.loadMixerPreset} className="item">
+                        {file}
+                    </li>
+                )
+            }
+        )
+        return <ul className="storage-list">{listItems}</ul>
+    }
+
     render() {
         return (
             <div className="channel-storage-body">
@@ -118,6 +148,13 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
                 <hr />
                 <h3>LOAD ROUTING :</h3>
                 <this.ListSnapshotFiles />
+                {window.mixerPresetList.length > 0 ? (
+                    <div>
+                        <hr />
+                        <h3>LOAD MIXER PRESET :</h3>
+                        <this.ListPresetFiles />
+                    </div>
+                ) : null}
                 {window.ccgFileList.length > 0 ? (
                     <div>
                         <hr />

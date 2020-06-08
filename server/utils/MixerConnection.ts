@@ -19,6 +19,7 @@ import { CasparCGConnection } from './mixerConnections/CasparCGConnection'
 import { IChannel } from '../reducers/channelsReducer'
 import { SET_OUTPUT_LEVEL, FADE_ACTIVE } from '../reducers/channelActions'
 import { SET_FADER_LEVEL } from '../reducers/faderActions'
+import { logger } from './logger'
 
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
 // The lower the more CPU
@@ -80,6 +81,14 @@ export class MixerGenericConnection {
         //Setup timers for fade in & out
         this.timer = new Array(state.channels[0].channel.length)
         this.fadeActiveTimer = new Array(state.channels[0].channel.length)
+    }
+
+    getPresetFileExtention(): string {
+        return this.mixerProtocol.presetFileExtension
+    }
+
+    loadMixerPreset(presetName: string) {
+        this.mixerConnection.loadMixerPreset(presetName)
     }
 
     checkForAutoResetThreshold(channel: number) {

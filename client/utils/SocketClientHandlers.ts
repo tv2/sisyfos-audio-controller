@@ -23,6 +23,7 @@ import {
     SOCKET_SET_VU_REDUCTION,
     SOCKET_SET_MIXER_ONLINE,
     SOCKET_SET_ALL_VU,
+    SOCKET_RETURN_MIXER_PRESET_LIST,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 
 export const socketClientHandlers = () => {
@@ -143,5 +144,8 @@ export const socketClientHandlers = () => {
         })
         .on(SOCKET_RETURN_CCG_LIST, (payload: any) => {
             window.ccgFileList = payload
+        })
+        .on(SOCKET_RETURN_MIXER_PRESET_LIST, (payload: any) => {
+            window.mixerPresetList = payload
         })
 }
