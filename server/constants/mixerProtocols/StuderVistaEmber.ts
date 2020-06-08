@@ -56,6 +56,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             channelTypeColor: '#2f2f2f',
             fromMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: 'a1 a1 {ch-type} {channel} a1 a2 e1',
@@ -113,6 +114,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             },
             toMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         // 7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a1 19 31 17 {a3} 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 {05 09 03 c0 06 13 00 00 00 00}
@@ -187,6 +189,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             channelTypeColor: '#3f2f2f',
             fromMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:
@@ -226,6 +229,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             },
             toMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         // 7f 8f ff fe d9 5c 80 30 80 a1 25 31 23 a1 21 31 1f a1 1d 31 1b a2 19 31 17 b9 15 31 13 a1 11 31 0f a2 0d 31 0b e1 09 31 07 63 05 09 03 80 03 05 00 00 00 00
@@ -299,6 +303,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             channelTypeColor: '#2f3f2f',
             fromMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:
@@ -338,6 +343,7 @@ export const StuderVistaMaster: IMixerProtocol = {
             },
             toMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:

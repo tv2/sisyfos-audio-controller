@@ -32,6 +32,7 @@ export interface IChannelTypes {
     channelTypeColor: string
     fromMixer: {
         CHANNEL_INPUT_GAIN: Array<IMixerMessageProtocol>
+        CHANNEL_INPUT_SELECTOR: Array<IMixerMessageProtocol>
         CHANNEL_OUT_GAIN: Array<IMixerMessageProtocol>
         CHANNEL_VU: Array<IMixerMessageProtocol>
         CHANNEL_VU_REDUCTION: Array<IMixerMessageProtocol>
@@ -51,6 +52,7 @@ export interface IChannelTypes {
     }
     toMixer: {
         CHANNEL_INPUT_GAIN: Array<IMixerMessageProtocol>
+        CHANNEL_INPUT_SELECTOR: Array<IMixerMessageProtocol>
         CHANNEL_OUT_GAIN: Array<IMixerMessageProtocol>
         CHANNEL_NAME: Array<IMixerMessageProtocol>
         PFL_ON: Array<IMixerMessageProtocol>

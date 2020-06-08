@@ -20,6 +20,7 @@ import {
     SOCKET_SET_HIGH,
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_INPUT_GAIN,
+    SOCKET_SET_INPUT_SELECTOR
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import CcgChannelInputSettings from './CcgChannelSettings'
 import ReductionMeter from './ReductionMeter'
@@ -74,7 +75,7 @@ class ChanStrip extends React.PureComponent<
         })
     }
     handleInputSelect(selected:number) {
-        window.socketIoClient.emit(SOCKET_SET_INPUT_GAIN, {
+        window.socketIoClient.emit(SOCKET_SET_INPUT_SELECTOR, {
             channel: this.props.faderIndex,
             inputSelect: selected,
         })

@@ -133,6 +133,7 @@ export const MidasMaster: IMixerProtocol = {
             channelTypeColor: '#2f2f2f',
             fromMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/ch/{channel}/mix/fader',
@@ -252,6 +253,7 @@ export const MidasMaster: IMixerProtocol = {
             },
             toMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/ch/{channel}/mix/fader',

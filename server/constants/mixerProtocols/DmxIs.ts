@@ -17,6 +17,7 @@ export const DMXIS: IMixerProtocol = {
             channelTypeColor: '#3f2f2f',
             fromMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/dmxis/ch/{channel}',
@@ -45,6 +46,7 @@ export const DMXIS: IMixerProtocol = {
             },
             toMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/dmxis/ch/{channel}',

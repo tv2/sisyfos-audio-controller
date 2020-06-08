@@ -3,6 +3,7 @@
 // Fader Channels:
 export const SOCKET_SET_FADERLEVEL = 'FaderLevel'
 export const SOCKET_SET_INPUT_GAIN = 'InputGain'
+export const SOCKET_SET_INPUT_SELECTOR = 'InputSelector'
 export const SOCKET_SET_ASSIGNED_FADER = 'setAssignedFader'
 export const SOCKET_SET_FADER_MONITOR = 'FaderMonitor'
 export const SOCKET_SHOW_IN_MINI_MONITOR = 'showInMiniMonitor'

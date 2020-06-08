@@ -26,6 +26,7 @@ export const SSLSystemT: IMixerProtocol = {
             channelTypeColor: '#2f2f2f',
             fromMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [emptyMixerMessage()], // Handled by SSLMixerconnection
                 CHANNEL_VU: [emptyMixerMessage()], // Not implemented in SSL Automation protocol yet
                 CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
@@ -54,6 +55,7 @@ export const SSLSystemT: IMixerProtocol = {
             },
             toMixer: {
                 CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: 'f1 06 00 80 00 {channel} {level}',
