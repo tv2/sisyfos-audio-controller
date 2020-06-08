@@ -184,7 +184,7 @@ export class MainThreadHandlers {
                 this.updateFullClientStore()
             })
             .on(SOCKET_LOAD_MIXER_PRESET, (payload: any) => {
-                logger.info('Set default CCG File :' + String(payload), {})
+                logger.info('Set Mixer Preset :' + String(payload), {})
                 mixerGenericConnection.loadMixerPreset(payload)
                 this.updateFullClientStore()
             })

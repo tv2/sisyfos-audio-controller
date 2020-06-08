@@ -1,5 +1,8 @@
 //Node Modules:
 const osc = require('osc')
+const fs = require('fs')
+const path = require('path')
+
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 import { socketServer } from '../../expressHandler'
@@ -37,6 +40,7 @@ import {
     SOCKET_SET_MIXER_ONLINE,
 } from '../../constants/SOCKET_IO_DISPATCHERS'
 import { logger } from '../logger'
+import { valueContainerCSS } from 'react-select/src/components/containers'
 
 export class OscMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -812,8 +816,12 @@ export class OscMixerConnection {
     }
 
     loadMixerPreset(presetName: string) {
-        logger.info('Loading preset :', presetName)
+        logger.info('Loading preset : ' + presetName)
         if (this.mixerProtocol.presetFileExtension === 'X32') {
+            let data = JSON.parse(
+                fs.readFileSync(path.resolve('storage', presetName))
+            )
+
             this.oscConnection.send({
                 address: this.mixerProtocol.loadPresetCommand[0].mixerMessage,
                 args: [
@@ -823,7 +831,7 @@ export class OscMixerConnection {
                     },
                     {
                         type: 'i',
-                        value: 1,
+                        value: parseInt(data.sceneIndex),
                     },
                 ],
             })

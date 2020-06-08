@@ -32,6 +32,7 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         this.ListSnapshotFiles = this.ListSnapshotFiles.bind(this)
         this.ListCcgFiles = this.ListCcgFiles.bind(this)
         this.ListPresetFiles = this.ListPresetFiles.bind(this)
+        this.loadMixerPreset = this.loadMixerPreset.bind(this)
         this.loadFile = this.loadFile.bind(this)
         this.saveFile = this.saveFile.bind(this)
     }
