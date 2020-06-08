@@ -445,10 +445,8 @@ export class OscMixerConnection {
                 }
             })
             .on('error', (error: any) => {
-                this.mixerOnline(false)
                 global.mainThreadHandler.updateFullClientStore()
                 logger.error('Error : ' + String(error), {})
-                logger.info('Lost OSC connection', {})
             })
             .on('disconnect', () => {
                 this.mixerOnline(false)
