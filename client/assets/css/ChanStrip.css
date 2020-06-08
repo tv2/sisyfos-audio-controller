@@ -29,7 +29,22 @@
     color: #fff;
 }
 
-.parameters > .parameter-group {
+.parameters > .inp-comp-del-group {
+    display: flex;
+    top: 5px;
+    left: 2px;
+    margin-left: 5px;
+    overflow: auto;
+    text-align: center;
+    color: #fff;
+}
+
+.inp-comp-del-group > .horizontal-space {
+    width: 40px;
+    height: 50px;
+}
+
+.parameters > .eq-group {
     display: flex;
     top: 5px;
     left: 2px;
@@ -39,12 +54,12 @@
     color: #fff;
 }
 
-.parameter-group > .horizontal-space {
+.eq-group > .horizontal-space {
     width: 150px;
     height: 50px;
 }
 
-.parameters > .group-text {
+.eq > .group-text {
     text-align: center;
     line-height: 20px;
     font-size: 110%;
@@ -81,9 +96,10 @@
     font-size: 100%;
 }
 
-.parameter-group > .delayButtons {
+.inp-comp-del-group > .delayButtons {
     width: 30px;
     margin-top: 24px;
+    margin-left: 50px;
 }
 
 .delayButtons > .delayTime {
@@ -91,6 +107,25 @@
     -moz-outline: none;
     color: white;
     height: 45px;
+    width: 70px;
+    border-color: rgb(71, 71, 71);
+    background-color: rgb(53, 53, 53);
+    margin-left: -50px;
+    margin-top: 5px;
+    border-radius: 7px;
+}
+
+.inp-comp-del-group > .input-buttons {
+    width: 30px;
+    margin-top: 24px;
+    margin-left: 50px;
+}
+
+.input-buttons > .input-select {
+    outline: none;
+    -moz-outline: none;
+    color: white;
+    height: 60px;
     width: 70px;
     border-color: rgb(71, 71, 71);
     background-color: rgb(53, 53, 53);

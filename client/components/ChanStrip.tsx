@@ -19,6 +19,7 @@ import {
     SOCKET_SET_MID,
     SOCKET_SET_HIGH,
     SOCKET_SET_AUX_LEVEL,
+    SOCKET_SET_INPUT_GAIN,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import CcgChannelInputSettings from './CcgChannelSettings'
 import ReductionMeter from './ReductionMeter'
@@ -72,7 +73,18 @@ class ChanStrip extends React.PureComponent<
             channel: -1,
         })
     }
-
+    handleInputSelect(selected:number) {
+        window.socketIoClient.emit(SOCKET_SET_INPUT_GAIN, {
+            channel: this.props.faderIndex,
+            inputSelect: selected,
+        })
+    }
+    handleInputGain(event: any) {
+        window.socketIoClient.emit(SOCKET_SET_INPUT_GAIN, {
+            channel: this.props.faderIndex,
+            level: parseFloat(event),
+        })
+    }
     handleThreshold(event: any) {
         window.socketIoClient.emit(SOCKET_SET_THRESHOLD, {
             channel: this.props.faderIndex,
@@ -134,6 +146,60 @@ class ChanStrip extends React.PureComponent<
         })
     }
 
+    inputSelector() {
+        return(
+            <div className="input-buttons">
+                    <button
+                        className="input-select"
+                        onClick={() => {
+                            this.handleInputSelect(1)
+                        }}
+                    >
+                        L-L
+                    </button>
+                    <button
+                        className="input-select"
+                        onClick={() => {
+                            this.handleInputSelect(2)
+                        }}
+                    >
+                        L-R
+                    </button>
+                    <button
+                        className="input-select"
+                        onClick={() => {
+                            this.handleInputSelect(3)
+                        }}
+                    >
+                        R-R
+                    </button>
+                </div>
+        )
+
+    }
+
+    inputGain() {
+        return (
+            <div className="parameter-text">
+                Inp.Gain
+                <ReactSlider
+                    className="chan-strip-fader"
+                    thumbClassName="chan-strip-thumb"
+                    orientation="vertical"
+                    invert
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={this.props.fader[this.props.faderIndex].inputGain}
+                    onChange={(event: any) => {
+                        this.handleInputGain(event)
+                    }}
+                />
+            </div>
+        )
+    }
+
+
     threshold() {
         return (
             <div className="parameter-text">
@@ -187,6 +253,30 @@ class ChanStrip extends React.PureComponent<
     delay() {
         return (
             <React.Fragment>
+                                <div className="parameter-text">
+                    {Math.round(
+                        500 *
+                            (this.props.fader[this.props.faderIndex]
+                                .delayTime || 0)
+                    )}{' '}
+                    ms
+                    <ReactSlider
+                        className="chan-strip-fader"
+                        thumbClassName="chan-strip-thumb"
+                        orientation="vertical"
+                        invert
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value={
+                            this.props.fader[this.props.faderIndex].delayTime ||
+                            0
+                        }
+                        onChange={(event: any) => {
+                            this.handleDelay(event)
+                        }}
+                    />
+                </div>
                 <div className="delayButtons">
                     <button
                         className="delayTime"
@@ -236,30 +326,6 @@ class ChanStrip extends React.PureComponent<
                     >
                         -10ms
                     </button>
-                </div>
-                <div className="parameter-text">
-                    {Math.round(
-                        500 *
-                            (this.props.fader[this.props.faderIndex]
-                                .delayTime || 0)
-                    )}{' '}
-                    ms
-                    <ReactSlider
-                        className="chan-strip-fader"
-                        thumbClassName="chan-strip-thumb"
-                        orientation="vertical"
-                        invert
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        value={
-                            this.props.fader[this.props.faderIndex].delayTime ||
-                            0
-                        }
-                        onChange={(event: any) => {
-                            this.handleDelay(event)
-                        }}
-                    />
                 </div>
             </React.Fragment>
         )
@@ -389,14 +455,26 @@ class ChanStrip extends React.PureComponent<
             return (
                 <div className="parameters">
                     <div className="group-text">
-                        COMPRESSOR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    INPUT
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; DELAY
+                    COMPRESSOR
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    DELAY
                     </div>
-                    <div className="parameter-group">
+
+                    <div className="inp-comp-del-group">
+                        {this.inputSelector()}
+                        {this.inputGain()}
+                        <p className="horizontal-space"></p>
                         {this.threshold()}
                         <p className="zero-comp">______</p>
                         {this.ratio()}
@@ -407,7 +485,7 @@ class ChanStrip extends React.PureComponent<
                     </div>
                     <hr />
                     <div className="group-text">{'EQUALIZER'}</div>
-                    <div className="parameter-group">
+                    <div className="eq-group">
                         {this.low()}
                         <p className="zero-eq">_______</p>
                         {this.loMid()}

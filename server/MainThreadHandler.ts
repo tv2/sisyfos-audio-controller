@@ -24,6 +24,7 @@ import {
     SOCKET_TOGGLE_PFL,
     SOCKET_TOGGLE_MUTE,
     SOCKET_SET_FADERLEVEL,
+    SOCKET_SET_INPUT_GAIN,
     SOCKET_SAVE_SETTINGS,
     SOCKET_GET_SNAPSHOT_LIST,
     SOCKET_RETURN_SNAPSHOT_LIST,
@@ -73,6 +74,7 @@ import {
     SET_FADER_LO_MID,
     SET_FADER_DELAY_TIME,
     SHOW_IN_MINI_MONITOR,
+    SET_INPUT_GAIN,
 } from './reducers/faderActions'
 import { SET_FADER_LEVEL } from './reducers/faderActions'
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions'
@@ -399,6 +401,21 @@ export class MainThreadHandlers {
                 })
                 mixerGenericConnection.updateOutLevel(payload.faderIndex)
                 mixerGenericConnection.updateNextAux(payload.faderIndex)
+                this.updatePartialStore(payload.faderIndex)
+            })
+            .on(SOCKET_SET_INPUT_GAIN, (payload: any) => {
+                logger.verbose(
+                    'Set fInput Gain Channel : ' +
+                        String(payload.faderIndex + 1) +
+                        '  Level : ' +
+                        String(payload.level)
+                )
+                store.dispatch({
+                    type: SET_INPUT_GAIN,
+                    channel: payload.faderIndex,
+                    level: parseFloat(payload.level),
+                })
+                mixerGenericConnection.updateInputGain(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })
     }

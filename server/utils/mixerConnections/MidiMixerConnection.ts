@@ -227,6 +227,11 @@ export class MidiMixerConnection {
     updateNextAux(channelIndex: number, level: number) {
         return true
     }
+
+    updateInputGain(channelIndex: number, level: number) {
+        return true
+    }
+
     updateThreshold(channelIndex: number, level: number) {
         return true
     }

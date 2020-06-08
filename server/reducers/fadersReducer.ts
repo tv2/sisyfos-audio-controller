@@ -7,6 +7,7 @@ import {
     SET_CHANNEL_LABEL,
     SET_COMPLETE_FADER_STATE,
     SET_FADER_LEVEL,
+    SET_INPUT_GAIN,
     SET_MUTE,
     SET_PFL,
     SET_PGM,
@@ -44,6 +45,7 @@ export interface IFaders {
 
 export interface IFader {
     faderLevel: number
+    inputGain: number
     label: string
     pgmOn: boolean
     voOn: boolean
@@ -81,6 +83,7 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
     for (let index = 0; index < numberOfFaders; index++) {
         defaultObj[0].fader[index] = {
             faderLevel: 0.75,
+            inputGain: 0.75,
             label: '',
             pgmOn: false,
             voOn: false,
@@ -159,6 +162,11 @@ export const faders = (
             return nextState
         case SET_FADER_LEVEL: //channel:  level:
             nextState[0].fader[action.channel].faderLevel = parseFloat(
+                action.level
+            )
+            return nextState
+        case SET_INPUT_GAIN: //channel:  level:
+            nextState[0].fader[action.channel].inputGain = parseFloat(
                 action.level
             )
             return nextState

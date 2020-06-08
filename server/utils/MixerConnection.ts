@@ -141,6 +141,17 @@ export class MixerGenericConnection {
         }
     }
 
+    updateInputGain(faderIndex: number) {
+        let level = state.faders[0].fader[faderIndex].ratio
+        state.channels[0].channel.map(
+            (channel: IChannel, channelIndex: number) => {
+                if (faderIndex === channel.assignedFader) {
+                    this.mixerConnection.updateInputGain(channelIndex, level)
+                }
+            }
+        )
+    }
+
     updatePflState(channelIndex: number) {
         this.mixerConnection.updatePflState(channelIndex)
     }

@@ -470,6 +470,10 @@ export class CasparCGConnection {
         }
     }
 
+    updateInputGain(channelIndex: number, level: number) {
+        return true
+    }
+
     updateThreshold(channelIndex: number, level: number) {
         return true
     }

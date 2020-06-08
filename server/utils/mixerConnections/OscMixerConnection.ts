@@ -694,6 +694,10 @@ export class OscMixerConnection {
         )
     }
 
+    updateInputGain(channelIndex: number, level: number) {
+        return true
+    }
+
     updateThreshold(channelIndex: number, level: number) {
         let channelType = state.channels[0].channel[channelIndex].channelType
         let channelTypeIndex =
