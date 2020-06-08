@@ -128,6 +128,9 @@ export const faders = (
             fader: [...state[0].fader],
         },
     ]
+    if (action.channel > nextState[0].fader.length) {
+        return nextState
+    }
 
     switch (action.type) {
         case SET_VU_LEVEL: //channel:  level:
