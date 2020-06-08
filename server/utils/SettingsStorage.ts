@@ -135,8 +135,7 @@ export const getMixerPresetList = (fileExtension: string): string[] => {
         .readdirSync(path.resolve('storage'))
         .filter((file: string) => {
             if (
-                file.includes('.' + fileExtension.toUpperCase()) &&
-                file !== 'default.' + fileExtension
+                file.toUpperCase().includes('.' + fileExtension.toUpperCase())
             ) {
                 return true
             }
