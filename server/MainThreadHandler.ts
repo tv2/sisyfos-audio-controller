@@ -55,6 +55,7 @@ import {
     SOCKET_GET_MIXER_PRESET_LIST,
     SOCKET_RETURN_MIXER_PRESET_LIST,
     SOCKET_LOAD_MIXER_PRESET,
+    SOCKET_SET_INPUT_SELECTOR,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
     TOGGLE_PGM,
@@ -416,6 +417,21 @@ export class MainThreadHandlers {
                     level: parseFloat(payload.level),
                 })
                 mixerGenericConnection.updateInputGain(payload.faderIndex)
+                this.updatePartialStore(payload.faderIndex)
+            })
+            .on(SOCKET_SET_INPUT_SELECTOR, (payload: any) => {
+                logger.verbose(
+                    'Set Input selector : ' +
+                        String(payload.faderIndex + 1) +
+                        '  Selected : ' +
+                        String(payload.selected)
+                )
+                store.dispatch({
+                    type: SOCKET_SET_INPUT_SELECTOR,
+                    channel: payload.faderIndex,
+                    selected: parseFloat(payload.selected),
+                })
+                mixerGenericConnection.updateInputSelector(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })
     }

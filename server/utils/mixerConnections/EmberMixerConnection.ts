@@ -295,6 +295,9 @@ export class EmberMixerConnection {
     updateInputGain(channelIndex: number, level: number) {
         return true
     }
+    updateInputSelector(channelIndex: number, inputSelected: number) {
+        return true
+    }
 
     updateThreshold(channelIndex: number, level: number) {
         return true

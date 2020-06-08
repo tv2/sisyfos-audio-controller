@@ -76,13 +76,13 @@ class ChanStrip extends React.PureComponent<
     }
     handleInputSelect(selected:number) {
         window.socketIoClient.emit(SOCKET_SET_INPUT_SELECTOR, {
-            channel: this.props.faderIndex,
-            inputSelect: selected,
+            faderIndex: this.props.faderIndex,
+            selected: selected,
         })
     }
     handleInputGain(event: any) {
         window.socketIoClient.emit(SOCKET_SET_INPUT_GAIN, {
-            channel: this.props.faderIndex,
+            faderIndex: this.props.faderIndex,
             level: parseFloat(event),
         })
     }
@@ -182,7 +182,7 @@ class ChanStrip extends React.PureComponent<
     inputGain() {
         return (
             <div className="parameter-text">
-                Inp.Gain
+                Gain
                 <ReactSlider
                     className="chan-strip-fader"
                     thumbClassName="chan-strip-thumb"

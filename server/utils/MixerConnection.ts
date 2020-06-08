@@ -142,11 +142,25 @@ export class MixerGenericConnection {
     }
 
     updateInputGain(faderIndex: number) {
-        let level = state.faders[0].fader[faderIndex].ratio
+        let level = state.faders[0].fader[faderIndex].inputGain
         state.channels[0].channel.map(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateInputGain(channelIndex, level)
+                }
+            }
+        )
+    }
+
+    updateInputSelector(faderIndex: number) {
+        let inputSelected = state.faders[0].fader[faderIndex].inputSelector
+        state.channels[0].channel.map(
+            (channel: IChannel, channelIndex: number) => {
+                if (faderIndex === channel.assignedFader) {
+                    this.mixerConnection.updateInputSelector(
+                        channelIndex,
+                        inputSelected
+                    )
                 }
             }
         )
