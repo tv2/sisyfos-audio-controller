@@ -1,16 +1,16 @@
 export interface IMixerProtocolGeneric {
     protocol: string
     label: string
-    presetFileExtension: string
-    loadPresetCommand: Array<IMixerMessageProtocol>
+    presetFileExtension?: string
+    loadPresetCommand?: Array<IMixerMessageProtocol>
     FADE_DISPATCH_RESOLUTION: number
-    fader: {
+    fader?: {
         min: number
         max: number
         zero: number
         step: number
     }
-    meter: {
+    meter?: {
         min: number
         max: number
         zero: number
@@ -20,64 +20,64 @@ export interface IMixerProtocolGeneric {
 }
 
 export interface IMixerProtocol extends IMixerProtocolGeneric {
-    leadingZeros: boolean
-    pingCommand: Array<IMixerMessageProtocol>
-    pingResponseCommand: Array<IMixerMessageProtocol>
-    pingTime: number
-    initializeCommands: Array<IMixerMessageProtocol>
+    leadingZeros?: boolean
+    pingCommand?: Array<IMixerMessageProtocol>
+    pingResponseCommand?: Array<IMixerMessageProtocol>
+    pingTime?: number
+    initializeCommands?: Array<IMixerMessageProtocol>
 }
 
 export interface IChannelTypes {
     channelTypeName: string
     channelTypeColor: string
     fromMixer: {
-        CHANNEL_INPUT_GAIN: Array<IMixerMessageProtocol>
-        CHANNEL_INPUT_SELECTOR: Array<IMixerMessageProtocol>
-        CHANNEL_OUT_GAIN: Array<IMixerMessageProtocol>
-        CHANNEL_VU: Array<IMixerMessageProtocol>
-        CHANNEL_VU_REDUCTION: Array<IMixerMessageProtocol>
-        CHANNEL_NAME: Array<IMixerMessageProtocol>
-        PFL: Array<IMixerMessageProtocol>
-        NEXT_SEND: Array<IMixerMessageProtocol>
-        THRESHOLD: Array<IMixerMessageProtocol>
-        RATIO: Array<IMixerMessageProtocol>
-        DELAY_TIME: Array<IMixerMessageProtocol>
-        LOW: Array<IMixerMessageProtocol>
-        LO_MID: Array<IMixerMessageProtocol>
-        MID: Array<IMixerMessageProtocol>
-        HIGH: Array<IMixerMessageProtocol>
-        AUX_LEVEL: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
+        CHANNEL_INPUT_GAIN?: Array<IMixerMessageProtocol>
+        CHANNEL_INPUT_SELECTOR?: Array<IMixerMessageProtocol>
+        CHANNEL_OUT_GAIN?: Array<IMixerMessageProtocol>
+        CHANNEL_VU?: Array<IMixerMessageProtocol>
+        CHANNEL_VU_REDUCTION?: Array<IMixerMessageProtocol>
+        CHANNEL_NAME?: Array<IMixerMessageProtocol>
+        PFL?: Array<IMixerMessageProtocol>
+        NEXT_SEND?: Array<IMixerMessageProtocol>
+        THRESHOLD?: Array<IMixerMessageProtocol>
+        RATIO?: Array<IMixerMessageProtocol>
+        DELAY_TIME?: Array<IMixerMessageProtocol>
+        LOW?: Array<IMixerMessageProtocol>
+        LO_MID?: Array<IMixerMessageProtocol>
+        MID?: Array<IMixerMessageProtocol>
+        HIGH?: Array<IMixerMessageProtocol>
+        AUX_LEVEL?: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
     }
     toMixer: {
-        CHANNEL_INPUT_GAIN: Array<IMixerMessageProtocol>
-        CHANNEL_INPUT_SELECTOR: Array<IMixerMessageProtocol>
-        CHANNEL_OUT_GAIN: Array<IMixerMessageProtocol>
-        CHANNEL_NAME: Array<IMixerMessageProtocol>
-        PFL_ON: Array<IMixerMessageProtocol>
-        PFL_OFF: Array<IMixerMessageProtocol>
-        NEXT_SEND: Array<IMixerMessageProtocol>
-        THRESHOLD: Array<IMixerMessageProtocol>
-        RATIO: Array<IMixerMessageProtocol>
-        DELAY_TIME: Array<IMixerMessageProtocol>
-        LOW: Array<IMixerMessageProtocol>
-        LO_MID: Array<IMixerMessageProtocol>
-        MID: Array<IMixerMessageProtocol>
-        HIGH: Array<IMixerMessageProtocol>
-        AUX_LEVEL: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_ON: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_OFF: Array<IMixerMessageProtocol>
+        CHANNEL_INPUT_GAIN?: Array<IMixerMessageProtocol>
+        CHANNEL_INPUT_SELECTOR?: Array<IMixerMessageProtocol>
+        CHANNEL_OUT_GAIN?: Array<IMixerMessageProtocol>
+        CHANNEL_NAME?: Array<IMixerMessageProtocol>
+        PFL_ON?: Array<IMixerMessageProtocol>
+        PFL_OFF?: Array<IMixerMessageProtocol>
+        NEXT_SEND?: Array<IMixerMessageProtocol>
+        THRESHOLD?: Array<IMixerMessageProtocol>
+        RATIO?: Array<IMixerMessageProtocol>
+        DELAY_TIME?: Array<IMixerMessageProtocol>
+        LOW?: Array<IMixerMessageProtocol>
+        LO_MID?: Array<IMixerMessageProtocol>
+        MID?: Array<IMixerMessageProtocol>
+        HIGH?: Array<IMixerMessageProtocol>
+        AUX_LEVEL?: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
+        CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
     }
 }
 
 interface IMixerMessageProtocol {
     mixerMessage: string
-    value: any
-    type: string
-    min: number
-    max: number
-    zero: number
+    value?: any
+    type?: string
+    min?: number
+    max?: number
+    zero?: number
 }
 
 export const emptyMixerMessage = (): IMixerMessageProtocol => {
