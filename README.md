@@ -133,6 +133,7 @@ As NEXT has been implemented, and PFL usually only work on on channel at a time,
 -   Midas Master
     -   OSC protocol for Midas M32 and Behringer X32
     -   Port 10023
+    -   Mixer preset loading (using .x32 files in storage folder)
 -   Behringer xr master
     -   OSC protocol for Behringer XR12,16,18
     -   Port 10024
