@@ -20,7 +20,7 @@ import {
     SOCKET_SET_HIGH,
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_INPUT_GAIN,
-    SOCKET_SET_INPUT_SELECTOR
+    SOCKET_SET_INPUT_SELECTOR,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import CcgChannelInputSettings from './CcgChannelSettings'
 import ReductionMeter from './ReductionMeter'
@@ -74,7 +74,7 @@ class ChanStrip extends React.PureComponent<
             channel: -1,
         })
     }
-    handleInputSelect(selected:number) {
+    handleInputSelect(selected: number) {
         window.socketIoClient.emit(SOCKET_SET_INPUT_SELECTOR, {
             faderIndex: this.props.faderIndex,
             selected: selected,
@@ -147,59 +147,68 @@ class ChanStrip extends React.PureComponent<
         })
     }
 
-    inputSelector() {
-        return(
-            <div className="input-buttons">
-                    <button
-                        className="input-select"
-                        onClick={() => {
-                            this.handleInputSelect(1)
-                        }}
-                    >
-                        L-L
-                    </button>
-                    <button
-                        className="input-select"
-                        onClick={() => {
-                            this.handleInputSelect(2)
-                        }}
-                    >
-                        L-R
-                    </button>
-                    <button
-                        className="input-select"
-                        onClick={() => {
-                            this.handleInputSelect(3)
-                        }}
-                    >
-                        R-R
-                    </button>
-                </div>
+    inputSelectorButton(index: number) {
+        return (
+            <button
+                className="input-select"
+                onClick={() => {
+                    this.handleInputSelect(index + 1)
+                }}
+            >
+                {window.mixerProtocol.channelTypes[0].toMixer
+                    .CHANNEL_INPUT_SELECTOR
+                    ? window.mixerProtocol.channelTypes[0].toMixer
+                          .CHANNEL_INPUT_SELECTOR[index].label
+                    : null}
+            </button>
         )
+    }
 
+    inputSelector() {
+        return (
+            <div className="input-buttons">
+                {window.mixerProtocol.channelTypes[0].toMixer
+                    .CHANNEL_INPUT_SELECTOR ? (
+                    <React.Fragment>
+                        {window.mixerProtocol.channelTypes[0].toMixer.CHANNEL_INPUT_SELECTOR.map(
+                            (none: any, index: number) => {
+                                return this.inputSelectorButton(index)
+                            }
+                        )}
+                    </React.Fragment>
+                ) : null}
+            </div>
+        )
     }
 
     inputGain() {
         return (
             <div className="parameter-text">
                 Gain
-                <ReactSlider
-                    className="chan-strip-fader"
-                    thumbClassName="chan-strip-thumb"
-                    orientation="vertical"
-                    invert
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={this.props.fader[this.props.faderIndex].inputGain}
-                    onChange={(event: any) => {
-                        this.handleInputGain(event)
-                    }}
-                />
+                {window.mixerProtocol.channelTypes[0].toMixer
+                    .CHANNEL_INPUT_GAIN ? (
+                    <React.Fragment>
+                        <ReactSlider
+                            className="chan-strip-fader"
+                            thumbClassName="chan-strip-thumb"
+                            orientation="vertical"
+                            invert
+                            min={0}
+                            max={1}
+                            step={0.01}
+                            value={
+                                this.props.fader[this.props.faderIndex]
+                                    .inputGain
+                            }
+                            onChange={(event: any) => {
+                                this.handleInputGain(event)
+                            }}
+                        />
+                    </React.Fragment>
+                ) : null}
             </div>
         )
     }
-
 
     threshold() {
         return (
@@ -254,7 +263,7 @@ class ChanStrip extends React.PureComponent<
     delay() {
         return (
             <React.Fragment>
-                                <div className="parameter-text">
+                <div className="parameter-text">
                     {Math.round(
                         500 *
                             (this.props.fader[this.props.faderIndex]
@@ -456,20 +465,17 @@ class ChanStrip extends React.PureComponent<
             return (
                 <div className="parameters">
                     <div className="group-text">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    INPUT
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INPUT
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    COMPRESSOR
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; COMPRESSOR
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    DELAY
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DELAY
                     </div>
 
                     <div className="inp-comp-del-group">

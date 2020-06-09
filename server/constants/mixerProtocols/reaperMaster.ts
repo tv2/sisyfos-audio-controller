@@ -16,8 +16,6 @@ export const ReaperMaster: IMixerProtocol = {
             channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
-                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/track/{channel}/volume',
@@ -63,8 +61,6 @@ export const ReaperMaster: IMixerProtocol = {
                 CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
-                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/track/{channel}/volume',
@@ -122,8 +118,6 @@ export const ReaperMaster: IMixerProtocol = {
             channelTypeName: 'MASTER',
             channelTypeColor: '#0f0f3f',
             fromMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
-                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/master/volume',
@@ -168,8 +162,6 @@ export const ReaperMaster: IMixerProtocol = {
                 CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
-                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/master/volume',
