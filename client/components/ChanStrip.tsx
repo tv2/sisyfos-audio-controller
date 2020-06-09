@@ -482,25 +482,49 @@ class ChanStrip extends React.PureComponent<
                         {this.inputSelector()}
                         {this.inputGain()}
                         <p className="horizontal-space"></p>
-                        {this.threshold()}
-                        <p className="zero-comp">______</p>
-                        {this.ratio()}
-                        <p className="zero-comp">______</p>
-                        {this.gainReduction()}
+                        {window.mixerProtocol.channelTypes[0].toMixer
+                            .THRESHOLD ? (
+                            <React.Fragment>
+                                {this.threshold()}
+                                <p className="zero-comp">______</p>
+                                {this.ratio()}
+                                <p className="zero-comp">______</p>
+                                {this.gainReduction()}
+                            </React.Fragment>
+                        ) : null}
                         <p className="horizontal-space"></p>
-                        {this.delay()}
+                        {window.mixerProtocol.channelTypes[0].toMixer
+                            .DELAY_TIME ? (
+                            <React.Fragment>{this.delay()}</React.Fragment>
+                        ) : null}
                     </div>
                     <hr />
                     <div className="group-text">{'EQUALIZER'}</div>
                     <div className="eq-group">
-                        {this.low()}
-                        <p className="zero-eq">_______</p>
-                        {this.loMid()}
-                        <p className="zero-eq">_______</p>
-                        {this.mid()}
-                        <p className="zero-eq">_______</p>
-                        {this.high()}
-                        <p className="zero-eq">_______</p>
+                        {window.mixerProtocol.channelTypes[0].toMixer.LOW ? (
+                            <React.Fragment>
+                                {this.low()}
+                                <p className="zero-eq">_______</p>
+                            </React.Fragment>
+                        ) : null}
+                        {window.mixerProtocol.channelTypes[0].toMixer.LO_MID ? (
+                            <React.Fragment>
+                                {this.loMid()}
+                                <p className="zero-eq">_______</p>
+                            </React.Fragment>
+                        ) : null}
+                        {window.mixerProtocol.channelTypes[0].toMixer.MID ? (
+                            <React.Fragment>
+                                {this.mid()}
+                                <p className="zero-eq">_______</p>
+                            </React.Fragment>
+                        ) : null}
+                        {window.mixerProtocol.channelTypes[0].toMixer.HIGH ? (
+                            <React.Fragment>
+                                {this.high()}
+                                <p className="zero-eq">_______</p>
+                            </React.Fragment>
+                        ) : null}
                     </div>
                     <hr />
                     <div className="group-text">
