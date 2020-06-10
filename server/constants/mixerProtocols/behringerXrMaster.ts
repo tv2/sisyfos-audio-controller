@@ -32,6 +32,7 @@ export const BehringerXrMaster: IMixerProtocol = {
         },
         {
             mixerMessage: '/ch/{channel}/mix/{argument}/level',
+            type: 'aux',
         },
         {
             mixerMessage: '/ch/{channel}/dyn/thr',
