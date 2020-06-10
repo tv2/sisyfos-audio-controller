@@ -76,6 +76,7 @@ import {
     SET_FADER_DELAY_TIME,
     SHOW_IN_MINI_MONITOR,
     SET_INPUT_GAIN,
+    SET_INPUT_SELECTOR,
 } from './reducers/faderActions'
 import { SET_FADER_LEVEL } from './reducers/faderActions'
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions'
@@ -426,8 +427,9 @@ export class MainThreadHandlers {
                         '  Selected : ' +
                         String(payload.selected)
                 )
+                console.log(payload)
                 store.dispatch({
-                    type: SOCKET_SET_INPUT_SELECTOR,
+                    type: SET_INPUT_SELECTOR,
                     channel: payload.faderIndex,
                     selected: parseFloat(payload.selected),
                 })
