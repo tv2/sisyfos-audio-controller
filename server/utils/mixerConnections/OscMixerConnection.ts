@@ -468,13 +468,14 @@ export class OscMixerConnection {
     }
 
     initialCommands() {
+        // To prevent network overload, timers will delay the requests.
         this.mixerProtocol.initializeCommands.forEach(
             (item, itemIndex: number) => {
                 setTimeout(() => {
                     if (item.mixerMessage.includes('{channel}')) {
-                        if (item.type === 'aux') {
+                        if (item.type !== undefined && item.type === 'aux') {
                             state.channels[0].channel.forEach(
-                                (channel: any, index: number) => {
+                                (channel: any) => {
                                     channel.auxLevel.forEach(
                                         (auxLevel: any, auxIndex: number) => {
                                             if (channel.assignedFader >= 0) {
@@ -511,12 +512,9 @@ export class OscMixerConnection {
                             )
                         }
                     } else {
-                        this.sendOutMessage(
-                            item.mixerMessage,
-                            1,
-                            item.value,
-                            item.type
-                        )
+                        let value = item.value || 0
+                        let type = item.type || 'i'
+                        this.sendOutMessage(item.mixerMessage, 1, value, type)
                     }
                 }, itemIndex * 100)
             }
@@ -526,12 +524,9 @@ export class OscMixerConnection {
     pingMixerCommand() {
         //Ping OSC mixer if mixerProtocol needs it.
         this.mixerProtocol.pingCommand.map((command) => {
-            this.sendOutMessage(
-                command.mixerMessage,
-                0,
-                command.value,
-                command.type
-            )
+            let value = command.value || 0
+            let type = command.type || 'i'
+            this.sendOutMessage(command.mixerMessage, 0, value, type)
         })
         global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
