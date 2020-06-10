@@ -16,7 +16,6 @@ export const StuderOnAirMaster: IMixerProtocol = {
             channelTypeName: 'MONO',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:
@@ -155,7 +154,6 @@ CH 96:7f 8f ff fe d9 5c 80 30 80 a4 19 31 17 a1 15 31 13 bf 60 10 31 0e a6 0c 31
 */
 
             toMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:

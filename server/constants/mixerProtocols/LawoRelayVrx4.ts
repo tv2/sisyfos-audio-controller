@@ -16,7 +16,6 @@ export const LawoRelayVrx4: IMixerProtocol = {
             channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:
@@ -54,7 +53,6 @@ export const LawoRelayVrx4: IMixerProtocol = {
                 CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:

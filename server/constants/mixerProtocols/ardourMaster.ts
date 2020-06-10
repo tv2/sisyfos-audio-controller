@@ -43,7 +43,6 @@ export const ArdourMaster: IMixerProtocol = {
             channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/strip/fader/{channel}',
@@ -89,7 +88,6 @@ export const ArdourMaster: IMixerProtocol = {
                 CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/strip/fader/{channel}',

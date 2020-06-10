@@ -19,6 +19,8 @@ import {
     SOCKET_SET_MID,
     SOCKET_SET_HIGH,
     SOCKET_SET_AUX_LEVEL,
+    SOCKET_SET_INPUT_GAIN,
+    SOCKET_SET_INPUT_SELECTOR,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import CcgChannelInputSettings from './CcgChannelSettings'
 import ReductionMeter from './ReductionMeter'
@@ -72,7 +74,18 @@ class ChanStrip extends React.PureComponent<
             channel: -1,
         })
     }
-
+    handleInputSelect(selected: number) {
+        window.socketIoClient.emit(SOCKET_SET_INPUT_SELECTOR, {
+            faderIndex: this.props.faderIndex,
+            selected: selected,
+        })
+    }
+    handleInputGain(event: any) {
+        window.socketIoClient.emit(SOCKET_SET_INPUT_GAIN, {
+            faderIndex: this.props.faderIndex,
+            level: parseFloat(event),
+        })
+    }
     handleThreshold(event: any) {
         window.socketIoClient.emit(SOCKET_SET_THRESHOLD, {
             channel: this.props.faderIndex,
@@ -134,6 +147,69 @@ class ChanStrip extends React.PureComponent<
         })
     }
 
+    inputSelectorButton(index: number) {
+        return (
+            <button
+                className="input-select"
+                onClick={() => {
+                    this.handleInputSelect(index + 1)
+                }}
+            >
+                {window.mixerProtocol.channelTypes[0].toMixer
+                    .CHANNEL_INPUT_SELECTOR
+                    ? window.mixerProtocol.channelTypes[0].toMixer
+                          .CHANNEL_INPUT_SELECTOR[index].label
+                    : null}
+            </button>
+        )
+    }
+
+    inputSelector() {
+        return (
+            <div className="input-buttons">
+                {window.mixerProtocol.channelTypes[0].toMixer
+                    .CHANNEL_INPUT_SELECTOR ? (
+                    <React.Fragment>
+                        {window.mixerProtocol.channelTypes[0].toMixer.CHANNEL_INPUT_SELECTOR.map(
+                            (none: any, index: number) => {
+                                return this.inputSelectorButton(index)
+                            }
+                        )}
+                    </React.Fragment>
+                ) : null}
+            </div>
+        )
+    }
+
+    inputGain() {
+        return (
+            <div className="parameter-text">
+                Gain
+                {window.mixerProtocol.channelTypes[0].toMixer
+                    .CHANNEL_INPUT_GAIN ? (
+                    <React.Fragment>
+                        <ReactSlider
+                            className="chan-strip-fader"
+                            thumbClassName="chan-strip-thumb"
+                            orientation="vertical"
+                            invert
+                            min={0}
+                            max={1}
+                            step={0.01}
+                            value={
+                                this.props.fader[this.props.faderIndex]
+                                    .inputGain
+                            }
+                            onChange={(event: any) => {
+                                this.handleInputGain(event)
+                            }}
+                        />
+                    </React.Fragment>
+                ) : null}
+            </div>
+        )
+    }
+
     threshold() {
         return (
             <div className="parameter-text">
@@ -187,6 +263,30 @@ class ChanStrip extends React.PureComponent<
     delay() {
         return (
             <React.Fragment>
+                <div className="parameter-text">
+                    {Math.round(
+                        500 *
+                            (this.props.fader[this.props.faderIndex]
+                                .delayTime || 0)
+                    )}{' '}
+                    ms
+                    <ReactSlider
+                        className="chan-strip-fader"
+                        thumbClassName="chan-strip-thumb"
+                        orientation="vertical"
+                        invert
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value={
+                            this.props.fader[this.props.faderIndex].delayTime ||
+                            0
+                        }
+                        onChange={(event: any) => {
+                            this.handleDelay(event)
+                        }}
+                    />
+                </div>
                 <div className="delayButtons">
                     <button
                         className="delayTime"
@@ -236,30 +336,6 @@ class ChanStrip extends React.PureComponent<
                     >
                         -10ms
                     </button>
-                </div>
-                <div className="parameter-text">
-                    {Math.round(
-                        500 *
-                            (this.props.fader[this.props.faderIndex]
-                                .delayTime || 0)
-                    )}{' '}
-                    ms
-                    <ReactSlider
-                        className="chan-strip-fader"
-                        thumbClassName="chan-strip-thumb"
-                        orientation="vertical"
-                        invert
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        value={
-                            this.props.fader[this.props.faderIndex].delayTime ||
-                            0
-                        }
-                        onChange={(event: any) => {
-                            this.handleDelay(event)
-                        }}
-                    />
                 </div>
             </React.Fragment>
         )
@@ -389,33 +465,66 @@ class ChanStrip extends React.PureComponent<
             return (
                 <div className="parameters">
                     <div className="group-text">
-                        COMPRESSOR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INPUT
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; COMPRESSOR
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; DELAY
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DELAY
                     </div>
-                    <div className="parameter-group">
-                        {this.threshold()}
-                        <p className="zero-comp">______</p>
-                        {this.ratio()}
-                        <p className="zero-comp">______</p>
-                        {this.gainReduction()}
+
+                    <div className="inp-comp-del-group">
+                        {this.inputSelector()}
+                        {this.inputGain()}
                         <p className="horizontal-space"></p>
-                        {this.delay()}
+                        {window.mixerProtocol.channelTypes[0].toMixer
+                            .THRESHOLD ? (
+                            <React.Fragment>
+                                {this.threshold()}
+                                <p className="zero-comp">______</p>
+                                {this.ratio()}
+                                <p className="zero-comp">______</p>
+                                {this.gainReduction()}
+                            </React.Fragment>
+                        ) : null}
+                        <p className="horizontal-space"></p>
+                        {window.mixerProtocol.channelTypes[0].toMixer
+                            .DELAY_TIME ? (
+                            <React.Fragment>{this.delay()}</React.Fragment>
+                        ) : null}
                     </div>
                     <hr />
                     <div className="group-text">{'EQUALIZER'}</div>
-                    <div className="parameter-group">
-                        {this.low()}
-                        <p className="zero-eq">_______</p>
-                        {this.loMid()}
-                        <p className="zero-eq">_______</p>
-                        {this.mid()}
-                        <p className="zero-eq">_______</p>
-                        {this.high()}
-                        <p className="zero-eq">_______</p>
+                    <div className="eq-group">
+                        {window.mixerProtocol.channelTypes[0].toMixer.LOW ? (
+                            <React.Fragment>
+                                {this.low()}
+                                <p className="zero-eq">_______</p>
+                            </React.Fragment>
+                        ) : null}
+                        {window.mixerProtocol.channelTypes[0].toMixer.LO_MID ? (
+                            <React.Fragment>
+                                {this.loMid()}
+                                <p className="zero-eq">_______</p>
+                            </React.Fragment>
+                        ) : null}
+                        {window.mixerProtocol.channelTypes[0].toMixer.MID ? (
+                            <React.Fragment>
+                                {this.mid()}
+                                <p className="zero-eq">_______</p>
+                            </React.Fragment>
+                        ) : null}
+                        {window.mixerProtocol.channelTypes[0].toMixer.HIGH ? (
+                            <React.Fragment>
+                                {this.high()}
+                                <p className="zero-eq">_______</p>
+                            </React.Fragment>
+                        ) : null}
                     </div>
                     <hr />
                     <div className="group-text">

@@ -134,7 +134,6 @@ let CasparCGMasterObject: ICasparCGMixerGeometry = {
             channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: 'none',
@@ -162,7 +161,6 @@ let CasparCGMasterObject: ICasparCGMixerGeometry = {
                 CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: 'none',

@@ -445,10 +445,8 @@ export class OscMixerConnection {
                 }
             })
             .on('error', (error: any) => {
-                this.mixerOnline(false)
                 global.mainThreadHandler.updateFullClientStore()
                 logger.error('Error : ' + String(error), {})
-                logger.info('Lost OSC connection', {})
             })
             .on('disconnect', () => {
                 this.mixerOnline(false)
@@ -692,6 +690,13 @@ export class OscMixerConnection {
             state.settings[0].nextSendAux - 1,
             level
         )
+    }
+
+    updateInputGain(channelIndex: number, level: number) {
+        return true
+    }
+    updateInputSelector(channelIndex: number, inputSelected: number) {
+        return true
     }
 
     updateThreshold(channelIndex: number, level: number) {
