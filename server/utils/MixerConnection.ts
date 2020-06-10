@@ -13,6 +13,7 @@ import { MidiMixerConnection } from './mixerConnections/MidiMixerConnection'
 import { QlClMixerConnection } from './mixerConnections/YamahaQlClConnection'
 import { SSLMixerConnection } from './mixerConnections/SSLMixerConnection'
 import { EmberMixerConnection } from './mixerConnections/EmberMixerConnection'
+import { LawoRubyMixerConnection } from './mixerConnections/LawoRubyConnection'
 import { StuderMixerConnection } from './mixerConnections/StuderMixerConnection'
 import { StuderVistaMixerConnection } from './mixerConnections/StuderVistaMixerConnection'
 import { CasparCGConnection } from './mixerConnections/CasparCGConnection'
@@ -62,6 +63,10 @@ export class MixerGenericConnection {
             )
         } else if (this.mixerProtocol.protocol === 'EMBER') {
             this.mixerConnection = new EmberMixerConnection(
+                this.mixerProtocol as IMixerProtocol
+            )
+        } else if (this.mixerProtocol.protocol === 'LAWORUBY') {
+            this.mixerConnection = new LawoRubyMixerConnection(
                 this.mixerProtocol as IMixerProtocol
             )
         } else if (this.mixerProtocol.protocol === 'STUDER') {
@@ -154,6 +159,7 @@ export class MixerGenericConnection {
 
     updateInputSelector(faderIndex: number) {
         let inputSelected = state.faders[0].fader[faderIndex].inputSelector
+        console.log(faderIndex, inputSelected)
         state.channels[0].channel.map(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {

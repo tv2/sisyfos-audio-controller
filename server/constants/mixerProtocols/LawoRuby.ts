@@ -1,7 +1,7 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
 
 export const LawoRuby: IMixerProtocol = {
-    protocol: 'EMBER',
+    protocol: 'LAWORUBY',
     label: 'Lawo Ruby',
     presetFileExtension: '',
     loadPresetCommand: [emptyMixerMessage()],
@@ -16,6 +16,40 @@ export const LawoRuby: IMixerProtocol = {
             channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
+                CHANNEL_INPUT_GAIN: [
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.Gain[dB]',
+                        value: 0,
+                        type: 'int',
+                        min: -30,
+                        max: 18,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_INPUT_SELECTOR: [
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 0,
+                        type: 'int',
+                        label: 'LR',
+                    },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 4,
+                        type: 'int',
+                        label: 'LL',
+                    },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 1,
+                        type: 'int',
+                        label: 'RR',
+                    },
+                ],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:
@@ -53,6 +87,40 @@ export const LawoRuby: IMixerProtocol = {
                 CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
+                CHANNEL_INPUT_GAIN: [
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.Gain[dB]',
+                        value: 0,
+                        type: 'int',
+                        min: -30,
+                        max: 18,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_INPUT_SELECTOR: [
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 0,
+                        type: 'int',
+                        label: 'LR',
+                    },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 4,
+                        type: 'int',
+                        label: 'LL',
+                    },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 1,
+                        type: 'int',
+                        label: 'RR',
+                    },
+                ],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:
