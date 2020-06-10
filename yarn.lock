@@ -3732,10 +3732,10 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emberplus-connection@^0.0.2-nightly-next-20200526-132421-5cd24f3.0:
-  version "0.0.2-nightly-next-20200526-132421-5cd24f3.0"
-  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.2-nightly-next-20200526-132421-5cd24f3.0.tgz#432e17b6de7a2a53a98fa240260c073e929bd74d"
-  integrity sha512-4Z9HQh7PNhaM+ExnT/OO7JrYSirdj2FSgL/kBEBY4du4G7+u4ik5XcmtOGgXK4BD6ao8cvZFNC7wgLjzZ2tg+w==
+emberplus-connection@^0.0.2-nightly-next-20200604-105628-46d0ba3.0:
+  version "0.0.2-nightly-next-20200604-105628-46d0ba3.0"
+  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.2-nightly-next-20200604-105628-46d0ba3.0.tgz#a2f6044a959283240972d76e22a9cc126b8fc9c4"
+  integrity sha512-NIB3w3F48i+st4LoBlXJh7b6OH8QwhL1GU3ECZfO+X8KgscOy6YcqLMqRt4KIfO/sXeMrX4fmaeTFus2T9TjgQ==
   dependencies:
     asn1 evs-broadcast/node-asn1
     enum "^2.4.0"
@@ -7183,6 +7183,18 @@ no-case@^2.2.0:
   integrity sha512-rmTZ9kz+f3rCvK2TD1Ue/oZlns7OGoIWP4fc3llxxRXlOkHKoWPPWJOfFYpITabSow43QJbRIoHQXtt10VldyQ==
   dependencies:
     lower-case "^1.1.1"
+
+"node-emberplus@https://github.com/olzzon/node-emberplus#feat/export-ber":
+  version "2.5.8"
+  resolved "https://github.com/olzzon/node-emberplus#089121967153349c37d22298e5b8b1796881071a"
+  dependencies:
+    asn1 "github:evs-broadcast/node-asn1"
+    enum "^2.4.0"
+    long "^3.2.0"
+    smart-buffer "^3.0.3"
+    winston "^2.1.1"
+    winston-color "^1.0.0"
+    yargs "^15.1.0"
 
 node-int64@^0.4.0:
   version "0.4.0"

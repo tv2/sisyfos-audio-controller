@@ -40,6 +40,9 @@ export class EmberMixerConnection {
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
         })
+        this.emberConnection.on('connected', () => {
+            logger.error('Connected to Ember device')
+        })
         logger.info('Connecting to Ember')
         let deviceRoot: any
         this.emberConnection
@@ -53,13 +56,15 @@ export class EmberMixerConnection {
 
                 console.log('Directory :', r)
                 this.deviceRoot = r
-                const sources = await this.emberConnection.getElementByPath(
+                const sourcesNode = await this.emberConnection.getElementByPath(
                     'Ruby.Sources'
                 )
-                this.emberConnection.expand(sources).then(() => {
-                    // expand is a pretty heavy operation, not sure if we _really_ need it....
-                    this.setupMixerConnection()
-                })
+                // this.emberConnection.expand(sources).then(() => {
+                //     logger.info('expanded sources')
+                //     // expand is a pretty heavy operation, not sure if we _really_ need it....
+                //     this.setupMixerConnection()
+                // })
+                this.setupMixerConnection()
             })
             .then((r: any) => {})
             .catch((e: any) => {
@@ -74,14 +79,18 @@ export class EmberMixerConnection {
 
         let ch: number = 1
         state.settings[0].numberOfChannelsInType.forEach(
-            (numberOfChannels, typeIndex) => {
+            async (numberOfChannels, typeIndex) => {
                 for (
                     let channelTypeIndex = 0;
                     channelTypeIndex < numberOfChannels;
                     channelTypeIndex++
                 ) {
-                    this.subscribeFaderLevel(ch, typeIndex, channelTypeIndex)
-                    ch++
+                    try {
+                        await this.subscribeFaderLevel(ch, typeIndex, channelTypeIndex)
+                        ch++
+                    } catch (e) {
+                        console.log(e)
+                    }
                 }
             }
         )
@@ -102,7 +111,7 @@ export class EmberMixerConnection {
         }
     }
 
-    subscribeFaderLevel(
+    async subscribeFaderLevel(
         ch: number,
         typeIndex: number,
         channelTypeIndex: number
@@ -113,38 +122,33 @@ export class EmberMixerConnection {
             '{channel}',
             String(channelTypeIndex + 1)
         )
-        this.emberConnection
-            .getElementByPath(command)
-            .then((node: any) => {
-                logger.info('Subscription of channel : ' + command)
-                this.emberNodeObject[ch - 1] = node
-                this.emberConnection.subscribe(node, () => {
-                    logger.verbose('Receiving Level from Ch ' + String(ch))
-                    if (
-                        !state.channels[0].channel[ch - 1].fadeActive &&
-                        !state.channels[0].channel[ch - 1].fadeActive &&
-                        node.contents.value >
-                            this.mixerProtocol.channelTypes[typeIndex].fromMixer
-                                .CHANNEL_OUT_GAIN[0].min
-                    ) {
-                        store.dispatch({
-                            type: SET_FADER_LEVEL,
-                            channel: ch - 1,
-                            level: node.contents.value,
-                        })
-                        global.mainThreadHandler.updatePartialStore(ch - 1)
-                        if (remoteConnections) {
-                            remoteConnections.updateRemoteFaderState(
-                                ch - 1,
-                                node.contents.value
-                            )
-                        }
-                    }
+        console.log(command)
+        const node: Model.NumberedTreeNode<Model.Parameter> = await this.emberConnection.getElementByPath(command) as any
+        logger.info('Subscription of channel : ' + command)
+        this.emberNodeObject[ch - 1] = node
+        this.emberConnection.subscribe(node, () => {
+            logger.verbose('Receiving Level from Ch ' + String(ch))
+            if (
+                !state.channels[0].channel[ch - 1].fadeActive &&
+                !state.channels[0].channel[ch - 1].fadeActive &&
+                node.contents.value >
+                    this.mixerProtocol.channelTypes[typeIndex].fromMixer
+                        .CHANNEL_OUT_GAIN[0].min
+            ) {
+                store.dispatch({
+                    type: SET_FADER_LEVEL,
+                    channel: ch - 1,
+                    level: node.contents.value,
                 })
-            })
-            .catch((error: any) => {
-                logger.error(error)
-            })
+                global.mainThreadHandler.updatePartialStore(ch - 1)
+                if (remoteConnections) {
+                    remoteConnections.updateRemoteFaderState(
+                        ch - 1,
+                        node.contents.value as number
+                    )
+                }
+            }
+        })
     }
 
     subscribeChannelName(
@@ -213,8 +217,8 @@ export class EmberMixerConnection {
         logger.verbose(
             'Sending out Level: ' +
                 String(value) +
-                ' To Path : ' +
-                JSON.stringify(this.emberNodeObject[channel])
+                ' To Path : ' +''
+                // JSON.stringify(this.emberNodeObject[channel])
         )
         this.emberConnection
             .setValue(this.emberNodeObject[channel - 1], value, false)
@@ -256,7 +260,8 @@ export class EmberMixerConnection {
             state.channels[0].channel[channelIndex].channelTypeIndex
         let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
             .CHANNEL_OUT_GAIN[0]
-        let level = (outputLevel - protocol.min) * (protocol.max - protocol.min)
+        let level = (outputLevel) * (protocol.max - protocol.min) + protocol.min
+        console.log(protocol, outputLevel, level)
 
         this.sendOutLevelMessage(channelTypeIndex + 1, level)
     }

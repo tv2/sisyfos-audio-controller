@@ -20,12 +20,12 @@ export const LawoRuby: IMixerProtocol = {
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:
-                            'Ruby.Sources.${channel}.Fader.Motor dB Value',
+                            'Ruby.Sources.{channel}.Fader.Motor Position',
                         value: 0,
-                        type: 'real',
-                        min: -191,
-                        max: 9,
-                        zero: 0,
+                        type: 'int',
+                        min: 0,
+                        max: 255,
+                        zero: 204,
                     },
                 ],
                 CHANNEL_VU: [emptyMixerMessage()],
@@ -58,12 +58,12 @@ export const LawoRuby: IMixerProtocol = {
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:
-                            'Ruby.Sources.${channel}.Fader.Motor dB Value',
+                            'Ruby.Sources.{channel}.Fader.Motor Position',
                         value: 0,
-                        type: 'real',
-                        min: -191,
-                        max: 9,
-                        zero: 0,
+                        type: 'int',
+                        min: 0,
+                        max: 255,
+                        zero: 204,
                     },
                 ],
                 CHANNEL_NAME: [
@@ -94,9 +94,9 @@ export const LawoRuby: IMixerProtocol = {
     ],
     fader: {
         min: 0,
-        max: 200,
-        zero: 1300,
-        step: 10,
+        max: 255,
+        zero: 204,
+        step: 5,
     },
     meter: {
         min: 0,
