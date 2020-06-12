@@ -13,6 +13,7 @@ export class LawoRubyMixerConnection {
     emberConnection: EmberClient
     deviceRoot: any
     emberNodeObject: Array<any>
+    faders: { [index: number]: string } = {}
 
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
@@ -63,13 +64,49 @@ export class LawoRubyMixerConnection {
             })
     }
 
-    setupMixerConnection() {
+    async setupMixerConnection() {
         logger.info(
             'Ember connection established - setting up subscription of channels'
         )
 
+        // get the node that contains the sources
+        const sourceNode = await this.emberConnection.getElementByPath(
+            'Ruby.Sources'
+        )
+        // get the sources
+        const req = await this.emberConnection.getDirectory(sourceNode)
+        const sources = await req.response
+
+        // map sourceNames to their fader number
+        if ('children' in sources) {
+            for (const i of Object.keys(sources.children)) {
+                const child = sources.children[(i as unknown) as number]
+                if (
+                    child.contents.type === Model.ElementType.Node &&
+                    child.contents.identifier
+                ) {
+                    const name = child.contents.identifier
+                    const fader = await this.emberConnection.getElementByPath(
+                        `Ruby.Sources.${name}.Fader.Number`
+                    )
+                    this.faders[
+                        (fader.contents as Model.Parameter).value as number
+                    ] = name
+                }
+            }
+        }
+
+        // Set channel labels
+        Object.entries(this.faders).forEach(([ch, name]) => {
+            store.dispatch({
+                type: SET_CHANNEL_LABEL,
+                channel: Number(ch) - 1, // - 1 ??
+                label: name,
+            })
+        })
+
         let ch: number = 1
-        state.settings[0].numberOfChannelsInType.forEach(
+        state.settings[0].numberOfChannelsInchType.forEach(
             async (numberOfChannels, typeIndex) => {
                 for (
                     let channelTypeIndex = 0;
@@ -257,10 +294,20 @@ export class LawoRubyMixerConnection {
             state.channels[0].channel[channelIndex].channelTypeIndex
         let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
             .CHANNEL_OUT_GAIN[0]
-        let level = outputLevel * (protocol.max - protocol.min) + protocol.min
-        // console.log(protocol, outputLevel, level)
 
-        this.sendOutLevelMessage(channelTypeIndex + 1, level)
+        // let level = outputLevel < 0.5 ?
+        //     outputLevel * 2 * (-9 - protocol.min) + protocol.min :
+        //     (outputLevel - .5) * 2 * (protocol.max - -9) + -9
+
+        let level =
+            170.67 * Math.pow(outputLevel, 4) +
+            -234.67 * Math.pow(outputLevel, 3) +
+            -202.67 * Math.pow(outputLevel, 2) +
+            466.67 * outputLevel +
+            -191
+        console.log(outputLevel, level)
+
+        // this.sendOutLevelMessage(channelTypeIndex + 1, level)
     }
 
     async updatePflState(channelIndex: number) {

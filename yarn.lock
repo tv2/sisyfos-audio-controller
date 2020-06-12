@@ -3732,10 +3732,10 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emberplus-connection@^0.0.2-nightly-next-20200604-105628-46d0ba3.0:
-  version "0.0.2-nightly-next-20200604-105628-46d0ba3.0"
-  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.2-nightly-next-20200604-105628-46d0ba3.0.tgz#a2f6044a959283240972d76e22a9cc126b8fc9c4"
-  integrity sha512-NIB3w3F48i+st4LoBlXJh7b6OH8QwhL1GU3ECZfO+X8KgscOy6YcqLMqRt4KIfO/sXeMrX4fmaeTFus2T9TjgQ==
+emberplus-connection@^0.0.3-nightly-20200611-095712-4e2267a.0:
+  version "0.0.3-nightly-20200611-095712-4e2267a.0"
+  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.3-nightly-20200611-095712-4e2267a.0.tgz#a3bc8e0dee846ef9ab5697aee29a0146f78c5198"
+  integrity sha512-2Jk/KwqfRm8UmtzUE+v2NAN3oL3ZoUvaUv3trER3XTGVxoexfEvGkfioKWCF49JyH2rue+AKh7523kaSethntg==
   dependencies:
     asn1 evs-broadcast/node-asn1
     enum "^2.4.0"
@@ -3743,7 +3743,6 @@ emberplus-connection@^0.0.2-nightly-next-20200604-105628-46d0ba3.0:
     smart-buffer "^3.0.3"
     winston "^2.1.1"
     winston-color "^1.0.0"
-    yargs "^15.1.0"
 
 emoji-regex@^7.0.1:
   version "7.0.3"
