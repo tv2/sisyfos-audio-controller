@@ -272,6 +272,7 @@ class Channel extends React.Component<
                     'vo-on': this.props.fader.voOn,
                     'mute-on': this.props.fader.muteOn,
                     'ignore-on': this.props.fader.ignoreAutomation,
+                    'not-found': this.props.fader.disabled,
                 })}
             >
                 {this.ignoreButton()}

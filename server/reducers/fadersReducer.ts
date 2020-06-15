@@ -37,6 +37,7 @@ import {
     SET_SINGLE_FADER_STATE,
     SHOW_IN_MINI_MONITOR,
     SET_INPUT_SELECTOR,
+    SET_CHANNEL_DISABLED,
 } from '../reducers/faderActions'
 
 export interface IFaders {
@@ -67,6 +68,7 @@ export interface IFader {
     showInMiniMonitor: boolean
     ignoreAutomation: boolean
     snapOn: Array<boolean>
+    disabled: boolean
 }
 
 export interface IVuMeters {
@@ -106,6 +108,7 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
             showInMiniMonitor: false,
             ignoreAutomation: false,
             snapOn: [],
+            disabled: false,
         }
         defaultObj[0].vuMeters.push({
             vuVal: 0.0,
@@ -326,6 +329,9 @@ export const faders = (
                 nextState[0].fader[index].pstOn = !!state[0].fader[index]
                     .snapOn[action.snapIndex]
             })
+            return nextState
+        case SET_CHANNEL_DISABLED:
+            nextState[0].fader[action.channel].disabled = action.disabled
             return nextState
         default:
             return nextState
