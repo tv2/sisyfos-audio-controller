@@ -216,6 +216,7 @@ export const faders = (
             nextState[0].vuMeters = action.vuMeters
             return nextState
         case SET_CHANNEL_LABEL: //channel:  label:
+            if (!nextState[0].fader[action.channel]) return nextState
             nextState[0].fader[action.channel].label = action.label
             return nextState
         case TOGGLE_PGM: //channel
@@ -331,6 +332,7 @@ export const faders = (
             })
             return nextState
         case SET_CHANNEL_DISABLED:
+            if (!nextState[0].fader[action.channel]) return nextState
             nextState[0].fader[action.channel].disabled = action.disabled
             return nextState
         default:
