@@ -107,11 +107,6 @@ export class LawoRubyMixerConnection {
                     this.faders[
                         (fader.contents as Model.Parameter).value as number
                     ] = name
-
-                    store.dispatch({
-                        type: SET_CHANNEL_LABEL,
-                        label: name,
-                    })
                 }
             }
         }
@@ -197,7 +192,7 @@ export class LawoRubyMixerConnection {
         channelTypeIndex: number
     ) {
         const sourceName = this.faders[ch]
-        if (!ch) return
+        if (!sourceName) return
 
         let command = this.mixerProtocol.channelTypes[
             typeIndex
@@ -354,12 +349,12 @@ export class LawoRubyMixerConnection {
             state.channels[0].channel[channelIndex].channelTypeIndex
 
         // gotta get the label and function:
-        const fader = this.faders[channelTypeIndex]
+        const fader = this.faders[channelTypeIndex + 1]
         const fn = (await this.emberConnection.getElementByPath(
             'Ruby.Functions.SetPFLState'
         )) as Model.NumberedTreeNode<Model.EmberFunction>
 
-        if (fader || !fn)
+        if (!fader || !fn)
             throw new Error(
                 'Oops could not find node or function to update PFL state'
             )
