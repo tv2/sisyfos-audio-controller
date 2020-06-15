@@ -58,7 +58,7 @@
         "asn1": "github:evs-broadcast/node-asn1",
         "casparcg-connection": "^4.9.0",
         "classnames": "^2.2.6",
-        "emberplus-connection": "^0.0.3-nightly-20200611-095712-4e2267a.0",
+        "emberplus-connection": "^0.0.3-nightly-20200612-082012-a88dc18.0",
         "express": "^4.17.1",
         "express-csp-header": "^3.0.0",
         "http": "^0.0.0",
