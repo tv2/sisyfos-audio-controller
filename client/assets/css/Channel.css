@@ -206,7 +206,7 @@
 
 .not-found::before {
     content: ' ';
-    z-index: 10;
+    z-index: 3;
     position: absolute;
     background-color: black;
     width: 86px;
