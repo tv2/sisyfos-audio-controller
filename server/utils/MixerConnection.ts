@@ -84,7 +84,7 @@ export class MixerGenericConnection {
     }
 
     getPresetFileExtention(): string {
-        return this.mixerProtocol.presetFileExtension
+        return this.mixerProtocol.presetFileExtension || ''
     }
 
     loadMixerPreset(presetName: string) {
