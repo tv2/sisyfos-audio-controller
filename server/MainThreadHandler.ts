@@ -8,7 +8,7 @@ import {
 import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
-import { UPDATE_SETTINGS, LOAD_CUSTOM_PAGES } from './reducers/settingsActions'
+import { UPDATE_SETTINGS } from './reducers/settingsActions'
 import {
     loadSettings,
     saveSettings,
