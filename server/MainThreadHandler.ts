@@ -8,7 +8,7 @@ import {
 import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
-import { UPDATE_SETTINGS } from './reducers/settingsActions'
+import { UPDATE_SETTINGS, LOAD_CUSTOM_PAGES } from './reducers/settingsActions'
 import {
     loadSettings,
     saveSettings,
@@ -16,6 +16,7 @@ import {
     getCcgSettingsList,
     setCcgDefault,
     getMixerPresetList,
+    getCustomPages,
 } from './utils/SettingsStorage'
 import {
     SOCKET_TOGGLE_PGM,
@@ -56,6 +57,8 @@ import {
     SOCKET_RETURN_MIXER_PRESET_LIST,
     SOCKET_LOAD_MIXER_PRESET,
     SOCKET_SET_INPUT_SELECTOR,
+    SOCKET_GET_PAGES_LIST,
+    SOCKET_RETURN_PAGES_LIST,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
     TOGGLE_PGM,
@@ -191,6 +194,10 @@ export class MainThreadHandlers {
                 logger.info('Set Mixer Preset :' + String(payload), {})
                 mixerGenericConnection.loadMixerPreset(payload)
                 this.updateFullClientStore()
+            })
+            .on(SOCKET_GET_PAGES_LIST, () => {
+                logger.info('Get custom pages list', {})
+                socketServer.emit(SOCKET_RETURN_PAGES_LIST, getCustomPages())
             })
             .on(SOCKET_SAVE_SETTINGS, (payload: any) => {
                 logger.info('Save settings :' + String(payload), {})

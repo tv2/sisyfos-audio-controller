@@ -375,6 +375,16 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br />
                 <label className="settings-input-field">
+                    PAGE LENGTH:
+                    <input
+                        name="pageLength"
+                        type="text"
+                        value={this.state.settings.pageLength}
+                        onChange={this.handleChange}
+                    />
+                </label>
+                <br />
+                <label className="settings-input-field">
                     AUTOMATION MODE:
                     <input
                         type="checkbox"
@@ -400,6 +410,16 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                         type="checkbox"
                         name="showPfl"
                         checked={this.state.settings.showPfl}
+                        onChange={this.handleChange}
+                    />
+                </label>
+                <br />
+                <label className="settings-input-field">
+                    ENABLE PAGES:
+                    <input
+                        type="checkbox"
+                        name="enablePages"
+                        checked={this.state.settings.enablePages}
                         onChange={this.handleChange}
                     />
                 </label>

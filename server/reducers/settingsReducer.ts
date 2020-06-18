@@ -10,15 +10,35 @@ import {
     SET_MIXER_ONLINE,
     TOGGLE_SHOW_MONITOR_OPTIONS,
     SET_SERVER_ONLINE,
+    SET_PAGE,
 } from '../reducers/settingsActions'
 
+export enum PageType {
+    All,
+    NumberedPage,
+    CustomPage,
+}
+
 export interface ISettings {
+    /** UI state (non persistant) */
     showSnaps: boolean
     showSettings: boolean
     showChanStrip: number
     showOptions: number | false
     showMonitorOptions: number
     showStorage: boolean
+    currentPage: {
+        type: PageType
+        start?: number
+        id?: string
+    }
+    customPages?: Array<{
+        id: string
+        label: string
+        faders: Array<number>
+    }>
+
+    /** User config */
     mixerProtocol: string
     localIp: string
     localOscPort: number
@@ -42,6 +62,10 @@ export interface ISettings {
     automationMode: boolean
     offtubeMode: boolean
     showPfl: boolean
+    enablePages: boolean
+    pageLength: number
+
+    /** Connection state */
     mixerOnline: boolean
     serverOnline: boolean
 }
@@ -54,6 +78,8 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showOptions: false,
         showMonitorOptions: -1,
         showStorage: false,
+        currentPage: { type: PageType.All },
+
         mixerProtocol: 'sslSystemT',
         localIp: '0.0.0.0',
         localOscPort: 1234,
@@ -77,6 +103,9 @@ const defaultSettingsReducerState: Array<ISettings> = [
         fadeTime: 120,
         voFadeTime: 280,
         showPfl: false,
+        enablePages: true,
+        pageLength: 16,
+
         mixerOnline: false,
         serverOnline: true,
     },
@@ -118,6 +147,13 @@ export const settings = (
         case TOGGLE_SHOW_SNAPS:
             nextState[0].showSnaps = !nextState[0].showSnaps
             return nextState
+        case SET_PAGE:
+            nextState[0].currentPage = {
+                type: action.pageType,
+                id: action.id,
+                start: action.start,
+            }
+            return nextState
         case SET_MIXER_ONLINE:
             nextState[0].mixerOnline = action.mixerOnline
             return nextState
@@ -126,12 +162,17 @@ export const settings = (
             return nextState
         case UPDATE_SETTINGS:
             nextState[0] = action.settings
+
+            // ignore UI state:
             nextState[0].showSettings = state[0].showSettings
             nextState[0].showOptions = state[0].showOptions
             nextState[0].showMonitorOptions = state[0].showMonitorOptions
             nextState[0].showStorage = state[0].showStorage
             nextState[0].showChanStrip = state[0].showChanStrip
             nextState[0].serverOnline = state[0].serverOnline
+            nextState[0].currentPage = state[0].currentPage
+            nextState[0].customPages = state[0].customPages
+
             if (
                 typeof MixerProtocolPresets[nextState[0].mixerProtocol] ===
                 'undefined'
