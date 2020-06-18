@@ -127,7 +127,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                         this.handlePages(PageType.NumberedPage, i)
                     }}
                 >
-                    CH{i * pageLength + 1}-{(i + 1) * pageLength}
+                    CH{i * pageLength + 1}-
+                    {Math.min((i + 1) * pageLength, numberOfFaders)}
                 </button>
             )
         }

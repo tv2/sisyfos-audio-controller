@@ -424,6 +424,16 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     />
                 </label>
                 <br />
+                <label className="settings-input-field">
+                    CHANNEL STRIP FOLLOWS PFL:
+                    <input
+                        type="checkbox"
+                        name="chanStripFollowsPFL"
+                        checked={this.state.settings.chanStripFollowsPFL}
+                        onChange={this.handleChange}
+                    />
+                </label>
+                <br />
                 {window.mixerProtocol.protocol === 'MIDI'
                     ? this.renderMixerMidiSettings()
                     : ''}

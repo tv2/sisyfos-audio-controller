@@ -82,6 +82,13 @@ class Channel extends React.Component<
 
     handlePfl() {
         window.socketIoClient.emit(SOCKET_TOGGLE_PFL, this.faderIndex)
+        if (
+            this.props.settings.chanStripFollowsPFL &&
+            !this.props.fader.pflOn &&
+            this.props.settings.showChanStrip !== this.faderIndex
+        ) {
+            this.handleShowChanStrip()
+        }
     }
 
     handleMute() {

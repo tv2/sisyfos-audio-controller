@@ -64,6 +64,7 @@ export interface ISettings {
     showPfl: boolean
     enablePages: boolean
     pageLength: number
+    chanStripFollowsPFL: boolean
 
     /** Connection state */
     mixerOnline: boolean
@@ -105,6 +106,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showPfl: false,
         enablePages: true,
         pageLength: 16,
+        chanStripFollowsPFL: true,
 
         mixerOnline: false,
         serverOnline: true,
