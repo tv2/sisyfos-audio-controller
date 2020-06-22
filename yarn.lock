@@ -3732,10 +3732,10 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emberplus-connection@^0.0.3-nightly-20200612-082012-a88dc18.0:
-  version "0.0.3-nightly-20200612-082012-a88dc18.0"
-  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.3-nightly-20200612-082012-a88dc18.0.tgz#10750643c397907f25c69fd1018e075dfbedf262"
-  integrity sha512-4gTha05B9H4hvzcRppzqlAvLYkajpYTwU5lwOKkKs0iPhE83UcnRFzLBy3C83TYsGhErc/whBenjWynuuv0gjA==
+emberplus-connection@^0.0.3-nightly-20200622-114815-88534e2.0:
+  version "0.0.3-nightly-20200622-114815-88534e2.0"
+  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.3-nightly-20200622-114815-88534e2.0.tgz#32682f6a9d7bb189f154857c021d8fa7132b3bd3"
+  integrity sha512-0SkeCLmcIuPN5GZIxmlmAETpxlsrCx+hNSwlpBErOcq4v7Vr8rRKdpc9lWC0eJ4WtdkKr18oj0bdy5nHG101dg==
   dependencies:
     asn1 evs-broadcast/node-asn1
     enum "^2.4.0"

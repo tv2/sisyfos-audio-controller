@@ -53,12 +53,12 @@ export const LawoRuby: IMixerProtocol = {
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage:
-                            'Ruby.Sources.{channel}.Fader.Motor Position',
+                            'Ruby.Sources.{channel}.Fader.Motor dB Value',
                         value: 0,
                         type: 'int',
-                        min: 0,
+                        min: -191,
                         max: 255,
-                        zero: 204,
+                        zero: 9,
                     },
                 ],
                 CHANNEL_NAME: [
