@@ -9,9 +9,43 @@ import {
     SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
     SET_CHANNEL_DISABLED,
+    SET_INPUT_GAIN,
+    SET_INPUT_SELECTOR,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions'
+
+// TODO - should these be util functions?
+export function floatToDB(f: number): number {
+    if (f >= 0.5) {
+        return f * 40 - 30 // max dB value: +10.
+    } else if (f >= 0.25) {
+        return f * 80 - 50
+    } else if (f >= 0.0625) {
+        return f * 160 - 70
+    } else if (f >= 0.0) {
+        return f * 480 - 90 // min dB value: -90 or -oo
+    } else {
+        return -191
+    }
+}
+
+export function dbToFloat(d: number): number {
+    let f: number
+    if (d < -60) {
+        f = (d + 90) / 480
+    } else if (d < -30) {
+        f = (d + 70) / 160
+    } else if (d < -10) {
+        f = (d + 50) / 80
+    } else if (d <= 10) {
+        f = (d + 30) / 40
+    } else {
+        f = 1
+    }
+    // Optionally round “f” to a X32 known value
+    return f // Math.round((f * 1023.5) / 1023.0)
+}
 
 export class LawoRubyMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -203,7 +237,7 @@ export class LawoRubyMixerConnection {
         const node = await this.emberConnection.getElementByPath(command)
         if (node.contents.type !== Model.ElementType.Parameter) return
 
-        logger.info('Subscription of channel : ' + command)
+        logger.info('Subscription of channel level: ' + command)
         this.emberConnection.subscribe(node, () => {
             logger.verbose('Receiving Level from Ch ' + String(ch))
             if (
@@ -216,16 +250,91 @@ export class LawoRubyMixerConnection {
                 store.dispatch({
                     type: SET_FADER_LEVEL,
                     channel: ch - 1,
-                    level: (node.contents as Model.Parameter).value,
+                    level: dbToFloat(
+                        (node.contents as Model.Parameter).value as number
+                    ),
                 })
                 global.mainThreadHandler.updatePartialStore(ch - 1)
                 if (remoteConnections) {
                     remoteConnections.updateRemoteFaderState(
                         ch - 1,
-                        (node.contents as Model.Parameter).value as number
+                        dbToFloat(
+                            (node.contents as Model.Parameter).value as number
+                        )
                     )
                 }
             }
+        })
+    }
+    async subscribeGainLevel(
+        ch: number,
+        typeIndex: number,
+        channelTypeIndex: number
+    ) {
+        const sourceName = this.faders[ch]
+        if (!sourceName) return
+
+        let command = this.mixerProtocol.channelTypes[
+            typeIndex
+        ].fromMixer.CHANNEL_INPUT_GAIN[0].mixerMessage.replace(
+            '{channel}',
+            sourceName
+        )
+        const node = await this.emberConnection.getElementByPath(command)
+        if (node.contents.type !== Model.ElementType.Parameter) return
+
+        logger.info('Subscription of channel gain: ' + command)
+        this.emberConnection.subscribe(node, () => {
+            logger.verbose('Receiving Gain from Ch ' + String(ch))
+            if (
+                (node.contents as Model.Parameter).value >
+                this.mixerProtocol.channelTypes[typeIndex].fromMixer
+                    .CHANNEL_INPUT_GAIN[0].min
+            ) {
+                store.dispatch({
+                    type: SET_INPUT_GAIN,
+                    channel: ch - 1,
+                    level: dbToFloat(
+                        (node.contents as Model.Parameter).value as number
+                    ),
+                })
+                global.mainThreadHandler.updatePartialStore(ch - 1)
+            }
+        })
+    }
+    async subscribeInputSelector(
+        ch: number,
+        typeIndex: number,
+        channelTypeIndex: number
+    ) {
+        const sourceName = this.faders[ch]
+        if (!sourceName) return
+
+        let command = this.mixerProtocol.channelTypes[
+            typeIndex
+        ].fromMixer.CHANNEL_INPUT_SELECTOR[0].mixerMessage.replace(
+            '{channel}',
+            sourceName
+        )
+        const node = await this.emberConnection.getElementByPath(command)
+        if (node.contents.type !== Model.ElementType.Parameter) return
+
+        logger.info('Subscription of channel input selector: ' + command)
+        this.emberConnection.subscribe(node, () => {
+            logger.verbose('Receiving InpSelector from Ch ' + String(ch))
+            this.mixerProtocol.channelTypes[
+                typeIndex
+            ].fromMixer.CHANNEL_INPUT_SELECTOR.forEach((selector, i) => {
+                if (
+                    selector.value === (node.contents as Model.Parameter).value
+                ) {
+                    store.dispatch({
+                        type: SET_INPUT_SELECTOR,
+                        channel: ch - 1,
+                        selected: i,
+                    })
+                }
+            })
         })
     }
 
@@ -320,17 +429,15 @@ export class LawoRubyMixerConnection {
         let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
             .CHANNEL_OUT_GAIN[0]
 
-        // let level = outputLevel < 0.5 ?
-        //     outputLevel * 2 * (-9 - protocol.min) + protocol.min :
-        //     (outputLevel - .5) * 2 * (protocol.max - -9) + -9
+        const level = floatToDB(outputLevel)
 
         // fitted curve to 0 = 0; 0.5 = -27; 0.75 = 0; 1 = 9
-        const level =
-            170.67 * Math.pow(outputLevel, 4) +
-            -234.67 * Math.pow(outputLevel, 3) +
-            -202.67 * Math.pow(outputLevel, 2) +
-            466.67 * outputLevel +
-            -191
+        // const level =
+        //     170.67 * Math.pow(outputLevel, 4) +
+        //     -234.67 * Math.pow(outputLevel, 3) +
+        //     -202.67 * Math.pow(outputLevel, 2) +
+        //     466.67 * outputLevel +
+        //     -191
         // fitted curve to 0 = 0; 0.5 = -9; 0.75 = 0; 1 = 9
         // const level =
         //     437.33 * Math.pow(outputLevel, 3) -

@@ -133,6 +133,9 @@
     margin-top: 5px;
     border-radius: 7px;
 }
+.input-buttons > .input-select.active {
+    background-color: #2f475b;
+}
 
 .parameters > .monitor-sends {
     list-style-type: none;

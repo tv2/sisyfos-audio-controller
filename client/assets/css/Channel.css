@@ -183,6 +183,9 @@
     border-radius: 7px;
     border-color: rgba(99, 99, 99, 0.301);
 }
+.channel-strip-button.active {
+    background-color: #2f475b;
+}
 
 .channel-volume-fader {
     width: 10px;

@@ -22,6 +22,7 @@ import {
     SOCKET_CLEAR_PST,
     SOCKET_RESTART_SERVER,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import { classNames } from 'react-select/src/utils'
 
 interface IChannelsInjectProps {
     channels: IChannels
@@ -99,13 +100,19 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             return undefined
         }
 
+        const curPage = this.props.settings.currentPage
+
         const customPageButtons = []
         const pages = window.customPagesList
         if (pages) {
             for (const p of pages) {
+                const isActive =
+                    curPage.type === PageType.CustomPage && curPage.id === p.id
                 customPageButtons.push(
                     <button
-                        className="channels-show-settings-button"
+                        className={ClassNames('channels-show-settings-button', {
+                            active: isActive,
+                        })}
                         onClick={() => {
                             this.handlePages(PageType.CustomPage, p.id)
                         }}
@@ -120,9 +127,14 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         const numberOfFaders = this.props.settings.numberOfFaders
         const pageLength = this.props.settings.pageLength
         for (let i = 0; i < Math.ceil(numberOfFaders / pageLength); i++) {
+            const isActive =
+                curPage.type === PageType.NumberedPage &&
+                curPage.start === i * this.props.settings.pageLength
             numberedButtons.push(
                 <button
-                    className="channels-show-settings-button"
+                    className={ClassNames('channels-show-settings-button', {
+                        active: isActive,
+                    })}
                     onClick={() => {
                         this.handlePages(PageType.NumberedPage, i)
                     }}
@@ -133,12 +145,15 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             )
         }
 
+        const isAllActive = curPage.type === PageType.All
         return (
             <React.Fragment>
                 {customPageButtons}
                 {numberedButtons}
                 <button
-                    className="channels-show-settings-button"
+                    className={ClassNames('channels-show-settings-button', {
+                        active: isAllActive,
+                    })}
                     onClick={() => {
                         this.handlePages(PageType.All, 0)
                     }}

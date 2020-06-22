@@ -148,9 +148,11 @@ class ChanStrip extends React.PureComponent<
     }
 
     inputSelectorButton(index: number) {
+        const isActive =
+            this.props.fader[this.props.faderIndex].inputSelector === index + 1
         return (
             <button
-                className="input-select"
+                className={'input-select' + (isActive ? ' active' : '')}
                 onClick={() => {
                     this.handleInputSelect(index + 1)
                 }}
@@ -462,6 +464,16 @@ class ChanStrip extends React.PureComponent<
     }
     parameters() {
         if (this.props.offtubeMode) {
+            const hasComp =
+                window.mixerProtocol.channelTypes[0].toMixer.THRESHOLD ||
+                window.mixerProtocol.channelTypes[0].toMixer.DELAY_TIME
+            const hasDelay =
+                window.mixerProtocol.channelTypes[0].toMixer.DELAY_TIME
+            const hasEq =
+                window.mixerProtocol.channelTypes[0].toMixer.LOW ||
+                window.mixerProtocol.channelTypes[0].toMixer.LO_MID ||
+                window.mixerProtocol.channelTypes[0].toMixer.MID ||
+                window.mixerProtocol.channelTypes[0].toMixer.HIGH
             return (
                 <div className="parameters">
                     <div className="group-text">
@@ -469,13 +481,13 @@ class ChanStrip extends React.PureComponent<
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; COMPRESSOR
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {hasComp && 'COMPRESSOR'}
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DELAY
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {hasDelay && 'DELAY'}
                     </div>
 
                     <div className="inp-comp-del-group">
@@ -499,7 +511,7 @@ class ChanStrip extends React.PureComponent<
                         ) : null}
                     </div>
                     <hr />
-                    <div className="group-text">{'EQUALIZER'}</div>
+                    <div className="group-text">{hasEq && 'EQUALIZER'}</div>
                     <div className="eq-group">
                         {window.mixerProtocol.channelTypes[0].toMixer.LOW ? (
                             <React.Fragment>

@@ -199,10 +199,12 @@ class Channel extends React.Component<
     }
 
     chanStripButton = () => {
+        const isActive = this.props.settings.showChanStrip === this.faderIndex
         return (
             <button
                 className={ClassNames('channel-strip-button', {
                     on: this.props.settings.showChanStrip,
+                    active: isActive,
                 })}
                 onClick={(event) => {
                     this.handleShowChanStrip()

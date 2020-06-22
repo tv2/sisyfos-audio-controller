@@ -23,7 +23,13 @@
     width: 100px;
     min-height: 950px;
     color: white;
-    background: linear-gradient(#2f2f2f 0px,#2f2f2f 790px, rgb(0, 0, 0) 1px, #2f2f2f 800px, #2f2f2f 100%);
+    background: linear-gradient(
+        #2f2f2f 0px,
+        #2f2f2f 790px,
+        rgb(0, 0, 0) 1px,
+        #2f2f2f 800px,
+        #2f2f2f 100%
+    );
     margin: 4px;
     border-radius: 9px;
     border-color: rgb(80, 80, 80);
@@ -32,8 +38,8 @@
 }
 
 .channels-show-mixer-online {
-    outline : none;
-    -moz-outline : none;
+    outline: none;
+    -moz-outline: none;
     color: rgb(255, 255, 255);
     height: 60px;
     width: 90px;
@@ -51,8 +57,8 @@
 }
 
 .channels-show-snaps-button {
-    outline : none;
-    -moz-outline : none;
+    outline: none;
+    -moz-outline: none;
     color: white;
     height: 60px;
     width: 90px;
@@ -63,11 +69,10 @@
     margin-top: 10px;
     border-radius: 7px;
 }
-
 
 .channels-show-settings-button {
-    outline : none;
-    -moz-outline : none;
+    outline: none;
+    -moz-outline: none;
     color: white;
     height: 60px;
     width: 90px;
@@ -78,11 +83,13 @@
     margin-top: 10px;
     border-radius: 7px;
 }
-
+.channels-show-settings-button.active {
+    background-color: #2f475b;
+}
 
 .channels-show-storage-button {
-    outline : none;
-    -moz-outline : none;
+    outline: none;
+    -moz-outline: none;
     color: white;
     height: 60px;
     width: 90px;
@@ -94,10 +101,9 @@
     border-radius: 7px;
 }
 
-
 .channels-mix-button {
-    outline : none;
-    -moz-outline : none;
+    outline: none;
+    -moz-outline: none;
     color: white;
     height: 90px;
     width: 90px;
@@ -109,10 +115,9 @@
     border-radius: 7px;
 }
 
-
 .channels-clear-button {
-    outline : none;
-    -moz-outline : none;
+    outline: none;
+    -moz-outline: none;
     color: white;
     height: 90px;
     width: 90px;
@@ -134,8 +139,8 @@
 }
 
 .channels-snap-mix-button {
-    outline : none;
-    -moz-outline : none;
+    outline: none;
+    -moz-outline: none;
     background-color: rgb(199, 202, 0);
     color: rgb(44, 44, 44);
     margin-left: 20px;
