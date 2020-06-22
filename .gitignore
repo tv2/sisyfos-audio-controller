@@ -11,6 +11,7 @@ node_modules/
 public/
 *.compiled.*
 settings.json
+pages.json
 *.shot
 *.ccg
 
