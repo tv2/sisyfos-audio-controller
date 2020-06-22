@@ -331,7 +331,6 @@ export class LawoRubyMixerConnection {
                         selector.value ===
                         (node.contents as Model.Parameter).value
                     ) {
-                        console.log(`channel ${ch} to mode ${selector.label}`)
                         store.dispatch({
                             type: SET_INPUT_SELECTOR,
                             channel: ch - 1,
@@ -376,7 +375,7 @@ export class LawoRubyMixerConnection {
                 )
             })
             .catch((error: any) => {
-                console.log('Ember Error ', error)
+                logger.error('Ember Error ', error)
             })
     }
 
@@ -472,7 +471,7 @@ export class LawoRubyMixerConnection {
         )
     }
     updateInputSelector(channelIndex: number, inputSelected: number) {
-        console.log('input select', channelIndex, inputSelected)
+        logger.debug('input select', channelIndex, inputSelected)
         const channel = state.channels[0].channel[channelIndex]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
