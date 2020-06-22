@@ -1,4 +1,3 @@
-//@ts-ignore
 import { EmberClient, Model, Types } from 'emberplus-connection'
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
@@ -40,9 +39,6 @@ export class EmberMixerConnection {
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
         })
-        this.emberConnection.on('connected', () => {
-            logger.error('Connected to Ember device')
-        })
         logger.info('Connecting to Ember')
         let deviceRoot: any
         this.emberConnection
@@ -52,21 +48,17 @@ export class EmberMixerConnection {
                 const req = await this.emberConnection.getDirectory(
                     this.emberConnection.tree
                 )
-                const r = await req.response
-
+                return await req.response
+            })
+            .then((r) => {
                 console.log('Directory :', r)
                 this.deviceRoot = r
-                const sourcesNode = await this.emberConnection.getElementByPath(
-                    'Ruby.Sources'
-                )
-                // this.emberConnection.expand(sources).then(() => {
-                //     logger.info('expanded sources')
-                //     // expand is a pretty heavy operation, not sure if we _really_ need it....
-                //     this.setupMixerConnection()
-                // })
-                this.setupMixerConnection()
+                this.emberConnection
+                    .expand(r as EmberClient['tree'])
+                    .then(() => {
+                        this.setupMixerConnection()
+                    })
             })
-            .then((r: any) => {})
             .catch((e: any) => {
                 console.log(e.stack)
             })
@@ -79,18 +71,14 @@ export class EmberMixerConnection {
 
         let ch: number = 1
         state.settings[0].numberOfChannelsInType.forEach(
-            async (numberOfChannels, typeIndex) => {
+            (numberOfChannels, typeIndex) => {
                 for (
                     let channelTypeIndex = 0;
                     channelTypeIndex < numberOfChannels;
                     channelTypeIndex++
                 ) {
-                    try {
-                        await this.subscribeFaderLevel(ch, typeIndex, channelTypeIndex)
-                        ch++
-                    } catch (e) {
-                        console.log(e)
-                    }
+                    this.subscribeFaderLevel(ch, typeIndex, channelTypeIndex)
+                    ch++
                 }
             }
         )
@@ -111,7 +99,7 @@ export class EmberMixerConnection {
         }
     }
 
-    async subscribeFaderLevel(
+    subscribeFaderLevel(
         ch: number,
         typeIndex: number,
         channelTypeIndex: number
@@ -122,33 +110,39 @@ export class EmberMixerConnection {
             '{channel}',
             String(channelTypeIndex + 1)
         )
-        console.log(command)
-        const node: Model.NumberedTreeNode<Model.Parameter> = await this.emberConnection.getElementByPath(command) as any
-        logger.info('Subscription of channel : ' + command)
-        this.emberNodeObject[ch - 1] = node
-        this.emberConnection.subscribe(node, () => {
-            logger.verbose('Receiving Level from Ch ' + String(ch))
-            if (
-                !state.channels[0].channel[ch - 1].fadeActive &&
-                !state.channels[0].channel[ch - 1].fadeActive &&
-                node.contents.value >
-                    this.mixerProtocol.channelTypes[typeIndex].fromMixer
-                        .CHANNEL_OUT_GAIN[0].min
-            ) {
-                store.dispatch({
-                    type: SET_FADER_LEVEL,
-                    channel: ch - 1,
-                    level: node.contents.value,
+        this.emberConnection
+            .getElementByPath(command)
+            .then((node) => {
+                logger.info('Subscription of channel : ' + command)
+                this.emberNodeObject[ch - 1] = node
+                this.emberConnection.subscribe(node, () => {
+                    logger.verbose('Receiving Level from Ch ' + String(ch))
+                    if (
+                        !state.channels[0].channel[ch - 1].fadeActive &&
+                        !state.channels[0].channel[ch - 1].fadeActive &&
+                        (node.contents as Model.Parameter).value >
+                            this.mixerProtocol.channelTypes[typeIndex].fromMixer
+                                .CHANNEL_OUT_GAIN[0].min
+                    ) {
+                        store.dispatch({
+                            type: SET_FADER_LEVEL,
+                            channel: ch - 1,
+                            level: (node.contents as Model.Parameter).value,
+                        })
+                        global.mainThreadHandler.updatePartialStore(ch - 1)
+                        if (remoteConnections) {
+                            remoteConnections.updateRemoteFaderState(
+                                ch - 1,
+                                (node.contents as Model.Parameter)
+                                    .value as number
+                            )
+                        }
+                    }
                 })
-                global.mainThreadHandler.updatePartialStore(ch - 1)
-                if (remoteConnections) {
-                    remoteConnections.updateRemoteFaderState(
-                        ch - 1,
-                        node.contents.value as number
-                    )
-                }
-            }
-        })
+            })
+            .catch((error: any) => {
+                logger.error(error)
+            })
     }
 
     subscribeChannelName(
@@ -156,22 +150,24 @@ export class EmberMixerConnection {
         typeIndex: number,
         channelTypeIndex: number
     ) {
-        // NOTE: it is extremely unlikely this will every change.
-        this.emberConnection.getElementByPath(
-            this.mixerProtocol.channelTypes[
-                typeIndex
-            ].fromMixer.CHANNEL_NAME[0].mixerMessage.replace(
-                '{channel}',
-                String(channelTypeIndex + 1)
-            ),
-            (node) => {
-                store.dispatch({
-                    type: SET_CHANNEL_LABEL,
-                    channel: ch - 1,
-                    level: (node.contents as Model.EmberNode).identifier,
+        this.emberConnection
+            .getElementByPath(
+                this.mixerProtocol.channelTypes[
+                    typeIndex
+                ].fromMixer.CHANNEL_NAME[0].mixerMessage.replace(
+                    '{channel}',
+                    String(channelTypeIndex + 1)
+                )
+            )
+            .then((node: any) => {
+                this.emberConnection.subscribe(node, () => {
+                    store.dispatch({
+                        type: SET_CHANNEL_LABEL,
+                        channel: ch - 1,
+                        level: node.contents.value,
+                    })
                 })
-            }
-        )
+            })
     }
 
     pingMixerCommand() {
@@ -204,7 +200,7 @@ export class EmberMixerConnection {
             .then((element: any) => {
                 logger.verbose('Sending out message : ' + message)
                 this.emberConnection.setValue(
-                    element,
+                    this.emberNodeObject[channel - 1],
                     typeof value === 'number' ? value : parseFloat(value)
                 )
             })
@@ -217,8 +213,8 @@ export class EmberMixerConnection {
         logger.verbose(
             'Sending out Level: ' +
                 String(value) +
-                ' To Path : ' +''
-                // JSON.stringify(this.emberNodeObject[channel])
+                ' To Path : ' +
+                JSON.stringify(this.emberNodeObject[channel])
         )
         this.emberConnection
             .setValue(this.emberNodeObject[channel - 1], value, false)
@@ -260,64 +256,37 @@ export class EmberMixerConnection {
             state.channels[0].channel[channelIndex].channelTypeIndex
         let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
             .CHANNEL_OUT_GAIN[0]
-        let level = (outputLevel) * (protocol.max - protocol.min) + protocol.min
-        console.log(protocol, outputLevel, level)
+        let level = (outputLevel - protocol.min) * (protocol.max - protocol.min)
 
         this.sendOutLevelMessage(channelTypeIndex + 1, level)
     }
 
-    async updatePflState(channelIndex: number) {
-        const channel = state.channels[0].channel[channelIndex]
-        let channelType = channel.channelType
+    updatePflState(channelIndex: number) {
+        let channelType = state.channels[0].channel[channelIndex].channelType
         let channelTypeIndex =
             state.channels[0].channel[channelIndex].channelTypeIndex
 
-        // gotta get the label:
-        const node: Model.NumberedTreeNode<Model.EmberNode> = (await this.emberConnection.getElementByPath(
-            'Ruby.Sources.' + channelTypeIndex
-        )) as any
-        const fn: Model.NumberedTreeNode<Model.EmberFunction> = (await this.emberConnection.getElementByPath(
-            'Ruby.Functions.SetPFLState'
-        )) as any
-
-        if (!node || !fn)
-            throw new Error(
-                'Oops could not find node or function to update PFL state'
+        if (state.faders[0].fader[channelIndex].pflOn === true) {
+            this.sendOutMessage(
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
+                    .mixerMessage,
+                channelTypeIndex + 1,
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
+                    .value,
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
+                    .type
             )
-
-        this.emberConnection.invoke(
-            fn,
-            {
-                value: node.contents.identifier,
-                type: Model.ParameterType.String,
-            },
-            {
-                value: state.faders[0].fader[channelIndex].pflOn,
-                type: Model.ParameterType.Boolean,
-            }
-        )
-
-        // if (state.faders[0].fader[channelIndex].pflOn === true) {
-        //     this.sendOutMessage(
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
-        //             .mixerMessage,
-        //         channelTypeIndex + 1,
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
-        //             .value,
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
-        //             .type
-        //     )
-        // } else {
-        //     this.sendOutMessage(
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
-        //             .mixerMessage,
-        //         channelTypeIndex + 1,
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
-        //             .value,
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
-        //             .type
-        //     )
-        // }
+        } else {
+            this.sendOutMessage(
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
+                    .mixerMessage,
+                channelTypeIndex + 1,
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
+                    .value,
+                this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
+                    .type
+            )
+        }
     }
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
