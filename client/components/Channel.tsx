@@ -82,6 +82,13 @@ class Channel extends React.Component<
 
     handlePfl() {
         window.socketIoClient.emit(SOCKET_TOGGLE_PFL, this.faderIndex)
+        if (
+            this.props.settings.chanStripFollowsPFL &&
+            !this.props.fader.pflOn &&
+            this.props.settings.showChanStrip !== this.faderIndex
+        ) {
+            this.handleShowChanStrip()
+        }
     }
 
     handleMute() {
@@ -192,10 +199,12 @@ class Channel extends React.Component<
     }
 
     chanStripButton = () => {
+        const isActive = this.props.settings.showChanStrip === this.faderIndex
         return (
             <button
                 className={ClassNames('channel-strip-button', {
                     on: this.props.settings.showChanStrip,
+                    active: isActive,
                 })}
                 onClick={(event) => {
                     this.handleShowChanStrip()
@@ -272,6 +281,7 @@ class Channel extends React.Component<
                     'vo-on': this.props.fader.voOn,
                     'mute-on': this.props.fader.muteOn,
                     'ignore-on': this.props.fader.ignoreAutomation,
+                    'not-found': this.props.fader.disabled,
                 })}
             >
                 {this.ignoreButton()}

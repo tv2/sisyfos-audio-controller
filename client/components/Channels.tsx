@@ -9,18 +9,20 @@ import { Store } from 'redux'
 import {
     TOGGLE_SHOW_SETTINGS,
     TOGGLE_SHOW_STORAGE,
+    SET_PAGE,
 } from '../../server/reducers/settingsActions'
 import ChannelRouteSettings from './ChannelRouteSettings'
 import ChanStrip from './ChanStrip'
 import ChannelMonitorOptions from './ChannelMonitorOptions'
 import { IChannels } from '../../server/reducers/channelsReducer'
 import { IFader } from '../../server/reducers/fadersReducer'
-import { ISettings } from '../../server/reducers/settingsReducer'
+import { ISettings, PageType } from '../../server/reducers/settingsReducer'
 import {
     SOCKET_NEXT_MIX,
     SOCKET_CLEAR_PST,
     SOCKET_RESTART_SERVER,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import { classNames } from 'react-select/src/utils'
 
 interface IChannelsInjectProps {
     channels: IChannels
@@ -44,7 +46,10 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 nextProps.settings.showMonitorOptions ||
             this.props.settings.mixerOnline !==
                 nextProps.settings.mixerOnline ||
-            this.props.faders.length !== nextProps.faders.length
+            this.props.faders.length !== nextProps.faders.length ||
+            this.props.settings.currentPage !==
+                nextProps.settings.currentPage ||
+            this.props.settings.pageLength !== nextProps.settings.pageLength
         )
     }
 
@@ -74,6 +79,128 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         })
     }
 
+    handlePages(type: PageType, i: number | string) {
+        if (typeof i === 'string') {
+            this.props.dispatch({
+                type: SET_PAGE,
+                pageType: type,
+                id: i,
+            })
+        } else {
+            this.props.dispatch({
+                type: SET_PAGE,
+                pageType: type,
+                start: i * this.props.settings.pageLength,
+            })
+        }
+    }
+
+    renderPageButtons() {
+        if (this.props.settings.enablePages === false) {
+            return undefined
+        }
+
+        const curPage = this.props.settings.currentPage
+
+        const customPageButtons = []
+        const pages = window.customPagesList
+        if (pages) {
+            for (const p of pages) {
+                const isActive =
+                    curPage.type === PageType.CustomPage && curPage.id === p.id
+                customPageButtons.push(
+                    <button
+                        className={ClassNames('channels-show-settings-button', {
+                            active: isActive,
+                        })}
+                        onClick={() => {
+                            this.handlePages(PageType.CustomPage, p.id)
+                        }}
+                    >
+                        {p.label}
+                    </button>
+                )
+            }
+        }
+
+        const numberedButtons = []
+        const numberOfFaders = this.props.settings.numberOfFaders
+        const pageLength = this.props.settings.pageLength
+        for (let i = 0; i < Math.ceil(numberOfFaders / pageLength); i++) {
+            const isActive =
+                curPage.type === PageType.NumberedPage &&
+                curPage.start === i * this.props.settings.pageLength
+            numberedButtons.push(
+                <button
+                    className={ClassNames('channels-show-settings-button', {
+                        active: isActive,
+                    })}
+                    onClick={() => {
+                        this.handlePages(PageType.NumberedPage, i)
+                    }}
+                >
+                    CH{i * pageLength + 1}-
+                    {Math.min((i + 1) * pageLength, numberOfFaders)}
+                </button>
+            )
+        }
+
+        const isAllActive = curPage.type === PageType.All
+        return (
+            <React.Fragment>
+                {customPageButtons}
+                {numberedButtons}
+                <button
+                    className={ClassNames('channels-show-settings-button', {
+                        active: isAllActive,
+                    })}
+                    onClick={() => {
+                        this.handlePages(PageType.All, 0)
+                    }}
+                >
+                    ALL
+                </button>
+            </React.Fragment>
+        )
+    }
+
+    renderFaders() {
+        const curPage = this.props.settings.currentPage
+        const pageLength = this.props.settings.pageLength
+        switch (curPage.type) {
+            case PageType.All:
+                return this.props.faders.map((value, index) => (
+                    <Channel faderIndex={index} key={index} />
+                ))
+            case PageType.NumberedPage:
+                return this.props.faders
+                    .slice(
+                        curPage.start,
+                        Number(curPage.start!) + Number(pageLength)
+                    )
+                    .map((value, index) => (
+                        <Channel
+                            faderIndex={index + curPage.start!}
+                            key={index + curPage.start!}
+                        />
+                    ))
+            case PageType.CustomPage:
+                const page = window.customPagesList.find(
+                    (page) => page.id === curPage.id
+                )
+                if (!page) return
+
+                return this.props.faders
+                    .filter((v, i) => page.faders.find((f) => i === f))
+                    .map((value, index) => (
+                        <Channel
+                            faderIndex={page.faders[index]}
+                            key={page.faders[index]}
+                        />
+                    ))
+        }
+    }
+
     render() {
         return (
             <div className="channels-body">
@@ -100,9 +227,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                         faderIndex={this.props.settings.showMonitorOptions}
                     />
                 ) : null}
-                {this.props.faders.map((none: any, index: number) => {
-                    return <Channel faderIndex={index} key={index} />
-                })}
+                {this.renderFaders()}
                 <br />
                 <div className="channels-mix-body">
                     {this.props.settings.mixerOnline ? (
@@ -176,6 +301,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                         </button>
                     }
                     <br />
+
+                    {this.renderPageButtons()}
                 </div>
             </div>
         )

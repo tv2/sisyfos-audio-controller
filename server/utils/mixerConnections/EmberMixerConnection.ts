@@ -1,5 +1,4 @@
-//@ts-ignore
-import { EmberClient } from 'node-emberplus'
+import { EmberClient, Model, Types } from 'emberplus-connection'
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 
@@ -44,16 +43,21 @@ export class EmberMixerConnection {
         let deviceRoot: any
         this.emberConnection
             .connect()
-            .then(() => {
+            .then(async () => {
                 console.log('Getting Directory')
-                return this.emberConnection.getDirectory()
+                const req = await this.emberConnection.getDirectory(
+                    this.emberConnection.tree
+                )
+                return await req.response
             })
-            .then((r: any) => {
+            .then((r) => {
                 console.log('Directory :', r)
                 this.deviceRoot = r
-                this.emberConnection.expand(r.elements[0]).then(() => {
-                    this.setupMixerConnection()
-                })
+                this.emberConnection
+                    .expand(r as EmberClient['tree'])
+                    .then(() => {
+                        this.setupMixerConnection()
+                    })
             })
             .catch((e: any) => {
                 console.log(e.stack)
@@ -108,7 +112,7 @@ export class EmberMixerConnection {
         )
         this.emberConnection
             .getElementByPath(command)
-            .then((node: any) => {
+            .then((node) => {
                 logger.info('Subscription of channel : ' + command)
                 this.emberNodeObject[ch - 1] = node
                 this.emberConnection.subscribe(node, () => {
@@ -116,20 +120,21 @@ export class EmberMixerConnection {
                     if (
                         !state.channels[0].channel[ch - 1].fadeActive &&
                         !state.channels[0].channel[ch - 1].fadeActive &&
-                        node.contents.value >
+                        (node.contents as Model.Parameter).value >
                             this.mixerProtocol.channelTypes[typeIndex].fromMixer
                                 .CHANNEL_OUT_GAIN[0].min
                     ) {
                         store.dispatch({
                             type: SET_FADER_LEVEL,
                             channel: ch - 1,
-                            level: node.contents.value,
+                            level: (node.contents as Model.Parameter).value,
                         })
                         global.mainThreadHandler.updatePartialStore(ch - 1)
                         if (remoteConnections) {
                             remoteConnections.updateRemoteFaderState(
                                 ch - 1,
-                                node.contents.value
+                                (node.contents as Model.Parameter)
+                                    .value as number
                             )
                         }
                     }
@@ -146,7 +151,7 @@ export class EmberMixerConnection {
         channelTypeIndex: number
     ) {
         this.emberConnection
-            .getNodeByPath(
+            .getElementByPath(
                 this.mixerProtocol.channelTypes[
                     typeIndex
                 ].fromMixer.CHANNEL_NAME[0].mixerMessage.replace(
@@ -212,7 +217,7 @@ export class EmberMixerConnection {
                 JSON.stringify(this.emberNodeObject[channel])
         )
         this.emberConnection
-            .setValueNoAck(this.emberNodeObject[channel - 1], value)
+            .setValue(this.emberNodeObject[channel - 1], value, false)
             .catch((error: any) => {
                 console.log('Ember Error ', error)
             })

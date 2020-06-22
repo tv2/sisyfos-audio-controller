@@ -41,6 +41,8 @@ export const SOCKET_LOAD_MIXER_PRESET = 'loadMixerPreset'
 export const SOCKET_LOAD_SNAPSHOT = 'loadSnapshot'
 export const SOCKET_SAVE_SNAPSHOT = 'saveSnapshot'
 export const SOCKET_SAVE_CCG_FILE = 'saveCcgFile'
+export const SOCKET_GET_PAGES_LIST = 'getPagesList'
+export const SOCKET_RETURN_PAGES_LIST = 'getPagesList'
 
 // Store updates:
 export const SOCKET_SET_FULL_STORE = 'setFullStore'

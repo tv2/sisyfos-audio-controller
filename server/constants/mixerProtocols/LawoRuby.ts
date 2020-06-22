@@ -1,7 +1,7 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
 
 export const LawoRuby: IMixerProtocol = {
-    protocol: 'EMBER',
+    protocol: 'LAWORUBY',
     label: 'Lawo Ruby',
     presetFileExtension: '',
     loadPresetCommand: [emptyMixerMessage()],
@@ -16,19 +16,51 @@ export const LawoRuby: IMixerProtocol = {
             channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_OUT_GAIN: [
+                CHANNEL_INPUT_GAIN: [
                     {
                         mixerMessage:
-                            'Ruby.Sources.${channel}.Fader.Motor dB Value',
+                            'Ruby.Sources.{channel}.DSP.Input.Gain[dB]',
                         value: 0,
-                        type: 'real',
-                        min: -191,
-                        max: 9,
+                        type: 'int',
+                        min: -30,
+                        max: 18,
                         zero: 0,
                     },
                 ],
-                CHANNEL_VU: [emptyMixerMessage()],
-                CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 0,
+                        type: 'int',
+                        label: 'LR',
+                    },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 4,
+                        type: 'int',
+                        label: 'LL',
+                    },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 1,
+                        type: 'int',
+                        label: 'RR',
+                    },
+                ],
+                CHANNEL_OUT_GAIN: [
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.Fader.Motor dB Value',
+                        value: 0,
+                        type: 'int',
+                        min: -191,
+                        max: 255,
+                        zero: 9,
+                    },
+                ],
                 CHANNEL_NAME: [
                     {
                         mixerMessage: '',
@@ -40,25 +72,57 @@ export const LawoRuby: IMixerProtocol = {
                     },
                 ],
                 PFL: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [emptyMixerMessage()],
-                RATIO: [emptyMixerMessage()],
-                DELAY_TIME: [emptyMixerMessage()],
-                LOW: [emptyMixerMessage()],
-                LO_MID: [emptyMixerMessage()],
-                MID: [emptyMixerMessage()],
-                HIGH: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
-                CHANNEL_OUT_GAIN: [
+                CHANNEL_INPUT_GAIN: [
                     {
                         mixerMessage:
-                            'Ruby.Sources.${channel}.Fader.Motor dB Value',
+                            'Ruby.Sources.{channel}.DSP.Input.Gain[dB]',
                         value: 0,
-                        type: 'real',
+                        type: 'int',
+                        min: -30,
+                        max: 18,
+                        zero: 0,
+                    },
+                ],
+                CHANNEL_INPUT_SELECTOR: [
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 0,
+                        type: 'int',
+                        label: 'LR',
+                    },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 4,
+                        type: 'int',
+                        label: 'LL',
+                    },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 1,
+                        type: 'int',
+                        label: 'RR',
+                    },
+                ],
+                CHANNEL_OUT_GAIN: [
+                    // {
+                    //     mixerMessage:
+                    //         'Ruby.Sources.{channel}.Fader.Motor Position',
+                    //     value: 0,
+                    //     type: 'int',
+                    //     min: 0,
+                    //     max: 255,
+                    //     zero: 204,
+                    // },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.Fader.Motor dB Value',
+                        value: 0,
+                        type: 'int',
                         min: -191,
                         max: 9,
                         zero: 0,
@@ -76,25 +140,14 @@ export const LawoRuby: IMixerProtocol = {
                 ],
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [emptyMixerMessage()],
-                RATIO: [emptyMixerMessage()],
-                DELAY_TIME: [emptyMixerMessage()],
-                LOW: [emptyMixerMessage()],
-                LO_MID: [emptyMixerMessage()],
-                MID: [emptyMixerMessage()],
-                HIGH: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
         },
     ],
     fader: {
         min: 0,
-        max: 200,
-        zero: 1300,
-        step: 10,
+        max: 255,
+        zero: 204,
+        step: 5,
     },
     meter: {
         min: 0,

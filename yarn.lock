@@ -1451,9 +1451,9 @@
   integrity sha512-bnoqK579sAYrQbp73wwglccjJ4sfRdKU7WNEZ5FW4K2U6Kc0/eZ5kvXG0JKsEKFB50zrFmfFt52/cvBbZa7eXg==
 
 "@types/node@^7.0.4":
-  version "7.10.9"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.10.9.tgz#4343e3b009f8cf5e1ed685e36097b74b4101e880"
-  integrity sha512-usSpgoUsRtO5xNV5YEPU8PPnHisFx8u0rokj1BPVn/hDF7zwUDzVLiuKZM38B7z8V2111Fj6kd4rGtQFUZpNOw==
+  version "7.10.11"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.10.11.tgz#2e533ffcc777d2a6ee8d00b6f82e0cdd3c3781e1"
+  integrity sha512-uEqP1HlJFhsgD8DOBFdC72/5selvor0mzdQY97zlyo8Q6qPl849cFBWkNpgTXw3jIvb7iNyWsId51/A8HYKzbQ==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1973,7 +1973,7 @@ asn1.js@^4.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
 
-"asn1@github:evs-broadcast/node-asn1":
+asn1@evs-broadcast/node-asn1, "asn1@github:evs-broadcast/node-asn1":
   version "0.5.4"
   resolved "https://codeload.github.com/evs-broadcast/node-asn1/tar.gz/0146823069e479e90595480dc90c72cafa161ba1"
   dependencies:
@@ -3731,6 +3731,18 @@ elliptic@^6.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
+
+emberplus-connection@^0.0.3-nightly-20200622-114815-88534e2.0:
+  version "0.0.3-nightly-20200622-114815-88534e2.0"
+  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.3-nightly-20200622-114815-88534e2.0.tgz#32682f6a9d7bb189f154857c021d8fa7132b3bd3"
+  integrity sha512-0SkeCLmcIuPN5GZIxmlmAETpxlsrCx+hNSwlpBErOcq4v7Vr8rRKdpc9lWC0eJ4WtdkKr18oj0bdy5nHG101dg==
+  dependencies:
+    asn1 evs-broadcast/node-asn1
+    enum "^2.4.0"
+    long "^3.2.0"
+    smart-buffer "^3.0.3"
+    winston "^2.1.1"
+    winston-color "^1.0.0"
 
 emoji-regex@^7.0.1:
   version "7.0.3"
@@ -7171,9 +7183,9 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
-"node-emberplus@https://github.com/olzzon/node-emberplus.git#feat/export-ber":
+"node-emberplus@https://github.com/olzzon/node-emberplus#feat/export-ber":
   version "2.5.8"
-  resolved "https://github.com/olzzon/node-emberplus.git#089121967153349c37d22298e5b8b1796881071a"
+  resolved "https://github.com/olzzon/node-emberplus#089121967153349c37d22298e5b8b1796881071a"
   dependencies:
     asn1 "github:evs-broadcast/node-asn1"
     enum "^2.4.0"
