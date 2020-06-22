@@ -1,5 +1,4 @@
-//@ts-ignore
-import { EmberClient, Model, Types } from 'emberplus-connection'
+import { EmberClient, Model } from 'emberplus-connection'
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 
@@ -43,14 +42,12 @@ export function dbToFloat(d: number): number {
     } else {
         f = 1
     }
-    // Optionally round “f” to a X32 known value
-    return f // Math.round((f * 1023.5) / 1023.0)
+    return Math.max(0, f)
 }
 
 export class LawoRubyMixerConnection {
     mixerProtocol: IMixerProtocol
     emberConnection: EmberClient
-    deviceRoot: any
     faders: { [index: number]: string } = {}
 
     constructor(mixerProtocol: IMixerProtocol) {
@@ -99,18 +96,18 @@ export class LawoRubyMixerConnection {
         this.emberConnection
             .connect()
             .then(async () => {
-                console.log('Getting Directory')
+                logger.debug('Getting Directory')
                 const req = await this.emberConnection.getDirectory(
                     this.emberConnection.tree
                 )
                 const r = await req.response
 
-                console.log('Directory :', r)
+                logger.debug('Directory :', r)
                 this.setupMixerConnection()
             })
             .then((r: any) => {})
             .catch((e: any) => {
-                console.log(e.stack)
+                logger.debug(e.stack)
             })
     }
 
@@ -191,7 +188,7 @@ export class LawoRubyMixerConnection {
                 channelTypeIndex < numberOfChannels;
                 channelTypeIndex++
             ) {
-                console.log('running subscriptions for ' + this.faders[ch])
+                logger.debug('running subscriptions for ' + this.faders[ch])
                 try {
                     await this.subscribeFaderLevel(
                         ch,
@@ -210,24 +207,13 @@ export class LawoRubyMixerConnection {
                     )
                     ch++
                 } catch (e) {
-                    console.log(e)
+                    logger.error(
+                        'error during subscriptions of parameters for ' +
+                            this.faders[ch],
+                        e
+                    )
                 }
             }
-        }
-        /*
-                .CHANNEL_VU)){
-                    store.dispatch({
-                        type:SET_VU_LEVEL,
-                        channel: ch - 1,
-                        level: message.args[0]
-                    });
-        */
-
-        //Ping OSC mixer if mixerProtocol needs it.
-        if (this.mixerProtocol.pingTime > 0) {
-            let emberTimer = setInterval(() => {
-                this.pingMixerCommand()
-            }, this.mixerProtocol.pingTime)
         }
     }
 
@@ -250,10 +236,8 @@ export class LawoRubyMixerConnection {
             const node = await this.emberConnection.getElementByPath(command)
             if (node.contents.type !== Model.ElementType.Parameter) return
 
-            logger.info('Subscription of channel level: ' + command)
+            logger.debug('Subscription of channel level: ' + command)
             this.emberConnection.subscribe(node, () => {
-                // @ts-ignore
-                console.log('level change ', command, node.contents.value)
                 logger.verbose('Receiving Level from Ch ' + String(ch))
                 if (
                     !state.channels[0].channel[ch - 1].fadeActive &&
@@ -261,8 +245,6 @@ export class LawoRubyMixerConnection {
                         this.mixerProtocol.channelTypes[typeIndex].fromMixer
                             .CHANNEL_OUT_GAIN[0].min
                 ) {
-                    // @ts-ignore
-                    console.log('gain is ', node.contents.value)
                     store.dispatch({
                         type: SET_FADER_LEVEL,
                         channel: ch - 1,
@@ -283,7 +265,7 @@ export class LawoRubyMixerConnection {
                 }
             })
         } catch (e) {
-            logger.error('error when subscribing to fader level', e)
+            logger.debug('error when subscribing to fader level', e)
         }
     }
     async subscribeGainLevel(
@@ -302,7 +284,7 @@ export class LawoRubyMixerConnection {
             const node = await this.emberConnection.getElementByPath(command)
             if (node.contents.type !== Model.ElementType.Parameter) return
 
-            logger.info('Subscription of channel gain: ' + command)
+            logger.debug('Subscription of channel gain: ' + command)
             this.emberConnection.subscribe(node, () => {
                 logger.verbose('Receiving Gain from Ch ' + String(ch))
                 const value = (node.contents as Model.Parameter).value as number
@@ -317,7 +299,7 @@ export class LawoRubyMixerConnection {
                 }
             })
         } catch (e) {
-            logger.error('error when subscribing to gain level', e)
+            logger.debug('error when subscribing to gain level', e)
         }
     }
     async subscribeInputSelector(
@@ -339,7 +321,7 @@ export class LawoRubyMixerConnection {
             const node = await this.emberConnection.getElementByPath(command)
             if (node.contents.type !== Model.ElementType.Parameter) return
 
-            logger.info('Subscription of channel input selector: ' + command)
+            logger.debug('Subscription of channel input selector: ' + command)
             this.emberConnection.subscribe(node, () => {
                 logger.verbose('Receiving InpSelector from Ch ' + String(ch))
                 this.mixerProtocol.channelTypes[
@@ -360,7 +342,7 @@ export class LawoRubyMixerConnection {
                 })
             })
         } catch (e) {
-            logger.error('error when subscribing to input selector', e)
+            logger.debug('error when subscribing to input selector', e)
         }
     }
 
@@ -378,13 +360,11 @@ export class LawoRubyMixerConnection {
         value: string | number,
         type?: string
     ) {
-        // let channelString = this.mixerProtocol.leadingZeros
-        //     ? ('0' + channel).slice(-2)
-        //     : channel.toString()
         const channelString = this.faders[channel]
 
+        if (!channelString) return
+
         let message = mixerMessage.replace('{channel}', channelString)
-        // console.log(message, value)
 
         this.emberConnection
             .getElementByPath(message)
@@ -407,32 +387,9 @@ export class LawoRubyMixerConnection {
         const mixerMessage = this.mixerProtocol.channelTypes[0].toMixer
             .CHANNEL_OUT_GAIN[0].mixerMessage
 
-        logger.verbose(
-            'Sending out Level: ' + String(value) + ' To ' + source
-            // JSON.stringify(this.emberNodeObject[channel])
-        )
-        console.log('level', channel - 1, source, value)
-        // this.emberConnection
-        //     .setValue(this.emberNodeObject[channel - 1], value, false)
-        //     .catch((error: any) => {
-        //         console.log('Ember Error ', error)
-        //     })
-        this.sendOutMessage(mixerMessage, channel, value)
-    }
+        logger.verbose('Sending out Level: ' + String(value) + ' To ' + source)
 
-    sendOutRequest(mixerMessage: string, channel: number) {
-        // let channelString = this.mixerProtocol.leadingZeros
-        //     ? ('0' + channel).slice(-2)
-        //     : channel.toString()
-        const channelString = this.faders[channel]
-        let message = mixerMessage.replace('{channel}', channelString)
-        if (message != 'none') {
-            /*
-            this.oscConnection.send({
-                address: message
-            });
-*/
-        }
+        this.sendOutMessage(mixerMessage, channel, value)
     }
 
     updateOutLevel(channelIndex: number) {
@@ -457,21 +414,6 @@ export class LawoRubyMixerConnection {
 
         const level = floatToDB(outputLevel)
 
-        // fitted curve to 0 = 0; 0.5 = -27; 0.75 = 0; 1 = 9
-        // const level =
-        //     170.67 * Math.pow(outputLevel, 4) +
-        //     -234.67 * Math.pow(outputLevel, 3) +
-        //     -202.67 * Math.pow(outputLevel, 2) +
-        //     466.67 * outputLevel +
-        //     -191
-        // fitted curve to 0 = 0; 0.5 = -9; 0.75 = 0; 1 = 9
-        // const level =
-        //     437.33 * Math.pow(outputLevel, 3) -
-        //     984 * Math.pow(outputLevel, 2) +
-        //     746.67 * outputLevel -
-        //     191
-        console.log(outputLevel, level)
-
         this.sendOutLevelMessage(channelTypeIndex + 1, level)
     }
 
@@ -481,7 +423,7 @@ export class LawoRubyMixerConnection {
         let channelTypeIndex =
             state.channels[0].channel[channelIndex].channelTypeIndex
 
-        // gotta get the label and function:
+        // fetch source name and function node
         const fader = this.faders[channelTypeIndex + 1]
         const fn = (await this.emberConnection.getElementByPath(
             'Ruby.Functions.SetPFLState'
@@ -503,28 +445,6 @@ export class LawoRubyMixerConnection {
                 type: Model.ParameterType.Boolean,
             }
         )
-
-        // if (state.faders[0].fader[channelIndex].pflOn === true) {
-        //     this.sendOutMessage(
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
-        //             .mixerMessage,
-        //         channelTypeIndex + 1,
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
-        //             .value,
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
-        //             .type
-        //     )
-        // } else {
-        //     this.sendOutMessage(
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
-        //             .mixerMessage,
-        //         channelTypeIndex + 1,
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
-        //             .value,
-        //         this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
-        //             .type
-        //     )
-        // }
     }
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
