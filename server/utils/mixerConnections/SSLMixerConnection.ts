@@ -121,43 +121,53 @@ export class SSLMixerConnection {
                                             state.settings[0].autoResetLevel) /
                                             100
                                 ) {
-                                    store.dispatch({
-                                        type: SET_FADER_LEVEL,
-                                        channel: assignedFaderIndex,
-                                        level: value,
-                                    })
                                     if (
-                                        !state.faders[0].fader[
-                                            assignedFaderIndex
-                                        ].pgmOn
+                                        state.channels[0].channel[channelIndex]
+                                            .outputLevel !== value
                                     ) {
                                         store.dispatch({
-                                            type: TOGGLE_PGM,
+                                            type: SET_FADER_LEVEL,
                                             channel: assignedFaderIndex,
+                                            level: value,
                                         })
-                                    }
+                                        if (
+                                            !state.faders[0].fader[
+                                                assignedFaderIndex
+                                            ].pgmOn
+                                        ) {
+                                            store.dispatch({
+                                                type: TOGGLE_PGM,
+                                                channel: assignedFaderIndex,
+                                            })
+                                        }
 
-                                    if (remoteConnections) {
-                                        remoteConnections.updateRemoteFaderState(
-                                            assignedFaderIndex,
-                                            value
-                                        )
-                                    }
-                                    if (
-                                        state.faders[0].fader[
-                                            assignedFaderIndex
-                                        ].pgmOn
-                                    ) {
-                                        state.channels[0].channel.map(
-                                            (channel: any, index: number) => {
-                                                if (
-                                                    channel.assignedFader ===
-                                                    assignedFaderIndex
-                                                ) {
-                                                    this.updateOutLevel(index)
+                                        if (remoteConnections) {
+                                            remoteConnections.updateRemoteFaderState(
+                                                assignedFaderIndex,
+                                                value
+                                            )
+                                        }
+                                        if (
+                                            state.faders[0].fader[
+                                                assignedFaderIndex
+                                            ].pgmOn
+                                        ) {
+                                            state.channels[0].channel.map(
+                                                (
+                                                    channel: any,
+                                                    index: number
+                                                ) => {
+                                                    if (
+                                                        channel.assignedFader ===
+                                                        assignedFaderIndex
+                                                    ) {
+                                                        this.updateOutLevel(
+                                                            index
+                                                        )
+                                                    }
                                                 }
-                                            }
-                                        )
+                                            )
+                                        }
                                     }
                                 } else if (
                                     state.faders[0].fader[assignedFaderIndex]
