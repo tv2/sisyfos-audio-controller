@@ -104,13 +104,15 @@ export class SSLMixerConnection {
                         // FADERLEVEL COMMAND:
                         try {
                             let commandHex = buffer.toString('hex')
-                            let channel = buffer[6]
+                            let channelIndex = buffer[6]
                             let value = buffer.readUInt16BE(7) / 1024
 
                             let assignedFaderIndex =
-                                state.channels[0].channel[channel].assignedFader
+                                state.channels[0].channel[channelIndex]
+                                    .assignedFader
                             if (
-                                !state.channels[0].channel[channel].fadeActive
+                                !state.channels[0].channel[channelIndex]
+                                    .fadeActive
                             ) {
                                 if (
                                     value >
