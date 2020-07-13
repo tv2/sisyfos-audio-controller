@@ -59,6 +59,7 @@ import {
     SOCKET_SET_INPUT_SELECTOR,
     SOCKET_GET_PAGES_LIST,
     SOCKET_RETURN_PAGES_LIST,
+    SOCKET_TOGGLE_AMIX,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
     TOGGLE_PGM,
@@ -80,6 +81,7 @@ import {
     SHOW_IN_MINI_MONITOR,
     SET_INPUT_GAIN,
     SET_INPUT_SELECTOR,
+    TOGGLE_AMIX,
 } from './reducers/faderActions'
 import { SET_FADER_LEVEL } from './reducers/faderActions'
 import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions'
@@ -387,6 +389,14 @@ export class MainThreadHandlers {
                     channel: faderIndex,
                 })
                 mixerGenericConnection.updateMuteState(faderIndex)
+                this.updatePartialStore(faderIndex)
+            })
+            .on(SOCKET_TOGGLE_AMIX, (faderIndex: any) => {
+                store.dispatch({
+                    type: TOGGLE_AMIX,
+                    channel: faderIndex,
+                })
+                mixerGenericConnection.updateAMixState(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_IGNORE, (faderIndex: any) => {

@@ -22,8 +22,14 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     windowLast: number = 0
     WINDOW: number = 2000
 
+    private _painting = false
+
     constructor(props: any) {
         super(props)
+    }
+
+    componentDidMount() {
+        if (this._painting) this.paintVuMeter()
     }
 
     totalHeight = () => {
@@ -88,7 +94,11 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     }
 
     paintVuMeter = () => {
-        if (!this.canvas) return
+        if (!this.canvas) {
+            this._painting = false
+            return
+        }
+        this._painting = true
 
         const context = this.canvas.getContext('2d', {
             antialias: false,
@@ -162,11 +172,11 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
             this.canvas.clientWidth,
             2
         )
+
+        window.requestAnimationFrame(this.paintVuMeter)
     }
 
     render() {
-        this.paintVuMeter()
-
         return (
             <div
                 className="vumeter-body"

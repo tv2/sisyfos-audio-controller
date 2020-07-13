@@ -13,6 +13,29 @@
     height: 950px;
     position: relative;
     touch-action: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.channel-body > .channel-props,
+.channel-body > .out-control,
+.channel-body > .channel-control {
+    flex-grow: 0;
+}
+.channel-body > .fader {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+}
+.channel-body > .out-control {
+    padding-bottom: 5px;
+}
+.channel-body > .channel-control {
+    height: 160px;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .channel-body.ignore-on {
@@ -47,7 +70,7 @@
     -moz-outline: none;
     margin-left: 3px;
     margin-right: 3px;
-    margin-top: 37px;
+    margin-top: 3px;
     color: white;
     height: 90px;
     width: 80px;
@@ -71,7 +94,7 @@
     -moz-outline: none;
     margin-left: 3px;
     margin-right: 3px;
-    margin-top: 5px;
+    margin-top: 3px;
     color: white;
     height: 90px;
     width: 80px;
@@ -95,7 +118,7 @@
     -moz-outline: none;
     margin-left: 3px;
     margin-right: 3px;
-    margin-top: 22px;
+    margin-top: 3px;
     color: white;
     height: 90px;
     width: 80px;
@@ -114,7 +137,8 @@
     background-color: rgb(163, 106, 0);
 }
 
-.channel-mute-button {
+.channel-mute-button,
+.channel-amix-button {
     outline: none;
     -moz-outline: none;
     margin-left: 3px;
@@ -132,6 +156,14 @@
 .channel-mute-button.on {
     background-color: rgb(168, 168, 168);
     color: rgb(48, 48, 48);
+}
+
+.channel-amix-button.on {
+    background-color: rgb(78, 59, 97);
+    color: rgb(255, 255, 255);
+}
+.channel-amix-button.disabled {
+    visibility: hidden;
 }
 
 .channel-ignore-button {
@@ -189,11 +221,24 @@
 
 .channel-volume-fader {
     width: 10px;
-    height: 400px;
-    margin-left: 55px;
-    margin-top: 30px;
+    height: calc(100% - 60px);
+    margin: 30px 20px;
     background-color: rgb(15, 15, 15);
     border-color: rgba(0, 0, 0);
+}
+
+.channel-volume-fader::before,
+.channel-volume-fader::after {
+    content: '__';
+    position: absolute;
+    color: rgb(134, 134, 134);
+    top: 92px;
+}
+.channel-volume-fader::before {
+    left: 9px;
+}
+.channel-volume-fader::after {
+    right: 9px;
 }
 
 :focus {
@@ -203,7 +248,7 @@
 .channel-zero-indicator {
     color: rgb(134, 134, 134);
     position: absolute;
-    top: 214px;
+    top: 206px;
     left: 37px;
 }
 

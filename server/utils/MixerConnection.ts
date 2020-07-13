@@ -189,6 +189,19 @@ export class MixerGenericConnection {
         )
     }
 
+    updateAMixState(faderIndex: number) {
+        state.channels[0].channel.map(
+            (channel: IChannel, channelIndex: number) => {
+                if (faderIndex === channel.assignedFader) {
+                    this.mixerConnection.updateAMixState(
+                        channelIndex,
+                        state.faders[0].fader[faderIndex].amixOn
+                    )
+                }
+            }
+        )
+    }
+
     updateNextAux(faderIndex: number) {
         let level = 0
         if (state.faders[0].fader[faderIndex].pstOn) {

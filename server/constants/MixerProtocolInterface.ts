@@ -49,6 +49,7 @@ export interface IChannelTypes {
         AUX_LEVEL?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
+        CHANNEL_AMIX?: Array<IMixerMessageProtocol>
     }
     toMixer: {
         CHANNEL_INPUT_GAIN?: Array<IMixerMessageProtocol>
@@ -68,6 +69,7 @@ export interface IChannelTypes {
         AUX_LEVEL?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
+        CHANNEL_AMIX?: Array<IMixerMessageProtocol>
     }
 }
 

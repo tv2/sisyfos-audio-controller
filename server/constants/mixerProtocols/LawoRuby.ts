@@ -57,8 +57,8 @@ export const LawoRuby: IMixerProtocol = {
                         value: 0,
                         type: 'int',
                         min: -191,
-                        max: 255,
-                        zero: 9,
+                        max: 9,
+                        zero: 0.75,
                     },
                 ],
                 CHANNEL_NAME: [
@@ -72,6 +72,11 @@ export const LawoRuby: IMixerProtocol = {
                     },
                 ],
                 PFL: [emptyMixerMessage()],
+                CHANNEL_AMIX: [
+                    {
+                        mixerMessage: 'Ruby.Sources.{channel}.DSP.AutoMix.On',
+                    },
+                ],
             },
             toMixer: {
                 CHANNEL_INPUT_GAIN: [
@@ -140,13 +145,18 @@ export const LawoRuby: IMixerProtocol = {
                 ],
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
+                CHANNEL_AMIX: [
+                    {
+                        mixerMessage: 'Ruby.Sources.{channel}.DSP.AutoMix.On',
+                    },
+                ],
             },
         },
     ],
     fader: {
         min: 0,
         max: 255,
-        zero: 204,
+        zero: 0.75,
         step: 5,
     },
     meter: {
