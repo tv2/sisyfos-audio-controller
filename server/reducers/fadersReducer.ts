@@ -364,7 +364,7 @@ export const faders = (
             }
             // remove object if empty:
             if (
-                Object.entries(nextState[0].fader[action.channel].capabilities)
+                Object.entries(nextState[0].fader[action.channel].capabilities!)
                     .length === 0
             ) {
                 delete nextState[0].fader[action.channel].capabilities
