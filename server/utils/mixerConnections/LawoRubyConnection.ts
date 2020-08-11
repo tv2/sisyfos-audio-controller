@@ -10,6 +10,8 @@ import {
     SET_CHANNEL_DISABLED,
     SET_INPUT_GAIN,
     SET_INPUT_SELECTOR,
+    SET_CAPABILITY,
+    SET_AMIX,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { SET_MIXER_ONLINE } from '../../reducers/settingsActions'
@@ -205,6 +207,11 @@ export class LawoRubyMixerConnection {
                         Number(typeIndex),
                         channelTypeIndex
                     )
+                    await this.subscribeAMixState(
+                        ch,
+                        Number(typeIndex),
+                        channelTypeIndex
+                    )
                     ch++
                 } catch (e) {
                     logger.error(
@@ -319,7 +326,16 @@ export class LawoRubyMixerConnection {
 
         try {
             const node = await this.emberConnection.getElementByPath(command)
-            if (node.contents.type !== Model.ElementType.Parameter) return
+            console.log('set_cap', ch, 'hasInputSel', true)
+            store.dispatch({
+                type: SET_CAPABILITY,
+                channel: ch - 1,
+                capability: 'hasInputSelector',
+                enabled: true,
+            })
+            if (node.contents.type !== Model.ElementType.Parameter) {
+                return
+            }
 
             logger.debug('Subscription of channel input selector: ' + command)
             this.emberConnection.subscribe(node, () => {
@@ -341,6 +357,66 @@ export class LawoRubyMixerConnection {
                 })
             })
         } catch (e) {
+            if (e.message.match(/could not find node/i)) {
+                console.log('set_cap', ch, 'hasInputSel', false)
+                store.dispatch({
+                    type: SET_CAPABILITY,
+                    channel: ch - 1,
+                    capability: 'hasInputSelector',
+                    enabled: false,
+                })
+            }
+            logger.debug('error when subscribing to input selector', e)
+        }
+    }
+    async subscribeAMixState(
+        ch: number,
+        typeIndex: number,
+        channelTypeIndex: number
+    ) {
+        const sourceName = this.faders[ch]
+        if (!sourceName) return
+
+        let command = this.mixerProtocol.channelTypes[
+            typeIndex
+        ].fromMixer.CHANNEL_AMIX[0].mixerMessage.replace(
+            '{channel}',
+            sourceName
+        )
+
+        try {
+            const node = await this.emberConnection.getElementByPath(command)
+            console.log('set_cap', ch - 1, 'hasAMix', true)
+            store.dispatch({
+                type: SET_CAPABILITY,
+                channel: ch - 1,
+                capability: 'hasAMix',
+                enabled: true,
+            })
+            if (node.contents.type !== Model.ElementType.Parameter) {
+                return
+            }
+
+            logger.debug('Subscription of AMix state: ' + command)
+            this.emberConnection.subscribe(node, () => {
+                logger.verbose('Receiving AMix state from Ch ' + String(ch))
+                store.dispatch({
+                    type: SET_AMIX,
+                    channel: ch - 1,
+                    state: (node.contents as Model.Parameter).value,
+                })
+                global.mainThreadHandler.updatePartialStore(ch - 1)
+            })
+        } catch (e) {
+            if (e.message.match(/could not find node/i)) {
+                console.log('set_cap', ch - 1, 'hasAMix', false)
+                store.dispatch({
+                    type: SET_CAPABILITY,
+                    channel: ch - 1,
+                    capability: 'hasAMix',
+                    enabled: false,
+                })
+            }
             logger.debug('error when subscribing to input selector', e)
         }
     }
@@ -356,7 +432,7 @@ export class LawoRubyMixerConnection {
     sendOutMessage(
         mixerMessage: string,
         channel: number,
-        value: string | number,
+        value: string | number | boolean,
         type?: string
     ) {
         const channelString = this.faders[channel]
@@ -371,7 +447,7 @@ export class LawoRubyMixerConnection {
                 logger.verbose('Sending out message : ' + message)
                 this.emberConnection.setValue(
                     element,
-                    typeof value === 'number' ? value : parseFloat(value)
+                    typeof value === 'string' ? parseFloat(value) : value
                 )
             })
             .catch((error: any) => {
@@ -448,6 +524,21 @@ export class LawoRubyMixerConnection {
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
         return true
+    }
+
+    updateAMixState(channelIndex: number, amixOn: boolean) {
+        const channel = state.channels[0].channel[channelIndex]
+        let channelType = channel.channelType
+        let channelTypeIndex = channel.channelTypeIndex
+        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
+            .CHANNEL_AMIX[0]
+
+        this.sendOutMessage(
+            protocol.mixerMessage,
+            channelTypeIndex + 1,
+            amixOn,
+            ''
+        )
     }
 
     updateNextAux(channelIndex: number, level: number) {

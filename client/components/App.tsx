@@ -32,6 +32,7 @@ class App extends React.Component<IAppProps> {
         window.socketIoClient.emit('get-store', 'update local store')
         window.socketIoClient.emit('get-settings', 'update local settings')
         this.iFrameFocusHandler()
+        this.contextMenuHandler()
     }
 
     public shouldComponentUpdate(nextProps: IAppProps) {
@@ -86,24 +87,35 @@ class App extends React.Component<IAppProps> {
         }
     }
 
+    /**
+     * disables context menu in order to enable multi touch support
+     */
+    contextMenuHandler() {
+        document.addEventListener(
+            'contextmenu',
+            function (e) {
+                e.preventDefault()
+            },
+            false
+        )
+    }
+
     render() {
         return (
             <div>
-                {!this.props.store.settings[0].serverOnline ? (
+                {!this.props.store.settings[0].serverOnline && (
                     <div className="server-offline">
-                        { this.props.t('TRYING TO CONNECT TO SISYFOS SERVER')}
+                        {this.props.t('TRYING TO CONNECT TO SISYFOS SERVER')}
                     </div>
-                ) : null}
-                {!window.location.search.includes('minimonitor=1') ? (
+                )}
+                {!window.location.search.includes('minimonitor=1') && (
                     <Channels />
-                ) : null}
-                {window.location.search.includes('minimonitor=1') ? (
+                )}
+                {window.location.search.includes('minimonitor=1') && (
                     <MiniChannels />
-                ) : null}
-                {this.props.store.settings[0].showStorage ? <Storage /> : null}
-                {this.props.store.settings[0].showSettings ? (
-                    <Settings />
-                ) : null}
+                )}
+                {this.props.store.settings[0].showStorage && <Storage />}
+                {this.props.store.settings[0].showSettings && <Settings />}
             </div>
         )
     }
@@ -112,8 +124,11 @@ class App extends React.Component<IAppProps> {
 const mapStateToProps = (state: any, t: any): IAppProps => {
     return {
         store: state,
-        t: t
+        t: t,
     }
 }
 
-export default compose(connect<any, IAppProps>(mapStateToProps), withTranslation()) (App) as any
+export default compose(
+    connect<any, IAppProps>(mapStateToProps),
+    withTranslation()
+)(App) as any

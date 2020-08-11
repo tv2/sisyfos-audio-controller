@@ -1,7 +1,7 @@
 .chan-strip-body {
     position: relative;
     top: 5px;
-    width: 620px;
+    min-width: 320px;
     height: 940px;
     background-color: rgb(31, 31, 31);
     border-color: rgb(70, 70, 70);
@@ -15,9 +15,11 @@
 .chan-strip-body > .header {
     margin-left: 40px;
     margin-top: 10px;
-    width: 420px;
+    margin-right: 80px;
+    /* width: 420px; */
     font-size: 240%;
     color: #fff;
+    white-space: nowrap;
 }
 
 .chan-strip-body > .parameters {
@@ -27,6 +29,16 @@
     overflow: auto;
     text-align: center;
     color: #fff;
+}
+
+.chan-strip-body .parameters .horizontal {
+    display: flex;
+    justify-content: space-evenly;
+}
+.chan-strip-body .parameters .horizontal .item {
+}
+.chan-strip-body .parameters .horizontal .item .content {
+    display: flex;
 }
 
 .parameters > .inp-comp-del-group {
@@ -44,7 +56,8 @@
     height: 50px;
 }
 
-.parameters > .eq-group {
+.parameters > .eq-group,
+.content > .eq-group {
     display: flex;
     top: 5px;
     left: 2px;
@@ -52,6 +65,9 @@
     overflow: auto;
     text-align: center;
     color: #fff;
+}
+.content > .eq-group {
+    margin-left: 0;
 }
 
 .eq-group > .horizontal-space {
@@ -88,7 +104,8 @@
     margin-top: -150px;
 }
 
-.parameters > .parameter-text {
+.parameters > .parameter-text,
+.content > .parameter-text {
     list-style-type: none;
     text-align: center;
     margin-top: 15px;
@@ -97,6 +114,11 @@
 }
 
 .inp-comp-del-group > .delayButtons {
+    width: 30px;
+    margin-top: 24px;
+    margin-left: 50px;
+}
+.content > .delayButtons {
     width: 30px;
     margin-top: 24px;
     margin-left: 50px;
@@ -120,6 +142,17 @@
     margin-top: 24px;
     margin-left: 50px;
 }
+.inp-comp-del-group .input-buttons.disabled {
+    visibility: hidden;
+}
+.content > .input-buttons {
+    width: 30px;
+    margin-top: 24px;
+    margin-left: 50px;
+}
+.content > .input-buttons.disabled {
+    visibility: hidden;
+}
 
 .input-buttons > .input-select {
     outline: none;
@@ -137,7 +170,8 @@
     background-color: #2f475b;
 }
 
-.parameters > .monitor-sends {
+.parameters > .monitor-sends,
+.content > .monitor-sends {
     list-style-type: none;
     display: flex;
     text-align: center;
@@ -149,7 +183,7 @@
 }
 
 .header > .close {
-    position: fixed;
+    position: absolute;
     outline: none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
@@ -158,8 +192,8 @@
     width: 50px;
     height: 50px;
     font-size: 30px;
-    margin-top: 5px;
-    left: 550px;
+    /* margin-top: 5px; */
+    right: 40px;
 }
 
 .header > button {

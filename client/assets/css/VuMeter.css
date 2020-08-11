@@ -1,20 +1,17 @@
 .vumeter-body {
-    position: absolute;
-    top: 110px;
     width: 24px;
-    margin-top: 15px;
-    margin-left: 5px;
+    margin: 15px 5px;
     background-color: black;
     border-radius: 7px;
     height: 430px;
 }
 
 .vumeter-canvas {
-    position: absolute;
     width: 10px;
     margin-left: 6px;
     bottom: 0;
     height: 100%;
+    margin-top: 50%;
 }
 
 .vumeter-lower-part {

@@ -5,23 +5,56 @@
     min-height: 760px;
 }
 
+.channels-body > .channels-body-inner {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 2;
+    overflow-x: auto;
+    height: calc(100vh);
+}
+
 .channels-body > .closedChanStrip {
-    margin-left: -630px;
-    transition: margin 300ms;
+    /* margin-left: -630px; */
+    transition: transform 300ms;
+    position: absolute;
+    z-index: 2;
+    transform: translateX(-100%);
 }
 
 .channels-body > .openChanStrip {
-    margin-left: 0px;
-    transition: margin 800ms;
+    /* margin-left: 0px;
+    transition: margin 800ms; */
+    transition: transform 300ms;
+    transform: unset;
+}
+
+.button {
+    outline: none;
+    -moz-outline: none;
+    color: white;
+    height: 90px;
+    width: 90px;
+    border-color: rgb(71, 71, 71);
+    background-color: rgb(53, 53, 53);
+    margin-left: 5px;
+    margin-right: 4px;
+    margin-top: 10px;
+    border-radius: 7px;
+}
+.button.half {
+    height: 60px;
+}
+.button.active {
+    background-color: #2f475b;
 }
 
 .channels-mix-body {
-    position: fixed;
-    z-index: 2;
-    right: -4px;
-    padding-right: 0px;
+    display: flex;
+    flex-direction: column;
+
     width: 100px;
     min-height: 950px;
+    max-height: calc(100vh - 10px);
     color: white;
     background: linear-gradient(
         #2f2f2f 0px,
@@ -36,101 +69,46 @@
     border-style: solid;
     border-width: 1px;
 }
+.channels-mix-body > .mid {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.channels-mix-body > .bot {
+    overflow-y: auto;
+}
 
 .channels-show-mixer-online {
-    outline: none;
-    -moz-outline: none;
-    color: rgb(255, 255, 255);
-    height: 60px;
-    width: 90px;
-    border-color: rgb(71, 71, 71);
     background-color: rgb(219, 1, 1);
-    margin-left: 5px;
-    margin-right: 4px;
-    margin-top: 10px;
-    border-radius: 7px;
 }
 
 .channels-show-mixer-online.connected {
     background-color: rgb(9, 107, 0);
-    color: white;
 }
 
 .channels-show-snaps-button {
-    outline: none;
-    -moz-outline: none;
-    color: white;
-    height: 60px;
-    width: 90px;
-    border-color: rgb(71, 71, 71);
-    background-color: rgb(53, 53, 53);
-    margin-left: 5px;
-    margin-right: 4px;
-    margin-top: 10px;
-    border-radius: 7px;
 }
 
 .channels-show-settings-button {
-    outline: none;
-    -moz-outline: none;
-    color: white;
-    height: 60px;
-    width: 90px;
-    border-color: rgb(71, 71, 71);
-    background-color: rgb(53, 53, 53);
-    margin-left: 5px;
-    margin-right: 4px;
-    margin-top: 10px;
-    border-radius: 7px;
 }
 .channels-show-settings-button.active {
     background-color: #2f475b;
 }
 
 .channels-show-storage-button {
-    outline: none;
-    -moz-outline: none;
-    color: white;
-    height: 60px;
-    width: 90px;
-    border-color: rgb(71, 71, 71);
-    background-color: rgb(53, 53, 53);
-    margin-left: 5px;
-    margin-right: 4px;
-    margin-top: 10px;
-    border-radius: 7px;
 }
 
 .channels-mix-button {
-    outline: none;
-    -moz-outline: none;
-    color: white;
-    height: 90px;
-    width: 90px;
-    border-color: rgb(139, 139, 139);
     background-color: rgb(65, 65, 65);
-    margin-left: 4px;
-    margin-right: 4px;
-    margin-top: 50px;
-    border-radius: 7px;
 }
 
 .channels-clear-button {
-    outline: none;
-    -moz-outline: none;
-    color: white;
-    height: 90px;
-    width: 90px;
-    border-color: rgb(99, 99, 99);
     background-color: rgb(19, 19, 19);
-    margin-left: 4px;
-    margin-right: 4px;
-    margin-top: 50px;
-    border-radius: 7px;
 }
 
 .channels-snap-mix-body {
-    margin-top: 58px;
+    /* margin-top: 58px; */
 }
 
 .channels-snap-mix-line {
@@ -139,16 +117,11 @@
 }
 
 .channels-snap-mix-button {
-    outline: none;
-    -moz-outline: none;
     background-color: rgb(199, 202, 0);
     color: rgb(44, 44, 44);
     margin-left: 20px;
-    margin-top: 4px;
-    margin-bottom: 4px;
     height: 25px;
     width: 60px;
-    border-radius: 7px;
     border-color: rgb(99, 99, 99);
     white-space: nowrap;
 }

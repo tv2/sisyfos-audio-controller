@@ -38,6 +38,9 @@ import {
     SHOW_IN_MINI_MONITOR,
     SET_INPUT_SELECTOR,
     SET_CHANNEL_DISABLED,
+    TOGGLE_AMIX,
+    SET_AMIX,
+    SET_CAPABILITY,
 } from '../reducers/faderActions'
 
 export interface IFaders {
@@ -56,6 +59,7 @@ export interface IFader {
     pstVoOn: boolean
     pflOn: boolean
     muteOn: boolean
+    amixOn: boolean
     low: number
     loMid: number
     mid: number
@@ -69,6 +73,15 @@ export interface IFader {
     ignoreAutomation: boolean
     snapOn: Array<boolean>
     disabled: boolean
+
+    /**
+     * Assuming that the protocol has a "feature", can it be enabled on this fader?
+     * If the capibilities object does not exist, yes is assumed.
+     */
+    capabilities?: {
+        hasAMix?: boolean
+        hasInputSelector?: boolean
+    }
 }
 
 export interface IVuMeters {
@@ -96,6 +109,7 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
             pstVoOn: false,
             pflOn: false,
             muteOn: false,
+            amixOn: false,
             low: 0.75,
             loMid: 0.75,
             mid: 0.75,
@@ -334,6 +348,27 @@ export const faders = (
         case SET_CHANNEL_DISABLED:
             if (!nextState[0].fader[action.channel]) return nextState
             nextState[0].fader[action.channel].disabled = action.disabled
+            return nextState
+        case TOGGLE_AMIX: //channel
+            nextState[0].fader[action.channel].amixOn = !nextState[0].fader[
+                action.channel
+            ].amixOn
+            return nextState
+        case SET_AMIX: //channel
+            nextState[0].fader[action.channel].amixOn = action.state
+            return nextState
+        case SET_CAPABILITY:
+            nextState[0].fader[action.channel].capabilities = {
+                ...nextState[0].fader[action.channel].capabilities,
+                [action.capability]: action.enabled,
+            }
+            // remove object if empty:
+            if (
+                Object.entries(nextState[0].fader[action.channel].capabilities!)
+                    .length === 0
+            ) {
+                delete nextState[0].fader[action.channel].capabilities
+            }
             return nextState
         default:
             return nextState
