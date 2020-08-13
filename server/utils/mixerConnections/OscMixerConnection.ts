@@ -166,10 +166,10 @@ export class OscMixerConnection {
 
                     if (!state.channels[0].channel[ch - 1].fadeActive) {
                         if (
-                            message.args[0] >
-                            this.mixerProtocol.fader.min +
-                                (this.mixerProtocol.fader.max *
-                                    state.settings[0].autoResetLevel) /
+                            message.args[0] > this.mixerProtocol.fader.min ||
+                            0 +
+                                (this.mixerProtocol.fader.max ||
+                                    1 * state.settings[0].autoResetLevel) /
                                     100
                         ) {
                             store.dispatch({
@@ -191,7 +191,8 @@ export class OscMixerConnection {
                             ) {
                                 if (
                                     message.args[0] >
-                                    this.mixerProtocol.fader.min
+                                        this.mixerProtocol.fader.min ||
+                                    0
                                 ) {
                                     store.dispatch({
                                         type: TOGGLE_PGM,
@@ -338,7 +339,8 @@ export class OscMixerConnection {
                     let ratio = this.mixerProtocol.channelTypes[0].fromMixer
                         .RATIO[0]
                     let level =
-                        message.args[0] / (ratio.max - ratio.min + ratio.min)
+                        message.args[0] /
+                        (ratio.max || 1 - ratio.min || 0 + ratio.min || 0)
                     store.dispatch({
                         type: SET_FADER_RATIO,
                         channel:
@@ -359,7 +361,8 @@ export class OscMixerConnection {
                     let delay = this.mixerProtocol.channelTypes[0].fromMixer
                         .DELAY_TIME[0]
                     let delayTime =
-                        message.args[0] / (delay.max - delay.min + delay.min)
+                        message.args[0] /
+                        (delay.max || 1 - delay.min || 0 + delay.min || 0)
                     store.dispatch({
                         type: SET_FADER_DELAY_TIME,
                         channel:
@@ -700,7 +703,6 @@ export class OscMixerConnection {
             state.channels[0].channel[channelIndex].channelTypeIndex
         let thr = this.mixerProtocol.channelTypes[channelType].toMixer
             .THRESHOLD[0]
-        level = level * (thr.max - thr.min) + thr.min
         this.sendOutMessage(thr.mixerMessage, channelTypeIndex + 1, level, 'f')
     }
     updateRatio(channelIndex: number, level: number) {
@@ -709,7 +711,6 @@ export class OscMixerConnection {
             state.channels[0].channel[channelIndex].channelTypeIndex
         let ratio = this.mixerProtocol.channelTypes[channelType].toMixer
             .RATIO[0]
-        level = level * (ratio.max - ratio.min) + ratio.min
         this.sendOutMessage(
             ratio.mixerMessage,
             channelTypeIndex + 1,
@@ -723,7 +724,6 @@ export class OscMixerConnection {
             state.channels[0].channel[channelIndex].channelTypeIndex
         let delayTime = this.mixerProtocol.channelTypes[channelType].toMixer
             .DELAY_TIME[0]
-        level = level * (delayTime.max - delayTime.min) + delayTime.min
         this.sendOutMessage(
             delayTime.mixerMessage,
             channelTypeIndex + 1,
@@ -736,7 +736,6 @@ export class OscMixerConnection {
         let channelTypeIndex =
             state.channels[0].channel[channelIndex].channelTypeIndex
         let low = this.mixerProtocol.channelTypes[channelType].toMixer.LOW[0]
-        level = level * (low.max - low.min) + low.min
         this.sendOutMessage(low.mixerMessage, channelTypeIndex + 1, level, 'f')
     }
     updateLoMid(channelIndex: number, level: number) {
@@ -745,7 +744,6 @@ export class OscMixerConnection {
             state.channels[0].channel[channelIndex].channelTypeIndex
         let loMid = this.mixerProtocol.channelTypes[channelType].toMixer
             .LO_MID[0]
-        level = level * (loMid.max - loMid.min) + loMid.min
         this.sendOutMessage(
             loMid.mixerMessage,
             channelTypeIndex + 1,
@@ -758,7 +756,6 @@ export class OscMixerConnection {
         let channelTypeIndex =
             state.channels[0].channel[channelIndex].channelTypeIndex
         let mid = this.mixerProtocol.channelTypes[channelType].toMixer.MID[0]
-        level = level * (mid.max - mid.min) + mid.min
         this.sendOutMessage(mid.mixerMessage, channelTypeIndex + 1, level, 'f')
     }
     updateHigh(channelIndex: number, level: number) {
@@ -766,7 +763,6 @@ export class OscMixerConnection {
         let channelTypeIndex =
             state.channels[0].channel[channelIndex].channelTypeIndex
         let high = this.mixerProtocol.channelTypes[channelType].toMixer.HIGH[0]
-        level = level * (high.max - high.min) + high.min
         this.sendOutMessage(high.mixerMessage, channelTypeIndex + 1, level, 'f')
     }
 
@@ -784,7 +780,6 @@ export class OscMixerConnection {
             auxSendNumber
         )
 
-        level = level * (auxSendCmd.max - auxSendCmd.min) + auxSendCmd.min
         this.sendOutMessage(message, channel, level, 'f')
     }
 
