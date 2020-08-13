@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.6.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.6.0...v3.6.1) (2020-08-13)
+
+### Bug Fixes
+
+-   OSC (Behringer - Midas) protocol use internal 0-1 level when sending level to mix parameters ([4998ae1](https://github.com/olzzon/sisyfos-audio-controller/commit/4998ae1101897a321ab325d640f7662b6eed8ff0))
+
 ## [3.6.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.5.0...v3.6.0) (2020-08-12)
 
 ### Features
