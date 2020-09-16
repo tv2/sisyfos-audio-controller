@@ -299,16 +299,30 @@ export class EmberMixerConnection {
             channelTypeIndex,
             mixerMessage,
             (node) => {
-                logger.verbose(
-                    `Receiving Label from Ch "${ch}", val: ${
-                        (node.contents as Model.Parameter).value
-                    }`
-                )
-                store.dispatch({
-                    type: SET_CHANNEL_LABEL,
-                    channel: ch - 1,
-                    label: (node.contents as Model.Parameter).value,
-                })
+                if (this.mixerProtocol.label === LawoMC2.label) {
+                    // this also depends on version of the firmware -_-
+                    logger.verbose(
+                        `Receiving Label from Ch "${ch}", val: ${
+                            (node.contents as Model.Parameter).description
+                        }`
+                    )
+                    store.dispatch({
+                        type: SET_CHANNEL_LABEL,
+                        channel: ch - 1,
+                        label: (node.contents as Model.Parameter).description,
+                    })
+                } else {
+                    logger.verbose(
+                        `Receiving Label from Ch "${ch}", val: ${
+                            (node.contents as Model.Parameter).value
+                        }`
+                    )
+                    store.dispatch({
+                        type: SET_CHANNEL_LABEL,
+                        channel: ch - 1,
+                        label: (node.contents as Model.Parameter).value,
+                    })
+                }
                 global.mainThreadHandler.updatePartialStore(ch - 1)
             }
         )
@@ -825,7 +839,7 @@ export class EmberMixerConnection {
             ('   ' + inp).substr(-l)
 
         if (this.mixerProtocol.label === LawoMC2.label) {
-            const channelName = 'INP ' + pad(channel, 3)
+            const channelName = '_' + Number(channel).toString(16) // 'INP ' + pad(channel, 3)
             return command.replace('${channel}', channelName)
         } else if (this.mixerProtocol.leadingZeros) {
             return command.replace('${channel}', pad(channel, 2))
