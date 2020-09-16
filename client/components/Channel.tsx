@@ -38,6 +38,10 @@ interface IChannelProps {
     faderIndex: number
 }
 
+function XOR(a: any, b: any): boolean {
+    return (a && !b) || (b && !a)
+}
+
 class Channel extends React.Component<
     IChannelProps & IChannelInjectProps & Store
 > {
@@ -69,7 +73,12 @@ class Channel extends React.Component<
             nextProps.settings.showPfl != this.props.settings.showPfl ||
             nextProps.settings.showChanStrip !=
                 this.props.settings.showChanStrip ||
-            nextProps.fader.amixOn != this.props.fader.amixOn
+            nextProps.fader.amixOn != this.props.fader.amixOn ||
+            XOR(nextProps.fader.capabilities, this.props.fader.capabilities) ||
+            XOR(
+                nextProps.fader.capabilities?.hasAMix,
+                this.props.fader.capabilities?.hasAMix
+            )
         )
     }
 

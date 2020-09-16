@@ -41,6 +41,7 @@ import {
     TOGGLE_AMIX,
     SET_AMIX,
     SET_CAPABILITY,
+    TOGGLE_ALL_MANUAL,
 } from '../reducers/faderActions'
 
 export interface IFaders {
@@ -370,6 +371,20 @@ export const faders = (
                 delete nextState[0].fader[action.channel].capabilities
             }
             return nextState
+        case TOGGLE_ALL_MANUAL:
+            const isAllManual =
+                nextState[0].fader.find((f) => f.ignoreAutomation !== true) ===
+                undefined
+
+            if (isAllManual) {
+                nextState[0].fader.forEach((f) => {
+                    f.ignoreAutomation = false
+                })
+            } else {
+                nextState[0].fader.forEach((f) => {
+                    f.ignoreAutomation = true
+                })
+            }
         default:
             return nextState
     }

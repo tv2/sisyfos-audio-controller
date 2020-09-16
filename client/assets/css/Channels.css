@@ -48,6 +48,13 @@
     background-color: #2f475b;
 }
 
+.button-all-manual.all {
+    background-color: #af39b9;
+}
+.button-all-manual.any {
+    border-color: #af39b9;
+}
+
 .channels-mix-body {
     display: flex;
     flex-direction: column;
