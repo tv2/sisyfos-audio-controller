@@ -300,7 +300,9 @@ export class EmberMixerConnection {
             mixerMessage,
             (node) => {
                 logger.verbose(
-                    `Receiving Label from Ch "${ch}", val: ${node.contents.value}`
+                    `Receiving Label from Ch "${ch}", val: ${
+                        (node.contents as Model.Parameter).value
+                    }`
                 )
                 store.dispatch({
                     type: SET_CHANNEL_LABEL,
@@ -324,7 +326,9 @@ export class EmberMixerConnection {
             mixerMessage,
             (node) => {
                 logger.verbose(
-                    `Receiving PFL from Ch "${ch}", val: ${node.contents.value}`
+                    `Receiving PFL from Ch "${ch}", val: ${
+                        (node.contents as Model.Parameter).value
+                    }`
                 )
                 store.dispatch({
                     type: SET_PFL,
@@ -348,7 +352,9 @@ export class EmberMixerConnection {
             mixerMessage,
             (node) => {
                 logger.verbose(
-                    `Receiving input gain from Ch "${ch}", val: ${node.contents.value}`
+                    `Receiving input gain from Ch "${ch}", val: ${
+                        (node.contents as Model.Parameter).value
+                    }`
                 )
 
                 let level = (node.contents as Model.Parameter).value
@@ -388,7 +394,9 @@ export class EmberMixerConnection {
                 mixerMessage,
                 (node) => {
                     logger.verbose(
-                        `Receiving input selector from Ch "${ch}", val: ${i}: ${node.contents.value}`
+                        `Receiving input selector from Ch "${ch}", val: ${i}: ${
+                            (node.contents as Model.Parameter).value
+                        }`
                     )
 
                     let value = (node.contents as Model.Parameter).value
@@ -423,7 +431,9 @@ export class EmberMixerConnection {
             mixerMessage,
             (node) => {
                 logger.verbose(
-                    `Update received for ch inp sel capability: ${node.contents.value}`
+                    `Update received for ch inp sel capability: ${
+                        (node.contents as Model.Parameter).value
+                    }`
                 )
                 store.dispatch({
                     type: SET_CAPABILITY,
@@ -473,7 +483,9 @@ export class EmberMixerConnection {
             llMixerMessage,
             (node) => {
                 logger.verbose(
-                    `Update received for ch inp sel: ll: ${node.contents.value}`
+                    `Update received for ch inp sel: ll: ${
+                        (node.contents as Model.Parameter).value
+                    }`
                 )
                 llState = (node.contents as Model.Parameter).value as boolean
                 updateState()
@@ -484,7 +496,9 @@ export class EmberMixerConnection {
             rrMixerMessage,
             (node) => {
                 logger.verbose(
-                    `Update received for ch inp sel: rr: ${node.contents.value}`
+                    `Update received for ch inp sel: rr: ${
+                        (node.contents as Model.Parameter).value
+                    }`
                 )
                 rrState = (node.contents as Model.Parameter).value as boolean
                 updateState()
@@ -506,7 +520,9 @@ export class EmberMixerConnection {
                 mixerMessage,
                 (node) => {
                     logger.verbose(
-                        `Update received for amix capability: ${node.contents.value}`
+                        `Update received for amix capability: ${
+                            (node.contents as Model.Parameter).value
+                        }`
                     )
                     store.dispatch({
                         type: SET_CAPABILITY,
@@ -527,7 +543,9 @@ export class EmberMixerConnection {
             mixerMessage,
             (node) => {
                 logger.verbose(
-                    `Receiving AMix from Ch "${ch}", val: ${node.contents.value}`
+                    `Receiving AMix from Ch "${ch}", val: ${
+                        (node.contents as Model.Parameter).value
+                    }`
                 )
                 store.dispatch({
                     type: SET_AMIX,
