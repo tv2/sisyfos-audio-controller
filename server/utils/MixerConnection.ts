@@ -110,13 +110,13 @@ export class MixerGenericConnection {
     }
 
     updateFadeToBlack() {
-        state.faders[0].fader.map((channel: any, index: number) => {
+        state.faders[0].fader.forEach((channel: any, index: number) => {
             this.updateOutLevel(index)
         })
     }
 
     updateOutLevels() {
-        state.faders[0].fader.map((channel: any, index: number) => {
+        state.faders[0].fader.forEach((channel: any, index: number) => {
             this.updateOutLevel(index)
             this.updateNextAux(index)
         })
@@ -131,7 +131,7 @@ export class MixerGenericConnection {
             }
         }
 
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.fadeInOut(channelIndex, fadeTime)
@@ -148,7 +148,7 @@ export class MixerGenericConnection {
 
     updateInputGain(faderIndex: number) {
         let level = state.faders[0].fader[faderIndex].inputGain
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateInputGain(channelIndex, level)
@@ -160,7 +160,7 @@ export class MixerGenericConnection {
     updateInputSelector(faderIndex: number) {
         let inputSelected = state.faders[0].fader[faderIndex].inputSelector
         console.log(faderIndex, inputSelected)
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateInputSelector(
@@ -177,7 +177,7 @@ export class MixerGenericConnection {
     }
 
     updateMuteState(faderIndex: number) {
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateMuteState(
@@ -190,7 +190,7 @@ export class MixerGenericConnection {
     }
 
     updateAMixState(faderIndex: number) {
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateAMixState(
@@ -212,7 +212,7 @@ export class MixerGenericConnection {
                     (100 - state.settings[0].voLevel)) /
                 100
         }
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateNextAux(channelIndex, level)
@@ -223,7 +223,7 @@ export class MixerGenericConnection {
 
     updateThreshold(faderIndex: number) {
         let level = state.faders[0].fader[faderIndex].threshold
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateThreshold(channelIndex, level)
@@ -233,7 +233,7 @@ export class MixerGenericConnection {
     }
     updateRatio(faderIndex: number) {
         let level = state.faders[0].fader[faderIndex].ratio
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateRatio(channelIndex, level)
@@ -243,7 +243,7 @@ export class MixerGenericConnection {
     }
     updateDelayTime(faderIndex: number) {
         let delayTime = state.faders[0].fader[faderIndex].delayTime
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateDelayTime(
@@ -256,7 +256,7 @@ export class MixerGenericConnection {
     }
     updateLow(faderIndex: number) {
         let level = state.faders[0].fader[faderIndex].low
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateLow(channelIndex, level)
@@ -266,7 +266,7 @@ export class MixerGenericConnection {
     }
     updateLoMid(faderIndex: number) {
         let level = state.faders[0].fader[faderIndex].loMid
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateLoMid(channelIndex, level)
@@ -276,7 +276,7 @@ export class MixerGenericConnection {
     }
     updateMid(faderIndex: number) {
         let level = state.faders[0].fader[faderIndex].mid
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateMid(channelIndex, level)
@@ -286,7 +286,7 @@ export class MixerGenericConnection {
     }
     updateHigh(faderIndex: number) {
         let level = state.faders[0].fader[faderIndex].high
-        state.channels[0].channel.map(
+        state.channels[0].channel.forEach(
             (channel: IChannel, channelIndex: number) => {
                 if (faderIndex === channel.assignedFader) {
                     this.mixerConnection.updateHigh(channelIndex, level)
