@@ -106,7 +106,7 @@ export class MidiMixerConnection {
                     )
                 }
                 if (state.faders[0].fader[faderChannel - 1].pgmOn) {
-                    state.channels[0].channel.map(
+                    state.channels[0].channel.forEach(
                         (channel: any, index: number) => {
                             if (channel.assignedFader === faderChannel - 1) {
                                 this.updateOutLevel(index)

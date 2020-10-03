@@ -505,7 +505,7 @@ export class OscMixerConnection {
                                 }
                             )
                         } else {
-                            state.channels[0].channel.map(
+                            state.channels[0].channel.forEach(
                                 (channel: any, index: any) => {
                                     this.sendOutRequest(
                                         item.mixerMessage,

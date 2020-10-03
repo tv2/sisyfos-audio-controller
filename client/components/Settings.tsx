@@ -128,7 +128,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     }
 
     handleShowAllChannels = () => {
-        this.props.store.channels[0].channel.map(
+        this.props.store.channels[0].channel.forEach(
             (channel: any, index: number) => {
                 this.props.dispatch({
                     type: SHOW_CHANNEL,
@@ -140,7 +140,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     }
 
     handleHideAllChannels = () => {
-        this.props.store.channels[0].channel.map(
+        this.props.store.channels[0].channel.forEach(
             (channel: any, index: number) => {
                 this.props.dispatch({
                     type: SHOW_CHANNEL,

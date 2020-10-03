@@ -68,7 +68,7 @@ export class SSLMixerConnection {
             logger.info('Receiving state of desk', {})
             this.mixerProtocol.initializeCommands.map((item) => {
                 if (item.mixerMessage.includes('{channel}')) {
-                    state.channels[0].channel.map(
+                    state.channels[0].channel.forEach(
                         (channel: any, index: any) => {
                             this.sendOutRequest(item.mixerMessage, index)
                         }
@@ -152,7 +152,7 @@ export class SSLMixerConnection {
                                                 assignedFaderIndex
                                             ].pgmOn
                                         ) {
-                                            state.channels[0].channel.map(
+                                            state.channels[0].channel.forEach(
                                                 (
                                                     channel: any,
                                                     index: number

@@ -20,14 +20,12 @@ import {
     SOCKET_TOGGLE_AMIX,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import { IFader } from '../../server/reducers/fadersReducer'
-import { IChannels } from '../../server/reducers/channelsReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
 import { TOGGLE_SHOW_CHAN_STRIP } from '../../server/reducers/settingsActions'
 import { withTranslation } from 'react-i18next'
 
 interface IChannelInjectProps {
     t: any
-    channels: IChannels
     fader: IFader
     settings: ISettings
     channelType: number
@@ -422,7 +420,6 @@ class Channel extends React.Component<
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
         t: props.t,
-        channels: state.channels[0].channel,
         fader: state.faders[0].fader[props.faderIndex],
         settings: state.settings[0],
         channelType: 0 /* TODO: state.channels[0].channel[props.channelIndex].channelType, */,

@@ -50,7 +50,7 @@ export class QlClMixerConnection {
                 logger.info('Receiving state of desk', {})
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes('{channel}')) {
-                        state.channels[0].channel.map(
+                        state.channels[0].channel.forEach(
                             (channel: any, index: any) => {
                                 this.sendOutMessage(
                                     item.mixerMessage,
@@ -152,7 +152,7 @@ export class QlClMixerConnection {
                             if (
                                 state.faders[0].fader[assignedFader - 1].pgmOn
                             ) {
-                                state.channels[0].channel.map(
+                                state.channels[0].channel.forEach(
                                     (channel: any, index: number) => {
                                         if (
                                             channel.assignedFader ===

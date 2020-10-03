@@ -67,11 +67,13 @@ export const channels = (
         case SET_COMPLETE_CH_STATE: //allState  //numberOfChannels
             nextState = defaultChannelsReducerState(action.numberOfTypeChannels)
             if (action.allState.channel.length == nextState[0].channel.length) {
-                action.allState.channel.map((channel: any, index: number) => {
-                    if (index < nextState[0].channel.length) {
-                        nextState[0].channel[index] = channel
+                action.allState.channel.forEach(
+                    (channel: any, index: number) => {
+                        if (index < nextState[0].channel.length) {
+                            nextState[0].channel[index] = channel
+                        }
                     }
-                })
+                )
             }
             return nextState
         case SET_SINGLE_CH_STATE: //channelIndex //state
