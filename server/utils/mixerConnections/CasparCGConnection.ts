@@ -346,14 +346,14 @@ export class CasparCGConnection {
     updateChannelSetting(channelIndex: number, setting: string, value: string) {
         if (
             this.mixerProtocol.sourceOptions &&
-            state.channels[0].channelConnection[0].channel[channelIndex].private
+            state.channels[0].chConnection[0].channel[channelIndex].private
         ) {
             const pair = this.mixerProtocol.sourceOptions.sources[channelIndex]
-            const producer = state.channels[0].channelConnection[0].channel[
+            const producer = state.channels[0].chConnection[0].channel[
                 channelIndex
             ].private!['producer']
             let filePath = String(
-                state.channels[0].channelConnection[0].channel[channelIndex]
+                state.channels[0].chConnection[0].channel[channelIndex]
                     .private!['file_path']
             )
             filePath = filePath.replace(/\.[\w\d]+$/, '')
@@ -420,7 +420,7 @@ export class CasparCGConnection {
                 this.setAllLayers(pairs, this.mixerProtocol.fader.min)
             } else {
                 // There are no other SOLO channels, restore PFL to match PGM
-                state.channels[0].channelConnection[0].channel.forEach(
+                state.channels[0].chConnection[0].channel.forEach(
                     (i, index) => {
                         if (
                             index >
@@ -435,9 +435,8 @@ export class CasparCGConnection {
                             .PFL_AUX_FADER_LEVEL[index]
                         this.setAllLayers(
                             pairs,
-                            state.channels[0].channelConnection[0].channel[
-                                index
-                            ].outputLevel
+                            state.channels[0].chConnection[0].channel[index]
+                                .outputLevel
                         )
                     }
                 )

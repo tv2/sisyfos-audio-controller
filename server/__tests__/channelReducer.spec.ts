@@ -21,7 +21,7 @@ describe('Test redux channelReducer actions', () => {
     it('should return the new output_level state on channels', () => {
         let parsedFullStore = JSON.parse(parsedFullStoreJSON)
         let nextState = JSON.parse(parsedFullStoreJSON)
-        nextState.channels[0].channelConnection[0].channel[10].outputLevel = 0.5
+        nextState.channels[0].chConnection[0].channel[10].outputLevel = 0.5
         expect(
             indexReducer(parsedFullStore, storeSetOutputLevel(10, 0.5))
         ).toEqual(nextState)
@@ -34,7 +34,7 @@ describe('Test redux channelReducer actions', () => {
     it('should return the new assignedFader state on channels', () => {
         let parsedFullStore = JSON.parse(parsedFullStoreJSON)
         let nextState = JSON.parse(parsedFullStoreJSON)
-        nextState.channels[0].channelConnection[0].channel[10].assignedFader = 2
+        nextState.channels[0].chConnection[0].channel[10].assignedFader = 2
         expect(
             indexReducer(parsedFullStore, {
                 type: SET_ASSIGNED_FADER,
@@ -51,7 +51,7 @@ describe('Test redux channelReducer actions', () => {
     it('should return the new FADE_ACTIVE state on channels', () => {
         let parsedFullStore = JSON.parse(parsedFullStoreJSON)
         let nextState = JSON.parse(parsedFullStoreJSON)
-        nextState.channels[0].channelConnection[0].channel[10].fadeActive = true
+        nextState.channels[0].chConnection[0].channel[10].fadeActive = true
         expect(
             indexReducer(parsedFullStore, {
                 type: FADE_ACTIVE,
@@ -78,9 +78,7 @@ describe('Test redux channelReducer actions', () => {
                 fadeActive: false,
                 outputLevel: 0.75,
             })
-            nextState.channels[0].channelConnection[0].channel[
-                i
-            ].outputLevel = 0.75
+            nextState.channels[0].chConnection[0].channel[i].outputLevel = 0.75
         }
         expect(
             indexReducer(parsedFullStore, {

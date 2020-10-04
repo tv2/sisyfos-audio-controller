@@ -29,7 +29,7 @@ export const behringerXrMeter = (message: any) => {
         })
         socketServer.emit(SOCKET_SET_VU, {
             faderIndex:
-                state.channels[0].channelConnection[0].channel[i].assignedFader,
+                state.channels[0].chConnection[0].channel[i].assignedFader,
             level: level,
         })
     }
@@ -53,7 +53,7 @@ export const behringerReductionMeter = (message: any) => {
         })
         socketServer.emit(SOCKET_SET_VU_REDUCTION, {
             faderIndex:
-                state.channels[0].channelConnection[0].channel[i].assignedFader,
+                state.channels[0].chConnection[0].channel[i].assignedFader,
             level: level,
         })
     }

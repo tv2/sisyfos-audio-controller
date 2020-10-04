@@ -67,7 +67,7 @@ export class SSLMixerConnection {
             logger.info('Receiving state of desk', {})
             this.mixerProtocol.initializeCommands.map((item) => {
                 if (item.mixerMessage.includes('{channel}')) {
-                    state.channels[0].channelConnection[0].channel.forEach(
+                    state.channels[0].chConnection[0].channel.forEach(
                         (channel: any, index: any) => {
                             this.sendOutRequest(item.mixerMessage, index)
                         }
@@ -107,11 +107,11 @@ export class SSLMixerConnection {
                             let value = buffer.readUInt16BE(7) / 1024
 
                             let assignedFaderIndex =
-                                state.channels[0].channelConnection[0].channel[
+                                state.channels[0].chConnection[0].channel[
                                     channelIndex
                                 ].assignedFader
                             if (
-                                !state.channels[0].channelConnection[0].channel[
+                                !state.channels[0].chConnection[0].channel[
                                     channelIndex
                                 ].fadeActive
                             ) {
@@ -123,7 +123,7 @@ export class SSLMixerConnection {
                                             100
                                 ) {
                                     if (
-                                        state.channels[0].channelConnection[0]
+                                        state.channels[0].chConnection[0]
                                             .channel[channelIndex]
                                             .outputLevel !== value
                                     ) {
@@ -154,7 +154,7 @@ export class SSLMixerConnection {
                                                 assignedFaderIndex
                                             ].pgmOn
                                         ) {
-                                            state.channels[0].channelConnection[0].channel.forEach(
+                                            state.channels[0].chConnection[0].channel.forEach(
                                                 (
                                                     channel: any,
                                                     index: number
@@ -182,7 +182,7 @@ export class SSLMixerConnection {
                                         channel: assignedFaderIndex,
                                         level: value,
                                     })
-                                    state.channels[0].channelConnection[0].channel.forEach(
+                                    state.channels[0].chConnection[0].channel.forEach(
                                         (item, index) => {
                                             if (
                                                 item.assignedFader ===
@@ -227,7 +227,7 @@ export class SSLMixerConnection {
                         )
 
                         let assignedFaderIndex =
-                            state.channels[0].channelConnection[0].channel[
+                            state.channels[0].chConnection[0].channel[
                                 channelIndex
                             ].assignedFader
 
@@ -243,7 +243,7 @@ export class SSLMixerConnection {
                                 value ? 1 : 0
                             )
                         }
-                        state.channels[0].channelConnection[0].channel.forEach(
+                        state.channels[0].chConnection[0].channel.forEach(
                             (channel: any, index: number) => {
                                 if (
                                     channel.assignedFader ===
@@ -428,13 +428,12 @@ export class SSLMixerConnection {
 
     updateOutLevel(channelIndex: number) {
         let channelType =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .channelType
+            state.channels[0].chConnection[0].channel[channelIndex].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
         let faderIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .assignedFader
         if (state.faders[0].fader[faderIndex].pgmOn) {
             store.dispatch(
@@ -448,17 +447,15 @@ export class SSLMixerConnection {
             this.mixerProtocol.channelTypes[channelType].toMixer
                 .CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex,
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .outputLevel
+            state.channels[0].chConnection[0].channel[channelIndex].outputLevel
         )
     }
 
     updatePflState(channelIndex: number) {
         let channelType =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .channelType
+            state.channels[0].chConnection[0].channel[channelIndex].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
         if (state.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutRequest(
@@ -477,10 +474,9 @@ export class SSLMixerConnection {
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
         let channelType =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .channelType
+            state.channels[0].chConnection[0].channel[channelIndex].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
         if (muteOn === true) {
             this.sendOutRequest(
@@ -499,10 +495,9 @@ export class SSLMixerConnection {
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         let channelType =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .channelType
+            state.channels[0].chConnection[0].channel[channelIndex].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
         this.sendOutLevelMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer
@@ -555,10 +550,9 @@ export class SSLMixerConnection {
 
     updateChannelName(channelIndex: number) {
         let channelType =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .channelType
+            state.channels[0].chConnection[0].channel[channelIndex].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
         let channelName = state.faders[0].fader[channelIndex].label
         /*

@@ -82,7 +82,7 @@ export class MidiMixerConnection {
                     )
                 let faderChannel =
                     1 +
-                    state.channels[0].channelConnection[0].channel[ch - 1]
+                    state.channels[0].chConnection[0].channel[ch - 1]
                         .assignedFader
                 store.dispatch({
                     type: SET_FADER_LEVEL,
@@ -93,9 +93,8 @@ export class MidiMixerConnection {
                     store.dispatch({
                         type: TOGGLE_PGM,
                         channel:
-                            state.channels[0].channelConnection[0].channel[
-                                ch - 1
-                            ].assignedFader - 1,
+                            state.channels[0].chConnection[0].channel[ch - 1]
+                                .assignedFader - 1,
                     })
                 }
                 if (remoteConnections) {
@@ -105,7 +104,7 @@ export class MidiMixerConnection {
                     )
                 }
                 if (state.faders[0].fader[faderChannel - 1].pgmOn) {
-                    state.channels[0].channelConnection[0].channel.forEach(
+                    state.channels[0].chConnection[0].channel.forEach(
                         (channel: any, index: number) => {
                             if (channel.assignedFader === faderChannel - 1) {
                                 this.updateOutLevel(index)
@@ -179,7 +178,7 @@ export class MidiMixerConnection {
 
     updateOutLevel(channelIndex: number) {
         let faderIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .assignedFader
         if (state.faders[0].fader[faderIndex].pgmOn) {
             store.dispatch(
@@ -194,7 +193,7 @@ export class MidiMixerConnection {
                 .mixerMessage,
             channelIndex + 1,
             String(
-                state.channels[0].channelConnection[0].channel[channelIndex]
+                state.channels[0].chConnection[0].channel[channelIndex]
                     .outputLevel
             )
         )

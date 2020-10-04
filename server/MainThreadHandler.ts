@@ -114,7 +114,7 @@ export class MainThreadHandlers {
             faderIndex: faderIndex,
             state: state.faders[0].fader[faderIndex],
         })
-        state.channels[0].channelConnection[0].channel.forEach(
+        state.channels[0].chConnection[0].channel.forEach(
             (channel: IChannel, index: number) => {
                 if (channel.assignedFader === faderIndex) {
                     socketServer.emit(SOCKET_SET_STORE_CHANNEL, {

@@ -159,7 +159,7 @@ const mapStateToProps = (
         label: state.faders[0].fader[props.faderIndex].label,
         selectedProtocol: state.settings[0].mixerProtocol,
         numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
-        channel: state.channels[0].channelConnection[0].channel,
+        channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
     }
 }

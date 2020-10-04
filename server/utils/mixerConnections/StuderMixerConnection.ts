@@ -106,9 +106,9 @@ export class StuderMixerConnection {
                 this.emberConnection.subscribe(node, () => {
                     logger.verbose('Receiving Level from Ch ' + String(ch))
                     if (
-                        !state.channels[0].channelConnection[0].channel[ch - 1]
+                        !state.channels[0].chConnection[0].channel[ch - 1]
                             .fadeActive &&
-                        !state.channels[0].channelConnection[0].channel[ch - 1]
+                        !state.channels[0].chConnection[0].channel[ch - 1]
                             .fadeActive &&
                         node.contents.value >
                             this.mixerProtocol.channelTypes[typeIndex].fromMixer
@@ -203,10 +203,9 @@ export class StuderMixerConnection {
         let levelMessage: string
         let channelVal: number
         let channelType =
-            state.channels[0].channelConnection[0].channel[channel - 1]
-                .channelType
+            state.channels[0].chConnection[0].channel[channel - 1].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channel - 1]
+            state.channels[0].chConnection[0].channel[channel - 1]
                 .channelTypeIndex
 
         if (channel < 25) {
@@ -263,11 +262,10 @@ export class StuderMixerConnection {
 
     updateOutLevel(channelIndex: number) {
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
         let outputlevel =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .outputLevel
+            state.channels[0].chConnection[0].channel[channelIndex].outputLevel
         let level = 20 * Math.log((1.3 * outputlevel) / 0.775)
         if (level < -90) {
             level = -90
@@ -279,7 +277,7 @@ export class StuderMixerConnection {
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
         let level = 20 * Math.log((1.3 * outputLevel) / 0.775)
         if (level < -90) {
@@ -292,10 +290,9 @@ export class StuderMixerConnection {
 
     updatePflState(channelIndex: number) {
         let channelType =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .channelType
+            state.channels[0].chConnection[0].channel[channelIndex].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
 
         if (state.faders[0].fader[channelIndex].pflOn === true) {
@@ -363,10 +360,9 @@ export class StuderMixerConnection {
 
     updateChannelName(channelIndex: number) {
         let channelType =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .channelType
+            state.channels[0].chConnection[0].channel[channelIndex].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
         let channelName = state.faders[0].fader[channelIndex].label
         this.sendOutMessage(

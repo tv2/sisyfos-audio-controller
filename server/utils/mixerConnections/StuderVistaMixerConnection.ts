@@ -123,7 +123,7 @@ export class StuderVistaMixerConnection {
 
     findChannelInArray(channelType: number, channelTypeIndex: number): number {
         let channelArrayIndex = 0
-        state.channels[0].channelConnection[0].channel.forEach(
+        state.channels[0].chConnection[0].channel.forEach(
             (channel: IChannel, index: number) => {
                 if (
                     channel.channelType === channelType &&
@@ -181,11 +181,11 @@ export class StuderVistaMixerConnection {
             channelTypeIndex
         )
         let assignedFader =
-            state.channels[0].channelConnection[0].channel[channelArrayIndex]
+            state.channels[0].chConnection[0].channel[channelArrayIndex]
                 .assignedFader
 
         if (
-            state.channels[0].channelConnection[0].channel[channelArrayIndex]
+            state.channels[0].chConnection[0].channel[channelArrayIndex]
                 .fadeActive
         ) {
             return
@@ -201,13 +201,11 @@ export class StuderVistaMixerConnection {
                 channel: assignedFader,
                 level: value,
             })
-            state.channels[0].channelConnection[0].channel.forEach(
-                (item, index) => {
-                    if (item.assignedFader === assignedFader) {
-                        store.dispatch(storeSetOutputLevel(index, value))
-                    }
+            state.channels[0].chConnection[0].channel.forEach((item, index) => {
+                if (item.assignedFader === assignedFader) {
+                    store.dispatch(storeSetOutputLevel(index, value))
                 }
-            )
+            })
             if (!state.faders[0].fader[assignedFader].pgmOn) {
                 if (value > 0) {
                     store.dispatch({
@@ -270,7 +268,7 @@ export class StuderVistaMixerConnection {
 
         // Update store:
         let assignedFader =
-            state.channels[0].channelConnection[0].channel[
+            state.channels[0].chConnection[0].channel[
                 this.findChannelInArray(channelType, channelTypeIndex)
             ].assignedFader
 
@@ -372,7 +370,7 @@ export class StuderVistaMixerConnection {
 
     pingChannel(mixerMessage: string) {
         state.faders[0].fader.forEach((fader: IFader, index: number) => {
-            state.channels[0].channelConnection[0].channel.forEach(
+            state.channels[0].chConnection[0].channel.forEach(
                 (channel: IChannel) => {
                     if (channel.assignedFader === index) {
                         let message = mixerMessage
@@ -428,7 +426,7 @@ export class StuderVistaMixerConnection {
     ) {
         let channelVal: number
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channel - 1]
+            state.channels[0].chConnection[0].channel[channel - 1]
                 .channelTypeIndex
 
         channelVal = 160 + channelTypeIndex + 1
@@ -473,10 +471,9 @@ export class StuderVistaMixerConnection {
         let levelMessage: string
         let channelVal: number
         let channelType =
-            state.channels[0].channelConnection[0].channel[channel - 1]
-                .channelType
+            state.channels[0].chConnection[0].channel[channel - 1].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channel - 1]
+            state.channels[0].chConnection[0].channel[channel - 1]
                 .channelTypeIndex
 
         levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer
@@ -521,8 +518,7 @@ export class StuderVistaMixerConnection {
 
     updateOutLevel(channelIndex: number) {
         let outputlevel =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .outputLevel
+            state.channels[0].chConnection[0].channel[channelIndex].outputLevel
         let level = 40 * Math.log(1.295 * outputlevel)
         if (level < -90) {
             level = -90
@@ -548,10 +544,9 @@ export class StuderVistaMixerConnection {
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
         let channelType =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .channelType
+            state.channels[0].chConnection[0].channel[channelIndex].channelType
         let channelTypeIndex =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex
         if (muteOn === true) {
             let mute = this.mixerProtocol.channelTypes[channelType].toMixer
@@ -610,10 +605,9 @@ export class StuderVistaMixerConnection {
     }
     updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {
         let channelType =
-            state.channels[0].channelConnection[0].channel[channelIndex]
-                .channelType
+            state.channels[0].chConnection[0].channel[channelIndex].channelType
         let channel =
-            state.channels[0].channelConnection[0].channel[channelIndex]
+            state.channels[0].chConnection[0].channel[channelIndex]
                 .channelTypeIndex + 1
         let auxSendCmd = this.mixerProtocol.channelTypes[channelType].toMixer
             .AUX_LEVEL[0]
