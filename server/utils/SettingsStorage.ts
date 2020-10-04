@@ -1,13 +1,10 @@
 // Node Modules:
 const fs = require('fs')
 const path = require('path')
-import { store, state } from '../reducers/store'
+import { store } from '../reducers/store'
 
 // Redux:
-import {
-    CHANNEL_ACTIONS,
-    storeSetCompleteChState,
-} from '../reducers/channelActions'
+import { storeSetCompleteChState } from '../reducers/channelActions'
 import { SET_COMPLETE_FADER_STATE } from '../reducers/faderActions'
 import { logger } from './logger'
 
