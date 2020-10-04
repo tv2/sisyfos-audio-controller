@@ -10,7 +10,7 @@ import '../assets/css/MiniChannel.css'
 import { IFader } from '../../server/reducers/fadersReducer'
 import { IChannels } from '../../server/reducers/channelsReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
-import { TOGGLE_SHOW_CHAN_STRIP } from '../../server/reducers/settingsActions'
+import { storeShowChanStrip } from '../../server/reducers/settingsActions'
 
 interface IChannelInjectProps {
     channels: IChannels
@@ -44,10 +44,7 @@ class MiniChannel extends React.Component<
     }
 
     handleShowChanStrip() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: this.faderIndex,
-        })
+        this.props.dispatch(storeShowChanStrip(this.faderIndex))
     }
 
     chanStripButton = () => {

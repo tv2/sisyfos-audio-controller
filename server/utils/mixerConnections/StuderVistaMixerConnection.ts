@@ -6,7 +6,7 @@ const net = require('net')
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import { logger } from '../logger'
-import { SET_MIXER_ONLINE } from '../../reducers/settingsActions'
+import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import { socketServer } from '../../expressHandler'
 import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
 import {
@@ -341,11 +341,8 @@ export class StuderVistaMixerConnection {
         return value
     }
 
-    mixerOnline(state: boolean) {
-        store.dispatch({
-            type: SET_MIXER_ONLINE,
-            mixerOnline: state,
-        })
+    mixerOnline(onLineState: boolean) {
+        store.dispatch(storeSetMixerOnline(onLineState))
         socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
             mixerOnline: state,
         })

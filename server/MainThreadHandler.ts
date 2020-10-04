@@ -8,7 +8,7 @@ import {
 import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
-import { UPDATE_SETTINGS } from './reducers/settingsActions'
+import { storeUpdateSettings } from './reducers/settingsActions'
 import {
     loadSettings,
     saveSettings,
@@ -99,10 +99,7 @@ export class MainThreadHandlers {
         logger.info('Setting up MainThreadHandlers', {})
 
         this.snapshotHandler = new SnapshotHandler()
-        store.dispatch({
-            type: UPDATE_SETTINGS,
-            settings: loadSettings(state),
-        })
+        store.dispatch(storeUpdateSettings(loadSettings(state)))
     }
 
     updateFullClientStore() {

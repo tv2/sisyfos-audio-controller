@@ -7,9 +7,7 @@ import Channel from './Channel'
 import '../assets/css/Channels.css'
 import { Store } from 'redux'
 import {
-    TOGGLE_SHOW_SETTINGS,
-    TOGGLE_SHOW_STORAGE,
-    SET_PAGE,
+    SET_PAGE, storeSetPage, storeShowSettings, storeShowStorage
 } from '../../server/reducers/settingsActions'
 import ChannelRouteSettings from './ChannelRouteSettings'
 import ChanStrip from './ChanStrip'
@@ -67,30 +65,18 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     }
 
     handleShowSettings() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_SETTINGS,
-        })
+        this.props.dispatch(storeShowSettings())
     }
 
     handleShowStorage() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_STORAGE,
-        })
+        this.props.dispatch(storeShowStorage())
     }
 
     handlePages(type: PageType, i: number | string) {
         if (typeof i === 'string') {
-            this.props.dispatch({
-                type: SET_PAGE,
-                pageType: type,
-                id: i,
-            })
+            this.props.dispatch(storeSetPage( type, i))
         } else {
-            this.props.dispatch({
-                type: SET_PAGE,
-                pageType: type,
-                start: i * this.props.settings.pageLength,
-            })
+            this.props.dispatch(storeSetPage(type , i * this.props.settings.pageLength))
         }
     }
 

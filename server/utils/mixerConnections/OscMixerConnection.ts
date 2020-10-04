@@ -33,10 +33,7 @@ import {
     SET_MUTE,
     SET_VU_REDUCTION_LEVEL,
 } from '../../reducers/faderActions'
-import {
-    SET_MIXER_ONLINE,
-    TOGGLE_SHOW_CHAN_STRIP,
-} from '../../reducers/settingsActions'
+import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import {
     SOCKET_SET_VU,
     SOCKET_SET_VU_REDUCTION,
@@ -55,10 +52,7 @@ export class OscMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        store.dispatch({
-            type: SET_MIXER_ONLINE,
-            mixerOnline: false,
-        })
+        store.dispatch(storeSetMixerOnline(false))
 
         this.mixerProtocol = mixerProtocol
 
@@ -75,11 +69,8 @@ export class OscMixerConnection {
         this.setupMixerConnection()
     }
 
-    mixerOnline(state: boolean) {
-        store.dispatch({
-            type: SET_MIXER_ONLINE,
-            mixerOnline: state,
-        })
+    mixerOnline(onLineState: boolean) {
+        store.dispatch(storeSetMixerOnline(onLineState))
         socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
             mixerOnline: state,
         })
@@ -587,10 +578,7 @@ export class OscMixerConnection {
         })
         global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch({
-                type: SET_MIXER_ONLINE,
-                mixerOnline: false,
-            })
+            store.dispatch(storeSetMixerOnline(false))
         }, this.mixerProtocol.pingTime)
     }
 

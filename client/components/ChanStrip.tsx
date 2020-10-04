@@ -5,9 +5,7 @@ import '../assets/css/ChanStrip.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
-    TOGGLE_SHOW_CHAN_STRIP,
-    TOGGLE_SHOW_OPTION,
-    TOGGLE_SHOW_MONITOR_OPTIONS,
+     storeShowChanStrip, storeShowOptions, storeShowMonitorOptions
 } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
 import {
@@ -56,32 +54,17 @@ class ChanStrip extends React.PureComponent<
     }
 
     handleShowRoutingOptions() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_OPTION,
-            channel: this.props.faderIndex,
-        })
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: -1,
-        })
+        this.props.dispatch(storeShowOptions(this.props.faderIndex))
+        this.props.dispatch(storeShowChanStrip(-1))
     }
 
     handleShowMonitorOptions() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_MONITOR_OPTIONS,
-            channel: this.props.faderIndex,
-        })
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: -1,
-        })
+        this.props.dispatch(storeShowMonitorOptions(this.props.faderIndex))
+        this.props.dispatch(storeShowChanStrip(-1))
     }
 
     handleClose = () => {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: -1,
-        })
+        this.props.dispatch(storeShowChanStrip(-1))
     }
     handleInputSelect(selected: number) {
         window.socketIoClient.emit(SOCKET_SET_INPUT_SELECTOR, {

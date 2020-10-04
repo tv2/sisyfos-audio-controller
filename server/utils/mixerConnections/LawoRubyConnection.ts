@@ -14,7 +14,7 @@ import {
     SET_AMIX,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
-import { SET_MIXER_ONLINE } from '../../reducers/settingsActions'
+import { storeSetMixerOnline } from '../../reducers/settingsActions'
 
 // TODO - should these be util functions?
 export function floatToDB(f: number): number {
@@ -64,10 +64,7 @@ export class LawoRubyMixerConnection {
             state.settings[0].mixers[0].devicePort
         )
 
-        store.dispatch({
-            type: SET_MIXER_ONLINE,
-            mixerOnline: false,
-        })
+        store.dispatch(storeSetMixerOnline(false))
 
         this.emberConnection.on('error', (error: any) => {
             if (
@@ -81,17 +78,11 @@ export class LawoRubyMixerConnection {
         })
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
-            store.dispatch({
-                type: SET_MIXER_ONLINE,
-                mixerOnline: false,
-            })
+            store.dispatch(storeSetMixerOnline(false))
         })
         this.emberConnection.on('connected', () => {
             logger.info('Connected to Ember device')
-            store.dispatch({
-                type: SET_MIXER_ONLINE,
-                mixerOnline: true,
-            })
+            store.dispatch(storeSetMixerOnline(true))
         })
 
         logger.info('Connecting to Ember')

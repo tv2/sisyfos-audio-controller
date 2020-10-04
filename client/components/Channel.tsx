@@ -21,7 +21,7 @@ import {
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import { IFader } from '../../server/reducers/fadersReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
-import { TOGGLE_SHOW_CHAN_STRIP } from '../../server/reducers/settingsActions'
+import { storeShowChanStrip } from '../../server/reducers/settingsActions'
 import { withTranslation } from 'react-i18next'
 
 interface IChannelInjectProps {
@@ -121,10 +121,7 @@ class Channel extends React.Component<
     }
 
     handleShowChanStrip() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: this.faderIndex,
-        })
+        this.props.dispatch(storeShowChanStrip(this.faderIndex))
     }
 
     fader() {

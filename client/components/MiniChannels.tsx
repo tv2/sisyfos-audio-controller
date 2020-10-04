@@ -1,23 +1,11 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-//@ts-ignore
-import * as ClassNames from 'classnames'
 
 import '../assets/css/MiniChannels.css'
 import { Store } from 'redux'
-import {
-    TOGGLE_SHOW_SETTINGS,
-    TOGGLE_SHOW_STORAGE,
-} from '../../server/reducers/settingsActions'
-import ChanStrip from './ChanStrip'
 import { IChannels } from '../../server/reducers/channelsReducer'
 import { IFader } from '../../server/reducers/fadersReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
-import {
-    SOCKET_NEXT_MIX,
-    SOCKET_CLEAR_PST,
-    SOCKET_RESTART_SERVER,
-} from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import MiniChannel from './MiniChannel'
 import MiniChanStrip from './MiniChanStrip'
 

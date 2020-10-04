@@ -11,7 +11,7 @@ import {
     TOGGLE_PGM,
     SET_MUTE,
 } from '../../reducers/faderActions'
-import { SET_MIXER_ONLINE } from '../../reducers/settingsActions'
+import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import { logger } from '../logger'
 
 export class SSLMixerConnection {
@@ -23,10 +23,7 @@ export class SSLMixerConnection {
     constructor(mixerProtocol: IMixerProtocol) {
         this.sendOutLevelMessage = this.sendOutLevelMessage.bind(this)
 
-        store.dispatch({
-            type: SET_MIXER_ONLINE,
-            mixerOnline: false,
-        })
+        store.dispatch(storeSetMixerOnline(false))
 
         this.mixerProtocol = mixerProtocol
 
@@ -59,10 +56,7 @@ export class SSLMixerConnection {
         let lastWasAck = false
 
         this.SSLConnection.on('ready', () => {
-            store.dispatch({
-                type: SET_MIXER_ONLINE,
-                mixerOnline: true,
-            })
+            store.dispatch(storeSetMixerOnline(true))
 
             logger.info('Receiving state of desk', {})
             this.mixerProtocol.initializeCommands.map((item) => {
@@ -80,10 +74,7 @@ export class SSLMixerConnection {
         })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                store.dispatch({
-                    type: SET_MIXER_ONLINE,
-                    mixerOnline: true,
-                })
+                store.dispatch(storeSetMixerOnline(true))
 
                 let buffers = []
                 let lastIndex = 0
@@ -295,10 +286,7 @@ export class SSLMixerConnection {
         })
         global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch({
-                type: SET_MIXER_ONLINE,
-                mixerOnline: false,
-            })
+            store.dispatch(storeSetMixerOnline(false))
         }, this.mixerProtocol.pingTime)
     }
 

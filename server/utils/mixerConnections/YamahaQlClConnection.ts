@@ -14,7 +14,7 @@ import {
     SET_MUTE,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
-import { SET_MIXER_ONLINE } from '../../reducers/settingsActions'
+import { storeSetMixerOnline } from '../../reducers/settingsActions'
 
 export class QlClMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -26,10 +26,7 @@ export class QlClMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        store.dispatch({
-            type: SET_MIXER_ONLINE,
-            mixerOnline: false,
-        })
+        store.dispatch(storeSetMixerOnline(false))
 
         this.mixerProtocol = mixerProtocol
 
@@ -77,10 +74,7 @@ export class QlClMixerConnection {
             })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                store.dispatch({
-                    type: SET_MIXER_ONLINE,
-                    mixerOnline: true,
-                })
+                store.dispatch(storeSetMixerOnline(true))
 
                 let buffers = []
                 let lastIndex = 0
@@ -248,10 +242,7 @@ export class QlClMixerConnection {
 
     pingMixerCommand() {
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch({
-                type: SET_MIXER_ONLINE,
-                mixerOnline: false,
-            })
+            store.dispatch(storeSetMixerOnline(false))
         }, this.mixerProtocol.pingTime)
     }
 

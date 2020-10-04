@@ -9,9 +9,9 @@ import {
     storeSetSingleChState,
 } from '../../server/reducers/channelActions'
 import {
-    UPDATE_SETTINGS,
-    SET_MIXER_ONLINE,
-    SET_SERVER_ONLINE,
+    storeSetMixerOnline,
+    storeSetServerOnline,
+    storeUpdateSettings,
 } from '../../server/reducers/settingsActions'
 import {
     SOCKET_SET_VU,
@@ -30,17 +30,11 @@ import {
 export const socketClientHandlers = () => {
     window.socketIoClient
         .on('connect', () => {
-            window.storeRedux.dispatch({
-                type: SET_SERVER_ONLINE,
-                serverOnline: true,
-            })
+            window.storeRedux.dispatch(storeSetServerOnline(true))
             console.log('CONNECTED TO SISYFOS SERVER')
         })
         .on('disconnect', () => {
-            window.storeRedux.dispatch({
-                type: SET_SERVER_ONLINE,
-                serverOnline: false,
-            })
+            window.storeRedux.dispatch(storeSetServerOnline(false))
             console.log('LOST CONNECTION TO SISYFOS SERVER')
         })
         .on(SOCKET_SET_FULL_STORE, (payload: any) => {
@@ -67,22 +61,17 @@ export const socketClientHandlers = () => {
                     allState: payload.faders[0],
                     numberOfTypeChannels: payload.settings[0].numberOfFaders,
                 })
-                window.storeRedux.dispatch({
-                    type: SET_MIXER_ONLINE,
-                    mixerOnline: payload.settings[0].mixers[0].mixerOnline,
-                })
-                window.storeRedux.dispatch({
-                    type: SET_SERVER_ONLINE,
-                    serverOnline: true,
-                })
+                window.storeRedux.dispatch(
+                    storeSetMixerOnline(
+                        payload.settings[0].mixers[0].mixerOnline
+                    )
+                )
+                window.storeRedux.dispatch(storeSetServerOnline(true))
             }
         })
         .on('set-settings', (payload: any) => {
             // console.log('SETTINGS RECEIVED :', payload)
-            window.storeRedux.dispatch({
-                type: UPDATE_SETTINGS,
-                settings: payload, // loadSettings(storeRedux.getState())
-            })
+            window.storeRedux.dispatch(storeUpdateSettings(payload))
         })
         .on('set-mixerprotocol', (payload: any) => {
             // console.log('MIXERPROTOCOL RECEIVED :', payload)
@@ -91,10 +80,7 @@ export const socketClientHandlers = () => {
             window.mixerProtocolList = payload.mixerProtocolList
         })
         .on(SOCKET_SET_MIXER_ONLINE, (payload: any) => {
-            window.storeRedux.dispatch({
-                type: SET_MIXER_ONLINE,
-                mixerOnline: payload.mixerOnline,
-            })
+            window.storeRedux.dispatch(storeSetMixerOnline(payload.mixerOnline))
         })
         .on(SOCKET_SET_STORE_FADER, (payload: any) => {
             window.storeRedux.dispatch({
