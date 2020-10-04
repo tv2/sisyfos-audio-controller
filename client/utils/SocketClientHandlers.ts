@@ -5,8 +5,8 @@ import {
     SET_VU_REDUCTION_LEVEL,
 } from '../../server/reducers/faderActions'
 import {
-    SET_COMPLETE_CH_STATE,
-    SET_SINGLE_CH_STATE,
+    storeSetCompleteChState,
+    storeSetSingleChState,
 } from '../../server/reducers/channelActions'
 import {
     UPDATE_SETTINGS,
@@ -55,11 +55,12 @@ export const socketClientHandlers = () => {
                         )
                     }
                 )
-                window.storeRedux.dispatch({
-                    type: SET_COMPLETE_CH_STATE,
-                    allState: payload.channels[0],
-                    numberOfTypeChannels: numberOfChannels,
-                })
+                window.storeRedux.dispatch(
+                    storeSetCompleteChState(
+                        payload.channels[0],
+                        numberOfChannels
+                    )
+                )
                 window.storeRedux.dispatch({
                     type: SET_COMPLETE_FADER_STATE,
                     allState: payload.faders[0],
@@ -102,11 +103,9 @@ export const socketClientHandlers = () => {
             })
         })
         .on(SOCKET_SET_STORE_CHANNEL, (payload: any) => {
-            window.storeRedux.dispatch({
-                type: SET_SINGLE_CH_STATE,
-                channelIndex: payload.channelIndex,
-                state: payload.state,
-            })
+            window.storeRedux.dispatch(
+                storeSetSingleChState(payload.channelIndex, payload.state)
+            )
         })
         .on(SOCKET_SET_ALL_VU, (payload: any) => {
             payload.vuMeters.forEach((meterLevel: number, index: number) => {

@@ -96,9 +96,9 @@ const mapStateToProps = (
     props: any
 ): IChannelSettingsInjectProps => {
     return {
-        label: state.channels[0].channel[props.channelIndex].label,
+        label: state.channels[0].channelConnection[0].channel[props.channelIndex].label,
         mixerProtocol: state.settings[0].mixerProtocol,
-        sourceOption: (state.channels[0].channel[props.channelIndex].private ||
+        sourceOption: (state.channels[0].channelConnection[0].channel[props.channelIndex].private ||
             {})['channel_layout'],
     }
 }

@@ -5,7 +5,7 @@ import { remoteConnections } from '../../mainClasses'
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
-import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
+import { storeSetOutputLevel } from '../../reducers/channelActions'
 import {
     SET_VU_LEVEL,
     SET_FADER_LEVEL,
@@ -50,7 +50,7 @@ export class QlClMixerConnection {
                 logger.info('Receiving state of desk', {})
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes('{channel}')) {
-                        state.channels[0].channel.forEach(
+                        state.channels[0].channelConnection[0].channel.forEach(
                             (channel: any, index: any) => {
                                 this.sendOutMessage(
                                     item.mixerMessage,
@@ -104,7 +104,10 @@ export class QlClMixerConnection {
                         let mixerValues: string[] = message.split(' ')
                         let ch = parseInt(mixerValues[3])
                         let assignedFader =
-                            1 + state.channels[0].channel[ch - 1].assignedFader
+                            1 +
+                            state.channels[0].channelConnection[0].channel[
+                                ch - 1
+                            ].assignedFader
                         let mixerValue = parseInt(mixerValues[6])
                         store.dispatch({
                             type: SET_VU_LEVEL,
@@ -120,13 +123,18 @@ export class QlClMixerConnection {
                     ) {
                         let ch = 1 + (message[11] | (message[10] << 8))
                         let assignedFader =
-                            1 + state.channels[0].channel[ch - 1].assignedFader
+                            1 +
+                            state.channels[0].channelConnection[0].channel[
+                                ch - 1
+                            ].assignedFader
                         let mixerLevel: number =
                             message[16] | (message[15] << 8) // parseFloat(message[16])
                         let faderLevel = Math.pow(2, mixerLevel / 1920) - 1
                         //let faderLevel = Math.log10((mixerLevel + 32768) / (1000 + 32768))
                         if (
-                            !state.channels[0].channel[ch - 1].fadeActive &&
+                            !state.channels[0].channelConnection[0].channel[
+                                ch - 1
+                            ].fadeActive &&
                             faderLevel > this.mixerProtocol.fader.min
                         ) {
                             store.dispatch({
@@ -152,7 +160,7 @@ export class QlClMixerConnection {
                             if (
                                 state.faders[0].fader[assignedFader - 1].pgmOn
                             ) {
-                                state.channels[0].channel.forEach(
+                                state.channels[0].channelConnection[0].channel.forEach(
                                     (channel: any, index: number) => {
                                         if (
                                             channel.assignedFader ===
@@ -186,8 +194,9 @@ export class QlClMixerConnection {
                         )
 
                         let assignedFaderIndex =
-                            state.channels[0].channel[channelIndex]
-                                .assignedFader
+                            state.channels[0].channelConnection[0].channel[
+                                channelIndex
+                            ].assignedFader
 
                         store.dispatch({
                             type: SET_MUTE,
@@ -201,7 +210,7 @@ export class QlClMixerConnection {
                                 value ? 1 : 0
                             )
                         }
-                        state.channels[0].channel.forEach(
+                        state.channels[0].channelConnection[0].channel.forEach(
                             (channel: any, index: number) => {
                                 if (
                                     channel.assignedFader ===
@@ -305,30 +314,40 @@ export class QlClMixerConnection {
     }
 
     updateOutLevel(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType
+        let channelType =
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelType
         let channelTypeIndex =
-            state.channels[0].channel[channelIndex].channelTypeIndex
-        let faderIndex = state.channels[0].channel[channelIndex].assignedFader
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelTypeIndex
+        let faderIndex =
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .assignedFader
         if (state.faders[0].fader[faderIndex].pgmOn) {
-            store.dispatch({
-                type: SET_OUTPUT_LEVEL,
-                channel: channelIndex,
-                level: state.faders[0].fader[faderIndex].faderLevel,
-            })
+            store.dispatch(
+                storeSetOutputLevel(
+                    channelIndex,
+                    state.faders[0].fader[faderIndex].faderLevel
+                )
+            )
         }
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer
                 .CHANNEL_OUT_GAIN[0].mixerMessage,
             channelTypeIndex,
-            state.channels[0].channel[channelIndex].outputLevel,
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .outputLevel,
             'f'
         )
     }
 
     updatePflState(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType
+        let channelType =
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelType
         let channelTypeIndex =
-            state.channels[0].channel[channelIndex].channelTypeIndex
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelTypeIndex
         if (state.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
@@ -353,9 +372,12 @@ export class QlClMixerConnection {
     }
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
-        let channelType = state.channels[0].channel[channelIndex].channelType
+        let channelType =
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelType
         let channelTypeIndex =
-            state.channels[0].channel[channelIndex].channelTypeIndex
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelTypeIndex
         if (muteOn === true) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer
@@ -412,9 +434,12 @@ export class QlClMixerConnection {
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType
+        let channelType =
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelType
         let channelTypeIndex =
-            state.channels[0].channel[channelIndex].channelTypeIndex
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelTypeIndex
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer
                 .CHANNEL_OUT_GAIN[0].mixerMessage,
@@ -425,9 +450,12 @@ export class QlClMixerConnection {
     }
 
     updateChannelName(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType
+        let channelType =
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelType
         let channelTypeIndex =
-            state.channels[0].channel[channelIndex].channelTypeIndex
+            state.channels[0].channelConnection[0].channel[channelIndex]
+                .channelTypeIndex
         let channelName = state.faders[0].fader[channelIndex].label
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0]

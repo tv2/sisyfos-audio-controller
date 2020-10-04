@@ -91,7 +91,7 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         settings: state.settings[0],
         channelType: 0 /* TODO: state.channels[0].channel[props.channelIndex].channelType, */,
         channelTypeIndex:
-            props.faderIndex /* TODO: state.channels[0].channel[props.channelIndex].channelTypeIndex, */,
+            props.faderIndex /* TODO: state.channels[0].channelConnection[0].channel[props.channelIndex].channelTypeIndex, */,
     }
 }
 

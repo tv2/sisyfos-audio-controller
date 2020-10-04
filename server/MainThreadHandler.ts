@@ -84,7 +84,10 @@ import {
     TOGGLE_AMIX,
 } from './reducers/faderActions'
 import { SET_FADER_LEVEL } from './reducers/faderActions'
-import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions'
+import {
+    storeSetAssignedFader,
+    storeSetAuxLevel,
+} from './reducers/channelActions'
 import { IChannel } from './reducers/channelsReducer'
 import { logger } from './utils/logger'
 const path = require('path')
@@ -111,7 +114,7 @@ export class MainThreadHandlers {
             faderIndex: faderIndex,
             state: state.faders[0].fader[faderIndex],
         })
-        state.channels[0].channel.forEach(
+        state.channels[0].channelConnection[0].channel.forEach(
             (channel: IChannel, index: number) => {
                 if (channel.assignedFader === faderIndex) {
                     socketServer.emit(SOCKET_SET_STORE_CHANNEL, {
@@ -216,11 +219,9 @@ export class MainThreadHandlers {
                         String(payload.faderAssign),
                     {}
                 )
-                store.dispatch({
-                    type: SET_ASSIGNED_FADER,
-                    channel: payload.channel,
-                    faderNumber: payload.faderAssign,
-                })
+                store.dispatch(
+                    storeSetAssignedFader(payload.channel, payload.faderAssign)
+                )
                 this.updateFullClientStore()
             })
             .on(SOCKET_SET_FADER_MONITOR, (payload: any) => {
@@ -251,12 +252,13 @@ export class MainThreadHandlers {
                     'Set Auxlevel Channel:' + String(payload.channel),
                     {}
                 )
-                store.dispatch({
-                    type: SET_AUX_LEVEL,
-                    channel: payload.channel,
-                    auxIndex: payload.auxIndex,
-                    level: payload.level,
-                })
+                store.dispatch(
+                    storeSetAuxLevel(
+                        payload.channel,
+                        payload.auxIndex,
+                        payload.level
+                    )
+                )
                 mixerGenericConnection.updateAuxLevel(
                     payload.channel,
                     payload.auxIndex

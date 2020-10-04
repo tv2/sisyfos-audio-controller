@@ -13,7 +13,7 @@ import {
     ICasparCGMixerGeometryFile,
 } from '../../constants/MixerProtocolInterface'
 import { IChannel } from '../../reducers/channelsReducer'
-import { SET_PRIVATE } from '../../reducers/channelActions'
+import { storeSetChPrivate } from '../../reducers/channelActions'
 import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS'
@@ -135,12 +135,13 @@ export class CasparCGConnection {
                                     i.layer === parseInt(m[5])
                             )
                             if (index >= 0) {
-                                store.dispatch({
-                                    type: SET_PRIVATE,
-                                    channel: index,
-                                    tag: 'producer',
-                                    value: message.args[0],
-                                })
+                                store.dispatch(
+                                    storeSetChPrivate(
+                                        index,
+                                        'producer',
+                                        message.args[0]
+                                    )
+                                )
                             }
                         } else if (
                             m[1] === 'channel' &&
@@ -153,12 +154,13 @@ export class CasparCGConnection {
                                     i.layer === parseInt(m[5])
                             )
                             if (index >= 0) {
-                                store.dispatch({
-                                    type: SET_PRIVATE,
-                                    channel: index,
-                                    tag: 'channel_layout',
-                                    value: message.args[0],
-                                })
+                                store.dispatch(
+                                    storeSetChPrivate(
+                                        index,
+                                        'channel_layout',
+                                        message.args[0]
+                                    )
+                                )
                             }
                         } else if (
                             m[1] === 'channel' &&
@@ -175,12 +177,9 @@ export class CasparCGConnection {
                                     typeof message.args[0] === 'string'
                                         ? message.args[0]
                                         : message.args[0].low
-                                store.dispatch({
-                                    type: SET_PRIVATE,
-                                    channel: index,
-                                    tag: 'file_path',
-                                    value,
-                                })
+                                store.dispatch(
+                                    storeSetChPrivate(index, 'file_path', value)
+                                )
                             }
                         }
                     }
@@ -347,14 +346,15 @@ export class CasparCGConnection {
     updateChannelSetting(channelIndex: number, setting: string, value: string) {
         if (
             this.mixerProtocol.sourceOptions &&
-            state.channels[0].channel[channelIndex].private
+            state.channels[0].channelConnection[0].channel[channelIndex].private
         ) {
             const pair = this.mixerProtocol.sourceOptions.sources[channelIndex]
-            const producer = state.channels[0].channel[channelIndex].private![
-                'producer'
-            ]
+            const producer = state.channels[0].channelConnection[0].channel[
+                channelIndex
+            ].private!['producer']
             let filePath = String(
-                state.channels[0].channel[channelIndex].private!['file_path']
+                state.channels[0].channelConnection[0].channel[channelIndex]
+                    .private!['file_path']
             )
             filePath = filePath.replace(/\.[\w\d]+$/, '')
             this.controlChannelSetting(
@@ -420,22 +420,27 @@ export class CasparCGConnection {
                 this.setAllLayers(pairs, this.mixerProtocol.fader.min)
             } else {
                 // There are no other SOLO channels, restore PFL to match PGM
-                state.channels[0].channel.forEach((i, index) => {
-                    if (
-                        index >
-                        this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL.length -
-                            1
-                    ) {
-                        return
-                    }
+                state.channels[0].channelConnection[0].channel.forEach(
+                    (i, index) => {
+                        if (
+                            index >
+                            this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL
+                                .length -
+                                1
+                        ) {
+                            return
+                        }
 
-                    const pairs = this.mixerProtocol.toMixer
-                        .PFL_AUX_FADER_LEVEL[index]
-                    this.setAllLayers(
-                        pairs,
-                        state.channels[0].channel[index].outputLevel
-                    )
-                })
+                        const pairs = this.mixerProtocol.toMixer
+                            .PFL_AUX_FADER_LEVEL[index]
+                        this.setAllLayers(
+                            pairs,
+                            state.channels[0].channelConnection[0].channel[
+                                index
+                            ].outputLevel
+                        )
+                    }
+                )
             }
         }
     }

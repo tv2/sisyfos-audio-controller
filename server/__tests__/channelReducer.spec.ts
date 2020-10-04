@@ -4,6 +4,7 @@ import {
     SET_ASSIGNED_FADER,
     SET_COMPLETE_CH_STATE,
     SET_OUTPUT_LEVEL,
+    storeSetOutputLevel,
 } from '../reducers/channelActions'
 import { IChannel } from '../reducers/channelsReducer'
 
@@ -22,11 +23,7 @@ describe('Test redux channelReducer actions', () => {
         let nextState = JSON.parse(parsedFullStoreJSON)
         nextState.channels[0].channel[10].outputLevel = 0.5
         expect(
-            indexReducer(parsedFullStore, {
-                type: SET_OUTPUT_LEVEL,
-                channel: 10,
-                level: '0.5',
-            })
+            indexReducer(parsedFullStore, storeSetOutputLevel(10, 0.5))
         ).toEqual(nextState)
     })
 
