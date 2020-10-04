@@ -47,7 +47,7 @@ export class MixerGenericConnection {
 
         // Get mixer protocol
         this.mixerProtocol =
-            MixerProtocolPresets[state.settings[0].mixerProtocol] ||
+            MixerProtocolPresets[state.settings[0].mixers[0].mixerProtocol] ||
             MixerProtocolPresets.sslSystemT
         if (this.mixerProtocol.protocol === 'OSC') {
             this.mixerConnection = new OscMixerConnection(
@@ -341,7 +341,7 @@ export class MixerGenericConnection {
     delayedFadeActiveDisable(channelIndex: number) {
         this.fadeActiveTimer[channelIndex] = setTimeout(() => {
             store.dispatch(storeFadeActive(channelIndex, false))
-        }, state.settings[0].protocolLatency)
+        }, state.settings[0].mixers[0].protocolLatency)
     }
 
     fadeInOut(channelIndex: number, fadeTime: number) {

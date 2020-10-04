@@ -83,13 +83,13 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
 
     handleMixerMidiInputPort = (selectedOption: any) => {
         var settingsCopy = Object.assign({}, this.state.settings)
-        settingsCopy.mixerMidiInputPort = selectedOption.value
+        settingsCopy.mixers[0].mixerMidiInputPort = selectedOption.value
         this.setState({ settings: settingsCopy })
     }
 
     handleMixerMidiOutputPort = (selectedOption: any) => {
         var settingsCopy = Object.assign({}, this.state.settings)
-        settingsCopy.mixerMidiOutputPort = selectedOption.value
+        settingsCopy.mixers[0].mixerMidiOutputPort = selectedOption.value
         this.setState({ settings: settingsCopy })
     }
 
@@ -103,19 +103,29 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         this.setState({ settings: settingsCopy })
     }
 
+    handleMixerChange = (event: ChangeEvent<HTMLInputElement>) => {
+        var settingsCopy = Object.assign({}, this.state.settings)
+        if (event.target.type === 'checkbox') {
+            (settingsCopy.mixers[0] as any)[event.target.name] = !!event.target.checked
+        } else {
+            (settingsCopy.mixers[0] as any)[event.target.name] = event.target.value
+        }
+        this.setState({ settings: settingsCopy })
+    }
+
     handleProtocolChange = (selectedOption: any) => {
         var settingsCopy = Object.assign({}, this.state.settings)
-        settingsCopy.mixerProtocol = selectedOption.value
+        settingsCopy.mixers[0].mixerProtocol = selectedOption.value
         window.mixerProtocol =
-            window.mixerProtocolPresets[settingsCopy.mixerProtocol]
+            window.mixerProtocolPresets[settingsCopy.mixers[0].mixerProtocol]
         this.setState({ settings: settingsCopy })
     }
 
     handleNumberOfChannels = (index: number, event: any) => {
         let settingsCopy = Object.assign({}, this.state.settings)
-        settingsCopy.numberOfChannelsInType[index] = parseInt(
+        settingsCopy.mixers[0].numberOfChannelsInType[index] = parseInt(
             event.target.value
-        )
+        ) || 1
         this.setState({ settings: settingsCopy })
     }
 
@@ -178,7 +188,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                         name="numberOfChannelsInType"
                                         type="text"
                                         value={
-                                            this.state.settings
+                                            this.state.settings.mixers[0]
                                                 .numberOfChannelsInType[index]
                                         }
                                         onChange={(event) =>
@@ -208,8 +218,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <Select
                     styles={selectorColorStyles}
                     value={{
-                        label: this.state.settings.mixerMidiInputPort,
-                        value: this.state.settings.mixerMidiInputPort,
+                        label: this.state.settings.mixers[0].mixerMidiInputPort,
+                        value: this.state.settings.mixers[0].mixerMidiInputPort,
                     }}
                     onChange={this.handleMixerMidiInputPort}
                     options={this.midiInputPortList}
@@ -221,8 +231,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <Select
                     styles={selectorColorStyles}
                     value={{
-                        label: this.state.settings.mixerMidiOutputPort,
-                        value: this.state.settings.mixerMidiOutputPort,
+                        label: this.state.settings.mixers[0].mixerMidiOutputPort,
+                        value: this.state.settings.mixers[0].mixerMidiOutputPort,
                     }}
                     onChange={this.handleMixerMidiOutputPort}
                     options={this.midiOutputPortList}
@@ -242,9 +252,9 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     value={{
                         label:
                             window.mixerProtocolPresets[
-                                this.state.settings.mixerProtocol
+                                this.state.settings.mixers[0].mixerProtocol
                             ].label,
-                        value: this.state.settings.mixerProtocol,
+                        value: this.state.settings.mixers[0].mixerProtocol,
                     }}
                     onChange={this.handleProtocolChange}
                     options={window.mixerProtocolList}
@@ -275,8 +285,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     <input
                         name="deviceIp"
                         type="text"
-                        value={this.state.settings.deviceIp}
-                        onChange={this.handleChange}
+                        value={this.state.settings.mixers[0].deviceIp}
+                        onChange={this.handleMixerChange}
                     />
                 </label>
                 <br />
@@ -285,8 +295,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     <input
                         name="devicePort"
                         type="text"
-                        value={this.state.settings.devicePort}
-                        onChange={this.handleChange}
+                        value={this.state.settings.mixers[0].devicePort}
+                        onChange={this.handleMixerChange}
                     />
                 </label>
                 <br />
@@ -339,8 +349,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     <input
                         name="protocolLatency"
                         type="text"
-                        value={this.state.settings.protocolLatency}
-                        onChange={this.handleChange}
+                        value={this.state.settings.mixers[0].protocolLatency}
+                        onChange={this.handleMixerChange}
                     />
                 </label>
                 <br />
@@ -359,8 +369,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     <input
                         name="numberOfAux"
                         type="text"
-                        value={this.state.settings.numberOfAux}
-                        onChange={this.handleChange}
+                        value={this.state.settings.mixers[0].numberOfAux}
+                        onChange={this.handleMixerChange}
                     />
                 </label>
                 <br />
@@ -369,8 +379,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     <input
                         name="nextSendAux"
                         type="text"
-                        value={this.state.settings.nextSendAux}
-                        onChange={this.handleChange}
+                        value={this.state.settings.mixers[0].nextSendAux}
+                        onChange={this.handleMixerChange}
                     />
                 </label>
                 <br />
@@ -461,9 +471,10 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     }
 }
 
-const mapStateToProps = (state: any): IAppProps => {
+const mapStateToProps = (state: any, t: any): IAppProps => {
     return {
         store: state,
+        t: t
     }
 }
 

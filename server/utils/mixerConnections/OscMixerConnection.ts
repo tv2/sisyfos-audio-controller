@@ -69,8 +69,8 @@ export class OscMixerConnection {
         this.oscConnection = new osc.UDPPort({
             localAddress: state.settings[0].localIp,
             localPort: parseInt(state.settings[0].localOscPort + ''),
-            remoteAddress: state.settings[0].deviceIp,
-            remotePort: parseInt(state.settings[0].devicePort + ''),
+            remoteAddress: state.settings[0].mixers[0].deviceIp,
+            remotePort: parseInt(state.settings[0].mixers[0].devicePort + ''),
         })
         this.setupMixerConnection()
     }
@@ -105,10 +105,16 @@ export class OscMixerConnection {
                             .CHANNEL_VU[0].mixerMessage
                     )
                 ) {
-                    if (state.settings[0].mixerProtocol.includes('behringer')) {
+                    if (
+                        state.settings[0].mixers[0].mixerProtocol.includes(
+                            'behringer'
+                        )
+                    ) {
                         behringerXrMeter(message.args)
                     } else if (
-                        state.settings[0].mixerProtocol.includes('midas')
+                        state.settings[0].mixers[0].mixerProtocol.includes(
+                            'midas'
+                        )
                     ) {
                         midasMeter(message.args)
                     } else {
@@ -138,10 +144,16 @@ export class OscMixerConnection {
                             .CHANNEL_VU_REDUCTION[0].mixerMessage
                     )
                 ) {
-                    if (state.settings[0].mixerProtocol.includes('behringer')) {
+                    if (
+                        state.settings[0].mixers[0].mixerProtocol.includes(
+                            'behringer'
+                        )
+                    ) {
                         behringerReductionMeter(message.args)
                     } else if (
-                        state.settings[0].mixerProtocol.includes('midas')
+                        state.settings[0].mixers[0].mixerProtocol.includes(
+                            'midas'
+                        )
                     ) {
                         midasMeter(message.args)
                     } else {
@@ -733,7 +745,7 @@ export class OscMixerConnection {
     updateNextAux(channelIndex: number, level: number) {
         this.updateAuxLevel(
             channelIndex,
-            state.settings[0].nextSendAux - 1,
+            state.settings[0].mixers[0].nextSendAux - 1,
             level
         )
     }

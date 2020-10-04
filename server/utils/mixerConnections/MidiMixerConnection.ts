@@ -38,17 +38,17 @@ export class MidiMixerConnection {
             }
             console.log(
                 'Connecting Mixer Midi input on port :',
-                state.settings[0].mixerMidiInputPort
+                state.settings[0].mixers[0].mixerMidiInputPort
             )
             console.log(
                 'Connecting Mixer Midi output on port :',
-                state.settings[0].mixerMidiOutputPort
+                state.settings[0].mixers[0].mixerMidiOutputPort
             )
             this.midiInput = WebMidi.getInputByName(
-                state.settings[0].mixerMidiInputPort
+                state.settings[0].mixers[0].mixerMidiInputPort
             )
             this.midiOutput = WebMidi.getOutputByName(
-                state.settings[0].mixerMidiOutputPort
+                state.settings[0].mixers[0].mixerMidiOutputPort
             )
 
             this.setupMixerConnection()
@@ -126,7 +126,7 @@ export class MidiMixerConnection {
             if (
                 this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU)
             ) {
-                if (state.settings[0].mixerProtocol === 'behringer') {
+                if (state.settings[0].mixers[0].mixerProtocol === 'behringer') {
                     behringerMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];

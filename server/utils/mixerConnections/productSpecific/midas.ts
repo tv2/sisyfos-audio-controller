@@ -18,7 +18,7 @@ export const midasMeter = (message: any) => {
     )
     let level: number
     let reductionLevel: number
-    let numberOfChannels = state.settings[0].numberOfChannelsInType[0]
+    let numberOfChannels = state.settings[0].mixers[0].numberOfChannelsInType[0]
 
     for (let i = 0; i < numberOfChannels; i++) {
         level = dataview.getFloat32(4 * i + DATA_OFFSET, true)

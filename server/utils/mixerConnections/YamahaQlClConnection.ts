@@ -38,9 +38,13 @@ export class QlClMixerConnection {
             .findIndex((ch) => ch === '{channel}')
 
         this.midiConnection = new net.Socket()
-        this.midiConnection.connect(50000, state.settings[0].deviceIp, () => {
-            logger.info('Connected to Yamaha mixer', {})
-        })
+        this.midiConnection.connect(
+            50000,
+            state.settings[0].mixers[0].deviceIp,
+            () => {
+                logger.info('Connected to Yamaha mixer', {})
+            }
+        )
         this.setupMixerConnection()
     }
 

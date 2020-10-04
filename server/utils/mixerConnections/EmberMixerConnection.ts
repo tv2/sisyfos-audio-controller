@@ -22,8 +22,8 @@ export class EmberMixerConnection {
 
         logger.info('Setting up Ember connection')
         this.emberConnection = new EmberClient(
-            state.settings[0].deviceIp,
-            state.settings[0].devicePort
+            state.settings[0].mixers[0].deviceIp,
+            state.settings[0].mixers[0].devicePort
         )
 
         this.emberConnection.on('error', (error: any) => {
@@ -70,7 +70,7 @@ export class EmberMixerConnection {
         )
 
         let ch: number = 1
-        state.settings[0].numberOfChannelsInType.forEach(
+        state.settings[0].mixers[0].numberOfChannelsInType.forEach(
             (numberOfChannels, typeIndex) => {
                 for (
                     let channelTypeIndex = 0;

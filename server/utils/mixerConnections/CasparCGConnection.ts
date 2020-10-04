@@ -45,8 +45,8 @@ export class CasparCGConnection {
             autoReconnect: true,
             autoReconnectAttempts: 20,
             autoReconnectInterval: 3000,
-            host: state.settings[0].deviceIp,
-            port: parseInt(state.settings[0].devicePort + ''),
+            host: state.settings[0].mixers[0].deviceIp,
+            port: parseInt(state.settings[0].mixers[0].devicePort + ''),
         })
         logger.info('Trying to connect to CasparCG...')
         this.connection.onConnected = () => {
@@ -96,11 +96,11 @@ export class CasparCGConnection {
     setupMixerConnection() {
         if (!this.oscClient) {
             const remotePort =
-                parseInt(state.settings[0].devicePort + '') + 1000
+                parseInt(state.settings[0].mixers[0].devicePort + '') + 1000
             this.oscClient = new osc.UDPPort({
                 localAddress: state.settings[0].localIp,
                 localPort: remotePort,
-                remoteAddress: state.settings[0].deviceIp,
+                remoteAddress: state.settings[0].mixers[0].deviceIp,
                 remotePort,
             })
                 .on('ready', () => {
@@ -192,7 +192,7 @@ export class CasparCGConnection {
             this.oscClient.open()
             logger.info(
                 'Listening for status on CasparCG: ' +
-                    state.settings[0].deviceIp +
+                    state.settings[0].mixers[0].deviceIp +
                     ':' +
                     remotePort
             )

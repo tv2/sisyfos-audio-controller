@@ -145,7 +145,9 @@ export class MainThreadHandlers {
             .on('get-mixerprotocol', () => {
                 socketServer.emit('set-mixerprotocol', {
                     mixerProtocol:
-                        mixerProtocolPresets[state.settings[0].mixerProtocol],
+                        mixerProtocolPresets[
+                            state.settings[0].mixers[0].mixerProtocol
+                        ],
                     mixerProtocolPresets: mixerProtocolPresets,
                     mixerProtocolList: mixerProtocolList,
                 })

@@ -41,8 +41,8 @@ export class StuderVistaMixerConnection {
 
         this.mixerConnection = net.createConnection(
             {
-                port: parseInt(state.settings[0].devicePort + ''),
-                host: state.settings[0].deviceIp,
+                port: parseInt(state.settings[0].mixers[0].devicePort + ''),
+                host: state.settings[0].mixers[0].deviceIp,
                 timeout: 1000,
             },
             () => {}
@@ -403,7 +403,11 @@ export class StuderVistaMixerConnection {
     }
 
     pingAuxSend(message: string) {
-        for (let index = 0; index < state.settings[0].numberOfAux; index++) {
+        for (
+            let index = 0;
+            index < state.settings[0].mixers[0].numberOfAux;
+            index++
+        ) {
             let auxMessage = message.replace(
                 '{aux}',
                 (index + 1 + 160).toString(16)
@@ -570,7 +574,7 @@ export class StuderVistaMixerConnection {
     updateNextAux(channelIndex: number, level: number) {
         this.updateAuxLevel(
             channelIndex,
-            state.settings[0].nextSendAux - 1,
+            state.settings[0].mixers[0].nextSendAux - 1,
             level
         )
     }

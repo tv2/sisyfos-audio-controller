@@ -25,7 +25,7 @@ export class SkaarhojRemoteConnection {
 
         this.remoteProtocol = RemoteFaderPresets.rawPanel
         this.mixerProtocol =
-            MixerProtocolPresets[state.settings[0].mixerProtocol] ||
+            MixerProtocolPresets[state.settings[0].mixers[0].mixerProtocol] ||
             MixerProtocolPresets.genericMidi
         this.clientList = []
 

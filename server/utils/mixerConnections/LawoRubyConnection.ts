@@ -60,8 +60,8 @@ export class LawoRubyMixerConnection {
 
         logger.info('Setting up Ember connection')
         this.emberConnection = new EmberClient(
-            state.settings[0].deviceIp,
-            state.settings[0].devicePort
+            state.settings[0].mixers[0].deviceIp,
+            state.settings[0].mixers[0].devicePort
         )
 
         store.dispatch({
@@ -145,7 +145,7 @@ export class LawoRubyMixerConnection {
         }
 
         // Set channel labels
-        state.settings[0].numberOfChannelsInType.forEach(
+        state.settings[0].mixers[0].numberOfChannelsInType.forEach(
             async (numberOfChannels, typeIndex) => {
                 for (
                     let channelTypeIndex = 0;
@@ -182,9 +182,10 @@ export class LawoRubyMixerConnection {
         )
 
         let ch: number = 1
-        for (const typeIndex in state.settings[0].numberOfChannelsInType) {
+        for (const typeIndex in state.settings[0].mixers[0]
+            .numberOfChannelsInType) {
             const numberOfChannels =
-                state.settings[0].numberOfChannelsInType[typeIndex]
+                state.settings[0].mixers[0].numberOfChannelsInType[typeIndex]
             for (
                 let channelTypeIndex = 0;
                 channelTypeIndex < numberOfChannels;

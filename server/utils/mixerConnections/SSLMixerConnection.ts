@@ -36,8 +36,8 @@ export class SSLMixerConnection {
 
         this.SSLConnection = new net.Socket()
         this.SSLConnection.connect(
-            state.settings[0].devicePort,
-            state.settings[0].deviceIp,
+            state.settings[0].mixers[0].devicePort,
+            state.settings[0].mixers[0].deviceIp,
             () => {
                 logger.info('Connected to SSL', {})
             }

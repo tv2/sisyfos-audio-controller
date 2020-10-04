@@ -20,7 +20,11 @@ export const behringerXrMeter = (message: any) => {
     let uint8bytes = Uint8Array.from(message[0])
     let dataview = new DataView(uint8bytes.buffer)
 
-    for (let i = 0; i < state.settings[0].numberOfChannelsInType[0]; i++) {
+    for (
+        let i = 0;
+        i < state.settings[0].mixers[0].numberOfChannelsInType[0];
+        i++
+    ) {
         let level = (dataview.getInt16(DATA_OFFSET + 2 * i, true) + 8000) / 8000
         store.dispatch({
             type: SET_VU_LEVEL,
@@ -42,7 +46,11 @@ export const behringerReductionMeter = (message: any) => {
     let uint8bytes = Uint8Array.from(message[0])
     let dataview = new DataView(uint8bytes.buffer)
 
-    for (let i = 0; i < state.settings[0].numberOfChannelsInType[0]; i++) {
+    for (
+        let i = 0;
+        i < state.settings[0].mixers[0].numberOfChannelsInType[0];
+        i++
+    ) {
         let level =
             1 -
             (dataview.getInt16(DATA_OFFSET + 2 * (i + 16), true) + 8000) / 8000

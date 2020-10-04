@@ -39,21 +39,14 @@ export interface ISettings {
     }>
 
     /** User config */
-    mixerProtocol: string
+    numberOfMixers: number
+    mixers: IMixerSettings[]
     localIp: string
     localOscPort: number
-    deviceIp: string
-    devicePort: number
-    protocolLatency: number // If a protocol has latency and feedback, the amount of time before enabling receiving data from channel again
     enableRemoteFader: boolean
-    mixerMidiInputPort: string
-    mixerMidiOutputPort: string
     remoteFaderMidiInputPort: string
     remoteFaderMidiOutputPort: string
-    numberOfChannelsInType: Array<number>
     numberOfFaders: number
-    numberOfAux: number
-    nextSendAux: number
     numberOfSnaps: number
     fadeTime: number // Default fade time for PGM ON - OFF
     voFadeTime: number // Default fade time for VO ON - OFF
@@ -67,8 +60,20 @@ export interface ISettings {
     chanStripFollowsPFL: boolean
 
     /** Connection state */
-    mixerOnline: boolean
     serverOnline: boolean
+}
+
+export interface IMixerSettings {
+    mixerProtocol: string
+    deviceIp: string
+    devicePort: number
+    protocolLatency: number // If a protocol has latency and feedback, the amount of time before enabling receiving data from channel again
+    mixerMidiInputPort: string
+    mixerMidiOutputPort: string
+    numberOfChannelsInType: Array<number>
+    numberOfAux: number
+    nextSendAux: number
+    mixerOnline: boolean
 }
 
 const defaultSettingsReducerState: Array<ISettings> = [
@@ -80,22 +85,28 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showMonitorOptions: -1,
         showStorage: false,
         currentPage: { type: PageType.All },
+        numberOfMixers: 1,
+        mixers: [
+            {
+                mixerProtocol: 'sslSystemT',
+                deviceIp: '0.0.0.0',
+                devicePort: 10024,
+                protocolLatency: 220,
+                mixerMidiInputPort: '',
+                mixerMidiOutputPort: '',
+                numberOfAux: 0,
+                nextSendAux: -1,
+                numberOfChannelsInType: [8],
+                mixerOnline: false,
+            },
+        ],
 
-        mixerProtocol: 'sslSystemT',
         localIp: '0.0.0.0',
         localOscPort: 1234,
-        deviceIp: '0.0.0.0',
-        devicePort: 10024,
-        protocolLatency: 220,
         enableRemoteFader: false,
-        mixerMidiInputPort: '',
-        mixerMidiOutputPort: '',
         remoteFaderMidiInputPort: '',
         remoteFaderMidiOutputPort: '',
-        numberOfChannelsInType: [8],
         numberOfFaders: 8,
-        numberOfAux: 0,
-        nextSendAux: -1,
         numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         voLevel: 30,
         autoResetLevel: 5,
@@ -107,8 +118,6 @@ const defaultSettingsReducerState: Array<ISettings> = [
         enablePages: true,
         pageLength: 16,
         chanStripFollowsPFL: true,
-
-        mixerOnline: false,
         serverOnline: true,
     },
 ]
@@ -157,7 +166,7 @@ export const settings = (
             }
             return nextState
         case SET_MIXER_ONLINE:
-            nextState[0].mixerOnline = action.mixerOnline
+            nextState[0].mixers[0].mixerOnline = action.mixerOnline
             return nextState
         case SET_SERVER_ONLINE:
             nextState[0].serverOnline = action.serverOnline
@@ -176,10 +185,11 @@ export const settings = (
             nextState[0].customPages = state[0].customPages
 
             if (
-                typeof MixerProtocolPresets[nextState[0].mixerProtocol] ===
-                'undefined'
+                typeof MixerProtocolPresets[
+                    nextState[0].mixers[0].mixerProtocol
+                ] === 'undefined'
             ) {
-                nextState[0].mixerProtocol = 'genericMidi'
+                nextState[0].mixers[0].mixerProtocol = 'genericMidi'
             }
             return nextState
         default:

@@ -51,7 +51,8 @@ export const socketClientHandlers = () => {
                 window.mixerProtocol.channelTypes.forEach(
                     (item: any, index: number) => {
                         numberOfChannels.push(
-                            payload.settings[0].numberOfChannelsInType[index]
+                            payload.settings[0].mixers[0]
+                                .numberOfChannelsInType[index]
                         )
                     }
                 )
@@ -68,7 +69,7 @@ export const socketClientHandlers = () => {
                 })
                 window.storeRedux.dispatch({
                     type: SET_MIXER_ONLINE,
-                    mixerOnline: payload.settings[0].mixerOnline,
+                    mixerOnline: payload.settings[0].mixers[0].mixerOnline,
                 })
                 window.storeRedux.dispatch({
                     type: SET_SERVER_ONLINE,

@@ -16,10 +16,10 @@ export class SnapshotHandler {
 
         // Count total number of channels:
         mixerProtocolPresets[
-            state.settings[0].mixerProtocol
+            state.settings[0].mixers[0].mixerProtocol
         ].channelTypes.forEach((item: any, index: number) => {
             this.numberOfChannels.push(
-                state.settings[0].numberOfChannelsInType[index]
+                state.settings[0].mixers[0].numberOfChannelsInType[index]
             )
         })
         this.loadSnapshotSettings(path.resolve('storage', 'default.shot'), true)
