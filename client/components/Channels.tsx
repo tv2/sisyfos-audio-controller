@@ -325,7 +325,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
 
 const mapStateToProps = (state: any): IChannelsInjectProps => {
     return {
-        channels: state.channels[0].channel,
+        channels: state.channels[0].channelConnection[0].channel,
         faders: state.faders[0].fader,
         settings: state.settings[0],
     }

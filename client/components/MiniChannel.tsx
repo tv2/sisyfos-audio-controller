@@ -86,7 +86,7 @@ class MiniChannel extends React.Component<
 
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
-        channels: state.channels[0].channel,
+        channels: state.channels[0].channelConnection[0].channel,
         fader: state.faders[0].fader[props.faderIndex],
         settings: state.settings[0],
         channelType: 0 /* TODO: state.channels[0].channel[props.channelIndex].channelType, */,

@@ -7,14 +7,18 @@
     ],
     "channels": [
         {
-            "channel": [
+            "channelConnection": [
                 {
-                    "channelType": 0,
-                    "channelTypeIndex": 0,
-                    "assignedFader": 0,
-                    "fadeActive": false,
-                    "outputLevel": 0,
-                    "auxLevel": []
+                    "channel": [
+                        {
+                            "channelType": 0,
+                            "channelTypeIndex": 0,
+                            "assignedFader": 0,
+                            "fadeActive": false,
+                            "outputLevel": 0,
+                            "auxLevel": []
+                        }
+                    ]
                 }
             ]
         }
@@ -38,9 +42,7 @@
             "mixerMidiOutputPort": "",
             "remoteFaderMidiInputPort": "",
             "remoteFaderMidiOutputPort": "",
-            "numberOfChannelsInType": [
-                8
-            ],
+            "numberOfChannelsInType": [8],
             "numberOfFaders": 8,
             "numberOfAux": 0,
             "nextSendAux": -1,
