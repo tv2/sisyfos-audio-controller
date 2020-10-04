@@ -83,7 +83,7 @@ describe('Test redux channelReducer actions', () => {
         expect(
             indexReducer(parsedFullStore, {
                 type: SET_COMPLETE_CH_STATE,
-                allState: { channel: channels },
+                allState: { chConnection: [{ channel: channels }] },
                 numberOfTypeChannels: [24],
             })
         ).toEqual(nextState)

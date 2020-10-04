@@ -67,18 +67,25 @@
             "mixerProtocol": "genericMidi",
             "localIp": "0.0.0.0",
             "localOscPort": 1234,
-            "deviceIp": "0.0.0.0",
-            "devicePort": 10024,
-            "protocolLatency": 20,
+            "numberOfMixers": 1,
+            "mixers": [
+                {
+                    "mixerProtocol": "sslSystemT",
+                    "deviceIp": "0.0.0.0",
+                    "devicePort": 10024,
+                    "protocolLatency": 220,
+                    "mixerMidiInputPort": "",
+                    "mixerMidiOutputPort": "",
+                    "numberOfChannelsInType": [8],
+                    "numberOfAux": 0,
+                    "nextSendAux": -1,
+                    "mixerOnline": false
+                }
+            ],
             "enableRemoteFader": false,
-            "mixerMidiInputPort": "",
-            "mixerMidiOutputPort": "",
             "remoteFaderMidiInputPort": "",
             "remoteFaderMidiOutputPort": "",
-            "numberOfChannelsInType": [8],
             "numberOfFaders": 8,
-            "numberOfAux": 0,
-            "nextSendAux": -1,
             "numberOfSnaps": 8,
             "voLevel": 20,
             "autoResetLevel": 10,
@@ -86,8 +93,7 @@
             "offtubeMode": false,
             "fadeTime": 60,
             "voFadeTime": 200,
-            "showPfl": false,
-            "mixerOnline": false
+            "showPfl": false
         }
     ]
 }
