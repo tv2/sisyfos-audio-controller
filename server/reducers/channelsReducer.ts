@@ -68,7 +68,7 @@ export const channels = (
 
     switch (action.type) {
         case SET_OUTPUT_LEVEL: //channel:  level:
-            nextState[0].chConnection[0].channel[
+            nextState[0].chConnection[action.mixerIndex].channel[
                 action.channel
             ].outputLevel = parseFloat(action.level)
             return nextState
@@ -96,7 +96,7 @@ export const channels = (
                 action.state
             return nextState
         case FADE_ACTIVE:
-            nextState[0].chConnection[0].channel[
+            nextState[0].chConnection[action.mixerIndex].channel[
                 action.channel
             ].fadeActive = !!action.active
             return nextState

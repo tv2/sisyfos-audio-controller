@@ -201,6 +201,7 @@ export class OscMixerConnection {
                                 if (item.assignedFader === assignedFaderIndex) {
                                     store.dispatch(
                                         storeSetOutputLevel(
+                                            this.mixerIndex,
                                             index,
                                             message.args[0]
                                         )
@@ -236,6 +237,7 @@ export class OscMixerConnection {
                                 if (item.assignedFader === assignedFaderIndex) {
                                     store.dispatch(
                                         storeSetOutputLevel(
+                                            this.mixerIndex,
                                             index,
                                             message.args[0]
                                         )

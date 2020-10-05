@@ -210,7 +210,9 @@ export class StuderVistaMixerConnection {
             state.channels[0].chConnection[this.mixerIndex].channel.forEach(
                 (item, index) => {
                     if (item.assignedFader === assignedFader) {
-                        store.dispatch(storeSetOutputLevel(index, value))
+                        store.dispatch(
+                            storeSetOutputLevel(this.mixerIndex, index, value)
+                        )
                     }
                 }
             )

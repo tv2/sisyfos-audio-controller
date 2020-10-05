@@ -443,7 +443,7 @@ export class MixerGenericConnection {
     delayedFadeActiveDisable(mixerIndex: number, channelIndex: number) {
         this.mixerTimers[mixerIndex].fadeActiveTimer[channelIndex] = setTimeout(
             () => {
-                store.dispatch(storeFadeActive(channelIndex, false))
+                store.dispatch(storeFadeActive(mixerIndex, channelIndex, false))
             },
             state.settings[0].mixers[0].protocolLatency
         )
@@ -471,7 +471,7 @@ export class MixerGenericConnection {
             )
             this.clearTimer(mixerIndex, channelIndex)
         }
-        store.dispatch(storeFadeActive(channelIndex, true))
+        store.dispatch(storeFadeActive(mixerIndex, channelIndex, true))
         if (
             state.faders[0].fader[faderIndex].pgmOn ||
             state.faders[0].fader[faderIndex].voOn
@@ -515,7 +515,11 @@ export class MixerGenericConnection {
                             outputLevel
                         )
                         store.dispatch(
-                            storeSetOutputLevel(channelIndex, outputLevel)
+                            storeSetOutputLevel(
+                                mixerIndex,
+                                channelIndex,
+                                outputLevel
+                            )
                         )
                         dispatchTrigger = 0
                     }
@@ -529,7 +533,11 @@ export class MixerGenericConnection {
                         this.clearTimer(mixerIndex, channelIndex)
 
                         store.dispatch(
-                            storeSetOutputLevel(channelIndex, outputLevel)
+                            storeSetOutputLevel(
+                                mixerIndex,
+                                channelIndex,
+                                outputLevel
+                            )
                         )
                         this.delayedFadeActiveDisable(mixerIndex, channelIndex)
                         return true
@@ -549,7 +557,11 @@ export class MixerGenericConnection {
 
                     if (dispatchTrigger > dispatchResolution) {
                         store.dispatch(
-                            storeSetOutputLevel(channelIndex, outputLevel)
+                            storeSetOutputLevel(
+                                mixerIndex,
+                                channelIndex,
+                                outputLevel
+                            )
                         )
                         dispatchTrigger = 0
                     }
@@ -562,7 +574,11 @@ export class MixerGenericConnection {
                         )
                         this.clearTimer(mixerIndex, channelIndex)
                         store.dispatch(
-                            storeSetOutputLevel(channelIndex, outputLevel)
+                            storeSetOutputLevel(
+                                mixerIndex,
+                                channelIndex,
+                                outputLevel
+                            )
                         )
                         this.delayedFadeActiveDisable(mixerIndex, channelIndex)
                         return true
@@ -593,7 +609,9 @@ export class MixerGenericConnection {
             )
 
             if (dispatchTrigger > dispatchResolution) {
-                store.dispatch(storeSetOutputLevel(channelIndex, outputLevel))
+                store.dispatch(
+                    storeSetOutputLevel(mixerIndex, channelIndex, outputLevel)
+                )
                 dispatchTrigger = 0
             }
 
@@ -604,7 +622,9 @@ export class MixerGenericConnection {
                     outputLevel
                 )
                 this.clearTimer(mixerIndex, channelIndex)
-                store.dispatch(storeSetOutputLevel(channelIndex, outputLevel))
+                store.dispatch(
+                    storeSetOutputLevel(mixerIndex, channelIndex, outputLevel)
+                )
                 this.delayedFadeActiveDisable(mixerIndex, channelIndex)
                 return true
             }

@@ -23,7 +23,7 @@ describe('Test redux channelReducer actions', () => {
         let nextState = JSON.parse(parsedFullStoreJSON)
         nextState.channels[0].chConnection[0].channel[10].outputLevel = 0.5
         expect(
-            indexReducer(parsedFullStore, storeSetOutputLevel(10, 0.5))
+            indexReducer(parsedFullStore, storeSetOutputLevel(0, 10, 0.5))
         ).toEqual(nextState)
     })
 

@@ -8,9 +8,14 @@ export const FADE_ACTIVE = 'FADE_ACTIVE'
 export const SET_ASSIGNED_FADER = 'SET_ASSIGNED_FADER'
 export const SET_PRIVATE = 'SET_PRIVATE'
 
-export const storeSetOutputLevel = (channel: number, level: number) => {
+export const storeSetOutputLevel = (
+    mixerIndex: number,
+    channel: number,
+    level: number
+) => {
     return {
         type: SET_OUTPUT_LEVEL,
+        mixerIndex: mixerIndex,
         channel: channel,
         level: level,
     }
@@ -51,9 +56,14 @@ export const storeSetSingleChState = (
     }
 }
 
-export const storeFadeActive = (channelIndex: number, active: boolean) => {
+export const storeFadeActive = (
+    mixerIndex: number,
+    channelIndex: number,
+    active: boolean
+) => {
     return {
         type: FADE_ACTIVE,
+        mixerIndex: mixerIndex,
         channel: channelIndex,
         active: active,
     }

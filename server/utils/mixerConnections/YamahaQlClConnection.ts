@@ -322,6 +322,7 @@ export class QlClMixerConnection {
         if (state.faders[0].fader[faderIndex].pgmOn) {
             store.dispatch(
                 storeSetOutputLevel(
+                    this.mixerIndex,
                     channelIndex,
                     state.faders[0].fader[faderIndex].faderLevel
                 )

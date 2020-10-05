@@ -185,6 +185,7 @@ export class SSLMixerConnection {
                                         ) {
                                             store.dispatch(
                                                 storeSetOutputLevel(
+                                                    this.mixerIndex,
                                                     index,
                                                     value
                                                 )
@@ -430,6 +431,7 @@ export class SSLMixerConnection {
         if (state.faders[0].fader[faderIndex].pgmOn) {
             store.dispatch(
                 storeSetOutputLevel(
+                    this.mixerIndex,
                     channelIndex,
                     state.faders[0].fader[faderIndex].faderLevel
                 )
