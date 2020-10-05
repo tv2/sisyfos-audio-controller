@@ -55,6 +55,7 @@ describe('Test redux channelReducer actions', () => {
         expect(
             indexReducer(parsedFullStore, {
                 type: FADE_ACTIVE,
+                mixerIndex: 0,
                 channel: 10,
                 active: true,
             })
