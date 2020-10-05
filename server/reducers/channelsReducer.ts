@@ -9,10 +9,10 @@ import {
 } from './channelActions'
 
 export interface IChannels {
-    chConnection: IchConnections[]
+    chConnection: IchConnection[]
 }
 
-export interface IchConnections {
+export interface IchConnection {
     channel: Array<IChannel>
 }
 
