@@ -33,20 +33,24 @@ const OSC_PATH_PRODUCER_CHANNEL_LAYOUT = /\/channel\/(\d+)\/stage\/layer\/(\d+)\
 
 export class CasparCGConnection {
     mixerProtocol: ICasparCGMixerGeometry
+    mixerIndex: number
     connection: CasparCG
     oscClient: any
     oscCommandMap: { [key: string]: CommandChannelMap } = {}
 
-    constructor(mixerProtocol: ICasparCGMixerGeometry) {
+    constructor(mixerProtocol: ICasparCGMixerGeometry, mixerIndex: number) {
         this.mixerProtocol = mixerProtocol
+        this.mixerIndex = mixerIndex
         this.injectCasparCGSetting()
 
         this.connection = new CasparCG({
             autoReconnect: true,
             autoReconnectAttempts: 20,
             autoReconnectInterval: 3000,
-            host: state.settings[0].mixers[0].deviceIp,
-            port: parseInt(state.settings[0].mixers[0].devicePort + ''),
+            host: state.settings[0].mixers[this.mixerIndex].deviceIp,
+            port: parseInt(
+                state.settings[0].mixers[this.mixerIndex].devicePort + ''
+            ),
         })
         logger.info('Trying to connect to CasparCG...')
         this.connection.onConnected = () => {
@@ -96,11 +100,14 @@ export class CasparCGConnection {
     setupMixerConnection() {
         if (!this.oscClient) {
             const remotePort =
-                parseInt(state.settings[0].mixers[0].devicePort + '') + 1000
+                parseInt(
+                    state.settings[0].mixers[this.mixerIndex].devicePort + ''
+                ) + 1000
             this.oscClient = new osc.UDPPort({
                 localAddress: state.settings[0].localIp,
                 localPort: remotePort,
-                remoteAddress: state.settings[0].mixers[0].deviceIp,
+                remoteAddress:
+                    state.settings[0].mixers[this.mixerIndex].deviceIp,
                 remotePort,
             })
                 .on('ready', () => {
@@ -192,7 +199,7 @@ export class CasparCGConnection {
             this.oscClient.open()
             logger.info(
                 'Listening for status on CasparCG: ' +
-                    state.settings[0].mixers[0].deviceIp +
+                    state.settings[0].mixers[this.mixerIndex].deviceIp +
                     ':' +
                     remotePort
             )
@@ -346,15 +353,17 @@ export class CasparCGConnection {
     updateChannelSetting(channelIndex: number, setting: string, value: string) {
         if (
             this.mixerProtocol.sourceOptions &&
-            state.channels[0].chConnection[0].channel[channelIndex].private
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].private
         ) {
             const pair = this.mixerProtocol.sourceOptions.sources[channelIndex]
-            const producer = state.channels[0].chConnection[0].channel[
-                channelIndex
-            ].private!['producer']
+            const producer = state.channels[0].chConnection[this.mixerIndex]
+                .channel[channelIndex].private!['producer']
             let filePath = String(
-                state.channels[0].chConnection[0].channel[channelIndex]
-                    .private!['file_path']
+                state.channels[0].chConnection[this.mixerIndex].channel[
+                    channelIndex
+                ].private!['file_path']
             )
             filePath = filePath.replace(/\.[\w\d]+$/, '')
             this.controlChannelSetting(
@@ -420,7 +429,7 @@ export class CasparCGConnection {
                 this.setAllLayers(pairs, this.mixerProtocol.fader.min)
             } else {
                 // There are no other SOLO channels, restore PFL to match PGM
-                state.channels[0].chConnection[0].channel.forEach(
+                state.channels[0].chConnection[this.mixerIndex].channel.forEach(
                     (i, index) => {
                         if (
                             index >
@@ -435,8 +444,8 @@ export class CasparCGConnection {
                             .PFL_AUX_FADER_LEVEL[index]
                         this.setAllLayers(
                             pairs,
-                            state.channels[0].chConnection[0].channel[index]
-                                .outputLevel
+                            state.channels[0].chConnection[this.mixerIndex]
+                                .channel[index].outputLevel
                         )
                     }
                 )

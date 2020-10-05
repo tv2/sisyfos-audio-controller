@@ -54,39 +54,48 @@ export class MixerGenericConnection {
             this.mixerConnection.push({})
             if (this.mixerProtocol[index].protocol === 'OSC') {
                 this.mixerConnection[index] = new OscMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol
+                    this.mixerProtocol[index] as IMixerProtocol,
+                    index
                 )
             } else if (this.mixerProtocol[index].protocol === 'QLCL') {
                 this.mixerConnection[index] = new QlClMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol
+                    this.mixerProtocol[index] as IMixerProtocol,
+                    index
                 )
             } else if (this.mixerProtocol[index].protocol === 'MIDI') {
                 this.mixerConnection[index] = new MidiMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol
+                    this.mixerProtocol[index] as IMixerProtocol,
+                    index
                 )
             } else if (this.mixerProtocol[index].protocol === 'CasparCG') {
                 this.mixerConnection[index] = new CasparCGConnection(
-                    this.mixerProtocol[index] as ICasparCGMixerGeometry
+                    this.mixerProtocol[index] as ICasparCGMixerGeometry,
+                    index
                 )
             } else if (this.mixerProtocol[index].protocol === 'EMBER') {
                 this.mixerConnection[index] = new EmberMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol
+                    this.mixerProtocol[index] as IMixerProtocol,
+                    index
                 )
             } else if (this.mixerProtocol[index].protocol === 'LAWORUBY') {
                 this.mixerConnection[index] = new LawoRubyMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol
+                    this.mixerProtocol[index] as IMixerProtocol,
+                    index
                 )
             } else if (this.mixerProtocol[index].protocol === 'STUDER') {
                 this.mixerConnection[index] = new StuderMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol
+                    this.mixerProtocol[index] as IMixerProtocol,
+                    index
                 )
             } else if (this.mixerProtocol[index].protocol === 'VISTA') {
                 this.mixerConnection[index] = new StuderVistaMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol
+                    this.mixerProtocol[index] as IMixerProtocol,
+                    index
                 )
             } else if (this.mixerProtocol[index].protocol === 'SSL') {
                 this.mixerConnection[index] = new SSLMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol
+                    this.mixerProtocol[index] as IMixerProtocol,
+                    index
                 )
             }
         })
