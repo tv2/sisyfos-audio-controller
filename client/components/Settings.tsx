@@ -70,51 +70,75 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     }
 
     handleRemoteMidiInputPort = (selectedOption: any) => {
-        var settingsCopy = Object.assign({}, this.state.settings)
+        let settingsCopy = Object.assign({}, this.state.settings)
         settingsCopy.remoteFaderMidiInputPort = selectedOption.value
         this.setState({ settings: settingsCopy })
     }
 
     handleRemoteMidiOutputPort = (selectedOption: any) => {
-        var settingsCopy = Object.assign({}, this.state.settings)
+        let settingsCopy = Object.assign({}, this.state.settings)
         settingsCopy.remoteFaderMidiOutputPort = selectedOption.value
         this.setState({ settings: settingsCopy })
     }
 
     handleMixerMidiInputPort = (selectedOption: any) => {
-        var settingsCopy = Object.assign({}, this.state.settings)
+        let settingsCopy = Object.assign({}, this.state.settings)
         settingsCopy.mixers[0].mixerMidiInputPort = selectedOption.value
         this.setState({ settings: settingsCopy })
     }
 
     handleMixerMidiOutputPort = (selectedOption: any) => {
-        var settingsCopy = Object.assign({}, this.state.settings)
+        let settingsCopy = Object.assign({}, this.state.settings)
         settingsCopy.mixers[0].mixerMidiOutputPort = selectedOption.value
         this.setState({ settings: settingsCopy })
     }
 
     handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        var settingsCopy = Object.assign({}, this.state.settings)
+        let settingsCopy = Object.assign({}, this.state.settings)
         if (event.target.type === 'checkbox') {
-            ;(settingsCopy as any)[event.target.name] = !!event.target.checked
+            (settingsCopy as any)[event.target.name] = !!event.target.checked
         } else {
-            ;(settingsCopy as any)[event.target.name] = event.target.value
+            (settingsCopy as any)[event.target.name] = event.target.value
         }
         this.setState({ settings: settingsCopy })
     }
 
+    handleNumberOfMixers = (event: ChangeEvent<HTMLInputElement>) => {
+        let settingsCopy = Object.assign({}, this.state.settings)
+        settingsCopy.numberOfMixers = parseInt(event.target.value) || 1
+        settingsCopy = this.setNumberOfMixers(settingsCopy)
+        this.setState({ settings: settingsCopy })
+    }
+
+    setNumberOfMixers = (settings: any) => {
+        console.log(settings.mixers)
+        settings.mixers = settings.mixers.map((mixer: any, index: number) => {
+            if (index < settings.numberOfMixers) {
+                return mixer
+            }
+        })
+        for (let i =0; i< settings.numberOfMixers; i++) {
+            if (settings.mixers[i] === undefined) {
+                settings.mixers.push(settings.mixers[0])
+            }
+        }
+        return settings
+    }
+
     handleMixerChange = (event: ChangeEvent<HTMLInputElement>) => {
-        var settingsCopy = Object.assign({}, this.state.settings)
+        let settingsCopy = Object.assign({}, this.state.settings)
         if (event.target.type === 'checkbox') {
-            (settingsCopy.mixers[0] as any)[event.target.name] = !!event.target.checked
+            (settingsCopy.mixers[0] as any)[event.target.name] = !!event.target
+                .checked
         } else {
-            (settingsCopy.mixers[0] as any)[event.target.name] = event.target.value
+            (settingsCopy.mixers[0] as any)[event.target.name] =
+                event.target.value
         }
         this.setState({ settings: settingsCopy })
     }
 
     handleProtocolChange = (selectedOption: any) => {
-        var settingsCopy = Object.assign({}, this.state.settings)
+        let settingsCopy = Object.assign({}, this.state.settings)
         settingsCopy.mixers[0].mixerProtocol = selectedOption.value
         window.mixerProtocol =
             window.mixerProtocolPresets[settingsCopy.mixers[0].mixerProtocol]
@@ -123,9 +147,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
 
     handleNumberOfChannels = (index: number, event: any) => {
         let settingsCopy = Object.assign({}, this.state.settings)
-        settingsCopy.mixers[0].numberOfChannelsInType[index] = parseInt(
-            event.target.value
-        ) || 1
+        settingsCopy.mixers[0].numberOfChannelsInType[index] =
+            parseInt(event.target.value) || 1
         this.setState({ settings: settingsCopy })
     }
 
@@ -175,7 +198,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     renderChannelTypeSettings = () => {
         return (
             <div className="settings-show-channel-selection">
-                <div className="settings-header">NUMBER OF CHANNELTYPES:</div>
                 {window.mixerProtocol.channelTypes.map(
                     (item: any, index: number) => {
                         return (
@@ -229,8 +251,10 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 <Select
                     styles={selectorColorStyles}
                     value={{
-                        label: this.state.settings.mixers[0].mixerMidiOutputPort,
-                        value: this.state.settings.mixers[0].mixerMidiOutputPort,
+                        label: this.state.settings.mixers[0]
+                            .mixerMidiOutputPort,
+                        value: this.state.settings.mixers[0]
+                            .mixerMidiOutputPort,
                     }}
                     onChange={this.handleMixerMidiOutputPort}
                     options={this.midiOutputPortList}
@@ -240,24 +264,107 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         )
     }
 
+    renderMixerSettings = () => {
+        return (
+            <div>
+                {this.state.settings.mixers.map((mixer: any, index: number) => {
+                    return (
+                        <React.Fragment>
+                            <div className="settings-header">
+                                MIXER {index + 1} SETTINGS:
+                            </div>
+
+                            <Select
+                                styles={selectorColorStyles}
+                                value={{
+                                    label:
+                                        window.mixerProtocolPresets[
+                                            mixer.mixerProtocol
+                                        ].label,
+                                    value: mixer.mixerProtocol,
+                                }}
+                                onChange={this.handleProtocolChange}
+                                options={window.mixerProtocolList}
+                            />
+                            <br />
+                            <label className="settings-input-field">
+                                MIXER IP :
+                                <input
+                                    name="deviceIp"
+                                    type="text"
+                                    value={
+                                        mixer.deviceIp
+                                    }
+                                    onChange={this.handleMixerChange}
+                                />
+                            </label>
+                            <br />
+                            <label className="settings-input-field">
+                                MIXER PORT :
+                                <input
+                                    name="devicePort"
+                                    type="text"
+                                    value={
+                                        mixer.devicePort
+                                    }
+                                    onChange={this.handleMixerChange}
+                                />
+                            </label>
+                            <br />
+                            <label className="settings-input-field">
+                                PROTOCOL LATENCY :
+                                <input
+                                    name="protocolLatency"
+                                    type="text"
+                                    value={
+                                        mixer.protocolLatency
+                                    }
+                                    onChange={this.handleMixerChange}
+                                />
+                            </label>
+                            <br />
+                            <label className="settings-input-field">
+                                NUMBER OF AUX :
+                                <input
+                                    name="numberOfAux"
+                                    type="text"
+                                    value={
+                                        mixer.numberOfAux
+                                    }
+                                    onChange={this.handleMixerChange}
+                                />
+                            </label>
+                            <br />
+                            <label className="settings-input-field">
+                                NEXT SEND AUX NR.:
+                                <input
+                                    name="nextSendAux"
+                                    type="text"
+                                    value={
+                                        mixer.nextSendAux
+                                    }
+                                    onChange={this.handleMixerChange}
+                                />
+                            </label>
+                            <br />
+                            {window.mixerProtocol.protocol === 'MIDI'
+                                ? this.renderMixerMidiSettings()
+                                : ''}
+                            <br />
+                            {this.renderChannelTypeSettings()}
+                            <br />
+                        </React.Fragment>
+                    )
+                })}
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className="settings-body">
-                <div className="settings-header">MIXER SETTINGS:</div>
+                <div className="settings-header">GENERIC SETTINGS:</div>
 
-                <Select
-                    styles={selectorColorStyles}
-                    value={{
-                        label:
-                            window.mixerProtocolPresets[
-                                this.state.settings.mixers[0].mixerProtocol
-                            ].label,
-                        value: this.state.settings.mixers[0].mixerProtocol,
-                    }}
-                    onChange={this.handleProtocolChange}
-                    options={window.mixerProtocolList}
-                />
-                <br />
                 <label className="settings-input-field">
                     LOCAL MIXER IP:
                     <input
@@ -275,26 +382,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                         type="text"
                         value={this.state.settings.localOscPort}
                         onChange={this.handleChange}
-                    />
-                </label>
-                <br />
-                <label className="settings-input-field">
-                    MIXER IP :
-                    <input
-                        name="deviceIp"
-                        type="text"
-                        value={this.state.settings.mixers[0].deviceIp}
-                        onChange={this.handleMixerChange}
-                    />
-                </label>
-                <br />
-                <label className="settings-input-field">
-                    MIXER PORT :
-                    <input
-                        name="devicePort"
-                        type="text"
-                        value={this.state.settings.mixers[0].devicePort}
-                        onChange={this.handleMixerChange}
                     />
                 </label>
                 <br />
@@ -343,16 +430,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br />
                 <label className="settings-input-field">
-                    PROTOCOL LATENCY :
-                    <input
-                        name="protocolLatency"
-                        type="text"
-                        value={this.state.settings.mixers[0].protocolLatency}
-                        onChange={this.handleMixerChange}
-                    />
-                </label>
-                <br />
-                <label className="settings-input-field">
                     NUMBER OF FADERS :
                     <input
                         name="numberOfFaders"
@@ -363,22 +440,12 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br />
                 <label className="settings-input-field">
-                    NUMBER OF AUX :
+                    NUMBER OF MIXERS :
                     <input
-                        name="numberOfAux"
+                        name="numberOfMixers"
                         type="text"
-                        value={this.state.settings.mixers[0].numberOfAux}
-                        onChange={this.handleMixerChange}
-                    />
-                </label>
-                <br />
-                <label className="settings-input-field">
-                    NEXT SEND AUX NR.:
-                    <input
-                        name="nextSendAux"
-                        type="text"
-                        value={this.state.settings.mixers[0].nextSendAux}
-                        onChange={this.handleMixerChange}
+                        value={this.state.settings.numberOfMixers}
+                        onChange={this.handleNumberOfMixers}
                     />
                 </label>
                 <br />
@@ -442,12 +509,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                     />
                 </label>
                 <br />
-                {window.mixerProtocol.protocol === 'MIDI'
-                    ? this.renderMixerMidiSettings()
-                    : ''}
-                <br />
-                {this.renderChannelTypeSettings()}
-                <br />
+
+                {this.renderMixerSettings()}
                 <button
                     className="settings-cancel-button"
                     onClick={() => {
@@ -472,7 +535,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
 const mapStateToProps = (state: any, t: any): IAppProps => {
     return {
         store: state,
-        t: t
+        t: t,
     }
 }
 
