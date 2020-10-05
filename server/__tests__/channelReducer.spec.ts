@@ -38,6 +38,7 @@ describe('Test redux channelReducer actions', () => {
         expect(
             indexReducer(parsedFullStore, {
                 type: SET_ASSIGNED_FADER,
+                mixerIndex: 0,
                 channel: 10,
                 faderNumber: 2,
             })
