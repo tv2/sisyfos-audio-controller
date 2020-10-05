@@ -137,17 +137,17 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         this.setState({ settings: settingsCopy })
     }
 
-    handleProtocolChange = (selectedOption: any) => {
+    handleProtocolChange = (selectedOption: any, mixerIndex: number) => {
         let settingsCopy = Object.assign({}, this.state.settings)
-        settingsCopy.mixers[0].mixerProtocol = selectedOption.value
+        settingsCopy.mixers[mixerIndex].mixerProtocol = selectedOption.value
         window.mixerProtocol =
-            window.mixerProtocolPresets[settingsCopy.mixers[0].mixerProtocol]
+            window.mixerProtocolPresets[settingsCopy.mixers[mixerIndex].mixerProtocol]
         this.setState({ settings: settingsCopy })
     }
 
-    handleNumberOfChannels = (index: number, event: any) => {
+    handleNumberOfChannels = (mixerIndex: number, index: number, event: any) => {
         let settingsCopy = Object.assign({}, this.state.settings)
-        settingsCopy.mixers[0].numberOfChannelsInType[index] =
+        settingsCopy.mixers[mixerIndex].numberOfChannelsInType[index] =
             parseInt(event.target.value) || 1
         this.setState({ settings: settingsCopy })
     }
@@ -195,10 +195,10 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         this.props.dispatch(storeShowSettings())
     }
 
-    renderChannelTypeSettings = () => {
+    renderChannelTypeSettings = (mixerIndex: number) => {
         return (
             <div className="settings-show-channel-selection">
-                {window.mixerProtocol.channelTypes.map(
+                {window.mixerProtocolPresets[this.state.settings.mixers[mixerIndex].mixerProtocol].channelTypes.map(
                     (item: any, index: number) => {
                         return (
                             <React.Fragment>
@@ -208,11 +208,12 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                         name="numberOfChannelsInType"
                                         type="text"
                                         value={
-                                            this.state.settings.mixers[0]
+                                            this.state.settings.mixers[mixerIndex]
                                                 .numberOfChannelsInType[index]
                                         }
                                         onChange={(event) =>
                                             this.handleNumberOfChannels(
+                                                mixerIndex,
                                                 index,
                                                 event
                                             )
@@ -267,11 +268,11 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     renderMixerSettings = () => {
         return (
             <div>
-                {this.state.settings.mixers.map((mixer: any, index: number) => {
+                {this.state.settings.mixers.map((mixer: any, mixerIndex: number) => {
                     return (
                         <React.Fragment>
                             <div className="settings-header">
-                                MIXER {index + 1} SETTINGS:
+                                MIXER {mixerIndex + 1} SETTINGS:
                             </div>
 
                             <Select
@@ -283,7 +284,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                         ].label,
                                     value: mixer.mixerProtocol,
                                 }}
-                                onChange={this.handleProtocolChange}
+                                onChange={(event) => this.handleProtocolChange(event, mixerIndex)}
                                 options={window.mixerProtocolList}
                             />
                             <br />
@@ -351,7 +352,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                 ? this.renderMixerMidiSettings()
                                 : ''}
                             <br />
-                            {this.renderChannelTypeSettings()}
+                            {this.renderChannelTypeSettings(mixerIndex)}
                             <br />
                         </React.Fragment>
                     )
