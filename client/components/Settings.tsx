@@ -125,13 +125,13 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         return settings
     }
 
-    handleMixerChange = (event: ChangeEvent<HTMLInputElement>) => {
+    handleMixerChange = (event: ChangeEvent<HTMLInputElement>, mixerIndex: number) => {
         let settingsCopy = Object.assign({}, this.state.settings)
         if (event.target.type === 'checkbox') {
-            (settingsCopy.mixers[0] as any)[event.target.name] = !!event.target
+            (settingsCopy.mixers[mixerIndex] as any)[event.target.name] = !!event.target
                 .checked
         } else {
-            (settingsCopy.mixers[0] as any)[event.target.name] =
+            (settingsCopy.mixers[mixerIndex] as any)[event.target.name] =
                 event.target.value
         }
         this.setState({ settings: settingsCopy })
@@ -296,7 +296,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                     value={
                                         mixer.deviceIp
                                     }
-                                    onChange={this.handleMixerChange}
+                                    onChange={(event) => this.handleMixerChange(event, mixerIndex)}
                                 />
                             </label>
                             <br />
@@ -308,7 +308,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                     value={
                                         mixer.devicePort
                                     }
-                                    onChange={this.handleMixerChange}
+                                    onChange={(event) => this.handleMixerChange(event, mixerIndex)}
                                 />
                             </label>
                             <br />
@@ -320,7 +320,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                     value={
                                         mixer.protocolLatency
                                     }
-                                    onChange={this.handleMixerChange}
+                                    onChange={(event) => this.handleMixerChange(event, mixerIndex)}
                                 />
                             </label>
                             <br />
@@ -332,7 +332,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                     value={
                                         mixer.numberOfAux
                                     }
-                                    onChange={this.handleMixerChange}
+                                    onChange={(event) => this.handleMixerChange(event, mixerIndex)}
                                 />
                             </label>
                             <br />
@@ -344,7 +344,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                     value={
                                         mixer.nextSendAux
                                     }
-                                    onChange={this.handleMixerChange}
+                                    onChange={(event) => this.handleMixerChange(event, mixerIndex)}
                                 />
                             </label>
                             <br />
