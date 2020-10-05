@@ -42,6 +42,7 @@ class ChannelRouteSettings extends React.PureComponent<
                 )
             ) {
                 window.socketIoClient.emit(SOCKET_SET_ASSIGNED_FADER, {
+                    mixerIndex: 0,
                     channel: channel,
                     faderAssign: -1,
                 })
@@ -58,6 +59,7 @@ class ChannelRouteSettings extends React.PureComponent<
                 )
             ) {
                 window.socketIoClient.emit(SOCKET_SET_ASSIGNED_FADER, {
+                    mixerIndex: 0,
                     channel: channel,
                     faderAssign: this.faderIndex,
                 })
@@ -69,6 +71,7 @@ class ChannelRouteSettings extends React.PureComponent<
         if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
             this.props.channel.forEach((channel: any, index: number) => {
                 window.socketIoClient.emit(SOCKET_SET_ASSIGNED_FADER, {
+                    mixerIndex: 0,
                     channel: index,
                     faderAssign: -1,
                 })
@@ -81,6 +84,7 @@ class ChannelRouteSettings extends React.PureComponent<
             this.props.fader.forEach((fader: any, index: number) => {
                 if (this.props.channel.length > index) {
                     window.socketIoClient.emit(SOCKET_SET_ASSIGNED_FADER, {
+                        mixerIndex: 0,
                         channel: index,
                         faderAssign: index,
                     })

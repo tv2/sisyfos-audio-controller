@@ -212,14 +212,20 @@ export class MainThreadHandlers {
             })
             .on(SOCKET_SET_ASSIGNED_FADER, (payload: any) => {
                 logger.verbose(
-                    'Set assigned fader. Channel:' +
+                    'Set assigned fader. Mixer:' +
+                        String(payload.mixerIndex + 1) +
+                        'Channel:' +
                         String(payload.channel) +
                         'Fader :' +
                         String(payload.faderAssign),
                     {}
                 )
                 store.dispatch(
-                    storeSetAssignedFader(payload.channel, payload.faderAssign)
+                    storeSetAssignedFader(
+                        payload.mixerIndex,
+                        payload.channel,
+                        payload.faderAssign
+                    )
                 )
                 this.updateFullClientStore()
             })

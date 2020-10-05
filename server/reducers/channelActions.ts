@@ -69,9 +69,14 @@ export const storeFadeActive = (
     }
 }
 
-export const storeSetAssignedFader = (channel: number, faderNumber: number) => {
+export const storeSetAssignedFader = (
+    mixerIndex: number,
+    channel: number,
+    faderNumber: number
+) => {
     return {
         type: SET_ASSIGNED_FADER,
+        mixerIndex: mixerIndex,
         channel: channel,
         faderNumber: faderNumber,
     }

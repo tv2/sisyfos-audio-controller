@@ -67,12 +67,12 @@ export const channels = (
     ]
 
     switch (action.type) {
-        case SET_OUTPUT_LEVEL: //channel:  level:
+        case SET_OUTPUT_LEVEL:
             nextState[0].chConnection[action.mixerIndex].channel[
                 action.channel
             ].outputLevel = parseFloat(action.level)
             return nextState
-        case SET_COMPLETE_CH_STATE: //allState  //numberOfChannels
+        case SET_COMPLETE_CH_STATE:
             nextState = defaultChannelsReducerState(action.numberOfTypeChannels)
             if (
                 action.allState.chConnection[0].channel.length ==
@@ -91,7 +91,7 @@ export const channels = (
                 )
             }
             return nextState
-        case SET_SINGLE_CH_STATE: //channelIndex //state
+        case SET_SINGLE_CH_STATE:
             nextState[0].chConnection[0].channel[action.channelIndex] =
                 action.state
             return nextState
@@ -100,11 +100,12 @@ export const channels = (
                 action.channel
             ].fadeActive = !!action.active
             return nextState
-        case SET_ASSIGNED_FADER: //channel:  faderNumber:
-            nextState[0].chConnection[0].channel[action.channel].assignedFader =
-                action.faderNumber
+        case SET_ASSIGNED_FADER:
+            nextState[0].chConnection[action.mixerIndex].channel[
+                action.channel
+            ].assignedFader = action.faderNumber
             return nextState
-        case SET_AUX_LEVEL: //channel:  auxIndex: level:
+        case SET_AUX_LEVEL:
             nextState[0].chConnection[0].channel[action.channel].auxLevel[
                 action.auxIndex
             ] = parseFloat(action.level)
