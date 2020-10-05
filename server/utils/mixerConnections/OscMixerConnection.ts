@@ -104,13 +104,13 @@ export class OscMixerConnection {
                             this.mixerIndex
                         ].mixerProtocol.includes('behringer')
                     ) {
-                        behringerXrMeter(message.args)
+                        behringerXrMeter(this.mixerIndex, message.args)
                     } else if (
                         state.settings[0].mixers[
                             this.mixerIndex
                         ].mixerProtocol.includes('midas')
                     ) {
-                        midasMeter(message.args)
+                        midasMeter(this.mixerIndex, message.args)
                     } else {
                         let ch = message.address.split('/')[
                             this.cmdChannelIndex
@@ -141,13 +141,13 @@ export class OscMixerConnection {
                             this.mixerIndex
                         ].mixerProtocol.includes('behringer')
                     ) {
-                        behringerReductionMeter(message.args)
+                        behringerReductionMeter(this.mixerIndex, message.args)
                     } else if (
                         state.settings[0].mixers[
                             this.mixerIndex
                         ].mixerProtocol.includes('midas')
                     ) {
-                        midasMeter(message.args)
+                        midasMeter(this.mixerIndex, message.args)
                     } else {
                         let ch = message.address.split('/')[
                             this.cmdChannelIndex

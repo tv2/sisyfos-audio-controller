@@ -6,9 +6,8 @@ import {
     SET_VU_LEVEL,
 } from '../../../reducers/faderActions'
 import { SOCKET_SET_ALL_VU } from '../../../constants/SOCKET_IO_DISPATCHERS'
-import { IChannel } from '../../../reducers/channelsReducer'
 
-export const midasMeter = (message: any) => {
+export const midasMeter = (mixerIndex: number, message: any) => {
     const DATA_OFFSET = 4
     let uint8bytes = Uint8Array.from(message[0])
     let dataview = new DataView(uint8bytes.buffer)
@@ -18,7 +17,8 @@ export const midasMeter = (message: any) => {
     )
     let level: number
     let reductionLevel: number
-    let numberOfChannels = state.settings[0].mixers[0].numberOfChannelsInType[0]
+    let numberOfChannels =
+        state.settings[0].mixers[mixerIndex].numberOfChannelsInType[0]
 
     for (let i = 0; i < numberOfChannels; i++) {
         level = dataview.getFloat32(4 * i + DATA_OFFSET, true)
@@ -26,27 +26,36 @@ export const midasMeter = (message: any) => {
 
         store.dispatch({
             type: SET_VU_LEVEL,
-            channel: state.channels[0].chConnection[0].channel[i].assignedFader,
+            channel:
+                state.channels[0].chConnection[mixerIndex].channel[i]
+                    .assignedFader,
             level: level,
         })
         reductionLevel = 1 - reductionLevel
         store.dispatch({
             type: SET_VU_REDUCTION_LEVEL,
-            channel: state.channels[0].chConnection[0].channel[i].assignedFader,
+            channel:
+                state.channels[0].chConnection[mixerIndex].channel[i]
+                    .assignedFader,
             level: reductionLevel,
         })
         if (
             vuMeters[
-                state.channels[0].chConnection[0].channel[i].assignedFader
+                state.channels[0].chConnection[mixerIndex].channel[i]
+                    .assignedFader
             ] === undefined &&
-            state.channels[0].chConnection[0].channel[i].assignedFader <
-                state.settings[0].numberOfFaders
+            state.channels[0].chConnection[mixerIndex].channel[i]
+                .assignedFader < state.settings[0].numberOfFaders
         ) {
             vuMeters[
-                state.channels[0].chConnection[0].channel[i].assignedFader
+                state.channels[0].chConnection[mixerIndex].channel[
+                    i
+                ].assignedFader
             ] = level
             vuReductionMeters[
-                state.channels[0].chConnection[0].channel[i].assignedFader
+                state.channels[0].chConnection[mixerIndex].channel[
+                    i
+                ].assignedFader
             ] = reductionLevel
         }
     }

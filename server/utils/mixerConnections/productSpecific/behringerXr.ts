@@ -13,7 +13,7 @@ import {
 
 const DATA_OFFSET = 4
 
-export const behringerXrMeter = (message: any) => {
+export const behringerXrMeter = (mixerIndex: number, message: any) => {
     //Test data from Behringer:
     //message = [40, 0, 0, 0, 133, 157, 183, 156, 72, 154, 101, 157, 229, 162, 241, 158, 253, 162, 156, 162, 131, 162, 253, 162, 81, 162, 29, 162, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 223, 157, 223, 157, 223, 157, 223, 157];
 
@@ -33,13 +33,14 @@ export const behringerXrMeter = (message: any) => {
         })
         socketServer.emit(SOCKET_SET_VU, {
             faderIndex:
-                state.channels[0].chConnection[0].channel[i].assignedFader,
+                state.channels[0].chConnection[mixerIndex].channel[i]
+                    .assignedFader,
             level: level,
         })
     }
 }
 
-export const behringerReductionMeter = (message: any) => {
+export const behringerReductionMeter = (mixerIndex: number, message: any) => {
     //Test data from Behringer:
     //message =
 
@@ -61,7 +62,8 @@ export const behringerReductionMeter = (message: any) => {
         })
         socketServer.emit(SOCKET_SET_VU_REDUCTION, {
             faderIndex:
-                state.channels[0].chConnection[0].channel[i].assignedFader,
+                state.channels[0].chConnection[mixerIndex].channel[i]
+                    .assignedFader,
             level: level,
         })
     }
