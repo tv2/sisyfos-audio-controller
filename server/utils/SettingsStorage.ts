@@ -41,7 +41,7 @@ export const saveSettings = (settings: any) => {
 export const loadSnapshotState = (
     stateSnapshot: any,
     stateChannelSnapshot: any,
-    numberOfChannels: Array<number>,
+    numberOfChannels: Array<any>,
     numberOfFaders: number,
     fileName: string,
     loadAll: boolean

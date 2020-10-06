@@ -28,7 +28,7 @@ export interface IChannel {
     }
 }
 
-const defaultChannelsReducerState = (numberOfTypeChannels: Array<number>) => {
+const defaultChannelsReducerState = (numberOfChannels: any) => {
     let defaultObj: Array<IChannels> = [
         {
             chConnection: [
@@ -39,25 +39,36 @@ const defaultChannelsReducerState = (numberOfTypeChannels: Array<number>) => {
         },
     ]
 
-    let totalNumberOfChannels = 0
-    numberOfTypeChannels.forEach((numberOfChannels, typeIndex) => {
-        for (let index = 0; index < numberOfChannels; index++) {
-            defaultObj[0].chConnection[0].channel[totalNumberOfChannels] = {
-                channelType: typeIndex,
-                channelTypeIndex: index,
-                assignedFader: totalNumberOfChannels,
-                fadeActive: false,
-                outputLevel: 0.0,
-                auxLevel: [],
+    for (
+        let mixerIndex = 0;
+        mixerIndex++;
+        mixerIndex < numberOfChannels.length
+    ) {
+        let totalNumberOfChannels = 0
+        numberOfChannels[mixerIndex].nuberOfTypeChannels.forEach(
+            (channelTypeSize: any, typeIndex: number) => {
+                for (let index = 0; index < channelTypeSize; index++) {
+                    defaultObj[0].chConnection[mixerIndex].channel[
+                        totalNumberOfChannels
+                    ] = {
+                        channelType: typeIndex,
+                        channelTypeIndex: index,
+                        assignedFader: totalNumberOfChannels,
+                        fadeActive: false,
+                        outputLevel: 0.0,
+                        auxLevel: [],
+                    }
+                    totalNumberOfChannels++
+                }
             }
-            totalNumberOfChannels++
-        }
-    })
+        )
+    }
+
     return defaultObj
 }
 
 export const channels = (
-    state = defaultChannelsReducerState([1]),
+    state = defaultChannelsReducerState([{ numberOfTypeChannels: 1 }]),
     action: any
 ): Array<IChannels> => {
     let nextState = [

@@ -6,7 +6,7 @@ import { logger } from './logger'
 
 const path = require('path')
 export class SnapshotHandler {
-    numberOfChannels: number[] = []
+    numberOfChannels: any[] = [{ numberOfChannelInTypes: [] }]
     settingsPath: string = ''
 
     constructor() {
@@ -15,13 +15,15 @@ export class SnapshotHandler {
         this.snapShopStoreTimer()
 
         // Count total number of channels:
-        mixerProtocolPresets[
-            state.settings[0].mixers[0].mixerProtocol
-        ].channelTypes.forEach((item: any, index: number) => {
-            this.numberOfChannels.push(
-                state.settings[0].mixers[0].numberOfChannelsInType[index]
-            )
-        })
+        for (let i = 0; i++; i < state.settings[0].numberOfMixers) {
+            mixerProtocolPresets[
+                state.settings[0].mixers[i].mixerProtocol
+            ].channelTypes.forEach((item: any, index: number) => {
+                this.numberOfChannels[i].numberOfChannelInTypes.push(
+                    state.settings[0].mixers[0].numberOfChannelsInType[index]
+                )
+            })
+        }
         this.loadSnapshotSettings(path.resolve('storage', 'default.shot'), true)
 
         // ** UNCOMMENT TO DUMP A FULL STORE:
