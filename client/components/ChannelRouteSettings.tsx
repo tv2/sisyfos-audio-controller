@@ -7,13 +7,14 @@ import { Store } from 'redux'
 import { connect } from 'react-redux'
 import { storeShowOptions } from '../../server/reducers/settingsActions'
 import { SOCKET_SET_ASSIGNED_FADER } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import { IChannel, IchConnection } from '../../server/reducers/channelsReducer'
+import { IFader } from '../../server/reducers/fadersReducer'
 
 interface IChannelSettingsInjectProps {
     label: string
-    selectedProtocol: string
-    numberOfChannelsInType: Array<number>
-    channel: Array<any>
-    fader: Array<any>
+    chConnections: IchConnection[]
+    channel: IChannel[]
+    fader: IFader[]
 }
 
 interface IChannelProps {
@@ -117,36 +118,47 @@ class ChannelRouteSettings extends React.PureComponent<
                     ROUTE 1:1
                 </button>
                 <hr />
-                {this.props.channel.map((channel: any, index: number) => {
-                    return (
-                        <div
-                            key={index}
-                            className={ClassNames('channel-route-text', {
-                                checked:
-                                    this.props.channel[index].assignedFader ===
-                                    this.faderIndex,
-                            })}
-                        >
-                            {' Channel ' + (index + 1) + ' : '}
-                            <input
-                                type="checkbox"
-                                checked={
-                                    this.props.channel[index].assignedFader ===
-                                    this.faderIndex
-                                }
-                                onChange={(event) =>
-                                    this.handleAssignChannel(index, event)
-                                }
-                            />
-                            {this.props.channel[index].assignedFader >= 0
-                                ? '   (Fader ' +
-                                  (this.props.channel[index].assignedFader +
-                                      1) +
-                                  ')'
-                                : ' (not assigned)'}
-                        </div>
-                    )
-                })}
+                {this.props.chConnections.map(
+                    (chConnection: IchConnection, mixerIndex: number) => {
+                        return chConnection.channel.map(
+                            (channel: any, index: number) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        className={ClassNames(
+                                            'channel-route-text',
+                                            {
+                                                checked:
+                                                    channel.assignedFader ===
+                                                    this.faderIndex,
+                                            }
+                                        )}
+                                    >
+                                        {' Channel ' + (index + 1) + ' : '}
+                                        <input
+                                            type="checkbox"
+                                            checked={
+                                                channel.assignedFader ===
+                                                this.faderIndex
+                                            }
+                                            onChange={(event) =>
+                                                this.handleAssignChannel(
+                                                    index,
+                                                    event
+                                                )
+                                            }
+                                        />
+                                        {channel.assignedFader >= 0
+                                            ? '   (Fader ' +
+                                              (channel.assignedFader + 1) +
+                                              ')'
+                                            : ' (not assigned)'}
+                                    </div>
+                                )
+                            }
+                        )
+                    }
+                )}
             </div>
         )
     }
@@ -158,8 +170,7 @@ const mapStateToProps = (
 ): IChannelSettingsInjectProps => {
     return {
         label: state.faders[0].fader[props.faderIndex].label,
-        selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
-        numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+        chConnections: state.channels[0].chConnection,
         channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
     }
