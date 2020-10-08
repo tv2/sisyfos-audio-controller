@@ -7,6 +7,7 @@ import { store } from '../reducers/store'
 import { storeSetCompleteChState } from '../reducers/channelActions'
 import { SET_COMPLETE_FADER_STATE } from '../reducers/faderActions'
 import { logger } from './logger'
+import { InumberOfChannels } from '../reducers/channelsReducer'
 
 export const loadSettings = (storeRedux: any) => {
     let settingsInterface = storeRedux.settings[0]
@@ -41,7 +42,7 @@ export const saveSettings = (settings: any) => {
 export const loadSnapshotState = (
     stateSnapshot: any,
     stateChannelSnapshot: any,
-    numberOfChannels: Array<any>,
+    numberOfChannels: InumberOfChannels[],
     numberOfFaders: number,
     fileName: string,
     loadAll: boolean

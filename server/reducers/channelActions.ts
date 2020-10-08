@@ -1,4 +1,4 @@
-import { IChannel, IChannels } from './channelsReducer'
+import { IChannel, IChannels, InumberOfChannels } from './channelsReducer'
 
 export const SET_OUTPUT_LEVEL = 'SET_OUTPUT_LEVEL'
 export const SET_AUX_LEVEL = 'SET_AUX_LEVEL'
@@ -36,12 +36,12 @@ export const storeSetAuxLevel = (
 
 export const storeSetCompleteChState = (
     allState: IChannels,
-    numberOfTypeChannels: number[]
+    numberOfChannels: InumberOfChannels[]
 ) => {
     return {
         type: SET_COMPLETE_CH_STATE,
         allState: allState,
-        numberOfTypeChannels: numberOfTypeChannels,
+        numberOfTypeChannels: numberOfChannels,
     }
 }
 

@@ -26,6 +26,10 @@ import {
     SOCKET_RETURN_MIXER_PRESET_LIST,
     SOCKET_RETURN_PAGES_LIST,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import {
+    IchConnection,
+    InumberOfChannels,
+} from '../../server/reducers/channelsReducer'
 
 export const socketClientHandlers = () => {
     window.socketIoClient
@@ -39,15 +43,14 @@ export const socketClientHandlers = () => {
         })
         .on(SOCKET_SET_FULL_STORE, (payload: any) => {
             // console.log('STATE RECEIVED :', payload)
-
-            let numberOfChannels: number[] = []
             if (window.mixerProtocol) {
-                window.mixerProtocol.channelTypes.forEach(
-                    (item: any, index: number) => {
-                        numberOfChannels.push(
-                            payload.settings[0].mixers[0]
-                                .numberOfChannelsInType[index]
-                        )
+                let numberOfChannels: InumberOfChannels[] = []
+                payload.channels[0].chConnection.forEach(
+                    (chConnection: IchConnection, mixerIndex: number) => {
+                        numberOfChannels.push({ numberOfTypeInCh: [] })
+                        numberOfChannels[mixerIndex].numberOfTypeInCh = [
+                            chConnection.channel.length,
+                        ]
                     }
                 )
                 window.storeRedux.dispatch(

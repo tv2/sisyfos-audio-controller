@@ -28,24 +28,27 @@ export interface IChannel {
     }
 }
 
-const defaultChannelsReducerState = (numberOfChannels: any) => {
-    let defaultObj: Array<IChannels> = [
+export interface InumberOfChannels {
+    numberOfTypeInCh: number[]
+}
+
+const defaultChannelsReducerState = (
+    numberOfChannels: InumberOfChannels[]
+): IChannels[] => {
+    let defaultObj: IChannels[] = [
         {
-            chConnection: [
-                {
-                    channel: [],
-                },
-            ],
+            chConnection: [],
         },
     ]
 
     for (
         let mixerIndex = 0;
-        mixerIndex++;
-        mixerIndex < numberOfChannels.length
+        mixerIndex < numberOfChannels.length;
+        mixerIndex++
     ) {
         let totalNumberOfChannels = 0
-        numberOfChannels[mixerIndex].nuberOfTypeChannels.forEach(
+        defaultObj[0].chConnection.push({ channel: [] })
+        numberOfChannels[mixerIndex].numberOfTypeInCh.forEach(
             (channelTypeSize: any, typeIndex: number) => {
                 for (let index = 0; index < channelTypeSize; index++) {
                     defaultObj[0].chConnection[mixerIndex].channel[
@@ -68,7 +71,7 @@ const defaultChannelsReducerState = (numberOfChannels: any) => {
 }
 
 export const channels = (
-    state = defaultChannelsReducerState([{ numberOfTypeChannels: 1 }]),
+    state = defaultChannelsReducerState([{ numberOfTypeInCh: [1] }]),
     action: any
 ): Array<IChannels> => {
     let nextState = [
@@ -85,22 +88,28 @@ export const channels = (
             return nextState
         case SET_COMPLETE_CH_STATE:
             nextState = defaultChannelsReducerState(action.numberOfTypeChannels)
-            if (
-                action.allState.chConnection[0].channel.length ==
-                nextState[0].chConnection[0].channel.length
-            ) {
-                action.allState.chConnection[0].channel.forEach(
-                    (channel: any, index: number) => {
-                        if (
-                            index < nextState[0].chConnection[0].channel.length
-                        ) {
-                            nextState[0].chConnection[0].channel[
-                                index
-                            ] = channel
+
+            nextState[0].chConnection.forEach(
+                (chConnection: IchConnection, mixerIndex: number) => {
+                    chConnection.channel.forEach(
+                        (channel: any, index: number) => {
+                            if (
+                                index <
+                                action.allState.chConnection[mixerIndex]
+                                    ?.channel.length
+                            ) {
+                                nextState[0].chConnection[mixerIndex].channel[
+                                    index
+                                ] =
+                                    action.allState.chConnection[
+                                        mixerIndex
+                                    ].channel[index]
+                            }
                         }
-                    }
-                )
-            }
+                    )
+                }
+            )
+
             return nextState
         case SET_SINGLE_CH_STATE:
             nextState[0].chConnection[0].channel[action.channelIndex] =
