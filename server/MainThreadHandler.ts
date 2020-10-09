@@ -259,6 +259,7 @@ export class MainThreadHandlers {
                 )
                 store.dispatch(
                     storeSetAuxLevel(
+                        0,
                         payload.channel,
                         payload.auxIndex,
                         payload.level

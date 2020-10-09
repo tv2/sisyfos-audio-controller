@@ -293,7 +293,12 @@ export class OscMixerConnection {
                                 message.args[0]
                         )
                         store.dispatch(
-                            storeSetAuxLevel(ch - 1, auxIndex, message.args[0])
+                            storeSetAuxLevel(
+                                this.mixerIndex,
+                                ch - 1,
+                                auxIndex,
+                                message.args[0]
+                            )
                         )
                         global.mainThreadHandler.updateFullClientStore()
                         if (remoteConnections) {

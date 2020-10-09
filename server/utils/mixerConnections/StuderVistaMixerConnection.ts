@@ -255,7 +255,14 @@ export class StuderVistaMixerConnection {
             channelTypeIndex
         )
 
-        store.dispatch(storeSetAuxLevel(channelArrayIndex, auxIndex, value))
+        store.dispatch(
+            storeSetAuxLevel(
+                this.mixerIndex,
+                channelArrayIndex,
+                auxIndex,
+                value
+            )
+        )
 
         global.mainThreadHandler.updateFullClientStore()
         remoteConnections.updateRemoteAuxPanels()

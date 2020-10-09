@@ -195,7 +195,7 @@ export class SkaarhojRemoteConnection {
                 ' Level : ' +
                 level
         )
-        store.dispatch(storeSetAuxLevel(chIndex, auxSendIndex, level))
+        store.dispatch(storeSetAuxLevel(0, chIndex, auxSendIndex, level))
         mixerGenericConnection.updateAuxLevel(chIndex, auxSendIndex + 1)
         global.mainThreadHandler.updateFullClientStore()
         this.updateRemoteAuxPanel(panelNumber)

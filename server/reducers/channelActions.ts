@@ -22,12 +22,14 @@ export const storeSetOutputLevel = (
 }
 
 export const storeSetAuxLevel = (
+    mixerIndex: number,
     channel: number,
     auxIndex: number,
     level: number
 ) => {
     return {
         type: SET_AUX_LEVEL,
+        mixerIndex: mixerIndex,
         channel: channel,
         auxIndex: auxIndex,
         level: level,
