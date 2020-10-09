@@ -102,6 +102,39 @@ class ChannelRouteSettings extends React.PureComponent<
         this.props.dispatch(storeShowOptions(this.faderIndex))
     }
 
+    renderMixer(chConnection: IchConnection, mixerIndex: number) {
+        return (
+            <div>
+                <p className='channel-route-mixer-name'> {'MIXER ' + (mixerIndex + 1)}</p>
+{
+            chConnection.channel.map((channel: any, index: number) => {
+            return (
+                <div
+                    key={index}
+                    className={ClassNames('channel-route-text', {
+                        checked: channel.assignedFader === this.faderIndex,
+                    })}
+                >
+                    {' Channel ' + (index + 1) + ' : '}
+                    <input
+                        type="checkbox"
+                        checked={channel.assignedFader === this.faderIndex}
+                        onChange={(event) =>
+                            this.handleAssignChannel(mixerIndex, index, event)
+                        }
+                    />
+                    {channel.assignedFader >= 0
+                        ? '   (Fader ' + (channel.assignedFader + 1) + ')'
+                        : ' (not assigned)'}
+                </div>
+            )
+
+        }
+        )}
+        </div>
+        )
+    }
+
     render() {
         return (
             <div className="channel-route-body">
@@ -123,46 +156,8 @@ class ChannelRouteSettings extends React.PureComponent<
                 </button>
                 <hr />
                 {this.props.chConnections.map(
-                    (chConnection: IchConnection, mixerIndex: number) => {
-                        return chConnection.channel.map(
-                            (channel: any, index: number) => {
-                                return (
-                                    <div
-                                        key={index}
-                                        className={ClassNames(
-                                            'channel-route-text',
-                                            {
-                                                checked:
-                                                    channel.assignedFader ===
-                                                    this.faderIndex,
-                                            }
-                                        )}
-                                    >
-                                        {' Channel ' + (index + 1) + ' : '}
-                                        <input
-                                            type="checkbox"
-                                            checked={
-                                                channel.assignedFader ===
-                                                this.faderIndex
-                                            }
-                                            onChange={(event) =>
-                                                this.handleAssignChannel(
-                                                    mixerIndex,
-                                                    index,
-                                                    event
-                                                )
-                                            }
-                                        />
-                                        {channel.assignedFader >= 0
-                                            ? '   (Fader ' +
-                                              (channel.assignedFader + 1) +
-                                              ')'
-                                            : ' (not assigned)'}
-                                    </div>
-                                )
-                            }
-                        )
-                    }
+                    (chConnection: IchConnection, mixerIndex: number) =>
+                        this.renderMixer(chConnection, mixerIndex)
                 )}
             </div>
         )
