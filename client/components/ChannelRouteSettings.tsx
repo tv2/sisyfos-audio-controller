@@ -31,19 +31,21 @@ class ChannelRouteSettings extends React.PureComponent<
         this.faderIndex = this.props.faderIndex
     }
 
-    handleAssignChannel(channel: number, event: any) {
+    handleAssignChannel(mixerIndex: number, channel: number, event: any) {
         if (event.target.checked === false) {
             console.log('Unbinding Channel')
             if (
                 window.confirm(
-                    'Unbind Channel ' +
+                    'Unbind Mixer ' +
+                        String(mixerIndex + 1) +
+                        ' Channel ' +
                         String(channel + 1) +
                         ' from Fader ' +
                         String(this.faderIndex + 1)
                 )
             ) {
                 window.socketIoClient.emit(SOCKET_SET_ASSIGNED_FADER, {
-                    mixerIndex: 0,
+                    mixerIndex: mixerIndex,
                     channel: channel,
                     faderAssign: -1,
                 })
@@ -52,7 +54,9 @@ class ChannelRouteSettings extends React.PureComponent<
             console.log('Binding Channel')
             if (
                 window.confirm(
-                    'Bind Channel ' +
+                    'Bind Mixer ' +
+                        String(mixerIndex + 1) +
+                        ' Channel ' +
                         String(channel + 1) +
                         ' to Fader ' +
                         String(this.faderIndex + 1) +
@@ -60,7 +64,7 @@ class ChannelRouteSettings extends React.PureComponent<
                 )
             ) {
                 window.socketIoClient.emit(SOCKET_SET_ASSIGNED_FADER, {
-                    mixerIndex: 0,
+                    mixerIndex: mixerIndex,
                     channel: channel,
                     faderAssign: this.faderIndex,
                 })
@@ -143,6 +147,7 @@ class ChannelRouteSettings extends React.PureComponent<
                                             }
                                             onChange={(event) =>
                                                 this.handleAssignChannel(
+                                                    mixerIndex,
                                                     index,
                                                     event
                                                 )
