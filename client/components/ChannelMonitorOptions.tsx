@@ -103,7 +103,7 @@ class ChannelMonitorOptions extends React.PureComponent<
 
     handleSetAux = (event: ChangeEvent<HTMLInputElement>) => {
         let value = parseFloat(event.target.value) || -1
-        if (value > this.props.settings.numberOfAux || value < 0) {
+        if (value > this.props.settings.mixers[0].numberOfAux || value < 0) {
             value = -1
         }
         window.socketIoClient.emit(SOCKET_SET_FADER_MONITOR, {
