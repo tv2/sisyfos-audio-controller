@@ -74,13 +74,22 @@ class ChannelRouteSettings extends React.PureComponent<
 
     handleClearRouting() {
         if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
-            this.props.channel.forEach((channel: any, index: number) => {
-                window.socketIoClient.emit(SOCKET_SET_ASSIGNED_FADER, {
-                    mixerIndex: 0,
-                    channel: index,
-                    faderAssign: -1,
-                })
-            })
+            this.props.chConnections.forEach(
+                (chConnection: IchConnection, mixerIndex: number) => {
+                    chConnection.channel.forEach(
+                        (channel: any, index: number) => {
+                            window.socketIoClient.emit(
+                                SOCKET_SET_ASSIGNED_FADER,
+                                {
+                                    mixerIndex: mixerIndex,
+                                    channel: index,
+                                    faderAssign: -1,
+                                }
+                            )
+                        }
+                    )
+                }
+            )
         }
     }
 
@@ -105,33 +114,42 @@ class ChannelRouteSettings extends React.PureComponent<
     renderMixer(chConnection: IchConnection, mixerIndex: number) {
         return (
             <div>
-                <p className='channel-route-mixer-name'> {'MIXER ' + (mixerIndex + 1)}</p>
-{
-            chConnection.channel.map((channel: any, index: number) => {
-            return (
-                <div
-                    key={index}
-                    className={ClassNames('channel-route-text', {
-                        checked: channel.assignedFader === this.faderIndex,
-                    })}
-                >
-                    {' Channel ' + (index + 1) + ' : '}
-                    <input
-                        type="checkbox"
-                        checked={channel.assignedFader === this.faderIndex}
-                        onChange={(event) =>
-                            this.handleAssignChannel(mixerIndex, index, event)
-                        }
-                    />
-                    {channel.assignedFader >= 0
-                        ? '   (Fader ' + (channel.assignedFader + 1) + ')'
-                        : ' (not assigned)'}
-                </div>
-            )
-
-        }
-        )}
-        </div>
+                <p className="channel-route-mixer-name">
+                    {' '}
+                    {'MIXER ' + (mixerIndex + 1)}
+                </p>
+                {chConnection.channel.map((channel: any, index: number) => {
+                    return (
+                        <div
+                            key={index}
+                            className={ClassNames('channel-route-text', {
+                                checked:
+                                    channel.assignedFader === this.faderIndex,
+                            })}
+                        >
+                            {' Channel ' + (index + 1) + ' : '}
+                            <input
+                                type="checkbox"
+                                checked={
+                                    channel.assignedFader === this.faderIndex
+                                }
+                                onChange={(event) =>
+                                    this.handleAssignChannel(
+                                        mixerIndex,
+                                        index,
+                                        event
+                                    )
+                                }
+                            />
+                            {channel.assignedFader >= 0
+                                ? '   (Fader ' +
+                                  (channel.assignedFader + 1) +
+                                  ')'
+                                : ' (not assigned)'}
+                        </div>
+                    )
+                })}
+            </div>
         )
     }
 
@@ -152,7 +170,7 @@ class ChannelRouteSettings extends React.PureComponent<
                     className="button"
                     onClick={() => this.handle11Routing()}
                 >
-                    ROUTE 1:1
+                    ROUTE 1.Mixer 1:1
                 </button>
                 <hr />
                 {this.props.chConnections.map(
