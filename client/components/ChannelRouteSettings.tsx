@@ -13,7 +13,6 @@ import { IFader } from '../../server/reducers/fadersReducer'
 interface IChannelSettingsInjectProps {
     label: string
     chConnections: IchConnection[]
-    channel: IChannel[]
     fader: IFader[]
 }
 
@@ -96,7 +95,7 @@ class ChannelRouteSettings extends React.PureComponent<
     handle11Routing() {
         if (window.confirm('Reassign all Faders 1:1 to Channels????')) {
             this.props.fader.forEach((fader: any, index: number) => {
-                if (this.props.channel.length > index) {
+                if (this.props.chConnections[0].channel.length > index) {
                     window.socketIoClient.emit(SOCKET_SET_ASSIGNED_FADER, {
                         mixerIndex: 0,
                         channel: index,
@@ -189,7 +188,6 @@ const mapStateToProps = (
     return {
         label: state.faders[0].fader[props.faderIndex].label,
         chConnections: state.channels[0].chConnection,
-        channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
     }
 }
