@@ -41,8 +41,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 nextProps.settings.showChanStrip ||
             this.props.settings.showMonitorOptions !==
                 nextProps.settings.showMonitorOptions ||
-            this.props.settings.mixerOnline !==
-                nextProps.settings.mixerOnline ||
+            this.props.settings.mixers[0].mixerOnline !==
+                nextProps.settings.mixers[0].mixerOnline ||
             this.props.faders.length !== nextProps.faders.length ||
             this.props.settings.currentPage !==
                 nextProps.settings.currentPage ||
@@ -223,12 +223,12 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 <br />
                 <div className="channels-mix-body">
                     <div className="top">
-                        {this.props.settings.mixerOnline ? (
+                        {this.props.settings.mixers[0].mixerOnline ? (
                             <button
                                 className={ClassNames(
                                     'button half channels-show-mixer-online',
                                     {
-                                        connected: this.props.settings
+                                        connected: this.props.settings.mixers[0]
                                             .mixerOnline,
                                     }
                                 )}
@@ -243,7 +243,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                                 className={ClassNames(
                                     'button half channels-show-mixer-online',
                                     {
-                                        connected: this.props.settings
+                                        connected: this.props.settings.mixers[0]
                                             .mixerOnline,
                                     }
                                 )}
