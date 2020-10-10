@@ -180,7 +180,7 @@ export const settings = (
             nextState[0].showMonitorOptions = state[0].showMonitorOptions || -1
             nextState[0].showStorage = state[0].showStorage || false
             nextState[0].showChanStrip = state[0].showChanStrip || -1
-            nextState[0].serverOnline = state[0].serverOnline || false
+            nextState[0].serverOnline = state[0].serverOnline || true
             nextState[0].currentPage = state[0].currentPage
             nextState[0].customPages = state[0].customPages
 

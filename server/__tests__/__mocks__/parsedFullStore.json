@@ -990,7 +990,10 @@
             "offtubeMode": false,
             "fadeTime": 60,
             "voFadeTime": 200,
-            "showPfl": false
+            "showPfl": false,
+            "serverOnline": true,
+            "currentPage": "undefined",
+            "customPages": "undefined"
         }
     ]
 }
