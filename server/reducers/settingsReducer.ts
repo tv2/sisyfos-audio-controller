@@ -175,15 +175,18 @@ export const settings = (
             nextState[0] = action.settings
 
             // ignore UI state:
-            nextState[0].showSettings = state[0].showSettings
-            nextState[0].showOptions = state[0].showOptions
-            nextState[0].showMonitorOptions = state[0].showMonitorOptions
-            nextState[0].showStorage = state[0].showStorage
-            nextState[0].showChanStrip = state[0].showChanStrip
-            nextState[0].serverOnline = state[0].serverOnline
+            nextState[0].showSettings = state[0].showSettings || false
+            nextState[0].showOptions = state[0].showOptions || false
+            nextState[0].showMonitorOptions = state[0].showMonitorOptions || -1
+            nextState[0].showStorage = state[0].showStorage || false
+            nextState[0].showChanStrip = state[0].showChanStrip || -1
+            nextState[0].serverOnline = state[0].serverOnline || false
             nextState[0].currentPage = state[0].currentPage
             nextState[0].customPages = state[0].customPages
 
+            if (!nextState[0].mixers) {
+                nextState = [Object.assign({}, defaultSettingsReducerState[0])]
+            }
             if (
                 typeof MixerProtocolPresets[
                     nextState[0].mixers[0].mixerProtocol
