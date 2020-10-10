@@ -121,7 +121,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         settings.mixers = []
         for (let i = 0; i < settings.numberOfMixers; i++) {
             if (settings.mixers[i] === undefined) {
-                settings.mixers.push(mixers[0])
+                settings.mixers.push( JSON.parse(JSON.stringify(mixers[0])))
             } else {
                 settings.mixers.push(mixers[i])
             }
