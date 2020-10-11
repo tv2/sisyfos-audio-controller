@@ -29,8 +29,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 nextProps.settings.showChanStrip ||
             this.props.settings.showMonitorOptions !==
                 nextProps.settings.showMonitorOptions ||
-            this.props.settings.mixerOnline !==
-                nextProps.settings.mixerOnline ||
+            this.props.settings.mixers[0].mixerOnline !==
+                nextProps.settings.mixers[0].mixerOnline ||
             this.props.faders.length !== nextProps.faders.length
         )
     }
