@@ -16,26 +16,22 @@ import { remoteConnections } from '../../mainClasses'
 //Utils:
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
-import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
-import {
-    SET_VU_LEVEL,
-    SET_FADER_LEVEL,
-    SET_CHANNEL_LABEL,
-    TOGGLE_PGM,
-} from '../../reducers/faderActions'
-import { logger } from '../logger'
+import { storeSetOutputLevel } from '../../reducers/channelActions'
+import { SET_FADER_LEVEL, TOGGLE_PGM } from '../../reducers/faderActions'
 
 export class MidiMixerConnection {
     store: any
     mixerProtocol: any
+    mixerIndex: number
     midiInput: any
     midiOutput: any
 
-    constructor(mixerProtocol: IMixerProtocol) {
+    constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
         this.mixerProtocol = mixerProtocol || MixerProtocolPresets.genericMidi
+        this.mixerIndex = mixerIndex
 
         WebMidi.enable((err: any) => {
             if (err) {
@@ -43,17 +39,17 @@ export class MidiMixerConnection {
             }
             console.log(
                 'Connecting Mixer Midi input on port :',
-                state.settings[0].mixerMidiInputPort
+                state.settings[0].mixers[this.mixerIndex].mixerMidiInputPort
             )
             console.log(
                 'Connecting Mixer Midi output on port :',
-                state.settings[0].mixerMidiOutputPort
+                state.settings[0].mixers[this.mixerIndex].mixerMidiOutputPort
             )
             this.midiInput = WebMidi.getInputByName(
-                state.settings[0].mixerMidiInputPort
+                state.settings[0].mixers[this.mixerIndex].mixerMidiInputPort
             )
             this.midiOutput = WebMidi.getOutputByName(
-                state.settings[0].mixerMidiOutputPort
+                state.settings[0].mixers[this.mixerIndex].mixerMidiOutputPort
             )
 
             this.setupMixerConnection()
@@ -86,7 +82,10 @@ export class MidiMixerConnection {
                             .CHANNEL_OUT_GAIN[0].mixerMessage
                     )
                 let faderChannel =
-                    1 + state.channels[0].channel[ch - 1].assignedFader
+                    1 +
+                    state.channels[0].chConnection[this.mixerIndex].channel[
+                        ch - 1
+                    ].assignedFader
                 store.dispatch({
                     type: SET_FADER_LEVEL,
                     channel: faderChannel - 1,
@@ -96,7 +95,8 @@ export class MidiMixerConnection {
                     store.dispatch({
                         type: TOGGLE_PGM,
                         channel:
-                            state.channels[0].channel[ch - 1].assignedFader - 1,
+                            state.channels[0].chConnection[this.mixerIndex]
+                                .channel[ch - 1].assignedFader - 1,
                     })
                 }
                 if (remoteConnections) {
@@ -106,13 +106,13 @@ export class MidiMixerConnection {
                     )
                 }
                 if (state.faders[0].fader[faderChannel - 1].pgmOn) {
-                    state.channels[0].channel.map(
-                        (channel: any, index: number) => {
-                            if (channel.assignedFader === faderChannel - 1) {
-                                this.updateOutLevel(index)
-                            }
+                    state.channels[0].chConnection[
+                        this.mixerIndex
+                    ].channel.forEach((channel: any, index: number) => {
+                        if (channel.assignedFader === faderChannel - 1) {
+                            this.updateOutLevel(index)
                         }
-                    )
+                    })
                 }
             }
         })
@@ -128,7 +128,7 @@ export class MidiMixerConnection {
             if (
                 this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU)
             ) {
-                if (state.settings[0].mixerProtocol === 'behringer') {
+                if (state.settings[0].mixers[this.mixerIndex].mixerProtocol === 'behringer') {
                     behringerMeter(message.args);
                 } else {
                     let ch = message.address.split("/")[2];
@@ -179,19 +179,28 @@ export class MidiMixerConnection {
     }
 
     updateOutLevel(channelIndex: number) {
-        let faderIndex = state.channels[0].channel[channelIndex].assignedFader
+        let faderIndex =
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].assignedFader
         if (state.faders[0].fader[faderIndex].pgmOn) {
-            store.dispatch({
-                type: SET_OUTPUT_LEVEL,
-                channel: channelIndex,
-                level: state.faders[0].fader[faderIndex].faderLevel,
-            })
+            store.dispatch(
+                storeSetOutputLevel(
+                    this.mixerIndex,
+                    channelIndex,
+                    state.faders[0].fader[faderIndex].faderLevel
+                )
+            )
         }
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0]
                 .mixerMessage,
             channelIndex + 1,
-            String(state.channels[0].channel[channelIndex].outputLevel)
+            String(
+                state.channels[0].chConnection[this.mixerIndex].channel[
+                    channelIndex
+                ].outputLevel
+            )
         )
         /* Client mode is disabled
         this.sendOutMessage(

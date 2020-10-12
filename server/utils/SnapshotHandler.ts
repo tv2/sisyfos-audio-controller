@@ -3,10 +3,11 @@ import { loadSnapshotState, saveSnapshotState } from './SettingsStorage'
 import { mixerProtocolPresets } from '../mainClasses'
 import { state } from '../reducers/store'
 import { logger } from './logger'
+import { InumberOfChannels } from '../reducers/channelsReducer'
 
 const path = require('path')
 export class SnapshotHandler {
-    numberOfChannels: number[] = []
+    numberOfChannels: InumberOfChannels[] = []
     settingsPath: string = ''
 
     constructor() {
@@ -15,13 +16,22 @@ export class SnapshotHandler {
         this.snapShopStoreTimer()
 
         // Count total number of channels:
-        mixerProtocolPresets[
-            state.settings[0].mixerProtocol
-        ].channelTypes.forEach((item: any, index: number) => {
-            this.numberOfChannels.push(
-                state.settings[0].numberOfChannelsInType[index]
-            )
-        })
+        for (
+            let mixerIndex = 0;
+            mixerIndex < state.settings[0].numberOfMixers;
+            mixerIndex++
+        ) {
+            this.numberOfChannels.push({ numberOfTypeInCh: [] })
+            mixerProtocolPresets[
+                state.settings[0].mixers[mixerIndex].mixerProtocol
+            ].channelTypes.forEach((item: any, index: number) => {
+                this.numberOfChannels[mixerIndex].numberOfTypeInCh.push(
+                    state.settings[0].mixers[mixerIndex].numberOfChannelsInType[
+                        index
+                    ]
+                )
+            })
+        }
         this.loadSnapshotSettings(path.resolve('storage', 'default.shot'), true)
 
         // ** UNCOMMENT TO DUMP A FULL STORE:

@@ -5,14 +5,13 @@ import * as ClassNames from 'classnames'
 import '../assets/css/ChannelMonitorOptions.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { TOGGLE_SHOW_MONITOR_OPTIONS } from '../../server/reducers/settingsActions'
+import { storeShowMonitorOptions, } from '../../server/reducers/settingsActions'
 import { ISettings } from '../../server/reducers/settingsReducer'
 import {
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_FADER_MONITOR,
     SOCKET_SHOW_IN_MINI_MONITOR,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import { SHOW_IN_MINI_MONITOR } from '../../server/reducers/faderActions'
 
 interface IMonitorSettingsInjectProps {
     label: string
@@ -104,7 +103,7 @@ class ChannelMonitorOptions extends React.PureComponent<
 
     handleSetAux = (event: ChangeEvent<HTMLInputElement>) => {
         let value = parseFloat(event.target.value) || -1
-        if (value > this.props.settings.numberOfAux || value < 0) {
+        if (value > this.props.settings.mixers[0].numberOfAux || value < 0) {
             value = -1
         }
         window.socketIoClient.emit(SOCKET_SET_FADER_MONITOR, {
@@ -114,10 +113,7 @@ class ChannelMonitorOptions extends React.PureComponent<
     }
 
     handleClose = () => {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_MONITOR_OPTIONS,
-            channel: this.faderIndex,
-        })
+        this.props.dispatch(storeShowMonitorOptions(this.faderIndex))
     }
 
     render() {
@@ -201,9 +197,9 @@ const mapStateToProps = (
 ): IMonitorSettingsInjectProps => {
     return {
         label: state.faders[0].fader[props.faderIndex].label,
-        selectedProtocol: state.settings[0].mixerProtocol,
-        numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
-        channel: state.channels[0].channel,
+        selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
+        numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+        channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
         settings: state.settings[0],
     }

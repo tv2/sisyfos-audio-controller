@@ -7,9 +7,7 @@ import Channel from './Channel'
 import '../assets/css/Channels.css'
 import { Store } from 'redux'
 import {
-    TOGGLE_SHOW_SETTINGS,
-    TOGGLE_SHOW_STORAGE,
-    SET_PAGE,
+    SET_PAGE, storeSetPage, storeShowSettings, storeShowStorage
 } from '../../server/reducers/settingsActions'
 import ChannelRouteSettings from './ChannelRouteSettings'
 import ChanStrip from './ChanStrip'
@@ -43,8 +41,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 nextProps.settings.showChanStrip ||
             this.props.settings.showMonitorOptions !==
                 nextProps.settings.showMonitorOptions ||
-            this.props.settings.mixerOnline !==
-                nextProps.settings.mixerOnline ||
+            this.props.settings.mixers[0].mixerOnline !==
+                nextProps.settings.mixers[0].mixerOnline ||
             this.props.faders.length !== nextProps.faders.length ||
             this.props.settings.currentPage !==
                 nextProps.settings.currentPage ||
@@ -67,30 +65,18 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     }
 
     handleShowSettings() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_SETTINGS,
-        })
+        this.props.dispatch(storeShowSettings())
     }
 
     handleShowStorage() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_STORAGE,
-        })
+        this.props.dispatch(storeShowStorage())
     }
 
     handlePages(type: PageType, i: number | string) {
         if (typeof i === 'string') {
-            this.props.dispatch({
-                type: SET_PAGE,
-                pageType: type,
-                id: i,
-            })
+            this.props.dispatch(storeSetPage( type, i))
         } else {
-            this.props.dispatch({
-                type: SET_PAGE,
-                pageType: type,
-                start: i * this.props.settings.pageLength,
-            })
+            this.props.dispatch(storeSetPage(type , i * this.props.settings.pageLength))
         }
     }
 
@@ -237,12 +223,12 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 <br />
                 <div className="channels-mix-body">
                     <div className="top">
-                        {this.props.settings.mixerOnline ? (
+                        {this.props.settings.mixers[0].mixerOnline ? (
                             <button
                                 className={ClassNames(
                                     'button half channels-show-mixer-online',
                                     {
-                                        connected: this.props.settings
+                                        connected: this.props.settings.mixers[0]
                                             .mixerOnline,
                                     }
                                 )}
@@ -257,7 +243,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                                 className={ClassNames(
                                     'button half channels-show-mixer-online',
                                     {
-                                        connected: this.props.settings
+                                        connected: this.props.settings.mixers[0]
                                             .mixerOnline,
                                     }
                                 )}
@@ -325,7 +311,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
 
 const mapStateToProps = (state: any): IChannelsInjectProps => {
     return {
-        channels: state.channels[0].channel,
+        channels: state.channels[0].chConnection[0].channel,
         faders: state.faders[0].fader,
         settings: state.settings[0],
     }

@@ -7,14 +7,18 @@
     ],
     "channels": [
         {
-            "channel": [
+            "chConnection": [
                 {
-                    "channelType": 0,
-                    "channelTypeIndex": 0,
-                    "assignedFader": 0,
-                    "fadeActive": false,
-                    "outputLevel": 0,
-                    "auxLevel": []
+                    "channel": [
+                        {
+                            "channelType": 0,
+                            "channelTypeIndex": 0,
+                            "assignedFader": 0,
+                            "fadeActive": false,
+                            "outputLevel": 0,
+                            "auxLevel": []
+                        }
+                    ]
                 }
             ]
         }
@@ -27,23 +31,27 @@
             "showOptions": false,
             "showMonitorOptions": -1,
             "showStorage": false,
-            "mixerProtocol": "sslSystemT",
-            "localIp": "0.0.0.0",
-            "localOscPort": 1234,
-            "deviceIp": "0.0.0.0",
-            "devicePort": 10024,
-            "protocolLatency": 220,
+            "numberOfMixers": 1,
+            "mixers": [
+                {
+                    "mixerProtocol": "sslSystemT",
+                    "deviceIp": "0.0.0.0",
+                    "devicePort": 10024,
+                    "protocolLatency": 220,
+                    "mixerMidiInputPort": "",
+                    "mixerMidiOutputPort": "",
+                    "numberOfChannelsInType": [8],
+                    "numberOfAux": 0,
+                    "nextSendAux": -1,
+                    "mixerOnline": false,
+                    "localIp": "0.0.0.0",
+                    "localOscPort": 1234
+                }
+            ],
             "enableRemoteFader": false,
-            "mixerMidiInputPort": "",
-            "mixerMidiOutputPort": "",
             "remoteFaderMidiInputPort": "",
             "remoteFaderMidiOutputPort": "",
-            "numberOfChannelsInType": [
-                8
-            ],
             "numberOfFaders": 8,
-            "numberOfAux": 0,
-            "nextSendAux": -1,
             "numberOfSnaps": 8,
             "voLevel": 30,
             "autoResetLevel": 5,
@@ -52,7 +60,9 @@
             "fadeTime": 120,
             "voFadeTime": 280,
             "showPfl": false,
-            "mixerOnline": false
+            "serverOnline": true,
+            "currentPage": "undefined",
+            "customPages": "undefined"
         }
     ]
 }

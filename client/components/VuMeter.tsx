@@ -20,12 +20,20 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     totalPeak: number = 0
     windowPeak: number = 0
     windowLast: number = 0
+    meterMax: number = 1
+    meterMin: number = 0
+    meterTest: number = 0.75
+    meterZero: number = 0.75
     WINDOW: number = 2000
 
     private _painting = false
 
     constructor(props: any) {
         super(props)
+        this.meterMax = window.mixerProtocol.meter?.max || 1
+        this.meterMin = window.mixerProtocol.meter?.min || 0
+        this.meterTest = window.mixerProtocol.meter?.test || 0.75
+        this.meterZero = window.mixerProtocol.meter?.zero || 0.75
     }
 
     componentDidMount() {
@@ -35,7 +43,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     totalHeight = () => {
         return (
             ((this.props.showSnaps ? 1 : 2) * 200) /
-            (window.mixerProtocol.meter.max - window.mixerProtocol.meter.min)
+            (this.meterMax - this.meterMin)
         )
     }
 
@@ -59,28 +67,28 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
     calcLower = () => {
         let val = this.props.vuVal
-        if (val >= window.mixerProtocol.meter.test) {
-            val = window.mixerProtocol.meter.test
+        if (val >= this.meterTest) {
+            val = this.meterTest
         }
         return this.totalHeight() * val
     }
 
     calcMiddle = () => {
         let val = this.props.vuVal
-        if (val < window.mixerProtocol.meter.test) {
-            val = window.mixerProtocol.meter.test
-        } else if (val >= window.mixerProtocol.meter.zero) {
-            val = window.mixerProtocol.meter.zero
+        if (val < this.meterTest) {
+            val = this.meterTest
+        } else if (val >= this.meterZero) {
+            val = this.meterZero
         }
-        return this.totalHeight() * (val - window.mixerProtocol.meter.test) + 1
+        return this.totalHeight() * (val - this.meterTest) + 1
     }
 
     calcUpper = () => {
         let val = this.props.vuVal
-        if (val < window.mixerProtocol.meter.zero) {
-            val = window.mixerProtocol.meter.zero
+        if (val < this.meterZero) {
+            val = this.meterZero
         }
-        return this.totalHeight() * (val - window.mixerProtocol.meter.zero) + 1
+        return this.totalHeight() * (val - this.meterZero) + 1
     }
 
     setRef = (el: HTMLCanvasElement) => {
@@ -109,7 +117,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
         if (!context) return
 
         const range =
-            window.mixerProtocol.meter.max - window.mixerProtocol.meter.min
+            this.meterMax - this.meterMin
         context.clearRect(
             0,
             0,
@@ -130,7 +138,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
         context.fillStyle = 'rgb(53, 167, 0)'
         context.fillRect(
             0,
-            this.totalHeight() * (range - window.mixerProtocol.meter.test) -
+            this.totalHeight() * (range - this.meterTest) -
                 this.calcMiddle(),
             this.canvas.clientWidth,
             this.calcMiddle()
@@ -140,7 +148,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
         context.fillStyle = 'rgb(206, 0, 0)'
         context.fillRect(
             0,
-            this.totalHeight() * (range - window.mixerProtocol.meter.zero) -
+            this.totalHeight() * (range - this.meterZero) -
                 this.calcUpper(),
             this.canvas.clientWidth,
             this.calcUpper()
@@ -148,7 +156,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
         // windowed peak
         const windowPeak = this.getWindowPeak()
-        if (this.windowPeak < window.mixerProtocol.meter.zero) {
+        if (this.windowPeak < this.meterZero) {
             context.fillStyle = 'rgb(16, 56, 0)'
         } else {
             context.fillStyle = 'rgb(100, 100, 100)'
@@ -161,7 +169,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
         )
 
         // absolute peak
-        if (this.totalPeak < window.mixerProtocol.meter.zero) {
+        if (this.totalPeak < this.meterZero) {
             context.fillStyle = 'rgb(64, 64, 64)'
         } else {
             context.fillStyle = 'rgb(255, 0, 0)'

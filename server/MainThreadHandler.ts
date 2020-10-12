@@ -8,7 +8,7 @@ import {
 import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
-import { UPDATE_SETTINGS } from './reducers/settingsActions'
+import { storeUpdateSettings } from './reducers/settingsActions'
 import {
     loadSettings,
     saveSettings,
@@ -84,7 +84,10 @@ import {
     TOGGLE_AMIX,
 } from './reducers/faderActions'
 import { SET_FADER_LEVEL } from './reducers/faderActions'
-import { SET_ASSIGNED_FADER, SET_AUX_LEVEL } from './reducers/channelActions'
+import {
+    storeSetAssignedFader,
+    storeSetAuxLevel,
+} from './reducers/channelActions'
 import { IChannel } from './reducers/channelsReducer'
 import { logger } from './utils/logger'
 const path = require('path')
@@ -96,10 +99,7 @@ export class MainThreadHandlers {
         logger.info('Setting up MainThreadHandlers', {})
 
         this.snapshotHandler = new SnapshotHandler()
-        store.dispatch({
-            type: UPDATE_SETTINGS,
-            settings: loadSettings(state),
-        })
+        store.dispatch(storeUpdateSettings(loadSettings(state)))
     }
 
     updateFullClientStore() {
@@ -107,21 +107,20 @@ export class MainThreadHandlers {
     }
 
     updatePartialStore(faderIndex: number) {
-        state.faders[0].fader[faderIndex]
         socketServer.emit(SOCKET_SET_STORE_FADER, {
             faderIndex: faderIndex,
             state: state.faders[0].fader[faderIndex],
         })
-        state.channels[0].channel.forEach(
-            (channel: IChannel, index: number) => {
+        state.channels[0].chConnection.forEach((chConnection) => {
+            chConnection.channel.forEach((channel: IChannel, index: number) => {
                 if (channel.assignedFader === faderIndex) {
                     socketServer.emit(SOCKET_SET_STORE_CHANNEL, {
                         channelIndex: index,
                         state: channel,
                     })
                 }
-            }
-        )
+            })
+        })
     }
 
     socketServerHandlers(socket: any) {
@@ -143,7 +142,9 @@ export class MainThreadHandlers {
             .on('get-mixerprotocol', () => {
                 socketServer.emit('set-mixerprotocol', {
                     mixerProtocol:
-                        mixerProtocolPresets[state.settings[0].mixerProtocol],
+                        mixerProtocolPresets[
+                            state.settings[0].mixers[0].mixerProtocol
+                        ],
                     mixerProtocolPresets: mixerProtocolPresets,
                     mixerProtocolList: mixerProtocolList,
                 })
@@ -211,17 +212,21 @@ export class MainThreadHandlers {
             })
             .on(SOCKET_SET_ASSIGNED_FADER, (payload: any) => {
                 logger.verbose(
-                    'Set assigned fader. Channel:' +
+                    'Set assigned fader. Mixer:' +
+                        String(payload.mixerIndex + 1) +
+                        'Channel:' +
                         String(payload.channel) +
                         'Fader :' +
                         String(payload.faderAssign),
                     {}
                 )
-                store.dispatch({
-                    type: SET_ASSIGNED_FADER,
-                    channel: payload.channel,
-                    faderNumber: payload.faderAssign,
-                })
+                store.dispatch(
+                    storeSetAssignedFader(
+                        payload.mixerIndex,
+                        payload.channel,
+                        payload.faderAssign
+                    )
+                )
                 this.updateFullClientStore()
             })
             .on(SOCKET_SET_FADER_MONITOR, (payload: any) => {
@@ -252,12 +257,14 @@ export class MainThreadHandlers {
                     'Set Auxlevel Channel:' + String(payload.channel),
                     {}
                 )
-                store.dispatch({
-                    type: SET_AUX_LEVEL,
-                    channel: payload.channel,
-                    auxIndex: payload.auxIndex,
-                    level: payload.level,
-                })
+                store.dispatch(
+                    storeSetAuxLevel(
+                        0,
+                        payload.channel,
+                        payload.auxIndex,
+                        payload.level
+                    )
+                )
                 mixerGenericConnection.updateAuxLevel(
                     payload.channel,
                     payload.auxIndex
