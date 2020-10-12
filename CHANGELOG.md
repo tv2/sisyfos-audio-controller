@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.6.1...v4.0.1) (2020-10-12)
+
+### Features
+
+-   adding support for multiple mixers in all product specific mixerConnections ([95209b5](https://github.com/olzzon/sisyfos-audio-controller/commit/95209b541d4d881d2358873571b3d7048063b0e0))
+-   mixerconnection initialize multiple mixers ([b33ea95](https://github.com/olzzon/sisyfos-audio-controller/commit/b33ea950511e526ed7a97fb7baee918a58ad7331))
+-   multiple faders - channel-fader routing ([6fdd8be](https://github.com/olzzon/sisyfos-audio-controller/commit/6fdd8beca00ad5465b71a1a4c96243e9a51a5445))
+-   multiple mixers - Aux working for first mixer. ([37c0ab8](https://github.com/olzzon/sisyfos-audio-controller/commit/37c0ab8eb3fbff35f191ba4c83bd7e407343391d))
+-   multiple mixers - behringer midas metering support ([0f6aff4](https://github.com/olzzon/sisyfos-audio-controller/commit/0f6aff403464d87f34b874757ecf6fb84aba6fc3))
+-   multiple mixers - Channel Fader routing: clear all assignments ([d62f3ea](https://github.com/olzzon/sisyfos-audio-controller/commit/d62f3eaa2805394b64e61053f7388037bc79c5af))
+-   multiple mixers - channel faders assign menu - label for each mixer ([f49a953](https://github.com/olzzon/sisyfos-audio-controller/commit/f49a953e1fbf1edab1538a353076a2162b47029f))
+-   multiple mixers - clean up routing options ([32a4abb](https://github.com/olzzon/sisyfos-audio-controller/commit/32a4abba5c3766b73b84a169d61ef822513366a4))
+-   multiple mixers - create channel structure and timing in front end ([c1871f0](https://github.com/olzzon/sisyfos-audio-controller/commit/c1871f0a19b40ed3a537c10c1251e91b320d5a85))
+-   multiple mixers - move local Ip and port to "mixers" so multiple OSC protocols can be supported ([b071cca](https://github.com/olzzon/sisyfos-audio-controller/commit/b071cca4cd2c9579d2f57e2d49814e440aa73916))
+-   multiple mixers - prepare channel-fader Routing ([5f55b95](https://github.com/olzzon/sisyfos-audio-controller/commit/5f55b95e44979673dc657bc379c537dafb186596))
+-   multiple mixers - settings working ([a2657dc](https://github.com/olzzon/sisyfos-audio-controller/commit/a2657dcbe331f2031c279f8351d066a4eff9487e))
+-   multiple mixers - update redux actions: outputLevel and fadeActive ([975f65b](https://github.com/olzzon/sisyfos-audio-controller/commit/975f65bf94638bc846102f2305109f78d7224f8e))
+-   multiple mixers support loop through all mixers in generic connection ([f29b09f](https://github.com/olzzon/sisyfos-audio-controller/commit/f29b09ffd87ad46e3b07b5c2f07b2d48840658af))
+-   multiple mixers, timer fade inout support ([f59036a](https://github.com/olzzon/sisyfos-audio-controller/commit/f59036af204f4d4a2441073d09dc46433248d458))
+-   multiple-mixers implementing restore full channel store ([c2e524f](https://github.com/olzzon/sisyfos-audio-controller/commit/c2e524f1a4633f4179f13f7a1857117217523426))
+-   preparing multiple mixer connections in channel store. ([c1ba41d](https://github.com/olzzon/sisyfos-audio-controller/commit/c1ba41d08ccacd6609bbae03d1011c812c18e2bf))
+-   preparing support for multiple mixers in settings store ([1796992](https://github.com/olzzon/sisyfos-audio-controller/commit/1796992ac283a86daf3181cc8d4ac601ec478797))
+-   settings.tsx preparing multiple audio mixers support ([d2076b2](https://github.com/olzzon/sisyfos-audio-controller/commit/d2076b2379b5d80670f0293d11aa2970a78e03de))
+-   support multiple mixers in Fade in-out ([b67c06d](https://github.com/olzzon/sisyfos-audio-controller/commit/b67c06da7b1f91e01326183951de2d4748a8a3b8))
+
+### Bug Fixes
+
+-   crash when starting with a pre 4.xx settings.json file ([35b7732](https://github.com/olzzon/sisyfos-audio-controller/commit/35b7732980dcb5fbbdcc1049431d087855f3c14f))
+-   deep clone to new mixer added in settings ([dc077be](https://github.com/olzzon/sisyfos-audio-controller/commit/dc077be58350870b622957672f1018993e292bee))
+-   limit VU updatespeed to 100ms for performance issues on large mixer setups ([858acf1](https://github.com/olzzon/sisyfos-audio-controller/commit/858acf1e0f72f1c74581352d9648ca886d02374a))
+-   metering - possibly undefined (wasn´t discovered, as the metering previously wasn´t visible if it was undefined) ([9ee5094](https://github.com/olzzon/sisyfos-audio-controller/commit/9ee5094b27440559812bd3fe755c83551e082f78))
+-   mixer online forced rerendering. Mixer Online i still only status for first mixer. (ToDO: support all mixers in GUI) ([622cc2e](https://github.com/olzzon/sisyfos-audio-controller/commit/622cc2e16c4760896ef1a003c7c928a27a8e5e1e))
+-   multiple mixers - assign channels to fader only assigned first mixer ([2086754](https://github.com/olzzon/sisyfos-audio-controller/commit/2086754bc1d60ce2460832b0e9af8118a9eae1e3))
+-   multiple mixers - aux settings support for first mixer - ToDo: support multiple mixers ([921be2d](https://github.com/olzzon/sisyfos-audio-controller/commit/921be2d516255e7f51123ee115f451c7d93f5d8a))
+-   multiple mixers - update mixer number of mixers - ch datastructure problem ([9b3642a](https://github.com/olzzon/sisyfos-audio-controller/commit/9b3642acbab86b04b46902e4f88c30d30c662864))
+-   multiple mixers, mixerconnection reference to correct mixer instead of first one ([59dee5d](https://github.com/olzzon/sisyfos-audio-controller/commit/59dee5dbef36b7e2b64c78e3b63401e5db14e066))
+-   multple mixers settings - port aux etc didn´t update correctly ([d87bc77](https://github.com/olzzon/sisyfos-audio-controller/commit/d87bc77dc123f417b1f4c6e66b3b8e499892c9bf))
+-   OSC protocol - type in logger.info mixerport ([b95e3c8](https://github.com/olzzon/sisyfos-audio-controller/commit/b95e3c8fb3cfab18c6d00852877f4852d03a92d4))
+-   re-render issue in miniChannels mixer ([a1fb85f](https://github.com/olzzon/sisyfos-audio-controller/commit/a1fb85f55298f38f9547ee8e20c1e3c22ce3ffdf))
+-   typo - CHANNEL_ACTIONS constant was left over in SettingsStorage.ts ([91905a9](https://github.com/olzzon/sisyfos-audio-controller/commit/91905a97dcae750f20d2aa5464665a35b5888dd9))
+
 ## [4.0.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.6.1...v4.0.0) (2020-10-12)
 
 ### Features
