@@ -29,7 +29,8 @@ export const LawoMC2: IMixerProtocol = {
                 ],
                 CHANNEL_NAME: [
                     {
-                        mixerMessage: 'Channels.Inputs.${channel}',
+                        mixerMessage:
+                            'Channels.Inputs.${channel}.General.User Label',
                         value: 0,
                         type: 'real',
                         min: -200,

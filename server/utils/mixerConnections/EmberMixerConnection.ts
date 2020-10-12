@@ -299,17 +299,14 @@ export class EmberMixerConnection {
             channelTypeIndex,
             mixerMessage,
             (node) => {
-                if (this.mixerProtocol.label === LawoMC2.label) {
-                    // this also depends on version of the firmware -_-
+                if (node.contents.type === Model.ElementType.Node) {
                     logger.verbose(
-                        `Receiving Label from Ch "${ch}", val: ${
-                            (node.contents as Model.Parameter).description
-                        }`
+                        `Receiving Label from Ch "${ch}", val: ${node.contents.description}`
                     )
                     store.dispatch({
                         type: SET_CHANNEL_LABEL,
                         channel: ch - 1,
-                        label: (node.contents as Model.Parameter).description,
+                        label: node.contents.description,
                     })
                 } else {
                     logger.verbose(
