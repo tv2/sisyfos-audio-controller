@@ -516,7 +516,8 @@ export class OscMixerConnection {
 
         this.oscConnection.open()
         logger.info(
-            `OSC listening on port ` + String(state.settings[0].localOscPort),
+            `OSC listening on port ` +
+                String(state.settings[0].mixers[this.mixerIndex].localOscPort),
             {}
         )
 
