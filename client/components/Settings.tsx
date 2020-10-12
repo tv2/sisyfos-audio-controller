@@ -121,7 +121,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         settings.mixers = []
         for (let i = 0; i < settings.numberOfMixers; i++) {
             if (settings.mixers[i] === undefined) {
-                settings.mixers.push( JSON.parse(JSON.stringify(mixers[0])))
+                settings.mixers.push(JSON.parse(JSON.stringify(mixers[0])))
             } else {
                 settings.mixers.push(mixers[i])
             }
@@ -339,6 +339,36 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                 </label>
                                 <br />
                                 <label className="settings-input-field">
+                                    LOCAL MIXER IP:
+                                    <input
+                                        name="localIp"
+                                        type="text"
+                                        value={mixer.localIp}
+                                        onChange={(event) =>
+                                            this.handleMixerChange(
+                                                event,
+                                                mixerIndex
+                                            )
+                                        }
+                                    />
+                                </label>
+                                <br />
+                                <label className="settings-input-field">
+                                    LOCAL MIXER PORT :
+                                    <input
+                                        name="localOscPort"
+                                        type="text"
+                                        value={mixer.localOscPort}
+                                        onChange={(event) =>
+                                            this.handleMixerChange(
+                                                event,
+                                                mixerIndex
+                                            )
+                                        }
+                                    />
+                                </label>
+                                <br />
+                                <label className="settings-input-field">
                                     PROTOCOL LATENCY :
                                     <input
                                         name="protocolLatency"
@@ -401,27 +431,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         return (
             <div className="settings-body">
                 <div className="settings-header">GENERIC SETTINGS:</div>
-
-                <label className="settings-input-field">
-                    LOCAL MIXER IP:
-                    <input
-                        name="localIp"
-                        type="text"
-                        value={this.state.settings.localIp}
-                        onChange={this.handleChange}
-                    />
-                </label>
-                <br />
-                <label className="settings-input-field">
-                    LOCAL MIXER PORT :
-                    <input
-                        name="localOscPort"
-                        type="text"
-                        value={this.state.settings.localOscPort}
-                        onChange={this.handleChange}
-                    />
-                </label>
-                <br />
                 <label className="settings-input-field">
                     FADE TIME :
                     <input

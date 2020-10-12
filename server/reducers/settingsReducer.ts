@@ -41,8 +41,6 @@ export interface ISettings {
     /** User config */
     numberOfMixers: number
     mixers: IMixerSettings[]
-    localIp: string
-    localOscPort: number
     enableRemoteFader: boolean
     remoteFaderMidiInputPort: string
     remoteFaderMidiOutputPort: string
@@ -74,6 +72,8 @@ export interface IMixerSettings {
     numberOfAux: number
     nextSendAux: number
     mixerOnline: boolean
+    localIp: string
+    localOscPort: number
 }
 
 const defaultSettingsReducerState: Array<ISettings> = [
@@ -98,11 +98,10 @@ const defaultSettingsReducerState: Array<ISettings> = [
                 nextSendAux: -1,
                 numberOfChannelsInType: [8],
                 mixerOnline: false,
+                localIp: '0.0.0.0',
+                localOscPort: 1234,
             },
         ],
-
-        localIp: '0.0.0.0',
-        localOscPort: 1234,
         enableRemoteFader: false,
         remoteFaderMidiInputPort: '',
         remoteFaderMidiOutputPort: '',

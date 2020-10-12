@@ -43,11 +43,11 @@
                     "numberOfChannelsInType": [8],
                     "numberOfAux": 0,
                     "nextSendAux": -1,
-                    "mixerOnline": false
+                    "mixerOnline": false,
+                    "localIp": "0.0.0.0",
+                    "localOscPort": 1234
                 }
             ],
-            "localIp": "0.0.0.0",
-            "localOscPort": 1234,
             "enableRemoteFader": false,
             "remoteFaderMidiInputPort": "",
             "remoteFaderMidiOutputPort": "",

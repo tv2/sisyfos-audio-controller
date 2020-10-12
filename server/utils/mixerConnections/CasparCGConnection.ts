@@ -104,7 +104,7 @@ export class CasparCGConnection {
                     state.settings[0].mixers[this.mixerIndex].devicePort + ''
                 ) + 1000
             this.oscClient = new osc.UDPPort({
-                localAddress: state.settings[0].localIp,
+                localAddress: state.settings[0].mixers[this.mixerIndex].localIp,
                 localPort: remotePort,
                 remoteAddress:
                     state.settings[0].mixers[this.mixerIndex].deviceIp,

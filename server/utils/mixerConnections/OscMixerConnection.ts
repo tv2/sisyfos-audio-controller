@@ -62,8 +62,10 @@ export class OscMixerConnection {
             .findIndex((ch) => ch === '{channel}')
 
         this.oscConnection = new osc.UDPPort({
-            localAddress: state.settings[0].localIp,
-            localPort: parseInt(state.settings[0].localOscPort + ''),
+            localAddress: state.settings[0].mixers[this.mixerIndex].localIp,
+            localPort: parseInt(
+                state.settings[0].mixers[this.mixerIndex].localOscPort + ''
+            ),
             remoteAddress: state.settings[0].mixers[this.mixerIndex].deviceIp,
             remotePort: parseInt(
                 state.settings[0].mixers[this.mixerIndex].devicePort + ''
