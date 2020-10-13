@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.2](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.0.1...v4.0.2) (2020-10-13)
+
+### Bug Fixes
+
+-   limit speed of VU updates on mixers with independent VU and VU reduction protocol ([cb59a70](https://github.com/olzzon/sisyfos-audio-controller/commit/cb59a706d3b37c31d4aea6efa977e6ebcca9cb89))
+-   Midas - Behringer X32 metering update correct when musing ultiple mixers with Vumeters ([0b628f0](https://github.com/olzzon/sisyfos-audio-controller/commit/0b628f09290e3787638b4fb4ee87779c1bbfdbf2))
+-   remove console.log in midas.ts metering ([f7f4c24](https://github.com/olzzon/sisyfos-audio-controller/commit/f7f4c248f452f5ff0aa0a1333dc76cc810f7903b))
+
 ### [4.0.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v3.6.1...v4.0.1) (2020-10-12)
 
 ### Features
