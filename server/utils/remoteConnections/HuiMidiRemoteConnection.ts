@@ -33,7 +33,7 @@ export class HuiMidiRemoteConnection {
 
         this.remoteProtocol = RemoteFaderPresets.hui
         this.mixerProtocol =
-            MixerProtocolPresets[state.settings[0].mixerProtocol] ||
+            MixerProtocolPresets[state.settings[0].mixers[0].mixerProtocol] ||
             MixerProtocolPresets.genericMidi
 
         if (!state.settings[0].enableRemoteFader) {

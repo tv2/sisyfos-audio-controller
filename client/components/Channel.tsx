@@ -20,14 +20,12 @@ import {
     SOCKET_TOGGLE_AMIX,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import { IFader } from '../../server/reducers/fadersReducer'
-import { IChannels } from '../../server/reducers/channelsReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
-import { TOGGLE_SHOW_CHAN_STRIP } from '../../server/reducers/settingsActions'
+import { storeShowChanStrip } from '../../server/reducers/settingsActions'
 import { withTranslation } from 'react-i18next'
 
 interface IChannelInjectProps {
     t: any
-    channels: IChannels
     fader: IFader
     settings: ISettings
     channelType: number
@@ -67,8 +65,8 @@ class Channel extends React.Component<
             nextProps.fader.showChannel != this.props.fader.showChannel ||
             nextProps.fader.faderLevel != this.props.fader.faderLevel ||
             nextProps.fader.label != this.props.fader.label ||
-            nextProps.settings.mixerProtocol !=
-                this.props.settings.mixerProtocol ||
+            nextProps.settings.mixers[0].mixerProtocol !=
+                this.props.settings.mixers[0].mixerProtocol ||
             nextProps.settings.showSnaps != this.props.settings.showSnaps ||
             nextProps.settings.showPfl != this.props.settings.showPfl ||
             nextProps.settings.showChanStrip !=
@@ -132,10 +130,7 @@ class Channel extends React.Component<
     }
 
     handleShowChanStrip() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: this.faderIndex,
-        })
+        this.props.dispatch(storeShowChanStrip(this.faderIndex))
     }
 
     fader() {
@@ -431,7 +426,6 @@ class Channel extends React.Component<
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
         t: props.t,
-        channels: state.channels[0].channel,
         fader: state.faders[0].fader[props.faderIndex],
         settings: state.settings[0],
         channelType: 0 /* TODO: state.channels[0].channel[props.channelIndex].channelType, */,

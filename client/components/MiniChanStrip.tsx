@@ -113,9 +113,9 @@ class MiniChanStrip extends React.PureComponent<
 const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
     let inject: IChanStripInjectProps = {
         label: '',
-        selectedProtocol: state.settings[0].mixerProtocol,
-        numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
-        channel: state.channels[0].channel,
+        selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
+        numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+        channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
         auxSendIndex: -1,
         offtubeMode: state.settings[0].offtubeMode,
@@ -123,9 +123,9 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
     if (props.faderIndex >= 0) {
         inject = {
             label: state.faders[0].fader[props.faderIndex].label,
-            selectedProtocol: state.settings[0].mixerProtocol,
-            numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
-            channel: state.channels[0].channel,
+            selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
+            numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+            channel: state.channels[0].chConnection[0].channel,
             fader: state.faders[0].fader,
             auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,
             offtubeMode: state.settings[0].offtubeMode,

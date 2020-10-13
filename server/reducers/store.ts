@@ -1,14 +1,11 @@
 import { createStore } from 'redux'
 import indexReducer from './indexReducer'
-import { UPDATE_SETTINGS } from './settingsActions'
+import { storeUpdateSettings } from './settingsActions'
 import { loadSettings } from '../utils/SettingsStorage'
 
 let storeRedux = createStore(indexReducer)
 
-storeRedux.dispatch({
-    type: UPDATE_SETTINGS,
-    settings: loadSettings(storeRedux.getState()),
-})
+storeRedux.dispatch(storeUpdateSettings(loadSettings(storeRedux.getState())))
 
 //Subscribe to redux store:
 let state = storeRedux.getState()

@@ -367,7 +367,7 @@ export class AutomationConnection {
                             this.automationProtocol.fromAutomation.PING
                         )
                     ) {
-                        let pingValue = state.settings[0].mixerOnline
+                        let pingValue = state.settings[0].mixers[0].mixerOnline
                             ? message.address.split('/')[2]
                             : 'offline'
 

@@ -5,9 +5,7 @@ import '../assets/css/ChanStrip.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
-    TOGGLE_SHOW_CHAN_STRIP,
-    TOGGLE_SHOW_OPTION,
-    TOGGLE_SHOW_MONITOR_OPTIONS,
+     storeShowChanStrip, storeShowOptions, storeShowMonitorOptions
 } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
 import {
@@ -56,32 +54,17 @@ class ChanStrip extends React.PureComponent<
     }
 
     handleShowRoutingOptions() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_OPTION,
-            channel: this.props.faderIndex,
-        })
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: -1,
-        })
+        this.props.dispatch(storeShowOptions(this.props.faderIndex))
+        this.props.dispatch(storeShowChanStrip(-1))
     }
 
     handleShowMonitorOptions() {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_MONITOR_OPTIONS,
-            channel: this.props.faderIndex,
-        })
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: -1,
-        })
+        this.props.dispatch(storeShowMonitorOptions(this.props.faderIndex))
+        this.props.dispatch(storeShowChanStrip(-1))
     }
 
     handleClose = () => {
-        this.props.dispatch({
-            type: TOGGLE_SHOW_CHAN_STRIP,
-            channel: -1,
-        })
+        this.props.dispatch(storeShowChanStrip(-1))
     }
     handleInputSelect(selected: number) {
         window.socketIoClient.emit(SOCKET_SET_INPUT_SELECTOR, {
@@ -679,9 +662,9 @@ class ChanStrip extends React.PureComponent<
 const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
     let inject: IChanStripInjectProps = {
         label: '',
-        selectedProtocol: state.settings[0].mixerProtocol,
-        numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
-        channel: state.channels[0].channel,
+        selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
+        numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+        channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
         auxSendIndex: -1,
         offtubeMode: state.settings[0].offtubeMode,
@@ -689,9 +672,9 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
     if (props.faderIndex >= 0) {
         inject = {
             label: state.faders[0].fader[props.faderIndex].label,
-            selectedProtocol: state.settings[0].mixerProtocol,
-            numberOfChannelsInType: state.settings[0].numberOfChannelsInType,
-            channel: state.channels[0].channel,
+            selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
+            numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+            channel: state.channels[0].chConnection[0].channel,
             fader: state.faders[0].fader,
             auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,
             offtubeMode: state.settings[0].offtubeMode,

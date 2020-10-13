@@ -20,25 +20,28 @@ import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
+import { ISettings, IMixerSettings } from '../../reducers/settingsReducer'
 
 export class EmberMixerConnection {
     mixerProtocol: IMixerProtocol
+    mixerIndex: number
     emberConnection: EmberClient
     deviceRoot: any
     emberNodeObject: Array<any>
     isSubscribedToChannel: Array<boolean> = []
 
-    constructor(mixerProtocol: IMixerProtocol) {
+    constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
         this.emberNodeObject = new Array(200)
         this.mixerProtocol = mixerProtocol
+        this.mixerIndex = mixerIndex
 
         logger.info('Setting up Ember connection')
         this.emberConnection = new EmberClient(
-            state.settings[0].deviceIp,
-            state.settings[0].devicePort
+            state.settings[0].mixers[this.mixerIndex].deviceIp,
+            state.settings[0].mixers[this.mixerIndex].devicePort
         )
 
         this.emberConnection.on('error', (error: any) => {
@@ -82,29 +85,33 @@ export class EmberMixerConnection {
         )
 
         let ch: number = 1
-        for (const [typeIndex, numberOfChannels] of Object.entries(
-            state.settings[0].numberOfChannelsInType
+        for (const mixer of Object.values<IMixerSettings>(
+            state.settings[0].mixers
         )) {
-            for (
-                let channelTypeIndex = 0;
-                channelTypeIndex < numberOfChannels;
-                channelTypeIndex++
-            ) {
-                if (this.mixerProtocol.label === LawoMC2.label) {
-                    await this.subscribeToMc2ChannelOnline(
-                        ch,
-                        Number(typeIndex),
-                        channelTypeIndex
-                    )
-                } else {
-                    await this.setupFaderSubscriptions(
-                        ch,
-                        Number(typeIndex),
-                        channelTypeIndex
-                    )
-                }
+            for (const [typeIndex, numberOfChannels] of Object.entries(
+                mixer.numberOfChannelsInType
+            )) {
+                for (
+                    let channelTypeIndex = 0;
+                    channelTypeIndex < numberOfChannels;
+                    channelTypeIndex++
+                ) {
+                    if (this.mixerProtocol.label === LawoMC2.label) {
+                        await this.subscribeToMc2ChannelOnline(
+                            ch,
+                            Number(typeIndex),
+                            channelTypeIndex
+                        )
+                    } else {
+                        await this.setupFaderSubscriptions(
+                            ch,
+                            Number(typeIndex),
+                            channelTypeIndex
+                        )
+                    }
 
-                ch++
+                    ch++
+                }
             }
         }
     }
@@ -253,7 +260,8 @@ export class EmberMixerConnection {
                 )
 
                 if (
-                    !state.channels[0].channel[ch - 1].fadeActive &&
+                    !state.channels[0].chConnection[0].channel[ch - 1]
+                        .fadeActive &&
                     level >= 0 &&
                     level <= 1
                 ) {
@@ -646,22 +654,34 @@ export class EmberMixerConnection {
     }
 
     updateOutLevel(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType
+        let channelType =
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].channelType
         let channelTypeIndex =
-            state.channels[0].channel[channelIndex].channelTypeIndex
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].channelTypeIndex
         let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
             .CHANNEL_OUT_GAIN[0]
         let level =
-            (state.channels[0].channel[channelIndex].outputLevel -
+            (state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].outputLevel -
                 protocol.min) *
             (protocol.max - protocol.min)
         this.sendOutLevelMessage(channelTypeIndex + 1, level)
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType
+        let channelType =
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].channelType
         let channelTypeIndex =
-            state.channels[0].channel[channelIndex].channelTypeIndex
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].channelTypeIndex
         // let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
         //     .CHANNEL_OUT_GAIN[0]
         // let level = (outputLevel - protocol.min) * (protocol.max - protocol.min)
@@ -672,9 +692,14 @@ export class EmberMixerConnection {
     }
 
     updatePflState(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType
+        let channelType =
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].channelType
         let channelTypeIndex =
-            state.channels[0].channel[channelIndex].channelTypeIndex
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].channelTypeIndex
 
         if (state.faders[0].fader[channelIndex].pflOn === true) {
             this.sendOutMessage(
@@ -708,7 +733,10 @@ export class EmberMixerConnection {
     }
 
     updateInputGain(channelIndex: number, gain: number) {
-        const channel = state.channels[0].channel[channelIndex]
+        const channel =
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
         let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
@@ -724,7 +752,10 @@ export class EmberMixerConnection {
         )
     }
     updateInputSelector(channelIndex: number, inputSelected: number) {
-        const channel = state.channels[0].channel[channelIndex]
+        const channel =
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
 
@@ -797,9 +828,14 @@ export class EmberMixerConnection {
     }
 
     updateChannelName(channelIndex: number) {
-        let channelType = state.channels[0].channel[channelIndex].channelType
+        let channelType =
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].channelType
         let channelTypeIndex =
-            state.channels[0].channel[channelIndex].channelTypeIndex
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ].channelTypeIndex
         let channelName = state.faders[0].fader[channelIndex].label
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0]
@@ -811,7 +847,10 @@ export class EmberMixerConnection {
     }
 
     updateAMixState(channelIndex: number, amixOn: boolean) {
-        const channel = state.channels[0].channel[channelIndex]
+        const channel =
+            state.channels[0].chConnection[this.mixerIndex].channel[
+                channelIndex
+            ]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
         let protocol = this.mixerProtocol.channelTypes[channelType].toMixer

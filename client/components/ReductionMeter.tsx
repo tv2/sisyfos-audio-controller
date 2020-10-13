@@ -21,10 +21,18 @@ export class ReductionMeter extends React.Component<
     totalPeak: number = 0
     windowPeak: number = 0
     windowLast: number = 0
+    meterMax: number = 1
+    meterMin: number = 0
+    meterTest: number = 0.75
+    meterZero: number = 0.75
     WINDOW: number = 2000
 
     constructor(props: any) {
         super(props)
+        this.meterMax = window.mixerProtocol.meter?.max || 1
+        this.meterMin = window.mixerProtocol.meter?.min || 0
+        this.meterTest = window.mixerProtocol.meter?.test || 0.75
+        this.meterZero = window.mixerProtocol.meter?.zero || 0.75
     }
 
     public shouldComponentUpdate(nextProps: IReductionMeterInjectedProps) {
@@ -34,7 +42,7 @@ export class ReductionMeter extends React.Component<
     totalHeight = () => {
         return (
             170 /
-            (window.mixerProtocol.meter.max - window.mixerProtocol.meter.min)
+            (this.meterMax - this.meterMin)
         )
     }
 
@@ -58,32 +66,32 @@ export class ReductionMeter extends React.Component<
 
     calcLower = () => {
         let val = this.props.reductionVal
-        if (val >= window.mixerProtocol.meter.test) {
-            val = window.mixerProtocol.meter.test
+        if (val >= this.meterTest) {
+            val = this.meterTest
         }
         return this.totalHeight() * val
     }
 
     calcMiddle = () => {
         let val = this.props.reductionVal
-        if (val < window.mixerProtocol.meter.test) {
+        if (val < this.meterTest) {
             val = 0
-        } else if (val >= window.mixerProtocol.meter.zero) {
+        } else if (val >= this.meterZero) {
             val =
-                window.mixerProtocol.meter.zero -
-                window.mixerProtocol.meter.test
+                this.meterZero -
+                this.meterTest
         } else {
-            val = this.props.reductionVal - window.mixerProtocol.meter.test
+            val = this.props.reductionVal - this.meterTest
         }
         return this.totalHeight() * val + 1
     }
 
     calcUpper = () => {
         let val = this.props.reductionVal
-        if (val < window.mixerProtocol.meter.zero) {
+        if (val < this.meterZero) {
             val = 0
         } else {
-            val = this.props.reductionVal - window.mixerProtocol.meter.zero
+            val = this.props.reductionVal - this.meterZero
         }
 
         return this.totalHeight() * val + 1
@@ -123,19 +131,19 @@ export class ReductionMeter extends React.Component<
 
         // middle part
         let middle = this.calcMiddle()
-        let middleRef = this.totalHeight() * window.mixerProtocol.meter.test
+        let middleRef = this.totalHeight() * this.meterTest
         context.fillStyle = 'rgb(53, 167, 0)'
-        context.fillRect(0, middleRef, this.canvas.clientWidth, middle) // (this.totalHeight() * (range - window.mixerProtocol.meter.test) - this.calcMiddle()), this.canvas.clientWidth, this.calcMiddle())
+        context.fillRect(0, middleRef, this.canvas.clientWidth, middle) // (this.totalHeight() * (range - this.meterTest) - this.calcMiddle()), this.canvas.clientWidth, this.calcMiddle())
 
         // upper part (too high/clip)
         let upper = this.calcUpper()
-        let upperRef = this.totalHeight() * window.mixerProtocol.meter.zero
+        let upperRef = this.totalHeight() * this.meterZero
         context.fillStyle = 'rgb(206, 0, 0)'
         context.fillRect(0, upperRef, this.canvas.clientWidth, upper)
 
         // windowed peak
         const windowPeak = this.getWindowPeak()
-        if (this.windowPeak < window.mixerProtocol.meter.zero) {
+        if (this.windowPeak < this.meterZero) {
             context.fillStyle = 'rgb(16, 56, 0)'
         } else {
             context.fillStyle = 'rgb(100, 100, 100)'
@@ -143,7 +151,7 @@ export class ReductionMeter extends React.Component<
         context.fillRect(0, windowPeak, this.canvas.clientWidth, 2)
 
         // absolute peak
-        if (this.totalPeak < window.mixerProtocol.meter.zero) {
+        if (this.totalPeak < this.meterZero) {
             context.fillStyle = 'rgb(64, 64, 64)'
         } else {
             context.fillStyle = 'rgb(255, 0, 0)'

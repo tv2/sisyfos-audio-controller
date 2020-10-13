@@ -1,74 +1,81 @@
 .channel-route-body {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 400px;
-	overflow: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    overflow: auto;
     max-height: 90vh;
     background-color: rgb(31, 31, 31);
     border-color: rgb(124, 124, 124);
     border-style: solid;
     border-width: 4px;
-	text-align: left;
-	z-index: 2;
+    text-align: left;
+    z-index: 2;
 
-	color: #fff;
+    color: #fff;
 }
 
 .channel-route-body > h2 {
-	border-bottom: 1px solid #999;
-	margin: 0;
-	padding: 10px 0;
-	line-height: 50px;
-	text-align: center;
-
+    border-bottom: 1px solid #999;
+    margin: 0;
+    padding: 10px 0;
+    line-height: 50px;
+    text-align: center;
 }
 
+.channel-route-mixer-name {
+    font-size: 150%;
+    border-bottom: 1px solid #999;
+    margin: 0;
+    padding: 10px 0;
+    line-height: 50px;
+    text-align: center;
+}
 
 .channel-route-text {
-	color: dimgray;
-	margin: 0;
-	margin-left: 40px;
-	padding: 0px 0;
-	line-height: 20px;
-	text-align: left;
-	font-size: 110%;
+    color: dimgray;
+    margin: 0;
+    margin-left: 40px;
+    padding: 0px 0;
+    line-height: 20px;
+    text-align: left;
+    font-size: 110%;
 }
 
 .channel-route-text.checked {
-	font-weight: bold;
-	color: white;
+    font-weight: bold;
+    color: white;
 }
 
 .channel-route-body > .close {
-	position: absolute;
-	outline : none;
+    position: absolute;
+    outline: none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
-	border-radius: 100%;
-	display: block;
-	color: #fff;
-	width: 50px;
-	height: 50px;
-	font-size: 30px;
-	line-height: 50px;
-	top: -5px;
-	right: 9px;
+    border-radius: 100%;
+    display: block;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    line-height: 50px;
+    top: -5px;
+    right: 9px;
 }
 
 .channel-route-body > button {
-	line-height: 10px;
-	outline : none;
+    line-height: 10px;
+    outline: none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
     margin-right: 10px;
-	margin-top: 15px;
+    margin-top: 15px;
     margin-bottom: 15px;
-	margin-left: 10px;
-	border-radius: 7px;
-	color: #fff;
-	width: 34%;
-	font-size: 10px;
+    margin-left: 10px;
+    border-radius: 7px;
+    color: #fff;
+    width: 34%;
+    font-size: 10px;
     line-height: 50px;
 }

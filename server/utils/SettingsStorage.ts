@@ -1,12 +1,13 @@
 // Node Modules:
 const fs = require('fs')
 const path = require('path')
-import { store, state } from '../reducers/store'
+import { store } from '../reducers/store'
 
 // Redux:
-import { SET_COMPLETE_CH_STATE } from '../reducers/channelActions'
+import { storeSetCompleteChState } from '../reducers/channelActions'
 import { SET_COMPLETE_FADER_STATE } from '../reducers/faderActions'
 import { logger } from './logger'
+import { InumberOfChannels } from '../reducers/channelsReducer'
 
 export const loadSettings = (storeRedux: any) => {
     let settingsInterface = storeRedux.settings[0]
@@ -41,7 +42,7 @@ export const saveSettings = (settings: any) => {
 export const loadSnapshotState = (
     stateSnapshot: any,
     stateChannelSnapshot: any,
-    numberOfChannels: Array<number>,
+    numberOfChannels: InumberOfChannels[],
     numberOfFaders: number,
     fileName: string,
     loadAll: boolean
@@ -50,11 +51,12 @@ export const loadSnapshotState = (
         const stateFromFile = JSON.parse(fs.readFileSync(fileName))
 
         if (loadAll) {
-            store.dispatch({
-                type: SET_COMPLETE_CH_STATE,
-                allState: stateFromFile.channelState,
-                numberOfTypeChannels: numberOfChannels,
-            })
+            store.dispatch(
+                storeSetCompleteChState(
+                    stateFromFile.channelState,
+                    numberOfChannels
+                )
+            )
             store.dispatch({
                 type: SET_COMPLETE_FADER_STATE,
                 allState: stateFromFile.faderState,
@@ -88,11 +90,9 @@ export const loadSnapshotState = (
                     return fader
                 }
             )
-            store.dispatch({
-                type: SET_COMPLETE_CH_STATE,
-                allState: stateChannelSnapshot,
-                numberOfTypeChannels: numberOfChannels,
-            })
+            store.dispatch(
+                storeSetCompleteChState(stateChannelSnapshot, numberOfChannels)
+            )
             store.dispatch({
                 type: SET_COMPLETE_FADER_STATE,
                 allState: stateSnapshot,
