@@ -33,6 +33,7 @@ import {
 
 export const socketClientHandlers = () => {
     let vuUpdateSpeed = Date.now()
+    let vuReductionUpdateSpeed = Date.now()
     window.socketIoClient
         .on('connect', () => {
             window.storeRedux.dispatch(storeSetServerOnline(true))
@@ -122,18 +123,25 @@ export const socketClientHandlers = () => {
             }
         })
         .on(SOCKET_SET_VU, (payload: any) => {
-            window.storeRedux.dispatch({
-                type: SET_VU_LEVEL,
-                channel: payload.faderIndex,
-                level: payload.level,
-            })
+            if (Date.now() - vuUpdateSpeed > 100) {
+                vuUpdateSpeed = Date.now()
+
+                window.storeRedux.dispatch({
+                    type: SET_VU_LEVEL,
+                    channel: payload.faderIndex,
+                    level: payload.level,
+                })
+            }
         })
         .on(SOCKET_SET_VU_REDUCTION, (payload: any) => {
-            window.storeRedux.dispatch({
-                type: SET_VU_REDUCTION_LEVEL,
-                channel: payload.faderIndex,
-                level: payload.level,
-            })
+            if (Date.now() - vuReductionUpdateSpeed > 100) {
+                vuReductionUpdateSpeed = Date.now()
+                window.storeRedux.dispatch({
+                    type: SET_VU_REDUCTION_LEVEL,
+                    channel: payload.faderIndex,
+                    level: payload.level,
+                })
+            }
         })
         .on(SOCKET_RETURN_SNAPSHOT_LIST, (payload: any) => {
             window.snapshotFileList = payload
