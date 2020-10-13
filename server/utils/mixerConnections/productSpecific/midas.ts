@@ -45,7 +45,6 @@ export const midasMeter = (mixerIndex: number, message: any) => {
         vuMeters[index] = meter.vuVal
         vuReductionMeters[index] = meter.reductionVal
     })
-    console.log('VU Val', vuMeters[0])
     socketServer.emit(SOCKET_SET_ALL_VU, {
         vuMeters: vuMeters,
         vuReductionMeters: vuReductionMeters,
