@@ -19,6 +19,7 @@ import {
     SOCKET_NEXT_MIX,
     SOCKET_CLEAR_PST,
     SOCKET_RESTART_SERVER,
+    SOCKET_TOGGLE_ALL_MANUAL,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 
 interface IChannelsInjectProps {
@@ -46,7 +47,11 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             this.props.faders.length !== nextProps.faders.length ||
             this.props.settings.currentPage !==
                 nextProps.settings.currentPage ||
-            this.props.settings.pageLength !== nextProps.settings.pageLength
+            this.props.settings.pageLength !== nextProps.settings.pageLength ||
+            !!nextProps.faders.find(
+                (f, i) =>
+                    this.props.faders[i].ignoreAutomation !== f.ignoreAutomation
+            )
         )
     }
 
@@ -56,6 +61,10 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
 
     handleClearAllPst() {
         window.socketIoClient.emit(SOCKET_CLEAR_PST)
+    }
+
+    handleAllManual() {
+        window.socketIoClient.emit(SOCKET_TOGGLE_ALL_MANUAL)
     }
 
     handleReconnect() {
@@ -144,6 +153,34 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     }}
                 >
                     ALL
+                </button>
+            </React.Fragment>
+        )
+    }
+
+    renderAllManualButton() {
+        // TODO - ignore disabled / hidden faders?
+        const isAllManual =
+            this.props.faders.find((f) => f.ignoreAutomation !== true) ===
+            undefined
+        const isAnyManual = !!this.props.faders.find(
+            (f) => f.ignoreAutomation === true
+        )
+
+        console.log('all manual', isAllManual, 'any manual', isAnyManual)
+
+        return (
+            <React.Fragment>
+                <button
+                    className={ClassNames('button button-all-manual', {
+                        all: isAllManual,
+                        any: isAnyManual && !isAllManual,
+                    })}
+                    onClick={() => {
+                        this.handleAllManual()
+                    }}
+                >
+                    MANUAL CONTROL
                 </button>
             </React.Fragment>
         )
@@ -281,6 +318,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                         )}
                     </div>
                     <div className="mid">
+                        {this.renderAllManualButton()}
                         {!this.props.settings.showPfl && (
                             <React.Fragment>
                                 <button

@@ -60,6 +60,7 @@ import {
     SOCKET_GET_PAGES_LIST,
     SOCKET_RETURN_PAGES_LIST,
     SOCKET_TOGGLE_AMIX,
+    SOCKET_TOGGLE_ALL_MANUAL,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
     TOGGLE_PGM,
@@ -82,6 +83,7 @@ import {
     SET_INPUT_GAIN,
     SET_INPUT_SELECTOR,
     TOGGLE_AMIX,
+    TOGGLE_ALL_MANUAL,
 } from './reducers/faderActions'
 import { SET_FADER_LEVEL } from './reducers/faderActions'
 import {
@@ -425,7 +427,7 @@ export class MainThreadHandlers {
                     channel: payload.faderIndex,
                     level: parseFloat(payload.level),
                 })
-                mixerGenericConnection.updateOutLevel(payload.faderIndex)
+                mixerGenericConnection.updateOutLevel(payload.faderIndex, 0)
                 mixerGenericConnection.updateNextAux(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })
@@ -459,6 +461,13 @@ export class MainThreadHandlers {
                 })
                 mixerGenericConnection.updateInputSelector(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
+            })
+            .on(SOCKET_TOGGLE_ALL_MANUAL, () => {
+                logger.verbose('Toggle manual mode for all')
+                store.dispatch({
+                    type: TOGGLE_ALL_MANUAL,
+                })
+                this.updateFullClientStore()
             })
     }
 }
