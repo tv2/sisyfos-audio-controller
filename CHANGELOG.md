@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.0.2...v4.1.0) (2020-10-14)
+
+### Features
+
+-   add button to toggle manual mode for all faders ([ee94d84](https://github.com/olzzon/sisyfos-audio-controller/commit/ee94d847b512c93a7b2bc3d0bedb8579a87ae5c0))
+-   implemented Lawo MC2 support ([e78d2c4](https://github.com/olzzon/sisyfos-audio-controller/commit/e78d2c4cac2ec40de40824b930aaaec6e86b7f2e))
+
+### Bug Fixes
+
+-   **mc2:** remove firmware 5.6.0 support ([8568719](https://github.com/olzzon/sisyfos-audio-controller/commit/8568719c3d9708c732d6d5af8830327c6e79d8ac))
+-   **mc2:** support mc2 firmware 5.6.0 ([fa80bde](https://github.com/olzzon/sisyfos-audio-controller/commit/fa80bde87eb0d61963a9234da74d2d712c200cf4))
+-   dispatch manual fader movements immediately ([2552797](https://github.com/olzzon/sisyfos-audio-controller/commit/2552797dce35fc32b9a6f8e4b53e7c262c6b8198))
+
 ### [4.0.2](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.0.1...v4.0.2) (2020-10-13)
 
 ### Bug Fixes
