@@ -5,9 +5,10 @@ import { store } from '../reducers/store'
 
 // Redux:
 import { storeSetCompleteChState } from '../reducers/channelActions'
-import { SET_COMPLETE_FADER_STATE } from '../reducers/faderActions'
+import { storeSetCompleteFaderState } from '../reducers/faderActions'
 import { logger } from './logger'
 import { InumberOfChannels } from '../reducers/channelsReducer'
+import { IFaders } from '../reducers/fadersReducer'
 
 export const loadSettings = (storeRedux: any) => {
     let settingsInterface = storeRedux.settings[0]
@@ -57,11 +58,12 @@ export const loadSnapshotState = (
                     numberOfChannels
                 )
             )
-            store.dispatch({
-                type: SET_COMPLETE_FADER_STATE,
-                allState: stateFromFile.faderState,
-                numberOfTypeChannels: numberOfFaders,
-            })
+            store.dispatch(
+                storeSetCompleteFaderState(
+                    numberOfFaders,
+                    stateFromFile.faderState as IFaders
+                )
+            )
         } else {
             stateChannelSnapshot.channel = stateChannelSnapshot.channel.map(
                 (channel: any, index: number) => {
@@ -93,11 +95,9 @@ export const loadSnapshotState = (
             store.dispatch(
                 storeSetCompleteChState(stateChannelSnapshot, numberOfChannels)
             )
-            store.dispatch({
-                type: SET_COMPLETE_FADER_STATE,
-                allState: stateSnapshot,
-                numberOfTypeChannels: numberOfFaders,
-            })
+            store.dispatch(
+                storeSetCompleteFaderState(numberOfFaders, stateSnapshot)
+            )
         }
     } catch (error) {
         logger.error('Error loading Snapshot' + String(error), {})

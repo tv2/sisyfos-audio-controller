@@ -1,3 +1,5 @@
+import { IFaders } from './fadersReducer'
+
 export const SET_VU_LEVEL = 'SET_VU_LEVEL'
 export const SET_VU_REDUCTION_LEVEL = 'SET_REDUCTION_LEVEL'
 export const SET_COMPLETE_FADER_STATE = 'SET_COMPLETE_FADER_STATE'
@@ -40,3 +42,30 @@ export const TOGGLE_AMIX = 'TOGGLE_AMIX'
 export const SET_AMIX = 'SET_AMIX'
 export const SET_CAPABILITY = 'SET_CAPABILITY'
 export const TOGGLE_ALL_MANUAL = 'TOGGLE_ALL_MANUAL'
+
+export const storeVuLevel = (channel: number, level: number) => {
+    return {
+        type: SET_VU_LEVEL,
+        channel: channel,
+        level: level,
+    }
+}
+
+export const storeVuReductionLevel = (channel: number, level: number) => {
+    return {
+        type: SET_VU_REDUCTION_LEVEL,
+        channel: channel,
+        level: level,
+    }
+}
+
+export const storeSetCompleteFaderState = (
+    numberOfTypeChannels: number,
+    allState: IFaders
+) => {
+    return {
+        type: SET_COMPLETE_FADER_STATE,
+        numberOfTypeChannels: numberOfTypeChannels,
+        allState: allState,
+    }
+}

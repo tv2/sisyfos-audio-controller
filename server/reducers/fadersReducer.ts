@@ -311,7 +311,7 @@ export const faders = (
             ] = !nextState[0].fader[action.channel].snapOn[action.snapIndex]
             return nextState
         case X_MIX: //none
-            nextState[0].fader.map((item, index) => {
+            nextState[0].fader.forEach((item, index) => {
                 let nextPgmOn = state[0].fader[index].pstOn
                 let nextVoOn = state[0].fader[index].pstVoOn
                 nextState[0].fader[index].pstOn = state[0].fader[index].pgmOn
@@ -321,7 +321,7 @@ export const faders = (
             })
             return nextState
         case NEXT_MIX: //none
-            nextState[0].fader.map((item, index) => {
+            nextState[0].fader.forEach((item, index) => {
                 nextState[0].fader[index].pgmOn = state[0].fader[index].pstOn
                 nextState[0].fader[index].voOn = state[0].fader[index].pstVoOn
                 nextState[0].fader[index].pstOn = false
@@ -329,19 +329,19 @@ export const faders = (
             })
             return nextState
         case FADE_TO_BLACK: //none
-            nextState[0].fader.map((item, index) => {
+            nextState[0].fader.forEach((item, index) => {
                 nextState[0].fader[index].pgmOn = false
                 nextState[0].fader[index].voOn = false
             })
             return nextState
         case CLEAR_PST: //none
-            nextState[0].fader.map((item, index) => {
+            nextState[0].fader.forEach((item, index) => {
                 nextState[0].fader[index].pstOn = false
                 nextState[0].fader[index].pstVoOn = false
             })
             return nextState
         case SNAP_RECALL: //snapIndex
-            nextState[0].fader.map((item, index) => {
+            nextState[0].fader.forEach((item, index) => {
                 nextState[0].fader[index].pstOn = !!state[0].fader[index]
                     .snapOn[action.snapIndex]
             })
@@ -385,6 +385,7 @@ export const faders = (
                     f.ignoreAutomation = true
                 })
             }
+            return nextState
         default:
             return nextState
     }

@@ -19,7 +19,6 @@ import {
     storeSetOutputLevel,
 } from '../../reducers/channelActions'
 import {
-    SET_VU_LEVEL,
     SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
     TOGGLE_PGM,
@@ -31,7 +30,8 @@ import {
     SET_FADER_LOW,
     SET_FADER_DELAY_TIME,
     SET_MUTE,
-    SET_VU_REDUCTION_LEVEL,
+    storeVuLevel,
+    storeVuReductionLevel,
 } from '../../reducers/faderActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import {
@@ -117,13 +117,13 @@ export class OscMixerConnection {
                         let ch = message.address.split('/')[
                             this.cmdChannelIndex
                         ]
-                        store.dispatch({
-                            type: SET_VU_LEVEL,
-                            channel:
+                        store.dispatch(
+                            storeVuLevel(
                                 state.channels[0].chConnection[this.mixerIndex]
                                     .channel[ch - 1].assignedFader,
-                            level: message.args[0],
-                        })
+                                message.args[0]
+                            )
+                        )
                         socketServer.emit(SOCKET_SET_VU, {
                             faderIndex:
                                 state.channels[0].chConnection[this.mixerIndex]
@@ -154,13 +154,13 @@ export class OscMixerConnection {
                         let ch = message.address.split('/')[
                             this.cmdChannelIndex
                         ]
-                        store.dispatch({
-                            type: SET_VU_REDUCTION_LEVEL,
-                            channel:
+                        store.dispatch(
+                            storeVuReductionLevel(
                                 state.channels[0].chConnection[this.mixerIndex]
                                     .channel[ch - 1].assignedFader,
-                            level: message.args[0],
-                        })
+                                message.args[0]
+                            )
+                        )
                         socketServer.emit(SOCKET_SET_VU_REDUCTION, {
                             faderIndex:
                                 state.channels[0].chConnection[this.mixerIndex]
