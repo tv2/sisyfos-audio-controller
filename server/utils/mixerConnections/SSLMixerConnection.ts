@@ -7,9 +7,9 @@ import { remoteConnections } from '../../mainClasses'
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import { storeSetOutputLevel } from '../../reducers/channelActions'
 import {
-    SET_FADER_LEVEL,
     TOGGLE_PGM,
     SET_MUTE,
+    storeFaderLevel,
 } from '../../reducers/faderActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import { logger } from '../logger'
@@ -119,11 +119,12 @@ export class SSLMixerConnection {
                                         ].channel[channelIndex].outputLevel !==
                                         value
                                     ) {
-                                        store.dispatch({
-                                            type: SET_FADER_LEVEL,
-                                            channel: assignedFaderIndex,
-                                            level: value,
-                                        })
+                                        store.dispatch(
+                                            storeFaderLevel(
+                                                assignedFaderIndex,
+                                                value
+                                            )
+                                        )
                                         if (
                                             !state.faders[0].fader[
                                                 assignedFaderIndex
@@ -171,11 +172,12 @@ export class SSLMixerConnection {
                                     state.faders[0].fader[assignedFaderIndex]
                                         .voOn
                                 ) {
-                                    store.dispatch({
-                                        type: SET_FADER_LEVEL,
-                                        channel: assignedFaderIndex,
-                                        level: value,
-                                    })
+                                    store.dispatch(
+                                        storeFaderLevel(
+                                            assignedFaderIndex,
+                                            value
+                                        )
+                                    )
                                     state.channels[0].chConnection[
                                         this.mixerIndex
                                     ].channel.forEach((item, index) => {

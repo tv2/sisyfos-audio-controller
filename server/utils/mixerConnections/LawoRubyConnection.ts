@@ -5,13 +5,13 @@ import { remoteConnections } from '../../mainClasses'
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import {
-    SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
     SET_CHANNEL_DISABLED,
     SET_INPUT_GAIN,
     SET_INPUT_SELECTOR,
     SET_CAPABILITY,
     SET_AMIX,
+    storeFaderLevel,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
@@ -251,13 +251,15 @@ export class LawoRubyMixerConnection {
                         this.mixerProtocol.channelTypes[typeIndex].fromMixer
                             .CHANNEL_OUT_GAIN[0].min
                 ) {
-                    store.dispatch({
-                        type: SET_FADER_LEVEL,
-                        channel: ch - 1,
-                        level: dbToFloat(
-                            (node.contents as Model.Parameter).value as number
-                        ),
-                    })
+                    store.dispatch(
+                        storeFaderLevel(
+                            ch - 1,
+                            dbToFloat(
+                                (node.contents as Model.Parameter)
+                                    .value as number
+                            )
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                     if (remoteConnections) {
                         remoteConnections.updateRemoteFaderState(

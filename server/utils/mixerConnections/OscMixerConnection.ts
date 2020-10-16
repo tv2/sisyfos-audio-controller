@@ -19,7 +19,6 @@ import {
     storeSetOutputLevel,
 } from '../../reducers/channelActions'
 import {
-    SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
     TOGGLE_PGM,
     SET_FADER_THRESHOLD,
@@ -32,6 +31,7 @@ import {
     SET_MUTE,
     storeVuLevel,
     storeVuReductionLevel,
+    storeFaderLevel,
 } from '../../reducers/faderActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import {
@@ -192,11 +192,12 @@ export class OscMixerConnection {
                                     1 * state.settings[0].autoResetLevel) /
                                     100
                         ) {
-                            store.dispatch({
-                                type: SET_FADER_LEVEL,
-                                channel: assignedFaderIndex,
-                                level: message.args[0],
-                            })
+                            store.dispatch(
+                                storeFaderLevel(
+                                    assignedFaderIndex,
+                                    message.args[0]
+                                )
+                            )
                             state.channels[0].chConnection[
                                 this.mixerIndex
                             ].channel.forEach((item, index) => {
@@ -228,11 +229,12 @@ export class OscMixerConnection {
                             state.faders[0].fader[assignedFaderIndex].pgmOn ||
                             state.faders[0].fader[assignedFaderIndex].voOn
                         ) {
-                            store.dispatch({
-                                type: SET_FADER_LEVEL,
-                                channel: assignedFaderIndex,
-                                level: message.args[0],
-                            })
+                            store.dispatch(
+                                storeFaderLevel(
+                                    assignedFaderIndex,
+                                    message.args[0]
+                                )
+                            )
                             state.channels[0].chConnection[
                                 this.mixerIndex
                             ].channel.forEach((item, index) => {

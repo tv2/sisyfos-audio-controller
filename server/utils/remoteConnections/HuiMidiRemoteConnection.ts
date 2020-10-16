@@ -4,9 +4,9 @@ import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
 import {
-    SET_FADER_LEVEL,
     TOGGLE_PGM,
     TOGGLE_PFL,
+    storeFaderLevel,
 } from '../../reducers/faderActions'
 
 //Utils:
@@ -87,11 +87,12 @@ export class HuiMidiRemoteConnection {
                     console.log(
                         'Received Fader message (' + message.data + ').'
                     )
-                    store.dispatch({
-                        type: SET_FADER_LEVEL,
-                        channel: message.data[1],
-                        level: this.convertFromRemoteLevel(message.data[2]),
-                    })
+                    store.dispatch(
+                        storeFaderLevel(
+                            message.data[1],
+                            this.convertFromRemoteLevel(message.data[2])
+                        )
+                    )
                     mixerGenericConnection.updateOutLevel(message.data[1])
                     this.updateRemoteFaderState(
                         message.data[1],

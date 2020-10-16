@@ -1,6 +1,6 @@
 import {
     storeSetCompleteFaderState,
-    SET_SINGLE_FADER_STATE,
+    storeSetSingleFaderState,
     storeVuLevel,
     storeVuReductionLevel,
 } from '../../server/reducers/faderActions'
@@ -89,11 +89,9 @@ export const socketClientHandlers = () => {
             window.storeRedux.dispatch(storeSetMixerOnline(payload.mixerOnline))
         })
         .on(SOCKET_SET_STORE_FADER, (payload: any) => {
-            window.storeRedux.dispatch({
-                type: SET_SINGLE_FADER_STATE,
-                faderIndex: payload.faderIndex,
-                state: payload.state,
-            })
+            window.storeRedux.dispatch(
+                storeSetSingleFaderState(payload.faderIndex, payload.state)
+            )
         })
         .on(SOCKET_SET_STORE_CHANNEL, (payload: any) => {
             window.storeRedux.dispatch(

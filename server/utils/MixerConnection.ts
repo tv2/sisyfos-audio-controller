@@ -22,7 +22,7 @@ import {
     storeFadeActive,
     storeSetOutputLevel,
 } from '../reducers/channelActions'
-import { SET_FADER_LEVEL } from '../reducers/faderActions'
+import { storeFaderLevel } from '../reducers/faderActions'
 
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
 // The lower the more CPU
@@ -148,11 +148,9 @@ export class MixerGenericConnection {
             state.faders[0].fader[channel].faderLevel <=
             state.settings[0].autoResetLevel / 100
         ) {
-            store.dispatch({
-                type: SET_FADER_LEVEL,
-                channel: channel,
-                level: this.mixerProtocol[0].fader.zero,
-            })
+            store.dispatch(
+                storeFaderLevel(channel, this.mixerProtocol[0].fader.zero)
+            )
         }
     }
 

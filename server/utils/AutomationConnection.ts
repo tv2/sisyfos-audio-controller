@@ -10,7 +10,6 @@ import {
 } from '../constants/AutomationPresets'
 import { IFader } from '../reducers/fadersReducer'
 import {
-    SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
     SET_PGM,
     SET_VO,
@@ -22,6 +21,7 @@ import {
     FADE_TO_BLACK,
     CLEAR_PST,
     SNAP_RECALL,
+    storeFaderLevel,
 } from '../reducers/faderActions'
 import { logger } from './logger'
 
@@ -172,11 +172,9 @@ export class AutomationConnection {
                     ) {
                         let ch = message.address.split('/')[2]
                         if (!state.faders[0].fader[ch - 1].ignoreAutomation) {
-                            store.dispatch({
-                                type: SET_FADER_LEVEL,
-                                channel: ch - 1,
-                                level: message.args[0],
-                            })
+                            store.dispatch(
+                                storeFaderLevel(ch - 1, message.args[0])
+                            )
                             mixerGenericConnection.updateOutLevel(ch - 1)
                             global.mainThreadHandler.updatePartialStore(ch - 1)
                         }

@@ -5,9 +5,7 @@ import { remoteConnections } from '../../mainClasses'
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import {
-    SET_FADER_LEVEL,
     SET_CHANNEL_LABEL,
-    TOGGLE_PGM,
     SET_PGM,
     SET_PFL,
     SET_INPUT_GAIN,
@@ -15,6 +13,7 @@ import {
     SET_INPUT_SELECTOR,
     SET_CAPABILITY,
     SHOW_CHANNEL,
+    storeFaderLevel,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
@@ -269,11 +268,9 @@ export class EmberMixerConnection {
                 )
 
                 if (!channel.fadeActive && level >= 0 && level <= 1) {
-                    store.dispatch({
-                        type: SET_FADER_LEVEL,
-                        channel: channel.assignedFader,
-                        level,
-                    })
+                    store.dispatch(
+                        storeFaderLevel(channel.assignedFader, level)
+                    )
                     store.dispatch({
                         type: SET_OUTPUT_LEVEL,
                         channel: channel.assignedFader,

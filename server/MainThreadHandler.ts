@@ -84,8 +84,8 @@ import {
     SET_INPUT_SELECTOR,
     TOGGLE_AMIX,
     TOGGLE_ALL_MANUAL,
+    storeFaderLevel,
 } from './reducers/faderActions'
-import { SET_FADER_LEVEL } from './reducers/faderActions'
 import {
     storeSetAssignedFader,
     storeSetAuxLevel,
@@ -422,11 +422,12 @@ export class MainThreadHandlers {
                         '  Level : ' +
                         String(payload.level)
                 )
-                store.dispatch({
-                    type: SET_FADER_LEVEL,
-                    channel: payload.faderIndex,
-                    level: parseFloat(payload.level),
-                })
+                store.dispatch(
+                    storeFaderLevel(
+                        payload.faderIndex,
+                        parseFloat(payload.level)
+                    )
+                )
                 mixerGenericConnection.updateOutLevel(payload.faderIndex, 0)
                 mixerGenericConnection.updateNextAux(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)

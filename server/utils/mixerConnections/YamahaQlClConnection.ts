@@ -7,10 +7,10 @@ import { remoteConnections } from '../../mainClasses'
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import { storeSetOutputLevel } from '../../reducers/channelActions'
 import {
-    SET_FADER_LEVEL,
     TOGGLE_PGM,
     SET_MUTE,
     storeVuLevel,
+    storeFaderLevel,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
@@ -129,11 +129,9 @@ export class QlClMixerConnection {
                                 .channel[ch - 1].fadeActive &&
                             faderLevel > this.mixerProtocol.fader.min
                         ) {
-                            store.dispatch({
-                                type: SET_FADER_LEVEL,
-                                channel: assignedFader - 1,
-                                level: faderLevel,
-                            })
+                            store.dispatch(
+                                storeFaderLevel(assignedFader - 1, faderLevel)
+                            )
                             if (
                                 !state.faders[0].fader[assignedFader - 1].pgmOn
                             ) {

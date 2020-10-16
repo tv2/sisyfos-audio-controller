@@ -1,9 +1,10 @@
-import { IFaders } from './fadersReducer'
+import { IFader, IFaders } from './fadersReducer'
 
 export const SET_VU_LEVEL = 'SET_VU_LEVEL'
 export const SET_VU_REDUCTION_LEVEL = 'SET_REDUCTION_LEVEL'
 export const SET_COMPLETE_FADER_STATE = 'SET_COMPLETE_FADER_STATE'
 export const SET_SINGLE_FADER_STATE = 'SET_SINGLE_FADER_STATE'
+
 export const SET_FADER_LEVEL = 'SET_FADER_LEVEL'
 export const SET_INPUT_GAIN = 'SET_INPUT_GAIN'
 export const SET_INPUT_SELECTOR = 'SET_INPUT_SELECTOR'
@@ -67,5 +68,21 @@ export const storeSetCompleteFaderState = (
         type: SET_COMPLETE_FADER_STATE,
         numberOfTypeChannels: numberOfTypeChannels,
         allState: allState,
+    }
+}
+
+export const storeSetSingleFaderState = (faderIndex: number, state: IFader) => {
+    return {
+        type: SET_SINGLE_FADER_STATE,
+        faderIndex: faderIndex,
+        state: state,
+    }
+}
+
+export const storeFaderLevel = (channel: number, level: number) => {
+    return {
+        type: SET_FADER_LEVEL,
+        channel: channel,
+        level: level,
     }
 }
