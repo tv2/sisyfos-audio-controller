@@ -94,11 +94,11 @@ export const storeInputGain = (channel: number, level: number) => {
     }
 }
 
-export const storeInputSelector = (channel: number, level: number) => {
+export const storeInputSelector = (channel: number, selected: number) => {
     return {
         type: SET_INPUT_SELECTOR,
         channel: channel,
-        selected: level,
+        selected: selected,
     }
 }
 
@@ -254,5 +254,13 @@ export const storeSetMute = (channel: number, muteOn: boolean) => {
         type: SET_MUTE,
         channel: channel,
         muteOn: muteOn,
+    }
+}
+
+export const storeShowChannel = (channel: number, showChannel: boolean) => {
+    return {
+        type: SHOW_CHANNEL,
+        channel: channel,
+        showChannel: showChannel,
     }
 }

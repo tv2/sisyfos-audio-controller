@@ -10,7 +10,6 @@ import {
 } from '../constants/AutomationPresets'
 import { IFader } from '../reducers/fadersReducer'
 import {
-    SHOW_CHANNEL,
     X_MIX,
     FADE_TO_BLACK,
     CLEAR_PST,
@@ -22,6 +21,7 @@ import {
     storeSetPstVo,
     storeSetMute,
     storeSetPst,
+    storeShowChannel,
 } from '../reducers/faderActions'
 import { logger } from './logger'
 
@@ -195,11 +195,9 @@ export class AutomationConnection {
                         )
                     ) {
                         let ch = message.address.split('/')[2]
-                        store.dispatch({
-                            type: SHOW_CHANNEL,
-                            channel: ch - 1,
-                            showChannel: message.args[0] === 1 ? true : false,
-                        })
+                        store.dispatch(
+                            storeShowChannel(ch - 1, message.args[0] === 1)
+                        )
                         global.mainThreadHandler.updatePartialStore(ch - 1)
                     } else if (
                         this.checkOscCommand(

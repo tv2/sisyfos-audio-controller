@@ -7,7 +7,6 @@ import { IAppProps } from './App'
 //Utils:
 import '../assets/css/Settings.css'
 import { ISettings } from '../../server/reducers/settingsReducer'
-import { SHOW_CHANNEL } from '../../server/reducers/faderActions'
 import { Store } from 'redux'
 import { ChangeEvent } from 'react'
 import { SOCKET_SAVE_SETTINGS } from '../../server/constants/SOCKET_IO_DISPATCHERS'
@@ -164,38 +163,6 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         settingsCopy.mixers[mixerIndex].numberOfChannelsInType[index] =
             parseInt(event.target.value) || 1
         this.setState({ settings: settingsCopy })
-    }
-
-    handleShowChannel = (index: number, event: any) => {
-        this.props.dispatch({
-            type: SHOW_CHANNEL,
-            channel: index,
-            showChannel: event.target.checked,
-        })
-    }
-
-    handleShowAllChannels = () => {
-        this.props.store.channels[0].chConnection[0].channel.forEach(
-            (channel: any, index: number) => {
-                this.props.dispatch({
-                    type: SHOW_CHANNEL,
-                    channel: index,
-                    showChannel: true,
-                })
-            }
-        )
-    }
-
-    handleHideAllChannels = () => {
-        this.props.store.channels[0].chConnection[0].channel.forEach(
-            (channel: any, index: number) => {
-                this.props.dispatch({
-                    type: SHOW_CHANNEL,
-                    channel: index,
-                    showChannel: false,
-                })
-            }
-        )
     }
 
     handleSave = () => {

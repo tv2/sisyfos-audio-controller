@@ -8,12 +8,12 @@ import {
     SET_AMIX,
     SET_INPUT_SELECTOR,
     SET_CAPABILITY,
-    SHOW_CHANNEL,
     storeFaderLevel,
     storeInputGain,
     storeFaderLabel,
     storeSetPgm,
     storeSetPfl,
+    storeShowChannel,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
@@ -187,21 +187,17 @@ export class EmberMixerConnection {
                             channelTypeIndex
                         )
                     }
-                    store.dispatch({
-                        type: SHOW_CHANNEL,
-                        channel: channel.assignedFader,
-                        showChannel: true,
-                    })
+                    store.dispatch(
+                        storeShowChannel(channel.assignedFader, true)
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         channel.assignedFader
                     )
                 } else {
                     logger.info(`Channel ${ch} offline`)
-                    store.dispatch({
-                        type: SHOW_CHANNEL,
-                        channel: channel.assignedFader,
-                        showChannel: false,
-                    })
+                    store.dispatch(
+                        storeShowChannel(channel.assignedFader, false)
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         channel.assignedFader
                     )
