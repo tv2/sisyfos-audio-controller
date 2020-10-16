@@ -15,6 +15,7 @@ export const SET_FADER_LOW = 'SET_FADER_LOW'
 export const SET_FADER_LO_MID = 'SET_FADER_LO_MID'
 export const SET_FADER_MID = 'SET_FADER_MID'
 export const SET_FADER_HIGH = 'SET_FADER_HIGH'
+
 export const SET_FADER_MONITOR = 'SET_FADER_MONITOR'
 export const TOGGLE_PGM = 'TOGGLE_PGM'
 export const SET_PGM = 'SET_PGM'
@@ -98,5 +99,69 @@ export const storeInputSelector = (channel: number, level: number) => {
         type: SET_INPUT_SELECTOR,
         channel: channel,
         selected: level,
+    }
+}
+
+export const storeFaderLabel = (channel: number, label: string) => {
+    return {
+        type: SET_CHANNEL_LABEL,
+        channel: channel,
+        label: label,
+    }
+}
+
+export const storeFaderThreshold = (channel: number, level: number) => {
+    return {
+        type: SET_FADER_THRESHOLD,
+        channel: channel,
+        level: level,
+    }
+}
+
+export const storeFaderRatio = (channel: number, level: number) => {
+    return {
+        type: SET_FADER_RATIO,
+        channel: channel,
+        level: level,
+    }
+}
+
+export const storeFaderDelayTime = (channel: number, delayTime: number) => {
+    return {
+        type: SET_FADER_DELAY_TIME,
+        channel: channel,
+        delayTime: delayTime,
+    }
+}
+
+export const storeFaderLow = (channel: number, level: number) => {
+    return {
+        type: SET_FADER_LOW,
+        channel: channel,
+        level: level,
+    }
+}
+
+export const storeFaderLoMid = (channel: number, level: number) => {
+    return {
+        type: SET_FADER_LO_MID,
+        channel: channel,
+        level: level,
+    }
+}
+
+export const storeFaderMid = (channel: number, level: number) => {
+    return {
+        type: SET_FADER_MID,
+        channel: channel,
+        level: level,
+    }
+}
+
+export const storeFaderHigh = (channel: number, level: number) => {
+    return {
+        type: SET_FADER_HIGH,
+        channel: channel,
+        level: level,
     }
 }

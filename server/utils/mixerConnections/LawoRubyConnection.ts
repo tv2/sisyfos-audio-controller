@@ -5,13 +5,13 @@ import { remoteConnections } from '../../mainClasses'
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import {
-    SET_CHANNEL_LABEL,
     SET_CHANNEL_DISABLED,
     SET_INPUT_SELECTOR,
     SET_CAPABILITY,
     SET_AMIX,
     storeFaderLevel,
     storeInputGain,
+    storeFaderLabel,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
@@ -149,11 +149,12 @@ export class LawoRubyMixerConnection {
                 ) {
                     if (this.faders[channelTypeIndex + 1]) {
                         // enable
-                        store.dispatch({
-                            type: SET_CHANNEL_LABEL,
-                            channel: channelTypeIndex,
-                            label: this.faders[channelTypeIndex + 1],
-                        })
+                        store.dispatch(
+                            storeFaderLabel(
+                                channelTypeIndex,
+                                this.faders[channelTypeIndex + 1]
+                            )
+                        )
                         store.dispatch({
                             type: SET_CHANNEL_DISABLED,
                             channel: channelTypeIndex,
@@ -166,11 +167,7 @@ export class LawoRubyMixerConnection {
                             channel: channelTypeIndex,
                             disabled: true,
                         })
-                        store.dispatch({
-                            type: SET_CHANNEL_LABEL,
-                            channel: channelTypeIndex,
-                            label: '',
-                        })
+                        store.dispatch(storeFaderLabel(channelTypeIndex, ''))
                     }
                 }
             }

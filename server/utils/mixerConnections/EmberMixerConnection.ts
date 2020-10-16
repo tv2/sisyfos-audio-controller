@@ -5,7 +5,6 @@ import { remoteConnections } from '../../mainClasses'
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import {
-    SET_CHANNEL_LABEL,
     SET_PGM,
     SET_PFL,
     SET_AMIX,
@@ -14,6 +13,7 @@ import {
     SHOW_CHANNEL,
     storeFaderLevel,
     storeInputGain,
+    storeFaderLabel,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
@@ -320,22 +320,24 @@ export class EmberMixerConnection {
                     logger.verbose(
                         `Receiving Label from Ch "${ch}", val: ${node.contents.description}`
                     )
-                    store.dispatch({
-                        type: SET_CHANNEL_LABEL,
-                        channel: channel.assignedFader,
-                        label: node.contents.description,
-                    })
+                    store.dispatch(
+                        storeFaderLabel(
+                            channel.assignedFader,
+                            node.contents.description
+                        )
+                    )
                 } else {
                     logger.verbose(
                         `Receiving Label from Ch "${ch}", val: ${
                             (node.contents as Model.Parameter).value
                         }`
                     )
-                    store.dispatch({
-                        type: SET_CHANNEL_LABEL,
-                        channel: channel.assignedFader,
-                        label: (node.contents as Model.Parameter).value,
-                    })
+                    store.dispatch(
+                        storeFaderLabel(
+                            channel.assignedFader,
+                            String((node.contents as Model.Parameter).value)
+                        )
+                    )
                 }
                 global.mainThreadHandler.updatePartialStore(
                     channel.assignedFader

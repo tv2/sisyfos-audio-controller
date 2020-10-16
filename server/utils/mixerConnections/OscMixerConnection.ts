@@ -19,19 +19,19 @@ import {
     storeSetOutputLevel,
 } from '../../reducers/channelActions'
 import {
-    SET_CHANNEL_LABEL,
     TOGGLE_PGM,
-    SET_FADER_THRESHOLD,
-    SET_FADER_RATIO,
-    SET_FADER_LO_MID,
-    SET_FADER_MID,
-    SET_FADER_HIGH,
-    SET_FADER_LOW,
-    SET_FADER_DELAY_TIME,
     SET_MUTE,
     storeVuLevel,
     storeVuReductionLevel,
     storeFaderLevel,
+    storeFaderLabel,
+    storeFaderThreshold,
+    storeFaderRatio,
+    storeFaderDelayTime,
+    storeFaderLow,
+    storeFaderLoMid,
+    storeFaderMid,
+    storeFaderHigh,
 } from '../../reducers/faderActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import {
@@ -317,13 +317,13 @@ export class OscMixerConnection {
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch({
-                        type: SET_CHANNEL_LABEL,
-                        channel:
+                    store.dispatch(
+                        storeFaderLabel(
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
-                        label: message.args[0],
-                    })
+                            message.args[0]
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1
@@ -358,13 +358,13 @@ export class OscMixerConnection {
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch({
-                        type: SET_FADER_THRESHOLD,
-                        channel:
+                    store.dispatch(
+                        storeFaderThreshold(
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
-                        level: message.args[0],
-                    })
+                            message.args[0]
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1
@@ -383,13 +383,13 @@ export class OscMixerConnection {
                     let level =
                         message.args[0] /
                         (ratio.max || 1 - ratio.min || 0 + ratio.min || 0)
-                    store.dispatch({
-                        type: SET_FADER_RATIO,
-                        channel:
+                    store.dispatch(
+                        storeFaderRatio(
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
-                        level: level,
-                    })
+                            level
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1
@@ -408,13 +408,13 @@ export class OscMixerConnection {
                     let delayTime =
                         message.args[0] /
                         (delay.max || 1 - delay.min || 0 + delay.min || 0)
-                    store.dispatch({
-                        type: SET_FADER_DELAY_TIME,
-                        channel:
+                    store.dispatch(
+                        storeFaderDelayTime(
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
-                        delayTime: delayTime,
-                    })
+                            delayTime
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1
@@ -428,13 +428,13 @@ export class OscMixerConnection {
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch({
-                        type: SET_FADER_LOW,
-                        channel:
+                    store.dispatch(
+                        storeFaderLow(
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
-                        level: message.args[0],
-                    })
+                            message.args[0]
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1
@@ -448,13 +448,13 @@ export class OscMixerConnection {
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch({
-                        type: SET_FADER_LO_MID,
-                        channel:
+                    store.dispatch(
+                        storeFaderLoMid(
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
-                        level: message.args[0],
-                    })
+                            message.args[0]
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1
@@ -468,13 +468,13 @@ export class OscMixerConnection {
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch({
-                        type: SET_FADER_MID,
-                        channel:
+                    store.dispatch(
+                        storeFaderMid(
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
-                        level: message.args[0],
-                    })
+                            message.args[0]
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1
@@ -488,13 +488,13 @@ export class OscMixerConnection {
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch({
-                        type: SET_FADER_HIGH,
-                        channel:
+                    store.dispatch(
+                        storeFaderHigh(
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
-                        level: message.args[0],
-                    })
+                            message.args[0]
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1

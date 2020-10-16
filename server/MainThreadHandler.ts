@@ -70,21 +70,21 @@ import {
     TOGGLE_MUTE,
     NEXT_MIX,
     CLEAR_PST,
-    SET_FADER_THRESHOLD,
-    SET_FADER_RATIO,
-    SET_FADER_LOW,
-    SET_FADER_MID,
-    SET_FADER_HIGH,
     SET_FADER_MONITOR,
     IGNORE_AUTOMATION,
-    SET_FADER_LO_MID,
-    SET_FADER_DELAY_TIME,
     SHOW_IN_MINI_MONITOR,
     SET_INPUT_SELECTOR,
     TOGGLE_AMIX,
     TOGGLE_ALL_MANUAL,
     storeFaderLevel,
     storeInputGain,
+    storeFaderThreshold,
+    storeFaderRatio,
+    storeFaderDelayTime,
+    storeFaderLow,
+    storeFaderLoMid,
+    storeFaderMid,
+    storeFaderHigh,
 } from './reducers/faderActions'
 import {
     storeSetAssignedFader,
@@ -276,71 +276,47 @@ export class MainThreadHandlers {
             })
             .on(SOCKET_SET_THRESHOLD, (payload: any) => {
                 logger.verbose('Set Threshold:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_THRESHOLD,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(
+                    storeFaderThreshold(payload.channel, payload.level)
+                )
                 mixerGenericConnection.updateThreshold(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_RATIO, (payload: any) => {
                 logger.verbose('Set Ratio:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_RATIO,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(storeFaderRatio(payload.channel, payload.level))
                 mixerGenericConnection.updateRatio(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_DELAY_TIME, (payload: any) => {
                 logger.verbose('Set Delay:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_DELAY_TIME,
-                    channel: payload.channel,
-                    delayTime: payload.delayTime,
-                })
+                store.dispatch(
+                    storeFaderDelayTime(payload.channel, payload.delayTime)
+                )
                 mixerGenericConnection.updateDelayTime(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_LOW, (payload: any) => {
                 logger.verbose('Set Low:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_LOW,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(storeFaderLow(payload.channel, payload.level))
                 mixerGenericConnection.updateLow(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_LO_MID, (payload: any) => {
-                logger.verbose('Set Mid:' + String(payload.level), {})
-                store.dispatch({
-                    type: SET_FADER_LO_MID,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                logger.verbose('Set LoMid:' + String(payload.level), {})
+                store.dispatch(storeFaderLoMid(payload.channel, payload.level))
                 mixerGenericConnection.updateLoMid(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_MID, (payload: any) => {
                 logger.verbose('Set Mid:' + String(payload.level), {})
-                store.dispatch({
-                    type: SET_FADER_MID,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(storeFaderMid(payload.channel, payload.level))
                 mixerGenericConnection.updateMid(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_HIGH, (payload: any) => {
                 logger.verbose('Set High:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_HIGH,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(storeFaderHigh(payload.channel, payload.level))
                 mixerGenericConnection.updateHigh(payload.channel)
                 this.updatePartialStore(payload.channel)
             })

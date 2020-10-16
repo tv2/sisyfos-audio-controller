@@ -5,7 +5,7 @@ import { remoteConnections } from '../../mainClasses'
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
-import { SET_CHANNEL_LABEL, storeFaderLevel } from '../../reducers/faderActions'
+import { storeFaderLabel, storeFaderLevel } from '../../reducers/faderActions'
 import { logger } from '../logger'
 
 export class StuderMixerConnection {
@@ -150,11 +150,7 @@ export class StuderMixerConnection {
             )
             .then((node: any) => {
                 this.emberConnection.subscribe(node, () => {
-                    store.dispatch({
-                        type: SET_CHANNEL_LABEL,
-                        channel: ch - 1,
-                        level: node.contents.value,
-                    })
+                    store.dispatch(storeFaderLabel(ch - 1, node.contents.value))
                 })
             })
     }

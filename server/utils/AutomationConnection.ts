@@ -10,7 +10,6 @@ import {
 } from '../constants/AutomationPresets'
 import { IFader } from '../reducers/fadersReducer'
 import {
-    SET_CHANNEL_LABEL,
     SET_PGM,
     SET_VO,
     SET_PST,
@@ -22,6 +21,7 @@ import {
     CLEAR_PST,
     SNAP_RECALL,
     storeFaderLevel,
+    storeFaderLabel,
 } from '../reducers/faderActions'
 import { logger } from './logger'
 
@@ -186,11 +186,7 @@ export class AutomationConnection {
                         )
                     ) {
                         let ch = message.address.split('/')[2]
-                        store.dispatch({
-                            type: SET_CHANNEL_LABEL,
-                            channel: ch - 1,
-                            label: message.args[0],
-                        })
+                        store.dispatch(storeFaderLabel(ch - 1, message.args[0]))
                         mixerGenericConnection.injectCommand(message.args)
                         global.mainThreadHandler.updatePartialStore(ch - 1)
                     } else if (
@@ -211,11 +207,7 @@ export class AutomationConnection {
                         )
                     ) {
                         let ch = message.address.split('/')[2]
-                        store.dispatch({
-                            type: SET_CHANNEL_LABEL,
-                            channel: ch - 1,
-                            label: message.args[0],
-                        })
+                        store.dispatch(storeFaderLabel(ch - 1, message.args[0]))
                         mixerGenericConnection.updateChannelName(ch - 1)
                         global.mainThreadHandler.updatePartialStore(ch - 1)
                     } else if (
