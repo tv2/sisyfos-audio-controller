@@ -5,8 +5,6 @@ import { remoteConnections } from '../../mainClasses'
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import {
-    SET_PGM,
-    SET_PFL,
     SET_AMIX,
     SET_INPUT_SELECTOR,
     SET_CAPABILITY,
@@ -14,12 +12,13 @@ import {
     storeFaderLevel,
     storeInputGain,
     storeFaderLabel,
+    storeSetPgm,
+    storeSetPfl,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
-import { ISettings, IMixerSettings } from '../../reducers/settingsReducer'
 
 export class EmberMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -280,11 +279,9 @@ export class EmberMixerConnection {
 
                     // toggle pgm based on level
                     logger.verbose(`Set Channel ${ch} pgmOn ${level > 0}`)
-                    store.dispatch({
-                        type: SET_PGM,
-                        channel: channel.assignedFader,
-                        pgmOn: level > 0,
-                    })
+                    store.dispatch(
+                        storeSetPgm(channel.assignedFader, level > 0)
+                    )
 
                     global.mainThreadHandler.updatePartialStore(
                         channel.assignedFader
@@ -365,11 +362,12 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value
                     }`
                 )
-                store.dispatch({
-                    type: SET_PFL,
-                    channel: channel.assignedFader,
-                    pflOn: (node.contents as Model.Parameter).value,
-                })
+                store.dispatch(
+                    storeSetPfl(
+                        channel.assignedFader,
+                        (node.contents as Model.Parameter).value !== 0
+                    )
+                )
                 global.mainThreadHandler.updatePartialStore(
                     channel.assignedFader
                 )

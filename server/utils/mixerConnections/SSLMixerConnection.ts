@@ -7,9 +7,9 @@ import { remoteConnections } from '../../mainClasses'
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import { storeSetOutputLevel } from '../../reducers/channelActions'
 import {
-    TOGGLE_PGM,
-    SET_MUTE,
     storeFaderLevel,
+    storeSetMute,
+    storeTogglePgm,
 } from '../../reducers/faderActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import { logger } from '../logger'
@@ -130,10 +130,11 @@ export class SSLMixerConnection {
                                                 assignedFaderIndex
                                             ].pgmOn
                                         ) {
-                                            store.dispatch({
-                                                type: TOGGLE_PGM,
-                                                channel: assignedFaderIndex,
-                                            })
+                                            store.dispatch(
+                                                storeTogglePgm(
+                                                    assignedFaderIndex
+                                                )
+                                            )
                                         }
 
                                         if (remoteConnections) {
@@ -227,11 +228,7 @@ export class SSLMixerConnection {
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[channelIndex].assignedFader
 
-                        store.dispatch({
-                            type: SET_MUTE,
-                            channel: assignedFaderIndex,
-                            muteOn: value,
-                        })
+                        store.dispatch(storeSetMute(assignedFaderIndex, value))
 
                         if (remoteConnections) {
                             remoteConnections.updateRemoteFaderState(

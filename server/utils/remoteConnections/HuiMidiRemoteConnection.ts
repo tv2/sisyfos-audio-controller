@@ -4,9 +4,9 @@ import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
 import {
-    TOGGLE_PGM,
-    TOGGLE_PFL,
     storeFaderLevel,
+    storeTogglePgm,
+    storeTogglePfl,
 } from '../../reducers/faderActions'
 
 //Utils:
@@ -105,20 +105,14 @@ export class HuiMidiRemoteConnection {
                         this.activeHuiChannel = message.data[2]
                     } else if (message.data[2] && message.data[2] === 65) {
                         //SELECT button - toggle PGM ON/OFF
-                        store.dispatch({
-                            type: TOGGLE_PGM,
-                            channel: this.activeHuiChannel,
-                        })
+                        store.dispatch(storeTogglePgm(this.activeHuiChannel))
                         mixerGenericConnection.updateOutLevel(
                             this.activeHuiChannel
                         )
                         this.updateRemotePgmPstPfl(this.activeHuiChannel)
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
-                        store.dispatch({
-                            type: TOGGLE_PFL,
-                            channel: this.activeHuiChannel,
-                        })
+                        store.dispatch(storeTogglePfl(this.activeHuiChannel))
                         mixerGenericConnection.updateOutLevel(
                             this.activeHuiChannel
                         )

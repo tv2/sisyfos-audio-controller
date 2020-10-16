@@ -63,14 +63,8 @@ import {
     SOCKET_TOGGLE_ALL_MANUAL,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
-    TOGGLE_PGM,
-    TOGGLE_VO,
-    TOGGLE_PST,
-    TOGGLE_PFL,
-    TOGGLE_MUTE,
     NEXT_MIX,
     CLEAR_PST,
-    SET_FADER_MONITOR,
     IGNORE_AUTOMATION,
     SHOW_IN_MINI_MONITOR,
     SET_INPUT_SELECTOR,
@@ -85,6 +79,12 @@ import {
     storeFaderLoMid,
     storeFaderMid,
     storeFaderHigh,
+    storeFaderMonitor,
+    storeTogglePgm,
+    storeToggleVo,
+    storeTogglePst,
+    storeTogglePfl,
+    storeToggleMute,
 } from './reducers/faderActions'
 import {
     storeSetAssignedFader,
@@ -232,11 +232,9 @@ export class MainThreadHandlers {
                 this.updateFullClientStore()
             })
             .on(SOCKET_SET_FADER_MONITOR, (payload: any) => {
-                store.dispatch({
-                    type: SET_FADER_MONITOR,
-                    channel: payload.faderIndex,
-                    auxIndex: payload.auxIndex,
-                })
+                store.dispatch(
+                    storeFaderMonitor(payload.faderIndex, payload.auxIndex)
+                )
                 this.updateFullClientStore()
             })
             .on(SOCKET_SHOW_IN_MINI_MONITOR, (payload: any) => {
@@ -336,43 +334,28 @@ export class MainThreadHandlers {
             })
             .on(SOCKET_TOGGLE_PGM, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
-                store.dispatch({
-                    type: TOGGLE_PGM,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeTogglePgm(faderIndex))
                 mixerGenericConnection.updateOutLevel(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_VO, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
-                store.dispatch({
-                    type: TOGGLE_VO,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeToggleVo(faderIndex))
                 mixerGenericConnection.updateOutLevel(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_PST, (faderIndex: any) => {
-                store.dispatch({
-                    type: TOGGLE_PST,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeTogglePst(faderIndex))
                 mixerGenericConnection.updateNextAux(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_PFL, (faderIndex: any) => {
-                store.dispatch({
-                    type: TOGGLE_PFL,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeTogglePfl(faderIndex))
                 mixerGenericConnection.updatePflState(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_MUTE, (faderIndex: any) => {
-                store.dispatch({
-                    type: TOGGLE_MUTE,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeToggleMute(faderIndex))
                 mixerGenericConnection.updateMuteState(faderIndex)
                 this.updatePartialStore(faderIndex)
             })

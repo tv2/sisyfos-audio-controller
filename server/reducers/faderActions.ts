@@ -15,7 +15,6 @@ export const SET_FADER_LOW = 'SET_FADER_LOW'
 export const SET_FADER_LO_MID = 'SET_FADER_LO_MID'
 export const SET_FADER_MID = 'SET_FADER_MID'
 export const SET_FADER_HIGH = 'SET_FADER_HIGH'
-
 export const SET_FADER_MONITOR = 'SET_FADER_MONITOR'
 export const TOGGLE_PGM = 'TOGGLE_PGM'
 export const SET_PGM = 'SET_PGM'
@@ -28,6 +27,7 @@ export const TOGGLE_PFL = 'TOGGLE_PFL'
 export const SET_PFL = 'SET_PFL'
 export const TOGGLE_MUTE = 'TOGGLE_MUTE'
 export const SET_MUTE = 'SET_MUTE'
+
 export const SHOW_CHANNEL = 'SHOW_CHANNEL'
 export const SHOW_IN_MINI_MONITOR = 'SHOW_IN_MINI_MONITOR'
 export const IGNORE_AUTOMATION = 'IGNORE_AUTOMATION'
@@ -163,5 +163,96 @@ export const storeFaderHigh = (channel: number, level: number) => {
         type: SET_FADER_HIGH,
         channel: channel,
         level: level,
+    }
+}
+
+export const storeFaderMonitor = (channel: number, auxIndex: number) => {
+    return {
+        type: SET_FADER_MONITOR,
+        channel: channel,
+        auxIndex: auxIndex,
+    }
+}
+
+export const storeTogglePgm = (channel: number) => {
+    return {
+        type: TOGGLE_PGM,
+        channel: channel,
+    }
+}
+
+export const storeSetPgm = (channel: number, pgmOn: boolean) => {
+    return {
+        type: SET_PGM,
+        channel: channel,
+        pgmOn: pgmOn,
+    }
+}
+
+export const storeToggleVo = (channel: number) => {
+    return {
+        type: TOGGLE_VO,
+        channel: channel,
+    }
+}
+
+export const storeSetVo = (channel: number, voOn: boolean) => {
+    return {
+        type: SET_VO,
+        channel: channel,
+        voOn: voOn,
+    }
+}
+
+export const storeTogglePst = (channel: number) => {
+    return {
+        type: TOGGLE_PST,
+        channel: channel,
+    }
+}
+
+export const storeSetPst = (channel: number, pstOn: boolean) => {
+    return {
+        type: SET_PST,
+        channel: channel,
+        pstOn: pstOn,
+    }
+}
+
+export const storeSetPstVo = (channel: number, pstVoOn: boolean) => {
+    return {
+        type: SET_PST_VO,
+        channel: channel,
+        pstVoOn: pstVoOn,
+    }
+}
+
+export const storeTogglePfl = (channel: number) => {
+    return {
+        type: TOGGLE_PFL,
+        channel: channel,
+    }
+}
+
+export const storeSetPfl = (channel: number, pflOn: boolean) => {
+    return {
+        type: SET_PFL,
+        channel: channel,
+        pflOn: pflOn,
+    }
+}
+
+export const storeToggleMute = (channel: number) => {
+    return {
+        type: TOGGLE_MUTE,
+        channel: channel,
+    }
+}
+
+export const storeSetMute = (channel: number, muteOn: boolean) => {
+    return {
+        type: SET_MUTE,
+        channel: channel,
+        muteOn: muteOn,
     }
 }

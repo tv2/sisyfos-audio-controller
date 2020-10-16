@@ -19,8 +19,6 @@ import {
     storeSetOutputLevel,
 } from '../../reducers/channelActions'
 import {
-    TOGGLE_PGM,
-    SET_MUTE,
     storeVuLevel,
     storeVuReductionLevel,
     storeFaderLevel,
@@ -32,6 +30,8 @@ import {
     storeFaderLoMid,
     storeFaderMid,
     storeFaderHigh,
+    storeTogglePgm,
+    storeSetMute,
 } from '../../reducers/faderActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import {
@@ -219,10 +219,9 @@ export class OscMixerConnection {
                                         this.mixerProtocol.fader.min ||
                                     0
                                 ) {
-                                    store.dispatch({
-                                        type: TOGGLE_PGM,
-                                        channel: assignedFaderIndex,
-                                    })
+                                    store.dispatch(
+                                        storeTogglePgm(assignedFaderIndex)
+                                    )
                                 }
                             }
                         } else if (
@@ -337,14 +336,13 @@ export class OscMixerConnection {
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
-                    let mute = message.args[0] === 0 ? 1 : 0
-                    store.dispatch({
-                        type: SET_MUTE,
-                        channel:
+                    store.dispatch(
+                        storeSetMute(
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
-                        muteOn: mute,
-                    })
+                            message.args[0] === 0
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1

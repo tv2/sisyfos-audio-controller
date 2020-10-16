@@ -10,11 +10,6 @@ import {
 } from '../constants/AutomationPresets'
 import { IFader } from '../reducers/fadersReducer'
 import {
-    SET_PGM,
-    SET_VO,
-    SET_PST,
-    SET_PST_VO,
-    SET_MUTE,
     SHOW_CHANNEL,
     X_MIX,
     FADE_TO_BLACK,
@@ -22,6 +17,11 @@ import {
     SNAP_RECALL,
     storeFaderLevel,
     storeFaderLabel,
+    storeSetPgm,
+    storeSetVo,
+    storeSetPstVo,
+    storeSetMute,
+    storeSetPst,
 } from '../reducers/faderActions'
 import { logger } from './logger'
 
@@ -76,26 +76,14 @@ export class AutomationConnection {
                                 mixerGenericConnection.checkForAutoResetThreshold(
                                     ch - 1
                                 )
-                                store.dispatch({
-                                    type: SET_PGM,
-                                    channel: ch - 1,
-                                    pgmOn: true,
-                                })
+                                store.dispatch(storeSetPgm(ch - 1, true))
                             } else if (message.args[0] === 2) {
                                 mixerGenericConnection.checkForAutoResetThreshold(
                                     ch - 1
                                 )
-                                store.dispatch({
-                                    type: SET_VO,
-                                    channel: ch - 1,
-                                    voOn: true,
-                                })
+                                store.dispatch(storeSetVo(ch - 1, true))
                             } else {
-                                store.dispatch({
-                                    type: SET_PGM,
-                                    channel: ch - 1,
-                                    pgmOn: false,
-                                })
+                                store.dispatch(storeSetPgm(ch - 1, false))
                             }
 
                             if (message.args.length > 1) {
@@ -118,23 +106,11 @@ export class AutomationConnection {
                         let ch = message.address.split('/')[2]
                         if (!state.faders[0].fader[ch - 1].ignoreAutomation) {
                             if (message.args[0] === 1) {
-                                store.dispatch({
-                                    type: SET_PST,
-                                    channel: ch - 1,
-                                    pstOn: true,
-                                })
+                                store.dispatch(storeSetPst(ch - 1, true))
                             } else if (message.args[0] === 2) {
-                                store.dispatch({
-                                    type: SET_PST_VO,
-                                    channel: ch - 1,
-                                    pstVoOn: true,
-                                })
+                                store.dispatch(storeSetPstVo(ch - 1, true))
                             } else {
-                                store.dispatch({
-                                    type: SET_PST,
-                                    channel: ch - 1,
-                                    pstOn: false,
-                                })
+                                store.dispatch(storeSetPst(ch - 1, false))
                             }
                             mixerGenericConnection.updateNextAux(ch - 1)
                             global.mainThreadHandler.updatePartialStore(ch - 1)
@@ -147,19 +123,9 @@ export class AutomationConnection {
                     ) {
                         let ch = message.address.split('/')[2]
                         if (!state.faders[0].fader[ch - 1].ignoreAutomation) {
-                            if (message.args[0] === 1) {
-                                store.dispatch({
-                                    type: SET_MUTE,
-                                    channel: ch - 1,
-                                    muteOn: true,
-                                })
-                            } else {
-                                store.dispatch({
-                                    type: SET_MUTE,
-                                    channel: ch - 1,
-                                    pstOn: false,
-                                })
-                            }
+                            store.dispatch(
+                                storeSetMute(ch - 1, message.args[0] === 1)
+                            )
                             mixerGenericConnection.updateMuteState(ch - 1)
                             global.mainThreadHandler.updatePartialStore(ch - 1)
                         }

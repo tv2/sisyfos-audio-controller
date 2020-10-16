@@ -17,7 +17,7 @@ import { remoteConnections } from '../../mainClasses'
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import { storeSetOutputLevel } from '../../reducers/channelActions'
-import { storeFaderLevel, TOGGLE_PGM } from '../../reducers/faderActions'
+import { storeFaderLevel, storeTogglePgm } from '../../reducers/faderActions'
 
 export class MidiMixerConnection {
     store: any
@@ -90,12 +90,12 @@ export class MidiMixerConnection {
                     storeFaderLevel(faderChannel - 1, message.data[2])
                 )
                 if (!state.faders[0].fader[faderChannel - 1].pgmOn) {
-                    store.dispatch({
-                        type: TOGGLE_PGM,
-                        channel:
+                    store.dispatch(
+                        storeTogglePgm(
                             state.channels[0].chConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader - 1,
-                    })
+                                .channel[ch - 1].assignedFader - 1
+                        )
+                    )
                 }
                 if (remoteConnections) {
                     remoteConnections.updateRemoteFaderState(
