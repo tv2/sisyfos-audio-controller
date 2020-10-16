@@ -5,15 +5,15 @@ import { remoteConnections } from '../../mainClasses'
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import {
-    SET_AMIX,
-    SET_INPUT_SELECTOR,
-    SET_CAPABILITY,
     storeFaderLevel,
     storeInputGain,
     storeFaderLabel,
     storeSetPgm,
     storeSetPfl,
     storeShowChannel,
+    storeSetAMix,
+    storeCapability,
+    storeInputSelector,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
@@ -441,11 +441,12 @@ export class EmberMixerConnection {
                                 i + 1
                             }`
                         )
-                        store.dispatch({
-                            type: SET_INPUT_SELECTOR,
-                            channel: channel.assignedFader,
-                            selected: Number(i) + 1,
-                        })
+                        store.dispatch(
+                            storeInputSelector(
+                                channel.assignedFader,
+                                Number(i) + 1
+                            )
+                        )
                     }
                     global.mainThreadHandler.updatePartialStore(
                         channel.assignedFader
@@ -473,12 +474,13 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value
                     }`
                 )
-                store.dispatch({
-                    type: SET_CAPABILITY,
-                    channel: channel.assignedFader,
-                    capability: 'hasInputSelector',
-                    enabled: (node.contents as Model.Parameter).value,
-                })
+                store.dispatch(
+                    storeCapability(
+                        channel.assignedFader,
+                        'hasInputSelector',
+                        (node.contents as Model.Parameter).value === 1
+                    )
+                )
             }
         )
         // subscribe to input selectors
@@ -488,25 +490,13 @@ export class EmberMixerConnection {
         const updateState = () => {
             if (llState && !rrState) {
                 logger.verbose(`Input selector state: ll`)
-                store.dispatch({
-                    type: SET_INPUT_SELECTOR,
-                    channel: channel.assignedFader,
-                    selected: 2,
-                })
+                store.dispatch(storeInputSelector(channel.assignedFader, 2))
             } else if (rrState && !llState) {
                 logger.verbose(`Input selector state: rr`)
-                store.dispatch({
-                    type: SET_INPUT_SELECTOR,
-                    channel: channel.assignedFader,
-                    selected: 3,
-                })
+                store.dispatch(storeInputSelector(channel.assignedFader, 3))
             } else {
                 logger.verbose(`Input selector state: lr`)
-                store.dispatch({
-                    type: SET_INPUT_SELECTOR,
-                    channel: channel.assignedFader,
-                    selected: 1,
-                })
+                store.dispatch(storeInputSelector(channel.assignedFader, 1))
             }
             global.mainThreadHandler.updatePartialStore(channel.assignedFader)
         }
@@ -564,13 +554,13 @@ export class EmberMixerConnection {
                             (node.contents as Model.Parameter).value
                         }`
                     )
-                    store.dispatch({
-                        type: SET_CAPABILITY,
-                        channel: channel.assignedFader,
-                        capability: 'hasAMix',
-                        enabled:
-                            (node.contents as Model.Parameter).value !== 15, // 15 is no unassigned
-                    })
+                    store.dispatch(
+                        storeCapability(
+                            channel.assignedFader,
+                            'hasAMix',
+                            (node.contents as Model.Parameter).value !== 15 // 15 is no unassigned
+                        )
+                    )
                     global.mainThreadHandler.updatePartialStore(
                         channel.assignedFader
                     )
@@ -589,11 +579,12 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value
                     }`
                 )
-                store.dispatch({
-                    type: SET_AMIX,
-                    channel: channel.assignedFader,
-                    state: (node.contents as Model.Parameter).value,
-                })
+                store.dispatch(
+                    storeSetAMix(
+                        channel.assignedFader,
+                        (node.contents as Model.Parameter).value === 1
+                    )
+                )
                 global.mainThreadHandler.updatePartialStore(
                     channel.assignedFader
                 )

@@ -12,7 +12,6 @@ import {
     SET_PGM,
     SET_PST,
     SET_PST_VO,
-    TOGGLE_SNAP,
     SET_VO,
     SET_VU_LEVEL,
     SET_VU_REDUCTION_LEVEL,
@@ -300,11 +299,6 @@ export const faders = (
         case IGNORE_AUTOMATION: //channel // ignoreAutomation
             nextState[0].fader[action.channel].ignoreAutomation = !nextState[0]
                 .fader[action.channel].ignoreAutomation
-            return nextState
-        case TOGGLE_SNAP: //channel //snapIndex
-            nextState[0].fader[action.channel].snapOn[
-                action.snapIndex
-            ] = !nextState[0].fader[action.channel].snapOn[action.snapIndex]
             return nextState
         case X_MIX: //none
             nextState[0].fader.forEach((item, index) => {

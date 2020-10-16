@@ -9,7 +9,6 @@ import {
     SET_MUTE,
     SET_CHANNEL_LABEL,
     SET_PST_VO,
-    TOGGLE_SNAP,
     TOGGLE_MUTE,
     TOGGLE_PFL,
     TOGGLE_PGM,
@@ -147,18 +146,6 @@ describe('Test redux faderReducers actions', () => {
     /**
      * TEST ALL TOGGLE ACTIONS
      */
-
-    it('should return the new SNAP state on faders', () => {
-        let parsedInitialStore = JSON.parse(parsedSimpleStoreJSON)
-        parsedInitialStore.faders[0].fader[0].snapOn[0] = true
-        expect(
-            indexReducer(JSON.parse(parsedSimpleStoreJSON), {
-                type: TOGGLE_SNAP,
-                channel: 0,
-                snapIndex: 0,
-            })
-        ).toEqual(parsedInitialStore)
-    })
 
     it('should return the new TOGGLE pgmOn state on faders', () => {
         let parsedInitialStore = JSON.parse(parsedSimpleStoreJSON)

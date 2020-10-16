@@ -27,14 +27,13 @@ export const TOGGLE_PFL = 'TOGGLE_PFL'
 export const SET_PFL = 'SET_PFL'
 export const TOGGLE_MUTE = 'TOGGLE_MUTE'
 export const SET_MUTE = 'SET_MUTE'
-
 export const SHOW_CHANNEL = 'SHOW_CHANNEL'
 export const SHOW_IN_MINI_MONITOR = 'SHOW_IN_MINI_MONITOR'
 export const IGNORE_AUTOMATION = 'IGNORE_AUTOMATION'
-export const TOGGLE_SNAP = 'TOGGLE_SNAP'
 export const X_MIX = 'X_MIX'
 export const NEXT_MIX = 'NEXT_MIX'
 export const FADE_TO_BLACK = 'FADE_TO_BLACK'
+
 export const CLEAR_PST = 'CLEAR_PST'
 export const SNAP_RECALL = 'SNAP_RECALL'
 export const SET_CHANNEL_DISABLED = 'SET_CHANNEL_DISABLED'
@@ -262,5 +261,89 @@ export const storeShowChannel = (channel: number, showChannel: boolean) => {
         type: SHOW_CHANNEL,
         channel: channel,
         showChannel: showChannel,
+    }
+}
+
+export const storeShowInMiniMonitor = (
+    faderIndex: number,
+    showInMiniMonitor: boolean
+) => {
+    return {
+        type: SHOW_IN_MINI_MONITOR,
+        faderIndex: faderIndex,
+        showInMiniMonitor: showInMiniMonitor,
+    }
+}
+
+export const storeToggleIgnoreAutomation = (channel: number) => {
+    return {
+        type: IGNORE_AUTOMATION,
+        channel: channel,
+    }
+}
+
+export const storeXmix = () => {
+    return {
+        type: X_MIX,
+    }
+}
+
+export const storeNextMix = () => {
+    return {
+        type: NEXT_MIX,
+    }
+}
+
+export const storeFadeToBlack = () => {
+    return {
+        type: FADE_TO_BLACK,
+    }
+}
+
+export const storeClearPst = () => {
+    return {
+        type: CLEAR_PST,
+    }
+}
+
+export const storeChannelDisabled = (channel: number, disabled: boolean) => {
+    return {
+        type: SET_CHANNEL_DISABLED,
+        channel: channel,
+        disabled: disabled,
+    }
+}
+
+export const storeToggleAMix = (channel: number) => {
+    return {
+        type: TOGGLE_AMIX,
+        channel: channel,
+    }
+}
+
+export const storeSetAMix = (channel: number, state: boolean) => {
+    return {
+        type: SET_AMIX,
+        channel: channel,
+        state: state,
+    }
+}
+
+export const storeCapability = (
+    channel: number,
+    capability: string,
+    enabled: boolean
+) => {
+    return {
+        type: SET_CAPABILITY,
+        channel: channel,
+        capability: capability,
+        enabled: enabled,
+    }
+}
+
+export const storeAllManual = () => {
+    return {
+        type: TOGGLE_ALL_MANUAL,
     }
 }

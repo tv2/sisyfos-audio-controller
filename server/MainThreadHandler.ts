@@ -63,13 +63,6 @@ import {
     SOCKET_TOGGLE_ALL_MANUAL,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
-    NEXT_MIX,
-    CLEAR_PST,
-    IGNORE_AUTOMATION,
-    SHOW_IN_MINI_MONITOR,
-    SET_INPUT_SELECTOR,
-    TOGGLE_AMIX,
-    TOGGLE_ALL_MANUAL,
     storeFaderLevel,
     storeInputGain,
     storeFaderThreshold,
@@ -85,6 +78,13 @@ import {
     storeTogglePst,
     storeTogglePfl,
     storeToggleMute,
+    storeToggleIgnoreAutomation,
+    storeShowInMiniMonitor,
+    storeNextMix,
+    storeClearPst,
+    storeToggleAMix,
+    storeAllManual,
+    storeInputSelector,
 } from './reducers/faderActions'
 import {
     storeSetAssignedFader,
@@ -238,11 +238,12 @@ export class MainThreadHandlers {
                 this.updateFullClientStore()
             })
             .on(SOCKET_SHOW_IN_MINI_MONITOR, (payload: any) => {
-                store.dispatch({
-                    type: SHOW_IN_MINI_MONITOR,
-                    faderIndex: payload.faderIndex,
-                    showInMiniMonitor: payload.showInMiniMonitor,
-                })
+                store.dispatch(
+                    storeShowInMiniMonitor(
+                        payload.faderIndex,
+                        payload.showInMiniMonitor
+                    )
+                )
                 this.updateFullClientStore()
             })
             .on(SOCKET_SET_INPUT_OPTION, (payload: any) => {
@@ -319,16 +320,12 @@ export class MainThreadHandlers {
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_NEXT_MIX, () => {
-                store.dispatch({
-                    type: NEXT_MIX,
-                })
+                store.dispatch(storeNextMix())
                 mixerGenericConnection.updateOutLevels()
                 this.updateFullClientStore()
             })
             .on(SOCKET_CLEAR_PST, () => {
-                store.dispatch({
-                    type: CLEAR_PST,
-                })
+                store.dispatch(storeClearPst())
                 mixerGenericConnection.updateOutLevels()
                 this.updateFullClientStore()
             })
@@ -360,18 +357,12 @@ export class MainThreadHandlers {
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_AMIX, (faderIndex: any) => {
-                store.dispatch({
-                    type: TOGGLE_AMIX,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeToggleAMix(faderIndex))
                 mixerGenericConnection.updateAMixState(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_IGNORE, (faderIndex: any) => {
-                store.dispatch({
-                    type: IGNORE_AUTOMATION,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeToggleIgnoreAutomation(faderIndex))
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_SET_FADERLEVEL, (payload: any) => {
@@ -415,19 +406,18 @@ export class MainThreadHandlers {
                         String(payload.selected)
                 )
                 console.log(payload)
-                store.dispatch({
-                    type: SET_INPUT_SELECTOR,
-                    channel: payload.faderIndex,
-                    selected: parseFloat(payload.selected),
-                })
+                store.dispatch(
+                    storeInputSelector(
+                        payload.faderIndex,
+                        parseFloat(payload.selected)
+                    )
+                )
                 mixerGenericConnection.updateInputSelector(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })
             .on(SOCKET_TOGGLE_ALL_MANUAL, () => {
                 logger.verbose('Toggle manual mode for all')
-                store.dispatch({
-                    type: TOGGLE_ALL_MANUAL,
-                })
+                store.dispatch(storeAllManual())
                 this.updateFullClientStore()
             })
     }

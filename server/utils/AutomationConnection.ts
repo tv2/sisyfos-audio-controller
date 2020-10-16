@@ -10,9 +10,6 @@ import {
 } from '../constants/AutomationPresets'
 import { IFader } from '../reducers/fadersReducer'
 import {
-    X_MIX,
-    FADE_TO_BLACK,
-    CLEAR_PST,
     SNAP_RECALL,
     storeFaderLevel,
     storeFaderLabel,
@@ -22,6 +19,9 @@ import {
     storeSetMute,
     storeSetPst,
     storeShowChannel,
+    storeXmix,
+    storeFadeToBlack,
+    storeClearPst,
 } from '../reducers/faderActions'
 import { logger } from './logger'
 
@@ -182,9 +182,7 @@ export class AutomationConnection {
                             this.automationProtocol.fromAutomation.X_MIX
                         )
                     ) {
-                        store.dispatch({
-                            type: X_MIX,
-                        })
+                        store.dispatch(storeXmix())
                         mixerGenericConnection.updateOutLevels()
                         global.mainThreadHandler.updateFullClientStore()
                     } else if (
@@ -205,9 +203,7 @@ export class AutomationConnection {
                             this.automationProtocol.fromAutomation.FADE_TO_BLACK
                         )
                     ) {
-                        store.dispatch({
-                            type: FADE_TO_BLACK,
-                        })
+                        store.dispatch(storeFadeToBlack())
                         mixerGenericConnection.updateFadeToBlack()
                         global.mainThreadHandler.updateFullClientStore()
                     } else if (
@@ -216,9 +212,7 @@ export class AutomationConnection {
                             this.automationProtocol.fromAutomation.CLEAR_PST
                         )
                     ) {
-                        store.dispatch({
-                            type: CLEAR_PST,
-                        })
+                        store.dispatch(storeClearPst())
                         mixerGenericConnection.updateOutLevels()
                         global.mainThreadHandler.updateFullClientStore()
                         // Get state from Producers Audio Mixer:

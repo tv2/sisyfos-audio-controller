@@ -5,13 +5,13 @@ import { remoteConnections } from '../../mainClasses'
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import {
-    SET_CHANNEL_DISABLED,
     SET_INPUT_SELECTOR,
-    SET_CAPABILITY,
-    SET_AMIX,
     storeFaderLevel,
     storeInputGain,
     storeFaderLabel,
+    storeChannelDisabled,
+    storeSetAMix,
+    storeCapability,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
@@ -155,18 +155,14 @@ export class LawoRubyMixerConnection {
                                 this.faders[channelTypeIndex + 1]
                             )
                         )
-                        store.dispatch({
-                            type: SET_CHANNEL_DISABLED,
-                            channel: channelTypeIndex,
-                            disabled: false,
-                        })
+                        store.dispatch(
+                            storeChannelDisabled(channelTypeIndex, false)
+                        )
                     } else {
                         // disable
-                        store.dispatch({
-                            type: SET_CHANNEL_DISABLED,
-                            channel: channelTypeIndex,
-                            disabled: true,
-                        })
+                        store.dispatch(
+                            storeChannelDisabled(channelTypeIndex, true)
+                        )
                         store.dispatch(storeFaderLabel(channelTypeIndex, ''))
                     }
                 }
@@ -321,12 +317,7 @@ export class LawoRubyMixerConnection {
         try {
             const node = await this.emberConnection.getElementByPath(command)
             console.log('set_cap', ch, 'hasInputSel', true)
-            store.dispatch({
-                type: SET_CAPABILITY,
-                channel: ch - 1,
-                capability: 'hasInputSelector',
-                enabled: true,
-            })
+            store.dispatch(storeCapability(ch - 1, 'hasInputSelector', true))
             if (node.contents.type !== Model.ElementType.Parameter) {
                 return
             }
@@ -353,12 +344,9 @@ export class LawoRubyMixerConnection {
         } catch (e) {
             if (e.message.match(/could not find node/i)) {
                 console.log('set_cap', ch, 'hasInputSel', false)
-                store.dispatch({
-                    type: SET_CAPABILITY,
-                    channel: ch - 1,
-                    capability: 'hasInputSelector',
-                    enabled: false,
-                })
+                store.dispatch(
+                    storeCapability(ch - 1, 'hasInputSelector', false)
+                )
             }
             logger.debug('error when subscribing to input selector', e)
         }
@@ -381,12 +369,7 @@ export class LawoRubyMixerConnection {
         try {
             const node = await this.emberConnection.getElementByPath(command)
             console.log('set_cap', ch - 1, 'hasAMix', true)
-            store.dispatch({
-                type: SET_CAPABILITY,
-                channel: ch - 1,
-                capability: 'hasAMix',
-                enabled: true,
-            })
+            store.dispatch(storeCapability(ch - 1, 'hasAMix', true))
             if (node.contents.type !== Model.ElementType.Parameter) {
                 return
             }
@@ -394,22 +377,18 @@ export class LawoRubyMixerConnection {
             logger.debug('Subscription of AMix state: ' + command)
             this.emberConnection.subscribe(node, () => {
                 logger.verbose('Receiving AMix state from Ch ' + String(ch))
-                store.dispatch({
-                    type: SET_AMIX,
-                    channel: ch - 1,
-                    state: (node.contents as Model.Parameter).value,
-                })
+                store.dispatch(
+                    storeSetAMix(
+                        ch - 1,
+                        (node.contents as Model.Parameter).value === 1
+                    )
+                )
                 global.mainThreadHandler.updatePartialStore(ch - 1)
             })
         } catch (e) {
             if (e.message.match(/could not find node/i)) {
                 console.log('set_cap', ch - 1, 'hasAMix', false)
-                store.dispatch({
-                    type: SET_CAPABILITY,
-                    channel: ch - 1,
-                    capability: 'hasAMix',
-                    enabled: false,
-                })
+                store.dispatch(storeCapability(ch - 1, 'hasAMix', false))
             }
             logger.debug('error when subscribing to input selector', e)
         }
