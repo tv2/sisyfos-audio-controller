@@ -3,7 +3,6 @@ import {
     CLEAR_PST,
     FADE_TO_BLACK,
     NEXT_MIX,
-    SET_ALL_VU_LEVELS,
     SET_CHANNEL_LABEL,
     SET_COMPLETE_FADER_STATE,
     SET_FADER_LEVEL,
@@ -226,9 +225,6 @@ export const faders = (
             return nextState
         case SET_FADER_MONITOR: //channel:  auxIndex:
             nextState[0].fader[action.channel].monitor = action.auxIndex
-            return nextState
-        case SET_ALL_VU_LEVELS: //channel:  level:
-            nextState[0].vuMeters = action.vuMeters
             return nextState
         case SET_CHANNEL_LABEL: //channel:  label:
             if (!nextState[0].fader[action.channel]) return nextState

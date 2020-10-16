@@ -8,12 +8,12 @@ import {
     SET_CHANNEL_LABEL,
     SET_PGM,
     SET_PFL,
-    SET_INPUT_GAIN,
     SET_AMIX,
     SET_INPUT_SELECTOR,
     SET_CAPABILITY,
     SHOW_CHANNEL,
     storeFaderLevel,
+    storeInputGain,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
@@ -406,11 +406,7 @@ export class EmberMixerConnection {
                 // assume it is in db now
                 level = this._faderLevelToFloat(Number(level), 0)
 
-                store.dispatch({
-                    type: SET_INPUT_GAIN,
-                    channel: channel.assignedFader,
-                    level,
-                })
+                store.dispatch(storeInputGain(channel.assignedFader, level))
                 global.mainThreadHandler.updatePartialStore(
                     channel.assignedFader
                 )

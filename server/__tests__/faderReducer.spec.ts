@@ -21,7 +21,6 @@ import {
     SHOW_CHANNEL,
     NEXT_MIX,
     X_MIX,
-    SET_ALL_VU_LEVELS,
     SET_COMPLETE_FADER_STATE,
 } from '../reducers/faderActions'
 
@@ -404,29 +403,6 @@ describe('Test redux faderReducers actions', () => {
                 type: SHOW_CHANNEL,
                 channel: 10,
                 showChannel: false,
-            })
-        ).toEqual(newState)
-    })
-
-    /**
-     * TEST SET_ALL_VU_LEVELS:
-     */
-    it('should return the new SET_ALL_VU_LEVELS state on faders', () => {
-        let parsedFullStore = JSON.parse(parsedFullStoreJSON)
-        let newState = JSON.parse(parsedFullStoreJSON)
-        let vuMeters: IVuMeters[] = []
-        for (let i = 0; i < 24; i++) {
-            vuMeters.push({
-                vuVal: 0.75,
-                reductionVal: 0,
-            })
-            newState.faders[0].vuMeters[i].vuVal = 0.75
-        }
-
-        expect(
-            indexReducer(parsedFullStore, {
-                type: SET_ALL_VU_LEVELS,
-                vuMeters: vuMeters,
             })
         ).toEqual(newState)
     })

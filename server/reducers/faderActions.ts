@@ -4,11 +4,9 @@ export const SET_VU_LEVEL = 'SET_VU_LEVEL'
 export const SET_VU_REDUCTION_LEVEL = 'SET_REDUCTION_LEVEL'
 export const SET_COMPLETE_FADER_STATE = 'SET_COMPLETE_FADER_STATE'
 export const SET_SINGLE_FADER_STATE = 'SET_SINGLE_FADER_STATE'
-
 export const SET_FADER_LEVEL = 'SET_FADER_LEVEL'
 export const SET_INPUT_GAIN = 'SET_INPUT_GAIN'
 export const SET_INPUT_SELECTOR = 'SET_INPUT_SELECTOR'
-export const SET_ALL_VU_LEVELS = 'SET_ALL_VU_LEVELS'
 export const SET_CHANNEL_LABEL = 'SET_CHANNEL_LABEL'
 export const SET_FADER_THRESHOLD = 'SET_FADER_THRESHOLD'
 export const SET_FADER_RATIO = 'SET_FADER_RATIO'
@@ -84,5 +82,21 @@ export const storeFaderLevel = (channel: number, level: number) => {
         type: SET_FADER_LEVEL,
         channel: channel,
         level: level,
+    }
+}
+
+export const storeInputGain = (channel: number, level: number) => {
+    return {
+        type: SET_INPUT_GAIN,
+        channel: channel,
+        level: level,
+    }
+}
+
+export const storeInputSelector = (channel: number, level: number) => {
+    return {
+        type: SET_INPUT_SELECTOR,
+        channel: channel,
+        selected: level,
     }
 }

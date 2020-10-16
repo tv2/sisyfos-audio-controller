@@ -80,11 +80,11 @@ import {
     SET_FADER_LO_MID,
     SET_FADER_DELAY_TIME,
     SHOW_IN_MINI_MONITOR,
-    SET_INPUT_GAIN,
     SET_INPUT_SELECTOR,
     TOGGLE_AMIX,
     TOGGLE_ALL_MANUAL,
     storeFaderLevel,
+    storeInputGain,
 } from './reducers/faderActions'
 import {
     storeSetAssignedFader,
@@ -439,11 +439,12 @@ export class MainThreadHandlers {
                         '  Level : ' +
                         String(payload.level)
                 )
-                store.dispatch({
-                    type: SET_INPUT_GAIN,
-                    channel: payload.faderIndex,
-                    level: parseFloat(payload.level),
-                })
+                store.dispatch(
+                    storeInputGain(
+                        payload.faderIndex,
+                        parseFloat(payload.level)
+                    )
+                )
                 mixerGenericConnection.updateInputGain(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })

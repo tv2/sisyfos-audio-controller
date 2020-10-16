@@ -7,11 +7,11 @@ import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
 import {
     SET_CHANNEL_LABEL,
     SET_CHANNEL_DISABLED,
-    SET_INPUT_GAIN,
     SET_INPUT_SELECTOR,
     SET_CAPABILITY,
     SET_AMIX,
     storeFaderLevel,
+    storeInputGain,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
@@ -298,11 +298,7 @@ export class LawoRubyMixerConnection {
                 const value = (node.contents as Model.Parameter).value as number
                 const level = (value - proto.min) / (proto.max - proto.min)
                 if ((node.contents as Model.Parameter).value > proto.min) {
-                    store.dispatch({
-                        type: SET_INPUT_GAIN,
-                        channel: ch - 1,
-                        level,
-                    })
+                    store.dispatch(storeInputGain(ch - 1, level))
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                 }
             })
