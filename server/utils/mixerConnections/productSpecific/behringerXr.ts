@@ -1,10 +1,9 @@
 import { store, state } from '../../../reducers/store'
 import { socketServer } from '../../../expressHandler'
 
-import * as DEFAULTS from '../../../constants/DEFAULTS'
 import {
-    SET_VU_LEVEL,
-    SET_VU_REDUCTION_LEVEL,
+    storeVuLevel,
+    storeVuReductionLevel,
 } from '../../../reducers/faderActions'
 import {
     SOCKET_SET_VU,
@@ -26,11 +25,7 @@ export const behringerXrMeter = (mixerIndex: number, message: any) => {
         i++
     ) {
         let level = (dataview.getInt16(DATA_OFFSET + 2 * i, true) + 8000) / 8000
-        store.dispatch({
-            type: SET_VU_LEVEL,
-            channel: i,
-            level: level,
-        })
+        store.dispatch(storeVuLevel(i, level))
         socketServer.emit(SOCKET_SET_VU, {
             faderIndex:
                 state.channels[0].chConnection[mixerIndex].channel[i]
@@ -55,11 +50,7 @@ export const behringerReductionMeter = (mixerIndex: number, message: any) => {
         let level =
             1 -
             (dataview.getInt16(DATA_OFFSET + 2 * (i + 16), true) + 8000) / 8000
-        store.dispatch({
-            type: SET_VU_REDUCTION_LEVEL,
-            channel: i,
-            level: level,
-        })
+        store.dispatch(storeVuReductionLevel(i, level))
         socketServer.emit(SOCKET_SET_VU_REDUCTION, {
             faderIndex:
                 state.channels[0].chConnection[mixerIndex].channel[i]

@@ -3,7 +3,7 @@ const net = require('net')
 import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
-import { SET_FADER_LEVEL } from '../../reducers/faderActions'
+import { storeFaderLevel } from '../../reducers/faderActions'
 
 //Utils:
 import {
@@ -122,11 +122,7 @@ export class SkaarhojRemoteConnection {
             console.log(
                 'Received Fader ' + (channelIndex + 1) + ' Level : ' + level
             )
-            store.dispatch({
-                type: SET_FADER_LEVEL,
-                channel: channelIndex,
-                level: level,
-            })
+            store.dispatch(storeFaderLevel(channelIndex, level))
             mixerGenericConnection.updateOutLevel(channelIndex)
             global.mainThreadHandler.updatePartialStore(channelIndex)
             this.updateRemoteFaderState(channelIndex, level)

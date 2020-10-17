@@ -5,7 +5,7 @@ import { remoteConnections } from '../../mainClasses'
 
 //Utils:
 import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
-import { SET_FADER_LEVEL, SET_CHANNEL_LABEL } from '../../reducers/faderActions'
+import { storeFaderLabel, storeFaderLevel } from '../../reducers/faderActions'
 import { logger } from '../logger'
 
 export class StuderMixerConnection {
@@ -116,11 +116,9 @@ export class StuderMixerConnection {
                             this.mixerProtocol.channelTypes[typeIndex].fromMixer
                                 .CHANNEL_OUT_GAIN[0].min
                     ) {
-                        store.dispatch({
-                            type: SET_FADER_LEVEL,
-                            channel: ch - 1,
-                            level: node.contents.value,
-                        })
+                        store.dispatch(
+                            storeFaderLevel(ch - 1, node.contents.value)
+                        )
                         global.mainThreadHandler.updatePartialStore(ch - 1)
                         if (remoteConnections) {
                             remoteConnections.updateRemoteFaderState(
@@ -152,11 +150,7 @@ export class StuderMixerConnection {
             )
             .then((node: any) => {
                 this.emberConnection.subscribe(node, () => {
-                    store.dispatch({
-                        type: SET_CHANNEL_LABEL,
-                        channel: ch - 1,
-                        level: node.contents.value,
-                    })
+                    store.dispatch(storeFaderLabel(ch - 1, node.contents.value))
                 })
             })
     }

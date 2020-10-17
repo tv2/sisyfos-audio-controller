@@ -9,7 +9,6 @@ import {
     SET_MUTE,
     SET_CHANNEL_LABEL,
     SET_PST_VO,
-    TOGGLE_SNAP,
     TOGGLE_MUTE,
     TOGGLE_PFL,
     TOGGLE_PGM,
@@ -21,7 +20,6 @@ import {
     SHOW_CHANNEL,
     NEXT_MIX,
     X_MIX,
-    SET_ALL_VU_LEVELS,
     SET_COMPLETE_FADER_STATE,
 } from '../reducers/faderActions'
 
@@ -148,18 +146,6 @@ describe('Test redux faderReducers actions', () => {
     /**
      * TEST ALL TOGGLE ACTIONS
      */
-
-    it('should return the new SNAP state on faders', () => {
-        let parsedInitialStore = JSON.parse(parsedSimpleStoreJSON)
-        parsedInitialStore.faders[0].fader[0].snapOn[0] = true
-        expect(
-            indexReducer(JSON.parse(parsedSimpleStoreJSON), {
-                type: TOGGLE_SNAP,
-                channel: 0,
-                snapIndex: 0,
-            })
-        ).toEqual(parsedInitialStore)
-    })
 
     it('should return the new TOGGLE pgmOn state on faders', () => {
         let parsedInitialStore = JSON.parse(parsedSimpleStoreJSON)
@@ -404,29 +390,6 @@ describe('Test redux faderReducers actions', () => {
                 type: SHOW_CHANNEL,
                 channel: 10,
                 showChannel: false,
-            })
-        ).toEqual(newState)
-    })
-
-    /**
-     * TEST SET_ALL_VU_LEVELS:
-     */
-    it('should return the new SET_ALL_VU_LEVELS state on faders', () => {
-        let parsedFullStore = JSON.parse(parsedFullStoreJSON)
-        let newState = JSON.parse(parsedFullStoreJSON)
-        let vuMeters: IVuMeters[] = []
-        for (let i = 0; i < 24; i++) {
-            vuMeters.push({
-                vuVal: 0.75,
-                reductionVal: 0,
-            })
-            newState.faders[0].vuMeters[i].vuVal = 0.75
-        }
-
-        expect(
-            indexReducer(parsedFullStore, {
-                type: SET_ALL_VU_LEVELS,
-                vuMeters: vuMeters,
             })
         ).toEqual(newState)
     })

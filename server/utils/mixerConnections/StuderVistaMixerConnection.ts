@@ -10,9 +10,9 @@ import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import { socketServer } from '../../expressHandler'
 import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
 import {
-    SET_FADER_LEVEL,
-    TOGGLE_PGM,
-    SET_MUTE,
+    storeFaderLevel,
+    storeSetMute,
+    storeTogglePgm,
 } from '../../reducers/faderActions'
 import {
     storeSetAuxLevel,
@@ -202,11 +202,7 @@ export class StuderVistaMixerConnection {
             state.faders[0].fader[assignedFader].pgmOn ||
             state.faders[0].fader[assignedFader].voOn
         ) {
-            store.dispatch({
-                type: SET_FADER_LEVEL,
-                channel: assignedFader,
-                level: value,
-            })
+            store.dispatch(storeFaderLevel(assignedFader, value))
             state.channels[0].chConnection[this.mixerIndex].channel.forEach(
                 (item, index) => {
                     if (item.assignedFader === assignedFader) {
@@ -218,10 +214,7 @@ export class StuderVistaMixerConnection {
             )
             if (!state.faders[0].fader[assignedFader].pgmOn) {
                 if (value > 0) {
-                    store.dispatch({
-                        type: TOGGLE_PGM,
-                        channel: assignedFader,
-                    })
+                    store.dispatch(storeTogglePgm(assignedFader))
                 }
             }
             global.mainThreadHandler.updatePartialStore(assignedFader)
@@ -289,11 +282,7 @@ export class StuderVistaMixerConnection {
                 this.findChannelInArray(channelType, channelTypeIndex)
             ].assignedFader
 
-        store.dispatch({
-            type: SET_MUTE,
-            channel: assignedFader,
-            muteOn: mute,
-        })
+        store.dispatch(storeSetMute(assignedFader, mute))
         global.mainThreadHandler.updatePartialStore(assignedFader)
     }
 

@@ -63,29 +63,29 @@ import {
     SOCKET_TOGGLE_ALL_MANUAL,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
-    TOGGLE_PGM,
-    TOGGLE_VO,
-    TOGGLE_PST,
-    TOGGLE_PFL,
-    TOGGLE_MUTE,
-    NEXT_MIX,
-    CLEAR_PST,
-    SET_FADER_THRESHOLD,
-    SET_FADER_RATIO,
-    SET_FADER_LOW,
-    SET_FADER_MID,
-    SET_FADER_HIGH,
-    SET_FADER_MONITOR,
-    IGNORE_AUTOMATION,
-    SET_FADER_LO_MID,
-    SET_FADER_DELAY_TIME,
-    SHOW_IN_MINI_MONITOR,
-    SET_INPUT_GAIN,
-    SET_INPUT_SELECTOR,
-    TOGGLE_AMIX,
-    TOGGLE_ALL_MANUAL,
+    storeFaderLevel,
+    storeInputGain,
+    storeFaderThreshold,
+    storeFaderRatio,
+    storeFaderDelayTime,
+    storeFaderLow,
+    storeFaderLoMid,
+    storeFaderMid,
+    storeFaderHigh,
+    storeFaderMonitor,
+    storeTogglePgm,
+    storeToggleVo,
+    storeTogglePst,
+    storeTogglePfl,
+    storeToggleMute,
+    storeToggleIgnoreAutomation,
+    storeShowInMiniMonitor,
+    storeNextMix,
+    storeClearPst,
+    storeToggleAMix,
+    storeAllManual,
+    storeInputSelector,
 } from './reducers/faderActions'
-import { SET_FADER_LEVEL } from './reducers/faderActions'
 import {
     storeSetAssignedFader,
     storeSetAuxLevel,
@@ -232,19 +232,18 @@ export class MainThreadHandlers {
                 this.updateFullClientStore()
             })
             .on(SOCKET_SET_FADER_MONITOR, (payload: any) => {
-                store.dispatch({
-                    type: SET_FADER_MONITOR,
-                    channel: payload.faderIndex,
-                    auxIndex: payload.auxIndex,
-                })
+                store.dispatch(
+                    storeFaderMonitor(payload.faderIndex, payload.auxIndex)
+                )
                 this.updateFullClientStore()
             })
             .on(SOCKET_SHOW_IN_MINI_MONITOR, (payload: any) => {
-                store.dispatch({
-                    type: SHOW_IN_MINI_MONITOR,
-                    faderIndex: payload.faderIndex,
-                    showInMiniMonitor: payload.showInMiniMonitor,
-                })
+                store.dispatch(
+                    storeShowInMiniMonitor(
+                        payload.faderIndex,
+                        payload.showInMiniMonitor
+                    )
+                )
                 this.updateFullClientStore()
             })
             .on(SOCKET_SET_INPUT_OPTION, (payload: any) => {
@@ -276,143 +275,94 @@ export class MainThreadHandlers {
             })
             .on(SOCKET_SET_THRESHOLD, (payload: any) => {
                 logger.verbose('Set Threshold:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_THRESHOLD,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(
+                    storeFaderThreshold(payload.channel, payload.level)
+                )
                 mixerGenericConnection.updateThreshold(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_RATIO, (payload: any) => {
                 logger.verbose('Set Ratio:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_RATIO,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(storeFaderRatio(payload.channel, payload.level))
                 mixerGenericConnection.updateRatio(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_DELAY_TIME, (payload: any) => {
                 logger.verbose('Set Delay:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_DELAY_TIME,
-                    channel: payload.channel,
-                    delayTime: payload.delayTime,
-                })
+                store.dispatch(
+                    storeFaderDelayTime(payload.channel, payload.delayTime)
+                )
                 mixerGenericConnection.updateDelayTime(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_LOW, (payload: any) => {
                 logger.verbose('Set Low:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_LOW,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(storeFaderLow(payload.channel, payload.level))
                 mixerGenericConnection.updateLow(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_LO_MID, (payload: any) => {
-                logger.verbose('Set Mid:' + String(payload.level), {})
-                store.dispatch({
-                    type: SET_FADER_LO_MID,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                logger.verbose('Set LoMid:' + String(payload.level), {})
+                store.dispatch(storeFaderLoMid(payload.channel, payload.level))
                 mixerGenericConnection.updateLoMid(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_MID, (payload: any) => {
                 logger.verbose('Set Mid:' + String(payload.level), {})
-                store.dispatch({
-                    type: SET_FADER_MID,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(storeFaderMid(payload.channel, payload.level))
                 mixerGenericConnection.updateMid(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_HIGH, (payload: any) => {
                 logger.verbose('Set High:' + String(payload.channel), {})
-                store.dispatch({
-                    type: SET_FADER_HIGH,
-                    channel: payload.channel,
-                    level: payload.level,
-                })
+                store.dispatch(storeFaderHigh(payload.channel, payload.level))
                 mixerGenericConnection.updateHigh(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_NEXT_MIX, () => {
-                store.dispatch({
-                    type: NEXT_MIX,
-                })
+                store.dispatch(storeNextMix())
                 mixerGenericConnection.updateOutLevels()
                 this.updateFullClientStore()
             })
             .on(SOCKET_CLEAR_PST, () => {
-                store.dispatch({
-                    type: CLEAR_PST,
-                })
+                store.dispatch(storeClearPst())
                 mixerGenericConnection.updateOutLevels()
                 this.updateFullClientStore()
             })
             .on(SOCKET_TOGGLE_PGM, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
-                store.dispatch({
-                    type: TOGGLE_PGM,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeTogglePgm(faderIndex))
                 mixerGenericConnection.updateOutLevel(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_VO, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
-                store.dispatch({
-                    type: TOGGLE_VO,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeToggleVo(faderIndex))
                 mixerGenericConnection.updateOutLevel(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_PST, (faderIndex: any) => {
-                store.dispatch({
-                    type: TOGGLE_PST,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeTogglePst(faderIndex))
                 mixerGenericConnection.updateNextAux(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_PFL, (faderIndex: any) => {
-                store.dispatch({
-                    type: TOGGLE_PFL,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeTogglePfl(faderIndex))
                 mixerGenericConnection.updatePflState(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_MUTE, (faderIndex: any) => {
-                store.dispatch({
-                    type: TOGGLE_MUTE,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeToggleMute(faderIndex))
                 mixerGenericConnection.updateMuteState(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_AMIX, (faderIndex: any) => {
-                store.dispatch({
-                    type: TOGGLE_AMIX,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeToggleAMix(faderIndex))
                 mixerGenericConnection.updateAMixState(faderIndex)
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_TOGGLE_IGNORE, (faderIndex: any) => {
-                store.dispatch({
-                    type: IGNORE_AUTOMATION,
-                    channel: faderIndex,
-                })
+                store.dispatch(storeToggleIgnoreAutomation(faderIndex))
                 this.updatePartialStore(faderIndex)
             })
             .on(SOCKET_SET_FADERLEVEL, (payload: any) => {
@@ -422,11 +372,12 @@ export class MainThreadHandlers {
                         '  Level : ' +
                         String(payload.level)
                 )
-                store.dispatch({
-                    type: SET_FADER_LEVEL,
-                    channel: payload.faderIndex,
-                    level: parseFloat(payload.level),
-                })
+                store.dispatch(
+                    storeFaderLevel(
+                        payload.faderIndex,
+                        parseFloat(payload.level)
+                    )
+                )
                 mixerGenericConnection.updateOutLevel(payload.faderIndex, 0)
                 mixerGenericConnection.updateNextAux(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
@@ -438,11 +389,12 @@ export class MainThreadHandlers {
                         '  Level : ' +
                         String(payload.level)
                 )
-                store.dispatch({
-                    type: SET_INPUT_GAIN,
-                    channel: payload.faderIndex,
-                    level: parseFloat(payload.level),
-                })
+                store.dispatch(
+                    storeInputGain(
+                        payload.faderIndex,
+                        parseFloat(payload.level)
+                    )
+                )
                 mixerGenericConnection.updateInputGain(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })
@@ -454,19 +406,18 @@ export class MainThreadHandlers {
                         String(payload.selected)
                 )
                 console.log(payload)
-                store.dispatch({
-                    type: SET_INPUT_SELECTOR,
-                    channel: payload.faderIndex,
-                    selected: parseFloat(payload.selected),
-                })
+                store.dispatch(
+                    storeInputSelector(
+                        payload.faderIndex,
+                        parseFloat(payload.selected)
+                    )
+                )
                 mixerGenericConnection.updateInputSelector(payload.faderIndex)
                 this.updatePartialStore(payload.faderIndex)
             })
             .on(SOCKET_TOGGLE_ALL_MANUAL, () => {
                 logger.verbose('Toggle manual mode for all')
-                store.dispatch({
-                    type: TOGGLE_ALL_MANUAL,
-                })
+                store.dispatch(storeAllManual())
                 this.updateFullClientStore()
             })
     }

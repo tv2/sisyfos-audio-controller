@@ -1,8 +1,8 @@
 import {
-    SET_COMPLETE_FADER_STATE,
-    SET_VU_LEVEL,
-    SET_SINGLE_FADER_STATE,
-    SET_VU_REDUCTION_LEVEL,
+    storeSetCompleteFaderState,
+    storeSetSingleFaderState,
+    storeVuLevel,
+    storeVuReductionLevel,
 } from '../../server/reducers/faderActions'
 import {
     storeSetCompleteChState,
@@ -61,11 +61,12 @@ export const socketClientHandlers = () => {
                         numberOfChannels
                     )
                 )
-                window.storeRedux.dispatch({
-                    type: SET_COMPLETE_FADER_STATE,
-                    allState: payload.faders[0],
-                    numberOfTypeChannels: payload.settings[0].numberOfFaders,
-                })
+                window.storeRedux.dispatch(
+                    storeSetCompleteFaderState(
+                        payload.faders[0],
+                        payload.settings[0].numberOfFaders
+                    )
+                )
                 window.storeRedux.dispatch(
                     storeSetMixerOnline(
                         payload.settings[0].mixers[0].mixerOnline
@@ -88,11 +89,9 @@ export const socketClientHandlers = () => {
             window.storeRedux.dispatch(storeSetMixerOnline(payload.mixerOnline))
         })
         .on(SOCKET_SET_STORE_FADER, (payload: any) => {
-            window.storeRedux.dispatch({
-                type: SET_SINGLE_FADER_STATE,
-                faderIndex: payload.faderIndex,
-                state: payload.state,
-            })
+            window.storeRedux.dispatch(
+                storeSetSingleFaderState(payload.faderIndex, payload.state)
+            )
         })
         .on(SOCKET_SET_STORE_CHANNEL, (payload: any) => {
             window.storeRedux.dispatch(
@@ -104,20 +103,16 @@ export const socketClientHandlers = () => {
                 vuUpdateSpeed = Date.now()
                 payload.vuMeters.forEach(
                     (meterLevel: number, index: number) => {
-                        window.storeRedux.dispatch({
-                            type: SET_VU_LEVEL,
-                            channel: index,
-                            level: meterLevel,
-                        })
+                        window.storeRedux.dispatch(
+                            storeVuLevel(index, meterLevel)
+                        )
                     }
                 )
                 payload.vuReductionMeters.forEach(
                     (meterLevel: number, index: number) => {
-                        window.storeRedux.dispatch({
-                            type: SET_VU_REDUCTION_LEVEL,
-                            channel: index,
-                            level: meterLevel,
-                        })
+                        window.storeRedux.dispatch(
+                            storeVuReductionLevel(index, meterLevel)
+                        )
                     }
                 )
             }
@@ -126,21 +121,17 @@ export const socketClientHandlers = () => {
             if (Date.now() - vuUpdateSpeed > 100) {
                 vuUpdateSpeed = Date.now()
 
-                window.storeRedux.dispatch({
-                    type: SET_VU_LEVEL,
-                    channel: payload.faderIndex,
-                    level: payload.level,
-                })
+                window.storeRedux.dispatch(
+                    storeVuLevel(payload.faderIndex, payload.level)
+                )
             }
         })
         .on(SOCKET_SET_VU_REDUCTION, (payload: any) => {
             if (Date.now() - vuReductionUpdateSpeed > 100) {
                 vuReductionUpdateSpeed = Date.now()
-                window.storeRedux.dispatch({
-                    type: SET_VU_REDUCTION_LEVEL,
-                    channel: payload.faderIndex,
-                    level: payload.level,
-                })
+                window.storeRedux.dispatch(
+                    storeVuReductionLevel(payload.faderIndex, payload.level)
+                )
             }
         })
         .on(SOCKET_RETURN_SNAPSHOT_LIST, (payload: any) => {

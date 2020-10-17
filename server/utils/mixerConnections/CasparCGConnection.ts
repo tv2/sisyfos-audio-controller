@@ -14,7 +14,7 @@ import {
 } from '../../constants/MixerProtocolInterface'
 import { IChannel } from '../../reducers/channelsReducer'
 import { storeSetChPrivate } from '../../reducers/channelActions'
-import { SET_VU_LEVEL, SET_CHANNEL_LABEL } from '../../reducers/faderActions'
+import { storeFaderLabel, storeVuLevel } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS'
 
@@ -119,11 +119,7 @@ export class CasparCGConnection {
                         this.oscCommandMap.CHANNEL_VU
                     )
                     if (index !== undefined && message.args) {
-                        store.dispatch({
-                            type: SET_VU_LEVEL,
-                            channel: index,
-                            level: message.args[0],
-                        })
+                        store.dispatch(storeVuLevel(index, message.args[0]))
                         socketServer.emit(SOCKET_SET_VU, {
                             faderIndex: index,
                             level: message.args[0],
@@ -214,11 +210,7 @@ export class CasparCGConnection {
         // Set source labels from geometry definition
         if (this.mixerProtocol.channelLabels) {
             this.mixerProtocol.channelLabels.forEach((label, channelIndex) => {
-                store.dispatch({
-                    type: SET_CHANNEL_LABEL,
-                    channel: channelIndex,
-                    label,
-                })
+                store.dispatch(storeFaderLabel(channelIndex, label))
             })
         }
     }
