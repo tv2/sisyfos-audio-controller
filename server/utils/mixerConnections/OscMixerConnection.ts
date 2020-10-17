@@ -182,6 +182,7 @@ export class OscMixerConnection {
                         ].assignedFader
 
                     if (
+                        assignedFaderIndex >= 0 &&
                         !state.channels[0].chConnection[this.mixerIndex]
                             .channel[ch - 1].fadeActive
                     ) {
