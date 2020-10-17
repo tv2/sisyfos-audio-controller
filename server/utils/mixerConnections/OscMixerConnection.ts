@@ -187,10 +187,8 @@ export class OscMixerConnection {
                     ) {
                         if (
                             message.args[0] > this.mixerProtocol.fader.min ||
-                            0 +
-                                (this.mixerProtocol.fader.max ||
-                                    1 * state.settings[0].autoResetLevel) /
-                                    100
+                            message.args[0] >
+                                state.settings[0].autoResetLevel / 100
                         ) {
                             store.dispatch(
                                 storeFaderLevel(
