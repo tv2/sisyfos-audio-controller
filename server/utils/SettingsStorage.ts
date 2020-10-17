@@ -60,8 +60,8 @@ export const loadSnapshotState = (
             )
             store.dispatch(
                 storeSetCompleteFaderState(
-                    numberOfFaders,
-                    stateFromFile.faderState as IFaders
+                    stateFromFile.faderState as IFaders,
+                    numberOfFaders
                 )
             )
         } else {
@@ -96,7 +96,7 @@ export const loadSnapshotState = (
                 storeSetCompleteChState(stateChannelSnapshot, numberOfChannels)
             )
             store.dispatch(
-                storeSetCompleteFaderState(numberOfFaders, stateSnapshot)
+                storeSetCompleteFaderState(stateSnapshot, numberOfFaders)
             )
         }
     } catch (error) {

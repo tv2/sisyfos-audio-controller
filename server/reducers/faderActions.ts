@@ -59,8 +59,8 @@ export const storeVuReductionLevel = (channel: number, level: number) => {
 }
 
 export const storeSetCompleteFaderState = (
-    numberOfTypeChannels: number,
-    allState: IFaders
+    allState: IFaders,
+    numberOfTypeChannels: number
 ) => {
     return {
         type: SET_COMPLETE_FADER_STATE,
