@@ -7,7 +7,9 @@ import Channel from './Channel'
 import '../assets/css/Channels.css'
 import { Store } from 'redux'
 import {
-    SET_PAGE, storeSetPage, storeShowSettings, storeShowStorage
+    storeSetPage,
+    storeShowSettings,
+    storeShowStorage,
 } from '../../server/reducers/settingsActions'
 import ChannelRouteSettings from './ChannelRouteSettings'
 import ChanStrip from './ChanStrip'
@@ -83,9 +85,11 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
 
     handlePages(type: PageType, i: number | string) {
         if (typeof i === 'string') {
-            this.props.dispatch(storeSetPage( type, i))
+            this.props.dispatch(storeSetPage(type, i))
         } else {
-            this.props.dispatch(storeSetPage(type , i * this.props.settings.pageLength))
+            this.props.dispatch(
+                storeSetPage(type, i * this.props.settings.pageLength)
+            )
         }
     }
 

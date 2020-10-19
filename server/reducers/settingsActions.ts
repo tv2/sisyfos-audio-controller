@@ -58,9 +58,19 @@ export const storeSetServerOnline = (serverOnline: boolean) => {
     }
 }
 export const storeSetPage = (pageType: PageType, id: number | string) => {
-    return {
-        type: SET_PAGE,
-        pageType: pageType,
-        id: id,
+    if (typeof id === 'string') {
+        return {
+            type: SET_PAGE,
+            pageType: pageType,
+            id: id,
+            start: 0,
+        }
+    } else {
+        return {
+            type: SET_PAGE,
+            pageType: pageType,
+            id: '',
+            start: id,
+        }
     }
 }
