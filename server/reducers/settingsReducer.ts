@@ -11,6 +11,7 @@ import {
     TOGGLE_SHOW_MONITOR_OPTIONS,
     SET_SERVER_ONLINE,
     SET_PAGE,
+    TOGGLE_SHOW_PAGES_SETUP,
 } from '../reducers/settingsActions'
 
 export enum PageType {
@@ -23,6 +24,7 @@ export interface ISettings {
     /** UI state (non persistant) */
     showSnaps: boolean
     showSettings: boolean
+    showPagesSetup: boolean
     showChanStrip: number
     showOptions: number | false
     showMonitorOptions: number
@@ -80,6 +82,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
     {
         showSnaps: false,
         showSettings: false,
+        showPagesSetup: false,
         showChanStrip: -1,
         showOptions: false,
         showMonitorOptions: -1,
@@ -131,6 +134,10 @@ export const settings = (
         case TOGGLE_SHOW_SETTINGS:
             nextState[0].showSettings = !nextState[0].showSettings
             return nextState
+        case TOGGLE_SHOW_PAGES_SETUP:
+            nextState[0].showPagesSetup = !nextState[0].showPagesSetup
+            return nextState
+
         case TOGGLE_SHOW_CHAN_STRIP:
             if (nextState[0].showChanStrip !== action.channel) {
                 nextState[0].showChanStrip = action.channel

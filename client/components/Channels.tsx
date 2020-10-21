@@ -8,6 +8,7 @@ import '../assets/css/Channels.css'
 import { Store } from 'redux'
 import {
     storeSetPage,
+    storeShowPagesSetup,
     storeShowSettings,
     storeShowStorage,
 } from '../../server/reducers/settingsActions'
@@ -83,6 +84,10 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         this.props.dispatch(storeShowStorage())
     }
 
+    handleShowPagesSetting() {
+        this.props.dispatch(storeShowPagesSetup())
+    }
+
     handlePages(type: PageType, i: number | string) {
         if (typeof i === 'string') {
             this.props.dispatch(storeSetPage(type, i))
@@ -121,7 +126,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             }
         }
 
-        const numberedButtons = []
+/*        const numberedButtons = []
         const numberOfFaders = this.props.settings.numberOfFaders
         const pageLength = this.props.settings.pageLength
         for (let i = 0; i < Math.ceil(numberOfFaders / pageLength); i++) {
@@ -142,12 +147,12 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 </button>
             )
         }
-
+*/
         const isAllActive = curPage.type === PageType.All
         return (
             <React.Fragment>
                 {customPageButtons}
-                {numberedButtons}
+                {/*numberedButtons*/}
                 <button
                     className={ClassNames('button half', {
                         active: isAllActive,
@@ -344,6 +349,14 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                             </React.Fragment>
                         )}
                     </div>
+                    <button
+                                className="button half channels-show-settings-button"
+                                onClick={() => {
+                                    this.handleShowPagesSetting()
+                                }}
+                            >
+                                PAGES SETUP
+                        </button>
                     <div className="bot">{this.renderPageButtons()}</div>
                 </div>
             </div>
