@@ -191,3 +191,17 @@ export const getCustomPages = (): object | undefined => {
         return
     }
 }
+
+export const saveCustomPages = (
+    stateCustomPages: any,
+    fileName: string = 'pages.json'
+) => {
+    let json = JSON.stringify(stateCustomPages)
+    fs.writeFile(path.join('storage', fileName), json, 'utf8', (error: any) => {
+        if (error) {
+            logger.error('Error saving pages file' + String(error), {})
+        } else {
+            logger.info('Pages ' + fileName + ' Saved to storage folder', {})
+        }
+    })
+}

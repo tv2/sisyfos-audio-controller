@@ -17,6 +17,7 @@ import {
     setCcgDefault,
     getMixerPresetList,
     getCustomPages,
+    saveCustomPages,
 } from './utils/SettingsStorage'
 import {
     SOCKET_TOGGLE_PGM,
@@ -61,6 +62,7 @@ import {
     SOCKET_RETURN_PAGES_LIST,
     SOCKET_TOGGLE_AMIX,
     SOCKET_TOGGLE_ALL_MANUAL,
+    SOCKET_SET_PAGES_LIST,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
     storeFaderLevel,
@@ -203,6 +205,10 @@ export class MainThreadHandlers {
             .on(SOCKET_GET_PAGES_LIST, () => {
                 logger.info('Get custom pages list', {})
                 socketServer.emit(SOCKET_RETURN_PAGES_LIST, getCustomPages())
+            })
+            .on(SOCKET_SET_PAGES_LIST, (payload: any) => {
+                saveCustomPages(payload)
+                logger.info('Save custom pages list: ' + String(payload), {})
             })
             .on(SOCKET_SAVE_SETTINGS, (payload: any) => {
                 logger.info('Save settings :' + String(payload), {})

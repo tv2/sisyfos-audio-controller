@@ -9,24 +9,21 @@ import { storeShowPagesSetup } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
 import Select from 'react-select'
 import { ICustomPages } from '..'
+import { SOCKET_GET_PAGES_LIST, SOCKET_SET_PAGES_LIST } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 
 interface IPagesSettingsInjectProps {
     fader: IFader[]
 }
 
-interface IPagesProps {
-    pageIndex: number
-}
-
 class PagesSettings extends React.PureComponent<
-    IPagesProps & IPagesSettingsInjectProps & Store
+    IPagesSettingsInjectProps & Store
 > {
-    pageIndex: number
     pageList: { label: string; value: number }[]
+    state = { pageIndex: 0}
 
     constructor(props: any) {
         super(props)
-        this.pageIndex = 0 // this.props.pageIndex
+
         this.pageList = window.customPagesList.map(
             (page: ICustomPages, index: number) => {
                 return { label: page.label, value: index }
@@ -35,8 +32,8 @@ class PagesSettings extends React.PureComponent<
     }
 
     handleSelectPage(event: any) {
-        this.pageIndex = event.value
-        console.log('PAGE SELECTED', this.pageIndex)
+        this.setState({pageIndex: event.value})
+        console.log('PAGE SELECTED', this.state.pageIndex)
     }
 
     handleAssignFader(fader: number, event: any) {
@@ -47,11 +44,11 @@ class PagesSettings extends React.PureComponent<
                     'Unbind Fader from page ' +
                         String(fader + 1) +
                         ' from Page ' +
-                        String(this.pageIndex + 1)
+                        String(this.state.pageIndex + 1)
                 )
             ) {
-                window.customPagesList[this.pageIndex].faders.splice(
-                    window.customPagesList[this.pageIndex].faders.indexOf(
+                window.customPagesList[this.state.pageIndex].faders.splice(
+                    window.customPagesList[this.state.pageIndex].faders.indexOf(
                         fader
                     ),
                     1
@@ -64,12 +61,12 @@ class PagesSettings extends React.PureComponent<
                     'Bind Fader ' +
                         String(fader + 1) +
                         ' to Page ' +
-                        String(this.pageIndex + 1) +
+                        String(this.state.pageIndex + 1) +
                         '?'
                 )
             ) {
-                window.customPagesList[this.pageIndex].faders.push(fader)
-                window.customPagesList[this.pageIndex].faders.sort((a, b) => {
+                window.customPagesList[this.state.pageIndex].faders.push(fader)
+                window.customPagesList[this.state.pageIndex].faders.sort((a, b) => {
                     return a - b
                 })
             }
@@ -78,11 +75,17 @@ class PagesSettings extends React.PureComponent<
 
     handleClearRouting() {
         if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
-            window.customPagesList[this.pageIndex].faders = []
+            window.customPagesList[this.state.pageIndex].faders = []
         }
     }
 
-    handleClose = () => {
+    handleCancel = () => {
+        window.socketIoClient.emit(SOCKET_GET_PAGES_LIST)
+        this.props.dispatch(storeShowPagesSetup())
+    }
+
+    handleSave = () => {
+        window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, window.customPagesList)
         this.props.dispatch(storeShowPagesSetup())
     }
 
@@ -95,7 +98,7 @@ class PagesSettings extends React.PureComponent<
                             key={index}
                             className={ClassNames('channel-route-text', {
                                 checked: window.customPagesList[
-                                    this.pageIndex
+                                    this.state.pageIndex
                                 ].faders.includes(index),
                             })}
                         >
@@ -103,7 +106,7 @@ class PagesSettings extends React.PureComponent<
                             <input
                                 type="checkbox"
                                 checked={window.customPagesList[
-                                    this.pageIndex
+                                    this.state.pageIndex
                                 ].faders.includes(index)}
                                 onChange={(event) =>
                                     this.handleAssignFader(index, event)
@@ -121,27 +124,40 @@ class PagesSettings extends React.PureComponent<
         return (
             <div className="channel-route-body">
                 <h2>CUSTOM PAGES</h2>
-                <Select
-                    value={{
-                        label:
-                            window.customPagesList[this.pageIndex].label ||
-                            'Page : ' + (this.pageIndex + 1),
-                        value: this.pageIndex,
-                    }}
-                    onChange={(event: any) => this.handleSelectPage(event)}
-                    options={this.pageList}
-                />
-                'Page : ' + (this.pageIndex + 1)}
-                <button className="close" onClick={() => this.handleClose()}>
-                    X
-                </button>
                 <button
-                    className="button"
+                    className="settings-cancel-button"
                     onClick={() => this.handleClearRouting()}
                 >
                     CLEAR ALL
                 </button>
+                <button
+                    className="settings-cancel-button"
+                    onClick={() => {
+                        this.handleCancel()
+                    }}
+                >
+                    CANCEL
+                </button>
+                <button
+                    className="settings-save-button"
+                    onClick={() => {
+                        this.handleSave()
+                    }}
+                >
+                    SAVE SETTINGS
+                </button>
+                <Select
+                    value={{
+                        label:
+                            window.customPagesList[this.state.pageIndex].label ||
+                            'Page : ' + (this.state.pageIndex + 1),
+                        value: this.state.pageIndex,
+                    }}
+                    onChange={(event: any) => this.handleSelectPage(event)}
+                    options={this.pageList}
+                />
                 {this.renderFaderList()}
+
             </div>
         )
     }
