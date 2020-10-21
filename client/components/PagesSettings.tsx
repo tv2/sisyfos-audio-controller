@@ -5,8 +5,10 @@ import * as ClassNames from 'classnames'
 import '../assets/css/ChannelRouteSettings.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import {  storeShowPagesSetup } from '../../server/reducers/settingsActions'
+import { storeShowPagesSetup } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
+import Select from 'react-select'
+import { ICustomPages } from '..'
 
 interface IPagesSettingsInjectProps {
     fader: IFader[]
@@ -20,10 +22,21 @@ class PagesSettings extends React.PureComponent<
     IPagesProps & IPagesSettingsInjectProps & Store
 > {
     pageIndex: number
+    pageList: { label: string; value: number }[]
 
     constructor(props: any) {
         super(props)
         this.pageIndex = 0 // this.props.pageIndex
+        this.pageList = window.customPagesList.map(
+            (page: ICustomPages, index: number) => {
+                return { label: page.label, value: index }
+            }
+        )
+    }
+
+    handleSelectPage(event: any) {
+        this.pageIndex = event.value
+        console.log('PAGE SELECTED', this.pageIndex)
     }
 
     handleAssignFader(fader: number, event: any) {
@@ -37,7 +50,12 @@ class PagesSettings extends React.PureComponent<
                         String(this.pageIndex + 1)
                 )
             ) {
-                window.customPagesList[this.pageIndex].faders.splice(window.customPagesList[this.pageIndex].faders.indexOf(fader),1)
+                window.customPagesList[this.pageIndex].faders.splice(
+                    window.customPagesList[this.pageIndex].faders.indexOf(
+                        fader
+                    ),
+                    1
+                )
             }
         } else {
             console.log('Binding Channel')
@@ -51,8 +69,9 @@ class PagesSettings extends React.PureComponent<
                 )
             ) {
                 window.customPagesList[this.pageIndex].faders.push(fader)
-                window.customPagesList[this.pageIndex].faders.sort((a, b) => {return a-b})
-
+                window.customPagesList[this.pageIndex].faders.sort((a, b) => {
+                    return a - b
+                })
             }
         }
     }
@@ -62,7 +81,6 @@ class PagesSettings extends React.PureComponent<
             window.customPagesList[this.pageIndex].faders = []
         }
     }
-
 
     handleClose = () => {
         this.props.dispatch(storeShowPagesSetup())
@@ -84,14 +102,11 @@ class PagesSettings extends React.PureComponent<
                             {' Fader ' + (index + 1) + ' : '}
                             <input
                                 type="checkbox"
-                                checked={ window.customPagesList[
+                                checked={window.customPagesList[
                                     this.pageIndex
                                 ].faders.includes(index)}
                                 onChange={(event) =>
-                                    this.handleAssignFader(
-                                        index,
-                                        event
-                                    )
+                                    this.handleAssignFader(index, event)
                                 }
                             />
                             {fader.label}
@@ -105,7 +120,18 @@ class PagesSettings extends React.PureComponent<
     render() {
         return (
             <div className="channel-route-body">
-                <h2>{window.customPagesList[this.pageIndex].label || (this.pageIndex + 1)}</h2>
+                <h2>CUSTOM PAGES</h2>
+                <Select
+                    value={{
+                        label:
+                            window.customPagesList[this.pageIndex].label ||
+                            'Page : ' + (this.pageIndex + 1),
+                        value: this.pageIndex,
+                    }}
+                    onChange={(event: any) => this.handleSelectPage(event)}
+                    options={this.pageList}
+                />
+                'Page : ' + (this.pageIndex + 1)}
                 <button className="close" onClick={() => this.handleClose()}>
                     X
                 </button>
