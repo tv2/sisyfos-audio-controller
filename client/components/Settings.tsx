@@ -463,11 +463,11 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                 </label>
                 <br />
                 <label className="settings-input-field">
-                    PAGE LENGTH:
+                    NUMBER OF CUSTOM PAGES:
                     <input
-                        name="pageLength"
+                        name="numberOfCustomPages"
                         type="text"
-                        value={this.state.settings.pageLength}
+                        value={this.state.settings.numberOfCustomPages}
                         onChange={this.handleChange}
                     />
                 </label>

@@ -17,6 +17,7 @@ import {
     setCcgDefault,
     getMixerPresetList,
     getCustomPages,
+    saveCustomPages,
 } from './utils/SettingsStorage'
 import {
     SOCKET_TOGGLE_PGM,
@@ -61,6 +62,7 @@ import {
     SOCKET_RETURN_PAGES_LIST,
     SOCKET_TOGGLE_AMIX,
     SOCKET_TOGGLE_ALL_MANUAL,
+    SOCKET_SET_PAGES_LIST,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
     storeFaderLevel,
@@ -92,6 +94,7 @@ import {
 } from './reducers/channelActions'
 import { IChannel } from './reducers/channelsReducer'
 import { logger } from './utils/logger'
+import { ICustomPages } from './reducers/settingsReducer'
 const path = require('path')
 
 export class MainThreadHandlers {
@@ -202,7 +205,37 @@ export class MainThreadHandlers {
             })
             .on(SOCKET_GET_PAGES_LIST, () => {
                 logger.info('Get custom pages list', {})
-                socketServer.emit(SOCKET_RETURN_PAGES_LIST, getCustomPages())
+                let customPages: ICustomPages[] = getCustomPages()
+                if (
+                    customPages.length === state.settings[0].numberOfCustomPages
+                ) {
+                    socketServer.emit(SOCKET_RETURN_PAGES_LIST, customPages)
+                } else {
+                    for (
+                        let i = 0;
+                        i < state.settings[0].numberOfCustomPages;
+                        i++
+                    ) {
+                        if (!customPages[i]) {
+                            customPages.push({
+                                id: 'custom' + String(i),
+                                label: 'Custom ' + String(i),
+                                faders: [],
+                            })
+                        }
+                    }
+                    socketServer.emit(
+                        SOCKET_RETURN_PAGES_LIST,
+                        customPages.slice(
+                            0,
+                            state.settings[0].numberOfCustomPages
+                        )
+                    )
+                }
+            })
+            .on(SOCKET_SET_PAGES_LIST, (payload: any) => {
+                saveCustomPages(payload)
+                logger.info('Save custom pages list: ' + String(payload), {})
             })
             .on(SOCKET_SAVE_SETTINGS, (payload: any) => {
                 logger.info('Save settings :' + String(payload), {})

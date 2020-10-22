@@ -9,6 +9,7 @@ import Settings from './Settings'
 import Storage from './RoutingStorage'
 import MiniChannels from './MiniChannels'
 import { withTranslation } from 'react-i18next'
+import PagesSettings from './PagesSettings'
 
 export interface IAppProps {
     store: IStore
@@ -39,6 +40,8 @@ class App extends React.Component<IAppProps> {
         return (
             nextProps.store.settings[0].showSettings !=
                 this.props.store.settings[0].showSettings ||
+                nextProps.store.settings[0].showPagesSetup !=
+                this.props.store.settings[0].showPagesSetup ||
             nextProps.store.settings[0].serverOnline !=
                 this.props.store.settings[0].serverOnline ||
             nextProps.store.settings[0].showStorage !=
@@ -114,6 +117,7 @@ class App extends React.Component<IAppProps> {
                 {window.location.search.includes('minimonitor=1') && (
                     <MiniChannels />
                 )}
+                {this.props.store.settings[0].showPagesSetup && <PagesSettings />}
                 {this.props.store.settings[0].showStorage && <Storage />}
                 {this.props.store.settings[0].showSettings && <Settings />}
             </div>

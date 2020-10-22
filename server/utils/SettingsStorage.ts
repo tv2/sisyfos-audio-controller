@@ -9,6 +9,7 @@ import { storeSetCompleteFaderState } from '../reducers/faderActions'
 import { logger } from './logger'
 import { InumberOfChannels } from '../reducers/channelsReducer'
 import { IFaders } from '../reducers/fadersReducer'
+import { ICustomPages } from '../reducers/settingsReducer'
 
 export const loadSettings = (storeRedux: any) => {
     let settingsInterface = storeRedux.settings[0]
@@ -181,13 +182,27 @@ export const setCcgDefault = (fileName: string) => {
     })
 }
 
-export const getCustomPages = (): object | undefined => {
+export const getCustomPages = (): ICustomPages[] => {
     try {
         return JSON.parse(
             fs.readFileSync(path.resolve('storage', 'pages.json'))
         )
     } catch (error) {
         logger.error('Couldn´t read pages.json file', {})
-        return
+        return []
     }
+}
+
+export const saveCustomPages = (
+    stateCustomPages: any,
+    fileName: string = 'pages.json'
+) => {
+    let json = JSON.stringify(stateCustomPages)
+    fs.writeFile(path.join('storage', fileName), json, 'utf8', (error: any) => {
+        if (error) {
+            logger.error('Error saving pages file' + String(error), {})
+        } else {
+            logger.info('Pages ' + fileName + ' Saved to storage folder', {})
+        }
+    })
 }
