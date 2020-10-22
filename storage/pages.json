@@ -1,4 +1,4 @@
 [
-    { "id": "example", "label": "hjkhjkkj", "faders": [3, 8, 12, 13, 14] },
-    { "id": "studio", "label": "Studie", "faders": [0, 1, 3, 4, 9, 11] }
+    { "id": "example", "label": "OK", "faders": [0, 1] },
+    { "id": "studio", "label": "Studier", "faders": [0, 1, 3, 4, 9, 11] }
 ]

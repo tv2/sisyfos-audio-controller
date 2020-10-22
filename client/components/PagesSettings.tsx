@@ -36,6 +36,9 @@ class PagesSettings extends React.PureComponent<
                 return { label: page.label, value: index }
             }
         )
+    }
+
+    componentDidMount() {
         this.setState({ label: this.props.customPages[0].label })
     }
 
@@ -58,7 +61,7 @@ class PagesSettings extends React.PureComponent<
                         String(this.state.pageIndex + 1)
                 )
             ) {
-                let nextPages: ICustomPages[] = Object.assign([], this.props.customPages)
+                let nextPages: ICustomPages[] = [...this.props.customPages]
                 nextPages[this.state.pageIndex].faders.splice(
                     this.props.customPages[this.state.pageIndex].faders.indexOf(
                         fader
@@ -79,7 +82,7 @@ class PagesSettings extends React.PureComponent<
                         '?'
                 )
             ) {
-                let nextPages: ICustomPages[] = Object.assign([], this.props.customPages)
+                let nextPages: ICustomPages[] = [...this.props.customPages]
                 nextPages[this.state.pageIndex].faders.push(fader)
                 nextPages[this.state.pageIndex].faders.sort((a, b) => {
                     return a - b
@@ -92,11 +95,9 @@ class PagesSettings extends React.PureComponent<
 
     handleLabel = (event: ChangeEvent<HTMLInputElement>) => {
         this.setState({ label: event.target.value })
-        this.pageList[this.state.pageIndex].label = this.props.customPages[
-            this.state.pageIndex
-        ].label
-        let nextPages: ICustomPages[] = Object.assign([], this.props.customPages)
-        nextPages[this.state.pageIndex].label = this.state.label
+        this.pageList[this.state.pageIndex].label = event.target.value
+        let nextPages: ICustomPages[] = [...this.props.customPages]
+        nextPages[this.state.pageIndex].label = event.target.value
 
         window.storeRedux.dispatch(storeUpdatePagesList(nextPages))
         window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
@@ -104,20 +105,15 @@ class PagesSettings extends React.PureComponent<
 
     handleClearRouting() {
         if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
-            this.props.customPages[this.state.pageIndex].faders = []
+            let nextPages: ICustomPages[] = [...this.props.customPages]
+            nextPages[this.state.pageIndex].faders = []
+            window.storeRedux.dispatch(storeUpdatePagesList(nextPages))
+            window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
         }
     }
 
-    handleCancel = () => {
+    handleClose = () => {
         window.socketIoClient.emit(SOCKET_GET_PAGES_LIST)
-        this.props.dispatch(storeShowPagesSetup())
-    }
-
-    handleSave = () => {
-        window.socketIoClient.emit(
-            SOCKET_SET_PAGES_LIST,
-            this.props.customPages
-        )
         this.props.dispatch(storeShowPagesSetup())
     }
 
@@ -162,21 +158,8 @@ class PagesSettings extends React.PureComponent<
                 >
                     CLEAR ALL
                 </button>
-                <button
-                    className="settings-cancel-button"
-                    onClick={() => {
-                        this.handleCancel()
-                    }}
-                >
-                    CANCEL
-                </button>
-                <button
-                    className="settings-save-button"
-                    onClick={() => {
-                        this.handleSave()
-                    }}
-                >
-                    SAVE SETTINGS
+                <button className="close" onClick={() => this.handleClose()}>
+                    X
                 </button>
                 <Select
                     value={{
