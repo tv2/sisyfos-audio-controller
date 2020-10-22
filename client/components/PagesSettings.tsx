@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react'
 //@ts-ignore
 import * as ClassNames from 'classnames'
 
-import '../assets/css/ChannelRouteSettings.css'
+import '../assets/css/PagesSettings.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
@@ -17,6 +17,23 @@ import {
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import { ICustomPages } from '../../server/reducers/settingsReducer'
 
+//Set style for Select dropdown component:
+const selectorColorStyles = {
+    control: (styles: any) => ({
+        ...styles,
+        backgroundColor: '#676767',
+        color: 'white',
+        border: 0,
+        width: 400,
+    }),
+    option: (styles: any) => {
+        return {
+            backgroundColor: '#AAAAAA',
+            color: 'white',
+        }
+    },
+    singleValue: (styles: any) => ({ ...styles, color: 'white' }),
+}
 interface IPagesSettingsInjectProps {
     customPages: ICustomPages[]
     fader: IFader[]
@@ -124,7 +141,7 @@ class PagesSettings extends React.PureComponent<
                     return (
                         <div
                             key={index}
-                            className={ClassNames('channel-route-text', {
+                            className={ClassNames('pages-settings-text', {
                                 checked: this.props.customPages[
                                     this.state.pageIndex
                                 ].faders.includes(index),
@@ -150,18 +167,13 @@ class PagesSettings extends React.PureComponent<
 
     render() {
         return (
-            <div className="channel-route-body">
+            <div className="pages-settings-body">
                 <h2>CUSTOM PAGES</h2>
-                <button
-                    className="settings-cancel-button"
-                    onClick={() => this.handleClearRouting()}
-                >
-                    CLEAR ALL
-                </button>
                 <button className="close" onClick={() => this.handleClose()}>
                     X
                 </button>
                 <Select
+                    styles={selectorColorStyles}
                     value={{
                         label:
                             this.props.customPages[this.state.pageIndex]
@@ -172,7 +184,7 @@ class PagesSettings extends React.PureComponent<
                     onChange={(event: any) => this.handleSelectPage(event)}
                     options={this.pageList}
                 />
-                <label className="settings-input-field">
+                <label className="inputfield">
                     LABEL :
                     <input
                         name="label"
@@ -181,7 +193,15 @@ class PagesSettings extends React.PureComponent<
                         onChange={(event) => this.handleLabel(event)}
                     />
                 </label>
+                <br />
                 {this.renderFaderList()}
+                <button
+                    className="button"
+                    onClick={() => this.handleClearRouting()}
+                >
+                    CLEAR ALL
+                </button>
+                <br />
             </div>
         )
     }
