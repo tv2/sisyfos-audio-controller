@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.2.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.1.0...v4.2.0) (2020-10-22)
+
+### Features
+
+-   custom page menu - implementing page selector ([f755ece](https://github.com/olzzon/sisyfos-audio-controller/commit/f755ece52756677233cff200eb82122d49c28c9e))
+-   custom pages menu - add css file to git - move "PAGES SETUP" in Channels view ([944c633](https://github.com/olzzon/sisyfos-audio-controller/commit/944c6335282c72772b5be0167a35641cf1180b4f))
+-   custom pages menu - CCS for GUI ([b68599c](https://github.com/olzzon/sisyfos-audio-controller/commit/b68599c7ee4a7303b91390c1a18167db9f8cc5f6))
+-   custom pages menu - css align tick boxes ([3bf4d60](https://github.com/olzzon/sisyfos-audio-controller/commit/3bf4d600afcd0fc0199fe866d4765ee29ae0eca1))
+-   custom pages menu - initialize label field correctly ([5d7bf9a](https://github.com/olzzon/sisyfos-audio-controller/commit/5d7bf9a95d86aba05df94902aae85cab45357c3a))
+-   custom pages menu - move from global space (window.customPages) to redux settings[0].customPages for realtime rendering ([865a467](https://github.com/olzzon/sisyfos-audio-controller/commit/865a467193c851c4fc1f3dafff3e6d3561f224b1))
+-   custom pages menu - realtime update of fader config in GUI ([4f4c542](https://github.com/olzzon/sisyfos-audio-controller/commit/4f4c5426e6519c3d342ec37cbf5e1e082b838a05))
+-   custom pages menu - set number of custom pages in Settings menu ([2167faa](https://github.com/olzzon/sisyfos-audio-controller/commit/2167faa92c15ec9f081577943fd4e17255e557ae))
+-   custom pages menu - working - ToDo: CSS ([329014a](https://github.com/olzzon/sisyfos-audio-controller/commit/329014a3fa1da472a4628ee49232f02f392a9ee5))
+-   custom pages setup - change label support ([93b8451](https://github.com/olzzon/sisyfos-audio-controller/commit/93b84518cab9ab761dc7090835a51c288774c82e))
+-   custom pages setup menu - bind and undbind to first custom page working ([648f880](https://github.com/olzzon/sisyfos-audio-controller/commit/648f88074867b4e09088ef911f120096c60a1ace))
+-   pages setup menu - creating menu and store ([70f7374](https://github.com/olzzon/sisyfos-audio-controller/commit/70f7374fd528b2728378a7c348a72f7cbeefc96d))
+
+### Bug Fixes
+
+-   OSC mixer protocol receiving channels not assigned to a fader should be ignored ([994e42d](https://github.com/olzzon/sisyfos-audio-controller/commit/994e42d5f5c1d93370687ed55ebc6dc43a1dd3ea))
+-   OSC mixerprotocol initial mixer state was resetting preset fader state ([aecfcb2](https://github.com/olzzon/sisyfos-audio-controller/commit/aecfcb2c76844e4eb0633962aeb7a526af886208))
+-   set all fader state, arguments was in wrong order. ([125bd1f](https://github.com/olzzon/sisyfos-audio-controller/commit/125bd1f9f7e2bbfb6b0d294705834cb1236d0bf9))
+-   storeSetPage() didn´t handle the different type of page selectors correctly ([5425603](https://github.com/olzzon/sisyfos-audio-controller/commit/542560304895c76a1309613d77e6c9d40c016e6e))
+
 ## [4.1.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.0.2...v4.1.0) (2020-10-14)
 
 ### Features
