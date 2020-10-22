@@ -17,7 +17,11 @@ import ChanStrip from './ChanStrip'
 import ChannelMonitorOptions from './ChannelMonitorOptions'
 import { IChannels } from '../../server/reducers/channelsReducer'
 import { IFader } from '../../server/reducers/fadersReducer'
-import { ICustomPages, ISettings, PageType } from '../../server/reducers/settingsReducer'
+import {
+    ICustomPages,
+    ISettings,
+    PageType,
+} from '../../server/reducers/settingsReducer'
 import {
     SOCKET_NEXT_MIX,
     SOCKET_CLEAR_PST,
@@ -184,7 +188,9 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     <Channel faderIndex={index} key={index} />
                 ))
             case PageType.CustomPage:
-                let pageIndex: number = this.props.customPages.map((item: ICustomPages) => item.id).indexOf(curPage.id || '');
+                let pageIndex: number = this.props.customPages
+                    .map((item: ICustomPages) => item.id)
+                    .indexOf(curPage.id || '')
                 return this.props.customPages[pageIndex].faders
                     .filter((value) => {
                         return (
@@ -194,10 +200,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     })
                     .map((faderIndex, index) => {
                         return (
-                            <Channel
-                                key={faderIndex}
-                                faderIndex={faderIndex}
-                            />
+                            <Channel key={faderIndex} faderIndex={faderIndex} />
                         )
                     })
         }
@@ -281,12 +284,24 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                             'settings=0'
                         ) ? null : (
                             <button
-                                className="button channels-show-storage-button"
+                                className="button half channels-show-storage-button"
                                 onClick={() => {
                                     this.handleShowStorage()
                                 }}
                             >
                                 STORAGE
+                            </button>
+                        )}
+                        {window.location.search.includes(
+                            'settings=0'
+                        ) ? null : (
+                            <button
+                                className="button half channels-show-settings-button"
+                                onClick={() => {
+                                    this.handleShowPagesSetting()
+                                }}
+                            >
+                                PAGES SETUP
                             </button>
                         )}
                     </div>
@@ -313,14 +328,6 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                             </React.Fragment>
                         )}
                     </div>
-                    <button
-                                className="button half channels-show-settings-button"
-                                onClick={() => {
-                                    this.handleShowPagesSetting()
-                                }}
-                            >
-                                PAGES SETUP
-                        </button>
                     <div className="bot">{this.renderPageButtons()}</div>
                 </div>
             </div>
