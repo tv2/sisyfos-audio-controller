@@ -12,11 +12,11 @@ import {
     SET_SERVER_ONLINE,
     SET_PAGE,
     TOGGLE_SHOW_PAGES_SETUP,
+    SET_PAGES_LIST,
 } from '../reducers/settingsActions'
 
 export enum PageType {
     All,
-    NumberedPage,
     CustomPage,
 }
 
@@ -34,11 +34,7 @@ export interface ISettings {
         start?: number
         id?: string
     }
-    customPages?: Array<{
-        id: string
-        label: string
-        faders: Array<number>
-    }>
+    customPages: Array<ICustomPages>
 
     /** User config */
     numberOfMixers: number
@@ -61,6 +57,12 @@ export interface ISettings {
 
     /** Connection state */
     serverOnline: boolean
+}
+
+export interface ICustomPages {
+    id: string
+    label: string
+    faders: Array<number>
 }
 
 export interface IMixerSettings {
@@ -89,6 +91,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showStorage: false,
         currentPage: { type: PageType.All },
         numberOfMixers: 1,
+        customPages: [],
         mixers: [
             {
                 mixerProtocol: 'sslSystemT',
@@ -137,7 +140,6 @@ export const settings = (
         case TOGGLE_SHOW_PAGES_SETUP:
             nextState[0].showPagesSetup = !nextState[0].showPagesSetup
             return nextState
-
         case TOGGLE_SHOW_CHAN_STRIP:
             if (nextState[0].showChanStrip !== action.channel) {
                 nextState[0].showChanStrip = action.channel
@@ -170,6 +172,9 @@ export const settings = (
                 id: action.id,
                 start: action.start,
             }
+            return nextState
+        case SET_PAGES_LIST:
+            nextState[0].customPages = action.customPages
             return nextState
         case SET_MIXER_ONLINE:
             nextState[0].mixers[0].mixerOnline = action.mixerOnline

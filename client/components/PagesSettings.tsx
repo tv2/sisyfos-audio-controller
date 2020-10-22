@@ -5,16 +5,20 @@ import * as ClassNames from 'classnames'
 import '../assets/css/ChannelRouteSettings.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { storeShowPagesSetup } from '../../server/reducers/settingsActions'
+import {
+    storeShowPagesSetup,
+    storeUpdatePagesList,
+} from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
 import Select from 'react-select'
-import { ICustomPages } from '..'
 import {
     SOCKET_GET_PAGES_LIST,
     SOCKET_SET_PAGES_LIST,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import { ICustomPages } from '../../server/reducers/settingsReducer'
 
 interface IPagesSettingsInjectProps {
+    customPages: ICustomPages[]
     fader: IFader[]
 }
 
@@ -22,22 +26,23 @@ class PagesSettings extends React.PureComponent<
     IPagesSettingsInjectProps & Store
 > {
     pageList: { label: string; value: number }[]
-    state = { pageIndex: 0, label: window.customPagesList[0].label }
+    state = { pageIndex: 0, label: '' }
 
     constructor(props: any) {
         super(props)
 
-        this.pageList = window.customPagesList.map(
+        this.pageList = this.props.customPages.map(
             (page: ICustomPages, index: number) => {
                 return { label: page.label, value: index }
             }
         )
+        this.setState({ label: this.props.customPages[0].label })
     }
 
     handleSelectPage(event: any) {
         this.setState({ pageIndex: event.value })
         this.setState({
-            label: window.customPagesList[event.value].label,
+            label: this.props.customPages[event.value].label,
         })
         console.log('PAGE SELECTED', this.state.pageIndex)
     }
@@ -53,12 +58,15 @@ class PagesSettings extends React.PureComponent<
                         String(this.state.pageIndex + 1)
                 )
             ) {
-                window.customPagesList[this.state.pageIndex].faders.splice(
-                    window.customPagesList[this.state.pageIndex].faders.indexOf(
+                let nextPages: ICustomPages[] = Object.assign([], this.props.customPages)
+                nextPages[this.state.pageIndex].faders.splice(
+                    this.props.customPages[this.state.pageIndex].faders.indexOf(
                         fader
                     ),
                     1
                 )
+                window.storeRedux.dispatch(storeUpdatePagesList(nextPages))
+                window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
             }
         } else {
             console.log('Binding Channel')
@@ -71,26 +79,32 @@ class PagesSettings extends React.PureComponent<
                         '?'
                 )
             ) {
-                window.customPagesList[this.state.pageIndex].faders.push(fader)
-                window.customPagesList[this.state.pageIndex].faders.sort(
-                    (a, b) => {
-                        return a - b
-                    }
-                )
+                let nextPages: ICustomPages[] = Object.assign([], this.props.customPages)
+                nextPages[this.state.pageIndex].faders.push(fader)
+                nextPages[this.state.pageIndex].faders.sort((a, b) => {
+                    return a - b
+                })
+                window.storeRedux.dispatch(storeUpdatePagesList(nextPages))
+                window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
             }
         }
     }
 
     handleLabel = (event: ChangeEvent<HTMLInputElement>) => {
         this.setState({ label: event.target.value })
-        this.pageList[this.state.pageIndex].label =
-            window.customPagesList[this.state.pageIndex].label
-        window.customPagesList[this.state.pageIndex].label = event.target.value
+        this.pageList[this.state.pageIndex].label = this.props.customPages[
+            this.state.pageIndex
+        ].label
+        let nextPages: ICustomPages[] = Object.assign([], this.props.customPages)
+        nextPages[this.state.pageIndex].label = this.state.label
+
+        window.storeRedux.dispatch(storeUpdatePagesList(nextPages))
+        window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
     }
 
     handleClearRouting() {
         if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
-            window.customPagesList[this.state.pageIndex].faders = []
+            this.props.customPages[this.state.pageIndex].faders = []
         }
     }
 
@@ -102,7 +116,7 @@ class PagesSettings extends React.PureComponent<
     handleSave = () => {
         window.socketIoClient.emit(
             SOCKET_SET_PAGES_LIST,
-            window.customPagesList
+            this.props.customPages
         )
         this.props.dispatch(storeShowPagesSetup())
     }
@@ -115,7 +129,7 @@ class PagesSettings extends React.PureComponent<
                         <div
                             key={index}
                             className={ClassNames('channel-route-text', {
-                                checked: window.customPagesList[
+                                checked: this.props.customPages[
                                     this.state.pageIndex
                                 ].faders.includes(index),
                             })}
@@ -123,7 +137,7 @@ class PagesSettings extends React.PureComponent<
                             {' Fader ' + (index + 1) + ' : '}
                             <input
                                 type="checkbox"
-                                checked={window.customPagesList[
+                                checked={this.props.customPages[
                                     this.state.pageIndex
                                 ].faders.includes(index)}
                                 onChange={(event) =>
@@ -167,7 +181,7 @@ class PagesSettings extends React.PureComponent<
                 <Select
                     value={{
                         label:
-                            window.customPagesList[this.state.pageIndex]
+                            this.props.customPages[this.state.pageIndex]
                                 .label ||
                             'Page : ' + (this.state.pageIndex + 1),
                         value: this.state.pageIndex,
@@ -192,6 +206,7 @@ class PagesSettings extends React.PureComponent<
 
 const mapStateToProps = (state: any, props: any): IPagesSettingsInjectProps => {
     return {
+        customPages: state.settings[0].customPages,
         fader: state.faders[0].fader,
     }
 }

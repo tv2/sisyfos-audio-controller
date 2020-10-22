@@ -11,6 +11,7 @@ import {
 import {
     storeSetMixerOnline,
     storeSetServerOnline,
+    storeUpdatePagesList,
     storeUpdateSettings,
 } from '../../server/reducers/settingsActions'
 import {
@@ -144,6 +145,6 @@ export const socketClientHandlers = () => {
             window.mixerPresetList = payload
         })
         .on(SOCKET_RETURN_PAGES_LIST, (payload: any) => {
-            window.customPagesList = payload
+            window.storeRedux.dispatch(storeUpdatePagesList(payload))
         })
 }

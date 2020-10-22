@@ -17,7 +17,7 @@ import ChanStrip from './ChanStrip'
 import ChannelMonitorOptions from './ChannelMonitorOptions'
 import { IChannels } from '../../server/reducers/channelsReducer'
 import { IFader } from '../../server/reducers/fadersReducer'
-import { ISettings, PageType } from '../../server/reducers/settingsReducer'
+import { ICustomPages, ISettings, PageType } from '../../server/reducers/settingsReducer'
 import {
     SOCKET_NEXT_MIX,
     SOCKET_CLEAR_PST,
@@ -29,6 +29,7 @@ interface IChannelsInjectProps {
     channels: IChannels
     faders: IFader[]
     settings: ISettings
+    customPages: ICustomPages[]
 }
 
 class Channels extends React.Component<IChannelsInjectProps & Store> {
@@ -45,6 +46,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 nextProps.settings.showChanStrip ||
             this.props.settings.showMonitorOptions !==
                 nextProps.settings.showMonitorOptions ||
+            this.props.settings.customPages !==
+                nextProps.settings.customPages ||
             this.props.settings.mixers[0].mixerOnline !==
                 nextProps.settings.mixers[0].mixerOnline ||
             this.props.faders.length !== nextProps.faders.length ||
@@ -106,7 +109,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         const curPage = this.props.settings.currentPage
 
         const customPageButtons = []
-        const pages = window.customPagesList
+        const pages = this.props.customPages
         if (pages) {
             for (const p of pages) {
                 const isActive =
@@ -126,28 +129,6 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             }
         }
 
-/*        const numberedButtons = []
-        const numberOfFaders = this.props.settings.numberOfFaders
-        const pageLength = this.props.settings.pageLength
-        for (let i = 0; i < Math.ceil(numberOfFaders / pageLength); i++) {
-            const isActive =
-                curPage.type === PageType.NumberedPage &&
-                curPage.start === i * this.props.settings.pageLength
-            numberedButtons.push(
-                <button
-                    className={ClassNames('button half', {
-                        active: isActive,
-                    })}
-                    onClick={() => {
-                        this.handlePages(PageType.NumberedPage, i)
-                    }}
-                >
-                    CH{i * pageLength + 1}-
-                    {Math.min((i + 1) * pageLength, numberOfFaders)}
-                </button>
-            )
-        }
-*/
         const isAllActive = curPage.type === PageType.All
         return (
             <React.Fragment>
@@ -197,27 +178,14 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
 
     renderFaders() {
         const curPage = this.props.settings.currentPage
-        const pageLength = this.props.settings.pageLength
         switch (curPage.type) {
             case PageType.All:
                 return this.props.faders.map((value, index) => (
                     <Channel faderIndex={index} key={index} />
                 ))
-            case PageType.NumberedPage:
-                return this.props.faders
-                    .slice(
-                        curPage.start,
-                        Number(curPage.start!) + Number(pageLength)
-                    )
-                    .map((value, index) => (
-                        <Channel
-                            faderIndex={index + curPage.start!}
-                            key={index + curPage.start!}
-                        />
-                    ))
             case PageType.CustomPage:
-                const page = window.customPagesList.find(
-                    (page) => page.id === curPage.id
+                const page = this.props.customPages.find(
+                    (item) => item.id === curPage.id
                 )
                 if (!page) return
 
@@ -368,6 +336,7 @@ const mapStateToProps = (state: any): IChannelsInjectProps => {
     return {
         channels: state.channels[0].chConnection[0].channel,
         faders: state.faders[0].fader,
+        customPages: state.settings[0].customPages,
         settings: state.settings[0],
     }
 }

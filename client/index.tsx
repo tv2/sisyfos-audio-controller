@@ -18,12 +18,8 @@ import {
 import { I18nextProvider } from 'react-i18next'
 import i18n from './i18n'
 import { IMixerProtocol } from '../server/constants/MixerProtocolInterface'
+import { ICustomPages } from '../server/reducers/settingsReducer'
 
-export interface ICustomPages {
-    id: string
-    label: string
-    faders: Array<number>
-}
 declare global {
     interface Window {
         storeRedux: any
@@ -34,7 +30,6 @@ declare global {
         snapshotFileList: string[]
         ccgFileList: string[]
         mixerPresetList: string[]
-        customPagesList: ICustomPages[]
     }
 }
 
