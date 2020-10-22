@@ -372,55 +372,6 @@ class Channel extends React.Component<
             </div>
         )
     }
-
-    DONOTUSE_render() {
-        return this.props.fader.showChannel === false ? null : (
-            <div
-                className={ClassNames('channel-body', {
-                    'with-pfl': this.props.settings.showPfl,
-                    'pgm-on': this.props.fader.pgmOn,
-                    'vo-on': this.props.fader.voOn,
-                    'mute-on': this.props.fader.muteOn,
-                    'ignore-on': this.props.fader.ignoreAutomation,
-                    'not-found': this.props.fader.disabled,
-                })}
-                ref={this._domRef}
-            >
-                {this.ignoreButton()}
-                {this.muteButton()}
-                {/* {this.props.fader.faderLevel} */}
-                <br />
-                <h4 className="channel-zero-indicator">_____</h4>
-                {this.fader()}
-                <VuMeter faderIndex={this.faderIndex} />
-                <br />
-                {this.pgmButton()}
-                <br />
-                {this.props.settings.automationMode ? (
-                    <React.Fragment>
-                        {this.voButton()}
-                        <br />
-                    </React.Fragment>
-                ) : null}
-                {!this.props.settings.showPfl ? (
-                    <React.Fragment>
-                        {this.pstButton()}
-                        <br />
-                    </React.Fragment>
-                ) : null}
-                {this.props.settings.showPfl ? (
-                    <React.Fragment>
-                        {this.pflButton()}
-                        <br />
-                    </React.Fragment>
-                ) : null}
-                <React.Fragment>
-                    {this.chanStripButton()}
-                    <br />
-                </React.Fragment>
-            </div>
-        )
-    }
 }
 
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {

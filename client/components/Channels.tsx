@@ -184,12 +184,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     <Channel faderIndex={index} key={index} />
                 ))
             case PageType.CustomPage:
-                const page = this.props.customPages.find(
-                    (item) => item.id === curPage.id
-                )
-                if (!page) return
-
-                return page.faders
+                let pageIndex: number = this.props.customPages.map((item: ICustomPages) => item.id).indexOf(curPage.id || '');
+                return this.props.customPages[pageIndex].faders
                     .filter((value) => {
                         return (
                             value >= 0 &&
@@ -199,8 +195,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     .map((faderIndex, index) => {
                         return (
                             <Channel
+                                key={faderIndex}
                                 faderIndex={faderIndex}
-                                key={page.id + index}
                             />
                         )
                     })
