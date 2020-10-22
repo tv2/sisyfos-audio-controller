@@ -94,6 +94,7 @@ import {
 } from './reducers/channelActions'
 import { IChannel } from './reducers/channelsReducer'
 import { logger } from './utils/logger'
+import { ICustomPages } from './reducers/settingsReducer'
 const path = require('path')
 
 export class MainThreadHandlers {
@@ -204,7 +205,33 @@ export class MainThreadHandlers {
             })
             .on(SOCKET_GET_PAGES_LIST, () => {
                 logger.info('Get custom pages list', {})
-                socketServer.emit(SOCKET_RETURN_PAGES_LIST, getCustomPages())
+                let customPages: ICustomPages[] = getCustomPages()
+                if (
+                    customPages.length === state.settings[0].numberOfCustomPages
+                ) {
+                    socketServer.emit(SOCKET_RETURN_PAGES_LIST, customPages)
+                } else {
+                    for (
+                        let i = 0;
+                        i < state.settings[0].numberOfCustomPages;
+                        i++
+                    ) {
+                        if (!customPages[i]) {
+                            customPages.push({
+                                id: 'custom' + String(i),
+                                label: 'Custom ' + String(i),
+                                faders: [],
+                            })
+                        }
+                    }
+                    socketServer.emit(
+                        SOCKET_RETURN_PAGES_LIST,
+                        customPages.slice(
+                            0,
+                            state.settings[0].numberOfCustomPages
+                        )
+                    )
+                }
             })
             .on(SOCKET_SET_PAGES_LIST, (payload: any) => {
                 saveCustomPages(payload)

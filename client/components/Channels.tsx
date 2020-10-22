@@ -57,7 +57,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             this.props.faders.length !== nextProps.faders.length ||
             this.props.settings.currentPage !==
                 nextProps.settings.currentPage ||
-            this.props.settings.pageLength !== nextProps.settings.pageLength ||
+            this.props.settings.numberOfCustomPages !== nextProps.settings.numberOfCustomPages ||
             !!nextProps.faders.find(
                 (f, i) =>
                     this.props.faders[i].ignoreAutomation !== f.ignoreAutomation
@@ -98,10 +98,6 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     handlePages(type: PageType, i: number | string) {
         if (typeof i === 'string') {
             this.props.dispatch(storeSetPage(type, i))
-        } else {
-            this.props.dispatch(
-                storeSetPage(type, i * this.props.settings.pageLength)
-            )
         }
     }
 

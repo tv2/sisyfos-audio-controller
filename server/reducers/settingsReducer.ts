@@ -52,7 +52,7 @@ export interface ISettings {
     offtubeMode: boolean
     showPfl: boolean
     enablePages: boolean
-    pageLength: number
+    numberOfCustomPages: number
     chanStripFollowsPFL: boolean
 
     /** Connection state */
@@ -121,7 +121,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         voFadeTime: 280,
         showPfl: false,
         enablePages: true,
-        pageLength: 16,
+        numberOfCustomPages: 16,
         chanStripFollowsPFL: true,
         serverOnline: true,
     },
