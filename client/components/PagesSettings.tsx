@@ -141,13 +141,14 @@ class PagesSettings extends React.PureComponent<
                     return (
                         <div
                             key={index}
-                            className={ClassNames('pages-settings-text', {
+                            className={ClassNames('pages-settings-tick', {
                                 checked: this.props.customPages[
                                     this.state.pageIndex
                                 ].faders.includes(index),
                             })}
                         >
-                            {' Fader ' + (index + 1) + ' : '}
+                            {' Fader ' + (index + 1) + ' - ' + fader.label + ' : '}
+                            {}
                             <input
                                 type="checkbox"
                                 checked={this.props.customPages[
@@ -157,7 +158,7 @@ class PagesSettings extends React.PureComponent<
                                     this.handleAssignFader(index, event)
                                 }
                             />
-                            {fader.label}
+
                         </div>
                     )
                 })}
