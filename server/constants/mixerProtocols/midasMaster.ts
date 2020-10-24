@@ -77,36 +77,50 @@ export const MidasMaster: IMixerProtocol = {
                 THRESHOLD: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/thr',
+                        maxLabel: 0,
+                        minLabel: -60,
                     },
                 ],
                 RATIO: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/ratio',
+                        maxLabel: 10,
+                        minLabel: 0,
                     },
                 ],
                 DELAY_TIME: [
                     {
                         mixerMessage: '/ch/{channel}/delay/time',
+                        maxLabel: 500,
+                        minLabel: 0,
                     },
                 ],
                 LOW: [
                     {
                         mixerMessage: '/ch/{channel}/eq/1/g',
+                        maxLabel: 15,
+                        minLabel: -15,
                     },
                 ],
                 LO_MID: [
                     {
                         mixerMessage: '/ch/{channel}/eq/2/g',
+                        maxLabel: 15,
+                        minLabel: -15,
                     },
                 ],
                 MID: [
                     {
                         mixerMessage: '/ch/{channel}/eq/3/g',
+                        maxLabel: 15,
+                        minLabel: -15,
                     },
                 ],
                 HIGH: [
                     {
                         mixerMessage: '/ch/{channel}/eq/4/g',
+                        maxLabel: 15,
+                        minLabel: -15,
                     },
                 ],
                 AUX_LEVEL: [
