@@ -96,9 +96,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     }
 
     handlePages(type: PageType, i: number | string) {
-        if (typeof i === 'string') {
             this.props.dispatch(storeSetPage(type, i))
-        }
     }
 
     renderPageButtons() {
