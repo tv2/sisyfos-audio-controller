@@ -5,7 +5,9 @@ import '../assets/css/ChanStrip.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
-     storeShowChanStrip, storeShowOptions, storeShowMonitorOptions
+    storeShowChanStrip,
+    storeShowOptions,
+    storeShowMonitorOptions,
 } from '../../server/reducers/settingsActions'
 import { IFader } from '../../server/reducers/fadersReducer'
 import {
@@ -186,9 +188,16 @@ class ChanStrip extends React.PureComponent<
     }
 
     inputGain() {
+        let maxLabel: number =
+            window.mixerProtocol.channelTypes[0].fromMixer
+                .CHANNEL_INPUT_GAIN?.[0].maxLabel ?? 1
+        let minLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer
+                .CHANNEL_INPUT_GAIN?.[0].minLabel ?? 0
         return (
             <div className="parameter-text">
                 Gain
+                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
                 {window.mixerProtocol.channelTypes[0].toMixer
                     .CHANNEL_INPUT_GAIN ? (
                     <React.Fragment>
@@ -210,14 +219,22 @@ class ChanStrip extends React.PureComponent<
                         />
                     </React.Fragment>
                 ) : null}
+                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
             </div>
         )
     }
 
     threshold() {
+        let maxLabel: number =
+            window.mixerProtocol.channelTypes[0].fromMixer.THRESHOLD?.[0]
+                .maxLabel ?? 1
+        let minLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer.THRESHOLD?.[0]
+                .minLabel ?? 0
         return (
             <div className="parameter-text">
                 Threshold
+                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
                 <ReactSlider
                     className="chan-strip-fader"
                     thumbClassName="chan-strip-thumb"
@@ -227,18 +244,36 @@ class ChanStrip extends React.PureComponent<
                     max={1}
                     step={0.01}
                     value={this.props.fader[this.props.faderIndex].threshold}
+                    renderThumb={(props: any, state: any) => (
+                        <div {...props}>
+                            {Math.round(
+                                (maxLabel - minLabel) *
+                                    parseFloat(state.valueNow) +
+                                    minLabel
+                            )}
+                            dB
+                        </div>
+                    )}
                     onChange={(event: any) => {
                         this.handleThreshold(event)
                     }}
                 />
+                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
             </div>
         )
     }
 
     ratio() {
+        let maxLabel: number =
+            window.mixerProtocol.channelTypes[0].fromMixer.RATIO?.[0]
+                .maxLabel ?? 1
+        let minLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer.RATIO?.[0]
+                .minLabel ?? 0
         return (
             <div className="parameter-text">
                 Ratio
+                <div className="parameter-mini-text">{maxLabel + ':1'}</div>
                 <ReactSlider
                     className="chan-strip-fader"
                     thumbClassName="chan-strip-thumb"
@@ -248,10 +283,20 @@ class ChanStrip extends React.PureComponent<
                     max={1}
                     step={0.01}
                     value={this.props.fader[this.props.faderIndex].ratio}
+                    renderThumb={(props: any, state: any) => (
+                        <div {...props}>
+                            {Math.round(
+                                (maxLabel - minLabel) *
+                                    parseFloat(state.valueNow) +
+                                    minLabel
+                            ) + ':1'}
+                        </div>
+                    )}
                     onChange={(event: any) => {
                         this.handleRatio(event)
                     }}
                 />
+                <div className="parameter-mini-text">{minLabel + ':1'}</div>
             </div>
         )
     }
@@ -265,15 +310,20 @@ class ChanStrip extends React.PureComponent<
         )
     }
     delay() {
+        let maxLabel: number =
+            window.mixerProtocol.channelTypes[0].fromMixer.DELAY_TIME?.[0]
+                .maxLabel ?? 1
+        let minLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer.DELAY_TIME?.[0]
+                .minLabel ?? 0
         return (
             <React.Fragment>
                 <div className="parameter-text">
-                    {Math.round(
-                        500 *
-                            (this.props.fader[this.props.faderIndex]
-                                .delayTime || 0)
-                    )}{' '}
-                    ms
+                    Time
+                    <div className="parameter-mini-text">
+                        {maxLabel + ' ms'}
+                    </div>
+
                     <ReactSlider
                         className="chan-strip-fader"
                         thumbClassName="chan-strip-thumb"
@@ -286,10 +336,23 @@ class ChanStrip extends React.PureComponent<
                             this.props.fader[this.props.faderIndex].delayTime ||
                             0
                         }
+                        renderThumb={(props: any, state: any) => (
+                            <div {...props}>
+                                {Math.round(
+                                    (maxLabel - minLabel) *
+                                        parseFloat(state.valueNow) +
+                                        minLabel
+                                )}
+                                ms
+                            </div>
+                        )}
                         onChange={(event: any) => {
                             this.handleDelay(event)
                         }}
                     />
+                    <div className="parameter-mini-text">
+                        {minLabel + ' ms'}
+                    </div>
                 </div>
                 <div className="delayButtons">
                     <button
@@ -346,9 +409,16 @@ class ChanStrip extends React.PureComponent<
     }
 
     low() {
+        let maxLabel: number =
+            window.mixerProtocol.channelTypes[0].fromMixer.LOW?.[0].maxLabel ??
+            1
+        let minLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer.LOW?.[0].minLabel ??
+            0
         return (
             <div className="parameter-text">
                 Low
+                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
                 <ReactSlider
                     className="chan-strip-fader"
                     thumbClassName="chan-strip-thumb"
@@ -358,18 +428,36 @@ class ChanStrip extends React.PureComponent<
                     max={1}
                     step={0.01}
                     value={this.props.fader[this.props.faderIndex].low}
+                    renderThumb={(props: any, state: any) => (
+                        <div {...props}>
+                            {Math.round(
+                                (maxLabel - minLabel) *
+                                    parseFloat(state.valueNow) +
+                                    minLabel
+                            )}
+                            dB
+                        </div>
+                    )}
                     onChange={(event: any) => {
                         this.handleLow(event)
                     }}
                 />
+                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
             </div>
         )
     }
 
     loMid() {
+        let maxLabel: number =
+            window.mixerProtocol.channelTypes[0].fromMixer.LO_MID?.[0]
+                .maxLabel ?? 1
+        let minLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer.LO_MID?.[0]
+                .minLabel ?? 0
         return (
             <div className="parameter-text">
                 Lo-Mid
+                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
                 <ReactSlider
                     className="chan-strip-fader"
                     thumbClassName="chan-strip-thumb"
@@ -379,18 +467,36 @@ class ChanStrip extends React.PureComponent<
                     max={1}
                     step={0.01}
                     value={this.props.fader[this.props.faderIndex].loMid}
+                    renderThumb={(props: any, state: any) => (
+                        <div {...props}>
+                            {Math.round(
+                                (maxLabel - minLabel) *
+                                    parseFloat(state.valueNow) +
+                                    minLabel
+                            )}
+                            dB
+                        </div>
+                    )}
                     onChange={(event: any) => {
                         this.handleLoMid(event)
                     }}
                 />
+                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
             </div>
         )
     }
 
     mid() {
+        let maxLabel: number =
+            window.mixerProtocol.channelTypes[0].fromMixer.MID?.[0].maxLabel ??
+            1
+        let minLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer.MID?.[0].minLabel ??
+            0
         return (
             <div className="parameter-text">
                 Hi-Mid
+                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
                 <ReactSlider
                     className="chan-strip-fader"
                     thumbClassName="chan-strip-thumb"
@@ -400,18 +506,36 @@ class ChanStrip extends React.PureComponent<
                     max={1}
                     step={0.01}
                     value={this.props.fader[this.props.faderIndex].mid}
+                    renderThumb={(props: any, state: any) => (
+                        <div {...props}>
+                            {Math.round(
+                                (maxLabel - minLabel) *
+                                    parseFloat(state.valueNow) +
+                                    minLabel
+                            )}
+                            dB
+                        </div>
+                    )}
                     onChange={(event: any) => {
                         this.handleMid(event)
                     }}
                 />
+                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
             </div>
         )
     }
 
     high() {
+        let maxLabel: number =
+            window.mixerProtocol.channelTypes[0].fromMixer.HIGH?.[0].maxLabel ??
+            1
+        let minLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer.HIGH?.[0].minLabel ??
+            0
         return (
             <div className="parameter-text">
                 High
+                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
                 <ReactSlider
                     className="chan-strip-fader"
                     thumbClassName="chan-strip-thumb"
@@ -421,10 +545,21 @@ class ChanStrip extends React.PureComponent<
                     max={1}
                     step={0.01}
                     value={this.props.fader[this.props.faderIndex].high}
+                    renderThumb={(props: any, state: any) => (
+                        <div {...props}>
+                            {Math.round(
+                                (maxLabel - minLabel) *
+                                    parseFloat(state.valueNow) +
+                                    minLabel
+                            )}
+                            dB
+                        </div>
+                    )}
                     onChange={(event: any) => {
                         this.handleHigh(event)
                     }}
                 />
+                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
             </div>
         )
     }
@@ -620,8 +755,6 @@ class ChanStrip extends React.PureComponent<
                         >
                             X
                         </button>
-                    </div>
-                    <div className="header">
                         {window.location.search.includes(
                             'settings=0'
                         ) ? null : (
@@ -629,7 +762,7 @@ class ChanStrip extends React.PureComponent<
                                 className="button half"
                                 onClick={() => this.handleShowRoutingOptions()}
                             >
-                                CHANNEL ROUTING
+                                Ch.Setup
                             </button>
                         )}
                         {window.location.search.includes(
@@ -639,7 +772,7 @@ class ChanStrip extends React.PureComponent<
                                 className="button half"
                                 onClick={() => this.handleShowMonitorOptions()}
                             >
-                                MONITOR ROUTING
+                                Mon.Setup
                             </button>
                         )}
                     </div>
@@ -663,7 +796,8 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
     let inject: IChanStripInjectProps = {
         label: '',
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
-        numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+        numberOfChannelsInType:
+            state.settings[0].mixers[0].numberOfChannelsInType,
         channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
         auxSendIndex: -1,
@@ -673,7 +807,8 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
         inject = {
             label: state.faders[0].fader[props.faderIndex].label,
             selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
-            numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+            numberOfChannelsInType:
+                state.settings[0].mixers[0].numberOfChannelsInType,
             channel: state.channels[0].chConnection[0].channel,
             fader: state.faders[0].fader,
             auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,

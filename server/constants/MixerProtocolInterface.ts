@@ -81,6 +81,9 @@ interface IMixerMessageProtocol {
     max?: number
     zero?: number
     label?: string
+    minLabel?: number
+    maxLabel?: number
+    zeroLabel?: number
 }
 
 export const emptyMixerMessage = (): IMixerMessageProtocol => {
