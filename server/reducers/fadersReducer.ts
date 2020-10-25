@@ -1,4 +1,5 @@
 import * as DEFAULTS from '../constants/DEFAULTS'
+import { fxParamsList } from '../constants/MixerProtocolInterface'
 import {
     CLEAR_PST,
     FADE_TO_BLACK,
@@ -59,10 +60,7 @@ export interface IFader {
     pflOn: boolean
     muteOn: boolean
     amixOn: boolean
-    low: number
-    loMid: number
-    mid: number
-    high: number
+    fxParam: Array<IFxParam>
     threshold: number
     ratio: number
     delayTime: number
@@ -88,6 +86,11 @@ export interface IVuMeters {
     reductionVal: number
 }
 
+export interface IFxParam {
+    key: fxParamsList
+    value: number
+}
+
 const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
     let defaultObj: Array<IFaders> = [
         {
@@ -109,10 +112,13 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
             pflOn: false,
             muteOn: false,
             amixOn: false,
-            low: 0.75,
-            loMid: 0.75,
-            mid: 0.75,
-            high: 0.75,
+            fxParam: Object.keys(fxParamsList).map(
+                (key): IFxParam => {
+                    if (!isNaN(Number(key))) {
+                        return { key: Number(key), value: NaN }
+                    }
+                }
+            ),
             threshold: 0.75,
             ratio: 0.75,
             delayTime: 0,
@@ -211,16 +217,24 @@ export const faders = (
             )
             return nextState
         case SET_FADER_LOW:
-            nextState[0].fader[action.channel].low = parseFloat(action.level)
+            nextState[0].fader[action.channel].fxParam[
+                fxParamsList.EqLowGain
+            ].value = parseFloat(action.level)
             return nextState
         case SET_FADER_LO_MID:
-            nextState[0].fader[action.channel].loMid = parseFloat(action.level)
+            nextState[0].fader[action.channel].fxParam[
+                fxParamsList.EqLowMidGain
+            ].value = parseFloat(action.level)
             return nextState
         case SET_FADER_MID:
-            nextState[0].fader[action.channel].mid = parseFloat(action.level)
+            nextState[0].fader[action.channel].fxParam[
+                fxParamsList.EqMidGain
+            ].value = parseFloat(action.level)
             return nextState
         case SET_FADER_HIGH:
-            nextState[0].fader[action.channel].high = parseFloat(action.level)
+            nextState[0].fader[action.channel].fxParam[
+                fxParamsList.EqHighGain
+            ].value = parseFloat(action.level)
             return nextState
         case SET_FADER_MONITOR:
             nextState[0].fader[action.channel].monitor = action.auxIndex

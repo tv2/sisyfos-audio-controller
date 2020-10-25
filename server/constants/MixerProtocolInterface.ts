@@ -1,5 +1,6 @@
 export interface IMixerProtocolGeneric {
     protocol: string
+    fxList?: {}
     label: string
     presetFileExtension?: string
     loadPresetCommand?: Array<IMixerMessageProtocol>
@@ -46,6 +47,7 @@ export interface IChannelTypes {
         LO_MID?: Array<IMixerMessageProtocol>
         MID?: Array<IMixerMessageProtocol>
         HIGH?: Array<IMixerMessageProtocol>
+        FX_PARAMS?: Array<IFxProtocol>
         AUX_LEVEL?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
@@ -66,6 +68,7 @@ export interface IChannelTypes {
         LO_MID?: Array<IMixerMessageProtocol>
         MID?: Array<IMixerMessageProtocol>
         HIGH?: Array<IMixerMessageProtocol>
+        FX_PARAMS?: Array<IFxProtocol>
         AUX_LEVEL?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
@@ -84,6 +87,18 @@ interface IMixerMessageProtocol {
     minLabel?: number
     maxLabel?: number
     zeroLabel?: number
+}
+
+interface IFxProtocol {
+    key: fxParamsList
+    params: Array<IMixerMessageProtocol>
+}
+
+export enum fxParamsList {
+    EqLowGain,
+    EqLowMidGain,
+    EqMidGain,
+    EqHighGain,
 }
 
 export const emptyMixerMessage = (): IMixerMessageProtocol => {

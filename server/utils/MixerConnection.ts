@@ -7,6 +7,7 @@ import {
     IMixerProtocol,
     IMixerProtocolGeneric,
     ICasparCGMixerGeometry,
+    fxParamsList,
 } from '../constants/MixerProtocolInterface'
 import { OscMixerConnection } from './mixerConnections/OscMixerConnection'
 import { MidiMixerConnection } from './mixerConnections/MidiMixerConnection'
@@ -347,14 +348,15 @@ export class MixerGenericConnection {
             }
         )
     }
-    updateLow = (faderIndex: number) => {
-        let level = state.faders[0].fader[faderIndex].low
+    updateFx = (fxParam: fxParamsList, faderIndex: number) => {
+        let level = state.faders[0].fader[faderIndex].fxParam[fxParam].value
         state.channels[0].chConnection.forEach(
             (chConnection: IchConnection, mixerIndex: number) => {
                 chConnection.channel.forEach(
                     (channel: IChannel, channelIndex: number) => {
                         if (faderIndex === channel.assignedFader) {
-                            this.mixerConnection[mixerIndex].updateLow(
+                            this.mixerConnection[mixerIndex].updateFx(
+                                fxParam,
                                 channelIndex,
                                 level
                             )
@@ -364,58 +366,6 @@ export class MixerGenericConnection {
             }
         )
     }
-    updateLoMid = (faderIndex: number) => {
-        let level = state.faders[0].fader[faderIndex].loMid
-        state.channels[0].chConnection.forEach(
-            (chConnection: IchConnection, mixerIndex: number) => {
-                chConnection.channel.forEach(
-                    (channel: IChannel, channelIndex: number) => {
-                        if (faderIndex === channel.assignedFader) {
-                            this.mixerConnection[mixerIndex].updateLoMid(
-                                channelIndex,
-                                level
-                            )
-                        }
-                    }
-                )
-            }
-        )
-    }
-    updateMid = (faderIndex: number) => {
-        let level = state.faders[0].fader[faderIndex].mid
-        state.channels[0].chConnection.forEach(
-            (chConnection: IchConnection, mixerIndex: number) => {
-                chConnection.channel.forEach(
-                    (channel: IChannel, channelIndex: number) => {
-                        if (faderIndex === channel.assignedFader) {
-                            this.mixerConnection[mixerIndex].updateMid(
-                                channelIndex,
-                                level
-                            )
-                        }
-                    }
-                )
-            }
-        )
-    }
-    updateHigh = (faderIndex: number) => {
-        let level = state.faders[0].fader[faderIndex].high
-        state.channels[0].chConnection.forEach(
-            (chConnection: IchConnection, mixerIndex: number) => {
-                chConnection.channel.forEach(
-                    (channel: IChannel, channelIndex: number) => {
-                        if (faderIndex === channel.assignedFader) {
-                            this.mixerConnection[mixerIndex].updateHigh(
-                                channelIndex,
-                                level
-                            )
-                        }
-                    }
-                )
-            }
-        )
-    }
-
     updateAuxLevel = (channelIndex: number, auxSendIndex: number) => {
         let channel = state.channels[0].chConnection[0].channel[channelIndex]
         if (channel.auxLevel[auxSendIndex] > -1) {
