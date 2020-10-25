@@ -4,7 +4,10 @@ import { store, state } from '../../reducers/store'
 const net = require('net')
 
 //Utils:
-import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
+import {
+    fxParamsList,
+    IMixerProtocol,
+} from '../../constants/MixerProtocolInterface'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import { socketServer } from '../../expressHandler'
@@ -604,16 +607,7 @@ export class StuderVistaMixerConnection {
     updateDelayTime(channelIndex: number, level: number) {
         return true
     }
-    updateLow(channelIndex: number, level: number) {
-        return true
-    }
-    updateLoMid(channelIndex: number, level: number) {
-        return true
-    }
-    updateMid(channelIndex: number, level: number) {
-        return true
-    }
-    updateHigh(channelIndex: number, level: number) {
+    updateFx(fxParam: fxParamsList, channelIndex: number, level: number) {
         return true
     }
     updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {
