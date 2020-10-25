@@ -9,15 +9,12 @@ import {
     storeShowOptions,
     storeShowMonitorOptions,
 } from '../../server/reducers/settingsActions'
-import { IFader } from '../../server/reducers/fadersReducer'
+import { IFader, IFxParam } from '../../server/reducers/fadersReducer'
 import {
     SOCKET_SET_THRESHOLD,
     SOCKET_SET_RATIO,
     SOCKET_SET_DELAY_TIME,
-    SOCKET_SET_LOW,
-    SOCKET_SET_LO_MID,
-    SOCKET_SET_MID,
-    SOCKET_SET_HIGH,
+    SOCKET_SET_FX,
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_INPUT_GAIN,
     SOCKET_SET_INPUT_SELECTOR,
@@ -25,6 +22,7 @@ import {
 import CcgChannelInputSettings from './CcgChannelSettings'
 import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
+import { fxParamsList } from '../../server/constants/MixerProtocolInterface'
 
 interface IChanStripInjectProps {
     label: string
@@ -107,32 +105,14 @@ class ChanStrip extends React.PureComponent<
         })
     }
 
-    handleLow(event: any) {
-        window.socketIoClient.emit(SOCKET_SET_LOW, {
+    handleFx(fxParam: fxParamsList, event: any) {
+        window.socketIoClient.emit(SOCKET_SET_FX, {
+            fxParam: fxParam,
             channel: this.props.faderIndex,
             level: parseFloat(event),
         })
     }
 
-    handleLoMid(event: any) {
-        window.socketIoClient.emit(SOCKET_SET_LO_MID, {
-            channel: this.props.faderIndex,
-            level: parseFloat(event),
-        })
-    }
-
-    handleMid(event: any) {
-        window.socketIoClient.emit(SOCKET_SET_MID, {
-            channel: this.props.faderIndex,
-            level: parseFloat(event),
-        })
-    }
-    handleHigh(event: any) {
-        window.socketIoClient.emit(SOCKET_SET_HIGH, {
-            channel: this.props.faderIndex,
-            level: parseFloat(event),
-        })
-    }
     handleMonitorLevel(event: any, channelIndex: number) {
         window.socketIoClient.emit(SOCKET_SET_AUX_LEVEL, {
             channel: channelIndex,
@@ -408,16 +388,16 @@ class ChanStrip extends React.PureComponent<
         )
     }
 
-    low() {
+    eqGain(fxParam: fxParamsList) {
         let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer.LOW?.[0].maxLabel ??
+            window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam].params[0].maxLabel ??
             1
         let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer.LOW?.[0].minLabel ??
+            window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam].params[0].minLabel ??
             0
         return (
             <div className="parameter-text">
-                Low
+                { window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam].params[0].label ?? 'ERR' }
                 <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
                 <ReactSlider
                     className="chan-strip-fader"
@@ -427,7 +407,7 @@ class ChanStrip extends React.PureComponent<
                     min={0}
                     max={1}
                     step={0.01}
-                    value={this.props.fader[this.props.faderIndex].low}
+                    value={this.props.fader[this.props.faderIndex].fxParam[fxParam].value}
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
                             {Math.round(
@@ -439,124 +419,7 @@ class ChanStrip extends React.PureComponent<
                         </div>
                     )}
                     onChange={(event: any) => {
-                        this.handleLow(event)
-                    }}
-                />
-                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
-            </div>
-        )
-    }
-
-    loMid() {
-        let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer.LO_MID?.[0]
-                .maxLabel ?? 1
-        let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer.LO_MID?.[0]
-                .minLabel ?? 0
-        return (
-            <div className="parameter-text">
-                Lo-Mid
-                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
-                <ReactSlider
-                    className="chan-strip-fader"
-                    thumbClassName="chan-strip-thumb"
-                    orientation="vertical"
-                    invert
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={this.props.fader[this.props.faderIndex].loMid}
-                    renderThumb={(props: any, state: any) => (
-                        <div {...props}>
-                            {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            )}
-                            dB
-                        </div>
-                    )}
-                    onChange={(event: any) => {
-                        this.handleLoMid(event)
-                    }}
-                />
-                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
-            </div>
-        )
-    }
-
-    mid() {
-        let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer.MID?.[0].maxLabel ??
-            1
-        let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer.MID?.[0].minLabel ??
-            0
-        return (
-            <div className="parameter-text">
-                Hi-Mid
-                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
-                <ReactSlider
-                    className="chan-strip-fader"
-                    thumbClassName="chan-strip-thumb"
-                    orientation="vertical"
-                    invert
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={this.props.fader[this.props.faderIndex].mid}
-                    renderThumb={(props: any, state: any) => (
-                        <div {...props}>
-                            {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            )}
-                            dB
-                        </div>
-                    )}
-                    onChange={(event: any) => {
-                        this.handleMid(event)
-                    }}
-                />
-                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
-            </div>
-        )
-    }
-
-    high() {
-        let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer.HIGH?.[0].maxLabel ??
-            1
-        let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer.HIGH?.[0].minLabel ??
-            0
-        return (
-            <div className="parameter-text">
-                High
-                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
-                <ReactSlider
-                    className="chan-strip-fader"
-                    thumbClassName="chan-strip-thumb"
-                    orientation="vertical"
-                    invert
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={this.props.fader[this.props.faderIndex].high}
-                    renderThumb={(props: any, state: any) => (
-                        <div {...props}>
-                            {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            )}
-                            dB
-                        </div>
-                    )}
-                    onChange={(event: any) => {
-                        this.handleHigh(event)
+                        this.handleFx(fxParam ,event)
                     }}
                 />
                 <div className="parameter-mini-text">{minLabel + ' dB'}</div>
@@ -612,10 +475,10 @@ class ChanStrip extends React.PureComponent<
             const hasDelay =
                 window.mixerProtocol.channelTypes[0].toMixer.DELAY_TIME
             const hasEq =
-                window.mixerProtocol.channelTypes[0].toMixer.LOW ||
-                window.mixerProtocol.channelTypes[0].toMixer.LO_MID ||
-                window.mixerProtocol.channelTypes[0].toMixer.MID ||
-                window.mixerProtocol.channelTypes[0].toMixer.HIGH
+                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqLowGain] ||
+                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqLowMidGain] ||
+                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqMidGain] ||
+                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqHighGain]
             const hasMonitorSends = this.props.channel.find(
                 (ch: any) => ch.auxLevel[this.props.auxSendIndex] >= 0
             )
@@ -668,9 +531,9 @@ class ChanStrip extends React.PureComponent<
                                     <div className="content">
                                         <div className="eq-group">
                                             {window.mixerProtocol
-                                                .channelTypes[0].toMixer.LOW ? (
+                                                .channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqLowGain] ? (
                                                 <React.Fragment>
-                                                    {this.low()}
+                                                    {this.eqGain(fxParamsList.EqLowGain)}
                                                     <p className="zero-eq">
                                                         _______
                                                     </p>
@@ -678,18 +541,18 @@ class ChanStrip extends React.PureComponent<
                                             ) : null}
                                             {window.mixerProtocol
                                                 .channelTypes[0].toMixer
-                                                .LO_MID ? (
+                                                .FX_PARAMS?.[fxParamsList.EqLowMidGain] ? (
                                                 <React.Fragment>
-                                                    {this.loMid()}
+                                                    {this.eqGain(fxParamsList.EqLowMidGain)}
                                                     <p className="zero-eq">
                                                         _______
                                                     </p>
                                                 </React.Fragment>
                                             ) : null}
                                             {window.mixerProtocol
-                                                .channelTypes[0].toMixer.MID ? (
+                                                .channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqMidGain] ? (
                                                 <React.Fragment>
-                                                    {this.mid()}
+                                                    {this.eqGain(fxParamsList.EqMidGain)}
                                                     <p className="zero-eq">
                                                         _______
                                                     </p>
@@ -697,9 +560,9 @@ class ChanStrip extends React.PureComponent<
                                             ) : null}
                                             {window.mixerProtocol
                                                 .channelTypes[0].toMixer
-                                                .HIGH ? (
+                                                .FX_PARAMS?.[fxParamsList.EqHighGain] ? (
                                                 <React.Fragment>
-                                                    {this.high()}
+                                                    {this.eqGain(fxParamsList.EqHighGain)}
                                                     <p className="zero-eq">
                                                         _______
                                                     </p>

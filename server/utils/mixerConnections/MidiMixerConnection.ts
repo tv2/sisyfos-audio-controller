@@ -15,7 +15,10 @@ import { remoteConnections } from '../../mainClasses'
 
 //Utils:
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
-import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
+import {
+    fxParamsList,
+    IMixerProtocol,
+} from '../../constants/MixerProtocolInterface'
 import { storeSetOutputLevel } from '../../reducers/channelActions'
 import { storeFaderLevel, storeTogglePgm } from '../../reducers/faderActions'
 
@@ -251,16 +254,7 @@ export class MidiMixerConnection {
     updateDelayTime(channelIndex: number, level: number) {
         return true
     }
-    updateLow(channelIndex: number, level: number) {
-        return true
-    }
-    updateLoMid(channelIndex: number, level: number) {
-        return true
-    }
-    updateMid(channelIndex: number, level: number) {
-        return true
-    }
-    updateHigh(channelIndex: number, level: number) {
+    updateFx(fxParam: fxParamsList, channelIndex: number, level: number) {
         return true
     }
     updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {

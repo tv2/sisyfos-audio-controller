@@ -11,6 +11,7 @@ import {
     ICasparCGMixerGeometry,
     ICasparCGChannelLayerPair,
     ICasparCGMixerGeometryFile,
+    fxParamsList,
 } from '../../constants/MixerProtocolInterface'
 import { IChannel } from '../../reducers/channelsReducer'
 import { storeSetChPrivate } from '../../reducers/channelActions'
@@ -491,16 +492,7 @@ export class CasparCGConnection {
     updateDelayTime(channelIndex: number, level: number) {
         return true
     }
-    updateLow(channelIndex: number, level: number) {
-        return true
-    }
-    updateLoMid(channelIndex: number, level: number) {
-        return true
-    }
-    updateMid(channelIndex: number, level: number) {
-        return true
-    }
-    updateHigh(channelIndex: number, level: number) {
+    updateFx(fxParam: fxParamsList, channelIndex: number, level: number) {
         return true
     }
     updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {

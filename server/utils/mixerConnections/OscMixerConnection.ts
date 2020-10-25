@@ -8,7 +8,10 @@ import { remoteConnections } from '../../mainClasses'
 import { socketServer } from '../../expressHandler'
 
 //Utils:
-import { IMixerProtocol } from '../../constants/MixerProtocolInterface'
+import {
+    fxParamsList,
+    IMixerProtocol,
+} from '../../constants/MixerProtocolInterface'
 import {
     behringerXrMeter,
     behringerReductionMeter,
@@ -26,10 +29,7 @@ import {
     storeFaderThreshold,
     storeFaderRatio,
     storeFaderDelayTime,
-    storeFaderLow,
-    storeFaderLoMid,
-    storeFaderMid,
-    storeFaderHigh,
+    storeFaderFx,
     storeTogglePgm,
     storeSetMute,
 } from '../../reducers/faderActions'
@@ -420,13 +420,15 @@ export class OscMixerConnection {
                 } else if (
                     this.checkOscCommand(
                         message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer.LOW[0]
-                            .mixerMessage
+                        this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
+                            fxParamsList.EqLowGain
+                        ].params[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
-                        storeFaderLow(
+                        storeFaderFx(
+                            fxParamsList.EqLowGain,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -440,13 +442,15 @@ export class OscMixerConnection {
                 } else if (
                     this.checkOscCommand(
                         message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer.LO_MID[0]
-                            .mixerMessage
+                        this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
+                            fxParamsList.EqLowMidGain
+                        ].params[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
-                        storeFaderLoMid(
+                        storeFaderFx(
+                            fxParamsList.EqLowMidGain,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -460,13 +464,15 @@ export class OscMixerConnection {
                 } else if (
                     this.checkOscCommand(
                         message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer.MID[0]
-                            .mixerMessage
+                        this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
+                            fxParamsList.EqMidGain
+                        ].params[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
-                        storeFaderMid(
+                        storeFaderFx(
+                            fxParamsList.EqMidGain,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -480,13 +486,15 @@ export class OscMixerConnection {
                 } else if (
                     this.checkOscCommand(
                         message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer.HIGH[0]
-                            .mixerMessage
+                        this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
+                            fxParamsList.EqHighGain
+                        ].params[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
-                        storeFaderHigh(
+                        storeFaderFx(
+                            fxParamsList.EqHighGain,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -817,7 +825,7 @@ export class OscMixerConnection {
             'f'
         )
     }
-    updateLow(channelIndex: number, level: number) {
+    updateFx(fxParam: fxParamsList, channelIndex: number, level: number) {
         let channelType =
             state.channels[0].chConnection[this.mixerIndex].channel[
                 channelIndex
@@ -826,50 +834,10 @@ export class OscMixerConnection {
             state.channels[0].chConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let low = this.mixerProtocol.channelTypes[channelType].toMixer.LOW[0]
-        this.sendOutMessage(low.mixerMessage, channelTypeIndex + 1, level, 'f')
-    }
-    updateLoMid(channelIndex: number, level: number) {
-        let channelType =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelType
-        let channelTypeIndex =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelTypeIndex
-        let loMid = this.mixerProtocol.channelTypes[channelType].toMixer
-            .LO_MID[0]
-        this.sendOutMessage(
-            loMid.mixerMessage,
-            channelTypeIndex + 1,
-            level,
-            'f'
-        )
-    }
-    updateMid(channelIndex: number, level: number) {
-        let channelType =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelType
-        let channelTypeIndex =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelTypeIndex
-        let mid = this.mixerProtocol.channelTypes[channelType].toMixer.MID[0]
-        this.sendOutMessage(mid.mixerMessage, channelTypeIndex + 1, level, 'f')
-    }
-    updateHigh(channelIndex: number, level: number) {
-        let channelType =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelType
-        let channelTypeIndex =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelTypeIndex
-        let high = this.mixerProtocol.channelTypes[channelType].toMixer.HIGH[0]
-        this.sendOutMessage(high.mixerMessage, channelTypeIndex + 1, level, 'f')
+        let fx = this.mixerProtocol.channelTypes[channelType].toMixer.FX_PARAMS[
+            fxParam
+        ].params[0]
+        this.sendOutMessage(fx.mixerMessage, channelTypeIndex + 1, level, 'f')
     }
 
     updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {

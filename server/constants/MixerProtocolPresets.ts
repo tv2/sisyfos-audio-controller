@@ -13,11 +13,6 @@ import { SSLSystemT } from './mixerProtocols/SSLsystemT'
 import { StuderOnAirMaster } from './mixerProtocols/StuderOnAirEmber'
 import { StuderVistaMaster } from './mixerProtocols/StuderVistaEmber'
 
-interface IMessageProtocol {
-    mixerMessage: string
-    value: any
-    type: string
-}
 // Interface:
 import { IMixerProtocolGeneric } from './MixerProtocolInterface'
 
