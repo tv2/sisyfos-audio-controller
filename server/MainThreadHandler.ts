@@ -40,16 +40,13 @@ import {
     SOCKET_CLEAR_PST,
     SOCKET_SET_THRESHOLD,
     SOCKET_SET_RATIO,
-    SOCKET_SET_LOW,
-    SOCKET_SET_MID,
-    SOCKET_SET_HIGH,
+    SOCKET_SET_FX,
     SOCKET_RESTART_SERVER,
     SOCKET_SET_FADER_MONITOR,
     SOCKET_TOGGLE_IGNORE,
     SOCKET_SET_FULL_STORE,
     SOCKET_SET_STORE_FADER,
     SOCKET_SET_STORE_CHANNEL,
-    SOCKET_SET_LO_MID,
     SOCKET_SET_INPUT_OPTION,
     SOCKET_SAVE_CCG_FILE,
     SOCKET_SET_DELAY_TIME,
@@ -70,10 +67,7 @@ import {
     storeFaderThreshold,
     storeFaderRatio,
     storeFaderDelayTime,
-    storeFaderLow,
-    storeFaderLoMid,
-    storeFaderMid,
-    storeFaderHigh,
+    storeFaderFx,
     storeFaderMonitor,
     storeTogglePgm,
     storeToggleVo,
@@ -329,38 +323,23 @@ export class MainThreadHandlers {
                 mixerGenericConnection.updateDelayTime(payload.channel)
                 this.updatePartialStore(payload.channel)
             })
-            .on(SOCKET_SET_LOW, (payload: any) => {
-                logger.verbose('Set Low:' + String(payload.channel), {})
-                store.dispatch(storeFaderLow(payload.channel, payload.level))
-                mixerGenericConnection.updateFx(
-                    fxParamsList.EqLowGain,
-                    payload.channel
+            .on(SOCKET_SET_FX, (payload: any) => {
+                logger.verbose(
+                    'Set ' +
+                        fxParamsList[payload.fxParam] +
+                        ': ' +
+                        String(payload.channel),
+                    {}
                 )
-                this.updatePartialStore(payload.channel)
-            })
-            .on(SOCKET_SET_LO_MID, (payload: any) => {
-                logger.verbose('Set LoMid:' + String(payload.level), {})
-                store.dispatch(storeFaderLoMid(payload.channel, payload.level))
-                mixerGenericConnection.updateFx(
-                    fxParamsList.EqLowMidGain,
-                    payload.channel
+                store.dispatch(
+                    storeFaderFx(
+                        payload.fxParam,
+                        payload.channel,
+                        payload.level
+                    )
                 )
-                this.updatePartialStore(payload.channel)
-            })
-            .on(SOCKET_SET_MID, (payload: any) => {
-                logger.verbose('Set Mid:' + String(payload.level), {})
-                store.dispatch(storeFaderMid(payload.channel, payload.level))
                 mixerGenericConnection.updateFx(
-                    fxParamsList.EqLowMidGain,
-                    payload.channel
-                )
-                this.updatePartialStore(payload.channel)
-            })
-            .on(SOCKET_SET_HIGH, (payload: any) => {
-                logger.verbose('Set High:' + String(payload.channel), {})
-                store.dispatch(storeFaderHigh(payload.channel, payload.level))
-                mixerGenericConnection.updateFx(
-                    fxParamsList.EqHighGain,
+                    payload.fxParam,
                     payload.channel
                 )
                 this.updatePartialStore(payload.channel)

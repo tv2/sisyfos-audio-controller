@@ -28,10 +28,7 @@ import {
     SET_FADER_THRESHOLD,
     SET_FADER_RATIO,
     SET_FADER_DELAY_TIME,
-    SET_FADER_LOW,
-    SET_FADER_LO_MID,
-    SET_FADER_MID,
-    SET_FADER_HIGH,
+    SET_FADER_FX,
     SET_FADER_MONITOR,
     SET_SINGLE_FADER_STATE,
     SHOW_IN_MINI_MONITOR,
@@ -218,24 +215,9 @@ export const faders = (
                 action.delayTime
             )
             return nextState
-        case SET_FADER_LOW:
+        case SET_FADER_FX:
             nextState[0].fader[action.channel].fxParam[
-                fxParamsList.EqLowGain
-            ].value = parseFloat(action.level)
-            return nextState
-        case SET_FADER_LO_MID:
-            nextState[0].fader[action.channel].fxParam[
-                fxParamsList.EqLowMidGain
-            ].value = parseFloat(action.level)
-            return nextState
-        case SET_FADER_MID:
-            nextState[0].fader[action.channel].fxParam[
-                fxParamsList.EqMidGain
-            ].value = parseFloat(action.level)
-            return nextState
-        case SET_FADER_HIGH:
-            nextState[0].fader[action.channel].fxParam[
-                fxParamsList.EqHighGain
+                action.fxParam
             ].value = parseFloat(action.level)
             return nextState
         case SET_FADER_MONITOR:

@@ -29,10 +29,7 @@ import {
     storeFaderThreshold,
     storeFaderRatio,
     storeFaderDelayTime,
-    storeFaderLow,
-    storeFaderLoMid,
-    storeFaderMid,
-    storeFaderHigh,
+    storeFaderFx,
     storeTogglePgm,
     storeSetMute,
 } from '../../reducers/faderActions'
@@ -430,7 +427,8 @@ export class OscMixerConnection {
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
-                        storeFaderLow(
+                        storeFaderFx(
+                            fxParamsList.EqLowGain,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -451,7 +449,8 @@ export class OscMixerConnection {
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
-                        storeFaderLoMid(
+                        storeFaderFx(
+                            fxParamsList.EqLowMidGain,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -472,7 +471,8 @@ export class OscMixerConnection {
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
-                        storeFaderMid(
+                        storeFaderFx(
+                            fxParamsList.EqMidGain,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -493,7 +493,8 @@ export class OscMixerConnection {
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
-                        storeFaderHigh(
+                        storeFaderFx(
+                            fxParamsList.EqHighGain,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]

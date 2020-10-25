@@ -1,3 +1,4 @@
+import { fxParamsList } from '../constants/MixerProtocolInterface'
 import { IFader, IFaders } from './fadersReducer'
 
 export const SET_VU_LEVEL = 'SET_VU_LEVEL'
@@ -11,10 +12,7 @@ export const SET_CHANNEL_LABEL = 'SET_CHANNEL_LABEL'
 export const SET_FADER_THRESHOLD = 'SET_FADER_THRESHOLD'
 export const SET_FADER_RATIO = 'SET_FADER_RATIO'
 export const SET_FADER_DELAY_TIME = 'SET_FADER_DELAY_TIME'
-export const SET_FADER_LOW = 'SET_FADER_LOW'
-export const SET_FADER_LO_MID = 'SET_FADER_LO_MID'
-export const SET_FADER_MID = 'SET_FADER_MID'
-export const SET_FADER_HIGH = 'SET_FADER_HIGH'
+export const SET_FADER_FX = 'SET_FADER_FX'
 export const SET_FADER_MONITOR = 'SET_FADER_MONITOR'
 export const TOGGLE_PGM = 'TOGGLE_PGM'
 export const SET_PGM = 'SET_PGM'
@@ -133,33 +131,14 @@ export const storeFaderDelayTime = (channel: number, delayTime: number) => {
     }
 }
 
-export const storeFaderLow = (channel: number, level: number) => {
+export const storeFaderFx = (
+    fxParam: fxParamsList,
+    channel: number,
+    level: number
+) => {
     return {
-        type: SET_FADER_LOW,
-        channel: channel,
-        level: level,
-    }
-}
-
-export const storeFaderLoMid = (channel: number, level: number) => {
-    return {
-        type: SET_FADER_LO_MID,
-        channel: channel,
-        level: level,
-    }
-}
-
-export const storeFaderMid = (channel: number, level: number) => {
-    return {
-        type: SET_FADER_MID,
-        channel: channel,
-        level: level,
-    }
-}
-
-export const storeFaderHigh = (channel: number, level: number) => {
-    return {
-        type: SET_FADER_HIGH,
+        type: SET_FADER_FX,
+        fxParam: fxParam,
         channel: channel,
         level: level,
     }
