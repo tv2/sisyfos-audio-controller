@@ -53,10 +53,6 @@ export const YamahaQLCL: IMixerProtocol = {
                 THRESHOLD: [emptyMixerMessage()],
                 RATIO: [emptyMixerMessage()],
                 DELAY_TIME: [emptyMixerMessage()],
-                LOW: [emptyMixerMessage()],
-                LO_MID: [emptyMixerMessage()],
-                MID: [emptyMixerMessage()],
-                HIGH: [emptyMixerMessage()],
                 AUX_LEVEL: [emptyMixerMessage()],
                 CHANNEL_MUTE_ON: [
                     {
@@ -91,10 +87,6 @@ export const YamahaQLCL: IMixerProtocol = {
                 THRESHOLD: [emptyMixerMessage()],
                 RATIO: [emptyMixerMessage()],
                 DELAY_TIME: [emptyMixerMessage()],
-                LOW: [emptyMixerMessage()],
-                LO_MID: [emptyMixerMessage()],
-                MID: [emptyMixerMessage()],
-                HIGH: [emptyMixerMessage()],
                 AUX_LEVEL: [emptyMixerMessage()],
                 CHANNEL_MUTE_ON: [
                     {

@@ -17,9 +17,12 @@
                     "pstVoOn": false,
                     "pflOn": false,
                     "muteOn": false,
-                    "low": 0.75,
-                    "mid": 0.75,
-                    "high": 0.75,
+                    "fxParam": [
+                        { "key": 0, "value": null },
+                        { "key": 1, "value": null },
+                        { "key": 2, "value": null },
+                        { "key": 3, "value": null }
+                    ],
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 1,

@@ -112,13 +112,15 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
             pflOn: false,
             muteOn: false,
             amixOn: false,
-            fxParam: Object.keys(fxParamsList).map(
-                (key): IFxParam => {
-                    if (!isNaN(Number(key))) {
+            fxParam: Object.keys(fxParamsList)
+                .filter((key) => {
+                    return !isNaN(Number(key))
+                })
+                .map(
+                    (key): IFxParam => {
                         return { key: Number(key), value: NaN }
                     }
-                }
-            ),
+                ),
             threshold: 0.75,
             ratio: 0.75,
             delayTime: 0,

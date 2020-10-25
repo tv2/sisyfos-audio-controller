@@ -43,10 +43,6 @@ export interface IChannelTypes {
         THRESHOLD?: Array<IMixerMessageProtocol>
         RATIO?: Array<IMixerMessageProtocol>
         DELAY_TIME?: Array<IMixerMessageProtocol>
-        LOW?: Array<IMixerMessageProtocol>
-        LO_MID?: Array<IMixerMessageProtocol>
-        MID?: Array<IMixerMessageProtocol>
-        HIGH?: Array<IMixerMessageProtocol>
         FX_PARAMS?: Array<IFxProtocol>
         AUX_LEVEL?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
@@ -64,10 +60,6 @@ export interface IChannelTypes {
         THRESHOLD?: Array<IMixerMessageProtocol>
         RATIO?: Array<IMixerMessageProtocol>
         DELAY_TIME?: Array<IMixerMessageProtocol>
-        LOW?: Array<IMixerMessageProtocol>
-        LO_MID?: Array<IMixerMessageProtocol>
-        MID?: Array<IMixerMessageProtocol>
-        HIGH?: Array<IMixerMessageProtocol>
         FX_PARAMS?: Array<IFxProtocol>
         AUX_LEVEL?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
