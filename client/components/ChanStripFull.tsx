@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactSlider from 'react-slider'
+import Draggable, { DraggableEvent } from 'react-draggable'
 
 import '../assets/css/ChanStripFull.css'
 import { Store } from 'redux'
@@ -41,9 +42,22 @@ interface IChanStripFullProps {
     faderIndex: number
 }
 
+enum EqColors {
+    'yellow',
+    'green',
+    'blue',
+    'red',
+}
+
 class ChanStripFull extends React.PureComponent<
     IChanStripFullProps & IChanStripFullInjectProps & Store
 > {
+    state = {
+        dragStartX: 0,
+        dragStartY: 0,
+        dragCurrentX: 0,
+        dragCurrentY: 0,
+    }
     constructor(props: any) {
         super(props)
     }
@@ -110,11 +124,11 @@ class ChanStripFull extends React.PureComponent<
         })
     }
 
-    handleFx(fxParam: fxParamsList, event: any) {
+    handleFx(fxParam: fxParamsList, level: any) {
         window.socketIoClient.emit(SOCKET_SET_FX, {
             fxParam: fxParam,
             channel: this.props.faderIndex,
-            level: parseFloat(event),
+            level: parseFloat(level),
         })
     }
 
@@ -126,6 +140,85 @@ class ChanStripFull extends React.PureComponent<
         })
     }
 
+
+    handleDragCaptureEq(key: number, event: MouseEvent) {
+        console.log('Realtime capture Gain :', String(fxParamsList[key]), 'X :',event.clientX, '  Y :',event.clientY)
+        let eqFreqKey:  keyof typeof fxParamsList = String(fxParamsList[key]).replace('EqGain','EqFreq') as keyof typeof fxParamsList
+
+        this.handleFx(fxParamsList[eqFreqKey], Math.round(100*(event.clientX-360) / 1500)/100)
+        this.handleFx(key, Math.round(100*(880 - event.clientY) / 440)/100)
+    }
+    eq() {
+        return (
+            <div className="eq-full">
+                <div className="title">EQUALIZER</div>
+                <div className="eq-window">
+                    {window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.filter(
+                        (param) => {
+                            return (
+                                fxParamsList[param.key].includes('Eq') &&
+                                fxParamsList[param.key].includes('Gain')
+                            )
+                        }
+                    ).map((param: IFxProtocol) => {
+                        let eqFreqKey:  keyof typeof fxParamsList = String(fxParamsList[param.key]).replace('EqGain','EqFreq') as keyof typeof fxParamsList
+                        return (
+                            <Draggable
+                                position={{ x: this.props.fader[this.props.faderIndex]
+                                    .fxParam[fxParamsList[eqFreqKey]].value*1500, y: 330-this.props.fader[this.props.faderIndex]
+                                    .fxParam[param.key].value*330 }}
+                                grid={[5, 5]}
+                                scale={1}
+                                onDrag={(event) =>
+                                    this.handleDragCaptureEq(
+                                        param.key,
+                                        event as MouseEvent
+                                    )
+                                }
+                            >
+                                <div
+                                    className="dot"
+                                    style={{
+                                        color: String(EqColors[param.key]),
+                                    }}
+                                >
+                                    O
+                                </div>
+                            </Draggable>
+                        )
+                    })}
+                </div>
+                <div className="eq-text">
+                    {window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.filter(
+                        (param) => {
+                            return (
+                                fxParamsList[param.key].includes('Eq') &&
+                                fxParamsList[param.key].includes('Gain')
+                            )
+                        }
+                    ).map((param: IFxProtocol) => {
+                        let eqFreqKey:  keyof typeof fxParamsList = String(fxParamsList[param.key]).replace('EqGain','EqFreq') as keyof typeof fxParamsList
+                        return (
+                            <div style={{color: EqColors[param.key] }}>
+                                {param.params[0].label}
+                                {'  Gain : '}
+                                {
+                                    this.props.fader[this.props.faderIndex]
+                                        .fxParam[param.key].value
+                                }
+                                {'  Freq :'}
+
+                                {
+                                    this.props.fader[this.props.faderIndex]
+                                        .fxParam[fxParamsList[eqFreqKey]].value
+                                }
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        )
+    }
     inputSelectorButton(index: number) {
         const isActive =
             this.props.fader[this.props.faderIndex].inputSelector === index + 1
@@ -474,45 +567,6 @@ class ChanStripFull extends React.PureComponent<
         )
     }
 
-    eq() {
-        return (
-            <React.Fragment>
-                <hr />
-                <div className="horizontal">
-                    <div className="item">
-                        <div className="title">EQUALIZER</div>
-                        <div className="content">
-                            <div className="eq-group">
-                                {window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.filter(
-                                    (param) => {
-                                        return fxParamsList[param.key].includes('Eq') && fxParamsList[param.key].includes('Gain')
-                                    }
-                                ).map((param: IFxProtocol) => {
-                                    return (
-                                        <React.Fragment>
-                                            <div className="dot" draggable={true}>O</div>
-                                        </React.Fragment>
-                                    )
-                                })}
-                                {window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.filter(
-                                    (param) => {
-                                        return fxParamsList[param.key].includes('Eq') && fxParamsList[param.key].includes('Gain')
-                                    }
-                                ).map((param: IFxProtocol) => {
-                                    return (
-                                        <React.Fragment>
-                                            {this.fxFader(param.key)}
-                                            <p className="zero-eq">_______</p>
-                                        </React.Fragment>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </React.Fragment>
-        )
-    }
     parameters() {
         if (this.props.offtubeMode) {
             const hasInput =
@@ -610,8 +664,10 @@ class ChanStripFull extends React.PureComponent<
                             </React.Fragment>
                         )}
                     </div>
-
-                    {hasEq && this.eq()}
+                    <React.Fragment>
+                        <hr />
+                        <div className="horizontal">{hasEq && this.eq()}</div>
+                    </React.Fragment>
                 </div>
             )
         } else {
