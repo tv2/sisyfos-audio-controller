@@ -7,9 +7,9 @@ import { connect } from 'react-redux'
 import {
     storeShowChanStrip,
     storeShowOptions,
-    storeShowMonitorOptions,
+    storeShowMonitorOptions, storeShowChanStripFull
 } from '../../server/reducers/settingsActions'
-import { IFader, IFxParam } from '../../server/reducers/fadersReducer'
+import { IFader } from '../../server/reducers/fadersReducer'
 import {
     SOCKET_SET_THRESHOLD,
     SOCKET_SET_RATIO,
@@ -62,7 +62,9 @@ class ChanStrip extends React.PureComponent<
         this.props.dispatch(storeShowMonitorOptions(this.props.faderIndex))
         this.props.dispatch(storeShowChanStrip(-1))
     }
-
+    handleShowChStripFull() {
+        this.props.dispatch(storeShowChanStripFull(this.props.faderIndex))
+    }
     handleClose = () => {
         this.props.dispatch(storeShowChanStrip(-1))
     }
@@ -638,6 +640,12 @@ class ChanStrip extends React.PureComponent<
                                 Mon.Setup
                             </button>
                         )}
+                         <button
+                                className="button half"
+                                onClick={() => this.handleShowChStripFull()}
+                            >
+                                FULL
+                            </button>
                     </div>
                     <hr />
                     {this.props.selectedProtocol.includes('caspar') ? (

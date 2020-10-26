@@ -13,6 +13,7 @@ import {
     SET_PAGE,
     TOGGLE_SHOW_PAGES_SETUP,
     SET_PAGES_LIST,
+    TOGGLE_SHOW_CHAN_STRIP_FULL,
 } from '../reducers/settingsActions'
 
 export enum PageType {
@@ -26,6 +27,7 @@ export interface ISettings {
     showSettings: boolean
     showPagesSetup: boolean
     showChanStrip: number
+    showChanStripFull: number
     showOptions: number | false
     showMonitorOptions: number
     showStorage: boolean
@@ -86,6 +88,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         showSettings: false,
         showPagesSetup: false,
         showChanStrip: -1,
+        showChanStripFull: -1,
         showOptions: false,
         showMonitorOptions: -1,
         showStorage: false,
@@ -145,6 +148,13 @@ export const settings = (
                 nextState[0].showChanStrip = action.channel
             } else {
                 nextState[0].showChanStrip = -1
+            }
+            return nextState
+        case TOGGLE_SHOW_CHAN_STRIP_FULL:
+            if (nextState[0].showChanStripFull !== action.channel) {
+                nextState[0].showChanStripFull = action.channel
+            } else {
+                nextState[0].showChanStripFull = -1
             }
             return nextState
         case TOGGLE_SHOW_MONITOR_OPTIONS:

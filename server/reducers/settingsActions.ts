@@ -3,6 +3,7 @@ import { ICustomPages, PageType } from './settingsReducer'
 export const TOGGLE_SHOW_SETTINGS = 'TOGGLE_SHOW_SETTINGS'
 export const TOGGLE_SHOW_PAGES_SETUP = 'TOGGLE_SHOW_PAGES_SETUP'
 export const TOGGLE_SHOW_CHAN_STRIP = 'TOGGLE_SHOW_CHAN_STRIP'
+export const TOGGLE_SHOW_CHAN_STRIP_FULL = 'TOGGLE_SHOW_CHAN_STRIP_FULL'
 export const TOGGLE_SHOW_OPTION = 'TOGGLE_SHOW_OPTION'
 export const TOGGLE_SHOW_MONITOR_OPTIONS = 'TOGGLE_SHOW_MONITOR_OPTIONS'
 export const TOGGLE_SHOW_STORAGE = 'TOGGLE_SHOW_STORAGE'
@@ -26,6 +27,12 @@ export const storeShowPagesSetup = () => {
 export const storeShowChanStrip = (faderIndex: number) => {
     return {
         type: TOGGLE_SHOW_CHAN_STRIP,
+        channel: faderIndex,
+    }
+}
+export const storeShowChanStripFull = (faderIndex: number) => {
+    return {
+        type: TOGGLE_SHOW_CHAN_STRIP_FULL,
         channel: faderIndex,
     }
 }

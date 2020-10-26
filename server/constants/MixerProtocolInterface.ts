@@ -1,3 +1,17 @@
+export enum fxParamsList {
+    EqLowGain,
+    EqLowMidGain,
+    EqMidGain,
+    EqHighGain,
+    EqLowFreq,
+    EqLowMidFreq,
+    EqMidFreq,
+    EqHighFreq,
+    EqLowQ,
+    EqLowMidQ,
+    EqMidQ,
+    EqHighQ,
+}
 export interface IMixerProtocolGeneric {
     protocol: string
     fxList?: {}
@@ -84,13 +98,6 @@ interface IMixerMessageProtocol {
 interface IFxProtocol {
     key: fxParamsList
     params: Array<IMixerMessageProtocol>
-}
-
-export enum fxParamsList {
-    EqLowGain,
-    EqLowMidGain,
-    EqMidGain,
-    EqHighGain,
 }
 
 export const emptyMixerMessage = (): IMixerMessageProtocol => {
