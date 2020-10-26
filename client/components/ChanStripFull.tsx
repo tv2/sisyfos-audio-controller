@@ -473,6 +473,35 @@ class ChanStripFull extends React.PureComponent<
             </li>
         )
     }
+
+    eq() {
+        return (
+            <React.Fragment>
+                <hr />
+                <div className="horizontal">
+                    <div className="item">
+                        <div className="title">EQUALIZER</div>
+                        <div className="content">
+                            <div className="eq-group">
+                                {window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.filter(
+                                    (param) => {
+                                        return fxParamsList[param.key].includes('Eq')
+                                    }
+                                ).map((param: IFxProtocol) => {
+                                    return (
+                                        <React.Fragment>
+                                            {this.fxFader(param.key)}
+                                            <p className="zero-eq">_______</p>
+                                        </React.Fragment>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </React.Fragment>
+        )
+    }
     parameters() {
         if (this.props.offtubeMode) {
             const hasInput =
@@ -571,34 +600,7 @@ class ChanStripFull extends React.PureComponent<
                         )}
                     </div>
 
-                    {hasEq && (
-                        <React.Fragment>
-                            <hr />
-                            <div className="horizontal">
-                                <div className="item">
-                                    <div className="title">EQUALIZER</div>
-                                    <div className="content">
-                                        <div className="eq-group">
-                                            {window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.map(
-                                                (param: IFxProtocol) => {
-                                                    return (
-                                                        <React.Fragment>
-                                                            {this.fxFader(
-                                                                param.key
-                                                            )}
-                                                            <p className="zero-eq">
-                                                                _______
-                                                            </p>
-                                                        </React.Fragment>
-                                                    )
-                                                }
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </React.Fragment>
-                    )}
+                    {hasEq && this.eq()}
                 </div>
             )
         } else {
