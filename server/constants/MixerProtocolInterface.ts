@@ -95,7 +95,7 @@ interface IMixerMessageProtocol {
     zeroLabel?: number
 }
 
-interface IFxProtocol {
+export interface IFxProtocol {
     key: fxParamsList
     params: Array<IMixerMessageProtocol>
 }

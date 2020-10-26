@@ -150,9 +150,9 @@ export const MidasMaster: IMixerProtocol = {
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/f',
-                                minLabel: -15,
-                                maxLabel: 15,
-                                label: 'Low',
+                                minLabel: 20,
+                                maxLabel: 20000,
+                                label: 'Low Freq',
                             },
                         ],
                     },
@@ -161,9 +161,9 @@ export const MidasMaster: IMixerProtocol = {
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/f',
-                                minLabel: -15,
-                                maxLabel: 15,
-                                label: 'LoMid',
+                                minLabel: 20,
+                                maxLabel: 20000,
+                                label: 'LoMid freq',
                             },
                         ],
                     },
@@ -172,9 +172,9 @@ export const MidasMaster: IMixerProtocol = {
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/f',
-                                minLabel: -15,
-                                maxLabel: 15,
-                                label: 'HiMid',
+                                minLabel: 20,
+                                maxLabel: 20000,
+                                label: 'HiMid freq',
                             },
                         ],
                     },
@@ -183,9 +183,9 @@ export const MidasMaster: IMixerProtocol = {
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/f',
-                                minLabel: -15,
-                                maxLabel: 15,
-                                label: 'High',
+                                minLabel: 20,
+                                maxLabel: 20000,
+                                label: 'High freq',
                             },
                         ],
                     },
@@ -194,8 +194,8 @@ export const MidasMaster: IMixerProtocol = {
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/q',
-                                minLabel: -15,
-                                maxLabel: 15,
+                                minLabel: 0.3,
+                                maxLabel: 10,
                                 label: 'Low Q',
                             },
                         ],
@@ -205,8 +205,8 @@ export const MidasMaster: IMixerProtocol = {
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/q',
-                                minLabel: -15,
-                                maxLabel: 15,
+                                minLabel: 0.3,
+                                maxLabel: 10,
                                 label: 'LoMid Q',
                             },
                         ],
@@ -216,8 +216,8 @@ export const MidasMaster: IMixerProtocol = {
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/q',
-                                minLabel: -15,
-                                maxLabel: 15,
+                                minLabel: 0.3,
+                                maxLabel: 10,
                                 label: 'HiMid Q',
                             },
                         ],
@@ -227,8 +227,8 @@ export const MidasMaster: IMixerProtocol = {
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/q',
-                                minLabel: -15,
-                                maxLabel: 15,
+                                minLabel: 0.3,
+                                maxLabel: 10,
                                 label: 'High Q',
                             },
                         ],

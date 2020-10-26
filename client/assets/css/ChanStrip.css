@@ -1,7 +1,7 @@
 .chan-strip-body {
     position: relative;
     top: 5px;
-    min-width: 320px;
+    width: 500px;
     height: 940px;
     background-color: rgb(31, 31, 31);
     border-color: rgb(70, 70, 70);

@@ -22,7 +22,7 @@ import {
 import CcgChannelInputSettings from './CcgChannelSettings'
 import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
-import { fxParamsList } from '../../server/constants/MixerProtocolInterface'
+import { fxParamsList, IFxProtocol } from '../../server/constants/MixerProtocolInterface'
 
 interface IChanStripFullInjectProps {
     label: string
@@ -389,7 +389,7 @@ class ChanStripFull extends React.PureComponent<
         )
     }
 
-    eqGain(fxParam: fxParamsList) {
+    fxFader(fxParam: fxParamsList) {
         let maxLabel: number =
             window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam]
                 .params[0].maxLabel ?? 1
@@ -546,60 +546,18 @@ class ChanStripFull extends React.PureComponent<
                                         <div className="eq-group">
                                             {window.mixerProtocol
                                                 .channelTypes[0].toMixer
-                                                .FX_PARAMS?.[
-                                                fxParamsList.EqLowGain
-                                            ] ? (
-                                                <React.Fragment>
-                                                    {this.eqGain(
-                                                        fxParamsList.EqLowGain
+                                                .FX_PARAMS?.map((param: IFxProtocol) => {
+
+                                                return (<React.Fragment>
+                                                    {this.fxFader(
+                                                        param.key
                                                     )}
                                                     <p className="zero-eq">
                                                         _______
                                                     </p>
-                                                </React.Fragment>
-                                            ) : null}
-                                            {window.mixerProtocol
-                                                .channelTypes[0].toMixer
-                                                .FX_PARAMS?.[
-                                                fxParamsList.EqLowMidGain
-                                            ] ? (
-                                                <React.Fragment>
-                                                    {this.eqGain(
-                                                        fxParamsList.EqLowMidGain
-                                                    )}
-                                                    <p className="zero-eq">
-                                                        _______
-                                                    </p>
-                                                </React.Fragment>
-                                            ) : null}
-                                            {window.mixerProtocol
-                                                .channelTypes[0].toMixer
-                                                .FX_PARAMS?.[
-                                                fxParamsList.EqMidGain
-                                            ] ? (
-                                                <React.Fragment>
-                                                    {this.eqGain(
-                                                        fxParamsList.EqMidGain
-                                                    )}
-                                                    <p className="zero-eq">
-                                                        _______
-                                                    </p>
-                                                </React.Fragment>
-                                            ) : null}
-                                            {window.mixerProtocol
-                                                .channelTypes[0].toMixer
-                                                .FX_PARAMS?.[
-                                                fxParamsList.EqHighGain
-                                            ] ? (
-                                                <React.Fragment>
-                                                    {this.eqGain(
-                                                        fxParamsList.EqHighGain
-                                                    )}
-                                                    <p className="zero-eq">
-                                                        _______
-                                                    </p>
-                                                </React.Fragment>
-                                            ) : null}
+                                                </React.Fragment>)
+                                            })
+                                        }
                                         </div>
                                     </div>
                                 </div>
