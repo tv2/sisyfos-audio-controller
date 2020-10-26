@@ -477,10 +477,10 @@ class ChanStrip extends React.PureComponent<
             const hasDelay =
                 window.mixerProtocol.channelTypes[0].toMixer.DELAY_TIME
             const hasEq =
-                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqLowGain] ||
-                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqLowMidGain] ||
-                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqMidGain] ||
-                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqHighGain]
+                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqGain01] ||
+                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqGain02] ||
+                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqGain03] ||
+                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqGain04]
             const hasMonitorSends = this.props.channel.find(
                 (ch: any) => ch.auxLevel[this.props.auxSendIndex] >= 0
             )
@@ -533,9 +533,9 @@ class ChanStrip extends React.PureComponent<
                                     <div className="content">
                                         <div className="eq-group">
                                             {window.mixerProtocol
-                                                .channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqLowGain] ? (
+                                                .channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqGain01] ? (
                                                 <React.Fragment>
-                                                    {this.eqGain(fxParamsList.EqLowGain)}
+                                                    {this.eqGain(fxParamsList.EqGain01)}
                                                     <p className="zero-eq">
                                                         _______
                                                     </p>
@@ -543,18 +543,18 @@ class ChanStrip extends React.PureComponent<
                                             ) : null}
                                             {window.mixerProtocol
                                                 .channelTypes[0].toMixer
-                                                .FX_PARAMS?.[fxParamsList.EqLowMidGain] ? (
+                                                .FX_PARAMS?.[fxParamsList.EqGain02] ? (
                                                 <React.Fragment>
-                                                    {this.eqGain(fxParamsList.EqLowMidGain)}
+                                                    {this.eqGain(fxParamsList.EqGain02)}
                                                     <p className="zero-eq">
                                                         _______
                                                     </p>
                                                 </React.Fragment>
                                             ) : null}
                                             {window.mixerProtocol
-                                                .channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqMidGain] ? (
+                                                .channelTypes[0].toMixer.FX_PARAMS?.[fxParamsList.EqGain03] ? (
                                                 <React.Fragment>
-                                                    {this.eqGain(fxParamsList.EqMidGain)}
+                                                    {this.eqGain(fxParamsList.EqGain03)}
                                                     <p className="zero-eq">
                                                         _______
                                                     </p>
@@ -562,9 +562,9 @@ class ChanStrip extends React.PureComponent<
                                             ) : null}
                                             {window.mixerProtocol
                                                 .channelTypes[0].toMixer
-                                                .FX_PARAMS?.[fxParamsList.EqHighGain] ? (
+                                                .FX_PARAMS?.[fxParamsList.EqGain04] ? (
                                                 <React.Fragment>
-                                                    {this.eqGain(fxParamsList.EqHighGain)}
+                                                    {this.eqGain(fxParamsList.EqGain04)}
                                                     <p className="zero-eq">
                                                         _______
                                                     </p>

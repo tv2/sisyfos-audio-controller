@@ -485,7 +485,18 @@ class ChanStripFull extends React.PureComponent<
                             <div className="eq-group">
                                 {window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.filter(
                                     (param) => {
-                                        return fxParamsList[param.key].includes('Eq')
+                                        return fxParamsList[param.key].includes('Eq') && fxParamsList[param.key].includes('Gain')
+                                    }
+                                ).map((param: IFxProtocol) => {
+                                    return (
+                                        <React.Fragment>
+                                            <div className="dot" draggable={true}>O</div>
+                                        </React.Fragment>
+                                    )
+                                })}
+                                {window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.filter(
+                                    (param) => {
+                                        return fxParamsList[param.key].includes('Eq') && fxParamsList[param.key].includes('Gain')
                                     }
                                 ).map((param: IFxProtocol) => {
                                     return (
@@ -516,16 +527,16 @@ class ChanStripFull extends React.PureComponent<
                 window.mixerProtocol.channelTypes[0].toMixer.DELAY_TIME
             const hasEq =
                 window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[
-                    fxParamsList.EqLowGain
+                    fxParamsList.EqGain01
                 ] ||
                 window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[
-                    fxParamsList.EqLowMidGain
+                    fxParamsList.EqGain02
                 ] ||
                 window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[
-                    fxParamsList.EqMidGain
+                    fxParamsList.EqGain03
                 ] ||
                 window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[
-                    fxParamsList.EqHighGain
+                    fxParamsList.EqGain04
                 ]
             const hasMonitorSends = this.props.channel.find(
                 (ch: any) => ch.auxLevel[this.props.auxSendIndex] >= 0

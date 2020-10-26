@@ -421,14 +421,14 @@ export class OscMixerConnection {
                     this.checkOscCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
-                            fxParamsList.EqLowGain
+                            fxParamsList.EqGain01
                         ].params[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
                         storeFaderFx(
-                            fxParamsList.EqLowGain,
+                            fxParamsList.EqGain01,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -443,14 +443,14 @@ export class OscMixerConnection {
                     this.checkOscCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
-                            fxParamsList.EqLowMidGain
+                            fxParamsList.EqGain02
                         ].params[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
                         storeFaderFx(
-                            fxParamsList.EqLowMidGain,
+                            fxParamsList.EqGain02,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -465,14 +465,14 @@ export class OscMixerConnection {
                     this.checkOscCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
-                            fxParamsList.EqMidGain
+                            fxParamsList.EqGain03
                         ].params[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
                         storeFaderFx(
-                            fxParamsList.EqMidGain,
+                            fxParamsList.EqGain03,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]
@@ -487,14 +487,14 @@ export class OscMixerConnection {
                     this.checkOscCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
-                            fxParamsList.EqHighGain
+                            fxParamsList.EqGain04
                         ].params[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
                         storeFaderFx(
-                            fxParamsList.EqHighGain,
+                            fxParamsList.EqGain04,
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader,
                             message.args[0]

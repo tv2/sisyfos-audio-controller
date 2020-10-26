@@ -106,7 +106,7 @@ export const BehringerXrMaster: IMixerProtocol = {
                 ],
                 FX_PARAMS: [
                     {
-                        key: fxParamsList.EqLowGain,
+                        key: fxParamsList.EqGain01,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/g',
@@ -116,7 +116,7 @@ export const BehringerXrMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowMidGain,
+                        key: fxParamsList.EqGain02,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/g',
@@ -126,7 +126,7 @@ export const BehringerXrMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqMidGain,
+                        key: fxParamsList.EqGain03,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/g',
@@ -136,7 +136,7 @@ export const BehringerXrMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqHighGain,
+                        key: fxParamsList.EqGain04,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/g',
@@ -190,7 +190,7 @@ export const BehringerXrMaster: IMixerProtocol = {
                 ],
                 FX_PARAMS: [
                     {
-                        key: fxParamsList.EqLowGain,
+                        key: fxParamsList.EqGain01,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/g',
@@ -200,7 +200,7 @@ export const BehringerXrMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowMidGain,
+                        key: fxParamsList.EqGain02,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/g',
@@ -210,7 +210,7 @@ export const BehringerXrMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqMidGain,
+                        key: fxParamsList.EqGain03,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/g',
@@ -220,7 +220,7 @@ export const BehringerXrMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqHighGain,
+                        key: fxParamsList.EqGain04,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/g',

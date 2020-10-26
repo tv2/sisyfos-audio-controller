@@ -255,3 +255,8 @@
         #3a3a3a 100%
     );
 }
+
+.eq-group > .dot {
+    font-size: 40px;
+    height: 40px;
+}

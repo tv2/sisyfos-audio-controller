@@ -102,7 +102,7 @@ export const MidasMaster: IMixerProtocol = {
                 ],
                 FX_PARAMS: [
                     {
-                        key: fxParamsList.EqLowGain,
+                        key: fxParamsList.EqGain01,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/g',
@@ -113,7 +113,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowMidGain,
+                        key: fxParamsList.EqGain02,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/g',
@@ -124,7 +124,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqMidGain,
+                        key: fxParamsList.EqGain03,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/g',
@@ -135,7 +135,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqHighGain,
+                        key: fxParamsList.EqGain04,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/g',
@@ -146,7 +146,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowFreq,
+                        key: fxParamsList.EqFreq01,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/f',
@@ -157,7 +157,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowMidFreq,
+                        key: fxParamsList.EqFreq02,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/f',
@@ -168,7 +168,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqMidFreq,
+                        key: fxParamsList.EqFreq03,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/f',
@@ -179,7 +179,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqHighFreq,
+                        key: fxParamsList.EqFreq04,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/f',
@@ -190,7 +190,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowQ,
+                        key: fxParamsList.EqQ01,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/q',
@@ -201,7 +201,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowMidQ,
+                        key: fxParamsList.EqQ02,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/q',
@@ -212,7 +212,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqMidQ,
+                        key: fxParamsList.EqQ03,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/q',
@@ -223,7 +223,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqHighQ,
+                        key: fxParamsList.EqQ04,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/q',
@@ -274,7 +274,7 @@ export const MidasMaster: IMixerProtocol = {
                 ],
                 FX_PARAMS: [
                     {
-                        key: fxParamsList.EqLowGain,
+                        key: fxParamsList.EqGain01,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/g',
@@ -282,7 +282,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowMidGain,
+                        key: fxParamsList.EqGain02,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/g',
@@ -290,7 +290,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqMidGain,
+                        key: fxParamsList.EqGain03,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/g',
@@ -298,7 +298,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqHighGain,
+                        key: fxParamsList.EqGain04,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/g',
@@ -306,7 +306,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowFreq,
+                        key: fxParamsList.EqFreq01,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/f',
@@ -314,7 +314,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowMidFreq,
+                        key: fxParamsList.EqFreq02,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/f',
@@ -322,7 +322,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqMidFreq,
+                        key: fxParamsList.EqFreq03,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/f',
@@ -330,7 +330,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqHighFreq,
+                        key: fxParamsList.EqFreq04,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/f',
@@ -338,7 +338,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowQ,
+                        key: fxParamsList.EqQ01,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/1/q',
@@ -346,7 +346,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqLowMidQ,
+                        key: fxParamsList.EqQ02,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/2/q',
@@ -354,7 +354,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqMidQ,
+                        key: fxParamsList.EqQ03,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/3/q',
@@ -362,7 +362,7 @@ export const MidasMaster: IMixerProtocol = {
                         ],
                     },
                     {
-                        key: fxParamsList.EqHighQ,
+                        key: fxParamsList.EqQ04,
                         params: [
                             {
                                 mixerMessage: '/ch/{channel}/eq/4/q',

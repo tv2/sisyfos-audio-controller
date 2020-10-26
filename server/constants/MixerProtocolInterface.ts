@@ -1,16 +1,16 @@
 export enum fxParamsList {
-    EqLowGain,
-    EqLowMidGain,
-    EqMidGain,
-    EqHighGain,
-    EqLowFreq,
-    EqLowMidFreq,
-    EqMidFreq,
-    EqHighFreq,
-    EqLowQ,
-    EqLowMidQ,
-    EqMidQ,
-    EqHighQ,
+    EqGain01,
+    EqGain02,
+    EqGain03,
+    EqGain04,
+    EqFreq01,
+    EqFreq02,
+    EqFreq03,
+    EqFreq04,
+    EqQ01,
+    EqQ02,
+    EqQ03,
+    EqQ04,
 }
 export interface IMixerProtocolGeneric {
     protocol: string
