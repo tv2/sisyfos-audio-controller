@@ -22,7 +22,10 @@ import {
 import CcgChannelInputSettings from './CcgChannelSettings'
 import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
-import { fxParamsList, IFxProtocol } from '../../server/constants/MixerProtocolInterface'
+import {
+    fxParamsList,
+    IFxProtocol,
+} from '../../server/constants/MixerProtocolInterface'
 
 interface IChanStripFullInjectProps {
     label: string
@@ -398,10 +401,12 @@ class ChanStripFull extends React.PureComponent<
                 .params[0].minLabel ?? 0
         return (
             <div className="parameter-text">
-                {window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[
-                    fxParam
-                ].params[0].label ?? 'ERR'}
-                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
+                {
+                    window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[
+                        fxParam
+                    ].params[0].label
+                }
+                <div className="parameter-mini-text">{maxLabel}</div>
                 <ReactSlider
                     className="chan-strip-fader"
                     thumbClassName="chan-strip-thumb"
@@ -428,7 +433,7 @@ class ChanStripFull extends React.PureComponent<
                         this.handleFx(fxParam, event)
                     }}
                 />
-                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
+                <div className="parameter-mini-text">{minLabel}</div>
             </div>
         )
     }
@@ -534,6 +539,36 @@ class ChanStripFull extends React.PureComponent<
                                 </div>
                             </React.Fragment>
                         )}
+                        {hasMonitorSends && (
+                            <React.Fragment>
+                                <div className="item">
+                                    <div className="title">
+                                        {this.props.label ||
+                                            'FADER ' +
+                                                (this.props.faderIndex + 1)}
+                                        {' - MONITOR MIX MINUS'}
+                                    </div>
+                                    <div className="content">
+                                        <ul className="monitor-sends">
+                                            {this.props.channel.map(
+                                                (ch: any, index: number) => {
+                                                    if (
+                                                        ch.auxLevel[
+                                                            this.props
+                                                                .auxSendIndex
+                                                        ] >= 0
+                                                    ) {
+                                                        return this.monitor(
+                                                            index
+                                                        )
+                                                    }
+                                                }
+                                            )}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        )}
                     </div>
 
                     {hasEq && (
@@ -544,48 +579,24 @@ class ChanStripFull extends React.PureComponent<
                                     <div className="title">EQUALIZER</div>
                                     <div className="content">
                                         <div className="eq-group">
-                                            {window.mixerProtocol
-                                                .channelTypes[0].toMixer
-                                                .FX_PARAMS?.map((param: IFxProtocol) => {
-
-                                                return (<React.Fragment>
-                                                    {this.fxFader(
-                                                        param.key
-                                                    )}
-                                                    <p className="zero-eq">
-                                                        _______
-                                                    </p>
-                                                </React.Fragment>)
-                                            })
-                                        }
+                                            {window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.map(
+                                                (param: IFxProtocol) => {
+                                                    return (
+                                                        <React.Fragment>
+                                                            {this.fxFader(
+                                                                param.key
+                                                            )}
+                                                            <p className="zero-eq">
+                                                                _______
+                                                            </p>
+                                                        </React.Fragment>
+                                                    )
+                                                }
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </React.Fragment>
-                    )}
-
-                    {hasMonitorSends && (
-                        <React.Fragment>
-                            <hr />
-                            <div className="group-text">
-                                {this.props.label ||
-                                    'FADER ' + (this.props.faderIndex + 1)}
-                                {' - MONITOR MIX MINUS'}
-                            </div>
-                            <ul className="monitor-sends">
-                                {this.props.channel.map(
-                                    (ch: any, index: number) => {
-                                        if (
-                                            ch.auxLevel[
-                                                this.props.auxSendIndex
-                                            ] >= 0
-                                        ) {
-                                            return this.monitor(index)
-                                        }
-                                    }
-                                )}
-                            </ul>
                         </React.Fragment>
                     )}
                 </div>

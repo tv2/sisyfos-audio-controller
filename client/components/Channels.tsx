@@ -226,11 +226,9 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     </div>
                 )}
                 {this.props.settings.showChanStripFull >= 0 ? (
-                    <div>
                         <ChanStripFull
                             faderIndex={this.props.settings.showChanStripFull}
                         />
-                    </div>
                 ) : (
                     <div></div>
                 )}
