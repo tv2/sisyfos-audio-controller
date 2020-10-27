@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactSlider from 'react-slider'
-import Draggable, { DraggableEvent } from 'react-draggable'
+import Draggable from 'react-draggable'
 
 import '../assets/css/ChanStripFull.css'
 import { Store } from 'redux'
@@ -10,7 +10,7 @@ import {
     storeShowMonitorOptions,
     storeShowChanStripFull,
 } from '../../server/reducers/settingsActions'
-import { IFader } from '../../server/reducers/fadersReducer'
+import { IFader, IFxParam } from '../../server/reducers/fadersReducer'
 import {
     SOCKET_SET_THRESHOLD,
     SOCKET_SET_RATIO,
@@ -27,13 +27,15 @@ import {
     fxParamsList,
     IFxProtocol,
 } from '../../server/constants/MixerProtocolInterface'
+import { IChannel } from '../../server/reducers/channelsReducer'
 
 interface IChanStripFullInjectProps {
     label: string
     selectedProtocol: string
     numberOfChannelsInType: Array<number>
-    channel: Array<any>
-    fader: Array<IFader>
+    channel: IChannel[]
+    fader: IFader[]
+    fxParam: IFxParam[]
     auxSendIndex: number
     offtubeMode: boolean
 }
@@ -48,6 +50,15 @@ enum EqColors {
     'blue',
     'red',
 }
+
+// Constant for calculation Eq dot positions:
+const MIN_HZ = 20
+const MAX_HZ = 20000
+const EQ_X_SIZE = 140
+const EQ_WIN_X = 450
+const EQ_X_OFFSET = 350
+const EQ_Y_SIZE = 330
+const EQ_Y_OFFSET = 840
 
 class ChanStripFull extends React.PureComponent<
     IChanStripFullProps & IChanStripFullInjectProps & Store
@@ -140,14 +151,30 @@ class ChanStripFull extends React.PureComponent<
         })
     }
 
-
     handleDragCaptureEq(key: number, event: MouseEvent) {
-        console.log('Realtime capture Gain :', String(fxParamsList[key]), 'X :',event.clientX, '  Y :',event.clientY)
-        let eqFreqKey:  keyof typeof fxParamsList = String(fxParamsList[key]).replace('EqGain','EqFreq') as keyof typeof fxParamsList
+        let eqFreqKey = fxParamsList[String(
+            fxParamsList[key]
+        ).replace('EqGain', 'EqFreq') as keyof typeof fxParamsList]
 
-        this.handleFx(fxParamsList[eqFreqKey], Math.round(100*(event.clientX-360) / 1500)/100)
-        this.handleFx(key, Math.round(100*(880 - event.clientY) / 440)/100)
+        this.handleFx(
+            eqFreqKey, this.freqPositionToValue(event.clientX)
+        )
+        this.handleFx(
+            key,
+            Math.round(100 * (EQ_Y_OFFSET- event.clientY)/ EQ_Y_SIZE) / 100
+        )
     }
+
+    valueToFreqPosition(value: number) {
+        return (
+            EQ_X_SIZE * (Math.log2(value * (MAX_HZ - MIN_HZ) + MIN_HZ) - 1) - EQ_WIN_X
+        )
+    }
+    freqPositionToValue(position: number) {
+        let newFreq = Math.pow(2, (position + EQ_WIN_X - EQ_X_OFFSET) / EQ_X_SIZE + 1)
+        return ((newFreq - MIN_HZ) / (MAX_HZ - MIN_HZ))
+    }
+
     eq() {
         return (
             <div className="eq-full">
@@ -156,19 +183,30 @@ class ChanStripFull extends React.PureComponent<
                     {window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.filter(
                         (param) => {
                             return (
-                                fxParamsList[param.key].includes('Eq') &&
-                                fxParamsList[param.key].includes('Gain')
+                                fxParamsList[param.key].includes('EqGain')
                             )
                         }
                     ).map((param: IFxProtocol) => {
-                        let eqFreqKey:  keyof typeof fxParamsList = String(fxParamsList[param.key]).replace('EqGain','EqFreq') as keyof typeof fxParamsList
+                        let eqFreqKey =
+                            fxParamsList[
+                                String(fxParamsList[param.key]).replace(
+                                    'EqGain',
+                                    'EqFreq'
+                                ) as keyof typeof fxParamsList
+                            ]
                         return (
                             <Draggable
-                                position={{ x: this.props.fader[this.props.faderIndex]
-                                    .fxParam[fxParamsList[eqFreqKey]].value*1500, y: 330-this.props.fader[this.props.faderIndex]
-                                    .fxParam[param.key].value*330 }}
-                                grid={[5, 5]}
-                                scale={1}
+                                position={{
+                                    x: this.valueToFreqPosition(
+                                        this.props.fxParam[eqFreqKey].value
+                                    ),
+                                    y:
+                                        EQ_Y_SIZE -
+                                        this.props.fxParam[param.key].value *
+                                            EQ_Y_SIZE,
+                                }}
+                                grid={[1, 1]}
+                                scale={100}
                                 onDrag={(event) =>
                                     this.handleDragCaptureEq(
                                         param.key,
@@ -192,26 +230,36 @@ class ChanStripFull extends React.PureComponent<
                     {window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.filter(
                         (param) => {
                             return (
-                                fxParamsList[param.key].includes('Eq') &&
-                                fxParamsList[param.key].includes('Gain')
+                                fxParamsList[param.key].includes('EqGain')
                             )
                         }
                     ).map((param: IFxProtocol) => {
-                        let eqFreqKey:  keyof typeof fxParamsList = String(fxParamsList[param.key]).replace('EqGain','EqFreq') as keyof typeof fxParamsList
+                        let eqFreqKey = fxParamsList[String(
+                            fxParamsList[param.key]
+                        ).replace(
+                            'EqGain',
+                            'EqFreq'
+                        ) as keyof typeof fxParamsList]
+                        let eqQKey = fxParamsList[String(
+                            fxParamsList[param.key]
+                        ).replace(
+                            'EqGain',
+                            'EqQ'
+                        ) as keyof typeof fxParamsList]
                         return (
-                            <div style={{color: EqColors[param.key] }}>
+                            <div style={{ color: EqColors[param.key] }}>
+                                <br />
                                 {param.params[0].label}
                                 {'  Gain : '}
                                 {
-                                    this.props.fader[this.props.faderIndex]
-                                        .fxParam[param.key].value
+                                    Math.round(100*this.props.fxParam[param.key].value)/100
                                 }
                                 {'  Freq :'}
-
                                 {
-                                    this.props.fader[this.props.faderIndex]
-                                        .fxParam[fxParamsList[eqFreqKey]].value
+                                    Math.round(100*this.props.fxParam[eqFreqKey].value)/100
                                 }
+
+                                {this.qFader(eqQKey)}
                             </div>
                         )
                     })}
@@ -484,6 +532,43 @@ class ChanStripFull extends React.PureComponent<
             </React.Fragment>
         )
     }
+    qFader(fxParam: fxParamsList) {
+        let maxLabel: number =
+            window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam]
+                .params[0].maxLabel ?? 1
+        let minLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam]
+                .params[0].minLabel ?? 0
+        return (
+            <div className="parameter-text">
+                <div className="parameter-mini-text">
+                    Q :{this.props.fxParam[fxParam].value}
+                </div>
+                <ReactSlider
+                    className="chan-strip-q"
+                    thumbClassName="chan-strip-q-thumb"
+                    orientation="horisontal"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={this.props.fxParam[fxParam].value}
+                    renderThumb={(props: any, state: any) => (
+                        <div {...props}>
+                            {Math.round(
+                                (maxLabel - minLabel) *
+                                    parseFloat(state.valueNow) +
+                                    minLabel
+                            )}
+                            Q
+                        </div>
+                    )}
+                    onChange={(event: any) => {
+                        this.handleFx(fxParam, event)
+                    }}
+                />
+            </div>
+        )
+    }
 
     fxFader(fxParam: fxParamsList) {
         let maxLabel: number =
@@ -508,10 +593,7 @@ class ChanStripFull extends React.PureComponent<
                     min={0}
                     max={1}
                     step={0.01}
-                    value={
-                        this.props.fader[this.props.faderIndex].fxParam[fxParam]
-                            .value
-                    }
+                    value={this.props.fxParam[fxParam].value}
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
                             {Math.round(
@@ -734,6 +816,7 @@ const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
         channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
         auxSendIndex: -1,
+        fxParam: [],
         offtubeMode: state.settings[0].offtubeMode,
     }
     if (props.faderIndex >= 0) {
@@ -744,6 +827,7 @@ const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
                 state.settings[0].mixers[0].numberOfChannelsInType,
             channel: state.channels[0].chConnection[0].channel,
             fader: state.faders[0].fader,
+            fxParam: state.faders[0].fader[props.faderIndex].fxParam,
             auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,
             offtubeMode: state.settings[0].offtubeMode,
         }
