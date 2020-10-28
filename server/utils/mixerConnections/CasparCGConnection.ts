@@ -257,11 +257,24 @@ export class CasparCGConnection {
     }
 
     private syncCommand = Promise.resolve()
+    floatToVolume = (float: number) => {
+        const db = floatToDB(float)
+        const volume = Math.pow(10, db / 20)
+
+        return Math.min(Math.max(volume, 0), 3.2) // clamp between 0 and 3.2
+    }
     controlVolume = (channel: number, layer: number, value: number) => {
+        logger.verbose(`Set ${channel}-${layer} volume = ${value}`)
         this.syncCommand = this.syncCommand
             .then(() =>
                 this.connection
-                    .mixerVolume(channel, layer, value, 0, undefined)
+                    .mixerVolume(
+                        channel,
+                        layer,
+                        this.floatToVolume(value),
+                        0,
+                        undefined
+                    )
                     .catch((e: any) => {
                         logger.error(
                             'Failed to send command' + JSON.stringify(e)
