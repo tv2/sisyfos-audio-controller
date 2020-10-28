@@ -423,6 +423,7 @@ export class MixerGenericConnection {
             )
             this.delayedFadeActiveDisable(mixerIndex, channelIndex)
             dispatchTrigger = 0
+            return
         }
         if (targetVal < outputLevel) {
             this.mixerTimers[mixerIndex].chTimer[channelIndex] = setInterval(
