@@ -130,6 +130,7 @@ export interface ICasparCGMixerGeometryFile {
         PGM_CHANNEL_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
         PFL_AUX_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
         NEXT_AUX_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
+        CHANNEL_INPUT_SELECTOR?: Array<IMixerMessageProtocol>
     }
     sourceOptions?: {
         sources: Array<
@@ -160,6 +161,7 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
         PGM_CHANNEL_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
         PFL_AUX_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
         NEXT_AUX_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
+        CHANNEL_INPUT_SELECTOR?: Array<IMixerMessageProtocol>
     }
     channelLabels?: string[]
     sourceOptions?: {

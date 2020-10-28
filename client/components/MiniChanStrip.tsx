@@ -6,7 +6,6 @@ import { Store } from 'redux'
 import { connect } from 'react-redux'
 import { IFader } from '../../server/reducers/fadersReducer'
 import { SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import CcgChannelInputSettings from './CcgChannelSettings'
 
 interface IChanStripInjectProps {
     label: string
@@ -73,28 +72,21 @@ class MiniChanStrip extends React.PureComponent<
         )
     }
     parameters() {
-        if (this.props.selectedProtocol.includes('caspar')) {
-            return (
-                <CcgChannelInputSettings channelIndex={this.props.faderIndex} />
-            )
-        } else {
-            return (
-                <div className="parameters">
-                    <div className="group-text">
-                        {this.props.label ||
-                            'FADER ' + (this.props.faderIndex + 1)}
-                        {' - MONITOR MIX MINUS'}
-                    </div>
-                    <ul className="monitor-sends">
-                        {this.props.channel.map((ch: any, index: number) => {
-                            if (ch.auxLevel[this.props.auxSendIndex] >= 0) {
-                                return this.monitor(index)
-                            }
-                        })}
-                    </ul>
+        return (
+            <div className="parameters">
+                <div className="group-text">
+                    {this.props.label || 'FADER ' + (this.props.faderIndex + 1)}
+                    {' - MONITOR MIX MINUS'}
                 </div>
-            )
-        }
+                <ul className="monitor-sends">
+                    {this.props.channel.map((ch: any, index: number) => {
+                        if (ch.auxLevel[this.props.auxSendIndex] >= 0) {
+                            return this.monitor(index)
+                        }
+                    })}
+                </ul>
+            </div>
+        )
     }
 
     render() {
@@ -114,7 +106,8 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
     let inject: IChanStripInjectProps = {
         label: '',
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
-        numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+        numberOfChannelsInType:
+            state.settings[0].mixers[0].numberOfChannelsInType,
         channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
         auxSendIndex: -1,
@@ -124,7 +117,8 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
         inject = {
             label: state.faders[0].fader[props.faderIndex].label,
             selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
-            numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+            numberOfChannelsInType:
+                state.settings[0].mixers[0].numberOfChannelsInType,
             channel: state.channels[0].chConnection[0].channel,
             fader: state.faders[0].fader,
             auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,
