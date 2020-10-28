@@ -45,15 +45,15 @@ interface IChanStripFullProps {
 }
 
 enum EqColors {
-    'yellow',
-    'green',
-    'blue',
-    'red',
+    'rgb(93, 184, 180)',
+    'rgb(53, 112, 127)',
+    'rgb(217, 21, 133)',
+    'rgb(229, 159, 34)',
 }
 
 // Constant for calculation Eq dot positions:
-const MIN_HZ = 20
-const MAX_HZ = 20000
+const EQ_MIN_HZ = 20
+const EQ_MAX_HZ = 20000
 const EQ_X_SIZE = 140
 const EQ_WIN_X = 450
 const EQ_X_OFFSET = 350
@@ -167,12 +167,12 @@ class ChanStripFull extends React.PureComponent<
 
     valueToFreqPosition(value: number) {
         return (
-            EQ_X_SIZE * (Math.log2(value * (MAX_HZ - MIN_HZ) + MIN_HZ) - 1) - EQ_WIN_X
+            EQ_X_SIZE * (Math.log2(value * (EQ_MAX_HZ - EQ_MIN_HZ) + EQ_MIN_HZ) - 1) - EQ_WIN_X
         )
     }
     freqPositionToValue(position: number) {
         let newFreq = Math.pow(2, (position + EQ_WIN_X - EQ_X_OFFSET) / EQ_X_SIZE + 1)
-        return ((newFreq - MIN_HZ) / (MAX_HZ - MIN_HZ))
+        return ((newFreq - EQ_MIN_HZ) / (EQ_MAX_HZ - EQ_MIN_HZ))
     }
 
     eq() {
