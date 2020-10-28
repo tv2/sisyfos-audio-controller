@@ -71,10 +71,19 @@
     text-align: left;
     font-size: 14px;
     color: #fff;
+    background-color: #2a42274d;
     border-style: solid;
-    border-color: rgb(128, 128, 128);
+    border-color: rgba(128, 128, 128, 0.144);
     border-width: 4px;
 }
+.eq-full > .eq-canvas {
+    position: absolute;
+    margin-left: -850px;
+    margin-top: 30px;
+    height: 410px;
+    width: 1675px;
+}
+
 .eq-full > .eq-text {
     display: flex;
     justify-content: space-evenly;

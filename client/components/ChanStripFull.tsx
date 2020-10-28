@@ -51,6 +51,37 @@ enum EqColors {
     'rgb(229, 159, 34)',
 }
 
+interface IFreqLabels {
+    label: string
+    posY: number
+}
+const EQ_FREQ_LABELS: IFreqLabels[] = [
+    {
+        label: '50',
+        posY: 300,
+    },
+    {
+        label: '100',
+        posY: 550,
+    },
+    {
+        label: '500',
+        posY: 800,
+    },
+    {
+        label: '1k',
+        posY: 1050,
+    },
+    {
+        label: '5k',
+        posY: 1300,
+    },
+    {
+        label: '10k',
+        posY: 1550,
+    },
+]
+
 // Constant for calculation Eq dot positions:
 const EQ_MIN_HZ = 20
 const EQ_MAX_HZ = 20000
@@ -63,6 +94,7 @@ const EQ_Y_OFFSET = 840
 class ChanStripFull extends React.PureComponent<
     IChanStripFullProps & IChanStripFullInjectProps & Store
 > {
+    canvas: HTMLCanvasElement | undefined
     state = {
         dragStartX: 0,
         dragStartY: 0,
@@ -152,39 +184,105 @@ class ChanStripFull extends React.PureComponent<
     }
 
     handleDragCaptureEq(key: number, event: MouseEvent) {
-        let eqFreqKey = fxParamsList[String(
-            fxParamsList[key]
-        ).replace('EqGain', 'EqFreq') as keyof typeof fxParamsList]
+        let eqFreqKey =
+            fxParamsList[
+                String(fxParamsList[key]).replace(
+                    'EqGain',
+                    'EqFreq'
+                ) as keyof typeof fxParamsList
+            ]
 
-        this.handleFx(
-            eqFreqKey, this.freqPositionToValue(event.clientX)
-        )
+        this.handleFx(eqFreqKey, this.freqPositionToValue(event.clientX))
         this.handleFx(
             key,
-            Math.round(100 * (EQ_Y_OFFSET- event.clientY)/ EQ_Y_SIZE) / 100
+            Math.round((100 * (EQ_Y_OFFSET - event.clientY)) / EQ_Y_SIZE) / 100
         )
     }
 
     valueToFreqPosition(value: number) {
         return (
-            EQ_X_SIZE * (Math.log2(value * (EQ_MAX_HZ - EQ_MIN_HZ) + EQ_MIN_HZ) - 1) - EQ_WIN_X
+            EQ_X_SIZE *
+                (Math.log2(value * (EQ_MAX_HZ - EQ_MIN_HZ) + EQ_MIN_HZ) - 1) -
+            EQ_WIN_X
         )
     }
     freqPositionToValue(position: number) {
-        let newFreq = Math.pow(2, (position + EQ_WIN_X - EQ_X_OFFSET) / EQ_X_SIZE + 1)
-        return ((newFreq - EQ_MIN_HZ) / (EQ_MAX_HZ - EQ_MIN_HZ))
+        let newFreq = Math.pow(
+            2,
+            (position + EQ_WIN_X - EQ_X_OFFSET) / EQ_X_SIZE + 1
+        )
+        return (newFreq - EQ_MIN_HZ) / (EQ_MAX_HZ - EQ_MIN_HZ)
+    }
+
+    setRef = (el: HTMLCanvasElement) => {
+        this.canvas = el
+        this.paintEqGraphics()
+    }
+
+    paintEqGraphics() {
+        if (!this.canvas) {
+            return
+        }
+        this.canvas.width = this.canvas.clientWidth
+        this.canvas.height = this.canvas.clientHeight
+        const context = this.canvas.getContext('2d', {
+            antialias: false,
+            stencil: false,
+            preserveDrawingBuffer: true,
+        }) as CanvasRenderingContext2D
+
+        if (!context) return
+
+        // Draw X-Y axis:
+        context.beginPath()
+        context.strokeStyle = 'white'
+        context.moveTo(175, 0)
+        context.lineTo(175, 405)
+        context.lineTo(1700, 405)
+        context.stroke()
+        // Draw zero gain line:
+        context.beginPath()
+        context.strokeStyle = 'rgba(128, 128, 128, 0.244) 10px'
+        context.moveTo(175, 200)
+        context.lineTo(1700, 200)
+        context.stroke()
+        // Freq on zero gain line:
+        context.beginPath()
+        EQ_FREQ_LABELS.forEach((freq: IFreqLabels) => {
+            context.font = '20px Ariel'
+            context.strokeStyle = 'white'
+            context.strokeText(freq.label, freq.posY, 220)
+        })
+        // Freq on zero gain line:
+        context.strokeText(
+            String(
+                window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[0]
+                    .params[fxParamsList.EqGain01].maxLabel
+            ) + ' dB',
+            120,
+            20
+        )
+        context.strokeText('0 dB', 120, 210)
+        context.strokeText(
+            String(
+                window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[0]
+                    .params[fxParamsList.EqGain01].maxLabel
+            ) + ' dB',
+            120,
+            400
+        )
+        context.stroke()
     }
 
     eq() {
         return (
             <div className="eq-full">
+                <canvas className="eq-canvas" ref={this.setRef}></canvas>
                 <div className="title">EQUALIZER</div>
                 <div className="eq-window">
                     {window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.filter(
                         (param) => {
-                            return (
-                                fxParamsList[param.key].includes('EqGain')
-                            )
+                            return fxParamsList[param.key].includes('EqGain')
                         }
                     ).map((param: IFxProtocol) => {
                         let eqFreqKey =
@@ -229,35 +327,35 @@ class ChanStripFull extends React.PureComponent<
                 <div className="eq-text">
                     {window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.filter(
                         (param) => {
-                            return (
-                                fxParamsList[param.key].includes('EqGain')
-                            )
+                            return fxParamsList[param.key].includes('EqGain')
                         }
                     ).map((param: IFxProtocol) => {
-                        let eqFreqKey = fxParamsList[String(
-                            fxParamsList[param.key]
-                        ).replace(
-                            'EqGain',
-                            'EqFreq'
-                        ) as keyof typeof fxParamsList]
-                        let eqQKey = fxParamsList[String(
-                            fxParamsList[param.key]
-                        ).replace(
-                            'EqGain',
-                            'EqQ'
-                        ) as keyof typeof fxParamsList]
+                        let eqFreqKey =
+                            fxParamsList[
+                                String(fxParamsList[param.key]).replace(
+                                    'EqGain',
+                                    'EqFreq'
+                                ) as keyof typeof fxParamsList
+                            ]
+                        let eqQKey =
+                            fxParamsList[
+                                String(fxParamsList[param.key]).replace(
+                                    'EqGain',
+                                    'EqQ'
+                                ) as keyof typeof fxParamsList
+                            ]
                         return (
                             <div style={{ color: EqColors[param.key] }}>
                                 <br />
                                 {param.params[0].label}
                                 {'  Gain : '}
-                                {
-                                    Math.round(100*this.props.fxParam[param.key].value)/100
-                                }
+                                {Math.round(
+                                    100 * this.props.fxParam[param.key].value
+                                ) / 100}
                                 {'  Freq :'}
-                                {
-                                    Math.round(100*this.props.fxParam[eqFreqKey].value)/100
-                                }
+                                {Math.round(
+                                    100 * this.props.fxParam[eqFreqKey].value
+                                ) / 100}
 
                                 {this.qFader(eqQKey)}
                             </div>
