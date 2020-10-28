@@ -18,6 +18,7 @@ import { storeSetChPrivate } from '../../reducers/channelActions'
 import { storeFaderLabel, storeVuLevel } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS'
+import { dbToFloat, floatToDB } from './LawoRubyConnection'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -99,6 +100,9 @@ export class CasparCGConnection {
     }
 
     setupMixerConnection() {
+        const calcVuLevel = (level: number) => {
+            return dbToFloat(20 * Math.log(level) + 12)
+        }
         if (!this.oscClient) {
             const remotePort =
                 parseInt(
@@ -123,7 +127,7 @@ export class CasparCGConnection {
                         store.dispatch(storeVuLevel(index, message.args[0]))
                         socketServer.emit(SOCKET_SET_VU, {
                             faderIndex: index,
-                            level: message.args[0],
+                            level: calcVuLevel(message.args[0]),
                         })
                     } else if (this.mixerProtocol.sourceOptions) {
                         const m = message.address.split('/')
