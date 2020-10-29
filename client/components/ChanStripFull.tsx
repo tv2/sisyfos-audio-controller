@@ -259,109 +259,139 @@ class ChanStripFull extends React.PureComponent<
             <div className="eq-full">
                 <canvas className="eq-canvas" ref={this.setRef}></canvas>
                 <div className="title">EQUALIZER</div>
-                <div className="eq-window">
-                    {Object.keys(fxParamsList)
-                        .filter((fxKey: number | string) => {
-                            return String(fxKey).includes('EqGain')
-                        })
-                        .map((keyName: string) => {
-                            let fxKey = keyName as keyof typeof fxParamsList
-                            let eqFreqKey =
-                                fxParamsList[
-                                    fxKey.replace(
-                                        'EqGain',
-                                        'EqFreq'
-                                    ) as keyof typeof fxParamsList
-                                ]
-                            return (
-                                <Draggable
-                                    position={{
-                                        x: this.valueToFreqPosition(
-                                            this.props.fader[
-                                                this.props.faderIndex
-                                            ][eqFreqKey]?.[0] ?? 0
-                                        ),
-                                        y:
-                                            EQ_Y_SIZE -
-                                            (this.props.fader[
-                                                this.props.faderIndex
-                                            ][fxParamsList[fxKey]]?.[0] ?? 0) *
-                                                EQ_Y_SIZE,
-                                    }}
-                                    grid={[1, 1]}
-                                    scale={100}
-                                    onDrag={(event) =>
-                                        this.handleDragCaptureEq(
-                                            fxParamsList[fxKey],
-                                            event as MouseEvent
-                                        )
-                                    }
-                                >
-                                    <div
-                                        className="dot"
-                                        style={{
-                                            color: String(
-                                                EqColors[fxParamsList[fxKey]]
-                                            ),
-                                        }}
-                                    >
-                                        O
-                                    </div>
-                                </Draggable>
-                            )
-                        })}
-                </div>
-                <div className="eq-text">
-                    {Object.keys(fxParamsList)
-                        .filter((fxKey: number | string) => {
-                            return String(fxKey).includes('EqGain')
-                        })
-                        .map((keyName: string) => {
-                            let fxKey = keyName as keyof typeof fxParamsList
-                            let eqFreqKey =
-                                fxParamsList[
-                                    fxKey.replace(
-                                        'EqGain',
-                                        'EqFreq'
-                                    ) as keyof typeof fxParamsList
-                                ]
-                            let eqQKey =
-                                fxParamsList[
-                                    fxKey.replace(
-                                        'EqGain',
-                                        'EqQ'
-                                    ) as keyof typeof fxParamsList
-                                ]
-                            return (
-                                <div
-                                    style={{
-                                        color: EqColors[fxParamsList[fxKey]],
-                                    }}
-                                >
-                                    <br />
-                                    {'  Gain : '}
-                                    {Math.round(
-                                        100 *
-                                            this.props.fader[
-                                                this.props.faderIndex
-                                            ][fxParamsList[fxKey]]?.[0] ?? 0
-                                    ) / 100}
-                                    {'  Freq :'}
-                                    {Math.round(
-                                        100 *
-                                            this.props.fader[
-                                                this.props.faderIndex
-                                            ][eqFreqKey]?.[0] ?? 0
-                                    ) / 100}
-
-                                    {this.qFader(eqQKey)}
-                                </div>
-                            )
-                        })}
-                </div>
+                {this.eqGraphics()}
+                {this.eqText()}
             </div>
         )
     }
+    eqGraphics() {
+        return (
+            <div className="eq-window">
+                {Object.keys(fxParamsList)
+                    .filter((fxKey: number | string) => {
+                        return String(fxKey).includes('EqGain')
+                    })
+                    .map((keyName: string) => {
+                        let fxKey = keyName as keyof typeof fxParamsList
+                        let eqFreqKey =
+                            fxParamsList[
+                                fxKey.replace(
+                                    'EqGain',
+                                    'EqFreq'
+                                ) as keyof typeof fxParamsList
+                            ]
+                        return (
+                            <Draggable
+                                position={{
+                                    x: this.valueToFreqPosition(
+                                        this.props.fader[this.props.faderIndex][
+                                            eqFreqKey
+                                        ]?.[0] ?? 0
+                                    ),
+                                    y:
+                                        EQ_Y_SIZE -
+                                        (this.props.fader[
+                                            this.props.faderIndex
+                                        ][fxParamsList[fxKey]]?.[0] ?? 0) *
+                                            EQ_Y_SIZE,
+                                }}
+                                grid={[1, 1]}
+                                scale={100}
+                                onDrag={(event) =>
+                                    this.handleDragCaptureEq(
+                                        fxParamsList[fxKey],
+                                        event as MouseEvent
+                                    )
+                                }
+                            >
+                                <div
+                                    className="dot"
+                                    style={{
+                                        color: String(
+                                            EqColors[fxParamsList[fxKey]]
+                                        ),
+                                    }}
+                                >
+                                    O
+                                </div>
+                            </Draggable>
+                        )
+                    })}
+            </div>
+        )
+    }
+
+    eqText() {
+        return (
+            <div className="eq-text">
+                {Object.keys(fxParamsList)
+                    .filter((fxKey: number | string) => {
+                        return String(fxKey).includes('EqGain')
+                    })
+                    .map((keyName: string) => {
+                        let fxKey = keyName as keyof typeof fxParamsList
+                        let eqFreqKey =
+                            fxParamsList[
+                                fxKey.replace(
+                                    'EqGain',
+                                    'EqFreq'
+                                ) as keyof typeof fxParamsList
+                            ]
+                        let maxFreq: number =
+                            window.mixerProtocol.channelTypes[0].fromMixer[
+                                eqFreqKey
+                            ]?.[0].maxLabel ?? 1
+                        let minFreq =
+                            window.mixerProtocol.channelTypes[0].fromMixer[
+                                eqFreqKey
+                            ]?.[0].minLabel ?? 0
+                        let eqQKey =
+                            fxParamsList[
+                                fxKey.replace(
+                                    'EqGain',
+                                    'EqQ'
+                                ) as keyof typeof fxParamsList
+                            ]
+                        let maxGain: number =
+                            window.mixerProtocol.channelTypes[0].fromMixer[
+                                fxParamsList[fxKey]
+                            ]?.[0].maxLabel ?? 1
+                        let minGain =
+                            window.mixerProtocol.channelTypes[0].fromMixer[
+                                fxParamsList[fxKey]
+                            ]?.[0].minLabel ?? 0
+
+                        return (
+                            <div
+                                style={{
+                                    color: EqColors[fxParamsList[fxKey]],
+                                }}
+                            >
+                                <br />
+                                {'  Gain : '}
+                                {Math.round(
+                                    (maxGain - minGain) *
+                                        (this.props.fader[
+                                            this.props.faderIndex
+                                        ][fxParamsList[fxKey]]?.[0] ?? 0) +
+                                        minGain
+                                )}
+                                {'  Freq :'}
+                                {Math.round(
+                                    (maxFreq - minFreq) *
+                                        (this.props.fader[
+                                            this.props.faderIndex
+                                        ][eqFreqKey]?.[0] ?? 0) +
+                                        minFreq
+                                )}
+                                {this.qFader(eqQKey)}
+                            </div>
+                        )
+                    })}
+            </div>
+        )
+    }
+
     inputSelectorButton(index: number) {
         const isActive =
             this.props.fader[this.props.faderIndex].inputSelector === index + 1
@@ -659,14 +689,10 @@ class ChanStripFull extends React.PureComponent<
                                     <p className="zero-comp">______</p>
                                 </div>
                             </div>
-                        </React.Fragment>
-                        <React.Fragment>
                             <div className="item">
                                 <div className="title">DELAY</div>
                                 <div className="content">{this.delay()}</div>
                             </div>
-                        </React.Fragment>
-                        <React.Fragment>
                             <div className="item">
                                 <div className="title">
                                     {this.props.label ||
@@ -706,7 +732,7 @@ class ChanStripFull extends React.PureComponent<
         if (this.props.faderIndex >= 0) {
             return (
                 <div className="chan-strip-full-body">
-                    <div className="header">
+                    <div className="ch-strip-full-header">
                         {this.props.label ||
                             'FADER ' + (this.props.faderIndex + 1)}
                         <button
@@ -722,7 +748,7 @@ class ChanStripFull extends React.PureComponent<
                                 className="button half"
                                 onClick={() => this.handleShowRoutingOptions()}
                             >
-                                Ch.Setup
+                                Channel-Fader Routing
                             </button>
                         )}
                         {window.location.search.includes(
@@ -732,7 +758,7 @@ class ChanStripFull extends React.PureComponent<
                                 className="button half"
                                 onClick={() => this.handleShowMonitorOptions()}
                             >
-                                Mon.Setup
+                                Monitor Routing
                             </button>
                         )}
                     </div>
