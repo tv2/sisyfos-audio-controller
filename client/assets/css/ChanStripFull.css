@@ -16,7 +16,7 @@
     color: #fff;
 }
 
-.chan-strip-full-body > .header {
+.chan-strip-full-body > .ch-strip-full-header {
     margin-left: 40px;
     margin-top: 10px;
     margin-right: 80px;
@@ -215,7 +215,7 @@
     font-size: 95%;
 }
 
-.header > .close {
+.ch-strip-full-header > .close {
     position: absolute;
     outline: none;
     border-color: rgb(99, 99, 99);
@@ -229,20 +229,20 @@
     right: 10px;
 }
 
-.header > .button {
+.ch-strip-full-header > .button {
     outline: none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
     border-radius: 7px;
     margin-left: 10px;
-    width: 80px;
+    width: 160px;
     height: 50px;
     font-size: 12px;
     line-height: 30px;
     color: #fff;
 }
 
-.chan-strip-fader {
+.chan-strip-full-fader {
     width: 10px;
     height: 190px;
     margin-left: 35px;
@@ -253,7 +253,7 @@
     border-radius: 8px;
     background-color: rgb(17, 17, 17);
 }
-.chan-strip-thumb {
+.chan-strip-full-thumb {
     margin-left: -20px;
     color: #3a3a3a;
     font-size: 90%;
@@ -275,18 +275,18 @@
 }
 
 .chan-strip-q {
-    width: 100px;
+    width: 300px;
     height: 10px;
     margin-left: 35px;
     margin-right: 30px;
-    margin-top: 10px;
+    margin-top: 30px;
     border-width: 0px;
     border-style: solid;
     border-radius: 8px;
     background-color: rgb(17, 17, 17);
 }
 .chan-strip-q-thumb {
-    margin-left: -20px;
+    margin-top: -20px;
     color: #3a3a3a;
     font-size: 90%;
     line-height: 50px;

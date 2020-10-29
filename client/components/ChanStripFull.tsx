@@ -84,6 +84,9 @@ const EQ_X_OFFSET = 350
 const EQ_Y_SIZE = 330
 const EQ_Y_OFFSET = 840
 
+// Constants for Delay buttons:
+const DEL_VALUES = [10, 1, -1, -10]
+
 class ChanStripFull extends React.PureComponent<
     IChanStripFullProps & IChanStripFullInjectProps & Store
 > {
@@ -420,8 +423,8 @@ class ChanStripFull extends React.PureComponent<
                     .CHANNEL_INPUT_GAIN ? (
                     <React.Fragment>
                         <ReactSlider
-                            className="chan-strip-fader"
-                            thumbClassName="chan-strip-thumb"
+                            className="chan-strip-full-fader"
+                            thumbClassName="chan-strip-full-thumb"
                             orientation="vertical"
                             invert
                             min={0}
@@ -455,58 +458,23 @@ class ChanStripFull extends React.PureComponent<
             <React.Fragment>
                 {this.fxParamFader(fxParamsList.DelayTime)}
                 <div className="delayButtons">
-                    <button
-                        className="delayTime"
-                        onClick={() => {
-                            this.changeDelay(
-                                this.props.fader[this.props.faderIndex][
-                                    fxParamsList.DelayTime
-                                ]?.[0] || 0,
-                                10 / 500
-                            )
-                        }}
-                    >
-                        +10ms
-                    </button>
-                    <button
-                        className="delayTime"
-                        onClick={() => {
-                            this.changeDelay(
-                                this.props.fader[this.props.faderIndex][
-                                    fxParamsList.DelayTime
-                                ]?.[0] || 0,
-                                1 / 500
-                            )
-                        }}
-                    >
-                        +1ms
-                    </button>
-                    <button
-                        className="delayTime"
-                        onClick={() => {
-                            this.changeDelay(
-                                this.props.fader[this.props.faderIndex][
-                                    fxParamsList.DelayTime
-                                ]?.[0] || 0,
-                                -1 / 500
-                            )
-                        }}
-                    >
-                        -1ms
-                    </button>
-                    <button
-                        className="delayTime"
-                        onClick={() => {
-                            this.changeDelay(
-                                this.props.fader[this.props.faderIndex][
-                                    fxParamsList.DelayTime
-                                ]?.[0] || 0,
-                                -10 / 500
-                            )
-                        }}
-                    >
-                        -10ms
-                    </button>
+                    {DEL_VALUES.map((value: number) => {
+                        return (
+                            <button
+                                className="delayTime"
+                                onClick={() => {
+                                    this.changeDelay(
+                                        this.props.fader[this.props.faderIndex][
+                                            fxParamsList.DelayTime
+                                        ]?.[0] || 0,
+                                        value / 500
+                                    )
+                                }}
+                            >
+                                +{value}ms
+                            </button>
+                        )
+                    })}
                 </div>
             </React.Fragment>
         )
@@ -518,10 +486,18 @@ class ChanStripFull extends React.PureComponent<
         let minLabel =
             window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
                 .minLabel ?? 0
+        let valueLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
+                .valueLabel ?? ''
         return (
             <div className="parameter-text">
                 <div className="parameter-mini-text">
-                    Q :{this.props.fader[0][fxParam]?.[0]}
+                    {Math.round(
+                        (maxLabel - minLabel) *
+                            this.props.fader[0][fxParam]?.[0] +
+                            minLabel
+                    )}
+                    {valueLabel}
                 </div>
                 <ReactSlider
                     className="chan-strip-q"
@@ -538,7 +514,7 @@ class ChanStripFull extends React.PureComponent<
                                     parseFloat(state.valueNow) +
                                     minLabel
                             )}
-                            Q
+                            {valueLabel}
                         </div>
                     )}
                     onChange={(event: any) => {
@@ -573,8 +549,8 @@ class ChanStripFull extends React.PureComponent<
                     {maxLabel + valueLabel}
                 </div>
                 <ReactSlider
-                    className="chan-strip-fader"
-                    thumbClassName="chan-strip-thumb"
+                    className="chan-strip-full-fader"
+                    thumbClassName="chan-strip-full-thumb"
                     orientation="vertical"
                     invert
                     min={0}
@@ -620,8 +596,8 @@ class ChanStripFull extends React.PureComponent<
             <li key={channelIndex}>
                 {monitorName}
                 <ReactSlider
-                    className="chan-strip-fader"
-                    thumbClassName="chan-strip-thumb"
+                    className="chan-strip-full-fader"
+                    thumbClassName="chan-strip-full-thumb"
                     orientation="vertical"
                     invert
                     min={0}

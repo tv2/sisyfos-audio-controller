@@ -36,6 +36,9 @@ interface IChanStripProps {
     faderIndex: number
 }
 
+// Constants for Delay buttons:
+const DEL_VALUES = [10, 1, -1, -10]
+
 class ChanStrip extends React.PureComponent<
     IChanStripProps & IChanStripInjectProps & Store
 > {
@@ -199,58 +202,23 @@ class ChanStrip extends React.PureComponent<
             <React.Fragment>
                 {this.fxParamFader(fxParamsList.DelayTime)}
                 <div className="delayButtons">
-                    <button
-                        className="delayTime"
-                        onClick={() => {
-                            this.changeDelay(
-                                this.props.fader[this.props.faderIndex][
-                                    fxParamsList.DelayTime
-                                ][0] || 0,
-                                10 / 500
-                            )
-                        }}
-                    >
-                        +10ms
-                    </button>
-                    <button
-                        className="delayTime"
-                        onClick={() => {
-                            this.changeDelay(
-                                this.props.fader[this.props.faderIndex][
-                                    fxParamsList.DelayTime
-                                ][0] || 0,
-                                1 / 500
-                            )
-                        }}
-                    >
-                        +1ms
-                    </button>
-                    <button
-                        className="delayTime"
-                        onClick={() => {
-                            this.changeDelay(
-                                this.props.fader[this.props.faderIndex][
-                                    fxParamsList.DelayTime
-                                ][0] || 0,
-                                -1 / 500
-                            )
-                        }}
-                    >
-                        -1ms
-                    </button>
-                    <button
-                        className="delayTime"
-                        onClick={() => {
-                            this.changeDelay(
-                                this.props.fader[this.props.faderIndex][
-                                    fxParamsList.DelayTime
-                                ][0] || 0,
-                                -10 / 500
-                            )
-                        }}
-                    >
-                        -10ms
-                    </button>
+                {DEL_VALUES.map((value: number) => {
+                        return (
+                            <button
+                                className="delayTime"
+                                onClick={() => {
+                                    this.changeDelay(
+                                        this.props.fader[this.props.faderIndex][
+                                            fxParamsList.DelayTime
+                                        ]?.[0] || 0,
+                                        value / 500
+                                    )
+                                }}
+                            >
+                                +{value}ms
+                            </button>
+                        )
+                    })}
                 </div>
             </React.Fragment>
         )
