@@ -20,9 +20,7 @@ import {
 import CcgChannelInputSettings from './CcgChannelSettings'
 import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
-import {
-    fxParamsList,
-} from '../../server/constants/MixerProtocolInterface'
+import { fxParamsList } from '../../server/constants/MixerProtocolInterface'
 import { IChannel } from '../../server/reducers/channelsReducer'
 
 interface IChanStripFullInjectProps {
@@ -233,7 +231,9 @@ class ChanStripFull extends React.PureComponent<
         // Freq on zero gain line:
         context.strokeText(
             String(
-                window.mixerProtocol.channelTypes[0].fromMixer[fxParamsList.EqGain01][0].maxLabel
+                window.mixerProtocol.channelTypes[0].fromMixer[
+                    fxParamsList.EqGain01
+                ][0].maxLabel
             ) + ' dB',
             120,
             20
@@ -241,7 +241,9 @@ class ChanStripFull extends React.PureComponent<
         context.strokeText('0 dB', 120, 210)
         context.strokeText(
             String(
-                window.mixerProtocol.channelTypes[0].fromMixer[fxParamsList.EqGain01][0].maxLabel
+                window.mixerProtocol.channelTypes[0].fromMixer[
+                    fxParamsList.EqGain01
+                ][0].maxLabel
             ) + ' dB',
             120,
             400
@@ -255,86 +257,104 @@ class ChanStripFull extends React.PureComponent<
                 <canvas className="eq-canvas" ref={this.setRef}></canvas>
                 <div className="title">EQUALIZER</div>
                 <div className="eq-window">
-                    {Object.keys(fxParamsList).filter((fxKey: number | string)=> {
-                        return String(fxKey).includes('EqGain')
-                    }
-                    ).map((keyName: string) => {
-                        let fxKey = keyName as keyof typeof fxParamsList
-                        let eqFreqKey =
-                            fxParamsList[
-                                fxKey.replace(
-                                    'EqGain',
-                                    'EqFreq'
-                                ) as keyof typeof fxParamsList
-                            ]
-                        return (
-                            <Draggable
-                                position={{
-                                    x: this.valueToFreqPosition(
-                                        (this.props.fader[this.props.faderIndex][eqFreqKey]?.[0] ?? 0)
-                                    ),
-                                    y:
-                                        EQ_Y_SIZE -
-                                        (this.props.fader[this.props.faderIndex][fxParamsList[fxKey]]?.[0] ?? 0) *
-                                            EQ_Y_SIZE,
-                                }}
-                                grid={[1, 1]}
-                                scale={100}
-                                onDrag={(event) =>
-                                    this.handleDragCaptureEq(
-                                        fxParamsList[fxKey],
-                                        event as MouseEvent
-                                    )
-                                }
-                            >
-                                <div
-                                    className="dot"
-                                    style={{
-                                        color: String(EqColors[fxParamsList[fxKey]]),
+                    {Object.keys(fxParamsList)
+                        .filter((fxKey: number | string) => {
+                            return String(fxKey).includes('EqGain')
+                        })
+                        .map((keyName: string) => {
+                            let fxKey = keyName as keyof typeof fxParamsList
+                            let eqFreqKey =
+                                fxParamsList[
+                                    fxKey.replace(
+                                        'EqGain',
+                                        'EqFreq'
+                                    ) as keyof typeof fxParamsList
+                                ]
+                            return (
+                                <Draggable
+                                    position={{
+                                        x: this.valueToFreqPosition(
+                                            this.props.fader[
+                                                this.props.faderIndex
+                                            ][eqFreqKey]?.[0] ?? 0
+                                        ),
+                                        y:
+                                            EQ_Y_SIZE -
+                                            (this.props.fader[
+                                                this.props.faderIndex
+                                            ][fxParamsList[fxKey]]?.[0] ?? 0) *
+                                                EQ_Y_SIZE,
                                     }}
+                                    grid={[1, 1]}
+                                    scale={100}
+                                    onDrag={(event) =>
+                                        this.handleDragCaptureEq(
+                                            fxParamsList[fxKey],
+                                            event as MouseEvent
+                                        )
+                                    }
                                 >
-                                    O
-                                </div>
-                            </Draggable>
-                        )
-                    })}
+                                    <div
+                                        className="dot"
+                                        style={{
+                                            color: String(
+                                                EqColors[fxParamsList[fxKey]]
+                                            ),
+                                        }}
+                                    >
+                                        O
+                                    </div>
+                                </Draggable>
+                            )
+                        })}
                 </div>
                 <div className="eq-text">
-                {Object.keys(fxParamsList).filter((fxKey: number | string)=> {
-                        return String(fxKey).includes('EqGain')
-                    }
-                    ).map((keyName: string) => {
-                        let fxKey = keyName as keyof typeof fxParamsList
-                        let eqFreqKey =
-                            fxParamsList[
-                                fxKey.replace(
-                                    'EqGain',
-                                    'EqFreq'
-                                ) as keyof typeof fxParamsList
-                            ]
-                        let eqQKey =
-                            fxParamsList[
-                                fxKey.replace(
-                                    'EqGain',
-                                    'EqQ'
-                                ) as keyof typeof fxParamsList
-                            ]
-                        return (
-                            <div style={{ color: EqColors[fxParamsList[fxKey]] }}>
-                                <br />
-                                {'  Gain : '}
-                                {Math.round(
-                                    100 * this.props.fader[this.props.faderIndex][fxParamsList[fxKey]]?.[0] ?? 0
-                                ) / 100}
-                                {'  Freq :'}
-                                {Math.round(
-                                    100 * this.props.fader[this.props.faderIndex][eqFreqKey]?.[0] ?? 0
-                                ) / 100}
+                    {Object.keys(fxParamsList)
+                        .filter((fxKey: number | string) => {
+                            return String(fxKey).includes('EqGain')
+                        })
+                        .map((keyName: string) => {
+                            let fxKey = keyName as keyof typeof fxParamsList
+                            let eqFreqKey =
+                                fxParamsList[
+                                    fxKey.replace(
+                                        'EqGain',
+                                        'EqFreq'
+                                    ) as keyof typeof fxParamsList
+                                ]
+                            let eqQKey =
+                                fxParamsList[
+                                    fxKey.replace(
+                                        'EqGain',
+                                        'EqQ'
+                                    ) as keyof typeof fxParamsList
+                                ]
+                            return (
+                                <div
+                                    style={{
+                                        color: EqColors[fxParamsList[fxKey]],
+                                    }}
+                                >
+                                    <br />
+                                    {'  Gain : '}
+                                    {Math.round(
+                                        100 *
+                                            this.props.fader[
+                                                this.props.faderIndex
+                                            ][fxParamsList[fxKey]]?.[0] ?? 0
+                                    ) / 100}
+                                    {'  Freq :'}
+                                    {Math.round(
+                                        100 *
+                                            this.props.fader[
+                                                this.props.faderIndex
+                                            ][eqFreqKey]?.[0] ?? 0
+                                    ) / 100}
 
-                                {this.qFader(eqQKey)}
-                            </div>
-                        )
-                    })}
+                                    {this.qFader(eqQKey)}
+                                </div>
+                            )
+                        })}
                 </div>
             </div>
         )
@@ -422,7 +442,6 @@ class ChanStripFull extends React.PureComponent<
         )
     }
 
-
     gainReduction() {
         return (
             <div className="parameter-text">
@@ -440,8 +459,9 @@ class ChanStripFull extends React.PureComponent<
                         className="delayTime"
                         onClick={() => {
                             this.changeDelay(
-                                this.props.fader[this.props.faderIndex]
-                                    [fxParamsList.DelayTime]?.[0] || 0,
+                                this.props.fader[this.props.faderIndex][
+                                    fxParamsList.DelayTime
+                                ]?.[0] || 0,
                                 10 / 500
                             )
                         }}
@@ -452,8 +472,9 @@ class ChanStripFull extends React.PureComponent<
                         className="delayTime"
                         onClick={() => {
                             this.changeDelay(
-                                this.props.fader[this.props.faderIndex]
-                                [fxParamsList.DelayTime]?.[0] || 0,
+                                this.props.fader[this.props.faderIndex][
+                                    fxParamsList.DelayTime
+                                ]?.[0] || 0,
                                 1 / 500
                             )
                         }}
@@ -464,8 +485,9 @@ class ChanStripFull extends React.PureComponent<
                         className="delayTime"
                         onClick={() => {
                             this.changeDelay(
-                                this.props.fader[this.props.faderIndex]
-                                [fxParamsList.DelayTime]?.[0] || 0,
+                                this.props.fader[this.props.faderIndex][
+                                    fxParamsList.DelayTime
+                                ]?.[0] || 0,
                                 -1 / 500
                             )
                         }}
@@ -476,8 +498,9 @@ class ChanStripFull extends React.PureComponent<
                         className="delayTime"
                         onClick={() => {
                             this.changeDelay(
-                                this.props.fader[this.props.faderIndex]
-                                [fxParamsList.DelayTime]?.[0] || 0,
+                                this.props.fader[this.props.faderIndex][
+                                    fxParamsList.DelayTime
+                                ]?.[0] || 0,
                                 -10 / 500
                             )
                         }}
@@ -527,20 +550,28 @@ class ChanStripFull extends React.PureComponent<
     }
 
     fxParamFader(fxParam: fxParamsList) {
+        if (!window.mixerProtocol.channelTypes[0].fromMixer[fxParam]) {
+            return
+        }
         let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]
-                [0].maxLabel ?? 1
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
+                .maxLabel ?? 1
         let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]
-                [0].minLabel ?? 0
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
+                .minLabel ?? 0
+        let valueLabel =
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
+                .valueLabel ?? ''
+
         return (
             <div className="parameter-text">
                 {
-                    window.mixerProtocol.channelTypes[0].fromMixer[
-                        fxParam
-                    ][0].label
+                    window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
+                        .label
                 }
-                <div className="parameter-mini-text">{maxLabel}</div>
+                <div className="parameter-mini-text">
+                    {maxLabel + valueLabel}
+                </div>
                 <ReactSlider
                     className="chan-strip-fader"
                     thumbClassName="chan-strip-thumb"
@@ -549,8 +580,10 @@ class ChanStripFull extends React.PureComponent<
                     min={0}
                     max={1}
                     step={0.01}
-                    value={this.props.fader[this.props.faderIndex][fxParam]?.[0] ??
-                        0 }
+                    value={
+                        this.props.fader[this.props.faderIndex][fxParam]?.[0] ??
+                        0
+                    }
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
                             {Math.round(
@@ -558,14 +591,16 @@ class ChanStripFull extends React.PureComponent<
                                     parseFloat(state.valueNow) +
                                     minLabel
                             )}
-                            dB
+                            {valueLabel}
                         </div>
                     )}
                     onChange={(event: any) => {
                         this.handleFx(fxParam, event)
                     }}
                 />
-                <div className="parameter-mini-text">{minLabel}</div>
+                <div className="parameter-mini-text">
+                    {minLabel + valueLabel}
+                </div>
             </div>
         )
     }
@@ -613,27 +648,6 @@ class ChanStripFull extends React.PureComponent<
                     .CHANNEL_INPUT_GAIN ||
                 window.mixerProtocol.channelTypes[0].toMixer
                     .CHANNEL_INPUT_SELECTOR
-            const hasComp =
-                window.mixerProtocol.channelTypes[0].toMixer[fxParamsList.CompThrs] ||
-                window.mixerProtocol.channelTypes[0].toMixer[fxParamsList.CompRatio]
-            const hasDelay =
-                window.mixerProtocol.channelTypes[0].toMixer[fxParamsList.DelayTime]
-            const hasEq =
-                window.mixerProtocol.channelTypes[0].toMixer[
-                    fxParamsList.EqGain01
-                ] ||
-                window.mixerProtocol.channelTypes[0].toMixer[
-                    fxParamsList.EqGain02
-                ] ||
-                window.mixerProtocol.channelTypes[0].toMixer[
-                    fxParamsList.EqGain03
-                ] ||
-                window.mixerProtocol.channelTypes[0].toMixer[
-                    fxParamsList.EqGain04
-                ]
-            const hasMonitorSends = this.props.channel.find(
-                (ch: any) => ch.auxLevel[this.props.auxSendIndex] >= 0
-            )
             return (
                 <div className="parameters">
                     <div className="horizontal">
@@ -648,68 +662,62 @@ class ChanStripFull extends React.PureComponent<
                                 </div>
                             </React.Fragment>
                         )}
-                        {hasComp && (
-                            <React.Fragment>
-                                <div className="item">
-                                    <div className="title">COMPRESSOR</div>
-                                    <div className="content">
-                                        {this.fxParamFader(
-                                            fxParamsList.CompThrs
-                                        )}
-                                        <p className="zero-comp">______</p>
-                                        {this.fxParamFader(
-                                            fxParamsList.CompRatio
-                                        )}
-                                        <p className="zero-comp">______</p>
-                                        {this.gainReduction()}
-                                    </div>
+                        <React.Fragment>
+                            <div className="item">
+                                <div className="title">COMPRESSOR</div>
+                                <div className="content">
+                                    {this.fxParamFader(fxParamsList.CompThrs)}
+                                    <p className="zero-comp">______</p>
+                                    {this.fxParamFader(fxParamsList.CompRatio)}
+                                    <p className="zero-comp">______</p>
+                                    {this.gainReduction()}
+                                    {this.fxParamFader(fxParamsList.CompMakeUp)}
+                                    <p className="zero-comp">______</p>
+                                    {this.fxParamFader(fxParamsList.CompAttack)}
+                                    <p className="zero-comp">______</p>
+                                    {this.fxParamFader(fxParamsList.CompHold)}
+                                    <p className="zero-comp">______</p>
+                                    {this.fxParamFader(
+                                        fxParamsList.CompRelease
+                                    )}
+                                    <p className="zero-comp">______</p>
                                 </div>
-                            </React.Fragment>
-                        )}
-                        {hasDelay && (
-                            <React.Fragment>
-                                <div className="item">
-                                    <div className="title">DELAY</div>
-                                    <div className="content">
-                                        {this.delay()}
-                                    </div>
+                            </div>
+                        </React.Fragment>
+                        <React.Fragment>
+                            <div className="item">
+                                <div className="title">DELAY</div>
+                                <div className="content">{this.delay()}</div>
+                            </div>
+                        </React.Fragment>
+                        <React.Fragment>
+                            <div className="item">
+                                <div className="title">
+                                    {this.props.label ||
+                                        'FADER ' + (this.props.faderIndex + 1)}
+                                    {' - MONITOR MIX MINUS'}
                                 </div>
-                            </React.Fragment>
-                        )}
-                        {hasMonitorSends && (
-                            <React.Fragment>
-                                <div className="item">
-                                    <div className="title">
-                                        {this.props.label ||
-                                            'FADER ' +
-                                                (this.props.faderIndex + 1)}
-                                        {' - MONITOR MIX MINUS'}
-                                    </div>
-                                    <div className="content">
-                                        <ul className="monitor-sends">
-                                            {this.props.channel.map(
-                                                (ch: any, index: number) => {
-                                                    if (
-                                                        ch.auxLevel[
-                                                            this.props
-                                                                .auxSendIndex
-                                                        ] >= 0
-                                                    ) {
-                                                        return this.monitor(
-                                                            index
-                                                        )
-                                                    }
+                                <div className="content">
+                                    <ul className="monitor-sends">
+                                        {this.props.channel.map(
+                                            (ch: any, index: number) => {
+                                                if (
+                                                    ch.auxLevel[
+                                                        this.props.auxSendIndex
+                                                    ] >= 0
+                                                ) {
+                                                    return this.monitor(index)
                                                 }
-                                            )}
-                                        </ul>
-                                    </div>
+                                            }
+                                        )}
+                                    </ul>
                                 </div>
-                            </React.Fragment>
-                        )}
+                            </div>
+                        </React.Fragment>
                     </div>
                     <React.Fragment>
                         <hr />
-                        <div className="horizontal">{hasEq && this.eq()}</div>
+                        <div className="horizontal">{this.eq()}</div>
                     </React.Fragment>
                 </div>
             )

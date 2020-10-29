@@ -79,7 +79,6 @@ export const MidasMaster: IMixerProtocol = {
                 CHANNEL_NAME: [emptyMixerMessage()], //[{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
                 PFL: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-
                 [fxParamsList.CompThrs]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/thr',
@@ -96,6 +95,51 @@ export const MidasMaster: IMixerProtocol = {
                         maxLabel: 10,
                         label: 'Ratio',
                         valueLabel: ' :1',
+                    },
+                ],
+                [fxParamsList.CompAttack]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/attack',
+                        minLabel: 0,
+                        maxLabel: 120,
+                        label: 'Attack',
+                        valueLabel: ' ms',
+                    },
+                ],
+                [fxParamsList.CompHold]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/hold',
+                        minLabel: 0,
+                        maxLabel: 2000,
+                        label: 'Hold',
+                        valueLabel: ' ms',
+                    },
+                ],
+                [fxParamsList.CompKnee]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/knee',
+                        minLabel: 0,
+                        maxLabel: 5,
+                        label: 'Knee',
+                        valueLabel: ' ',
+                    },
+                ],
+                [fxParamsList.CompMakeUp]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/mgain',
+                        minLabel: 0,
+                        maxLabel: 24,
+                        label: 'MakeUp',
+                        valueLabel: ' dB',
+                    },
+                ],
+                [fxParamsList.CompRelease]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/ratio',
+                        minLabel: 5,
+                        maxLabel: 4000,
+                        label: 'Release',
+                        valueLabel: ' ms',
                     },
                 ],
                 [fxParamsList.DelayTime]: [
@@ -244,6 +288,31 @@ export const MidasMaster: IMixerProtocol = {
                     },
                 ],
                 [fxParamsList.CompRatio]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/ratio',
+                    },
+                ],
+                [fxParamsList.CompAttack]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/attack',
+                    },
+                ],
+                [fxParamsList.CompHold]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/hold',
+                    },
+                ],
+                [fxParamsList.CompKnee]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/knee',
+                    },
+                ],
+                [fxParamsList.CompMakeUp]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/mgain',
+                    },
+                ],
+                [fxParamsList.CompRelease]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/ratio',
                     },

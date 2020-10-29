@@ -11,9 +11,14 @@ export enum fxParamsList {
     EqQ02,
     EqQ03,
     EqQ04,
+    DelayTime,
     CompThrs,
     CompRatio,
-    DelayTime,
+    CompKnee,
+    CompMakeUp,
+    CompAttack,
+    CompHold,
+    CompRelease,
 }
 export interface IMixerProtocolGeneric {
     protocol: string
