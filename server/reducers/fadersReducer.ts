@@ -25,9 +25,6 @@ import {
     TOGGLE_PST,
     TOGGLE_VO,
     X_MIX,
-    SET_FADER_THRESHOLD,
-    SET_FADER_RATIO,
-    SET_FADER_DELAY_TIME,
     SET_FADER_FX,
     SET_FADER_MONITOR,
     SET_SINGLE_FADER_STATE,
@@ -57,10 +54,7 @@ export interface IFader {
     pflOn: boolean
     muteOn: boolean
     amixOn: boolean
-    fxParam: Array<IFxParam>
-    threshold: number
-    ratio: number
-    delayTime: number
+    [fxparam: number]: Array<number>
     monitor: number
     showChannel: boolean
     showInMiniMonitor: boolean
@@ -81,11 +75,6 @@ export interface IFader {
 export interface IVuMeters {
     vuVal: number
     reductionVal: number
-}
-
-export interface IFxParam {
-    key: fxParamsList
-    value: number
 }
 
 const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
@@ -109,18 +98,6 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
             pflOn: false,
             muteOn: false,
             amixOn: false,
-            fxParam: Object.keys(fxParamsList)
-                .filter((key) => {
-                    return !isNaN(Number(key))
-                })
-                .map(
-                    (key): IFxParam => {
-                        return { key: Number(key), value: NaN }
-                    }
-                ),
-            threshold: 0.75,
-            ratio: 0.75,
-            delayTime: 0,
             monitor: index + 1, // route fader - aux 1:1 as default
             showChannel: true,
             showInMiniMonitor: false,
@@ -202,23 +179,13 @@ export const faders = (
                 action.selected
             )
             return nextState
-        case SET_FADER_THRESHOLD:
-            nextState[0].fader[action.channel].threshold = parseFloat(
-                action.level
-            )
-            return nextState
-        case SET_FADER_RATIO:
-            nextState[0].fader[action.channel].ratio = parseFloat(action.level)
-            return nextState
-        case SET_FADER_DELAY_TIME:
-            nextState[0].fader[action.channel].delayTime = parseFloat(
-                action.delayTime
-            )
-            return nextState
         case SET_FADER_FX:
-            nextState[0].fader[action.channel].fxParam[
-                action.fxParam
-            ].value = parseFloat(action.level)
+            if (!nextState[0].fader[action.channel][action.fxParam]) {
+                nextState[0].fader[action.channel][action.fxParam] = []
+            }
+            nextState[0].fader[action.channel][action.fxParam][0] = parseFloat(
+                action.level ?? 0
+            )
             return nextState
         case SET_FADER_MONITOR:
             nextState[0].fader[action.channel].monitor = action.auxIndex

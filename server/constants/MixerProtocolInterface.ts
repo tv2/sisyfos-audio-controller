@@ -11,6 +11,9 @@ export enum fxParamsList {
     EqQ02,
     EqQ03,
     EqQ04,
+    CompThrs,
+    CompRatio,
+    DelayTime,
 }
 export interface IMixerProtocolGeneric {
     protocol: string
@@ -54,10 +57,7 @@ export interface IChannelTypes {
         CHANNEL_NAME?: Array<IMixerMessageProtocol>
         PFL?: Array<IMixerMessageProtocol>
         NEXT_SEND?: Array<IMixerMessageProtocol>
-        THRESHOLD?: Array<IMixerMessageProtocol>
-        RATIO?: Array<IMixerMessageProtocol>
-        DELAY_TIME?: Array<IMixerMessageProtocol>
-        FX_PARAMS?: Array<IFxProtocol>
+        [FX_PARAM: number]: Array<IMixerMessageProtocol>
         AUX_LEVEL?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
@@ -71,10 +71,7 @@ export interface IChannelTypes {
         PFL_ON?: Array<IMixerMessageProtocol>
         PFL_OFF?: Array<IMixerMessageProtocol>
         NEXT_SEND?: Array<IMixerMessageProtocol>
-        THRESHOLD?: Array<IMixerMessageProtocol>
-        RATIO?: Array<IMixerMessageProtocol>
-        DELAY_TIME?: Array<IMixerMessageProtocol>
-        FX_PARAMS?: Array<IFxProtocol>
+        [FX_PARAM: number]: Array<IMixerMessageProtocol>
         AUX_LEVEL?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
         CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
@@ -90,6 +87,7 @@ interface IMixerMessageProtocol {
     max?: number
     zero?: number
     label?: string
+    valueLabel?: string
     minLabel?: number
     maxLabel?: number
     zeroLabel?: number

@@ -79,159 +79,140 @@ export const MidasMaster: IMixerProtocol = {
                 CHANNEL_NAME: [emptyMixerMessage()], //[{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
                 PFL: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [
+
+                [fxParamsList.CompThrs]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/thr',
                         minLabel: -60,
                         maxLabel: 0,
+                        label: 'Threshold',
+                        valueLabel: ' dB',
                     },
                 ],
-                RATIO: [
+                [fxParamsList.CompRatio]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/ratio',
                         minLabel: 1,
                         maxLabel: 10,
+                        label: 'Ratio',
+                        valueLabel: ' :1',
                     },
                 ],
-                DELAY_TIME: [
+                [fxParamsList.DelayTime]: [
                     {
                         mixerMessage: '/ch/{channel}/delay/time',
                         minLabel: 0,
                         maxLabel: 500,
+                        label: 'Time',
+                        valueLabel: ' ms',
                     },
                 ],
-                FX_PARAMS: [
+                [fxParamsList.EqGain01]: [
                     {
-                        key: fxParamsList.EqGain01,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/1/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                                label: 'Low',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/1/g',
+                        minLabel: -15,
+                        maxLabel: 15,
+                        label: 'Low',
+                        valueLabel: ' dB',
                     },
+                ],
+                [fxParamsList.EqGain02]: [
                     {
-                        key: fxParamsList.EqGain02,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/2/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                                label: 'LoMid',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/2/g',
+                        minLabel: -15,
+                        maxLabel: 15,
+                        label: 'LoMid',
+                        valueLabel: ' dB',
                     },
+                ],
+                [fxParamsList.EqGain03]: [
                     {
-                        key: fxParamsList.EqGain03,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/3/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                                label: 'HiMid',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/3/g',
+                        minLabel: -15,
+                        maxLabel: 15,
+                        label: 'HiMid',
+                        valueLabel: ' dB',
                     },
+                ],
+                [fxParamsList.EqGain04]: [
                     {
-                        key: fxParamsList.EqGain04,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/4/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                                label: 'High',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/4/g',
+                        minLabel: -15,
+                        maxLabel: 15,
+                        label: 'High',
+                        valueLabel: ' dB',
                     },
+                ],
+                [fxParamsList.EqFreq01]: [
                     {
-                        key: fxParamsList.EqFreq01,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/1/f',
-                                minLabel: 20,
-                                maxLabel: 20000,
-                                label: 'Low Freq',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/1/f',
+                        minLabel: 20,
+                        maxLabel: 20000,
+                        label: 'Low Freq',
+                        valueLabel: ' Freq',
                     },
+                ],
+                [fxParamsList.EqFreq02]: [
                     {
-                        key: fxParamsList.EqFreq02,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/2/f',
-                                minLabel: 20,
-                                maxLabel: 20000,
-                                label: 'LoMid freq',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/2/f',
+                        minLabel: 20,
+                        maxLabel: 20000,
+                        label: 'LoMid freq',
+                        valueLabel: ' Freq',
                     },
+                ],
+                [fxParamsList.EqFreq03]: [
                     {
-                        key: fxParamsList.EqFreq03,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/3/f',
-                                minLabel: 20,
-                                maxLabel: 20000,
-                                label: 'HiMid freq',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/3/f',
+                        minLabel: 20,
+                        maxLabel: 20000,
+                        label: 'HiMid freq',
+                        valueLabel: ' Freq',
                     },
+                ],
+                [fxParamsList.EqFreq04]: [
                     {
-                        key: fxParamsList.EqFreq04,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/4/f',
-                                minLabel: 20,
-                                maxLabel: 20000,
-                                label: 'High freq',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/4/f',
+                        minLabel: 20,
+                        maxLabel: 20000,
+                        label: 'High freq',
+                        valueLabel: ' Freq',
                     },
+                ],
+                [fxParamsList.EqQ01]: [
                     {
-                        key: fxParamsList.EqQ01,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/1/q',
-                                minLabel: 0.3,
-                                maxLabel: 10,
-                                label: 'Low Q',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/1/q',
+                        minLabel: 0.3,
+                        maxLabel: 10,
+                        label: 'Low Q',
+                        valueLabel: ' Q',
                     },
+                ],
+                [fxParamsList.EqQ02]: [
                     {
-                        key: fxParamsList.EqQ02,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/2/q',
-                                minLabel: 0.3,
-                                maxLabel: 10,
-                                label: 'LoMid Q',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/2/q',
+                        minLabel: 0.3,
+                        maxLabel: 10,
+                        label: 'LoMid Q',
+                        valueLabel: ' Q',
                     },
+                ],
+                [fxParamsList.EqQ03]: [
                     {
-                        key: fxParamsList.EqQ03,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/3/q',
-                                minLabel: 0.3,
-                                maxLabel: 10,
-                                label: 'HiMid Q',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/3/q',
+                        minLabel: 0.3,
+                        maxLabel: 10,
+                        label: 'HiMid Q',
+                        valueLabel: ' Q',
                     },
+                ],
+                [fxParamsList.EqQ04]: [
                     {
-                        key: fxParamsList.EqQ04,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/4/q',
-                                minLabel: 0.3,
-                                maxLabel: 10,
-                                label: 'High Q',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/4/q',
+                        minLabel: 0.3,
+                        maxLabel: 10,
+                        label: 'High Q',
+                        valueLabel: ' Q',
                     },
                 ],
                 AUX_LEVEL: [
@@ -257,117 +238,79 @@ export const MidasMaster: IMixerProtocol = {
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [
+                [fxParamsList.CompThrs]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/thr',
                     },
                 ],
-                RATIO: [
+                [fxParamsList.CompRatio]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/ratio',
                     },
                 ],
-                DELAY_TIME: [
+                [fxParamsList.DelayTime]: [
                     {
                         mixerMessage: '/ch/{channel}/delay/time',
                     },
                 ],
-                FX_PARAMS: [
+                [fxParamsList.EqGain01]: [
                     {
-                        key: fxParamsList.EqGain01,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/1/g',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/1/g',
                     },
+                ],
+                [fxParamsList.EqGain02]: [
                     {
-                        key: fxParamsList.EqGain02,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/2/g',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/2/g',
                     },
+                ],
+                [fxParamsList.EqGain03]: [
                     {
-                        key: fxParamsList.EqGain03,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/3/g',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/3/g',
                     },
+                ],
+                [fxParamsList.EqGain04]: [
                     {
-                        key: fxParamsList.EqGain04,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/4/g',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/4/g',
                     },
+                ],
+                [fxParamsList.EqFreq01]: [
                     {
-                        key: fxParamsList.EqFreq01,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/1/f',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/1/f',
                     },
+                ],
+                [fxParamsList.EqFreq02]: [
                     {
-                        key: fxParamsList.EqFreq02,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/2/f',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/2/f',
                     },
+                ],
+                [fxParamsList.EqFreq03]: [
                     {
-                        key: fxParamsList.EqFreq03,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/3/f',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/3/f',
                     },
+                ],
+                [fxParamsList.EqFreq04]: [
                     {
-                        key: fxParamsList.EqFreq04,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/4/f',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/4/f',
                     },
+                ],
+                [fxParamsList.EqQ01]: [
                     {
-                        key: fxParamsList.EqQ01,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/1/q',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/1/q',
                     },
+                ],
+                [fxParamsList.EqQ02]: [
                     {
-                        key: fxParamsList.EqQ02,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/2/q',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/2/q',
                     },
+                ],
+                [fxParamsList.EqQ03]: [
                     {
-                        key: fxParamsList.EqQ03,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/3/q',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/3/q',
                     },
+                ],
+                [fxParamsList.EqQ04]: [
                     {
-                        key: fxParamsList.EqQ04,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/4/q',
-                            },
-                        ],
+                        mixerMessage: '/ch/{channel}/eq/4/q',
                     },
                 ],
                 AUX_LEVEL: [

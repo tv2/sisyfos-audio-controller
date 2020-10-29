@@ -10,11 +10,8 @@ import {
     storeShowMonitorOptions,
     storeShowChanStripFull,
 } from '../../server/reducers/settingsActions'
-import { IFader, IFxParam } from '../../server/reducers/fadersReducer'
+import { IFader } from '../../server/reducers/fadersReducer'
 import {
-    SOCKET_SET_THRESHOLD,
-    SOCKET_SET_RATIO,
-    SOCKET_SET_DELAY_TIME,
     SOCKET_SET_FX,
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_INPUT_GAIN,
@@ -25,7 +22,6 @@ import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
 import {
     fxParamsList,
-    IFxProtocol,
 } from '../../server/constants/MixerProtocolInterface'
 import { IChannel } from '../../server/reducers/channelsReducer'
 
@@ -35,7 +31,6 @@ interface IChanStripFullInjectProps {
     numberOfChannelsInType: Array<number>
     channel: IChannel[]
     fader: IFader[]
-    fxParam: IFxParam[]
     auxSendIndex: number
     offtubeMode: boolean
 }
@@ -140,30 +135,12 @@ class ChanStripFull extends React.PureComponent<
             level: parseFloat(event),
         })
     }
-    handleThreshold(event: any) {
-        window.socketIoClient.emit(SOCKET_SET_THRESHOLD, {
-            channel: this.props.faderIndex,
-            level: parseFloat(event),
-        })
-    }
-    handleRatio(event: any) {
-        window.socketIoClient.emit(SOCKET_SET_RATIO, {
-            channel: this.props.faderIndex,
-            level: parseFloat(event),
-        })
-    }
-
-    handleDelay(event: any) {
-        window.socketIoClient.emit(SOCKET_SET_DELAY_TIME, {
-            channel: this.props.faderIndex,
-            delayTime: parseFloat(event),
-        })
-    }
 
     changeDelay(currentValue: number, addValue: number) {
-        window.socketIoClient.emit(SOCKET_SET_DELAY_TIME, {
+        window.socketIoClient.emit(SOCKET_SET_FX, {
+            fxParam: fxParamsList.DelayTime,
             channel: this.props.faderIndex,
-            delayTime: currentValue + addValue,
+            level: currentValue + addValue,
         })
     }
 
@@ -256,8 +233,7 @@ class ChanStripFull extends React.PureComponent<
         // Freq on zero gain line:
         context.strokeText(
             String(
-                window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[0]
-                    .params[fxParamsList.EqGain01].maxLabel
+                window.mixerProtocol.channelTypes[0].fromMixer[fxParamsList.EqGain01][0].maxLabel
             ) + ' dB',
             120,
             20
@@ -265,8 +241,7 @@ class ChanStripFull extends React.PureComponent<
         context.strokeText('0 dB', 120, 210)
         context.strokeText(
             String(
-                window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[0]
-                    .params[fxParamsList.EqGain01].maxLabel
+                window.mixerProtocol.channelTypes[0].fromMixer[fxParamsList.EqGain01][0].maxLabel
             ) + ' dB',
             120,
             400
@@ -280,14 +255,14 @@ class ChanStripFull extends React.PureComponent<
                 <canvas className="eq-canvas" ref={this.setRef}></canvas>
                 <div className="title">EQUALIZER</div>
                 <div className="eq-window">
-                    {window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.filter(
-                        (param) => {
-                            return fxParamsList[param.key].includes('EqGain')
-                        }
-                    ).map((param: IFxProtocol) => {
+                    {Object.keys(fxParamsList).filter((fxKey: number | string)=> {
+                        return String(fxKey).includes('EqGain')
+                    }
+                    ).map((keyName: string) => {
+                        let fxKey = keyName as keyof typeof fxParamsList
                         let eqFreqKey =
                             fxParamsList[
-                                String(fxParamsList[param.key]).replace(
+                                fxKey.replace(
                                     'EqGain',
                                     'EqFreq'
                                 ) as keyof typeof fxParamsList
@@ -296,18 +271,18 @@ class ChanStripFull extends React.PureComponent<
                             <Draggable
                                 position={{
                                     x: this.valueToFreqPosition(
-                                        this.props.fxParam[eqFreqKey].value
+                                        this.props.fader[this.props.faderIndex][eqFreqKey]?.[0] ?? 0
                                     ),
                                     y:
                                         EQ_Y_SIZE -
-                                        this.props.fxParam[param.key].value *
+                                        this.props.fader[this.props.faderIndex][fxParamsList[fxKey]]?.[0] ?? 0 *
                                             EQ_Y_SIZE,
                                 }}
                                 grid={[1, 1]}
                                 scale={100}
                                 onDrag={(event) =>
                                     this.handleDragCaptureEq(
-                                        param.key,
+                                        fxParamsList[fxKey],
                                         event as MouseEvent
                                     )
                                 }
@@ -315,7 +290,7 @@ class ChanStripFull extends React.PureComponent<
                                 <div
                                     className="dot"
                                     style={{
-                                        color: String(EqColors[param.key]),
+                                        color: String(EqColors[fxParamsList[fxKey]]),
                                     }}
                                 >
                                     O
@@ -325,36 +300,35 @@ class ChanStripFull extends React.PureComponent<
                     })}
                 </div>
                 <div className="eq-text">
-                    {window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.filter(
-                        (param) => {
-                            return fxParamsList[param.key].includes('EqGain')
-                        }
-                    ).map((param: IFxProtocol) => {
+                {Object.keys(fxParamsList).filter((fxKey: number | string)=> {
+                        return String(fxKey).includes('EqGain')
+                    }
+                    ).map((keyName: string) => {
+                        let fxKey = keyName as keyof typeof fxParamsList
                         let eqFreqKey =
                             fxParamsList[
-                                String(fxParamsList[param.key]).replace(
+                                fxKey.replace(
                                     'EqGain',
                                     'EqFreq'
                                 ) as keyof typeof fxParamsList
                             ]
                         let eqQKey =
                             fxParamsList[
-                                String(fxParamsList[param.key]).replace(
+                                fxKey.replace(
                                     'EqGain',
                                     'EqQ'
                                 ) as keyof typeof fxParamsList
                             ]
                         return (
-                            <div style={{ color: EqColors[param.key] }}>
+                            <div style={{ color: EqColors[fxParamsList[fxKey]] }}>
                                 <br />
-                                {param.params[0].label}
                                 {'  Gain : '}
                                 {Math.round(
-                                    100 * this.props.fxParam[param.key].value
+                                    100 * this.props.fader[this.props.faderIndex][fxParamsList[fxKey]]?.[0] ?? 0
                                 ) / 100}
                                 {'  Freq :'}
                                 {Math.round(
-                                    100 * this.props.fxParam[eqFreqKey].value
+                                    100 * this.props.fader[this.props.faderIndex][eqFreqKey]?.[0] ?? 0
                                 ) / 100}
 
                                 {this.qFader(eqQKey)}
@@ -448,82 +422,6 @@ class ChanStripFull extends React.PureComponent<
         )
     }
 
-    threshold() {
-        let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer.THRESHOLD?.[0]
-                .maxLabel ?? 1
-        let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer.THRESHOLD?.[0]
-                .minLabel ?? 0
-        return (
-            <div className="parameter-text">
-                Threshold
-                <div className="parameter-mini-text">{maxLabel + ' dB'}</div>
-                <ReactSlider
-                    className="chan-strip-fader"
-                    thumbClassName="chan-strip-thumb"
-                    orientation="vertical"
-                    invert
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={this.props.fader[this.props.faderIndex].threshold}
-                    renderThumb={(props: any, state: any) => (
-                        <div {...props}>
-                            {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            )}
-                            dB
-                        </div>
-                    )}
-                    onChange={(event: any) => {
-                        this.handleThreshold(event)
-                    }}
-                />
-                <div className="parameter-mini-text">{minLabel + ' dB'}</div>
-            </div>
-        )
-    }
-
-    ratio() {
-        let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer.RATIO?.[0]
-                .maxLabel ?? 1
-        let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer.RATIO?.[0]
-                .minLabel ?? 0
-        return (
-            <div className="parameter-text">
-                Ratio
-                <div className="parameter-mini-text">{maxLabel + ':1'}</div>
-                <ReactSlider
-                    className="chan-strip-fader"
-                    thumbClassName="chan-strip-thumb"
-                    orientation="vertical"
-                    invert
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={this.props.fader[this.props.faderIndex].ratio}
-                    renderThumb={(props: any, state: any) => (
-                        <div {...props}>
-                            {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            ) + ':1'}
-                        </div>
-                    )}
-                    onChange={(event: any) => {
-                        this.handleRatio(event)
-                    }}
-                />
-                <div className="parameter-mini-text">{minLabel + ':1'}</div>
-            </div>
-        )
-    }
 
     gainReduction() {
         return (
@@ -535,10 +433,10 @@ class ChanStripFull extends React.PureComponent<
     }
     delay() {
         let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer.DELAY_TIME?.[0]
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParamsList.DelayTime][0]
                 .maxLabel ?? 1
         let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer.DELAY_TIME?.[0]
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParamsList.DelayTime][0]
                 .minLabel ?? 0
         return (
             <React.Fragment>
@@ -556,7 +454,7 @@ class ChanStripFull extends React.PureComponent<
                         max={1}
                         step={0.01}
                         value={
-                            this.props.fader[this.props.faderIndex].delayTime ||
+                            this.props.fader[this.props.faderIndex][fxParamsList.DelayTime] ||
                             0
                         }
                         renderThumb={(props: any, state: any) => (
@@ -570,7 +468,7 @@ class ChanStripFull extends React.PureComponent<
                             </div>
                         )}
                         onChange={(event: any) => {
-                            this.handleDelay(event)
+                            this.handleFx(fxParamsList.DelayTime, event)
                         }}
                     />
                     <div className="parameter-mini-text">
@@ -583,7 +481,7 @@ class ChanStripFull extends React.PureComponent<
                         onClick={() => {
                             this.changeDelay(
                                 this.props.fader[this.props.faderIndex]
-                                    .delayTime || 0,
+                                    [fxParamsList.DelayTime]?.[0] || 0,
                                 10 / 500
                             )
                         }}
@@ -595,7 +493,7 @@ class ChanStripFull extends React.PureComponent<
                         onClick={() => {
                             this.changeDelay(
                                 this.props.fader[this.props.faderIndex]
-                                    .delayTime || 0,
+                                [fxParamsList.DelayTime]?.[0] || 0,
                                 1 / 500
                             )
                         }}
@@ -607,7 +505,7 @@ class ChanStripFull extends React.PureComponent<
                         onClick={() => {
                             this.changeDelay(
                                 this.props.fader[this.props.faderIndex]
-                                    .delayTime || 0,
+                                [fxParamsList.DelayTime]?.[0] || 0,
                                 -1 / 500
                             )
                         }}
@@ -619,7 +517,7 @@ class ChanStripFull extends React.PureComponent<
                         onClick={() => {
                             this.changeDelay(
                                 this.props.fader[this.props.faderIndex]
-                                    .delayTime || 0,
+                                [fxParamsList.DelayTime]?.[0] || 0,
                                 -10 / 500
                             )
                         }}
@@ -632,15 +530,15 @@ class ChanStripFull extends React.PureComponent<
     }
     qFader(fxParam: fxParamsList) {
         let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam]
-                .params[0].maxLabel ?? 1
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
+                .maxLabel ?? 1
         let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam]
-                .params[0].minLabel ?? 0
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
+                .minLabel ?? 0
         return (
             <div className="parameter-text">
                 <div className="parameter-mini-text">
-                    Q :{this.props.fxParam[fxParam].value}
+                    Q :{this.props.fader[0][fxParam]?.[0]}
                 </div>
                 <ReactSlider
                     className="chan-strip-q"
@@ -649,7 +547,7 @@ class ChanStripFull extends React.PureComponent<
                     min={0}
                     max={1}
                     step={0.01}
-                    value={this.props.fxParam[fxParam].value}
+                    value={this.props.fader[0][fxParam]?.[0]}
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
                             {Math.round(
@@ -668,19 +566,19 @@ class ChanStripFull extends React.PureComponent<
         )
     }
 
-    fxFader(fxParam: fxParamsList) {
+    fxParamFader(fxParam: fxParamsList) {
         let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam]
-                .params[0].maxLabel ?? 1
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]
+                [0].maxLabel ?? 1
         let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[fxParam]
-                .params[0].minLabel ?? 0
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]
+                [0].minLabel ?? 0
         return (
             <div className="parameter-text">
                 {
-                    window.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS?.[
+                    window.mixerProtocol.channelTypes[0].fromMixer[
                         fxParam
-                    ].params[0].label
+                    ][0].label
                 }
                 <div className="parameter-mini-text">{maxLabel}</div>
                 <ReactSlider
@@ -691,7 +589,8 @@ class ChanStripFull extends React.PureComponent<
                     min={0}
                     max={1}
                     step={0.01}
-                    value={this.props.fxParam[fxParam].value}
+                    value={this.props.fader[this.props.faderIndex][fxParam]?.[0] ??
+                        0 }
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
                             {Math.round(
@@ -755,21 +654,21 @@ class ChanStripFull extends React.PureComponent<
                 window.mixerProtocol.channelTypes[0].toMixer
                     .CHANNEL_INPUT_SELECTOR
             const hasComp =
-                window.mixerProtocol.channelTypes[0].toMixer.THRESHOLD ||
-                window.mixerProtocol.channelTypes[0].toMixer.DELAY_TIME
+                window.mixerProtocol.channelTypes[0].toMixer[fxParamsList.CompThrs] ||
+                window.mixerProtocol.channelTypes[0].toMixer[fxParamsList.CompRatio]
             const hasDelay =
-                window.mixerProtocol.channelTypes[0].toMixer.DELAY_TIME
+                window.mixerProtocol.channelTypes[0].toMixer[fxParamsList.DelayTime]
             const hasEq =
-                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[
+                window.mixerProtocol.channelTypes[0].toMixer[
                     fxParamsList.EqGain01
                 ] ||
-                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[
+                window.mixerProtocol.channelTypes[0].toMixer[
                     fxParamsList.EqGain02
                 ] ||
-                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[
+                window.mixerProtocol.channelTypes[0].toMixer[
                     fxParamsList.EqGain03
                 ] ||
-                window.mixerProtocol.channelTypes[0].toMixer.FX_PARAMS?.[
+                window.mixerProtocol.channelTypes[0].toMixer[
                     fxParamsList.EqGain04
                 ]
             const hasMonitorSends = this.props.channel.find(
@@ -794,9 +693,13 @@ class ChanStripFull extends React.PureComponent<
                                 <div className="item">
                                     <div className="title">COMPRESSOR</div>
                                     <div className="content">
-                                        {this.threshold()}
+                                        {this.fxParamFader(
+                                            fxParamsList.CompThrs
+                                        )}
                                         <p className="zero-comp">______</p>
-                                        {this.ratio()}
+                                        {this.fxParamFader(
+                                            fxParamsList.CompRatio
+                                        )}
                                         <p className="zero-comp">______</p>
                                         {this.gainReduction()}
                                     </div>
@@ -914,7 +817,6 @@ const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
         channel: state.channels[0].chConnection[0].channel,
         fader: state.faders[0].fader,
         auxSendIndex: -1,
-        fxParam: [],
         offtubeMode: state.settings[0].offtubeMode,
     }
     if (props.faderIndex >= 0) {
@@ -925,7 +827,6 @@ const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
                 state.settings[0].mixers[0].numberOfChannelsInType,
             channel: state.channels[0].chConnection[0].channel,
             fader: state.faders[0].fader,
-            fxParam: state.faders[0].fader[props.faderIndex].fxParam,
             auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,
             offtubeMode: state.settings[0].offtubeMode,
         }
