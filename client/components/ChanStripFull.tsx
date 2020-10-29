@@ -271,11 +271,11 @@ class ChanStripFull extends React.PureComponent<
                             <Draggable
                                 position={{
                                     x: this.valueToFreqPosition(
-                                        this.props.fader[this.props.faderIndex][eqFreqKey]?.[0] ?? 0
+                                        (this.props.fader[this.props.faderIndex][eqFreqKey]?.[0] ?? 0)
                                     ),
                                     y:
                                         EQ_Y_SIZE -
-                                        this.props.fader[this.props.faderIndex][fxParamsList[fxKey]]?.[0] ?? 0 *
+                                        (this.props.fader[this.props.faderIndex][fxParamsList[fxKey]]?.[0] ?? 0) *
                                             EQ_Y_SIZE,
                                 }}
                                 grid={[1, 1]}
