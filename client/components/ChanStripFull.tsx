@@ -432,49 +432,9 @@ class ChanStripFull extends React.PureComponent<
         )
     }
     delay() {
-        let maxLabel: number =
-            window.mixerProtocol.channelTypes[0].fromMixer[fxParamsList.DelayTime][0]
-                .maxLabel ?? 1
-        let minLabel =
-            window.mixerProtocol.channelTypes[0].fromMixer[fxParamsList.DelayTime][0]
-                .minLabel ?? 0
         return (
             <React.Fragment>
-                <div className="parameter-text">
-                    Time
-                    <div className="parameter-mini-text">
-                        {maxLabel + ' ms'}
-                    </div>
-                    <ReactSlider
-                        className="chan-strip-fader"
-                        thumbClassName="chan-strip-thumb"
-                        orientation="vertical"
-                        invert
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        value={
-                            this.props.fader[this.props.faderIndex][fxParamsList.DelayTime] ||
-                            0
-                        }
-                        renderThumb={(props: any, state: any) => (
-                            <div {...props}>
-                                {Math.round(
-                                    (maxLabel - minLabel) *
-                                        parseFloat(state.valueNow) +
-                                        minLabel
-                                )}
-                                ms
-                            </div>
-                        )}
-                        onChange={(event: any) => {
-                            this.handleFx(fxParamsList.DelayTime, event)
-                        }}
-                    />
-                    <div className="parameter-mini-text">
-                        {minLabel + ' ms'}
-                    </div>
-                </div>
+                {this.fxParamFader(fxParamsList.DelayTime)}
                 <div className="delayButtons">
                     <button
                         className="delayTime"
