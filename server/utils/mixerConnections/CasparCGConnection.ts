@@ -15,11 +15,11 @@ import {
 } from '../../constants/MixerProtocolInterface'
 import { IChannel } from '../../reducers/channelsReducer'
 import { storeSetChPrivate } from '../../reducers/channelActions'
-import { storeFaderLabel, storeVuLevel } from '../../reducers/faderActions'
+import { storeFaderLabel } from '../../reducers/faderActions'
 import { logger } from '../logger'
-import { SOCKET_SET_VU } from '../../constants/SOCKET_IO_DISPATCHERS'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { IFader } from '../../reducers/fadersReducer'
+import { sendVuLevel, VuType } from '../vuServer'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -120,17 +120,30 @@ export class CasparCGConnection {
                     logger.info('Receiving state of mixer')
                 })
                 .on('message', (message: any) => {
-                    const index = this.checkOscCommand(
-                        message.address,
-                        this.oscCommandMap.CHANNEL_VU
-                    )
-                    if (index !== undefined && message.args) {
-                        store.dispatch(storeVuLevel(index, message.args[0]))
-                        socketServer.emit(SOCKET_SET_VU, {
-                            faderIndex: index,
-                            level: calcVuLevel(message.args[0]),
-                        })
-                    } else if (this.mixerProtocol.sourceOptions) {
+                    for (const channelIndex in this.mixerProtocol.fromMixer
+                        .CHANNEL_VU) {
+                        for (const vuChannelIndex in this.mixerProtocol
+                            .fromMixer.CHANNEL_VU[channelIndex]) {
+                            if (
+                                message.address ===
+                                this.mixerProtocol.fromMixer.CHANNEL_VU[
+                                    channelIndex
+                                ][vuChannelIndex]
+                            ) {
+                                const faderIndex =
+                                    state.channels[0].chConnection[
+                                        this.mixerIndex
+                                    ].channel[channelIndex].assignedFader
+                                sendVuLevel(
+                                    faderIndex,
+                                    VuType.Channel,
+                                    parseInt(vuChannelIndex),
+                                    calcVuLevel(message.args[0])
+                                )
+                            }
+                        }
+                    }
+                    if (this.mixerProtocol.sourceOptions) {
                         const m = message.address.split('/')
 
                         if (
