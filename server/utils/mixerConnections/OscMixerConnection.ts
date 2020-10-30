@@ -443,38 +443,39 @@ export class OscMixerConnection {
     }
 
     checkFxCommands(message: any) {
-        Object.keys(fxParamsList)
-            .filter((fxKey: number | string) => {
-                return typeof fxKey === 'string'
-            })
-            .forEach((keyName: string) => {
-                let fxKey = keyName as keyof typeof fxParamsList
-                if (
-                    this.checkOscCommand(
-                        message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer[
-                            fxParamsList[fxKey]
-                        ][0].mixerMessage
-                    )
-                ) {
-                    let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch(
-                        storeFaderFx(
-                            fxParamsList[fxKey],
-                            state.channels[0].chConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader,
-                            message.args[0]
-                        )
-                    )
-                    global.mainThreadHandler.updatePartialStore(
+        Object.keys(fxParamsList).forEach((keyName: string) => {
+            if (!isNaN(parseFloat(keyName))) {
+                return
+            }
+
+            let fxKey = keyName as keyof typeof fxParamsList
+            if (
+                this.checkOscCommand(
+                    message.address,
+                    this.mixerProtocol.channelTypes[0].fromMixer[
+                        fxParamsList[fxKey]
+                    ][0].mixerMessage
+                )
+            ) {
+                let ch = message.address.split('/')[this.cmdChannelIndex]
+                store.dispatch(
+                    storeFaderFx(
+                        fxParamsList[fxKey],
                         state.channels[0].chConnection[this.mixerIndex].channel[
                             ch - 1
-                        ].assignedFader
+                        ].assignedFader,
+                        message.args[0]
                     )
-                }
+                )
+                global.mainThreadHandler.updatePartialStore(
+                    state.channels[0].chConnection[this.mixerIndex].channel[
+                        ch - 1
+                    ].assignedFader
+                )
+            }
 
-                console.log(fxKey)
-            })
+            console.log(fxKey)
+        })
     }
 
     checkOscCommand(message: string, command: string): boolean {

@@ -146,6 +146,8 @@ class ChanStripFull extends React.PureComponent<
     }
 
     handleFx(fxParam: fxParamsList, level: any) {
+        if (level < 0) { level = 0}
+        if (level > 1) { level = 1}
         window.socketIoClient.emit(SOCKET_SET_FX, {
             fxParam: fxParam,
             channel: this.props.faderIndex,
