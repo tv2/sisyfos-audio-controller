@@ -91,12 +91,7 @@ class ChanStripFull extends React.PureComponent<
     IChanStripFullProps & IChanStripFullInjectProps & Store
 > {
     canvas: HTMLCanvasElement | undefined
-    state = {
-        dragStartX: 0,
-        dragStartY: 0,
-        dragCurrentX: 0,
-        dragCurrentY: 0,
-    }
+
     constructor(props: any) {
         super(props)
     }
@@ -238,7 +233,7 @@ class ChanStripFull extends React.PureComponent<
             String(
                 window.mixerProtocol.channelTypes[0].fromMixer[
                     fxParamsList.EqGain01
-                ][0].maxLabel
+                ]?.[0].maxLabel
             ) + ' dB',
             120,
             20
@@ -248,7 +243,7 @@ class ChanStripFull extends React.PureComponent<
             String(
                 window.mixerProtocol.channelTypes[0].fromMixer[
                     fxParamsList.EqGain01
-                ][0].maxLabel
+                ]?.[0].maxLabel
             ) + ' dB',
             120,
             400
