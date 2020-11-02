@@ -158,7 +158,7 @@ class ChanStripFull extends React.PureComponent<
         })
     }
 
-    handleDragCaptureEq(key: number, event: MouseEvent) {
+    handleDragCaptureEq(key: number, event: any) {
         let eqFreqKey =
             fxParamsList[
                 String(fxParamsList[key]).replace(
@@ -166,11 +166,12 @@ class ChanStripFull extends React.PureComponent<
                     'EqFreq'
                 ) as keyof typeof fxParamsList
             ]
-
-        this.handleFx(eqFreqKey, this.freqPositionToValue(event.clientX))
+        let eventX = event.clientX ?? event.touches[0].clientX
+        let eventY = event.clientY ?? event.touches[0].clientY
+        this.handleFx(eqFreqKey, this.freqPositionToValue(eventX))
         this.handleFx(
             key,
-            Math.round((100 * (EQ_Y_OFFSET - event.clientY)) / EQ_Y_SIZE) / 100
+            Math.round((100 * (EQ_Y_OFFSET - eventY)) / EQ_Y_SIZE) / 100
         )
     }
 
