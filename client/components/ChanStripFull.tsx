@@ -52,27 +52,35 @@ interface IFreqLabels {
 const EQ_FREQ_LABELS: IFreqLabels[] = [
     {
         label: '50',
-        posY: 300,
+        posY: 400,
     },
     {
         label: '100',
         posY: 550,
     },
     {
+        label: '250',
+        posY: 700,
+    },
+    {
         label: '500',
-        posY: 800,
+        posY: 850,
     },
     {
         label: '1k',
-        posY: 1050,
+        posY: 1000,
+    },
+    {
+        label: '2k',
+        posY: 1150,
     },
     {
         label: '5k',
-        posY: 1300,
+        posY: 1320,
     },
     {
         label: '10k',
-        posY: 1550,
+        posY: 1460,
     },
 ]
 
