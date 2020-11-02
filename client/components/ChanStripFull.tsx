@@ -22,6 +22,7 @@ import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
 import { fxParamsList } from '../../server/constants/MixerProtocolInterface'
 import { IChannel } from '../../server/reducers/channelsReducer'
+import { storeFaderFx } from '../../server/reducers/faderActions'
 
 interface IChanStripFullInjectProps {
     label: string
@@ -143,6 +144,7 @@ class ChanStripFull extends React.PureComponent<
     handleFx(fxParam: fxParamsList, level: any) {
         if (level < 0) { level = 0}
         if (level > 1) { level = 1}
+//        window.storeRedux.dispatch(storeFaderFx(fxParam, this.props.faderIndex, parseFloat(level)))
         window.socketIoClient.emit(SOCKET_SET_FX, {
             fxParam: fxParam,
             channel: this.props.faderIndex,
@@ -284,21 +286,21 @@ class ChanStripFull extends React.PureComponent<
                                     x: this.valueToFreqPosition(
                                         this.props.fader[this.props.faderIndex][
                                             eqFreqKey
-                                        ]?.[0] ?? 0
+                                        ]?.[0]
                                     ),
                                     y:
                                         EQ_Y_SIZE -
                                         (this.props.fader[
                                             this.props.faderIndex
-                                        ][fxParamsList[fxKey]]?.[0] ?? 0) *
+                                        ][fxParamsList[fxKey]]?.[0]) *
                                             EQ_Y_SIZE,
                                 }}
-                                grid={[1, 1]}
+                                grid={[20, 20]}
                                 scale={100}
                                 onDrag={(event) =>
                                     this.handleDragCaptureEq(
                                         fxParamsList[fxKey],
-                                        event as MouseEvent
+                                        event
                                     )
                                 }
                             >
