@@ -297,59 +297,8 @@ export class MixerGenericConnection {
         )
     }
 
-    updateThreshold = (faderIndex: number) => {
-        let level = state.faders[0].fader[faderIndex].threshold
-        state.channels[0].chConnection.forEach(
-            (chConnection: IchConnection, mixerIndex: number) => {
-                chConnection.channel.forEach(
-                    (channel: IChannel, channelIndex: number) => {
-                        if (faderIndex === channel.assignedFader) {
-                            this.mixerConnection[mixerIndex].updateThreshold(
-                                channelIndex,
-                                level
-                            )
-                        }
-                    }
-                )
-            }
-        )
-    }
-    updateRatio = (faderIndex: number) => {
-        let level = state.faders[0].fader[faderIndex].ratio
-        state.channels[0].chConnection.forEach(
-            (chConnection: IchConnection, mixerIndex: number) => {
-                chConnection.channel.forEach(
-                    (channel: IChannel, channelIndex: number) => {
-                        if (faderIndex === channel.assignedFader) {
-                            this.mixerConnection[mixerIndex].updateRatio(
-                                channelIndex,
-                                level
-                            )
-                        }
-                    }
-                )
-            }
-        )
-    }
-    updateDelayTime = (faderIndex: number) => {
-        let delayTime = state.faders[0].fader[faderIndex].delayTime
-        state.channels[0].chConnection.forEach(
-            (chConnection: IchConnection, mixerIndex: number) => {
-                chConnection.channel.forEach(
-                    (channel: IChannel, channelIndex: number) => {
-                        if (faderIndex === channel.assignedFader) {
-                            this.mixerConnection[mixerIndex].updateDelayTime(
-                                channelIndex,
-                                delayTime
-                            )
-                        }
-                    }
-                )
-            }
-        )
-    }
     updateFx = (fxParam: fxParamsList, faderIndex: number) => {
-        let level = state.faders[0].fader[faderIndex].fxParam[fxParam].value
+        let level: number = state.faders[0].fader[faderIndex][fxParam][0]
         state.channels[0].chConnection.forEach(
             (chConnection: IchConnection, mixerIndex: number) => {
                 chConnection.channel.forEach(

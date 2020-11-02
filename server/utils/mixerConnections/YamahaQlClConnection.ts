@@ -401,15 +401,6 @@ export class QlClMixerConnection {
         return true
     }
 
-    updateThreshold(channelIndex: number, level: number) {
-        return true
-    }
-    updateRatio(channelIndex: number, level: number) {
-        return true
-    }
-    updateDelayTime(channelIndex: number, level: number) {
-        return true
-    }
     updateFx(fxParam: fxParamsList, channelIndex: number, level: number) {
         return true
     }

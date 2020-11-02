@@ -9,9 +9,6 @@ export const SET_FADER_LEVEL = 'SET_FADER_LEVEL'
 export const SET_INPUT_GAIN = 'SET_INPUT_GAIN'
 export const SET_INPUT_SELECTOR = 'SET_INPUT_SELECTOR'
 export const SET_CHANNEL_LABEL = 'SET_CHANNEL_LABEL'
-export const SET_FADER_THRESHOLD = 'SET_FADER_THRESHOLD'
-export const SET_FADER_RATIO = 'SET_FADER_RATIO'
-export const SET_FADER_DELAY_TIME = 'SET_FADER_DELAY_TIME'
 export const SET_FADER_FX = 'SET_FADER_FX'
 export const SET_FADER_MONITOR = 'SET_FADER_MONITOR'
 export const TOGGLE_PGM = 'TOGGLE_PGM'
@@ -104,30 +101,6 @@ export const storeFaderLabel = (channel: number, label: string) => {
         type: SET_CHANNEL_LABEL,
         channel: channel,
         label: label,
-    }
-}
-
-export const storeFaderThreshold = (channel: number, level: number) => {
-    return {
-        type: SET_FADER_THRESHOLD,
-        channel: channel,
-        level: level,
-    }
-}
-
-export const storeFaderRatio = (channel: number, level: number) => {
-    return {
-        type: SET_FADER_RATIO,
-        channel: channel,
-        level: level,
-    }
-}
-
-export const storeFaderDelayTime = (channel: number, delayTime: number) => {
-    return {
-        type: SET_FADER_DELAY_TIME,
-        channel: channel,
-        delayTime: delayTime,
     }
 }
 

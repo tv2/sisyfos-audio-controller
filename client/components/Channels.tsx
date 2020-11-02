@@ -28,6 +28,7 @@ import {
     SOCKET_RESTART_SERVER,
     SOCKET_TOGGLE_ALL_MANUAL,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import ChanStripFull from './ChanStripFull'
 
 interface IChannelsInjectProps {
     channels: IChannels
@@ -48,6 +49,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 nextProps.settings.showOptions ||
             this.props.settings.showChanStrip !==
                 nextProps.settings.showChanStrip ||
+            this.props.settings.showChanStripFull !==
+                nextProps.settings.showChanStripFull ||
             this.props.settings.showMonitorOptions !==
                 nextProps.settings.showMonitorOptions ||
             this.props.settings.customPages !==
@@ -57,7 +60,8 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
             this.props.faders.length !== nextProps.faders.length ||
             this.props.settings.currentPage !==
                 nextProps.settings.currentPage ||
-            this.props.settings.numberOfCustomPages !== nextProps.settings.numberOfCustomPages ||
+            this.props.settings.numberOfCustomPages !==
+                nextProps.settings.numberOfCustomPages ||
             !!nextProps.faders.find(
                 (f, i) =>
                     this.props.faders[i].ignoreAutomation !== f.ignoreAutomation
@@ -96,7 +100,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     }
 
     handlePages(type: PageType, i: number | string) {
-            this.props.dispatch(storeSetPage(type, i))
+        this.props.dispatch(storeSetPage(type, i))
     }
 
     renderPageButtons() {
@@ -221,6 +225,14 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                         />
                     </div>
                 )}
+                {this.props.settings.showChanStripFull >= 0 ? (
+                        <ChanStripFull
+                            faderIndex={this.props.settings.showChanStripFull}
+                        />
+                ) : (
+                    <div></div>
+                )}
+
                 {this.props.settings.showMonitorOptions >= 0 ? (
                     <ChannelMonitorOptions
                         faderIndex={this.props.settings.showMonitorOptions}

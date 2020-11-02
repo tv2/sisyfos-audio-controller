@@ -26,9 +26,6 @@ import {
     storeVuReductionLevel,
     storeFaderLevel,
     storeFaderLabel,
-    storeFaderThreshold,
-    storeFaderRatio,
-    storeFaderDelayTime,
     storeFaderFx,
     storeTogglePgm,
     storeSetMute,
@@ -347,165 +344,8 @@ export class OscMixerConnection {
                             ch - 1
                         ].assignedFader
                     )
-                } else if (
-                    this.checkOscCommand(
-                        message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer
-                            .THRESHOLD[0].mixerMessage
-                    )
-                ) {
-                    let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch(
-                        storeFaderThreshold(
-                            state.channels[0].chConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader,
-                            message.args[0]
-                        )
-                    )
-                    global.mainThreadHandler.updatePartialStore(
-                        state.channels[0].chConnection[this.mixerIndex].channel[
-                            ch - 1
-                        ].assignedFader
-                    )
-                } else if (
-                    this.checkOscCommand(
-                        message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer.RATIO[0]
-                            .mixerMessage
-                    )
-                ) {
-                    let ch = message.address.split('/')[this.cmdChannelIndex]
-                    let ratio = this.mixerProtocol.channelTypes[0].fromMixer
-                        .RATIO[0]
-                    let level =
-                        message.args[0] /
-                        (ratio.max || 1 - ratio.min || 0 + ratio.min || 0)
-                    store.dispatch(
-                        storeFaderRatio(
-                            state.channels[0].chConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader,
-                            level
-                        )
-                    )
-                    global.mainThreadHandler.updatePartialStore(
-                        state.channels[0].chConnection[this.mixerIndex].channel[
-                            ch - 1
-                        ].assignedFader
-                    )
-                } else if (
-                    this.checkOscCommand(
-                        message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer
-                            .DELAY_TIME[0].mixerMessage
-                    )
-                ) {
-                    let ch = message.address.split('/')[this.cmdChannelIndex]
-                    let delay = this.mixerProtocol.channelTypes[0].fromMixer
-                        .DELAY_TIME[0]
-                    let delayTime =
-                        message.args[0] /
-                        (delay.max || 1 - delay.min || 0 + delay.min || 0)
-                    store.dispatch(
-                        storeFaderDelayTime(
-                            state.channels[0].chConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader,
-                            delayTime
-                        )
-                    )
-                    global.mainThreadHandler.updatePartialStore(
-                        state.channels[0].chConnection[this.mixerIndex].channel[
-                            ch - 1
-                        ].assignedFader
-                    )
-                } else if (
-                    this.checkOscCommand(
-                        message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
-                            fxParamsList.EqLowGain
-                        ].params[0].mixerMessage
-                    )
-                ) {
-                    let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch(
-                        storeFaderFx(
-                            fxParamsList.EqLowGain,
-                            state.channels[0].chConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader,
-                            message.args[0]
-                        )
-                    )
-                    global.mainThreadHandler.updatePartialStore(
-                        state.channels[0].chConnection[this.mixerIndex].channel[
-                            ch - 1
-                        ].assignedFader
-                    )
-                } else if (
-                    this.checkOscCommand(
-                        message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
-                            fxParamsList.EqLowMidGain
-                        ].params[0].mixerMessage
-                    )
-                ) {
-                    let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch(
-                        storeFaderFx(
-                            fxParamsList.EqLowMidGain,
-                            state.channels[0].chConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader,
-                            message.args[0]
-                        )
-                    )
-                    global.mainThreadHandler.updatePartialStore(
-                        state.channels[0].chConnection[this.mixerIndex].channel[
-                            ch - 1
-                        ].assignedFader
-                    )
-                } else if (
-                    this.checkOscCommand(
-                        message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
-                            fxParamsList.EqMidGain
-                        ].params[0].mixerMessage
-                    )
-                ) {
-                    let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch(
-                        storeFaderFx(
-                            fxParamsList.EqMidGain,
-                            state.channels[0].chConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader,
-                            message.args[0]
-                        )
-                    )
-                    global.mainThreadHandler.updatePartialStore(
-                        state.channels[0].chConnection[this.mixerIndex].channel[
-                            ch - 1
-                        ].assignedFader
-                    )
-                } else if (
-                    this.checkOscCommand(
-                        message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer.FX_PARAMS[
-                            fxParamsList.EqHighGain
-                        ].params[0].mixerMessage
-                    )
-                ) {
-                    let ch = message.address.split('/')[this.cmdChannelIndex]
-                    store.dispatch(
-                        storeFaderFx(
-                            fxParamsList.EqHighGain,
-                            state.channels[0].chConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader,
-                            message.args[0]
-                        )
-                    )
-                    global.mainThreadHandler.updatePartialStore(
-                        state.channels[0].chConnection[this.mixerIndex].channel[
-                            ch - 1
-                        ].assignedFader
-                    )
                 } else {
+                    this.checkFxCommands(message)
                     logger.verbose(
                         'Unknown OSC message: ' + message.address,
                         {}
@@ -600,6 +440,42 @@ export class OscMixerConnection {
         this.mixerOnlineTimer = setTimeout(() => {
             store.dispatch(storeSetMixerOnline(false))
         }, this.mixerProtocol.pingTime)
+    }
+
+    checkFxCommands(message: any) {
+        Object.keys(fxParamsList).forEach((keyName: string) => {
+            if (!isNaN(parseFloat(keyName))) {
+                return
+            }
+
+            let fxKey = keyName as keyof typeof fxParamsList
+            if (
+                this.checkOscCommand(
+                    message.address,
+                    this.mixerProtocol.channelTypes[0].fromMixer[
+                        fxParamsList[fxKey]
+                    ][0].mixerMessage
+                )
+            ) {
+                let ch = message.address.split('/')[this.cmdChannelIndex]
+                store.dispatch(
+                    storeFaderFx(
+                        fxParamsList[fxKey],
+                        state.channels[0].chConnection[this.mixerIndex].channel[
+                            ch - 1
+                        ].assignedFader,
+                        message.args[0]
+                    )
+                )
+                global.mainThreadHandler.updatePartialStore(
+                    state.channels[0].chConnection[this.mixerIndex].channel[
+                        ch - 1
+                    ].assignedFader
+                )
+            }
+
+            console.log(fxKey)
+        })
     }
 
     checkOscCommand(message: string, command: string): boolean {
@@ -776,55 +652,6 @@ export class OscMixerConnection {
         return true
     }
 
-    updateThreshold(channelIndex: number, level: number) {
-        let channelType =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelType
-        let channelTypeIndex =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelTypeIndex
-        let thr = this.mixerProtocol.channelTypes[channelType].toMixer
-            .THRESHOLD[0]
-        this.sendOutMessage(thr.mixerMessage, channelTypeIndex + 1, level, 'f')
-    }
-    updateRatio(channelIndex: number, level: number) {
-        let channelType =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelType
-        let channelTypeIndex =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelTypeIndex
-        let ratio = this.mixerProtocol.channelTypes[channelType].toMixer
-            .RATIO[0]
-        this.sendOutMessage(
-            ratio.mixerMessage,
-            channelTypeIndex + 1,
-            level,
-            'f'
-        )
-    }
-    updateDelayTime(channelIndex: number, level: number) {
-        let channelType =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelType
-        let channelTypeIndex =
-            state.channels[0].chConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelTypeIndex
-        let delayTime = this.mixerProtocol.channelTypes[channelType].toMixer
-            .DELAY_TIME[0]
-        this.sendOutMessage(
-            delayTime.mixerMessage,
-            channelTypeIndex + 1,
-            level,
-            'f'
-        )
-    }
     updateFx(fxParam: fxParamsList, channelIndex: number, level: number) {
         let channelType =
             state.channels[0].chConnection[this.mixerIndex].channel[
@@ -834,9 +661,9 @@ export class OscMixerConnection {
             state.channels[0].chConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let fx = this.mixerProtocol.channelTypes[channelType].toMixer.FX_PARAMS[
+        let fx = this.mixerProtocol.channelTypes[channelType].toMixer[
             fxParam
-        ].params[0]
+        ][0]
         this.sendOutMessage(fx.mixerMessage, channelTypeIndex + 1, level, 'f')
     }
 

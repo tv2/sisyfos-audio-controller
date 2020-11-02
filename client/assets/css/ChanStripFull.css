@@ -1,18 +1,22 @@
-.chan-strip-body {
-    position: relative;
-    top: 5px;
-    width: 500px;
-    height: 940px;
-    background-color: rgb(31, 31, 31);
-    border-color: rgb(70, 70, 70);
+.chan-strip-full-body {
+    position: fixed;
+    top: 50px;
+    left: 150px;
+    width: 1700px;
+    height: 1000px;
+    overflow: auto;
+    background-color: rgb(36, 36, 36);
+    border-color: rgb(149, 149, 149);
     border-style: solid;
     border-width: 4px;
     border-radius: 8px;
     text-align: left;
+    z-index: 2;
+
     color: #fff;
 }
 
-.chan-strip-body > .header {
+.chan-strip-full-body > .ch-strip-full-header {
     margin-left: 40px;
     margin-top: 10px;
     margin-right: 80px;
@@ -22,7 +26,7 @@
     white-space: nowrap;
 }
 
-.chan-strip-body > .parameters {
+.chan-strip-full-body > .parameters {
     top: 5px;
     left: 2px;
     height: 900px;
@@ -31,13 +35,13 @@
     color: #fff;
 }
 
-.chan-strip-body .parameters .horizontal {
+.chan-strip-full-body .parameters .horizontal {
     display: flex;
     justify-content: space-evenly;
 }
-.chan-strip-body .parameters .horizontal .item {
+.chan-strip-full-body .parameters .horizontal .item {
 }
-.chan-strip-body .parameters .horizontal .item .content {
+.chan-strip-full-body .parameters .horizontal .item .content {
     display: flex;
 }
 
@@ -56,38 +60,57 @@
     height: 50px;
 }
 
-.parameters > .eq-group,
-.content > .eq-group {
-    display: flex;
+.eq-full > .eq-window {
     top: 5px;
     left: 2px;
-    margin-left: 90px;
+    height: 400px;
+    width: 1500px;
+    margin-left: 150px;
+    margin-top: 10px;
     overflow: auto;
-    text-align: center;
+    text-align: left;
     font-size: 14px;
     color: #fff;
+    background-color: #2a42274d;
+    border-style: solid;
+    border-color: rgba(128, 128, 128, 0.144);
+    border-width: 4px;
 }
-.content > .eq-group {
-    margin-left: 0;
+.eq-full > .eq-canvas {
+    position: absolute;
+    margin-left: -850px;
+    margin-top: 30px;
+    height: 410px;
+    width: 1675px;
 }
 
-.eq-group > .horizontal-space {
+.eq-full > .eq-text {
+    display: flex;
+    justify-content: space-evenly;
+    top: 5px;
+    left: 2px;
+    height: 150px;
+    width: 1500px;
+    margin-left: 150px;
+    margin-top: 10px;
+    overflow: auto;
+    text-align: center;
+    font-size: 20px;
+    color: #fff;
+    border-style: solid;
+    border-color: rgb(128, 128, 128);
+    border-width: 4px;
+}
+
+.eq-window > .horizontal-space {
     width: 150px;
     height: 50px;
 }
 
-.eq > .group-text {
-    text-align: center;
-    line-height: 20px;
-    font-size: 110%;
-}
-
-.zero-eq {
-    width: 63px;
-    height: 2px;
-    margin-left: -68px;
-    margin-right: 30px;
-    margin-top: 111px;
+.eq-window > .dot {
+    position: absolute;
+    font-size: 60px;
+    height: 60px;
 }
 
 .zero-comp {
@@ -192,7 +215,7 @@
     font-size: 95%;
 }
 
-.header > .close {
+.ch-strip-full-header > .close {
     position: absolute;
     outline: none;
     border-color: rgb(99, 99, 99);
@@ -206,20 +229,20 @@
     right: 10px;
 }
 
-.header > .button {
+.ch-strip-full-header > .button {
     outline: none;
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
     border-radius: 7px;
     margin-left: 10px;
-    width: 80px;
+    width: 160px;
     height: 50px;
     font-size: 12px;
     line-height: 30px;
     color: #fff;
 }
 
-.chan-strip-fader {
+.chan-strip-full-fader {
     width: 10px;
     height: 190px;
     margin-left: 35px;
@@ -230,8 +253,7 @@
     border-radius: 8px;
     background-color: rgb(17, 17, 17);
 }
-
-.chan-strip-thumb {
+.chan-strip-full-thumb {
     margin-left: -20px;
     color: #3a3a3a;
     font-size: 90%;
@@ -242,6 +264,38 @@
     border-radius: 8px;
     background: linear-gradient(
         to top,
+        #3a3a3a 0%,
+        #c2c2c2 20%,
+        hsl(0, 0%, 57%) 50%,
+        #00a 1px,
+        #919191 52%,
+        #c2c2c2 80%,
+        #3a3a3a 100%
+    );
+}
+
+.chan-strip-q {
+    width: 300px;
+    height: 10px;
+    margin-left: 35px;
+    margin-right: 30px;
+    margin-top: 30px;
+    border-width: 0px;
+    border-style: solid;
+    border-radius: 8px;
+    background-color: rgb(17, 17, 17);
+}
+.chan-strip-q-thumb {
+    margin-top: -20px;
+    color: #3a3a3a;
+    font-size: 90%;
+    line-height: 50px;
+    width: 45px;
+    height: 49px;
+    border: 1px solid #c5c2c2;
+    border-radius: 8px;
+    background: linear-gradient(
+        to right,
         #3a3a3a 0%,
         #c2c2c2 20%,
         hsl(0, 0%, 57%) 50%,

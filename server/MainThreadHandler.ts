@@ -38,8 +38,6 @@ import {
     SOCKET_SET_AUX_LEVEL,
     SOCKET_NEXT_MIX,
     SOCKET_CLEAR_PST,
-    SOCKET_SET_THRESHOLD,
-    SOCKET_SET_RATIO,
     SOCKET_SET_FX,
     SOCKET_RESTART_SERVER,
     SOCKET_SET_FADER_MONITOR,
@@ -49,7 +47,6 @@ import {
     SOCKET_SET_STORE_CHANNEL,
     SOCKET_SET_INPUT_OPTION,
     SOCKET_SAVE_CCG_FILE,
-    SOCKET_SET_DELAY_TIME,
     SOCKET_SHOW_IN_MINI_MONITOR,
     SOCKET_GET_MIXER_PRESET_LIST,
     SOCKET_RETURN_MIXER_PRESET_LIST,
@@ -64,9 +61,6 @@ import {
 import {
     storeFaderLevel,
     storeInputGain,
-    storeFaderThreshold,
-    storeFaderRatio,
-    storeFaderDelayTime,
     storeFaderFx,
     storeFaderMonitor,
     storeTogglePgm,
@@ -300,28 +294,6 @@ export class MainThreadHandlers {
                 )
                 this.updateFullClientStore()
                 remoteConnections.updateRemoteAuxPanels()
-            })
-            .on(SOCKET_SET_THRESHOLD, (payload: any) => {
-                logger.verbose('Set Threshold:' + String(payload.channel), {})
-                store.dispatch(
-                    storeFaderThreshold(payload.channel, payload.level)
-                )
-                mixerGenericConnection.updateThreshold(payload.channel)
-                this.updatePartialStore(payload.channel)
-            })
-            .on(SOCKET_SET_RATIO, (payload: any) => {
-                logger.verbose('Set Ratio:' + String(payload.channel), {})
-                store.dispatch(storeFaderRatio(payload.channel, payload.level))
-                mixerGenericConnection.updateRatio(payload.channel)
-                this.updatePartialStore(payload.channel)
-            })
-            .on(SOCKET_SET_DELAY_TIME, (payload: any) => {
-                logger.verbose('Set Delay:' + String(payload.channel), {})
-                store.dispatch(
-                    storeFaderDelayTime(payload.channel, payload.delayTime)
-                )
-                mixerGenericConnection.updateDelayTime(payload.channel)
-                this.updatePartialStore(payload.channel)
             })
             .on(SOCKET_SET_FX, (payload: any) => {
                 logger.verbose(

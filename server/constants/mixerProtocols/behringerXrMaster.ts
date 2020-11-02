@@ -89,63 +89,6 @@ export const BehringerXrMaster: IMixerProtocol = {
                 ],
                 PFL: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [
-                    {
-                        mixerMessage: '/ch/{channel}/dyn/thr',
-                    },
-                ],
-                RATIO: [
-                    {
-                        mixerMessage: '/ch/{channel}/dyn/ratio',
-                    },
-                ],
-                DELAY_TIME: [
-                    {
-                        mixerMessage: '/ch/{channel}/delay/time',
-                    },
-                ],
-                FX_PARAMS: [
-                    {
-                        key: fxParamsList.EqLowGain,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/1/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                            },
-                        ],
-                    },
-                    {
-                        key: fxParamsList.EqLowMidGain,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/2/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                            },
-                        ],
-                    },
-                    {
-                        key: fxParamsList.EqMidGain,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/3/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                            },
-                        ],
-                    },
-                    {
-                        key: fxParamsList.EqHighGain,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/4/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                            },
-                        ],
-                    },
-                ],
                 AUX_LEVEL: [
                     {
                         mixerMessage: '/ch/{channel}/mix/{argument}/level',
@@ -173,63 +116,6 @@ export const BehringerXrMaster: IMixerProtocol = {
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [
-                    {
-                        mixerMessage: '/ch/{channel}/dyn/thr',
-                    },
-                ],
-                RATIO: [
-                    {
-                        mixerMessage: '/ch/{channel}/dyn/ratio',
-                    },
-                ],
-                DELAY_TIME: [
-                    {
-                        mixerMessage: '/ch/{channel}/delay/time',
-                    },
-                ],
-                FX_PARAMS: [
-                    {
-                        key: fxParamsList.EqLowGain,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/1/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                            },
-                        ],
-                    },
-                    {
-                        key: fxParamsList.EqLowMidGain,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/2/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                            },
-                        ],
-                    },
-                    {
-                        key: fxParamsList.EqMidGain,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/3/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                            },
-                        ],
-                    },
-                    {
-                        key: fxParamsList.EqHighGain,
-                        params: [
-                            {
-                                mixerMessage: '/ch/{channel}/eq/4/g',
-                                minLabel: -15,
-                                maxLabel: 15,
-                            },
-                        ],
-                    },
-                ],
                 AUX_LEVEL: [
                     {
                         mixerMessage: '/ch/{channel}/mix/{argument}/level',

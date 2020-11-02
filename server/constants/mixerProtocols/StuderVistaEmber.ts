@@ -70,9 +70,6 @@ export const StuderVistaMaster: IMixerProtocol = {
                 CHANNEL_NAME: [emptyMixerMessage()],
                 PFL: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [emptyMixerMessage()],
-                RATIO: [emptyMixerMessage()],
-                DELAY_TIME: [emptyMixerMessage()],
                 AUX_LEVEL: [
                     {
                         mixerMessage: 'a1 a1 {ch-type} {channel} a1 a4 {aux}',
@@ -134,9 +131,6 @@ export const StuderVistaMaster: IMixerProtocol = {
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [emptyMixerMessage()],
-                RATIO: [emptyMixerMessage()],
-                DELAY_TIME: [emptyMixerMessage()],
                 AUX_LEVEL: [
                     {
                         mixerMessage:
@@ -202,9 +196,6 @@ export const StuderVistaMaster: IMixerProtocol = {
                 ],
                 PFL: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [emptyMixerMessage()],
-                RATIO: [emptyMixerMessage()],
-                DELAY_TIME: [emptyMixerMessage()],
                 AUX_LEVEL: [emptyMixerMessage()],
                 CHANNEL_MUTE_ON: [emptyMixerMessage()],
                 CHANNEL_MUTE_OFF: [emptyMixerMessage()],
@@ -236,9 +227,6 @@ export const StuderVistaMaster: IMixerProtocol = {
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [emptyMixerMessage()],
-                RATIO: [emptyMixerMessage()],
-                DELAY_TIME: [emptyMixerMessage()],
                 AUX_LEVEL: [
                     {
                         mixerMessage:
@@ -304,9 +292,6 @@ export const StuderVistaMaster: IMixerProtocol = {
                 ],
                 PFL: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [emptyMixerMessage()],
-                RATIO: [emptyMixerMessage()],
-                DELAY_TIME: [emptyMixerMessage()],
                 AUX_LEVEL: [emptyMixerMessage()],
                 CHANNEL_MUTE_ON: [emptyMixerMessage()],
                 CHANNEL_MUTE_OFF: [emptyMixerMessage()],
@@ -337,9 +322,6 @@ export const StuderVistaMaster: IMixerProtocol = {
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
-                THRESHOLD: [emptyMixerMessage()],
-                RATIO: [emptyMixerMessage()],
-                DELAY_TIME: [emptyMixerMessage()],
                 AUX_LEVEL: [
                     {
                         mixerMessage:
