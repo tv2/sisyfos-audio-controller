@@ -522,7 +522,7 @@ class ChanStripFull extends React.PureComponent<
                 <div className="parameter-mini-text">
                     {Math.round(
                         (maxLabel - minLabel) *
-                            this.props.fader[0][fxParam]?.[0] +
+                            this.props.fader[this.props.faderIndex][fxParam]?.[0] +
                             minLabel
                     )}
                     {valueLabel}
@@ -534,7 +534,7 @@ class ChanStripFull extends React.PureComponent<
                     min={0}
                     max={1}
                     step={0.01}
-                    value={this.props.fader[0][fxParam]?.[0]}
+                    value={this.props.fader[this.props.faderIndex][fxParam]?.[0]}
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
                             {Math.round(
