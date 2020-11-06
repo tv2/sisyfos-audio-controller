@@ -59,6 +59,57 @@ export const MidasMaster: IMixerProtocol = {
         {
             mixerMessage: '/ch/{channel}/eq/4/g',
         },
+        {
+            mixerMessage: '/ch/{channel}/dyn/thr',
+        },
+        {
+            mixerMessage: '/ch/{channel}/dyn/ratio',
+        },
+        {
+            mixerMessage: '/ch/{channel}/dyn/attack',
+        },
+        {
+            mixerMessage: '/ch/{channel}/dyn/hold',
+        },
+        {
+            mixerMessage: '/ch/{channel}/dyn/knee',
+        },
+        {
+            mixerMessage: '/ch/{channel}/dyn/mgain',
+        },
+        {
+            mixerMessage: '/ch/{channel}/dyn/ratio',
+        },
+        {
+            mixerMessage: '/ch/{channel}/delay/time',
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/1/g',
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/1/f',
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/2/f',
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/3/f',
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/4/f',
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/1/q',
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/2/q',
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/3/q',
+        },
+        {
+            mixerMessage: '/ch/{channel}/eq/4/q',
+        },
     ],
     channelTypes: [
         {
@@ -135,7 +186,7 @@ export const MidasMaster: IMixerProtocol = {
                 ],
                 [fxParamsList.CompRelease]: [
                     {
-                        mixerMessage: '/ch/{channel}/dyn/ratio',
+                        mixerMessage: '/ch/{channel}/dyn/release',
                         minLabel: 5,
                         maxLabel: 4000,
                         label: 'Release',
@@ -314,7 +365,7 @@ export const MidasMaster: IMixerProtocol = {
                 ],
                 [fxParamsList.CompRelease]: [
                     {
-                        mixerMessage: '/ch/{channel}/dyn/ratio',
+                        mixerMessage: '/ch/{channel}/dyn/release',
                     },
                 ],
                 [fxParamsList.DelayTime]: [
