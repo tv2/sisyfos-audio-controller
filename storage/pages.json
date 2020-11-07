@@ -5,6 +5,6 @@
         "faders": [0, 2, 3, 4, 8, 13, 14, 15, 31]
     },
     { "id": "studio", "label": "STUDIO", "faders": [0, 1, 4, 5, 9, 11] },
-    { "id": "custom2", "label": "EXT", "faders": [5, 7, 8, 10] },
+    { "id": "custom2", "label": "PLAYOUT", "faders": [7, 8, 10] },
     { "id": "custom3", "label": "Custom 3", "faders": [] }
 ]

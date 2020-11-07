@@ -87,7 +87,7 @@ const EQ_FREQ_LABELS: IFreqLabels[] = [
 // Constant for calculation Eq dot positions:
 const EQ_MIN_HZ = 20
 const EQ_MAX_HZ = 20000
-const EQ_X_SIZE = 140
+const EQ_X_SIZE = 1450
 const EQ_WIN_X = 450
 const EQ_X_OFFSET = 350
 const EQ_Y_SIZE = 330
@@ -150,9 +150,13 @@ class ChanStripFull extends React.PureComponent<
     }
 
     handleFx(fxParam: fxParamsList, level: any) {
-        if (level < 0) { level = 0}
-        if (level > 1) { level = 1}
-//        window.storeRedux.dispatch(storeFaderFx(fxParam, this.props.faderIndex, parseFloat(level)))
+        if (level < 0) {
+            level = 0
+        }
+        if (level > 1) {
+            level = 1
+        }
+        //        window.storeRedux.dispatch(storeFaderFx(fxParam, this.props.faderIndex, parseFloat(level)))
         window.socketIoClient.emit(SOCKET_SET_FX, {
             fxParam: fxParam,
             channel: this.props.faderIndex,
@@ -186,26 +190,28 @@ class ChanStripFull extends React.PureComponent<
     }
 
     valueToFreqPosition(value: number) {
-        return (
-            EQ_X_SIZE *
-                (Math.log2(value * (EQ_MAX_HZ - EQ_MIN_HZ) + EQ_MIN_HZ) - 1) -
-            EQ_WIN_X
-        )
+        return EQ_X_SIZE * value
     }
     freqPositionToValue(position: number) {
-        let newFreq = Math.pow(
-            2,
-            (position + EQ_WIN_X - EQ_X_OFFSET) / EQ_X_SIZE + 1
+        return (position - EQ_X_OFFSET) / EQ_X_SIZE
+    }
+
+    logOscToLinFreq(value: number) {
+        return Math.round(
+            Math.pow(
+                10,
+                value * (Math.log10(EQ_MAX_HZ) - Math.log10(EQ_MIN_HZ)) +
+                    Math.log10(EQ_MIN_HZ)
+            )
         )
-        return (newFreq - EQ_MIN_HZ) / (EQ_MAX_HZ - EQ_MIN_HZ)
     }
 
     setRef = (el: HTMLCanvasElement) => {
         this.canvas = el
-        this.paintEqGraphics()
+        this.paintEqBackground()
     }
 
-    paintEqGraphics() {
+    paintEqBackground() {
         if (!this.canvas) {
             return
         }
@@ -298,9 +304,9 @@ class ChanStripFull extends React.PureComponent<
                                     ),
                                     y:
                                         EQ_Y_SIZE -
-                                        (this.props.fader[
-                                            this.props.faderIndex
-                                        ][fxParamsList[fxKey]]?.[0]) *
+                                        this.props.fader[this.props.faderIndex][
+                                            fxParamsList[fxKey]
+                                        ]?.[0] *
                                             EQ_Y_SIZE,
                                 }}
                                 grid={[20, 20]}
@@ -345,14 +351,6 @@ class ChanStripFull extends React.PureComponent<
                                     'EqFreq'
                                 ) as keyof typeof fxParamsList
                             ]
-                        let maxFreq: number =
-                            window.mixerProtocol.channelTypes[0].fromMixer[
-                                eqFreqKey
-                            ]?.[0].maxLabel ?? 1
-                        let minFreq =
-                            window.mixerProtocol.channelTypes[0].fromMixer[
-                                eqFreqKey
-                            ]?.[0].minLabel ?? 0
                         let eqQKey =
                             fxParamsList[
                                 fxKey.replace(
@@ -385,12 +383,10 @@ class ChanStripFull extends React.PureComponent<
                                         minGain
                                 )}
                                 {'  Freq :'}
-                                {Math.round(
-                                    (maxFreq - minFreq) *
-                                        (this.props.fader[
-                                            this.props.faderIndex
-                                        ][eqFreqKey]?.[0] ?? 0) +
-                                        minFreq
+                                {this.logOscToLinFreq(
+                                    this.props.fader[this.props.faderIndex][
+                                        eqFreqKey
+                                    ]?.[0] ?? 0
                                 )}
                                 {this.qFader(eqQKey)}
                             </div>
@@ -532,7 +528,9 @@ class ChanStripFull extends React.PureComponent<
                 <div className="parameter-mini-text">
                     {Math.round(
                         (maxLabel - minLabel) *
-                            this.props.fader[this.props.faderIndex][fxParam]?.[0] +
+                            this.props.fader[this.props.faderIndex][
+                                fxParam
+                            ]?.[0] +
                             minLabel
                     )}
                     {valueLabel}
@@ -544,7 +542,9 @@ class ChanStripFull extends React.PureComponent<
                     min={0}
                     max={1}
                     step={0.01}
-                    value={this.props.fader[this.props.faderIndex][fxParam]?.[0]}
+                    value={
+                        this.props.fader[this.props.faderIndex][fxParam]?.[0]
+                    }
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
                             {Math.round(
