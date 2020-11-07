@@ -56,7 +56,7 @@ const EQ_FREQ_LABELS: IFreqLabels[] = [
     },
     {
         label: '100',
-        posY: 550,
+        posY: 525,
     },
     {
         label: '250',
@@ -68,19 +68,19 @@ const EQ_FREQ_LABELS: IFreqLabels[] = [
     },
     {
         label: '1k',
-        posY: 1000,
+        posY: 1025,
     },
     {
         label: '2k',
-        posY: 1150,
+        posY: 1160,
     },
     {
         label: '5k',
-        posY: 1320,
+        posY: 1350,
     },
     {
         label: '10k',
-        posY: 1460,
+        posY: 1490,
     },
 ]
 
@@ -376,12 +376,13 @@ class ChanStripFull extends React.PureComponent<
                                 <br />
                                 {'  Gain : '}
                                 {Math.round(
-                                    (maxGain - minGain) *
-                                        (this.props.fader[
-                                            this.props.faderIndex
-                                        ][fxParamsList[fxKey]]?.[0] ?? 0) +
-                                        minGain
-                                )}
+                                    10 *
+                                        ((maxGain - minGain) *
+                                            (this.props.fader[
+                                                this.props.faderIndex
+                                            ][fxParamsList[fxKey]]?.[0] ?? 0) +
+                                            minGain)
+                                ) / 10}
                                 {'  Freq :'}
                                 {this.logOscToLinFreq(
                                     this.props.fader[this.props.faderIndex][
