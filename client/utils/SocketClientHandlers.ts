@@ -29,6 +29,7 @@ import {
     IchConnection,
     InumberOfChannels,
 } from '../../server/reducers/channelsReducer'
+import { VuType } from '../../server/utils/vuServer'
 
 export const vuMeters: number[][] = []
 
@@ -119,4 +120,11 @@ export const socketClientHandlers = () => {
         .on(SOCKET_RETURN_PAGES_LIST, (payload: any) => {
             window.storeRedux.dispatch(storeUpdatePagesList(payload))
         })
+        .on(
+            VuType.Channel,
+            (faderIndex: number, channelIndex: number, level: number) => {
+                if (!vuMeters[faderIndex]) vuMeters[faderIndex] = []
+                vuMeters[faderIndex][channelIndex] = level
+            }
+        )
 }

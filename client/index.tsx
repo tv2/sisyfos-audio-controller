@@ -50,23 +50,8 @@ socketClientHandlers()
 window.socketIoClient.emit('get-store', 'update local store')
 window.socketIoClient.emit('get-settings', 'update local settings')
 window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
-
 if (!window.location.search.includes('vu=0')) {
-    window.socketIoVuClient = io(
-        document.location.protocol + '//' + document.location.hostname + ':1178'
-    )
-    window.socketIoVuClient.on('connect', () => console.log('connection!'))
-    window.socketIoVuClient.on(
-        'channel',
-        (faderIndex: number, channelIndex: number, level: number) => {
-            // console.log('got vu!', ...payload)
-            if (!vuMeters[faderIndex]) vuMeters[faderIndex] = []
-            vuMeters[faderIndex][channelIndex] = level
-        }
-    )
-    // window.socketIoVuClient.on('reduction', (...payload: any[]) =>
-    //     console.log('got reduction!', ...payload)
-    // )
+    window.socketIoClient.emit('subscribe-vu-meter', 'subscribe to vu meters')
 }
 
 ReactDom.render(
