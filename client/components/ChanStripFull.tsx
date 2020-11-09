@@ -565,7 +565,7 @@ class ChanStripFull extends React.PureComponent<
     }
 
     fxParamFader(fxParam: fxParamsList) {
-        if (!window.mixerProtocol.channelTypes[0].fromMixer[fxParam]) {
+        if (!this.doesParamExists(fxParam)) {
             return
         }
         let maxLabel: number =
@@ -656,6 +656,10 @@ class ChanStripFull extends React.PureComponent<
         )
     }
 
+    doesParamExists(fxParam: fxParamsList): boolean {
+        return !!window.mixerProtocol.channelTypes[0].fromMixer[fxParam]
+    }
+
     parameters() {
         if (this.props.offtubeMode) {
             const hasInput =
@@ -678,30 +682,50 @@ class ChanStripFull extends React.PureComponent<
                             </React.Fragment>
                         )}
                         <React.Fragment>
-                            <div className="item">
-                                <div className="title">COMPRESSOR</div>
-                                <div className="content">
-                                    {this.fxParamFader(fxParamsList.CompThrs)}
-                                    <p className="zero-comp">______</p>
-                                    {this.fxParamFader(fxParamsList.CompRatio)}
-                                    <p className="zero-comp">______</p>
-                                    {this.gainReduction()}
-                                    {this.fxParamFader(fxParamsList.CompMakeUp)}
-                                    <p className="zero-comp">______</p>
-                                    {this.fxParamFader(fxParamsList.CompAttack)}
-                                    <p className="zero-comp">______</p>
-                                    {this.fxParamFader(fxParamsList.CompHold)}
-                                    <p className="zero-comp">______</p>
-                                    {this.fxParamFader(
-                                        fxParamsList.CompRelease
-                                    )}
-                                    <p className="zero-comp">______</p>
+                            {this.doesParamExists(fxParamsList.CompThrs) ? (
+                                <div className="item">
+                                    <div className="title">COMPRESSOR</div>
+                                    <div className="content">
+                                        {this.fxParamFader(
+                                            fxParamsList.CompThrs
+                                        )}
+                                        <p className="zero-comp">______</p>
+                                        {this.fxParamFader(
+                                            fxParamsList.CompRatio
+                                        )}
+                                        <p className="zero-comp">______</p>
+                                        {this.gainReduction()}
+                                        {this.fxParamFader(
+                                            fxParamsList.CompMakeUp
+                                        )}
+                                        <p className="zero-comp">______</p>
+                                        {this.fxParamFader(
+                                            fxParamsList.CompAttack
+                                        )}
+                                        <p className="zero-comp">______</p>
+                                        {this.fxParamFader(
+                                            fxParamsList.CompHold
+                                        )}
+                                        <p className="zero-comp">______</p>
+                                        {this.fxParamFader(
+                                            fxParamsList.CompRelease
+                                        )}
+                                        <p className="zero-comp">______</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="item">
-                                <div className="title">DELAY</div>
-                                <div className="content">{this.delay()}</div>
-                            </div>
+                            ) : (
+                                <React.Fragment></React.Fragment>
+                            )}
+                            {this.doesParamExists(fxParamsList.DelayTime) ? (
+                                <div className="item">
+                                    <div className="title">DELAY</div>
+                                    <div className="content">
+                                        {this.delay()}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="noDelayButtons"></div>
+                            )}
                             <div className="item">
                                 <div className="title">
                                     {this.props.label ||
@@ -728,7 +752,11 @@ class ChanStripFull extends React.PureComponent<
                     </div>
                     <React.Fragment>
                         <hr />
-                        <div className="horizontal">{this.eq()}</div>
+                        {this.doesParamExists(fxParamsList.EqGain01) ? (
+                            <div className="horizontal">{this.eq()}</div>
+                        ) : (
+                            <React.Fragment></React.Fragment>
+                        )}
                     </React.Fragment>
                 </div>
             )

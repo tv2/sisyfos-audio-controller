@@ -153,8 +153,13 @@
 }
 .content > .delayButtons {
     width: 30px;
+    min-height: 220px;
     margin-top: 24px;
     margin-left: 50px;
+}
+.noDelayButtons {
+    margin-top: 24px;
+    min-height: 220px;
 }
 
 .delayButtons > .delayTime {
