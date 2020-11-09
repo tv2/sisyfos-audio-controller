@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.3.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.2.0...v4.3.0) (2020-11-09)
+
+### Features
+
+-   full ch strip - digit on gain read out, adjusted freq indicators ([26e44b5](https://github.com/olzzon/sisyfos-audio-controller/commit/26e44b58959c5cc22c718d71042c5ce98a550742))
+-   full ch strip - initial setup ([48c08de](https://github.com/olzzon/sisyfos-audio-controller/commit/48c08defc39962e8728c9a1054bc5ab11ad5bc18))
+-   full ch strip - list all eq feature (preparation for graphic Eq GUI) ([0f68a0d](https://github.com/olzzon/sisyfos-audio-controller/commit/0f68a0da6297dcd677c6f1af983df7ea9a3f24ee))
+-   full ch strip - OSCMixerProtocol a lot of code removed with support for fxParams ([486dfce](https://github.com/olzzon/sisyfos-audio-controller/commit/486dfce0a91168e5f50b7867973cb0e89febab82))
+-   full ch strip - set draggrid to 20x20 for better performance. ([b243a71](https://github.com/olzzon/sisyfos-audio-controller/commit/b243a713a3cfb6b9c380717505505549729afaad))
+-   full ch strip graphic eq - better colors ([abf4e10](https://github.com/olzzon/sisyfos-audio-controller/commit/abf4e1069c309e54a2a59caa3f6cd9d426527059))
+-   full ch-strip - full comp parameters on X32 mixer ([4defbad](https://github.com/olzzon/sisyfos-audio-controller/commit/4defbad86dee5538aee0734cc0e999719ae396bb))
+-   full ch-strip - gain freq values in Eq ([5e4ae42](https://github.com/olzzon/sisyfos-audio-controller/commit/5e4ae42ed2a5a146eb35d2f3f1e88583d3f1f04b))
+-   full ch-strip - graphical eq drag gain+freq working ([d4efe28](https://github.com/olzzon/sisyfos-audio-controller/commit/d4efe2862d3cd2c6386c194303f3b9bce9adc8da))
+-   full ch-strip - logarithmic Freq on graph eq, adding Q ([f4e63b0](https://github.com/olzzon/sisyfos-audio-controller/commit/f4e63b0f771c1e33fb2c1d85ccdc3b4e5405fc85))
+-   full ch-strip - XY, freq labels zero gain etc ([5382c6f](https://github.com/olzzon/sisyfos-audio-controller/commit/5382c6f4f568c623b5b2fbb527e65b5a533a11fa))
+-   full ch-strip add new files ([df1f538](https://github.com/olzzon/sisyfos-audio-controller/commit/df1f538803ced4b665a45ee4b73a7a0b27b9416a))
+-   full ch-strip move eq to seperate function preparing EQ GUI ([b746112](https://github.com/olzzon/sisyfos-audio-controller/commit/b746112d30f347eece51f905dadb41a97f90f692))
+-   Full channelstrip - only show eq,comp,delay if part of protocol ([104cbbc](https://github.com/olzzon/sisyfos-audio-controller/commit/104cbbce3c1f76644d06ec9cdea856a85daca0fb))
+-   full chstrip - clean up code - delay buttons moved to array ([12937e4](https://github.com/olzzon/sisyfos-audio-controller/commit/12937e44c20b20c31034bc2ad06c0efa3b4483af))
+-   full chstrip - Delay fader uses fxParam ([55d7de4](https://github.com/olzzon/sisyfos-audio-controller/commit/55d7de4b4bc3beb4862d46ae1d9cbf92d3ec0a3e))
+-   full-ch-strip - move monitor sends to upper area of GUI ([6dea7fe](https://github.com/olzzon/sisyfos-audio-controller/commit/6dea7fefaa9735497665a4074fc41b12985f6236))
+-   labels on parameters in chstrip ([592dc2c](https://github.com/olzzon/sisyfos-audio-controller/commit/592dc2c42bdf5913a4008e6adbcadf6286c9631b))
+
+### Bug Fixes
+
+-   checkFxCommands didn´t filter out non numbered ([d98f592](https://github.com/olzzon/sisyfos-audio-controller/commit/d98f59202516d3b801dc69eb6934df3e98a1e959))
+-   Custom Pages "ALL" button didn´t work ([c2f500e](https://github.com/olzzon/sisyfos-audio-controller/commit/c2f500eb6bc8ab75719e39b59d0de3e0fb331fc0))
+-   datastructure didn´t reference to key but to index. ([75c5944](https://github.com/olzzon/sisyfos-audio-controller/commit/75c5944f9071fbf04f4a11e87d4f717e1b8f27a9))
+-   full ch strip - better placement of freq text on graph eq ([28a96ef](https://github.com/olzzon/sisyfos-audio-controller/commit/28a96efbbebe8efbcf9986da63d77cd9737ffd98))
+-   full ch strip - crash when using mixer protocol without eq. ([2f9518c](https://github.com/olzzon/sisyfos-audio-controller/commit/2f9518c07bf7790a398de0dc6415aeddde7bb22c))
+-   full ch strip - move log-lin conversion from graphic eq to freq readout ([de16b9b](https://github.com/olzzon/sisyfos-audio-controller/commit/de16b9b5e0e2c1c8cec7451ac8555fc1c78f755d))
+-   full ch strip - typo: Q value always changed channel 0 ([c0f870d](https://github.com/olzzon/sisyfos-audio-controller/commit/c0f870def67f1828a7617adb356dabe8600936c5))
+-   midas/behringer X32 initial fetch of all fx parameters ([d1a9cf0](https://github.com/olzzon/sisyfos-audio-controller/commit/d1a9cf001705bbc356991bc978cfee76717a1132))
+-   min ratio in midas should be 1:1 ([c9abc07](https://github.com/olzzon/sisyfos-audio-controller/commit/c9abc0794700d7750a16971975a568558f1d25b0))
+-   touchscreen event in graphical Eq ([54329f2](https://github.com/olzzon/sisyfos-audio-controller/commit/54329f293424cedc07c06ac10e14e4764227eeab))
+-   Y axis in graphics Eq only draw minValue ([61300dc](https://github.com/olzzon/sisyfos-audio-controller/commit/61300dcff9eaae9ff0014a10ffa41c4ae66184cc))
+
 ## [4.2.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.1.0...v4.2.0) (2020-10-22)
 
 ### Features
