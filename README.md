@@ -101,6 +101,12 @@ To see the MiniMonitorView:
 localhost:1176/?minimonitor=1
 ```
 
+If you want to disable the VU meters:
+
+```
+localhost:1176/?vu=0
+```
+
 ## Settings:
 
 ### Show PFL Controls:
