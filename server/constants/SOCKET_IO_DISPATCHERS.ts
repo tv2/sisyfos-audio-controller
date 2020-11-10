@@ -23,7 +23,6 @@ export const SOCKET_CLEAR_PST = 'clearPst'
 // Div:
 export const SOCKET_SAVE_SETTINGS = 'saveSettings'
 export const SOCKET_RESTART_SERVER = 'restartServer'
-export const SOCKET_SET_VU_REDUCTION = 'setVuReduction'
 export const SOCKET_GET_SNAPSHOT_LIST = 'getSnapshotList'
 export const SOCKET_RETURN_SNAPSHOT_LIST = 'returnSnapshotList'
 export const SOCKET_GET_CCG_LIST = 'getCcgList'

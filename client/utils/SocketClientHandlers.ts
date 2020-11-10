@@ -1,7 +1,6 @@
 import {
     storeSetCompleteFaderState,
     storeSetSingleFaderState,
-    storeVuLevel,
     storeVuReductionLevel,
 } from '../../server/reducers/faderActions'
 import {
@@ -20,7 +19,6 @@ import {
     SOCKET_SET_STORE_FADER,
     SOCKET_SET_STORE_CHANNEL,
     SOCKET_RETURN_CCG_LIST,
-    SOCKET_SET_VU_REDUCTION,
     SOCKET_SET_MIXER_ONLINE,
     SOCKET_RETURN_MIXER_PRESET_LIST,
     SOCKET_RETURN_PAGES_LIST,
@@ -34,8 +32,6 @@ import { VuType } from '../../server/utils/vuServer'
 export const vuMeters: number[][] = []
 
 export const socketClientHandlers = () => {
-    let vuUpdateSpeed = Date.now()
-    let vuReductionUpdateSpeed = Date.now()
     window.socketIoClient
         .on('connect', () => {
             window.storeRedux.dispatch(storeSetServerOnline(true))
@@ -100,14 +96,6 @@ export const socketClientHandlers = () => {
                 storeSetSingleChState(payload.channelIndex, payload.state)
             )
         })
-        .on(SOCKET_SET_VU_REDUCTION, (payload: any) => {
-            if (Date.now() - vuReductionUpdateSpeed > 100) {
-                vuReductionUpdateSpeed = Date.now()
-                window.storeRedux.dispatch(
-                    storeVuReductionLevel(payload.faderIndex, payload.level)
-                )
-            }
-        })
         .on(SOCKET_RETURN_SNAPSHOT_LIST, (payload: any) => {
             window.snapshotFileList = payload
         })
@@ -125,6 +113,14 @@ export const socketClientHandlers = () => {
             (faderIndex: number, channelIndex: number, level: number) => {
                 if (!vuMeters[faderIndex]) vuMeters[faderIndex] = []
                 vuMeters[faderIndex][channelIndex] = level
+            }
+        )
+        .on(
+            VuType.Reduction,
+            (faderIndex: number, channelIndex: number, level: number) => {
+                window.storeRedux.dispatch(
+                    storeVuReductionLevel(faderIndex, level)
+                )
             }
         )
 }

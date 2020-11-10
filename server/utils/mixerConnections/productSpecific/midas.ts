@@ -1,8 +1,4 @@
-import { store, state } from '../../../reducers/store'
-import { socketServer } from '../../../expressHandler'
-
-import { storeVuReductionLevel } from '../../../reducers/faderActions'
-import { faders, IVuMeters } from '../../../reducers/fadersReducer'
+import { state } from '../../../reducers/store'
 import { sendVuLevel, VuType } from '../../vuServer'
 
 export const midasMeter = (mixerIndex: number, message: any) => {
@@ -12,10 +8,6 @@ export const midasMeter = (mixerIndex: number, message: any) => {
     let level: number
     let reductionLevel: number
     let assignedFader: number
-    let vuMeters: number[] = new Array(Number(state.settings[0].numberOfFaders))
-    let vuReductionMeters: number[] = new Array(
-        Number(state.settings[0].numberOfFaders)
-    )
     let numberOfChannels =
         state.settings[0].mixers[mixerIndex].numberOfChannelsInType[0]
 
@@ -26,16 +18,7 @@ export const midasMeter = (mixerIndex: number, message: any) => {
             state.channels[0].chConnection[mixerIndex].channel[i].assignedFader
         if (assignedFader < state.settings[0].numberOfFaders) {
             sendVuLevel(assignedFader, VuType.Channel, 0, level)
-            reductionLevel = 1 - reductionLevel
-            store.dispatch(storeVuReductionLevel(assignedFader, reductionLevel))
+            sendVuLevel(assignedFader, VuType.Reduction, 0, 1 - reductionLevel)
         }
     }
-    state.faders[0].vuMeters.forEach((meter: IVuMeters, index: number) => {
-        // vuMeters[index] = meter.vuVal
-        vuReductionMeters[index] = meter.reductionVal
-    })
-    // socketServer.emit(SOCKET_SET_ALL_VU, {
-    //     vuMeters: vuMeters,
-    //     vuReductionMeters: vuReductionMeters,
-    // })
 }
