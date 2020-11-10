@@ -10,13 +10,13 @@ import {
 } from '../../constants/MixerProtocolInterface'
 import { storeSetOutputLevel } from '../../reducers/channelActions'
 import {
-    storeVuLevel,
     storeFaderLevel,
     storeTogglePgm,
     storeSetMute,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
+import { sendVuLevel, VuType } from '../vuServer'
 
 export class QlClMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -110,7 +110,12 @@ export class QlClMixerConnection {
                             state.channels[0].chConnection[this.mixerIndex]
                                 .channel[ch - 1].assignedFader
                         let mixerValue = parseInt(mixerValues[6])
-                        store.dispatch(storeVuLevel(assignedFader, mixerValue))
+                        sendVuLevel(
+                            assignedFader,
+                            VuType.Channel,
+                            0,
+                            mixerValue
+                        )
                     } else if (
                         this.checkMidiCommand(
                             message,

@@ -116,8 +116,8 @@ let CasparCGMasterObject: ICasparCGMixerGeometry = {
     sourceOptions: geometry.sourceOptions,
     fader: {
         min: 0,
-        max: 1.5,
-        zero: 1,
+        max: 1,
+        zero: 0.75,
         step: 0.001,
     },
     meter: {
@@ -136,22 +136,24 @@ let CasparCGMasterObject: ICasparCGMixerGeometry = {
             fromMixer: {
                 CHANNEL_OUT_GAIN: [
                     {
-                        mixerMessage: 'none',
+                        mixerMessage: 'MIXER ${CHANNEL} VOLUME ',
                         value: 0,
                         type: 'f',
                         min: 0,
-                        max: 1.5,
-                        zero: 1,
+                        max: 1,
+                        zero: 0.75,
                     },
                 ],
-                CHANNEL_VU: [emptyMixerMessage()],
-                CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
-                CHANNEL_NAME: [emptyMixerMessage()],
-                PFL: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
+                CHANNEL_VU: [
+                    {
+                        mixerMessage:
+                            '/channel/{ch}/stage/layer/{layer}/audio/1/pFS',
+                    },
+                    {
+                        mixerMessage:
+                            '/channel/{ch}/stage/layer/{layer}/audio/2/pFS',
+                    },
+                ],
             },
             toMixer: {
                 CHANNEL_OUT_GAIN: [
@@ -160,17 +162,24 @@ let CasparCGMasterObject: ICasparCGMixerGeometry = {
                         value: 0,
                         type: 'f',
                         min: 0,
-                        max: 1.5,
-                        zero: 1,
+                        max: 1,
+                        zero: 0.75,
                     },
                 ],
-                CHANNEL_NAME: [emptyMixerMessage()],
-                PFL_ON: [emptyMixerMessage()],
-                PFL_OFF: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
+                CHANNEL_INPUT_SELECTOR: [
+                    {
+                        mixerMessage: '',
+                        label: '1L-2R',
+                    },
+                    {
+                        mixerMessage: '',
+                        label: '1L-1R',
+                    },
+                    {
+                        mixerMessage: '',
+                        label: '2L-2R',
+                    },
+                ],
             },
         },
     ],

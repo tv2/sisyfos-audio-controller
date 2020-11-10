@@ -347,9 +347,16 @@ class Channel extends React.Component<
                     {this.amixButton()}
                 </div>
                 <div className="fader">
+                    {!window.location.search.includes('vu=0') &&
+                        window.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU?.map(
+                            (_, i) => (
+                                <VuMeter
+                                    faderIndex={this.faderIndex}
+                                    channel={i}
+                                />
+                            )
+                        )}
                     {this.fader()}
-                    {window.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_VU && <VuMeter faderIndex={this.faderIndex} />}
                 </div>
                 <div className="out-control">
                     {this.pgmButton()}

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import App from './components/App'
-import { socketClientHandlers } from './utils/SocketClientHandlers'
+import { socketClientHandlers, vuMeters } from './utils/SocketClientHandlers'
 import io from 'socket.io-client'
 
 //Redux:
@@ -27,6 +27,7 @@ declare global {
         mixerProtocolPresets: any
         mixerProtocolList: any
         socketIoClient: any
+        socketIoVuClient: any
         snapshotFileList: string[]
         ccgFileList: string[]
         mixerPresetList: string[]
@@ -49,6 +50,9 @@ socketClientHandlers()
 window.socketIoClient.emit('get-store', 'update local store')
 window.socketIoClient.emit('get-settings', 'update local settings')
 window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
+if (!window.location.search.includes('vu=0')) {
+    window.socketIoClient.emit('subscribe-vu-meter', 'subscribe to vu meters')
+}
 
 ReactDom.render(
     <ReduxProvider store={storeRedux}>

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { vuMeters } from '../utils/SocketClientHandlers'
 
 //assets:
 import '../assets/css/VuMeter.css'
@@ -7,7 +8,8 @@ import '../assets/css/VuMeter.css'
 
 export interface IVuMeterInjectedProps {
     showSnaps: boolean
-    vuVal: number
+    faderIndex: number
+    channel: number
 }
 
 interface IVuMeterProps {
@@ -27,6 +29,8 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     WINDOW: number = 2000
 
     private _painting = false
+    private _previousVal = -1
+    private _value = 0
 
     constructor(props: any) {
         super(props)
@@ -48,25 +52,25 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     }
 
     getTotalPeak = () => {
-        if (this.props.vuVal > this.totalPeak) {
-            this.totalPeak = this.props.vuVal
+        if (this._value > this.totalPeak) {
+            this.totalPeak = this._value
         }
         return this.totalHeight() * this.totalPeak
     }
 
     getWindowPeak = () => {
         if (
-            this.props.vuVal > this.windowPeak ||
+            this._value > this.windowPeak ||
             Date.now() - this.windowLast > this.WINDOW
         ) {
-            this.windowPeak = this.props.vuVal
+            this.windowPeak = this._value
             this.windowLast = Date.now()
         }
         return this.totalHeight() * this.windowPeak
     }
 
     calcLower = () => {
-        let val = this.props.vuVal
+        let val = this._value
         if (val >= this.meterTest) {
             val = this.meterTest
         }
@@ -74,7 +78,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     }
 
     calcMiddle = () => {
-        let val = this.props.vuVal
+        let val = this._value
         if (val < this.meterTest) {
             val = this.meterTest
         } else if (val >= this.meterZero) {
@@ -84,7 +88,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     }
 
     calcUpper = () => {
-        let val = this.props.vuVal
+        let val = this._value
         if (val < this.meterZero) {
             val = this.meterZero
         }
@@ -108,6 +112,15 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
         }
         this._painting = true
 
+        this._value = vuMeters[this.props.faderIndex]?.[this.props.channel] || 0
+
+        if (this._value === this._previousVal) {
+            this._painting = false
+            window.requestAnimationFrame(this.paintVuMeter)
+            return
+        }
+        this._previousVal = this._value
+
         const context = this.canvas.getContext('2d', {
             antialias: false,
             stencil: false,
@@ -116,8 +129,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
         if (!context) return
 
-        const range =
-            this.meterMax - this.meterMin
+        const range = this.meterMax - this.meterMin
         context.clearRect(
             0,
             0,
@@ -138,8 +150,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
         context.fillStyle = 'rgb(53, 167, 0)'
         context.fillRect(
             0,
-            this.totalHeight() * (range - this.meterTest) -
-                this.calcMiddle(),
+            this.totalHeight() * (range - this.meterTest) - this.calcMiddle(),
             this.canvas.clientWidth,
             this.calcMiddle()
         )
@@ -148,8 +159,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
         context.fillStyle = 'rgb(206, 0, 0)'
         context.fillRect(
             0,
-            this.totalHeight() * (range - this.meterZero) -
-                this.calcUpper(),
+            this.totalHeight() * (range - this.meterZero) - this.calcUpper(),
             this.canvas.clientWidth,
             this.calcUpper()
         )
@@ -210,7 +220,8 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
 const mapStateToProps = (state: any, props: any): IVuMeterInjectedProps => {
     return {
-        vuVal: state.faders[0].vuMeters[props.faderIndex].vuVal,
+        faderIndex: props.faderIndex,
+        channel: props.channel,
         showSnaps: state.settings[0].showSnaps,
     }
 }

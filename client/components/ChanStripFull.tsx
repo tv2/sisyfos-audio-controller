@@ -17,7 +17,6 @@ import {
     SOCKET_SET_INPUT_GAIN,
     SOCKET_SET_INPUT_SELECTOR,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import CcgChannelInputSettings from './CcgChannelSettings'
 import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
 import { fxParamsList } from '../../server/constants/MixerProtocolInterface'
@@ -800,13 +799,7 @@ class ChanStripFull extends React.PureComponent<
                         )}
                     </div>
                     <hr />
-                    {this.props.selectedProtocol.includes('caspar') ? (
-                        <CcgChannelInputSettings
-                            channelIndex={this.props.faderIndex}
-                        />
-                    ) : (
-                        this.parameters()
-                    )}
+                    {this.parameters()}
                 </div>
             )
         } else {
