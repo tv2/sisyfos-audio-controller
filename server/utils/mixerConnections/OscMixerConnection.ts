@@ -30,10 +30,7 @@ import {
     storeSetMute,
 } from '../../reducers/faderActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
-import {
-    SOCKET_SET_VU_REDUCTION,
-    SOCKET_SET_MIXER_ONLINE,
-} from '../../constants/SOCKET_IO_DISPATCHERS'
+import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
 import { logger } from '../logger'
 import { sendVuLevel, VuType } from '../vuServer'
 
@@ -128,36 +125,15 @@ export class OscMixerConnection {
                             .CHANNEL_VU_REDUCTION[0].mixerMessage
                     )
                 ) {
-                    if (
-                        state.settings[0].mixers[
-                            this.mixerIndex
-                        ].mixerProtocol.includes('behringer')
-                    ) {
-                        behringerReductionMeter(this.mixerIndex, message.args)
-                    } else if (
-                        state.settings[0].mixers[
-                            this.mixerIndex
-                        ].mixerProtocol.includes('midas')
-                    ) {
-                        midasMeter(this.mixerIndex, message.args)
-                    } else {
-                        let ch = message.address.split('/')[
-                            this.cmdChannelIndex
-                        ]
-                        store.dispatch(
-                            storeVuReductionLevel(
-                                state.channels[0].chConnection[this.mixerIndex]
-                                    .channel[ch - 1].assignedFader,
-                                message.args[0]
-                            )
-                        )
-                        socketServer.emit(SOCKET_SET_VU_REDUCTION, {
-                            faderIndex:
-                                state.channels[0].chConnection[this.mixerIndex]
-                                    .channel[ch - 1].assignedFader,
-                            level: message.args[0],
-                        })
-                    }
+                    let ch = message.address.split('/')[this.cmdChannelIndex]
+                    sendVuLevel(
+                        state.channels[0].chConnection[this.mixerIndex].channel[
+                            ch - 1
+                        ].assignedFader,
+                        VuType.Reduction,
+                        0,
+                        message.args[0]
+                    )
                 } else if (
                     this.checkOscCommand(
                         message.address,
