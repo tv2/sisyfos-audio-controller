@@ -16,7 +16,6 @@ import {
     TOGGLE_VO,
     CLEAR_PST,
     FADE_TO_BLACK,
-    SET_VU_LEVEL,
     SHOW_CHANNEL,
     NEXT_MIX,
     X_MIX,
@@ -127,18 +126,6 @@ describe('Test redux faderReducers actions', () => {
                 type: SET_PST_VO,
                 channel: 0,
                 pstVoOn: true,
-            })
-        ).toEqual(parsedInitialStore)
-    })
-
-    it('should return the new SET_VU_LEVEL state on faders', () => {
-        let parsedInitialStore = JSON.parse(parsedSimpleStoreJSON)
-        parsedInitialStore.faders[0].vuMeters[0].vuVal = 0.75
-        expect(
-            indexReducer(JSON.parse(parsedSimpleStoreJSON), {
-                type: SET_VU_LEVEL,
-                channel: 0,
-                level: 0.75,
             })
         ).toEqual(parsedInitialStore)
     })
