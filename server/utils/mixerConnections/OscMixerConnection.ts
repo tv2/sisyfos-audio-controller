@@ -22,7 +22,6 @@ import {
     storeSetOutputLevel,
 } from '../../reducers/channelActions'
 import {
-    storeVuLevel,
     storeVuReductionLevel,
     storeFaderLevel,
     storeFaderLabel,
@@ -32,11 +31,11 @@ import {
 } from '../../reducers/faderActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import {
-    SOCKET_SET_VU,
     SOCKET_SET_VU_REDUCTION,
     SOCKET_SET_MIXER_ONLINE,
 } from '../../constants/SOCKET_IO_DISPATCHERS'
 import { logger } from '../logger'
+import { sendVuLevel, VuType } from '../vuServer'
 
 export class OscMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -114,19 +113,13 @@ export class OscMixerConnection {
                         let ch = message.address.split('/')[
                             this.cmdChannelIndex
                         ]
-                        store.dispatch(
-                            storeVuLevel(
-                                state.channels[0].chConnection[this.mixerIndex]
-                                    .channel[ch - 1].assignedFader,
-                                message.args[0]
-                            )
+                        sendVuLevel(
+                            state.channels[0].chConnection[this.mixerIndex]
+                                .channel[ch - 1].assignedFader,
+                            VuType.Channel,
+                            0,
+                            message.args[0]
                         )
-                        socketServer.emit(SOCKET_SET_VU, {
-                            faderIndex:
-                                state.channels[0].chConnection[this.mixerIndex]
-                                    .channel[ch - 1].assignedFader,
-                            level: message.args[0],
-                        })
                     }
                 } else if (
                     this.checkOscCommand(

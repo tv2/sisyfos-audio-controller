@@ -1,4 +1,5 @@
 import { logger } from './utils/logger'
+import { socketSubscribeVu, socketUnsubscribeVu } from './utils/vuServer'
 
 const express = require('express')
 const path = require('path')
@@ -20,6 +21,14 @@ server.on('connection', () => {
 socketServer.on('connection', (socket: any) => {
     logger.info('Client connected :' + String(socket.client.id), {})
     global.mainThreadHandler.socketServerHandlers(socket)
+
+    socket.on('subscribe-vu-meter', () => {
+        console.log('socket subscribe vu')
+        socketSubscribeVu(socket)
+    })
+    socket.on('disconnect', () => {
+        socketUnsubscribeVu(socket)
+    })
 })
 
 export const expressInit = () => {

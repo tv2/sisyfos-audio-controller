@@ -15,7 +15,6 @@ import {
     storeUpdateSettings,
 } from '../../server/reducers/settingsActions'
 import {
-    SOCKET_SET_VU,
     SOCKET_RETURN_SNAPSHOT_LIST,
     SOCKET_SET_FULL_STORE,
     SOCKET_SET_STORE_FADER,
@@ -23,7 +22,6 @@ import {
     SOCKET_RETURN_CCG_LIST,
     SOCKET_SET_VU_REDUCTION,
     SOCKET_SET_MIXER_ONLINE,
-    SOCKET_SET_ALL_VU,
     SOCKET_RETURN_MIXER_PRESET_LIST,
     SOCKET_RETURN_PAGES_LIST,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
@@ -31,6 +29,9 @@ import {
     IchConnection,
     InumberOfChannels,
 } from '../../server/reducers/channelsReducer'
+import { VuType } from '../../server/utils/vuServer'
+
+export const vuMeters: number[][] = []
 
 export const socketClientHandlers = () => {
     let vuUpdateSpeed = Date.now()
@@ -99,34 +100,6 @@ export const socketClientHandlers = () => {
                 storeSetSingleChState(payload.channelIndex, payload.state)
             )
         })
-        .on(SOCKET_SET_ALL_VU, (payload: any) => {
-            if (Date.now() - vuUpdateSpeed > 100) {
-                vuUpdateSpeed = Date.now()
-                payload.vuMeters.forEach(
-                    (meterLevel: number, index: number) => {
-                        window.storeRedux.dispatch(
-                            storeVuLevel(index, meterLevel)
-                        )
-                    }
-                )
-                payload.vuReductionMeters.forEach(
-                    (meterLevel: number, index: number) => {
-                        window.storeRedux.dispatch(
-                            storeVuReductionLevel(index, meterLevel)
-                        )
-                    }
-                )
-            }
-        })
-        .on(SOCKET_SET_VU, (payload: any) => {
-            if (Date.now() - vuUpdateSpeed > 100) {
-                vuUpdateSpeed = Date.now()
-
-                window.storeRedux.dispatch(
-                    storeVuLevel(payload.faderIndex, payload.level)
-                )
-            }
-        })
         .on(SOCKET_SET_VU_REDUCTION, (payload: any) => {
             if (Date.now() - vuReductionUpdateSpeed > 100) {
                 vuReductionUpdateSpeed = Date.now()
@@ -147,4 +120,11 @@ export const socketClientHandlers = () => {
         .on(SOCKET_RETURN_PAGES_LIST, (payload: any) => {
             window.storeRedux.dispatch(storeUpdatePagesList(payload))
         })
+        .on(
+            VuType.Channel,
+            (faderIndex: number, channelIndex: number, level: number) => {
+                if (!vuMeters[faderIndex]) vuMeters[faderIndex] = []
+                vuMeters[faderIndex][channelIndex] = level
+            }
+        )
 }

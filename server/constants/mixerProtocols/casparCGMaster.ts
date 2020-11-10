@@ -147,7 +147,11 @@ let CasparCGMasterObject: ICasparCGMixerGeometry = {
                 CHANNEL_VU: [
                     {
                         mixerMessage:
-                            '/stage/channel/{ch}/layer/{layer}/mixer/volume',
+                            '/channel/{ch}/stage/layer/{layer}/audio/1/pFS',
+                    },
+                    {
+                        mixerMessage:
+                            '/channel/{ch}/stage/layer/{layer}/audio/2/pFS',
                     },
                 ],
             },

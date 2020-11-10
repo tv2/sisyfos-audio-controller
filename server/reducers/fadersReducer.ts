@@ -14,7 +14,6 @@ import {
     SET_PST,
     SET_PST_VO,
     SET_VO,
-    SET_VU_LEVEL,
     SET_VU_REDUCTION_LEVEL,
     SHOW_CHANNEL,
     IGNORE_AUTOMATION,
@@ -73,7 +72,6 @@ export interface IFader {
 }
 
 export interface IVuMeters {
-    vuVal: number
     reductionVal: number
 }
 
@@ -106,7 +104,6 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
             disabled: false,
         }
         defaultObj[0].vuMeters.push({
-            vuVal: 0.0,
             reductionVal: 0.0,
         })
         for (let y = 0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
@@ -131,13 +128,6 @@ export const faders = (
     }
 
     switch (action.type) {
-        case SET_VU_LEVEL:
-            if (typeof nextState[0].vuMeters[action.channel] !== 'undefined') {
-                nextState[0].vuMeters[action.channel].vuVal = parseFloat(
-                    action.level
-                )
-            }
-            return nextState
         case SET_VU_REDUCTION_LEVEL:
             if (typeof nextState[0].vuMeters[action.channel] !== 'undefined') {
                 nextState[0].vuMeters[action.channel].reductionVal = parseFloat(
