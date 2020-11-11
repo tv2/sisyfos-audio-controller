@@ -28,7 +28,6 @@ import {
     InumberOfChannels,
 } from '../../server/reducers/channelsReducer'
 import { VuType } from '../../server/utils/vuServer'
-import { state } from '../../server/reducers/store'
 
 export const vuMeters: number[][] = []
 
@@ -120,8 +119,10 @@ export const socketClientHandlers = () => {
             VuType.Reduction,
             (faderIndex: number, channelIndex: number, level: number) => {
                 if (
-                    state.settings[0].showChanStrip === faderIndex &&
-                    state.settings[0].showChanStripFull === faderIndex
+                    window.storeRedux.getState().settings[0].showChanStrip ===
+                        faderIndex &&
+                    window.storeRedux.getState().settings[0]
+                        .showChanStripFull === faderIndex
                 ) {
                     window.storeRedux.dispatch(
                         storeVuReductionLevel(faderIndex, level)
