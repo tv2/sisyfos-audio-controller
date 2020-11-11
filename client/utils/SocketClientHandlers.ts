@@ -31,6 +31,12 @@ import { VuType } from '../../server/utils/vuServer'
 
 export const vuMeters: number[][] = []
 
+//Subscribe to redux store:
+let reduxState = window.storeRedux.getState()
+const unsubscribe = window.storeRedux.subscribe(() => {
+    reduxState = window.storeRedux.getState()
+})
+
 export const socketClientHandlers = () => {
     window.socketIoClient
         .on('connect', () => {
@@ -119,10 +125,8 @@ export const socketClientHandlers = () => {
             VuType.Reduction,
             (faderIndex: number, channelIndex: number, level: number) => {
                 if (
-                    window.storeRedux.getState().settings[0].showChanStrip ===
-                        faderIndex &&
-                    window.storeRedux.getState().settings[0]
-                        .showChanStripFull === faderIndex
+                    reduxState.settings[0].showChanStrip === faderIndex ||
+                    reduxState.settings[0].showChanStripFull === faderIndex
                 ) {
                     window.storeRedux.dispatch(
                         storeVuReductionLevel(faderIndex, level)
