@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { ReducerState } from 'react'
 import ReactDom from 'react-dom'
 import App from './components/App'
-import { socketClientHandlers, vuMeters } from './utils/SocketClientHandlers'
+import { socketClientHandlers } from './utils/SocketClientHandlers'
 import io from 'socket.io-client'
 
 //Redux:
@@ -22,6 +22,7 @@ import { IMixerProtocol } from '../server/constants/MixerProtocolInterface'
 declare global {
     interface Window {
         storeRedux: any
+        reduxState: any
         mixerProtocol: IMixerProtocol
         mixerProtocolPresets: any
         mixerProtocolList: any
@@ -38,6 +39,13 @@ declare global {
 
 const storeRedux = createStore(indexReducer)
 window.storeRedux = storeRedux
+
+//Subscribe to redux store:
+window.reduxState = window.storeRedux.getState()
+const unsubscribe = window.storeRedux.subscribe(() => {
+    window.reduxState = window.storeRedux.getState()
+})
+
 window.socketIoClient = io()
 window.socketIoClient.emit(SOCKET_GET_SNAPSHOT_LIST)
 window.socketIoClient.emit(SOCKET_GET_CCG_LIST)
