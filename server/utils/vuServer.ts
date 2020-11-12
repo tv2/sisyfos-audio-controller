@@ -6,7 +6,10 @@ export enum VuType {
 const sockets: Array<any> = []
 
 export function socketSubscribeVu(socket: any) {
-    sockets.push(socket)
+    const i = sockets.indexOf(socket)
+    if (i === -1) {
+        sockets.push(socket)
+    }
 }
 
 export function socketUnsubscribeVu(socket: any) {
