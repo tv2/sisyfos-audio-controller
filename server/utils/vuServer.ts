@@ -1,3 +1,5 @@
+import { socketServer } from '../expressHandler'
+
 export enum VuType {
     Channel = 'vuChannel',
     Reduction = 'vuReduction',
@@ -11,7 +13,7 @@ export function socketSubscribeVu(socket: any) {
 
 export function socketUnsubscribeVu(socket: any) {
     const i = sockets.indexOf(socket)
-    if (i) {
+    if (i >= 0) {
         sockets.splice(i, 1)
     }
 }
