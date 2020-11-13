@@ -49,6 +49,10 @@ export class OscMixerConnection {
 
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
+        //If default store has been recreated multiple mixers are not created
+        if (!state.channels[0].chConnection[this.mixerIndex]) {
+            state.channels[0].chConnection[this.mixerIndex] = { channel: [] }
+        }
 
         this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
             .split('/')
