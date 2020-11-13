@@ -1,5 +1,3 @@
-import { socketServer } from '../expressHandler'
-
 export enum VuType {
     Channel = 'vuChannel',
     Reduction = 'vuReduction',
