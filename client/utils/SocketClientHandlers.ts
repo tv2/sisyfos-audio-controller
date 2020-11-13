@@ -36,6 +36,13 @@ export const socketClientHandlers = () => {
         .on('connect', () => {
             window.storeRedux.dispatch(storeSetServerOnline(true))
             console.log('CONNECTED TO SISYFOS SERVER')
+            if (!window.location.search.includes('vu=0')) {
+                // subscribe to VU'
+                window.socketIoClient.emit(
+                    'subscribe-vu-meter',
+                    'subscribe to vu meters'
+                )
+            }
         })
         .on('disconnect', () => {
             window.storeRedux.dispatch(storeSetServerOnline(false))

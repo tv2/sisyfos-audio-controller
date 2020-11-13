@@ -57,9 +57,6 @@ socketClientHandlers()
 window.socketIoClient.emit('get-store', 'update local store')
 window.socketIoClient.emit('get-settings', 'update local settings')
 window.socketIoClient.emit('get-mixerprotocol', 'get selected mixerprotocol')
-if (!window.location.search.includes('vu=0')) {
-    window.socketIoClient.emit('subscribe-vu-meter', 'subscribe to vu meters')
-}
 
 ReactDom.render(
     <ReduxProvider store={storeRedux}>
