@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.4.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.3.0...v4.4.0) (2020-11-14)
+
+### Features
+
+-   multi-channel vu meter ([5447042](https://github.com/olzzon/sisyfos-audio-controller/commit/54470423e27fba3ea1d70b59505b2aeda2907039))
+
+### Bug Fixes
+
+-   directly setting fader should not send any more commands ([f196cc1](https://github.com/olzzon/sisyfos-audio-controller/commit/f196cc19caddd585b7e259910f2f012c8c399099))
+-   Midas/Behringer X32 Gain reduction metering, implemented in new metering structure ([de5c255](https://github.com/olzzon/sisyfos-audio-controller/commit/de5c255ba5a670aa60d57a13ce616f94655ec2dd))
+-   Multiple Mixers intial state, if default.shot was empty, a crash could occour. ([ca94894](https://github.com/olzzon/sisyfos-audio-controller/commit/ca94894ee71d9afbb93afb91c09b965bff251a0f))
+-   Multiple we clients - returning -1 when using indexOf() cause all clients reference to be deleted ([006b7ec](https://github.com/olzzon/sisyfos-audio-controller/commit/006b7ecdfc4b7cb342147afad5b6e5aff4ad5b0a))
+-   put vu messages back on main socket ([d23d3ca](https://github.com/olzzon/sisyfos-audio-controller/commit/d23d3caf69a700a8341e60f974a351b107137a2b))
+-   Reduction metering - only update active channelstrip ([948ab79](https://github.com/olzzon/sisyfos-audio-controller/commit/948ab798b9e8ed17de1f298f8e874c1219c0a68e))
+-   remove ccg component from new ChannelStripFull ([a11de4f](https://github.com/olzzon/sisyfos-audio-controller/commit/a11de4f743651ab1002f3897f7096cba95fe113c))
+-   subscribe to VU meters upon connection ([bf5fce7](https://github.com/olzzon/sisyfos-audio-controller/commit/bf5fce76d95c61a2578786f28d2288baadd115b7))
+-   use getState on client side instead of servers redux store ([18d0562](https://github.com/olzzon/sisyfos-audio-controller/commit/18d0562a04ed812ed8844321842cb84706d85a14))
+-   Use sendVuLevel for reduction in Behringer XR and plain OSC protocol ([6300181](https://github.com/olzzon/sisyfos-audio-controller/commit/6300181a0d886de5dee4881ce1fa0aa0afb00a36))
+-   **casparcg:** better fader response ([50b3c30](https://github.com/olzzon/sisyfos-audio-controller/commit/50b3c30191409272f0db7ef0b2cba9a868d0d4e6))
+-   **casparcg:** better support for multiple mixers ([9caa210](https://github.com/olzzon/sisyfos-audio-controller/commit/9caa210f4ad9201447aa1c230a965599c7045e35))
+-   **casparcg:** calculate proper VU level ([ee89d7c](https://github.com/olzzon/sisyfos-audio-controller/commit/ee89d7c45e283826609493e64dfad0b101abdaca))
+-   **casparcg:** use normal input selector rather than custom component ([f33a18f](https://github.com/olzzon/sisyfos-audio-controller/commit/f33a18fb5b212b1a5fb56820983fc41adcc76e4a))
+
 ## [4.3.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.2.0...v4.3.0) (2020-11-09)
 
 ### Features
