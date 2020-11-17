@@ -404,7 +404,6 @@ export class EmberMixerConnection {
 
                 // assume it is in db now
                 level = this._faderLevelToFloat(Number(level), 0)
-
                 store.dispatch(storeInputGain(channel.assignedFader, level))
                 global.mainThreadHandler.updatePartialStore(
                     channel.assignedFader
@@ -766,7 +765,9 @@ export class EmberMixerConnection {
         let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
             .CHANNEL_INPUT_GAIN[0]
 
-        let level = gain * (protocol.max - protocol.min) + protocol.min
+        let level = this._floatToFaderLevel(gain, 0)
+
+        // let level = gain * (protocol.max - protocol.min) + protocol.min
 
         this.sendOutMessage(
             protocol.mixerMessage,
