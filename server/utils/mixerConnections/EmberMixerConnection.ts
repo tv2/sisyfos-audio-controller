@@ -364,7 +364,7 @@ export class EmberMixerConnection {
                 store.dispatch(
                     storeSetPfl(
                         channel.assignedFader,
-                        (node.contents as Model.Parameter).value !== 0
+                        (node.contents as Model.Parameter).value as boolean
                     )
                 )
                 global.mainThreadHandler.updatePartialStore(
@@ -481,8 +481,11 @@ export class EmberMixerConnection {
                     storeCapability(
                         channel.assignedFader,
                         'hasInputSelector',
-                        (node.contents as Model.Parameter).value === 1
+                        (node.contents as Model.Parameter).value as boolean
                     )
+                )
+                global.mainThreadHandler.updatePartialStore(
+                    channel.assignedFader
                 )
             }
         )
@@ -561,7 +564,9 @@ export class EmberMixerConnection {
                         storeCapability(
                             channel.assignedFader,
                             'hasAMix',
-                            (node.contents as Model.Parameter).value !== 15 // 15 is no unassigned
+                            (node.contents as Model.Parameter).value !==
+                                ((node.contents as Model.Parameter).maximum ||
+                                    63) // max is unassigned, max = 63 in firmware 6.4
                         )
                     )
                     global.mainThreadHandler.updatePartialStore(
@@ -585,7 +590,7 @@ export class EmberMixerConnection {
                 store.dispatch(
                     storeSetAMix(
                         channel.assignedFader,
-                        (node.contents as Model.Parameter).value === 1
+                        (node.contents as Model.Parameter).value as boolean
                     )
                 )
                 global.mainThreadHandler.updatePartialStore(

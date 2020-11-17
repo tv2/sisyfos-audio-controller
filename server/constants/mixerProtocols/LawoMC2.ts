@@ -47,6 +47,8 @@ export const LawoMC2: IMixerProtocol = {
                         min: -128,
                         max: 12,
                         zero: 0,
+                        maxLabel: 12,
+                        minLabel: -128,
                     },
                 ],
                 CHANNEL_INPUT_SELECTOR: [
@@ -109,12 +111,14 @@ export const LawoMC2: IMixerProtocol = {
                 CHANNEL_INPUT_GAIN: [
                     {
                         mixerMessage:
-                            'Channels.Inputs.${channel}.Signal Processing.Input Mixer.Input Gain',
+                            'Channels.Inputs.${channel}.Signal Processing.Digital Amplifier.DigiAmp Level',
                         value: 0,
                         type: 'int',
                         min: -128,
                         max: 12,
                         zero: 0,
+                        maxLabel: 12,
+                        minLabel: -128,
                     },
                 ],
                 CHANNEL_INPUT_SELECTOR: [

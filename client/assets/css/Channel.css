@@ -16,6 +16,10 @@
     flex-direction: column;
     align-items: center;
 }
+.channel-body > .channel-props {
+    display: flex;
+    flex-direction: column;
+}
 .channel-body > .channel-props,
 .channel-body > .out-control,
 .channel-body > .channel-control {
