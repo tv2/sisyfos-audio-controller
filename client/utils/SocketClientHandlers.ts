@@ -28,6 +28,7 @@ import {
     InumberOfChannels,
 } from '../../server/reducers/channelsReducer'
 import { VuType } from '../../server/utils/vuServer'
+import { IMixerSettings } from '../../server/reducers/settingsReducer'
 
 export const vuMeters: number[][] = []
 
@@ -72,10 +73,12 @@ export const socketClientHandlers = () => {
                         payload.settings[0].numberOfFaders
                     )
                 )
-                window.storeRedux.dispatch(
-                    storeSetMixerOnline(
-                        payload.settings[0].mixers[0].mixerOnline
-                    )
+                payload.settings[0].mixers.forEach(
+                    (mixer: IMixerSettings, i: number) => {
+                        window.storeRedux.dispatch(
+                            storeSetMixerOnline(i, mixer.mixerOnline)
+                        )
+                    }
                 )
                 window.storeRedux.dispatch(storeSetServerOnline(true))
             }
@@ -91,7 +94,9 @@ export const socketClientHandlers = () => {
             window.mixerProtocolList = payload.mixerProtocolList
         })
         .on(SOCKET_SET_MIXER_ONLINE, (payload: any) => {
-            window.storeRedux.dispatch(storeSetMixerOnline(payload.mixerOnline))
+            window.storeRedux.dispatch(
+                storeSetMixerOnline(payload.mixerIndex, payload.mixerOnline)
+            )
         })
         .on(SOCKET_SET_STORE_FADER, (payload: any) => {
             window.storeRedux.dispatch(

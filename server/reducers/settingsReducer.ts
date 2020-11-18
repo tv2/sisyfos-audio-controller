@@ -187,7 +187,8 @@ export const settings = (
             nextState[0].customPages = action.customPages
             return nextState
         case SET_MIXER_ONLINE:
-            nextState[0].mixers[0].mixerOnline = action.mixerOnline
+            nextState[0].mixers[action.mixerIndex || 0].mixerOnline =
+                action.mixerOnline
             return nextState
         case SET_SERVER_ONLINE:
             nextState[0].serverOnline = action.serverOnline

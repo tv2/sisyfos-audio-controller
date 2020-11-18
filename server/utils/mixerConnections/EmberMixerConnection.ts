@@ -22,6 +22,9 @@ import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
+import { storeSetMixerOnline } from '../../reducers/settingsActions'
+import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
+import { socketServer } from '../../expressHandler'
 
 export class EmberMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -39,7 +42,11 @@ export class EmberMixerConnection {
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
 
-        logger.info('Setting up Ember connection')
+        this.setupEmberSocket()
+    }
+
+    setupEmberSocket() {
+        logger.info('Setting up new Ember connection')
         this.emberConnection = new EmberClient(
             state.settings[0].mixers[this.mixerIndex].deviceIp,
             state.settings[0].mixers[this.mixerIndex].devicePort
@@ -60,27 +67,39 @@ export class EmberMixerConnection {
         })
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
+
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
+
+            this.emberNodeObject = []
+            this.isSubscribedToChannel = []
+            this.emberConnection.tree = []
+            // this.emberConnection.discard()
+            // delete this.emberConnection
+            // this.setupEmberSocket()
+        })
+        this.emberConnection.on('connected', async () => {
+            logger.info('Found Ember connection')
+
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
+                mixerIndex: this.mixerIndex,
+                mixerOnline: true,
+            })
+
+            const req = await this.emberConnection.getDirectory(
+                this.emberConnection.tree
+            )
+
+            await req.response
+
+            this.setupMixerConnection()
         })
         logger.info('Connecting to Ember')
-        let deviceRoot: any
-        this.emberConnection
-            .connect()
-            .then(async () => {
-                console.log('Getting Directory')
-                const req = await this.emberConnection.getDirectory(
-                    this.emberConnection.tree
-                )
-                return await req.response
-            })
-            .then((r) => {
-                console.log('Directory :', r)
-                this.deviceRoot = r
-
-                this.setupMixerConnection()
-            })
-            .catch((e: any) => {
-                console.log(e.stack)
-            })
+        this.emberConnection.connect()
     }
 
     async setupMixerConnection() {

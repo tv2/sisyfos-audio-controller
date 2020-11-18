@@ -69,7 +69,7 @@ export class LawoRubyMixerConnection {
             state.settings[0].mixers[this.mixerIndex].devicePort
         )
 
-        store.dispatch(storeSetMixerOnline(false))
+        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
 
         this.emberConnection.on('error', (error: any) => {
             if (
@@ -83,11 +83,11 @@ export class LawoRubyMixerConnection {
         })
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
-            store.dispatch(storeSetMixerOnline(false))
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
         })
         this.emberConnection.on('connected', () => {
             logger.info('Connected to Ember device')
-            store.dispatch(storeSetMixerOnline(true))
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
         })
 
         logger.info('Connecting to Ember')

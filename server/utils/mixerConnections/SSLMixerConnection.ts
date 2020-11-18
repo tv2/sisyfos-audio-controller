@@ -27,7 +27,7 @@ export class SSLMixerConnection {
     constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
         this.sendOutLevelMessage = this.sendOutLevelMessage.bind(this)
 
-        store.dispatch(storeSetMixerOnline(false))
+        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
 
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
@@ -61,7 +61,7 @@ export class SSLMixerConnection {
         let lastWasAck = false
 
         this.SSLConnection.on('ready', () => {
-            store.dispatch(storeSetMixerOnline(true))
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
 
             logger.info('Receiving state of desk', {})
             this.mixerProtocol.initializeCommands.map((item) => {
@@ -79,7 +79,7 @@ export class SSLMixerConnection {
         })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                store.dispatch(storeSetMixerOnline(true))
+                store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
 
                 let buffers = []
                 let lastIndex = 0
@@ -289,7 +289,7 @@ export class SSLMixerConnection {
         })
         global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch(storeSetMixerOnline(false))
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
         }, this.mixerProtocol.pingTime)
     }
 

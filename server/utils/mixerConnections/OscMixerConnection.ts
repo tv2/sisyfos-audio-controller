@@ -45,7 +45,7 @@ export class OscMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        store.dispatch(storeSetMixerOnline(false))
+        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
 
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
@@ -72,8 +72,9 @@ export class OscMixerConnection {
     }
 
     mixerOnline(onLineState: boolean) {
-        store.dispatch(storeSetMixerOnline(onLineState))
+        store.dispatch(storeSetMixerOnline(this.mixerIndex, onLineState))
         socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
+            mixerIndex: this.mixerIndex,
             mixerOnline: state,
         })
     }
@@ -411,7 +412,7 @@ export class OscMixerConnection {
         })
         global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch(storeSetMixerOnline(false))
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
         }, this.mixerProtocol.pingTime)
     }
 
