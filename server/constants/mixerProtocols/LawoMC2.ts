@@ -3,8 +3,12 @@ import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
 export const LawoMC2: IMixerProtocol = {
     protocol: 'EMBER',
     label: 'Lawo MC2',
-    presetFileExtension: '',
-    loadPresetCommand: [emptyMixerMessage()],
+    presetFileExtension: 'MC2',
+    loadPresetCommand: [
+        {
+            mixerMessage: 'Production.Load Snapshot',
+        },
+    ],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],

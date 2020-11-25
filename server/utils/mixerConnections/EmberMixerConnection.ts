@@ -1,6 +1,8 @@
 import { EmberClient, Model, Types } from 'emberplus-connection'
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
+import path from 'path'
+import fs from 'fs'
 
 //Utils:
 import {
@@ -890,7 +892,25 @@ export class EmberMixerConnection {
         )
     }
 
-    loadMixerPreset(presetName: string) {}
+    async loadMixerPreset(presetName: string) {
+        logger.info('Loading preset : ' + presetName)
+        if (this.mixerProtocol.presetFileExtension === 'MC2') {
+            let data = JSON.parse(
+                fs.readFileSync(path.resolve('storage', presetName)).toString()
+            )
+
+            const loadFunction = await this.emberConnection.getElementByPath(
+                this.mixerProtocol.loadPresetCommand[0].mixerMessage
+            )
+
+            if (loadFunction.contents.type === Model.ElementType.Function) {
+                this.emberConnection.invoke(
+                    loadFunction as any,
+                    data.sceneAddress
+                )
+            }
+        }
+    }
 
     injectCommand(command: string[]) {
         return true
