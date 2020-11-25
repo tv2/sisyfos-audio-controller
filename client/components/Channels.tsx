@@ -227,9 +227,9 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     </div>
                 )}
                 {this.props.settings.showChanStripFull >= 0 ? (
-                        <ChanStripFull
-                            faderIndex={this.props.settings.showChanStripFull}
-                        />
+                    <ChanStripFull
+                        faderIndex={this.props.settings.showChanStripFull}
+                    />
                 ) : (
                     <div></div>
                 )}
@@ -285,18 +285,16 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                                 SETTINGS
                             </button>
                         )}
-                        {window.location.search.includes(
-                            'settings=0'
-                        ) ? null : (
-                            <button
-                                className="button half channels-show-storage-button"
-                                onClick={() => {
-                                    this.handleShowStorage()
-                                }}
-                            >
-                                STORAGE
-                            </button>
-                        )}
+
+                        <button
+                            className="button half channels-show-storage-button"
+                            onClick={() => {
+                                this.handleShowStorage()
+                            }}
+                        >
+                            STORAGE
+                        </button>
+
                         {window.location.search.includes(
                             'settings=0'
                         ) ? null : (
@@ -346,7 +344,9 @@ const mapStateToProps = (state: any): IChannelsInjectProps => {
         faders: state.faders[0].fader,
         customPages: state.settings[0].customPages,
         settings: state.settings[0],
-        mixersOnline: state.settings[0].mixers.map((m: IMixerSettings) => m.mixerOnline).reduce((a: boolean, b: boolean) => a && b)
+        mixersOnline: state.settings[0].mixers
+            .map((m: IMixerSettings) => m.mixerOnline)
+            .reduce((a: boolean, b: boolean) => a && b),
     }
 }
 
