@@ -124,7 +124,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         voFadeTime: 280,
         showPfl: false,
         enablePages: true,
-        numberOfCustomPages: 16,
+        numberOfCustomPages: 4,
         chanStripFollowsPFL: true,
         serverOnline: true,
     },
