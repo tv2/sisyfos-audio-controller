@@ -351,8 +351,9 @@ export class StuderVistaMixerConnection {
     }
 
     mixerOnline(onLineState: boolean) {
-        store.dispatch(storeSetMixerOnline(onLineState))
+        store.dispatch(storeSetMixerOnline(this.mixerIndex, onLineState))
         socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
+            mixerIndex: this.mixerIndex,
             mixerOnline: state,
         })
     }

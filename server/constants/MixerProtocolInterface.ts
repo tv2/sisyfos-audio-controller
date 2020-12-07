@@ -20,6 +20,12 @@ export enum fxParamsList {
     CompHold,
     CompRelease,
 }
+export enum VuLabelConversionType {
+    Linear = 'linear',
+    Decibel = 'decibel',
+    DecibelRuby = 'decibelRuby',
+    DecibelMC2 = 'decibelMC2',
+}
 export interface IMixerProtocolGeneric {
     protocol: string
     fxList?: {}
@@ -27,6 +33,8 @@ export interface IMixerProtocolGeneric {
     presetFileExtension?: string
     loadPresetCommand?: Array<IMixerMessageProtocol>
     FADE_DISPATCH_RESOLUTION: number
+    vuLabelConversionType?: VuLabelConversionType
+    vuLabelValues?: Array<number>
     fader?: {
         min: number
         max: number

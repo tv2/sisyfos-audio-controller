@@ -103,7 +103,7 @@
     width: 49px;
     height: 75px;
     right: -20px;
-    top: -35px;
+    top: -38px;
 }
 .noUi-txt-dir-rtl.noUi-horizontal .noUi-handle {
     left: -17px;
@@ -300,28 +300,46 @@
 .noUi-pips-vertical {
     padding: 0 10px;
     height: 100%;
-    top: 0;
-    left: 100%;
+    top: 0px;
+    left: 0%;
 }
 .noUi-value-vertical {
     -webkit-transform: translate(0, -50%);
-    transform: translate(0, -50%);
-    padding-left: 25px;
+    transform: translate(0, -100%);
+    padding-left: 0px;
+    font-size: 10px;
 }
 .noUi-rtl .noUi-value-vertical {
     -webkit-transform: translate(0, 50%);
-    transform: translate(0, 50%);
+    transform: translate(0, 100%);
 }
 .noUi-marker-vertical.noUi-marker {
-    width: 5px;
+    width: 0px;
     height: 2px;
     margin-top: -1px;
 }
 .noUi-marker-vertical.noUi-marker-sub {
     width: 10px;
+    height: 1px;
+}
+.noUi-marker-vertical.noUi-marker-sub::before {
+    content: ' ';
+    width: 10px;
+    height: 1px;
+    position: absolute;
+    background: #aaa;
+    left: -22px;
 }
 .noUi-marker-vertical.noUi-marker-large {
     width: 15px;
+}
+.noUi-marker-vertical.noUi-marker-large::before {
+    content: ' ';
+    width: 15px;
+    height: 2px;
+    position: absolute;
+    background: #aaa;
+    left: -27px;
 }
 .noUi-tooltip {
     display: block;

@@ -16,6 +16,10 @@
     flex-direction: column;
     align-items: center;
 }
+.channel-body > .channel-props {
+    display: flex;
+    flex-direction: column;
+}
 .channel-body > .channel-props,
 .channel-body > .out-control,
 .channel-body > .channel-control {
@@ -131,7 +135,7 @@
 }
 
 .channel-pst-button.on {
-    background-color: rgb(124, 0, 0);
+    background-color: rgb(34, 135, 20);
 }
 
 .channel-pst-button.vo {
@@ -228,7 +232,7 @@
     border-color: rgba(0, 0, 0);
 }
 
-.channel-volume-fader::before,
+/* .channel-volume-fader::before,
 .channel-volume-fader::after {
     content: '__';
     position: absolute;
@@ -240,7 +244,7 @@
 }
 .channel-volume-fader::after {
     right: 9px;
-}
+} */
 
 :focus {
     outline: 0;

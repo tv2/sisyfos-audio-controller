@@ -1,6 +1,8 @@
 import { EmberClient, Model, Types } from 'emberplus-connection'
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
+import path from 'path'
+import fs from 'fs'
 
 //Utils:
 import {
@@ -22,6 +24,9 @@ import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
+import { storeSetMixerOnline } from '../../reducers/settingsActions'
+import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
+import { socketServer } from '../../expressHandler'
 
 export class EmberMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -39,7 +44,11 @@ export class EmberMixerConnection {
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
 
-        logger.info('Setting up Ember connection')
+        this.setupEmberSocket()
+    }
+
+    setupEmberSocket() {
+        logger.info('Setting up new Ember connection')
         this.emberConnection = new EmberClient(
             state.settings[0].mixers[this.mixerIndex].deviceIp,
             state.settings[0].mixers[this.mixerIndex].devicePort
@@ -60,27 +69,39 @@ export class EmberMixerConnection {
         })
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
+
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
+
+            this.emberNodeObject = []
+            this.isSubscribedToChannel = []
+            this.emberConnection.tree = []
+            // this.emberConnection.discard()
+            // delete this.emberConnection
+            // this.setupEmberSocket()
+        })
+        this.emberConnection.on('connected', async () => {
+            logger.info('Found Ember connection')
+
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
+                mixerIndex: this.mixerIndex,
+                mixerOnline: true,
+            })
+
+            const req = await this.emberConnection.getDirectory(
+                this.emberConnection.tree
+            )
+
+            await req.response
+
+            this.setupMixerConnection()
         })
         logger.info('Connecting to Ember')
-        let deviceRoot: any
-        this.emberConnection
-            .connect()
-            .then(async () => {
-                console.log('Getting Directory')
-                const req = await this.emberConnection.getDirectory(
-                    this.emberConnection.tree
-                )
-                return await req.response
-            })
-            .then((r) => {
-                console.log('Directory :', r)
-                this.deviceRoot = r
-
-                this.setupMixerConnection()
-            })
-            .catch((e: any) => {
-                console.log(e.stack)
-            })
+        this.emberConnection.connect()
     }
 
     async setupMixerConnection() {
@@ -364,7 +385,7 @@ export class EmberMixerConnection {
                 store.dispatch(
                     storeSetPfl(
                         channel.assignedFader,
-                        (node.contents as Model.Parameter).value !== 0
+                        (node.contents as Model.Parameter).value as boolean
                     )
                 )
                 global.mainThreadHandler.updatePartialStore(
@@ -404,7 +425,6 @@ export class EmberMixerConnection {
 
                 // assume it is in db now
                 level = this._faderLevelToFloat(Number(level), 0)
-
                 store.dispatch(storeInputGain(channel.assignedFader, level))
                 global.mainThreadHandler.updatePartialStore(
                     channel.assignedFader
@@ -481,8 +501,11 @@ export class EmberMixerConnection {
                     storeCapability(
                         channel.assignedFader,
                         'hasInputSelector',
-                        (node.contents as Model.Parameter).value === 1
+                        (node.contents as Model.Parameter).value as boolean
                     )
+                )
+                global.mainThreadHandler.updatePartialStore(
+                    channel.assignedFader
                 )
             }
         )
@@ -561,7 +584,9 @@ export class EmberMixerConnection {
                         storeCapability(
                             channel.assignedFader,
                             'hasAMix',
-                            (node.contents as Model.Parameter).value !== 15 // 15 is no unassigned
+                            (node.contents as Model.Parameter).value !==
+                                ((node.contents as Model.Parameter).maximum ||
+                                    63) // max is unassigned, max = 63 in firmware 6.4
                         )
                     )
                     global.mainThreadHandler.updatePartialStore(
@@ -585,7 +610,7 @@ export class EmberMixerConnection {
                 store.dispatch(
                     storeSetAMix(
                         channel.assignedFader,
-                        (node.contents as Model.Parameter).value === 1
+                        (node.contents as Model.Parameter).value as boolean
                     )
                 )
                 global.mainThreadHandler.updatePartialStore(
@@ -761,7 +786,9 @@ export class EmberMixerConnection {
         let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
             .CHANNEL_INPUT_GAIN[0]
 
-        let level = gain * (protocol.max - protocol.min) + protocol.min
+        let level = this._floatToFaderLevel(gain, 0)
+
+        // let level = gain * (protocol.max - protocol.min) + protocol.min
 
         this.sendOutMessage(
             protocol.mixerMessage,
@@ -865,7 +892,25 @@ export class EmberMixerConnection {
         )
     }
 
-    loadMixerPreset(presetName: string) {}
+    async loadMixerPreset(presetName: string) {
+        logger.info('Loading preset : ' + presetName)
+        if (this.mixerProtocol.presetFileExtension === 'MC2') {
+            let data = JSON.parse(
+                fs.readFileSync(path.resolve('storage', presetName)).toString()
+            )
+
+            const loadFunction = await this.emberConnection.getElementByPath(
+                this.mixerProtocol.loadPresetCommand[0].mixerMessage
+            )
+
+            if (loadFunction.contents.type === Model.ElementType.Function) {
+                this.emberConnection.invoke(
+                    loadFunction as any,
+                    data.sceneAddress
+                )
+            }
+        }
+    }
 
     injectCommand(command: string[]) {
         return true

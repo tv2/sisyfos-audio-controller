@@ -65,9 +65,13 @@ export const storeUpdatePagesList = (customPages: ICustomPages[]) => {
         customPages: customPages,
     }
 }
-export const storeSetMixerOnline = (mixerOnline: boolean) => {
+export const storeSetMixerOnline = (
+    mixerIndex: number,
+    mixerOnline: boolean
+) => {
     return {
         type: SET_MIXER_ONLINE,
+        mixerIndex: mixerIndex,
         mixerOnline: mixerOnline,
     }
 }

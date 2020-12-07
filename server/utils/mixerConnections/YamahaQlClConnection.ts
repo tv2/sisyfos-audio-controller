@@ -29,7 +29,7 @@ export class QlClMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        store.dispatch(storeSetMixerOnline(false))
+        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
 
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
@@ -78,7 +78,7 @@ export class QlClMixerConnection {
             })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                store.dispatch(storeSetMixerOnline(true))
+                store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
 
                 let buffers = []
                 let lastIndex = 0
@@ -239,7 +239,7 @@ export class QlClMixerConnection {
 
     pingMixerCommand() {
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch(storeSetMixerOnline(false))
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
         }, this.mixerProtocol.pingTime)
     }
 

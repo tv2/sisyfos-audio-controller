@@ -1,16 +1,26 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
+import {
+    IMixerProtocol,
+    emptyMixerMessage,
+    VuLabelConversionType,
+} from '../MixerProtocolInterface'
 
 export const LawoMC2: IMixerProtocol = {
     protocol: 'EMBER',
     label: 'Lawo MC2',
-    presetFileExtension: '',
-    loadPresetCommand: [emptyMixerMessage()],
+    presetFileExtension: 'MC2',
+    loadPresetCommand: [
+        {
+            mixerMessage: 'Production.Load Snapshot',
+        },
+    ],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],
     pingTime: 0, //Bypass ping when pingTime is zero
     initializeCommands: [emptyMixerMessage()],
+    vuLabelConversionType: VuLabelConversionType.DecibelMC2,
+    vuLabelValues: [0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1],
     channelTypes: [
         {
             channelTypeName: 'CH',
@@ -41,12 +51,14 @@ export const LawoMC2: IMixerProtocol = {
                 CHANNEL_INPUT_GAIN: [
                     {
                         mixerMessage:
-                            'Channels.Inputs.${channel}.Signal Processing.Input Mixer.Input Gain',
+                            'Channels.Inputs.${channel}.Signal Processing.Digital Amplifier.DigiAmp Level',
                         value: 0,
                         type: 'int',
                         min: -128,
                         max: 12,
                         zero: 0,
+                        maxLabel: 12,
+                        minLabel: -128,
                     },
                 ],
                 CHANNEL_INPUT_SELECTOR: [
@@ -109,12 +121,14 @@ export const LawoMC2: IMixerProtocol = {
                 CHANNEL_INPUT_GAIN: [
                     {
                         mixerMessage:
-                            'Channels.Inputs.${channel}.Signal Processing.Input Mixer.Input Gain',
+                            'Channels.Inputs.${channel}.Signal Processing.Digital Amplifier.DigiAmp Level',
                         value: 0,
                         type: 'int',
                         min: -128,
                         max: 12,
                         zero: 0,
+                        maxLabel: 12,
+                        minLabel: -128,
                     },
                 ],
                 CHANNEL_INPUT_SELECTOR: [

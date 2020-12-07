@@ -19,6 +19,7 @@ import { IChannels } from '../../server/reducers/channelsReducer'
 import { IFader } from '../../server/reducers/fadersReducer'
 import {
     ICustomPages,
+    IMixerSettings,
     ISettings,
     PageType,
 } from '../../server/reducers/settingsReducer'
@@ -35,6 +36,7 @@ interface IChannelsInjectProps {
     faders: IFader[]
     settings: ISettings
     customPages: ICustomPages[]
+    mixersOnline: boolean
 }
 
 class Channels extends React.Component<IChannelsInjectProps & Store> {
@@ -55,8 +57,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 nextProps.settings.showMonitorOptions ||
             this.props.settings.customPages !==
                 nextProps.settings.customPages ||
-            this.props.settings.mixers[0].mixerOnline !==
-                nextProps.settings.mixers[0].mixerOnline ||
+            this.props.mixersOnline !== nextProps.mixersOnline ||
             this.props.faders.length !== nextProps.faders.length ||
             this.props.settings.currentPage !==
                 nextProps.settings.currentPage ||
@@ -226,9 +227,9 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     </div>
                 )}
                 {this.props.settings.showChanStripFull >= 0 ? (
-                        <ChanStripFull
-                            faderIndex={this.props.settings.showChanStripFull}
-                        />
+                    <ChanStripFull
+                        faderIndex={this.props.settings.showChanStripFull}
+                    />
                 ) : (
                     <div></div>
                 )}
@@ -242,13 +243,12 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 <br />
                 <div className="channels-mix-body">
                     <div className="top">
-                        {this.props.settings.mixers[0].mixerOnline ? (
+                        {this.props.mixersOnline ? (
                             <button
                                 className={ClassNames(
                                     'button half channels-show-mixer-online',
                                     {
-                                        connected: this.props.settings.mixers[0]
-                                            .mixerOnline,
+                                        connected: this.props.mixersOnline,
                                     }
                                 )}
                                 onClick={() => {
@@ -262,8 +262,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                                 className={ClassNames(
                                     'button half channels-show-mixer-online',
                                     {
-                                        connected: this.props.settings.mixers[0]
-                                            .mixerOnline,
+                                        connected: this.props.mixersOnline,
                                     }
                                 )}
                                 onClick={() => {
@@ -286,18 +285,16 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                                 SETTINGS
                             </button>
                         )}
-                        {window.location.search.includes(
-                            'settings=0'
-                        ) ? null : (
-                            <button
-                                className="button half channels-show-storage-button"
-                                onClick={() => {
-                                    this.handleShowStorage()
-                                }}
-                            >
-                                STORAGE
-                            </button>
-                        )}
+
+                        <button
+                            className="button half channels-show-storage-button"
+                            onClick={() => {
+                                this.handleShowStorage()
+                            }}
+                        >
+                            STORAGE
+                        </button>
+
                         {window.location.search.includes(
                             'settings=0'
                         ) ? null : (
@@ -347,6 +344,9 @@ const mapStateToProps = (state: any): IChannelsInjectProps => {
         faders: state.faders[0].fader,
         customPages: state.settings[0].customPages,
         settings: state.settings[0],
+        mixersOnline: state.settings[0].mixers
+            .map((m: IMixerSettings) => m.mixerOnline)
+            .reduce((a: boolean, b: boolean) => a && b),
     }
 }
 
