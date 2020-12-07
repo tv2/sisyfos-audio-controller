@@ -1,4 +1,8 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
+import {
+    IMixerProtocol,
+    emptyMixerMessage,
+    VuLabelConversionType,
+} from '../MixerProtocolInterface'
 
 export const LawoMC2: IMixerProtocol = {
     protocol: 'EMBER',
@@ -15,6 +19,8 @@ export const LawoMC2: IMixerProtocol = {
     pingResponseCommand: [emptyMixerMessage()],
     pingTime: 0, //Bypass ping when pingTime is zero
     initializeCommands: [emptyMixerMessage()],
+    vuLabelConversionType: VuLabelConversionType.DecibelMC2,
+    vuLabelValues: [0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1],
     channelTypes: [
         {
             channelTypeName: 'CH',

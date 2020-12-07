@@ -1,4 +1,8 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
+import {
+    IMixerProtocol,
+    emptyMixerMessage,
+    VuLabelConversionType,
+} from '../MixerProtocolInterface'
 
 export const LawoRuby: IMixerProtocol = {
     protocol: 'LAWORUBY',
@@ -11,6 +15,8 @@ export const LawoRuby: IMixerProtocol = {
     pingResponseCommand: [emptyMixerMessage()],
     pingTime: 0, //Bypass ping when pingTime is zero
     initializeCommands: [emptyMixerMessage()],
+    vuLabelConversionType: VuLabelConversionType.Decibel,
+    vuLabelValues: [0, 0.5, 0.75, 1],
     channelTypes: [
         {
             channelTypeName: 'CH',

@@ -23,6 +23,8 @@ import { IFader } from '../../server/reducers/fadersReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
 import { storeShowChanStrip } from '../../server/reducers/settingsActions'
 import { withTranslation } from 'react-i18next'
+import { VuLabelConversionType } from '../../server/constants/MixerProtocolInterface'
+import { Conversions } from '../../server/utils/dbConversion'
 
 interface IChannelInjectProps {
     t: any
@@ -134,6 +136,39 @@ class Channel extends React.Component<
     }
 
     fader() {
+        const showFormat = !!window.mixerProtocol.vuLabelConversionType
+        const values = (showFormat && window.mixerProtocol.vuLabelValues) || [
+            0.75,
+        ]
+        let format = {
+            to: (f: number) => 0,
+            from: (d: number) => 0,
+        }
+        if (showFormat) {
+            if (
+                window.mixerProtocol.vuLabelConversionType ===
+                VuLabelConversionType.Linear
+            ) {
+                const range = window.mixerProtocol.fader
+                format = {
+                    to: (f: number) => {
+                        if (!range) return f
+                        return (range.max - range.min) * f + range.max
+                    },
+                    from: (d: number) => {
+                        if (!range) return d
+                        return (d - range.min) / (range.max - range.min)
+                    },
+                }
+            } else if (
+                Conversions[
+                    window.mixerProtocol
+                        .vuLabelConversionType as keyof typeof Conversions
+                ]
+            ) {
+                format = Conversions[VuLabelConversionType.Decibel]
+            }
+        }
         return (
             <Nouislider
                 className={ClassNames({
@@ -149,6 +184,22 @@ class Channel extends React.Component<
                 connect
                 onSlide={(event: any) => {
                     this.handleLevel(event)
+                }}
+                pips={{
+                    mode: 'values',
+                    values,
+                    format,
+                    filter: (v: number) => {
+                        if (values.includes(v)) {
+                            if (v === 0.75) {
+                                return 1 // large
+                            } else {
+                                return 2 // small
+                            }
+                        } else {
+                            return -1 // no pip
+                        }
+                    },
                 }}
             />
         )

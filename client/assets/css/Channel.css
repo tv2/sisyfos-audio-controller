@@ -232,7 +232,7 @@
     border-color: rgba(0, 0, 0);
 }
 
-.channel-volume-fader::before,
+/* .channel-volume-fader::before,
 .channel-volume-fader::after {
     content: '__';
     position: absolute;
@@ -244,7 +244,7 @@
 }
 .channel-volume-fader::after {
     right: 9px;
-}
+} */
 
 :focus {
     outline: 0;
