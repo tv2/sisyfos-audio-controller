@@ -22,9 +22,9 @@ The features on the channelstrip depends on the Mixer Protocol.
 
 <img src="Docs/pix/SisyfosChannelStripdescription.jpg">
 
-### Advanced Channelstrip:
+### Full Channelstrip:
 
-(You open the channelstrip by clicking on the advanced button on the normal channelstrip)
+(You open the channelstrip by clicking on the "Full Ch.Strip" in the normal channelstrip)
 
 The Advanced channelstrip has all the features the seleced Mixer Protol supports. (Example: Midas M32)
 
