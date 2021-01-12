@@ -18,8 +18,17 @@ It´s fast to see what faders are on-aie, and whether they are PGM level or Voic
 ### These are the functions on the channelstrip:
 
 (You open the channelstrip by clicking on the channel label)
+The features on the channelstrip depends on the Mixer Protocol.
 
 <img src="Docs/pix/SisyfosChannelStripdescription.jpg">
+
+### Advanced Channelstrip:
+
+(You open the channelstrip by clicking on the advanced button on the normal channelstrip)
+
+The Advanced channelstrip has all the features the seleced Mixer Protol supports. (Example: Midas M32)
+
+<img src="Docs/pix/AdvancedChannelStrip.png">
 
 ### If you need a MiniMonitorView for a client:
 
