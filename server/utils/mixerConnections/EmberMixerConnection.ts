@@ -25,8 +25,6 @@ import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
-import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
-import { socketServer } from '../../expressHandler'
 
 export class EmberMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -71,10 +69,7 @@ export class EmberMixerConnection {
             logger.error('Lost Ember connection')
 
             store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
-            socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
-                mixerIndex: this.mixerIndex,
-                mixerOnline: false,
-            })
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
 
             this.emberNodeObject = []
             this.isSubscribedToChannel = []
@@ -87,10 +82,7 @@ export class EmberMixerConnection {
             logger.info('Found Ember connection')
 
             store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
-            socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
-                mixerIndex: this.mixerIndex,
-                mixerOnline: true,
-            })
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
 
             const req = await this.emberConnection.getDirectory(
                 this.emberConnection.tree

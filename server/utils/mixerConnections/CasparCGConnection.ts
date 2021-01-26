@@ -21,7 +21,6 @@ import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { IFader } from '../../reducers/fadersReducer'
 import { sendVuLevel, VuType } from '../vuServer'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
-import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -60,22 +59,16 @@ export class CasparCGConnection {
         logger.info('Trying to connect to CasparCG...')
         this.connection.onConnected = () => {
             logger.info('CasparCG connected')
-            this.setupMixerConnection()
-
             store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
-            socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
-                mixerIndex: this.mixerIndex,
-                mixerOnline: true,
-            })
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
+
+            this.setupMixerConnection()
         }
         this.connection.onDisconnected = () => {
             logger.info('CasparCG disconnected')
 
             store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
-            socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
-                mixerIndex: this.mixerIndex,
-                mixerOnline: false,
-            })
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         }
         this.connection.connect()
 

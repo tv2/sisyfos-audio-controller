@@ -5,7 +5,6 @@ const path = require('path')
 
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
-import { socketServer } from '../../expressHandler'
 
 //Utils:
 import {
@@ -30,7 +29,6 @@ import {
     storeSetMute,
 } from '../../reducers/faderActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
-import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
 import { logger } from '../logger'
 import { sendVuLevel, VuType } from '../vuServer'
 
@@ -73,10 +71,7 @@ export class OscMixerConnection {
 
     mixerOnline(onLineState: boolean) {
         store.dispatch(storeSetMixerOnline(this.mixerIndex, onLineState))
-        socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
-            mixerIndex: this.mixerIndex,
-            mixerOnline: state,
-        })
+        global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
     }
 
     setupMixerConnection() {

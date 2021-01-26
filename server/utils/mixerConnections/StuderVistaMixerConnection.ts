@@ -10,8 +10,6 @@ import {
 } from '../../constants/MixerProtocolInterface'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
-import { socketServer } from '../../expressHandler'
-import { SOCKET_SET_MIXER_ONLINE } from '../../constants/SOCKET_IO_DISPATCHERS'
 import {
     storeFaderLevel,
     storeSetMute,
@@ -352,10 +350,7 @@ export class StuderVistaMixerConnection {
 
     mixerOnline(onLineState: boolean) {
         store.dispatch(storeSetMixerOnline(this.mixerIndex, onLineState))
-        socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
-            mixerIndex: this.mixerIndex,
-            mixerOnline: state,
-        })
+        global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
     }
 
     pingMixerCommand() {

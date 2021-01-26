@@ -84,10 +84,12 @@ export class LawoRubyMixerConnection {
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
             store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         })
         this.emberConnection.on('connected', () => {
             logger.info('Connected to Ember device')
             store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         })
 
         logger.info('Connecting to Ember')
