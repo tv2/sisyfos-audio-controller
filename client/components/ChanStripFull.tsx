@@ -683,7 +683,7 @@ class ChanStripFull extends React.PureComponent<
                         <React.Fragment>
                             {this.doesParamExists(fxParamsList.GainTrim) ? (
                                 <div className="item">
-                                    <div className="title">GAIN TRIM</div>
+                                    <div className="title">INPUT</div>
                                     <div className="content">
                                         {this.fxParamFader(
                                             fxParamsList.GainTrim
