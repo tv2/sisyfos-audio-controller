@@ -15,6 +15,7 @@ import {
     storeChannelDisabled,
     storeSetAMix,
     storeCapability,
+    storeShowChannel,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
@@ -84,10 +85,12 @@ export class LawoRubyMixerConnection {
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
             store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         })
         this.emberConnection.on('connected', () => {
             logger.info('Connected to Ember device')
             store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         })
 
         logger.info('Connecting to Ember')
@@ -161,12 +164,16 @@ export class LawoRubyMixerConnection {
                         store.dispatch(
                             storeChannelDisabled(channelTypeIndex, false)
                         )
+                        store.dispatch(storeShowChannel(channelTypeIndex, true))
                     } else {
                         // disable
                         store.dispatch(
                             storeChannelDisabled(channelTypeIndex, true)
                         )
                         store.dispatch(storeFaderLabel(channelTypeIndex, ''))
+                        store.dispatch(
+                            storeShowChannel(channelTypeIndex, false)
+                        )
                     }
                 }
             }

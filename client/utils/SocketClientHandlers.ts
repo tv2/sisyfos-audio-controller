@@ -99,9 +99,11 @@ export const socketClientHandlers = () => {
             )
         })
         .on(SOCKET_SET_STORE_FADER, (payload: any) => {
-            window.storeRedux.dispatch(
-                storeSetSingleFaderState(payload.faderIndex, payload.state)
-            )
+            if ('faderIndex' in payload && 'state' in payload) {
+                window.storeRedux.dispatch(
+                    storeSetSingleFaderState(payload.faderIndex, payload.state)
+                )
+            }
         })
         .on(SOCKET_SET_STORE_CHANNEL, (payload: any) => {
             window.storeRedux.dispatch(

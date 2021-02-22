@@ -20,6 +20,7 @@ import { logger } from '../logger'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { IFader } from '../../reducers/fadersReducer'
 import { sendVuLevel, VuType } from '../vuServer'
+import { storeSetMixerOnline } from '../../reducers/settingsActions'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -58,10 +59,16 @@ export class CasparCGConnection {
         logger.info('Trying to connect to CasparCG...')
         this.connection.onConnected = () => {
             logger.info('CasparCG connected')
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
+
             this.setupMixerConnection()
         }
         this.connection.onDisconnected = () => {
             logger.info('CasparCG disconnected')
+
+            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         }
         this.connection.connect()
 

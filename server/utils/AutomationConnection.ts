@@ -71,7 +71,10 @@ export class AutomationConnection {
                         )
                     ) {
                         let ch = message.address.split('/')[2]
-                        if (!state.faders[0].fader[ch - 1].ignoreAutomation) {
+                        if (
+                            state.faders[0].fader[ch - 1] &&
+                            !state.faders[0].fader[ch - 1].ignoreAutomation
+                        ) {
                             if (message.args[0] === 1) {
                                 mixerGenericConnection.checkForAutoResetThreshold(
                                     ch - 1
@@ -104,7 +107,10 @@ export class AutomationConnection {
                         )
                     ) {
                         let ch = message.address.split('/')[2]
-                        if (!state.faders[0].fader[ch - 1].ignoreAutomation) {
+                        if (
+                            state.faders[0].fader[ch - 1] &&
+                            !state.faders[0].fader[ch - 1].ignoreAutomation
+                        ) {
                             if (message.args[0] === 1) {
                                 store.dispatch(storeSetPst(ch - 1, true))
                             } else if (message.args[0] === 2) {
@@ -122,7 +128,10 @@ export class AutomationConnection {
                         )
                     ) {
                         let ch = message.address.split('/')[2]
-                        if (!state.faders[0].fader[ch - 1].ignoreAutomation) {
+                        if (
+                            state.faders[0].fader[ch - 1] &&
+                            !state.faders[0].fader[ch - 1].ignoreAutomation
+                        ) {
                             store.dispatch(
                                 storeSetMute(ch - 1, message.args[0] === 1)
                             )
@@ -137,7 +146,10 @@ export class AutomationConnection {
                         )
                     ) {
                         let ch = message.address.split('/')[2]
-                        if (!state.faders[0].fader[ch - 1].ignoreAutomation) {
+                        if (
+                            state.faders[0].fader[ch - 1] &&
+                            !state.faders[0].fader[ch - 1].ignoreAutomation
+                        ) {
                             store.dispatch(
                                 storeFaderLevel(ch - 1, message.args[0])
                             )

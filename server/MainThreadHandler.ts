@@ -57,6 +57,7 @@ import {
     SOCKET_TOGGLE_AMIX,
     SOCKET_TOGGLE_ALL_MANUAL,
     SOCKET_SET_PAGES_LIST,
+    SOCKET_SET_MIXER_ONLINE,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
     storeFaderLevel,
@@ -114,6 +115,13 @@ export class MainThreadHandlers {
                     })
                 }
             })
+        })
+    }
+
+    updateMixerOnline(mixerIndex: number) {
+        socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
+            mixerIndex,
+            mixerOnline: state.settings[0].mixers[mixerIndex].mixerOnline,
         })
     }
 
