@@ -123,7 +123,10 @@ export const faders = (
             fader: [...state[0].fader],
         },
     ]
-    if (action.channel > nextState[0].fader.length) {
+    if (
+        action.channel &&
+        (action.channel < 0 || action.channel >= nextState[0].fader.length)
+    ) {
         return nextState
     }
 
