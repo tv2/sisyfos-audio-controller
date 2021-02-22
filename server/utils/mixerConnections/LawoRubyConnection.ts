@@ -15,6 +15,7 @@ import {
     storeChannelDisabled,
     storeSetAMix,
     storeCapability,
+    storeShowChannel,
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
@@ -163,12 +164,16 @@ export class LawoRubyMixerConnection {
                         store.dispatch(
                             storeChannelDisabled(channelTypeIndex, false)
                         )
+                        store.dispatch(storeShowChannel(channelTypeIndex, true))
                     } else {
                         // disable
                         store.dispatch(
                             storeChannelDisabled(channelTypeIndex, true)
                         )
                         store.dispatch(storeFaderLabel(channelTypeIndex, ''))
+                        store.dispatch(
+                            storeShowChannel(channelTypeIndex, false)
+                        )
                     }
                 }
             }
