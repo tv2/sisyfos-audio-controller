@@ -681,6 +681,18 @@ class ChanStripFull extends React.PureComponent<
                             </React.Fragment>
                         )}
                         <React.Fragment>
+                            {this.doesParamExists(fxParamsList.GainTrim) ? (
+                                <div className="item">
+                                    <div className="title">GAIN TRIM</div>
+                                    <div className="content">
+                                        {this.fxParamFader(
+                                            fxParamsList.GainTrim
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <React.Fragment></React.Fragment>
+                            )}
                             {this.doesParamExists(fxParamsList.CompThrs) ? (
                                 <div className="item">
                                     <div className="title">COMPRESSOR</div>

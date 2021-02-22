@@ -12,6 +12,7 @@ export enum fxParamsList {
     EqQ03,
     EqQ04,
     DelayTime,
+    GainTrim,
     CompThrs,
     CompRatio,
     CompKnee,

@@ -39,6 +39,9 @@ export const MidasMaster: IMixerProtocol = {
             type: 'aux',
         },
         {
+            mixerMessage: '/ch/{channel}/preamp/trim',
+        },
+        {
             mixerMessage: '/ch/{channel}/dyn/thr',
         },
         {
@@ -130,6 +133,15 @@ export const MidasMaster: IMixerProtocol = {
                 CHANNEL_NAME: [emptyMixerMessage()], //[{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
                 PFL: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
+                [fxParamsList.GainTrim]: [
+                    {
+                        mixerMessage: '/ch/{channel}/preamp/trim',
+                        minLabel: -18,
+                        maxLabel: 18,
+                        label: 'Gain Trim',
+                        valueLabel: ' dB',
+                    },
+                ],
                 [fxParamsList.CompThrs]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/thr',
@@ -333,6 +345,15 @@ export const MidasMaster: IMixerProtocol = {
                 PFL_ON: [emptyMixerMessage()],
                 PFL_OFF: [emptyMixerMessage()],
                 NEXT_SEND: [emptyMixerMessage()],
+                [fxParamsList.GainTrim]: [
+                    {
+                        mixerMessage: '/ch/{channel}/preamp/trim',
+                        minLabel: -18,
+                        maxLabel: 18,
+                        label: 'Gain Trim',
+                        valueLabel: ' dB',
+                    },
+                ],
                 [fxParamsList.CompThrs]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/thr',
