@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.5.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.4.0...v4.5.0) (2021-02-24)
+
+### Features
+
+-   Midas/X32 - Input gain trim in full channel view ([6e3ccbc](https://github.com/olzzon/sisyfos-audio-controller/commit/6e3ccbc983390092a7977949adc2026e8dd50833))
+-   More Generic Preset load files for midas/X32 ([bc292d4](https://github.com/olzzon/sisyfos-audio-controller/commit/bc292d436b5036e1265b1f8ed0355b2f8aac57f7))
+-   show dB range on the fader ([d38b4ba](https://github.com/olzzon/sisyfos-audio-controller/commit/d38b4ba98e48cf7ddb8d95a484290f94b816fd96))
+-   **ember:** load mixer snapshots ([14c4d71](https://github.com/olzzon/sisyfos-audio-controller/commit/14c4d715be1144be77a3c8c76823bb096e4baedf))
+
+### Bug Fixes
+
+-   casparcg online status ([b0c079d](https://github.com/olzzon/sisyfos-audio-controller/commit/b0c079d7558782d842062574b6ae5508b05e2867))
+-   change PFL color to green ([40d8514](https://github.com/olzzon/sisyfos-audio-controller/commit/40d851463462612ad76038ec17ae88a295dc5a26))
+-   default number of custompages changed from 16 to 4 ([353ac95](https://github.com/olzzon/sisyfos-audio-controller/commit/353ac95b86c280ea0862abe68ddcf05783e3c398))
+-   hide unused Lawo Ruby channels ([c7356cb](https://github.com/olzzon/sisyfos-audio-controller/commit/c7356cb618ecfa4ed5a25958bb6db55eb42b3c0c))
+-   mc2 input gain ([7a07fdc](https://github.com/olzzon/sisyfos-audio-controller/commit/7a07fdc6b805a693325566476fa060ddb4990016))
+-   mc2 mixer protocol ([0602048](https://github.com/olzzon/sisyfos-audio-controller/commit/0602048b0b4237f288f82942bf0f0f62d736d78f))
+-   Midas/Behringer X32 load first scene in mixer (index 0) ([ee31992](https://github.com/olzzon/sisyfos-audio-controller/commit/ee3199204a4d5dc5b6d5ed1caafa190001962214))
+-   Midas/X32 - Q-param in Eq was reverted and non exponential ([41e3809](https://github.com/olzzon/sisyfos-audio-controller/commit/41e380985a0febd00e733b3647659b6684aa2299))
+-   mixer status + mc2 reconnects ([80bc452](https://github.com/olzzon/sisyfos-audio-controller/commit/80bc45293f98f6c12171376e2aa06117cf8ee4fb))
+-   OSC protocol - set mixer online when auto reconnecting ([18ac6c0](https://github.com/olzzon/sisyfos-audio-controller/commit/18ac6c034fad2af9bfb067dabc4b9331834beb9a))
+-   rename "Gain Trim" to "Input" as gain trim is the name of the parameter ([804235b](https://github.com/olzzon/sisyfos-audio-controller/commit/804235bc41a55dce5716ae89725fc4c7d148bdb4))
+-   show storage with settings disabled ([a7563a6](https://github.com/olzzon/sisyfos-audio-controller/commit/a7563a6583ecb1db2bbb648a1a831c075f14d8b0))
+-   ui crash when an invalid channel number was used by automation ([66ee580](https://github.com/olzzon/sisyfos-audio-controller/commit/66ee5803a6cb8f750120fed42694417984a6d46b))
+
 ## [4.4.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.3.0...v4.4.0) (2020-11-14)
 
 ### Features
