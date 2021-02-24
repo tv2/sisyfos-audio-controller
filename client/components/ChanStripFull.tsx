@@ -21,7 +21,6 @@ import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
 import { fxParamsList } from '../../server/constants/MixerProtocolInterface'
 import { IChannel } from '../../server/reducers/channelsReducer'
-import { storeFaderFx } from '../../server/reducers/faderActions'
 
 interface IChanStripFullInjectProps {
     label: string
@@ -527,12 +526,18 @@ class ChanStripFull extends React.PureComponent<
             <div className="parameter-text">
                 <div className="parameter-mini-text">
                     {Math.round(
-                        (maxLabel - minLabel) *
-                            this.props.fader[this.props.faderIndex][
-                                fxParam
-                            ]?.[0] +
-                            minLabel
-                    )}
+                        ((maxLabel - minLabel) *
+                            (1 -
+                                Math.pow(
+                                    1 -
+                                        this.props.fader[this.props.faderIndex][
+                                            fxParam
+                                        ]?.[0],
+                                    3
+                                )) +
+                            minLabel) *
+                            10
+                    ) / 10}
                     {valueLabel}
                 </div>
                 <ReactSlider
@@ -541,6 +546,7 @@ class ChanStripFull extends React.PureComponent<
                     orientation="horisontal"
                     min={0}
                     max={1}
+                    invert="true"
                     step={0.01}
                     value={
                         this.props.fader[this.props.faderIndex][fxParam]?.[0]
@@ -548,10 +554,15 @@ class ChanStripFull extends React.PureComponent<
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
                             {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            )}
+                                ((maxLabel - minLabel) *
+                                    (1 -
+                                        Math.pow(
+                                            1 - parseFloat(state.valueNow),
+                                            3
+                                        )) +
+                                    minLabel) *
+                                    10
+                            ) / 10}
                             {valueLabel}
                         </div>
                     )}
@@ -590,7 +601,6 @@ class ChanStripFull extends React.PureComponent<
                     className="chan-strip-full-fader"
                     thumbClassName="chan-strip-full-thumb"
                     orientation="vertical"
-                    invert
                     min={0}
                     max={1}
                     step={0.01}

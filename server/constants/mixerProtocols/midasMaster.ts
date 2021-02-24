@@ -289,8 +289,8 @@ export const MidasMaster: IMixerProtocol = {
                 [fxParamsList.EqQ01]: [
                     {
                         mixerMessage: '/ch/{channel}/eq/1/q',
-                        minLabel: 0.3,
-                        maxLabel: 10,
+                        minLabel: 10,
+                        maxLabel: 0.3,
                         label: 'Low Q',
                         valueLabel: ' Q',
                     },
@@ -298,8 +298,8 @@ export const MidasMaster: IMixerProtocol = {
                 [fxParamsList.EqQ02]: [
                     {
                         mixerMessage: '/ch/{channel}/eq/2/q',
-                        minLabel: 0.3,
-                        maxLabel: 10,
+                        minLabel: 10,
+                        maxLabel: 0.3,
                         label: 'LoMid Q',
                         valueLabel: ' Q',
                     },
@@ -307,8 +307,8 @@ export const MidasMaster: IMixerProtocol = {
                 [fxParamsList.EqQ03]: [
                     {
                         mixerMessage: '/ch/{channel}/eq/3/q',
-                        minLabel: 0.3,
-                        maxLabel: 10,
+                        minLabel: 10,
+                        maxLabel: 0.3,
                         label: 'HiMid Q',
                         valueLabel: ' Q',
                     },
@@ -316,8 +316,8 @@ export const MidasMaster: IMixerProtocol = {
                 [fxParamsList.EqQ04]: [
                     {
                         mixerMessage: '/ch/{channel}/eq/4/q',
-                        minLabel: 0.3,
-                        maxLabel: 10,
+                        minLabel: 10,
+                        maxLabel: 0.3,
                         label: 'High Q',
                         valueLabel: ' Q',
                     },
