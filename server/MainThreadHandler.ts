@@ -118,10 +118,11 @@ export class MainThreadHandlers {
         })
     }
 
-    updateMixerOnline(mixerIndex: number) {
+    updateMixerOnline(mixerIndex: number, onLineState?: boolean) {
         socketServer.emit(SOCKET_SET_MIXER_ONLINE, {
             mixerIndex,
-            mixerOnline: state.settings[0].mixers[mixerIndex].mixerOnline,
+            mixerOnline:
+                onLineState ?? state.settings[0].mixers[mixerIndex].mixerOnline,
         })
     }
 

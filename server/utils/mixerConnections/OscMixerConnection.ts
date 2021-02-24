@@ -71,7 +71,7 @@ export class OscMixerConnection {
 
     mixerOnline(onLineState: boolean) {
         store.dispatch(storeSetMixerOnline(this.mixerIndex, onLineState))
-        global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
+        global.mainThreadHandler.updateMixerOnline(this.mixerIndex, onLineState)
     }
 
     setupMixerConnection() {
@@ -85,6 +85,9 @@ export class OscMixerConnection {
             })
             .on('message', (message: any) => {
                 clearTimeout(this.mixerOnlineTimer)
+                if (!state.settings[0].mixers[this.mixerIndex].mixerOnline) {
+                    this.mixerOnline(true)
+                }
                 logger.verbose('Received OSC message: ' + message.address, {})
 
                 if (
