@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.5.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.5.0...v4.5.1) (2021-02-25)
+
+### Bug Fixes
+
+-   Full channelstrip - vertical faders in react-slider module, inherited "reverse" setting from horisontal faders. ([30505ac](https://github.com/olzzon/sisyfos-audio-controller/commit/30505ac4c5cbf023e28143e5124e4cb52f0d6bbf))
+
 ## [4.5.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.4.0...v4.5.0) (2021-02-24)
 
 ### Features
