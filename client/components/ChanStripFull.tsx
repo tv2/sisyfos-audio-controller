@@ -604,6 +604,7 @@ class ChanStripFull extends React.PureComponent<
                     min={0}
                     max={1}
                     step={0.01}
+                    invert="false"
                     value={
                         this.props.fader[this.props.faderIndex][fxParam]?.[0] ??
                         0
