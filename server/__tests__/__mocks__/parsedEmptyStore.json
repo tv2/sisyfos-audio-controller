@@ -25,7 +25,6 @@
     ],
     "settings": [
         {
-            "showSnaps": false,
             "showSettings": false,
             "showChanStrip": -1,
             "showOptions": false,
@@ -52,7 +51,6 @@
             "remoteFaderMidiInputPort": "",
             "remoteFaderMidiOutputPort": "",
             "numberOfFaders": 8,
-            "numberOfSnaps": 8,
             "voLevel": 30,
             "autoResetLevel": 5,
             "automationMode": true,

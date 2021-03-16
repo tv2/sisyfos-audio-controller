@@ -1,10 +1,8 @@
-import * as DEFAULTS from '../constants/DEFAULTS'
 import { MixerProtocolPresets } from '../constants/MixerProtocolPresets'
 import {
     TOGGLE_SHOW_CHAN_STRIP,
     TOGGLE_SHOW_OPTION,
     TOGGLE_SHOW_SETTINGS,
-    TOGGLE_SHOW_SNAPS,
     TOGGLE_SHOW_STORAGE,
     UPDATE_SETTINGS,
     SET_MIXER_ONLINE,
@@ -23,7 +21,6 @@ export enum PageType {
 
 export interface ISettings {
     /** UI state (non persistant) */
-    showSnaps: boolean
     showSettings: boolean
     showPagesSetup: boolean
     showChanStrip: number
@@ -45,7 +42,6 @@ export interface ISettings {
     remoteFaderMidiInputPort: string
     remoteFaderMidiOutputPort: string
     numberOfFaders: number
-    numberOfSnaps: number
     fadeTime: number // Default fade time for PGM ON - OFF
     voFadeTime: number // Default fade time for VO ON - OFF
     voLevel: number // Relative level of PGM in %
@@ -84,7 +80,6 @@ export interface IMixerSettings {
 
 const defaultSettingsReducerState: Array<ISettings> = [
     {
-        showSnaps: false,
         showSettings: false,
         showPagesSetup: false,
         showChanStrip: -1,
@@ -115,7 +110,6 @@ const defaultSettingsReducerState: Array<ISettings> = [
         remoteFaderMidiInputPort: '',
         remoteFaderMidiOutputPort: '',
         numberOfFaders: 8,
-        numberOfSnaps: DEFAULTS.NUMBER_OF_SNAPS,
         voLevel: 30,
         autoResetLevel: 5,
         automationMode: true,
@@ -172,9 +166,6 @@ export const settings = (
             return nextState
         case TOGGLE_SHOW_STORAGE:
             nextState[0].showStorage = !nextState[0].showStorage
-            return nextState
-        case TOGGLE_SHOW_SNAPS:
-            nextState[0].showSnaps = !nextState[0].showSnaps
             return nextState
         case SET_PAGE:
             nextState[0].currentPage = {

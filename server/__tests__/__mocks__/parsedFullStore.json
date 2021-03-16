@@ -118,17 +118,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 1,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -148,17 +138,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 2,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -178,17 +158,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 3,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -208,17 +178,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 4,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -238,17 +198,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 5,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -268,17 +218,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 6,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -298,17 +238,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 7,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -328,17 +258,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 8,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -358,17 +278,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 9,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -388,17 +298,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 10,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -418,17 +318,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 11,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -448,17 +338,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 12,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -478,17 +358,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 13,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -508,17 +378,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 14,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -538,17 +398,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 15,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -568,17 +418,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 16,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -598,17 +438,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 17,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -628,17 +458,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 18,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -658,17 +478,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 19,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -688,17 +498,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 20,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -718,17 +518,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 21,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -748,17 +538,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 22,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -778,17 +558,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 23,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 },
                 {
                     "faderLevel": 0.75,
@@ -808,17 +578,7 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 24,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 }
             ]
         }
@@ -1027,7 +787,6 @@
     ],
     "settings": [
         {
-            "showSnaps": false,
             "showSettings": false,
             "showChanStrip": -1,
             "showOptions": false,
@@ -1055,7 +814,6 @@
             "remoteFaderMidiInputPort": "",
             "remoteFaderMidiOutputPort": "",
             "numberOfFaders": "24",
-            "numberOfSnaps": 8,
             "voLevel": 20,
             "autoResetLevel": 10,
             "automationMode": true,

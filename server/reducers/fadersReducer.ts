@@ -1,5 +1,3 @@
-import * as DEFAULTS from '../constants/DEFAULTS'
-import { fxParamsList } from '../constants/MixerProtocolInterface'
 import {
     CLEAR_PST,
     FADE_TO_BLACK,
@@ -17,7 +15,6 @@ import {
     SET_VU_REDUCTION_LEVEL,
     SHOW_CHANNEL,
     IGNORE_AUTOMATION,
-    SNAP_RECALL,
     TOGGLE_MUTE,
     TOGGLE_PFL,
     TOGGLE_PGM,
@@ -58,7 +55,6 @@ export interface IFader {
     showChannel: boolean
     showInMiniMonitor: boolean
     ignoreAutomation: boolean
-    snapOn: Array<boolean>
     disabled: boolean
 
     /**
@@ -100,15 +96,11 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
             showChannel: true,
             showInMiniMonitor: false,
             ignoreAutomation: false,
-            snapOn: [],
             disabled: false,
         }
         defaultObj[0].vuMeters.push({
             reductionVal: 0.0,
         })
-        for (let y = 0; y < DEFAULTS.NUMBER_OF_SNAPS; y++) {
-            defaultObj[0].fader[index].snapOn.push(false)
-        }
     }
     return defaultObj
 }
@@ -286,12 +278,6 @@ export const faders = (
             nextState[0].fader.forEach((item, index) => {
                 nextState[0].fader[index].pstOn = false
                 nextState[0].fader[index].pstVoOn = false
-            })
-            return nextState
-        case SNAP_RECALL: //snapIndex
-            nextState[0].fader.forEach((item, index) => {
-                nextState[0].fader[index].pstOn = !!state[0].fader[index]
-                    .snapOn[action.snapIndex]
             })
             return nextState
         case SET_CHANNEL_DISABLED:
