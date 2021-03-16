@@ -1,8 +1,4 @@
-import {
-    IMixerProtocol,
-    emptyMixerMessage,
-    fxParamsList,
-} from '../MixerProtocolInterface'
+import { IMixerProtocol, fxParamsList } from '../MixerProtocolInterface'
 
 export const MidasMaster: IMixerProtocol = {
     protocol: 'OSC',
@@ -129,10 +125,6 @@ export const MidasMaster: IMixerProtocol = {
                         mixerMessage: '/meters/1',
                     },
                 ],
-                CHANNEL_VU_REDUCTION: [emptyMixerMessage()], // Gain reduction is return toghter with CHANNEL_VU response
-                CHANNEL_NAME: [emptyMixerMessage()], //[{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-                PFL: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
                 [fxParamsList.GainTrim]: [
                     {
                         mixerMessage: '/ch/{channel}/preamp/trim',
@@ -332,8 +324,6 @@ export const MidasMaster: IMixerProtocol = {
                         mixerMessage: '/ch/{channel}/mix/on',
                     },
                 ],
-                // Only MUTE_ON is used as receiver
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
                 CHANNEL_OUT_GAIN: [
@@ -341,10 +331,6 @@ export const MidasMaster: IMixerProtocol = {
                         mixerMessage: '/ch/{channel}/mix/fader',
                     },
                 ],
-                CHANNEL_NAME: [emptyMixerMessage()], //[{ mixerMessage: '/ch/{channel}/config/name', value: 0, type: 'f', min: 0, max: 1, zero: 0.75}],
-                PFL_ON: [emptyMixerMessage()],
-                PFL_OFF: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
                 [fxParamsList.GainTrim]: [
                     {
                         mixerMessage: '/ch/{channel}/preamp/trim',
