@@ -837,7 +837,7 @@ const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
         numberOfChannelsInType:
             state.settings[0].mixers[0].numberOfChannelsInType,
-        channel: state.channels[0].chConnection[0].channel,
+        channel: state.channels[0].chMixerConnection[0].channel,
         fader: state.faders[0].fader,
         auxSendIndex: -1,
         offtubeMode: state.settings[0].offtubeMode,
@@ -848,7 +848,7 @@ const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
             selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
             numberOfChannelsInType:
                 state.settings[0].mixers[0].numberOfChannelsInType,
-            channel: state.channels[0].chConnection[0].channel,
+            channel: state.channels[0].chMixerConnection[0].channel,
             fader: state.faders[0].fader,
             auxSendIndex: state.faders[0].fader[props.faderIndex].monitor - 1,
             offtubeMode: state.settings[0].offtubeMode,

@@ -24,7 +24,7 @@ import {
     SOCKET_RETURN_PAGES_LIST,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import {
-    IchConnection,
+    IchMixerConnection,
     InumberOfChannels,
 } from '../../server/reducers/channelsReducer'
 import { VuType } from '../../server/utils/vuServer'
@@ -53,11 +53,14 @@ export const socketClientHandlers = () => {
             // console.log('STATE RECEIVED :', payload)
             if (window.mixerProtocol) {
                 let numberOfChannels: InumberOfChannels[] = []
-                payload.channels[0].chConnection.forEach(
-                    (chConnection: IchConnection, mixerIndex: number) => {
+                payload.channels[0].chMixerConnection.forEach(
+                    (
+                        chMixerConnection: IchMixerConnection,
+                        mixerIndex: number
+                    ) => {
                         numberOfChannels.push({ numberOfTypeInCh: [] })
                         numberOfChannels[mixerIndex].numberOfTypeInCh = [
-                            chConnection.channel.length,
+                            chMixerConnection.channel.length,
                         ]
                     }
                 )

@@ -398,7 +398,7 @@ export class CasparCGConnection {
                 state.faders[0].fader[channel.assignedFader].faderLevel
             )
             // Ensure that all other non-SOLO channels are muted on MONITOR
-            // const others = state.channels[0].chConnection[this.mixerIndex].channel.map((ch: IChannel) => state.faders[0].fader[ch.assignedFader].pflOn ? undefined : index)
+            // const others = state.channels[0].chMixerConnection[this.mixerIndex].channel.map((ch: IChannel) => state.faders[0].fader[ch.assignedFader].pflOn ? undefined : index)
             const others = state.channels[0].chMixerConnection[
                 this.mixerIndex
             ].channel

@@ -585,7 +585,7 @@
     ],
     "channels": [
         {
-            "chConnection": [
+            "chMixerConnection": [
                 {
                     "channel": [
                         {

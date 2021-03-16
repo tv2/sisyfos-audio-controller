@@ -7,7 +7,7 @@
     ],
     "channels": [
         {
-            "chConnection": [
+            "chMixerConnection": [
                 {
                     "channel": [
                         {

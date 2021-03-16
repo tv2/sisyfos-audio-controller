@@ -116,18 +116,21 @@ export const faders = (
         },
     ]
     if (
-        action.channel &&
-        (action.channel < 0 || action.channel >= nextState[0].fader.length)
+        action.faderIndex &&
+        (action.faderIndex < 0 ||
+            action.faderIndex >= nextState[0].fader.length)
     ) {
         return nextState
     }
 
     switch (action.type) {
         case SET_VU_REDUCTION_LEVEL:
-            if (typeof nextState[0].vuMeters[action.channel] !== 'undefined') {
-                nextState[0].vuMeters[action.channel].reductionVal = parseFloat(
-                    action.level
-                )
+            if (
+                typeof nextState[0].vuMeters[action.faderIndex] !== 'undefined'
+            ) {
+                nextState[0].vuMeters[
+                    action.faderIndex
+                ].reductionVal = parseFloat(action.level)
             }
             return nextState
         case SET_COMPLETE_FADER_STATE:
@@ -150,95 +153,95 @@ export const faders = (
             nextState[0].fader[action.faderIndex] = action.state
             return nextState
         case SET_FADER_LEVEL:
-            nextState[0].fader[action.channel].faderLevel = parseFloat(
+            nextState[0].fader[action.faderIndex].faderLevel = parseFloat(
                 action.level
             )
             return nextState
         case SET_INPUT_GAIN:
-            nextState[0].fader[action.channel].inputGain = parseFloat(
+            nextState[0].fader[action.faderIndex].inputGain = parseFloat(
                 action.level
             )
             return nextState
         case SET_INPUT_SELECTOR:
-            nextState[0].fader[action.channel].inputSelector = parseFloat(
+            nextState[0].fader[action.faderIndex].inputSelector = parseFloat(
                 action.selected
             )
             return nextState
         case SET_FADER_FX:
-            if (!nextState[0].fader[action.channel][action.fxParam]) {
-                nextState[0].fader[action.channel][action.fxParam] = []
+            if (!nextState[0].fader[action.faderIndex][action.fxParam]) {
+                nextState[0].fader[action.faderIndex][action.fxParam] = []
             }
-            nextState[0].fader[action.channel][action.fxParam][0] = parseFloat(
-                action.level ?? 0
-            )
+            nextState[0].fader[action.faderIndex][
+                action.fxParam
+            ][0] = parseFloat(action.level ?? 0)
             return nextState
         case SET_FADER_MONITOR:
-            nextState[0].fader[action.channel].monitor = action.auxIndex
+            nextState[0].fader[action.faderIndex].monitor = action.auxIndex
             return nextState
         case SET_CHANNEL_LABEL:
-            if (!nextState[0].fader[action.channel]) return nextState
-            nextState[0].fader[action.channel].label = action.label
+            if (!nextState[0].fader[action.faderIndex]) return nextState
+            nextState[0].fader[action.faderIndex].label = action.label
             return nextState
         case TOGGLE_PGM:
-            nextState[0].fader[action.channel].pgmOn = !nextState[0].fader[
-                action.channel
+            nextState[0].fader[action.faderIndex].pgmOn = !nextState[0].fader[
+                action.faderIndex
             ].pgmOn
-            nextState[0].fader[action.channel].voOn = false
+            nextState[0].fader[action.faderIndex].voOn = false
             return nextState
         case SET_PGM:
-            nextState[0].fader[action.channel].pgmOn = !!action.pgmOn
-            nextState[0].fader[action.channel].voOn = false
+            nextState[0].fader[action.faderIndex].pgmOn = !!action.pgmOn
+            nextState[0].fader[action.faderIndex].voOn = false
             return nextState
         case TOGGLE_VO:
-            nextState[0].fader[action.channel].voOn = !nextState[0].fader[
-                action.channel
+            nextState[0].fader[action.faderIndex].voOn = !nextState[0].fader[
+                action.faderIndex
             ].voOn
-            nextState[0].fader[action.channel].pgmOn = false
+            nextState[0].fader[action.faderIndex].pgmOn = false
             return nextState
         case SET_VO:
-            nextState[0].fader[action.channel].voOn = !!action.voOn
-            nextState[0].fader[action.channel].pgmOn = false
+            nextState[0].fader[action.faderIndex].voOn = !!action.voOn
+            nextState[0].fader[action.faderIndex].pgmOn = false
             return nextState
         case TOGGLE_PST:
-            if (nextState[0].fader[action.channel].pstOn) {
-                nextState[0].fader[action.channel].pstOn = false
+            if (nextState[0].fader[action.faderIndex].pstOn) {
+                nextState[0].fader[action.faderIndex].pstOn = false
                 // Disable toggle to pstVoOn, to enable change pstVoOn: true here:
-                nextState[0].fader[action.channel].pstVoOn = false
-            } else if (nextState[0].fader[action.channel].pstVoOn) {
-                nextState[0].fader[action.channel].pstOn = false
-                nextState[0].fader[action.channel].pstVoOn = false
+                nextState[0].fader[action.faderIndex].pstVoOn = false
+            } else if (nextState[0].fader[action.faderIndex].pstVoOn) {
+                nextState[0].fader[action.faderIndex].pstOn = false
+                nextState[0].fader[action.faderIndex].pstVoOn = false
             } else {
-                nextState[0].fader[action.channel].pstOn = true
-                nextState[0].fader[action.channel].pstVoOn = false
+                nextState[0].fader[action.faderIndex].pstOn = true
+                nextState[0].fader[action.faderIndex].pstVoOn = false
             }
             return nextState
         case SET_PST:
-            nextState[0].fader[action.channel].pstOn = !!action.pstOn
-            nextState[0].fader[action.channel].pstVoOn = false
+            nextState[0].fader[action.faderIndex].pstOn = !!action.pstOn
+            nextState[0].fader[action.faderIndex].pstVoOn = false
             return nextState
         case SET_PST_VO:
-            nextState[0].fader[action.channel].pstVoOn = !!action.pstVoOn
-            nextState[0].fader[action.channel].pstOn = false
+            nextState[0].fader[action.faderIndex].pstVoOn = !!action.pstVoOn
+            nextState[0].fader[action.faderIndex].pstOn = false
             return nextState
         case TOGGLE_PFL:
-            nextState[0].fader[action.channel].pflOn = !nextState[0].fader[
-                action.channel
+            nextState[0].fader[action.faderIndex].pflOn = !nextState[0].fader[
+                action.faderIndex
             ].pflOn
             return nextState
         case SET_PFL:
-            nextState[0].fader[action.channel].pflOn = !!action.pflOn
+            nextState[0].fader[action.faderIndex].pflOn = !!action.pflOn
             return nextState
         case TOGGLE_MUTE:
-            nextState[0].fader[action.channel].muteOn = !nextState[0].fader[
-                action.channel
+            nextState[0].fader[action.faderIndex].muteOn = !nextState[0].fader[
+                action.faderIndex
             ].muteOn
             return nextState
         case SET_MUTE:
-            nextState[0].fader[action.channel].muteOn = !!action.muteOn
+            nextState[0].fader[action.faderIndex].muteOn = !!action.muteOn
             return nextState
         case SHOW_CHANNEL:
             nextState[0].fader[
-                action.channel
+                action.faderIndex
             ].showChannel = !!action.showChannel
             return nextState
         case SHOW_IN_MINI_MONITOR: //faderIndexz // showInMiniMonitor
@@ -247,8 +250,10 @@ export const faders = (
             ].showInMiniMonitor = !!action.showInMiniMonitor
             return nextState
         case IGNORE_AUTOMATION: //channel // ignoreAutomation
-            nextState[0].fader[action.channel].ignoreAutomation = !nextState[0]
-                .fader[action.channel].ignoreAutomation
+            nextState[0].fader[
+                action.faderIndex
+            ].ignoreAutomation = !nextState[0].fader[action.faderIndex]
+                .ignoreAutomation
             return nextState
         case X_MIX: //none
             nextState[0].fader.forEach((item, index) => {
@@ -281,28 +286,29 @@ export const faders = (
             })
             return nextState
         case SET_CHANNEL_DISABLED:
-            if (!nextState[0].fader[action.channel]) return nextState
-            nextState[0].fader[action.channel].disabled = action.disabled
+            if (!nextState[0].fader[action.faderIndex]) return nextState
+            nextState[0].fader[action.faderIndex].disabled = action.disabled
             return nextState
         case TOGGLE_AMIX: //channel
-            nextState[0].fader[action.channel].amixOn = !nextState[0].fader[
-                action.channel
+            nextState[0].fader[action.faderIndex].amixOn = !nextState[0].fader[
+                action.faderIndex
             ].amixOn
             return nextState
         case SET_AMIX: //channel
-            nextState[0].fader[action.channel].amixOn = action.state
+            nextState[0].fader[action.faderIndex].amixOn = action.state
             return nextState
         case SET_CAPABILITY:
-            nextState[0].fader[action.channel].capabilities = {
-                ...nextState[0].fader[action.channel].capabilities,
+            nextState[0].fader[action.faderIndex].capabilities = {
+                ...nextState[0].fader[action.faderIndex].capabilities,
                 [action.capability]: action.enabled,
             }
             // remove object if empty:
             if (
-                Object.entries(nextState[0].fader[action.channel].capabilities!)
-                    .length === 0
+                Object.entries(
+                    nextState[0].fader[action.faderIndex].capabilities!
+                ).length === 0
             ) {
-                delete nextState[0].fader[action.channel].capabilities
+                delete nextState[0].fader[action.faderIndex].capabilities
             }
             return nextState
         case TOGGLE_ALL_MANUAL:

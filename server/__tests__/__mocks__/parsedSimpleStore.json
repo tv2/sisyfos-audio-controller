@@ -33,7 +33,7 @@
     ],
     "channels": [
         {
-            "chConnection": [
+            "chMixerConnection": [
                 {
                     "channel": [
                         {
