@@ -9,10 +9,10 @@ import {
 } from './channelActions'
 
 export interface IChannels {
-    chConnection: IchConnection[]
+    chMixerConnection: IchMixerConnection[]
 }
 
-export interface IchConnection {
+export interface IchMixerConnection {
     channel: Array<IChannel>
 }
 
@@ -37,7 +37,7 @@ const defaultChannelsReducerState = (
 ): IChannels[] => {
     let defaultObj: IChannels[] = [
         {
-            chConnection: [],
+            chMixerConnection: [],
         },
     ]
 
@@ -47,11 +47,11 @@ const defaultChannelsReducerState = (
         mixerIndex++
     ) {
         let totalNumberOfChannels = 0
-        defaultObj[0].chConnection.push({ channel: [] })
+        defaultObj[0].chMixerConnection.push({ channel: [] })
         numberOfChannels[mixerIndex].numberOfTypeInCh.forEach(
             (channelTypeSize: any, typeIndex: number) => {
                 for (let index = 0; index < channelTypeSize; index++) {
-                    defaultObj[0].chConnection[mixerIndex].channel[
+                    defaultObj[0].chMixerConnection[mixerIndex].channel[
                         totalNumberOfChannels
                     ] = {
                         channelType: typeIndex,
@@ -76,7 +76,7 @@ export const channels = (
 ): Array<IChannels> => {
     let nextState = [
         {
-            chConnection: [...state[0].chConnection],
+            chConnection: [...state[0].chMixerConnection],
         },
     ]
 
@@ -90,7 +90,7 @@ export const channels = (
             nextState = defaultChannelsReducerState(action.numberOfTypeChannels)
 
             nextState[0].chConnection.forEach(
-                (chConnection: IchConnection, mixerIndex: number) => {
+                (chConnection: IchMixerConnection, mixerIndex: number) => {
                     chConnection.channel.forEach(
                         (channel: any, index: number) => {
                             if (

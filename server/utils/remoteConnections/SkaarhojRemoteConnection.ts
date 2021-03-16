@@ -145,20 +145,22 @@ export class SkaarhojRemoteConnection {
         }
         let chIndex = 0
         let btnIndex = 1
-        state.channels[0].chConnection[0].channel.forEach((ch: any, index) => {
-            if (ch.auxLevel[auxSendIndex] >= 0) {
-                if (btnIndex === auxBtnNumber) {
-                    chIndex = index
-                    btnIndex++
-                } else if (btnIndex < auxBtnNumber) {
-                    btnIndex++
+        state.channels[0].chMixerConnection[0].channel.forEach(
+            (ch: any, index) => {
+                if (ch.auxLevel[auxSendIndex] >= 0) {
+                    if (btnIndex === auxBtnNumber) {
+                        chIndex = index
+                        btnIndex++
+                    } else if (btnIndex < auxBtnNumber) {
+                        btnIndex++
+                    }
                 }
             }
-        })
+        )
 
         let event = command.slice(command.indexOf('=') + 1)
         let level =
-            state.channels[0].chConnection[0].channel[chIndex].auxLevel[
+            state.channels[0].chMixerConnection[0].channel[chIndex].auxLevel[
                 auxSendIndex
             ]
         if (event === 'Enc:1') {
@@ -230,7 +232,7 @@ export class SkaarhojRemoteConnection {
             return
         }
         let hwButton = panelNumber * 10 + 70 + 1
-        state.channels[0].chConnection[0].channel.forEach(
+        state.channels[0].chMixerConnection[0].channel.forEach(
             (ch: any, index: number) => {
                 if (
                     ch.auxLevel[auxSendIndex] >= 0 &&

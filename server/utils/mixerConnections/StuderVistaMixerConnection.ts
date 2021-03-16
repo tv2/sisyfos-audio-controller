@@ -128,7 +128,7 @@ export class StuderVistaMixerConnection {
 
     findChannelInArray(channelType: number, channelTypeIndex: number): number {
         let channelArrayIndex = 0
-        state.channels[0].chConnection[this.mixerIndex].channel.forEach(
+        state.channels[0].chMixerConnection[this.mixerIndex].channel.forEach(
             (channel: IChannel, index: number) => {
                 if (
                     channel.channelType === channelType &&
@@ -186,12 +186,12 @@ export class StuderVistaMixerConnection {
             channelTypeIndex
         )
         let assignedFader =
-            state.channels[0].chConnection[this.mixerIndex].channel[
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelArrayIndex
             ].assignedFader
 
         if (
-            state.channels[0].chConnection[this.mixerIndex].channel[
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelArrayIndex
             ].fadeActive
         ) {
@@ -204,15 +204,15 @@ export class StuderVistaMixerConnection {
             state.faders[0].fader[assignedFader].voOn
         ) {
             store.dispatch(storeFaderLevel(assignedFader, value))
-            state.channels[0].chConnection[this.mixerIndex].channel.forEach(
-                (item, index) => {
-                    if (item.assignedFader === assignedFader) {
-                        store.dispatch(
-                            storeSetOutputLevel(this.mixerIndex, index, value)
-                        )
-                    }
+            state.channels[0].chMixerConnection[
+                this.mixerIndex
+            ].channel.forEach((item, index) => {
+                if (item.assignedFader === assignedFader) {
+                    store.dispatch(
+                        storeSetOutputLevel(this.mixerIndex, index, value)
+                    )
                 }
-            )
+            })
             if (!state.faders[0].fader[assignedFader].pgmOn) {
                 if (value > 0) {
                     store.dispatch(storeTogglePgm(assignedFader))
@@ -279,7 +279,7 @@ export class StuderVistaMixerConnection {
 
         // Update store:
         let assignedFader =
-            state.channels[0].chConnection[this.mixerIndex].channel[
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 this.findChannelInArray(channelType, channelTypeIndex)
             ].assignedFader
 
@@ -372,35 +372,33 @@ export class StuderVistaMixerConnection {
 
     pingChannel(mixerMessage: string) {
         state.faders[0].fader.forEach((fader: IFader, index: number) => {
-            state.channels[0].chConnection[this.mixerIndex].channel.forEach(
-                (channel: IChannel) => {
-                    if (channel.assignedFader === index) {
-                        let message = mixerMessage
-                            .replace(
-                                '{ch-type}',
-                                (channel.channelType + 1 + 160).toString(16)
-                            )
-                            .replace(
-                                '{channel}',
-                                (channel.channelTypeIndex + 1 + 160).toString(
-                                    16
-                                )
-                            )
-                        if (message.includes('{aux}')) {
-                            this.pingAuxSend(message)
-                        } else {
-                            let hexArray = message.split(' ')
-                            let buf = Buffer.from(
-                                hexArray.map((val: string) => {
-                                    return parseInt(val, 16)
-                                })
-                            )
-                            // console.log('Pinging : ', buf)
-                            this.mixerConnection.write(buf)
-                        }
+            state.channels[0].chMixerConnection[
+                this.mixerIndex
+            ].channel.forEach((channel: IChannel) => {
+                if (channel.assignedFader === index) {
+                    let message = mixerMessage
+                        .replace(
+                            '{ch-type}',
+                            (channel.channelType + 1 + 160).toString(16)
+                        )
+                        .replace(
+                            '{channel}',
+                            (channel.channelTypeIndex + 1 + 160).toString(16)
+                        )
+                    if (message.includes('{aux}')) {
+                        this.pingAuxSend(message)
+                    } else {
+                        let hexArray = message.split(' ')
+                        let buf = Buffer.from(
+                            hexArray.map((val: string) => {
+                                return parseInt(val, 16)
+                            })
+                        )
+                        // console.log('Pinging : ', buf)
+                        this.mixerConnection.write(buf)
                     }
                 }
-            )
+            })
         })
     }
 
@@ -432,8 +430,9 @@ export class StuderVistaMixerConnection {
     ) {
         let channelVal: number
         let channelTypeIndex =
-            state.channels[0].chConnection[this.mixerIndex].channel[channel - 1]
-                .channelTypeIndex
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
+                channel - 1
+            ].channelTypeIndex
 
         channelVal = 160 + channelTypeIndex + 1
 
@@ -477,11 +476,13 @@ export class StuderVistaMixerConnection {
         let levelMessage: string
         let channelVal: number
         let channelType =
-            state.channels[0].chConnection[this.mixerIndex].channel[channel - 1]
-                .channelType
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
+                channel - 1
+            ].channelType
         let channelTypeIndex =
-            state.channels[0].chConnection[this.mixerIndex].channel[channel - 1]
-                .channelTypeIndex
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
+                channel - 1
+            ].channelTypeIndex
 
         levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer
             .CHANNEL_OUT_GAIN[0].mixerMessage
@@ -525,7 +526,7 @@ export class StuderVistaMixerConnection {
 
     updateOutLevel(channelIndex: number) {
         let outputlevel =
-            state.channels[0].chConnection[this.mixerIndex].channel[
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].outputLevel
         let level = 40 * Math.log(1.295 * outputlevel)
@@ -553,11 +554,11 @@ export class StuderVistaMixerConnection {
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
         let channelType =
-            state.channels[0].chConnection[this.mixerIndex].channel[
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelType
         let channelTypeIndex =
-            state.channels[0].chConnection[this.mixerIndex].channel[
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
         if (muteOn === true) {
@@ -599,11 +600,11 @@ export class StuderVistaMixerConnection {
     }
     updateAuxLevel(channelIndex: number, auxSendIndex: number, level: number) {
         let channelType =
-            state.channels[0].chConnection[this.mixerIndex].channel[
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelType
         let channel =
-            state.channels[0].chConnection[this.mixerIndex].channel[
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex + 1
         let auxSendCmd = this.mixerProtocol.channelTypes[channelType].toMixer
