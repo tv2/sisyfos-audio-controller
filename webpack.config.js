@@ -17,8 +17,7 @@ module.exports = {
       },
       {
           test: /\.(tsx?|ts)$/,
-          use: [{ loader: 'babel-loader' }],
-          include: defaultInclude
+          loader: 'ts-loader'
       },
       {
         test: /\.(jpe?g|png|gif)$/,
