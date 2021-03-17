@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 
 import Channel from './Channel'
 import '../assets/css/Channels.css'

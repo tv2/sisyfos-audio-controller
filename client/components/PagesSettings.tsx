@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from 'react'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 
 import '../assets/css/PagesSettings.css'
 import { Store } from 'redux'

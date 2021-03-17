@@ -1,6 +1,5 @@
 import React from 'react'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 
 import '../assets/css/ChannelRouteSettings.css'
 import { Store } from 'redux'

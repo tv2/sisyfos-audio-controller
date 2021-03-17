@@ -1,6 +1,5 @@
 import * as React from 'react'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 import { connect } from 'react-redux'
 import VuMeter from './VuMeter'
 import { Store, compose } from 'redux'

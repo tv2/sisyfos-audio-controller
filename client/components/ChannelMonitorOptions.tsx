@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from 'react'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 
 import '../assets/css/ChannelMonitorOptions.css'
 import { Store } from 'redux'
