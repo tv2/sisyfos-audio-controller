@@ -21,7 +21,6 @@ import {
     storeSetOutputLevel,
 } from '../../reducers/channelActions'
 import {
-    storeVuReductionLevel,
     storeFaderLevel,
     storeFaderLabel,
     storeFaderFx,
@@ -96,7 +95,7 @@ export class OscMixerConnection {
                     this.checkOscCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
-                            .CHANNEL_VU[0].mixerMessage
+                            .CHANNEL_VU?.[0].mixerMessage
                     )
                 ) {
                     if (
@@ -127,7 +126,7 @@ export class OscMixerConnection {
                     this.checkOscCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
-                            .CHANNEL_VU_REDUCTION[0].mixerMessage
+                            .CHANNEL_VU_REDUCTION?.[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
@@ -142,7 +141,7 @@ export class OscMixerConnection {
                     this.checkOscCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
-                            .CHANNEL_OUT_GAIN[0].mixerMessage
+                            .CHANNEL_OUT_GAIN?.[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
@@ -230,8 +229,8 @@ export class OscMixerConnection {
                 } else if (
                     this.checkOscCommand(
                         message.address,
-                        this.mixerProtocol.channelTypes[0].fromMixer
-                            .AUX_LEVEL[0].mixerMessage
+                        this.mixerProtocol.channelTypes?.[0].fromMixer
+                            .AUX_LEVEL?.[0].mixerMessage
                     )
                 ) {
                     let commandArray: string[] = this.mixerProtocol.channelTypes[0].fromMixer.AUX_LEVEL[0].mixerMessage.split(
@@ -279,7 +278,7 @@ export class OscMixerConnection {
                     this.checkOscCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
-                            .CHANNEL_NAME[0].mixerMessage
+                            .CHANNEL_NAME?.[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
@@ -298,7 +297,7 @@ export class OscMixerConnection {
                     this.checkOscCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
-                            .CHANNEL_MUTE_ON[0].mixerMessage
+                            .CHANNEL_MUTE_ON?.[0].mixerMessage
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
@@ -445,7 +444,8 @@ export class OscMixerConnection {
         })
     }
 
-    checkOscCommand(message: string, command: string): boolean {
+    checkOscCommand(message: string, command: string | undefined): boolean {
+        if (!command) return false
         if (message === command) return true
         let messageArray: string[] = message.split('/')
         let commandArray: string[] = command.split('/')
