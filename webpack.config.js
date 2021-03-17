@@ -36,10 +36,6 @@ module.exports = {
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ]
   },
-  output: {
-    // NB: Can also be "window", etc.
-    libraryTarget: "var"
-  },
   target: 'web',
   plugins: [
     new HtmlWebpackPlugin({

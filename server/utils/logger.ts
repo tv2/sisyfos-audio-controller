@@ -1,5 +1,5 @@
-const winston = require('winston')
-const Elasticsearch = require('winston-elasticsearch')
+import winston from 'winston'
+import Elasticsearch from 'winston-elasticsearch'
 const processArgs = require('minimist')(process.argv.slice(2))
 
 const loggerIp = process.env.loggerIp || processArgs.loggerIp || '0.0.0.0'
@@ -28,7 +28,7 @@ const logger = winston.createLogger({
             level: loggerFileLevel,
         }), //save errors on file
         new winston.transports.Console({ level: loggerConsoleLevel }), //save errors on file
-        new Elasticsearch(esTransportOpts), //everything info and above goes to elastic
+        new Elasticsearch.ElasticsearchTransport(esTransportOpts), //everything info and above goes to elastic
     ],
 })
 
