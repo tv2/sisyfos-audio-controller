@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.5.2](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.5.1...v4.5.2) (2021-03-18)
+
+### Bug Fixes
+
+-   Fader resolution increased to 1/1000 so delay on Midas could be handled ([c8272dc](https://github.com/olzzon/sisyfos-audio-controller/commit/c8272dcf14aa7ff642a9561c8e3470f7e659113b))
+
 ### [4.5.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.5.0...v4.5.1) (2021-02-25)
 
 ### Bug Fixes
