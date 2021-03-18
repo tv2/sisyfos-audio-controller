@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from 'react'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 
 import '../assets/css/ChannelMonitorOptions.css'
 import { Store } from 'redux'
@@ -199,7 +198,7 @@ const mapStateToProps = (
         label: state.faders[0].fader[props.faderIndex].label,
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
         numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
-        channel: state.channels[0].chConnection[0].channel,
+        channel: state.channels[0].chMixerConnection[0].channel,
         fader: state.faders[0].fader,
         settings: state.settings[0],
     }

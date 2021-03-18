@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 
 import Channel from './Channel'
 import '../assets/css/Channels.css'
@@ -340,7 +339,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
 
 const mapStateToProps = (state: any): IChannelsInjectProps => {
     return {
-        channels: state.channels[0].chConnection[0].channel,
+        channels: state.channels[0].chMixerConnection[0].channel,
         faders: state.faders[0].fader,
         customPages: state.settings[0].customPages,
         settings: state.settings[0],

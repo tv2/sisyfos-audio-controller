@@ -13,7 +13,8 @@ export const midasMeter = (mixerIndex: number, message: any) => {
 
     for (let i = 0; i < numberOfChannels; i++) {
         assignedFader =
-            state.channels[0].chConnection[mixerIndex].channel[i].assignedFader
+            state.channels[0].chMixerConnection[mixerIndex].channel[i]
+                .assignedFader
         if (assignedFader < state.settings[0].numberOfFaders) {
             level = dataview.getFloat32(4 * i + DATA_OFFSET, true)
             reductionLevel = dataview.getFloat32(

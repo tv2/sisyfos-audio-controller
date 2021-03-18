@@ -1,10 +1,9 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
+import { IMixerProtocol } from '../MixerProtocolInterface'
 
 export const ArdourMaster: IMixerProtocol = {
     protocol: 'OSC',
     label: 'Ardour DAW - Master Mode',
     presetFileExtension: '',
-    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false,
     pingCommand: [
@@ -63,7 +62,6 @@ export const ArdourMaster: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
                 CHANNEL_NAME: [
                     {
                         mixerMessage: '/strip/name/{channel}',
@@ -74,11 +72,6 @@ export const ArdourMaster: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                PFL: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
                 CHANNEL_OUT_GAIN: [
@@ -101,12 +94,6 @@ export const ArdourMaster: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                PFL_ON: [emptyMixerMessage()],
-                PFL_OFF: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
         },
     ],

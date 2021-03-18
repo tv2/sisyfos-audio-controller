@@ -1,16 +1,12 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
+import { IMixerProtocol } from '../MixerProtocolInterface'
 
 export const DMXIS: IMixerProtocol = {
     protocol: 'OSC',
     label: 'DMXIS Light Controller Protocol',
     presetFileExtension: '',
-    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
-    pingCommand: [emptyMixerMessage()],
-    pingResponseCommand: [emptyMixerMessage()],
     pingTime: 0, //Bypass ping when pingTime is zero
-    initializeCommands: [emptyMixerMessage()],
     channelTypes: [
         {
             channelTypeName: 'CH',
@@ -26,14 +22,6 @@ export const DMXIS: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                CHANNEL_VU: [emptyMixerMessage()],
-                CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
-                CHANNEL_NAME: [emptyMixerMessage()],
-                PFL: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
                 CHANNEL_OUT_GAIN: [
@@ -56,12 +44,6 @@ export const DMXIS: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                PFL_ON: [emptyMixerMessage()],
-                PFL_OFF: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
         },
     ],

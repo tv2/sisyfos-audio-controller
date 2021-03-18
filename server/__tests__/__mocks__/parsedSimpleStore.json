@@ -26,24 +26,14 @@
                     "threshold": 0.75,
                     "ratio": 0.75,
                     "monitor": 1,
-                    "showChannel": true,
-                    "snapOn": [
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false
-                    ]
+                    "showChannel": true
                 }
             ]
         }
     ],
     "channels": [
         {
-            "chConnection": [
+            "chMixerConnection": [
                 {
                     "channel": [
                         {
@@ -61,7 +51,6 @@
     ],
     "settings": [
         {
-            "showSnaps": false,
             "showSettings": false,
             "showChanStrip": -1,
             "showOptions": false,
@@ -89,7 +78,6 @@
             "remoteFaderMidiInputPort": "",
             "remoteFaderMidiOutputPort": "",
             "numberOfFaders": 8,
-            "numberOfSnaps": 8,
             "voLevel": 20,
             "autoResetLevel": 10,
             "automationMode": true,

@@ -20,7 +20,7 @@ describe('Test redux channelReducer actions', () => {
     it('should return the new output_level state on channels', () => {
         let parsedFullStore = JSON.parse(parsedFullStoreJSON)
         let nextState = JSON.parse(parsedFullStoreJSON)
-        nextState.channels[0].chConnection[0].channel[10].outputLevel = 0.5
+        nextState.channels[0].chMixerConnection[0].channel[10].outputLevel = 0.5
         expect(
             indexReducer(parsedFullStore, storeSetOutputLevel(0, 10, 0.5))
         ).toEqual(nextState)
@@ -33,7 +33,7 @@ describe('Test redux channelReducer actions', () => {
     it('should return the new assignedFader state on channels', () => {
         let parsedFullStore = JSON.parse(parsedFullStoreJSON)
         let nextState = JSON.parse(parsedFullStoreJSON)
-        nextState.channels[0].chConnection[0].channel[10].assignedFader = 2
+        nextState.channels[0].chMixerConnection[0].channel[10].assignedFader = 2
         expect(
             indexReducer(parsedFullStore, storeSetAssignedFader(0, 10, 2))
         ).toEqual(nextState)
@@ -46,7 +46,7 @@ describe('Test redux channelReducer actions', () => {
     it('should return the new FADE_ACTIVE state on channels', () => {
         let parsedFullStore = JSON.parse(parsedFullStoreJSON)
         let nextState = JSON.parse(parsedFullStoreJSON)
-        nextState.channels[0].chConnection[0].channel[10].fadeActive = true
+        nextState.channels[0].chMixerConnection[0].channel[10].fadeActive = true
         expect(
             indexReducer(parsedFullStore, storeFadeActive(0, 10, true))
         ).toEqual(nextState)
@@ -71,13 +71,15 @@ describe('Test redux channelReducer actions', () => {
                 fadeActive: false,
                 outputLevel: 0.75,
             })
-            nextState.channels[0].chConnection[0].channel[i].outputLevel = 0.75
+            nextState.channels[0].chMixerConnection[0].channel[
+                i
+            ].outputLevel = 0.75
         }
         expect(
             indexReducer(
                 parsedFullStore,
                 storeSetCompleteChState(
-                    { chConnection: [{ channel: channels }] },
+                    { chMixerConnection: [{ channel: channels }] },
                     numberOfChannels
                 )
             )

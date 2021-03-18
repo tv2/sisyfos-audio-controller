@@ -1,14 +1,9 @@
-import {
-    IMixerProtocol,
-    emptyMixerMessage,
-    fxParamsList,
-} from '../MixerProtocolInterface'
+import { IMixerProtocol } from '../MixerProtocolInterface'
 
 export const BehringerXrMaster: IMixerProtocol = {
     protocol: 'OSC',
     label: 'Behringer XR-series / Midas MR-series',
     presetFileExtension: '',
-    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: true,
     pingCommand: [
@@ -65,8 +60,6 @@ export const BehringerXrMaster: IMixerProtocol = {
             channelTypeName: 'CH',
             channelTypeColor: '#2f2f2f',
             fromMixer: {
-                CHANNEL_INPUT_GAIN: [emptyMixerMessage()],
-                CHANNEL_INPUT_SELECTOR: [emptyMixerMessage()],
                 CHANNEL_OUT_GAIN: [
                     {
                         mixerMessage: '/ch/{channel}/mix/fader',
@@ -87,8 +80,6 @@ export const BehringerXrMaster: IMixerProtocol = {
                         mixerMessage: '/ch/{channel}/config/name',
                     },
                 ],
-                PFL: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
                 AUX_LEVEL: [
                     {
                         mixerMessage: '/ch/{channel}/mix/{argument}/level',
@@ -99,8 +90,6 @@ export const BehringerXrMaster: IMixerProtocol = {
                         mixerMessage: '/ch/{channel}/mix/on',
                     },
                 ],
-                // Only MUTE_ON is used as receiver
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
                 CHANNEL_OUT_GAIN: [
@@ -113,9 +102,6 @@ export const BehringerXrMaster: IMixerProtocol = {
                         mixerMessage: '/ch/{channel}/config/name',
                     },
                 ],
-                PFL_ON: [emptyMixerMessage()],
-                PFL_OFF: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
                 AUX_LEVEL: [
                     {
                         mixerMessage: '/ch/{channel}/mix/{argument}/level',

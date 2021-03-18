@@ -3,7 +3,6 @@ import {
     TOGGLE_SHOW_CHAN_STRIP,
     TOGGLE_SHOW_OPTION,
     TOGGLE_SHOW_SETTINGS,
-    TOGGLE_SHOW_SNAPS,
     TOGGLE_SHOW_STORAGE,
     UPDATE_SETTINGS,
 } from '../reducers/settingsActions'
@@ -73,21 +72,6 @@ describe('Test redux settingsReducer actions', () => {
         expect(
             indexReducer(parsedFullStore, {
                 type: TOGGLE_SHOW_SETTINGS,
-            })
-        ).toEqual(nextState)
-    })
-
-    /**
-     * TEST TOGGLE_SHOW_SNAPS:
-     */
-
-    it('should return the new showSnaps state on settings', () => {
-        let parsedFullStore = JSON.parse(parsedFullStoreJSON)
-        let nextState = JSON.parse(parsedFullStoreJSON)
-        nextState.settings[0].showSnaps = true
-        expect(
-            indexReducer(parsedFullStore, {
-                type: TOGGLE_SHOW_SNAPS,
             })
         ).toEqual(nextState)
     })

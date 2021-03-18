@@ -1,6 +1,5 @@
 import * as React from 'react'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 import { connect } from 'react-redux'
 import { Store } from 'redux'
 import '../assets/css/NoUiSlider.css'
@@ -83,12 +82,12 @@ class MiniChannel extends React.Component<
 
 const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     return {
-        channels: state.channels[0].chConnection[0].channel,
+        channels: state.channels[0].chMixerConnection[0].channel,
         fader: state.faders[0].fader[props.faderIndex],
         settings: state.settings[0],
         channelType: 0 /* TODO: state.channels[0].channel[props.channelIndex].channelType, */,
         channelTypeIndex:
-            props.faderIndex /* TODO: state.channels[0].chConnection[0].channel[props.channelIndex].channelTypeIndex, */,
+            props.faderIndex /* TODO: state.channels[0].chMixerConnection[0].channel[props.channelIndex].channelTypeIndex, */,
     }
 }
 

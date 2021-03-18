@@ -7,7 +7,6 @@ import '../assets/css/VuMeter.css'
 //Utils:
 
 export interface IVuMeterInjectedProps {
-    showSnaps: boolean
     faderIndex: number
     channel: number
 }
@@ -46,7 +45,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 
     totalHeight = () => {
         return (
-            ((this.props.showSnaps ? 1 : 2) * 200) /
+            (400) /
             (this.meterMax - this.meterMin)
         )
     }
@@ -221,8 +220,7 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
 const mapStateToProps = (state: any, props: any): IVuMeterInjectedProps => {
     return {
         faderIndex: props.faderIndex,
-        channel: props.channel,
-        showSnaps: state.settings[0].showSnaps,
+        channel: props.channel
     }
 }
 

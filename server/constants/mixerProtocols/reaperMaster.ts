@@ -1,16 +1,12 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
+import { IMixerProtocol } from '../MixerProtocolInterface'
 
 export const ReaperMaster: IMixerProtocol = {
     protocol: 'OSC',
     label: 'Reaper DAW Master mode(reaper.fm)',
     presetFileExtension: '',
-    loadPresetCommand: [emptyMixerMessage()],
     FADE_DISPATCH_RESOLUTION: 5,
     leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
-    pingCommand: [emptyMixerMessage()],
-    pingResponseCommand: [emptyMixerMessage()],
     pingTime: 0, //Set to value to get MixerOnline status
-    initializeCommands: [emptyMixerMessage()],
     channelTypes: [
         {
             channelTypeName: 'CH',
@@ -36,7 +32,6 @@ export const ReaperMaster: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
                 CHANNEL_NAME: [
                     {
                         mixerMessage: '/track/{channel}/name',
@@ -47,11 +42,6 @@ export const ReaperMaster: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                PFL: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
                 CHANNEL_OUT_GAIN: [
@@ -94,10 +84,6 @@ export const ReaperMaster: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
         },
         {
@@ -132,13 +118,6 @@ export const ReaperMaster: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                CHANNEL_VU_REDUCTION: [emptyMixerMessage()],
-                CHANNEL_NAME: [emptyMixerMessage()],
-                PFL: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
             toMixer: {
                 CHANNEL_OUT_GAIN: [
@@ -151,13 +130,6 @@ export const ReaperMaster: IMixerProtocol = {
                         zero: 0.75,
                     },
                 ],
-                CHANNEL_NAME: [emptyMixerMessage()],
-                PFL_ON: [emptyMixerMessage()],
-                PFL_OFF: [emptyMixerMessage()],
-                NEXT_SEND: [emptyMixerMessage()],
-                AUX_LEVEL: [emptyMixerMessage()],
-                CHANNEL_MUTE_ON: [emptyMixerMessage()],
-                CHANNEL_MUTE_OFF: [emptyMixerMessage()],
             },
         },
     ],

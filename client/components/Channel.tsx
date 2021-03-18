@@ -1,6 +1,5 @@
 import * as React from 'react'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 import { connect } from 'react-redux'
 import VuMeter from './VuMeter'
 import { Store, compose } from 'redux'
@@ -69,7 +68,6 @@ class Channel extends React.Component<
             nextProps.fader.label != this.props.fader.label ||
             nextProps.settings.mixers[0].mixerProtocol !=
                 this.props.settings.mixers[0].mixerProtocol ||
-            nextProps.settings.showSnaps != this.props.settings.showSnaps ||
             nextProps.settings.showPfl != this.props.settings.showPfl ||
             nextProps.settings.showChanStrip !=
                 this.props.settings.showChanStrip ||

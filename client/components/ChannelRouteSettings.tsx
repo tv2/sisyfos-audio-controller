@@ -1,18 +1,17 @@
 import React from 'react'
-//@ts-ignore
-import * as ClassNames from 'classnames'
+import ClassNames from 'classnames'
 
 import '../assets/css/ChannelRouteSettings.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
 import { storeShowOptions } from '../../server/reducers/settingsActions'
 import { SOCKET_SET_ASSIGNED_FADER } from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import { IChannel, IchConnection } from '../../server/reducers/channelsReducer'
+import { IChannel, IchMixerConnection } from '../../server/reducers/channelsReducer'
 import { IFader } from '../../server/reducers/fadersReducer'
 
 interface IChannelSettingsInjectProps {
     label: string
-    chConnections: IchConnection[]
+    chMixerConnections: IchMixerConnection[]
     fader: IFader[]
 }
 
@@ -73,9 +72,9 @@ class ChannelRouteSettings extends React.PureComponent<
 
     handleClearRouting() {
         if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
-            this.props.chConnections.forEach(
-                (chConnection: IchConnection, mixerIndex: number) => {
-                    chConnection.channel.forEach(
+            this.props.chMixerConnections.forEach(
+                (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
+                    chMixerConnection.channel.forEach(
                         (channel: any, index: number) => {
                             window.socketIoClient.emit(
                                 SOCKET_SET_ASSIGNED_FADER,
@@ -95,7 +94,7 @@ class ChannelRouteSettings extends React.PureComponent<
     handle11Routing() {
         if (window.confirm('Reassign all Faders 1:1 to Channels????')) {
             this.props.fader.forEach((fader: any, index: number) => {
-                if (this.props.chConnections[0].channel.length > index) {
+                if (this.props.chMixerConnections[0].channel.length > index) {
                     window.socketIoClient.emit(SOCKET_SET_ASSIGNED_FADER, {
                         mixerIndex: 0,
                         channel: index,
@@ -110,14 +109,14 @@ class ChannelRouteSettings extends React.PureComponent<
         this.props.dispatch(storeShowOptions(this.faderIndex))
     }
 
-    renderMixer(chConnection: IchConnection, mixerIndex: number) {
+    renderMixer(chMixerConnection: IchMixerConnection, mixerIndex: number) {
         return (
             <div>
                 <p className="channel-route-mixer-name">
                     {' '}
                     {'MIXER ' + (mixerIndex + 1)}
                 </p>
-                {chConnection.channel.map((channel: any, index: number) => {
+                {chMixerConnection.channel.map((channel: any, index: number) => {
                     return (
                         <div
                             key={index}
@@ -172,9 +171,9 @@ class ChannelRouteSettings extends React.PureComponent<
                     ROUTE 1.Mixer 1:1
                 </button>
                 <hr />
-                {this.props.chConnections.map(
-                    (chConnection: IchConnection, mixerIndex: number) =>
-                        this.renderMixer(chConnection, mixerIndex)
+                {this.props.chMixerConnections.map(
+                    (chMixerConnection: IchMixerConnection, mixerIndex: number) =>
+                        this.renderMixer(chMixerConnection, mixerIndex)
                 )}
             </div>
         )
@@ -187,7 +186,7 @@ const mapStateToProps = (
 ): IChannelSettingsInjectProps => {
     return {
         label: state.faders[0].fader[props.faderIndex].label,
-        chConnections: state.channels[0].chConnection,
+        chMixerConnections: state.channels[0].chMixerConnection,
         fader: state.faders[0].fader,
     }
 }

@@ -17,8 +17,7 @@ module.exports = {
       },
       {
           test: /\.(tsx?|ts)$/,
-          use: [{ loader: 'babel-loader' }],
-          include: defaultInclude
+          loader: 'ts-loader'
       },
       {
         test: /\.(jpe?g|png|gif)$/,
@@ -35,10 +34,6 @@ module.exports = {
   entry: "./client",
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ]
-  },
-  output: {
-    // NB: Can also be "window", etc.
-    libraryTarget: "var"
   },
   target: 'web',
   plugins: [
