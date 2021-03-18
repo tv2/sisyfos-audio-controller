@@ -504,7 +504,8 @@ class ChanStripFull extends React.PureComponent<
                                     )
                                 }}
                             >
-                                +{value}ms
+                                {value > 0 ? '+' : ''}
+                                {value}ms
                             </button>
                         )
                     })}

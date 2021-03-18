@@ -201,7 +201,7 @@ class ChanStrip extends React.PureComponent<
             <React.Fragment>
                 {this.fxParamFader(fxParamsList.DelayTime)}
                 <div className="delayButtons">
-                {DEL_VALUES.map((value: number) => {
+                    {DEL_VALUES.map((value: number) => {
                         return (
                             <button
                                 className="delayTime"
@@ -214,7 +214,8 @@ class ChanStrip extends React.PureComponent<
                                     )
                                 }}
                             >
-                                +{value}ms
+                                {value > 0 ? '+' : ''}
+                                {value}ms
                             </button>
                         )
                     })}
