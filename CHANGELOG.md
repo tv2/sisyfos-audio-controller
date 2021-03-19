@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.6.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.5.2...v4.6.0) (2021-03-19)
+
+### Features
+
+-   code cleanup, remove unused emptyMixerProtocol() function in OSC mixer protocols ([66e3d9c](https://github.com/olzzon/sisyfos-audio-controller/commit/66e3d9cbdca19911f227f567293020ac103d0cbf))
+-   refactor - all snaps code from old implementation removed ([62d2ea2](https://github.com/olzzon/sisyfos-audio-controller/commit/62d2ea2a0761bdc3a0cd827e42b87b6600dfb125))
+-   refactor - rename channel to faderIndex in all faderReducers and faderActions ([e738ba4](https://github.com/olzzon/sisyfos-audio-controller/commit/e738ba46777706599f14804653e92d7c5afb600c))
+-   refactor - rename chConnection to chMixerConnection ([fc22e4e](https://github.com/olzzon/sisyfos-audio-controller/commit/fc22e4e5adb7c95a124bc88bbee0fbfc43d181da))
+-   settings are changed so they are only available when /?settings=1 is added ([48f61a4](https://github.com/olzzon/sisyfos-audio-controller/commit/48f61a4a45f4fc8d1751b59e41ea477d717d040c))
+
+### Bug Fixes
+
+-   delay button had a + sign in from nomatter if it was positive og negative ([3aa404a](https://github.com/olzzon/sisyfos-audio-controller/commit/3aa404adf0928e79854c7d2061c832e4a8a76214))
+-   OscMixerConnection check parameter as optional for support when not in the mixerprotocol ([609cb91](https://github.com/olzzon/sisyfos-audio-controller/commit/609cb9157a27ee8441bfe3c5df81ee7968d693b9))
+-   types for ClassNames and .babelrc for jest tests ([f9e4d16](https://github.com/olzzon/sisyfos-audio-controller/commit/f9e4d1638bbabab8d8c7aa811c9783f4c7648bad))
+-   update tests for support of faderActions ([731ce0f](https://github.com/olzzon/sisyfos-audio-controller/commit/731ce0f0c787e6b8db5eaa42e5daf57d3a54d59e))
+
 ### [4.5.2](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.5.1...v4.5.2) (2021-03-18)
 
 ### Bug Fixes
