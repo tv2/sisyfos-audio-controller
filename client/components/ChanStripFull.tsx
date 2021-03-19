@@ -802,25 +802,25 @@ class ChanStripFull extends React.PureComponent<
                             X
                         </button>
                         {window.location.search.includes(
-                            'settings=0'
-                        ) ? null : (
+                            'settings=1'
+                        ) ? (
                             <button
                                 className="button half"
                                 onClick={() => this.handleShowRoutingOptions()}
                             >
                                 Channel-Fader Routing
                             </button>
-                        )}
+                        ) : null}
                         {window.location.search.includes(
-                            'settings=0'
-                        ) ? null : (
+                            'settings=1'
+                        ) ?  (
                             <button
                                 className="button half"
                                 onClick={() => this.handleShowMonitorOptions()}
                             >
                                 Monitor Routing
                             </button>
-                        )}
+                        ) : null}
                     </div>
                     <hr />
                     {this.parameters()}

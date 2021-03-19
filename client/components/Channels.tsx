@@ -272,9 +272,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                             </button>
                         )}
 
-                        {window.location.search.includes(
-                            'settings=0'
-                        ) ? null : (
+                        {window.location.search.includes('settings=1') ? (
                             <button
                                 className="button half channels-show-settings-button"
                                 onClick={() => {
@@ -283,7 +281,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                             >
                                 SETTINGS
                             </button>
-                        )}
+                        ) : null}
 
                         <button
                             className="button half channels-show-storage-button"
@@ -294,9 +292,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                             STORAGE
                         </button>
 
-                        {window.location.search.includes(
-                            'settings=0'
-                        ) ? null : (
+                        {window.location.search.includes('settings=1') ? (
                             <button
                                 className="button half channels-show-settings-button"
                                 onClick={() => {
@@ -305,7 +301,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                             >
                                 PAGES SETUP
                             </button>
-                        )}
+                        ) : null}
                     </div>
                     <div className="mid">
                         {this.renderAllManualButton()}

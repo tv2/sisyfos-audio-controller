@@ -124,7 +124,11 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
         const listItems = window.mixerPresetList.map(
             (file: string, index: number) => {
                 return (
-                    <li key={index} onClick={this.loadMixerPreset} className="item">
+                    <li
+                        key={index}
+                        onClick={this.loadMixerPreset}
+                        className="item"
+                    >
                         {file}
                     </li>
                 )
@@ -141,11 +145,15 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
                 </button>
                 <h2>STORAGE</h2>
                 <br />
-                <h3>SAVE ROUTING :</h3>
-                <button onClick={this.saveFile} className="button">
-                    SAVE
-                </button>
-                <hr />
+                {window.location.search.includes('settings=1') ? (
+                    <React.Fragment>
+                        <h3>SAVE ROUTING :</h3>
+                        <button onClick={this.saveFile} className="button">
+                            SAVE
+                        </button>
+                        <hr />
+                    </React.Fragment>
+                ) : null}
                 <h3>LOAD ROUTING :</h3>
                 <this.ListSnapshotFiles />
                 {window.mixerPresetList.length > 0 ? (

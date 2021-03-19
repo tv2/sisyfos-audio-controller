@@ -98,10 +98,10 @@ The levels are:
 localhost:1176 (or whatever ip you use for Sisyfos Nodejs/Docker)
 ```
 
-IF you wan´t to disable settings:
+#### Important - To enable settings:
 
 ```
-localhost:1176/?settings=0
+localhost:1176/?settings=1
 ```
 
 To see the MiniMonitorView:
