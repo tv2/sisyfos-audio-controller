@@ -31,6 +31,7 @@ import {
     SET_AMIX,
     SET_CAPABILITY,
     TOGGLE_ALL_MANUAL,
+    SET_ASSIGNED_CHANNEL,
 } from '../reducers/faderActions'
 
 export interface IFaders {
@@ -297,6 +298,32 @@ export const faders = (
             return nextState
         case SET_AMIX: //channel
             nextState[0].fader[action.faderIndex].amixOn = action.state
+            return nextState
+        case SET_ASSIGNED_CHANNEL:
+            if (action.assigned) {
+                let assignedChannels =
+                    nextState[0].fader[action.faderIndex].assignedChannels
+                assignedChannels.push(action.channelIndex)
+                assignedChannels.sort((a: number, b: number) => a)
+                nextState[0].fader[
+                    action.faderIndex
+                ].assignedChannels = assignedChannels
+            } else {
+                let assignedChannels =
+                    nextState[0].fader[action.faderIndex].assignedChannels
+                if (
+                    assignedChannels.find((channel: number, index: number) => {
+                        return channel === action.channelIndex
+                    })
+                ) {
+                    assignedChannels = assignedChannels.filter((channel) => {
+                        return channel !== action.channelIndex
+                    })
+                }
+                nextState[0].fader[
+                    action.faderIndex
+                ].assignedChannels = assignedChannels
+            }
             return nextState
         case SET_CAPABILITY:
             nextState[0].fader[action.faderIndex].capabilities = {
