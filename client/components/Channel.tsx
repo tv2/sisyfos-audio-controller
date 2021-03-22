@@ -5,8 +5,6 @@ import VuMeter from './VuMeter'
 import { Store, compose } from 'redux'
 import Nouislider from 'nouislider-react'
 import '../assets/css/NoUiSlider.css'
-import { vuMeters } from '../utils/SocketClientHandlers'
-
 
 //assets:
 import '../assets/css/Channel.css'
@@ -20,7 +18,7 @@ import {
     SOCKET_TOGGLE_IGNORE,
     SOCKET_TOGGLE_AMIX,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import { IFader } from '../../server/reducers/fadersReducer'
+import { IChannelReference, IFader } from '../../server/reducers/fadersReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
 import { storeShowChanStrip } from '../../server/reducers/settingsActions'
 import { withTranslation } from 'react-i18next'
@@ -151,17 +149,17 @@ class Channel extends React.Component<
                 </React.Fragment>
             )
         } else {
-            let assignedChannels: number[] = this.props.fader.assignedChannels || [1]
+            let assignedChannels: IChannelReference[] = this.props.fader
+                .assignedChannels || [{ mixerIndex: 0, channelIndex: 0 }]
             return (
                 <React.Fragment>
-                    {!window.location.search.includes('vu=0') && assignedChannels?.map(
-                            (_, i) => (
-                                <VuMeter
-                                    faderIndex={this.faderIndex}
-                                    channel={i}
-                                />
-                            )
-                        )}{' '}
+                    {!window.location.search.includes('vu=0') &&
+                        assignedChannels?.map((assigned: IChannelReference, index) => (
+                            <VuMeter
+                                faderIndex={this.faderIndex}
+                                channel={index}
+                            />
+                        ))}{' '}
                 </React.Fragment>
             )
         }

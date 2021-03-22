@@ -76,6 +76,8 @@ import {
     storeToggleAMix,
     storeAllManual,
     storeInputSelector,
+    removeAllAssignedChannels,
+    storeSetAssignedChannel,
 } from './reducers/faderActions'
 import {
     storeSetAssignedFader,
@@ -98,10 +100,12 @@ export class MainThreadHandlers {
     }
 
     updateFullClientStore() {
+        this.recalcAssignedChannels()
         socketServer.emit(SOCKET_SET_FULL_STORE, state)
     }
 
     updatePartialStore(faderIndex: number) {
+        this.recalcAssignedChannels()
         socketServer.emit(SOCKET_SET_STORE_FADER, {
             faderIndex: faderIndex,
             state: state.faders[0].fader[faderIndex],
@@ -125,6 +129,24 @@ export class MainThreadHandlers {
             mixerIndex,
             mixerOnline:
                 onLineState ?? state.settings[0].mixers[mixerIndex].mixerOnline,
+        })
+    }
+
+    recalcAssignedChannels() {
+        store.dispatch(removeAllAssignedChannels())
+        state.channels[0].chMixerConnection.forEach((mixer, mixerIndex) => {
+            mixer.channel.forEach((channel: IChannel, channelIndex) => {
+                if (channel.assignedFader >= 0) {
+                    store.dispatch(
+                        storeSetAssignedChannel(
+                            channel.assignedFader,
+                            mixerIndex,
+                            channelIndex,
+                            true
+                        )
+                    )
+                }
+            })
         })
     }
 
@@ -262,6 +284,7 @@ export class MainThreadHandlers {
                         payload.faderAssign
                     )
                 )
+
                 this.updateFullClientStore()
             })
             .on(SOCKET_SET_FADER_MONITOR, (payload: any) => {
