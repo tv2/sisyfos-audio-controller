@@ -56,6 +56,7 @@ export interface IFader {
     showInMiniMonitor: boolean
     ignoreAutomation: boolean
     disabled: boolean
+    assignedChannels?: number[]
 
     /**
      * Assuming that the protocol has a "feature", can it be enabled on this fader?

@@ -5,6 +5,8 @@ import VuMeter from './VuMeter'
 import { Store, compose } from 'redux'
 import Nouislider from 'nouislider-react'
 import '../assets/css/NoUiSlider.css'
+import { vuMeters } from '../utils/SocketClientHandlers'
+
 
 //assets:
 import '../assets/css/Channel.css'
@@ -131,6 +133,38 @@ class Channel extends React.Component<
 
     handleShowChanStrip() {
         this.props.dispatch(storeShowChanStrip(this.faderIndex))
+    }
+
+    handleVuMeter() {
+        if (window.mixerProtocol.protocol === 'CasparCG') {
+            return (
+                <React.Fragment>
+                    {!window.location.search.includes('vu=0') &&
+                        window.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU?.map(
+                            (_, i) => (
+                                <VuMeter
+                                    faderIndex={this.faderIndex}
+                                    channel={i}
+                                />
+                            )
+                        )}{' '}
+                </React.Fragment>
+            )
+        } else {
+            let assignedChannels: number[] = this.props.fader.assignedChannels || [1]
+            return (
+                <React.Fragment>
+                    {!window.location.search.includes('vu=0') && assignedChannels?.map(
+                            (_, i) => (
+                                <VuMeter
+                                    faderIndex={this.faderIndex}
+                                    channel={i}
+                                />
+                            )
+                        )}{' '}
+                </React.Fragment>
+            )
+        }
     }
 
     fader() {
@@ -396,15 +430,7 @@ class Channel extends React.Component<
                     {this.amixButton()}
                 </div>
                 <div className="fader">
-                    {!window.location.search.includes('vu=0') &&
-                        window.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU?.map(
-                            (_, i) => (
-                                <VuMeter
-                                    faderIndex={this.faderIndex}
-                                    channel={i}
-                                />
-                            )
-                        )}
+                    {this.handleVuMeter()}
                     {this.fader()}
                 </div>
                 <div className="out-control">
