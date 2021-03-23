@@ -18,7 +18,7 @@ import {
     SOCKET_TOGGLE_IGNORE,
     SOCKET_TOGGLE_AMIX,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import { IFader } from '../../server/reducers/fadersReducer'
+import { IChannelReference, IFader } from '../../server/reducers/fadersReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
 import { storeShowChanStrip } from '../../server/reducers/settingsActions'
 import { withTranslation } from 'react-i18next'
@@ -131,6 +131,38 @@ class Channel extends React.Component<
 
     handleShowChanStrip() {
         this.props.dispatch(storeShowChanStrip(this.faderIndex))
+    }
+
+    handleVuMeter() {
+        if (window.mixerProtocol.protocol === 'CasparCG') {
+            return (
+                <React.Fragment>
+                    {!window.location.search.includes('vu=0') &&
+                        window.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU?.map(
+                            (_, i) => (
+                                <VuMeter
+                                    faderIndex={this.faderIndex}
+                                    channel={i}
+                                />
+                            )
+                        )}{' '}
+                </React.Fragment>
+            )
+        } else {
+            let assignedChannels: IChannelReference[] = this.props.fader
+                .assignedChannels || [{ mixerIndex: 0, channelIndex: 0 }]
+            return (
+                <React.Fragment>
+                    {!window.location.search.includes('vu=0') &&
+                        assignedChannels?.map((assigned: IChannelReference, index) => (
+                            <VuMeter
+                                faderIndex={this.faderIndex}
+                                channel={index}
+                            />
+                        ))}{' '}
+                </React.Fragment>
+            )
+        }
     }
 
     fader() {
@@ -396,15 +428,7 @@ class Channel extends React.Component<
                     {this.amixButton()}
                 </div>
                 <div className="fader">
-                    {!window.location.search.includes('vu=0') &&
-                        window.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU?.map(
-                            (_, i) => (
-                                <VuMeter
-                                    faderIndex={this.faderIndex}
-                                    channel={i}
-                                />
-                            )
-                        )}
+                    {this.handleVuMeter()}
                     {this.fader()}
                 </div>
                 <div className="out-control">

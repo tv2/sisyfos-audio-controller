@@ -10,6 +10,8 @@ export const SET_INPUT_SELECTOR = 'SET_INPUT_SELECTOR'
 export const SET_CHANNEL_LABEL = 'SET_CHANNEL_LABEL'
 export const SET_FADER_FX = 'SET_FADER_FX'
 export const SET_FADER_MONITOR = 'SET_FADER_MONITOR'
+export const SET_ASSIGNED_CHANNEL = 'SET_ASSIGNED_CHANNEL'
+export const REMOVE_ALL_ASSIGNED_CHANNELS = 'REMOVE_ASSIGNED_CHANNELS'
 export const TOGGLE_PGM = 'TOGGLE_PGM'
 export const SET_PGM = 'SET_PGM'
 export const TOGGLE_VO = 'TOGGLE_VO'
@@ -269,6 +271,27 @@ export const storeSetAMix = (faderIndex: number, state: boolean) => {
         type: SET_AMIX,
         faderIndex: faderIndex,
         state: state,
+    }
+}
+
+export const removeAllAssignedChannels = () => {
+    return {
+        type: REMOVE_ALL_ASSIGNED_CHANNELS,
+    }
+}
+
+export const storeSetAssignedChannel = (
+    faderIndex: number,
+    mixerIndex: number,
+    channelIndex: number,
+    assigned: boolean
+) => {
+    return {
+        type: SET_ASSIGNED_CHANNEL,
+        faderIndex: faderIndex,
+        mixerIndex: mixerIndex,
+        channelIndex: channelIndex,
+        assigned: assigned,
     }
 }
 

@@ -31,11 +31,18 @@ import {
     SET_AMIX,
     SET_CAPABILITY,
     TOGGLE_ALL_MANUAL,
+    SET_ASSIGNED_CHANNEL,
+    REMOVE_ALL_ASSIGNED_CHANNELS,
 } from '../reducers/faderActions'
 
 export interface IFaders {
     fader: Array<IFader>
     vuMeters: Array<IVuMeters>
+}
+
+export interface IChannelReference {
+    mixerIndex: number
+    channelIndex: number
 }
 
 export interface IFader {
@@ -56,6 +63,7 @@ export interface IFader {
     showInMiniMonitor: boolean
     ignoreAutomation: boolean
     disabled: boolean
+    assignedChannels?: IChannelReference[]
 
     /**
      * Assuming that the protocol has a "feature", can it be enabled on this fader?
@@ -296,6 +304,48 @@ export const faders = (
             return nextState
         case SET_AMIX: //channel
             nextState[0].fader[action.faderIndex].amixOn = action.state
+            return nextState
+        case REMOVE_ALL_ASSIGNED_CHANNELS: //channel
+            nextState[0].fader.forEach((fader) => {
+                fader.assignedChannels = []
+            })
+            return nextState
+        case SET_ASSIGNED_CHANNEL:
+            if (action.assigned) {
+                let assignedChannels: IChannelReference[] =
+                    nextState[0].fader[action.faderIndex].assignedChannels || []
+                assignedChannels.push({
+                    mixerIndex: action.mixerIndex,
+                    channelIndex: action.channelIndex,
+                })
+                assignedChannels.sort(
+                    (n1: IChannelReference, n2: IChannelReference) =>
+                        n1.channelIndex - n2.channelIndex
+                )
+                nextState[0].fader[
+                    action.faderIndex
+                ].assignedChannels = assignedChannels
+            } else {
+                let assignedChannels =
+                    nextState[0].fader[action.faderIndex].assignedChannels
+                if (
+                    assignedChannels.find(
+                        (channelReference: IChannelReference) => {
+                            return (
+                                channelReference.channelIndex ===
+                                action.channelIndex
+                            )
+                        }
+                    )
+                ) {
+                    assignedChannels = assignedChannels.filter((channel) => {
+                        return channel !== action.channelIndex
+                    })
+                }
+                nextState[0].fader[
+                    action.faderIndex
+                ].assignedChannels = assignedChannels
+            }
             return nextState
         case SET_CAPABILITY:
             nextState[0].fader[action.faderIndex].capabilities = {
