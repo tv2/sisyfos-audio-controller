@@ -1,6 +1,7 @@
 .vumeter-body {
     width: 24px;
-    margin: 15px 5px;
+    margin-left: 2px;
+    margin-right: 4px;
     background-color: black;
     border-radius: 7px;
     height: 430px;
