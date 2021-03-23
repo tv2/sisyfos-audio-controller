@@ -2,6 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 import { store } from '../reducers/store'
+import { checkVersion } from './migrations'
 
 // Redux:
 import { storeSetCompleteChState } from '../reducers/channelActions'
@@ -14,9 +15,11 @@ import { ICustomPages } from '../reducers/settingsReducer'
 export const loadSettings = (storeRedux: any) => {
     let settingsInterface = storeRedux.settings[0]
     try {
-        return JSON.parse(
+        let newSettings = JSON.parse(
             fs.readFileSync(path.resolve('storage', 'settings.json'))
         )
+        checkVersion(settingsInterface)
+        return newSettings
     } catch (error) {
         logger.error('Couldn´t read Settings.json file, creating af new', {})
         saveSettings(settingsInterface)
