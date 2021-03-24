@@ -13,7 +13,6 @@ import {
     SET_PAGES_LIST,
     TOGGLE_SHOW_CHAN_STRIP_FULL,
 } from '../reducers/settingsActions'
-import { getVersion } from '../utils/migrations'
 
 export enum PageType {
     All,
@@ -84,7 +83,6 @@ export interface IMixerSettings {
 
 const defaultSettingsReducerState: Array<ISettings> = [
     {
-        sisyfosVersion: getVersion(),
         showSettings: false,
         showPagesSetup: false,
         showChanStrip: -1,

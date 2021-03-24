@@ -10,20 +10,27 @@ import { storeSetCompleteFaderState } from '../reducers/faderActions'
 import { logger } from './logger'
 import { InumberOfChannels } from '../reducers/channelsReducer'
 import { IFaders } from '../reducers/fadersReducer'
-import { ICustomPages } from '../reducers/settingsReducer'
+import { IChannels } from '../reducers/channelsReducer'
 
-export const loadSettings = (storeRedux: any) => {
-    let settingsInterface = storeRedux.settings[0]
+import { ICustomPages, ISettings } from '../reducers/settingsReducer'
+
+export interface IShotStorage {
+    channelState: IChannels
+    faderState: IFaders
+}
+
+export const loadSettings = (storeRedux: any): ISettings => {
+    let newSettings = storeRedux.settings[0]
     try {
-        let newSettings = JSON.parse(
+        newSettings = JSON.parse(
             fs.readFileSync(path.resolve('storage', 'settings.json'))
         )
-        checkVersion(settingsInterface)
+        checkVersion(newSettings)
         return newSettings
     } catch (error) {
-        logger.error('Couldn´t read Settings.json file, creating af new', {})
-        saveSettings(settingsInterface)
-        return settingsInterface
+        logger.error('Couldn´t read Settings.json file, creating af new', error)
+        saveSettings(newSettings)
+        return newSettings
     }
 }
 
@@ -45,20 +52,22 @@ export const saveSettings = (settings: any) => {
 }
 
 export const loadSnapshotState = (
-    stateSnapshot: any,
-    stateChannelSnapshot: any,
+    stateSnapshot: IFaders,
+    stateChannelSnapshot: IChannels,
     numberOfChannels: InumberOfChannels[],
     numberOfFaders: number,
     fileName: string,
     loadAll: boolean
 ) => {
     try {
-        const stateFromFile = JSON.parse(fs.readFileSync(fileName))
+        const stateFromFile: IShotStorage = JSON.parse(
+            fs.readFileSync(fileName)
+        )
 
         if (loadAll) {
             store.dispatch(
                 storeSetCompleteChState(
-                    stateFromFile.channelState,
+                    stateFromFile.channelState as IChannels,
                     numberOfChannels
                 )
             )
@@ -67,40 +76,6 @@ export const loadSnapshotState = (
                     stateFromFile.faderState as IFaders,
                     numberOfFaders
                 )
-            )
-        } else {
-            stateChannelSnapshot.channel = stateChannelSnapshot.channel.map(
-                (channel: any, index: number) => {
-                    if (
-                        stateFromFile.channelState.channel[index]
-                            .assignedFader >= 0
-                    ) {
-                        channel.auxLevel =
-                            stateFromFile.channelState.channel[index]
-                                .auxLevel || []
-                        channel.assignedFader =
-                            stateFromFile.channelState.channel[
-                                index
-                            ].assignedFader
-                    } else {
-                        channel.assignedFader = -1
-                    }
-                    return channel
-                }
-            )
-
-            stateSnapshot.fader = stateSnapshot.fader.map(
-                (fader: any, index: number) => {
-                    fader.monitor =
-                        stateFromFile.faderState.fader[index].monitor || -1
-                    return fader
-                }
-            )
-            store.dispatch(
-                storeSetCompleteChState(stateChannelSnapshot, numberOfChannels)
-            )
-            store.dispatch(
-                storeSetCompleteFaderState(stateSnapshot, numberOfFaders)
             )
         }
     } catch (error) {
@@ -122,7 +97,7 @@ export const saveSnapshotState = (stateSnapshot: any, fileName: string) => {
     })
 }
 
-export const getSnapShotList = () => {
+export const getSnapShotList = (): string[] => {
     const files = fs
         .readdirSync(path.resolve('storage'))
         .filter((file: string) => {
