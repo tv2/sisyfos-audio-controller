@@ -20,6 +20,9 @@ export enum PageType {
 }
 
 export interface ISettings {
+    /* Sisyfos Settings Version: */
+    sisyfosVersion?: string
+
     /** UI state (non persistant) */
     showSettings: boolean
     showPagesSetup: boolean

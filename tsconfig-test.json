@@ -19,6 +19,7 @@
         // Check for "any" while converting to TS this can be turned off.
         "noImplicitAny": false,
         "module": "commonjs",
+        "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true
     },
     "include": ["src"]

@@ -14,6 +14,7 @@
         "esModuleInterop": true,
         // Check for "any" while converting to TS this can be turned off.
         "noImplicitAny": true,
+        "resolveJsonModule": true,
         "module": "commonjs",
         "outDir": "../dist/server"
     },
