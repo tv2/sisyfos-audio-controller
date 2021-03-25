@@ -132,6 +132,8 @@ export class MainThreadHandlers {
         })
     }
 
+    // Assigned channel to faders are right now based on Channel.assignedFader
+    // Plan is to change it so fader.assignedChannel will be the master (a lot of change in code is needed)
     recalcAssignedChannels() {
         store.dispatch(removeAllAssignedChannels())
         state.channels[0].chMixerConnection.forEach((mixer, mixerIndex) => {
