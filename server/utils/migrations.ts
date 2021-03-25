@@ -67,6 +67,17 @@ const migrate45to46 = (currentSettings: ISettings): ISettings => {
         )
     })
     currentSettings.sisyfosVersion = version
-    saveSettings(currentSettings)
+    delete currentSettings.customPages
+    fs.writeFileSync(
+        path.resolve('storage', 'settings.json'),
+        JSON.stringify(currentSettings),
+        'utf8',
+        (error: any) => {
+            logger.error(
+                'Migration failed - error writing settings.json file: ',
+                error
+            )
+        }
+    )
     return currentSettings
 }
