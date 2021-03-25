@@ -89,7 +89,8 @@ const versionAsNumber = (versionString: string): number => {
     if (!versionString) return 0
     let versionArray: string[] = versionString.split('.')
     let versionValue: number =
-        parseInt(versionArray[0]) * 100 + parseInt(versionArray[1])
-
+        parseInt(versionArray[0]) * 10000 +
+        parseInt(versionArray[1]) * 100 +
+        (parseInt(versionArray[2]) || 0)
     return versionValue
 }
