@@ -33,7 +33,7 @@ import {
     TOGGLE_ALL_MANUAL,
     SET_ASSIGNED_CHANNEL,
     REMOVE_ALL_ASSIGNED_CHANNELS,
-} from '../reducers/faderActions'
+} from './faderActions'
 
 export interface IFaders {
     fader: Array<IFader>

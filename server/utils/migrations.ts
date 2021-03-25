@@ -38,7 +38,7 @@ const migrate45to46 = (currentSettings: ISettings): ISettings => {
         )
         // As this is the first implemented migration it also looks .shot files from ealier versions than 4.xx
         if (stateFromShot.channelState.chConnection) {
-            // From Version 4.0
+            // From Version 4.xx
             stateFromShot.channelState.chMixerConnection =
                 stateFromShot.channelState?.chConnection
             delete stateFromShot.channelState.chConnection
