@@ -346,7 +346,7 @@ export class OscMixerConnection {
 
     initialCommands() {
         // To prevent network overload, timers will delay the requests.
-        this.mixerProtocol.initializeCommands.forEach(
+        this.mixerProtocol.initializeCommands?.forEach(
             (item, itemIndex: number) => {
                 setTimeout(() => {
                     if (item.mixerMessage.includes('{channel}')) {
