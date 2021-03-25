@@ -397,7 +397,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     render() {
         return (
             <div className="settings-body">
-                <div className="settings-header">GENERIC SETTINGS:</div>
+                <div className="settings-header">GENERIC SETTINGS</div>
+                <div className="settings-input-field">Sisyfos v.{this.state.settings.sisyfosVersion}</div>
                 <label className="settings-input-field">
                     FADE TIME :
                     <input
