@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.7.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.6.0...v4.7.0) (2021-03-25)
+
+### Features
+
+-   add fader store set and remove assigned channel from fader ([73749ab](https://github.com/olzzon/sisyfos-audio-controller/commit/73749ab5245f47be0b5f64738e6426a3e4cf0af5))
+-   CSS - less space for Multiple meter ([dc1c4e4](https://github.com/olzzon/sisyfos-audio-controller/commit/dc1c4e4a0bd558ce10a4dc0ef81c6ece86220ec1))
+-   implemented Midas support for multiple meters based on the assigned channels to a fader. ToDo full support for multiple mixers ([01a6e36](https://github.com/olzzon/sisyfos-audio-controller/commit/01a6e363cd7f5080cad310ae43032b266b0c4b5b))
+-   inital migration.ts and version check. ([15e9b79](https://github.com/olzzon/sisyfos-audio-controller/commit/15e9b797a63c032f27af28a732cfb6d1da97df72))
+-   Migration - handler updates from 4.xx to 4.6 and also .shot files from 3.xx ([60da92c](https://github.com/olzzon/sisyfos-audio-controller/commit/60da92c10bae6b49a250af2abe13925d5e387526))
+-   prepare change to meter pr assigned channel ([fefa810](https://github.com/olzzon/sisyfos-audio-controller/commit/fefa810ed33f972dfd7564224db7e0007dac57fd))
+
+### Bug Fixes
+
+-   import of faderActions.ts had bad path reference ([39c9f05](https://github.com/olzzon/sisyfos-audio-controller/commit/39c9f05e91da5b246ff9bafc8f19deb6b76a777a))
+-   migration should write settings in sync mode to prevent async loading of old settings ([00e004f](https://github.com/olzzon/sisyfos-audio-controller/commit/00e004ffccde364301685a59c743282e0db382db))
+-   OSC mixerconnection - make initializeCommands optional for protocols without it ([d008250](https://github.com/olzzon/sisyfos-audio-controller/commit/d00825031e2993cde8ec400bade3637c7a688db4))
+
 ## [4.6.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.5.2...v4.6.0) (2021-03-19)
 
 ### Features
