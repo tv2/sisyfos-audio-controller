@@ -3,12 +3,15 @@ const path = require('path')
 
 import { logger } from './logger'
 import { ISettings } from '../reducers/settingsReducer'
-import { getSnapShotList, IShotStorage, saveSettings } from './SettingsStorage'
+import { getSnapShotList, IShotStorage } from './SettingsStorage'
 
 const version = process.env.npm_package_version
 
 export const checkVersion = (currentSettings: ISettings): ISettings => {
-    if (version > (currentSettings.sisyfosVersion || '0')) {
+    if (
+        versionAsNumber(version) >
+        versionAsNumber(currentSettings.sisyfosVersion)
+    ) {
         currentSettings = migrateVersion(currentSettings)
     }
     return currentSettings
@@ -22,13 +25,13 @@ const migrateVersion = (currentSettings: ISettings): ISettings => {
         version
     )
     let newSettings = currentSettings
-    if (version === '4.6.0') {
-        newSettings = migrate45to46(currentSettings)
+    if (versionAsNumber(version) >= versionAsNumber('4.7.0')) {
+        newSettings = migrate45to47(currentSettings)
     }
     return newSettings
 }
 
-const migrate45to46 = (currentSettings: ISettings): ISettings => {
+const migrate45to47 = (currentSettings: ISettings): ISettings => {
     let files: string[] = getSnapShotList()
     files.push('default.shot')
 
@@ -80,4 +83,13 @@ const migrate45to46 = (currentSettings: ISettings): ISettings => {
         }
     )
     return currentSettings
+}
+
+const versionAsNumber = (versionString: string): number => {
+    if (!versionString) return 0
+    let versionArray: string[] = versionString.split('.')
+    let versionValue: number =
+        parseInt(versionArray[0]) * 100 + parseInt(versionArray[1])
+
+    return versionValue
 }
