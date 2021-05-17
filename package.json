@@ -125,6 +125,7 @@
     },
     "resolutions": {
         "minimist": "^1.2.5",
+        "hosted-git-info ": "^3.0.8",
         "yargs-parser": "^18.1.2",
         "serialize-javascript": "^3.1.0",
         "dot-prop": "^5.1.1"
