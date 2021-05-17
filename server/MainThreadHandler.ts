@@ -189,7 +189,7 @@ export class MainThreadHandlers {
                 logger.info('Load Snapshot', {})
                 this.snapshotHandler.loadSnapshotSettings(
                     path.resolve('storage', payload),
-                    false
+                    true
                 )
                 this.updateFullClientStore()
             })
