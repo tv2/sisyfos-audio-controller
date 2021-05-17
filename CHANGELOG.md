@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.8.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.8.0...v4.8.1) (2021-05-17)
+
+### Bug Fixes
+
+-   load of snapshot was not enabled. Will now load full snapshot. ToDo filter output non-config based values. ([18fbc22](https://github.com/olzzon/sisyfos-audio-controller/commit/18fbc22e1a8827fa932719f40be431a71b4306dc))
+
 ## [4.8.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.7.1...v4.8.0) (2021-03-25)
 
 ### Features
