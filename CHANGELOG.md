@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.8.2](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.8.1...v4.8.2) (2021-05-19)
+
+### Bug Fixes
+
+-   resolution on hosted-git-info package to force fix vulnerability ([ef0c283](https://github.com/olzzon/sisyfos-audio-controller/commit/ef0c28333b6329c1ed10c5b46ea73c54c45e3cff))
+
 ### [4.8.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.8.0...v4.8.1) (2021-05-17)
 
 ### Bug Fixes
