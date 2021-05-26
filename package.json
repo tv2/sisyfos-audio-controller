@@ -69,6 +69,7 @@
         "i18next-browser-languagedetector": "^6.1.1",
         "jquery": "^3.6.0",
         "node-emberplus": "https://github.com/olzzon/node-emberplus#feat/export-ber",
+        "node-vmix": "^1.5.2",
         "nouislider": "^14.6.3",
         "nouislider-react": "^3.4.0",
         "osc": "https://github.com/olzzon/tv2-osc.js-no-serialport.git",

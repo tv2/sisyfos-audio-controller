@@ -10,6 +10,7 @@ import {
     fxParamsList,
 } from '../constants/MixerProtocolInterface'
 import { OscMixerConnection } from './mixerConnections/OscMixerConnection'
+import { VMixMixerConnection } from './mixerConnections/VMixMixerConnection'
 import { MidiMixerConnection } from './mixerConnections/MidiMixerConnection'
 import { QlClMixerConnection } from './mixerConnections/YamahaQlClConnection'
 import { SSLMixerConnection } from './mixerConnections/SSLMixerConnection'
@@ -91,6 +92,11 @@ export class MixerGenericConnection {
                 )
             } else if (this.mixerProtocol[index].protocol === 'SSL') {
                 this.mixerConnection[index] = new SSLMixerConnection(
+                    this.mixerProtocol[index] as IMixerProtocol,
+                    index
+                )
+            } else if (this.mixerProtocol[index].protocol === 'VMIX') {
+                this.mixerConnection[index] = new VMixMixerConnection(
                     this.mixerProtocol[index] as IMixerProtocol,
                     index
                 )
