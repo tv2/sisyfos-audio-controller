@@ -2,6 +2,7 @@
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 import { ConnectionTCP } from 'node-vmix'
+import { XmlApi } from 'vmix-js-utils'
 
 //Utils:
 import {
@@ -74,15 +75,18 @@ export class VMixMixerConnection {
                 this.mixerOnline(true)
                 global.mainThreadHandler.updateFullClientStore()
             })
-            .on('data', (message: any) => {
+            .on('data', (data: any) => {
+                const message = data.toString()
+                console.log(XmlApi.DataParser.parse(message))
                 clearTimeout(this.mixerOnlineTimer)
                 if (!state.settings[0].mixers[this.mixerIndex].mixerOnline) {
                     this.mixerOnline(true)
                 }
-                logger.verbose('Received OSC message: ' + message.address, {})
+                logger.verbose('Received Vmix message: ' + message, {})
+                console.log('Received Vmix message: ', message)
 
                 if (
-                    this.checkOscCommand(
+                    this.checkVMixCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
                             .CHANNEL_VU?.[0].mixerMessage
@@ -97,7 +101,7 @@ export class VMixMixerConnection {
                         message.args[0]
                     )
                 } else if (
-                    this.checkOscCommand(
+                    this.checkVMixCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
                             .CHANNEL_VU_REDUCTION?.[0].mixerMessage
@@ -112,7 +116,7 @@ export class VMixMixerConnection {
                         message.args[0]
                     )
                 } else if (
-                    this.checkOscCommand(
+                    this.checkVMixCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
                             .CHANNEL_OUT_GAIN?.[0].mixerMessage
@@ -201,7 +205,7 @@ export class VMixMixerConnection {
                         }
                     }
                 } else if (
-                    this.checkOscCommand(
+                    this.checkVMixCommand(
                         message.address,
                         this.mixerProtocol.channelTypes?.[0].fromMixer
                             .AUX_LEVEL?.[0].mixerMessage
@@ -249,7 +253,7 @@ export class VMixMixerConnection {
                         }
                     }
                 } else if (
-                    this.checkOscCommand(
+                    this.checkVMixCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
                             .CHANNEL_NAME?.[0].mixerMessage
@@ -268,7 +272,7 @@ export class VMixMixerConnection {
                             .channel[ch - 1].assignedFader
                     )
                 } else if (
-                    this.checkOscCommand(
+                    this.checkVMixCommand(
                         message.address,
                         this.mixerProtocol.channelTypes[0].fromMixer
                             .CHANNEL_MUTE_ON?.[0].mixerMessage
@@ -311,13 +315,14 @@ export class VMixMixerConnection {
 
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
-            let oscTimer = setInterval(() => {
+            setInterval(() => {
                 this.pingMixerCommand()
             }, this.mixerProtocol.pingTime)
         }
     }
 
     initialCommands() {
+        return
         // To prevent network overload, timers will delay the requests.
         this.mixerProtocol.initializeCommands?.forEach(
             (item, itemIndex: number) => {
@@ -391,7 +396,7 @@ export class VMixMixerConnection {
 
             let fxKey = keyName as keyof typeof fxParamsList
             if (
-                this.checkOscCommand(
+                this.checkVMixCommand(
                     message.address,
                     this.mixerProtocol.channelTypes[0].fromMixer[
                         fxParamsList[fxKey]
@@ -413,13 +418,14 @@ export class VMixMixerConnection {
                 )
             }
 
-            console.log(fxKey)
+            //            console.log(fxKey)
         })
     }
 
-    checkOscCommand(message: string, command: string | undefined): boolean {
+    checkVMixCommand(message: string, command: string | undefined): boolean {
         if (!command) return false
         if (message === command) return true
+        return
         let messageArray: string[] = message.split('/')
         let commandArray: string[] = command.split('/')
         let status: boolean = true
