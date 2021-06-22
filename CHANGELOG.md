@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.9.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.8.3...v4.9.0) (2021-06-22)
+
+### Features
+
+-   remove logging til logfile.log - as this is not used ([59d6b03](https://github.com/olzzon/sisyfos-audio-controller/commit/59d6b031a5e76175d9c775ebb6a3a3a0ef409eca))
+
 ### [4.8.3](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.8.2...v4.8.3) (2021-06-22)
 
 ### Bug Fixes
