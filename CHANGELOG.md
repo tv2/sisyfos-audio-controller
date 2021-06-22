@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.8.3](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.8.2...v4.8.3) (2021-06-22)
+
+### Bug Fixes
+
+-   remove winston-elasticsearch support. Caused crash and is no longer used. ([955d52a](https://github.com/olzzon/sisyfos-audio-controller/commit/955d52a4c66304f6e717d249e54110f0edd58852))
+
 ### [4.8.2](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.8.1...v4.8.2) (2021-05-19)
 
 ### Bug Fixes
