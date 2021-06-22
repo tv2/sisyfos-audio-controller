@@ -322,6 +322,8 @@ export class VMixMixerConnection {
     }
 
     initialCommands() {
+        this.vmixConnection.send('XML')
+        this.vmixConnection.send({ Function: 'SUBSCRIBE TALLY' })
         return
         // To prevent network overload, timers will delay the requests.
         this.mixerProtocol.initializeCommands?.forEach(
@@ -449,15 +451,26 @@ export class VMixMixerConnection {
     }
 
     sendOutMessage(
-        oscMessage: string,
+        vMixMessage: string,
         channel: number,
         value: string | number,
         type: string
     ) {
-        let channelString = this.mixerProtocol.leadingZeros
+        if (typeof value === 'number') {
+            this.vmixConnection.send({
+                Function: `SetVolume&Input=1&Value=${value * 100}`,
+            })
+        } else {
+            this.vmixConnection.send({
+                Function: `SetVolume&Input=1&Value=${parseFloat(value) * 100}`,
+            })
+        }
+        this.vmixConnection.send({ Function: `SetBalance&Input=1&Value=-1` })
+
+        /*let channelString = this.mixerProtocol.leadingZeros
             ? ('0' + channel).slice(-2)
             : channel.toString()
-        let message = oscMessage.replace('{channel}', channelString)
+        let message = vMixMessage.replace('{channel}', channelString)
         if (message != 'none') {
             logger.verbose('Sending OSC command :' + message, {})
             this.vmixConnection.send({
@@ -469,7 +482,7 @@ export class VMixMixerConnection {
                     },
                 ],
             })
-        }
+        }*/
     }
 
     sendOutRequest(oscMessage: string, channel: number) {
