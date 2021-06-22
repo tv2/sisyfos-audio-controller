@@ -112,7 +112,7 @@
         "prop-types": "^15.7.2",
         "react-test-renderer": "^17.0.1",
         "simple-git-hooks": "^2.0.3",
-        "standard-version": "^9.1.1",
+        "standard-version": "^9.3.0",
         "style-loader": "^2.0.0",
         "ts-jest": "^26.5.3",
         "ts-loader": "^8.0.18",
@@ -124,9 +124,12 @@
     },
     "resolutions": {
         "minimist": "^1.2.5",
+        "css-what": "^5.0.1",
+        "trim-newlines": "^4.0.1",
         "hosted-git-info ": "^3.0.8",
         "yargs-parser": "^18.1.2",
         "serialize-javascript": "^3.1.0",
-        "dot-prop": "^5.1.1"
+        "dot-prop": "^5.1.1",
+        "browserslist": "^4.16.5"
     }
 }
