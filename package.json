@@ -86,8 +86,7 @@
         "utf-8-validate": "^5.0.4",
         "web-midi-api": "^2.0.8",
         "webmidi": "^2.5.2",
-        "winston": "^3.3.3",
-        "winston-elasticsearch": "^0.15.2"
+        "winston": "^3.3.3"
     },
     "devDependencies": {
         "@babel/core": "^7.13.10",
