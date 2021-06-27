@@ -138,7 +138,10 @@ export class MainThreadHandlers {
         store.dispatch(removeAllAssignedChannels())
         state.channels[0].chMixerConnection.forEach((mixer, mixerIndex) => {
             mixer.channel.forEach((channel: IChannel, channelIndex) => {
-                if (channel.assignedFader >= 0) {
+                if (
+                    channel.assignedFader >= 0 &&
+                    state.faders[0].fader[channel.assignedFader]
+                ) {
                     store.dispatch(
                         storeSetAssignedChannel(
                             channel.assignedFader,
