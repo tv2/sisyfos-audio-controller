@@ -531,12 +531,12 @@ export class MixerGenericConnection {
         this.mixerTimers[mixerIndex].chTimer[channelIndex] = setInterval(() => {
             outputLevel -= step
             dispatchTrigger += step
-            this.mixerConnection[mixerIndex].updateFadeIOLevel(
-                channelIndex,
-                outputLevel
-            )
-
             if (dispatchTrigger > dispatchResolution) {
+                this.mixerConnection[mixerIndex].updateFadeIOLevel(
+                    channelIndex,
+                    outputLevel
+                )
+
                 store.dispatch(
                     storeSetOutputLevel(mixerIndex, channelIndex, outputLevel)
                 )
