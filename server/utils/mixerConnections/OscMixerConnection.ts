@@ -31,12 +31,18 @@ import { storeSetMixerOnline } from '../../reducers/settingsActions'
 import { logger } from '../logger'
 import { sendVuLevel, VuType } from '../vuServer'
 
+interface IOscCommand {
+    address: string
+    args?: any[]
+}
+
 export class OscMixerConnection {
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
     oscConnection: any
     mixerOnlineTimer: any
+    commandBuffer: IOscCommand[] = []
 
     constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
@@ -340,8 +346,16 @@ export class OscMixerConnection {
         if (this.mixerProtocol.pingTime > 0) {
             let oscTimer = setInterval(() => {
                 this.pingMixerCommand()
+                logger.debug(`Send buffer Size : ${this.commandBuffer.length}`)
             }, this.mixerProtocol.pingTime)
         }
+
+        //Setup Buffer Timer:
+        setInterval(() => {
+            if (this.commandBuffer.length > 0) {
+                this.oscConnection.send(this.commandBuffer.shift())
+            }
+        }, 2)
     }
 
     initialCommands() {
@@ -481,7 +495,7 @@ export class OscMixerConnection {
         let message = oscMessage.replace('{channel}', channelString)
         if (message != 'none') {
             logger.verbose('Sending OSC command :' + message, {})
-            this.oscConnection.send({
+            this.sendBuffered({
                 address: message,
                 args: [
                     {
@@ -499,7 +513,7 @@ export class OscMixerConnection {
             : channel.toString()
         let message = oscMessage.replace('{channel}', channelString)
         if (message != 'none') {
-            this.oscConnection.send({
+            this.sendBuffered({
                 address: message,
             })
         }
@@ -516,7 +530,7 @@ export class OscMixerConnection {
         message = message.replace('{argument}', auxSendNumber)
         logger.verbose('Initial Aux Message : ' + message)
         if (message != 'none') {
-            this.oscConnection.send({
+            this.sendBuffered({
                 address: message,
             })
         }
@@ -700,7 +714,7 @@ export class OscMixerConnection {
                 fs.readFileSync(path.resolve('storage', presetName))
             )
 
-            this.oscConnection.send({
+            this.sendBuffered({
                 address: this.mixerProtocol.loadPresetCommand[0].mixerMessage,
                 args: [
                     {
@@ -714,6 +728,10 @@ export class OscMixerConnection {
                 ],
             })
         }
+    }
+
+    sendBuffered(command: IOscCommand) {
+        this.commandBuffer.push(JSON.parse(JSON.stringify(command)))
     }
 
     injectCommand(command: string[]) {
