@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.9.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.9.0...v4.9.1) (2021-07-26)
+
+### Bug Fixes
+
+-   Fade down was sending command in each loop in setInterval not respecting drivers dispatchResolution ([283cad0](https://github.com/olzzon/sisyfos-audio-controller/commit/283cad02850753ba13c6901725518ebbebaf2218))
+-   If default.shot file is missing Sisyfos couln´t startup because trying to set assigned fader on store before faders in store was recreated. ([ece0623](https://github.com/olzzon/sisyfos-audio-controller/commit/ece06235849470b3e099facc153fcece9d16378e))
+-   OSC buffer added to avoid overloading of Midas mixers ([0e4607b](https://github.com/olzzon/sisyfos-audio-controller/commit/0e4607ba9b033d5a6643709cf489262ff772d331))
+-   OSC connection buffer interval lowered to 0.5ms ([9302cf3](https://github.com/olzzon/sisyfos-audio-controller/commit/9302cf38f523194be5e987b4319d931cbd993341))
+
 ## [4.9.0](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.8.3...v4.9.0) (2021-06-22)
 
 ### Features
