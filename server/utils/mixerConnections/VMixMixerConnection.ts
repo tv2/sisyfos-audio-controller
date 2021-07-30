@@ -104,7 +104,7 @@ export class VMixMixerConnection {
             })
             .on('disconnect', () => {
                 this.mixerOnline(false)
-                logger.info('Lost OSC connection', {})
+                logger.info('Lost VMix connection', {})
             })
 
         logger.info(
@@ -146,9 +146,9 @@ export class VMixMixerConnection {
                     })
 
                 d.volume = Math.pow(parseFloat(d.volume || '0') / 100, 0.25)
-                d.meterF1 = (9.555 * Math.log(d.meterF1)) / Math.log(3)
-                d.meterF2 = (9.555 * Math.log(d.meterF2)) / Math.log(3)
-                d.muted = d.muted === 'True'
+                d.meterF1 = (9.555 * Math.log(d.meterF1 || 0)) / Math.log(3)
+                d.meterF2 = (9.555 * Math.log(d.meterF2 || 0)) / Math.log(3)
+                d.muted = d.muted ? d.muted === 'True' : true
                 d.solo = d.solo === 'True'
                 d.gainDb = parseFloat(d.gainDb || '0') / 24
 
@@ -214,7 +214,7 @@ export class VMixMixerConnection {
                         if (muteOn) {
                             dispatch(storeSetMute(assignedFader, false))
                         }
-                        if (!pgmOn && !voOn) {
+                        if (!fadeActive && !pgmOn && !voOn) {
                             dispatch(storeSetPgm(assignedFader, true))
                             store.dispatch({
                                 type: SET_OUTPUT_LEVEL,
@@ -312,6 +312,8 @@ export class VMixMixerConnection {
 
     pingMixerCommand() {
         //Ping OSC mixer if mixerProtocol needs it.
+        if (!this.mixerProtocol.pingCommand.length) return
+
         this.mixerProtocol.pingCommand.map((command) => {
             let value = command.value || 0
             let type = command.type || 'i'
@@ -392,12 +394,14 @@ export class VMixMixerConnection {
         value: string | number,
         type: string
     ) {
-        logger.verbose(`send${vMixMessage} Input=1&Value=${value}`)
-        this.vmixConnection.send({
-            Function: vMixMessage,
-            Input: channel, // todo - should we map these?
-            Value: value,
-        })
+        if (state.settings[0].mixers[this.mixerIndex].mixerOnline) {
+            logger.verbose(`send${vMixMessage} Input=1&Value=${value}`)
+            this.vmixConnection.send({
+                Function: vMixMessage,
+                Input: channel, // todo - should we map these?
+                Value: value,
+            })
+        }
     }
 
     sendOutRequest(oscMessage: string, channel: number) {
@@ -640,22 +644,23 @@ export class VMixMixerConnection {
     }
 
     updateChannelName(channelIndex: number) {
-        let channelType =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelType
-        let channelTypeIndex =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelTypeIndex
-        let channelName = state.faders[0].fader[channelIndex].label
-        this.sendOutMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0]
-                .mixerMessage,
-            channelTypeIndex + 1,
-            channelName,
-            's'
-        )
+        // let channelType =
+        //     state.channels[0].chMixerConnection[this.mixerIndex].channel[
+        //         channelIndex
+        //     ].channelType
+        // let channelTypeIndex =
+        //     state.channels[0].chMixerConnection[this.mixerIndex].channel[
+        //         channelIndex
+        //     ].channelTypeIndex
+        // let channelName = state.faders[0].fader[channelIndex].label
+        // this.sendOutMessage(
+        //     this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0]
+        //         .mixerMessage,
+        //     channelTypeIndex + 1,
+        //     channelName,
+        //     's'
+        // )
+        return true
     }
 
     loadMixerPreset(presetName: string) {
