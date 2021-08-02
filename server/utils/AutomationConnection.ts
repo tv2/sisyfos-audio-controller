@@ -43,6 +43,233 @@ export class AutomationConnection {
     }
 
     setupAutomationConnection() {
+        const messageHandler = (
+            message: any,
+            timetag: number | undefined,
+            info: any
+        ) => {
+            const check = (key: keyof IAutomationProtocol['fromAutomation']) =>
+                this.checkOscCommand(
+                    message.address,
+                    this.automationProtocol.fromAutomation[key]
+                )
+            const wrapChannelCommand = (fn: (ch: any) => void) => {
+                let ch: number
+                let chMessage = message.address.split('/')[2]
+
+                if (Number.isNaN(parseInt(chMessage))) {
+                    // look among labels to find channel
+                    const fader = state.faders[0].fader
+                        .map((f, i) => ({ ...f, i }))
+                        .find(
+                            (f) =>
+                                f.userLabel === chMessage ||
+                                f.label === chMessage
+                        )
+                    const channel = state.channels[0].chMixerConnection
+                        .map((conn) =>
+                            conn.channel.map((ch) => ({
+                                assignedFader: ch.assignedFader,
+                                label: ch.label,
+                            }))
+                        )
+                        .map((m) => m.find((ch) => ch.label === chMessage))
+                        .find((m) => m)
+
+                    if (fader) {
+                        ch = fader.i + 1
+                    } else if (channel) {
+                        ch = channel.assignedFader + 1
+                    } else {
+                        logger.error(
+                            'Could not find fader with label ' + chMessage
+                        )
+                        return
+                    }
+                } else {
+                    ch = parseInt(chMessage)
+                }
+
+                if (
+                    state.faders[0].fader[ch - 1] &&
+                    !state.faders[0].fader[ch - 1].ignoreAutomation
+                ) {
+                    fn(ch)
+                }
+                global.mainThreadHandler.updatePartialStore(ch - 1)
+            }
+
+            logger.info(
+                'RECIEVED AUTOMATION MESSAGE :' +
+                    message.address +
+                    ', ' +
+                    message.args[0],
+                {}
+            )
+
+            // Set state of Sisyfos:
+            if (check('CHANNEL_PGM_ON_OFF')) {
+                wrapChannelCommand((ch: any) => {
+                    if (message.args[0] === 1) {
+                        mixerGenericConnection.checkForAutoResetThreshold(
+                            ch - 1
+                        )
+                        store.dispatch(storeSetPgm(ch - 1, true))
+                    } else if (message.args[0] === 2) {
+                        mixerGenericConnection.checkForAutoResetThreshold(
+                            ch - 1
+                        )
+                        store.dispatch(storeSetVo(ch - 1, true))
+                    } else {
+                        store.dispatch(storeSetPgm(ch - 1, false))
+                    }
+
+                    if (message.args.length > 1) {
+                        mixerGenericConnection.updateOutLevel(
+                            ch - 1,
+                            parseFloat(message.args[1])
+                        )
+                    } else {
+                        mixerGenericConnection.updateOutLevel(ch - 1)
+                    }
+                })
+            } else if (check('CHANNEL_PST_ON_OFF')) {
+                wrapChannelCommand((ch) => {
+                    if (message.args[0] === 1) {
+                        store.dispatch(storeSetPst(ch - 1, true))
+                    } else if (message.args[0] === 2) {
+                        store.dispatch(storeSetPstVo(ch - 1, true))
+                    } else {
+                        store.dispatch(storeSetPst(ch - 1, false))
+                    }
+                    mixerGenericConnection.updateNextAux(ch - 1)
+                })
+            } else if (check('CHANNEL_MUTE')) {
+                wrapChannelCommand((ch: any) => {
+                    store.dispatch(storeSetMute(ch - 1, message.args[0] === 1))
+                    mixerGenericConnection.updateMuteState(ch - 1)
+                })
+            } else if (check('CHANNEL_FADER_LEVEL')) {
+                wrapChannelCommand((ch: any) => {
+                    store.dispatch(storeFaderLevel(ch - 1, message.args[0]))
+                    mixerGenericConnection.updateOutLevel(ch - 1)
+                    global.mainThreadHandler.updatePartialStore(ch - 1)
+                })
+            } else if (check('INJECT_COMMAND')) {
+                wrapChannelCommand((ch: any) => {
+                    store.dispatch(storeFaderLabel(ch - 1, message.args[0]))
+                    mixerGenericConnection.injectCommand(message.args)
+                })
+            } else if (check('SNAP_RECALL')) {
+                let snapNumber = message.address.split('/')[2]
+                store.dispatch({
+                    type: SNAP_RECALL,
+                    snapIndex: snapNumber - 1,
+                })
+            } else if (check('SET_LABEL')) {
+                wrapChannelCommand((ch: any) => {
+                    store.dispatch(storeFaderLabel(ch - 1, message.args[0]))
+                    mixerGenericConnection.updateChannelName(ch - 1)
+                })
+            } else if (check('X_MIX')) {
+                store.dispatch(storeXmix())
+                mixerGenericConnection.updateOutLevels()
+                global.mainThreadHandler.updateFullClientStore()
+            } else if (check('CHANNEL_VISIBLE')) {
+                wrapChannelCommand((ch: any) => {
+                    store.dispatch(
+                        storeShowChannel(ch - 1, message.args[0] === 1)
+                    )
+                })
+            } else if (check('FADE_TO_BLACK')) {
+                store.dispatch(storeFadeToBlack())
+                mixerGenericConnection.updateFadeToBlack()
+                global.mainThreadHandler.updateFullClientStore()
+            } else if (check('CLEAR_PST')) {
+                store.dispatch(storeClearPst())
+                mixerGenericConnection.updateOutLevels()
+                global.mainThreadHandler.updateFullClientStore()
+            } else if (check('STATE_FULL')) {
+                // Get state from Producers Audio Mixer:
+                this.sendOutMessage(
+                    this.automationProtocol.toAutomation.STATE_FULL,
+                    0,
+                    JSON.stringify({
+                        channel: state.faders[0].fader.map(
+                            ({
+                                faderLevel,
+                                pgmOn,
+                                voOn,
+                                pstOn,
+                                showChannel,
+                            }: IFader) => ({
+                                faderLevel,
+                                pgmOn,
+                                voOn,
+                                pstOn,
+                                showChannel,
+                            })
+                        ),
+                    }),
+                    's',
+                    info
+                )
+            } else if (check('STATE_CHANNEL_PGM')) {
+                wrapChannelCommand((ch: any) => {
+                    this.sendOutMessage(
+                        this.automationProtocol.toAutomation.STATE_CHANNEL_PGM,
+                        ch,
+                        state.faders[0].fader[ch - 1].pgmOn,
+                        'i',
+                        info
+                    )
+                })
+            } else if (check('STATE_CHANNEL_PST')) {
+                wrapChannelCommand((ch) => {
+                    this.sendOutMessage(
+                        this.automationProtocol.toAutomation.STATE_CHANNEL_PST,
+                        ch,
+                        state.faders[0].fader[ch - 1].pstOn,
+                        'i',
+                        info
+                    )
+                })
+            } else if (check('STATE_CHANNEL_MUTE')) {
+                wrapChannelCommand((ch) => {
+                    this.sendOutMessage(
+                        this.automationProtocol.toAutomation.STATE_CHANNEL_MUTE,
+                        ch,
+                        state.faders[0].fader[ch - 1].muteOn,
+                        'i',
+                        info
+                    )
+                })
+            } else if (check('STATE_CHANNEL_FADER_LEVEL')) {
+                wrapChannelCommand((ch) => {
+                    this.sendOutMessage(
+                        this.automationProtocol.toAutomation
+                            .STATE_CHANNEL_FADER_LEVEL,
+                        ch,
+                        state.faders[0].fader[ch - 1].faderLevel,
+                        'f',
+                        info
+                    )
+                })
+            } else if (check('PING')) {
+                let pingValue = state.settings[0].mixers[0].mixerOnline
+                    ? message.address.split('/')[2]
+                    : 'offline'
+
+                this.sendOutMessage(
+                    this.automationProtocol.toAutomation.PONG,
+                    0,
+                    pingValue,
+                    's',
+                    info
+                )
+            }
+        }
+
         this.oscConnection
             .on('ready', () => {
                 this.automationProtocol.initializeCommands.map((item) => {
@@ -53,294 +280,7 @@ export class AutomationConnection {
                     )
                 })
             })
-            .on(
-                'message',
-                (message: any, timetag: number | undefined, info: any) => {
-                    logger.info(
-                        'RECIEVED AUTOMATION MESSAGE :' +
-                            message.address +
-                            message.args[0],
-                        {}
-                    )
-                    //Set state of Sisyfos:
-                    if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation
-                                .CHANNEL_PGM_ON_OFF
-                        )
-                    ) {
-                        let ch = message.address.split('/')[2]
-                        if (
-                            state.faders[0].fader[ch - 1] &&
-                            !state.faders[0].fader[ch - 1].ignoreAutomation
-                        ) {
-                            if (message.args[0] === 1) {
-                                mixerGenericConnection.checkForAutoResetThreshold(
-                                    ch - 1
-                                )
-                                store.dispatch(storeSetPgm(ch - 1, true))
-                            } else if (message.args[0] === 2) {
-                                mixerGenericConnection.checkForAutoResetThreshold(
-                                    ch - 1
-                                )
-                                store.dispatch(storeSetVo(ch - 1, true))
-                            } else {
-                                store.dispatch(storeSetPgm(ch - 1, false))
-                            }
-
-                            if (message.args.length > 1) {
-                                mixerGenericConnection.updateOutLevel(
-                                    ch - 1,
-                                    parseFloat(message.args[1])
-                                )
-                            } else {
-                                mixerGenericConnection.updateOutLevel(ch - 1)
-                            }
-                        }
-                        global.mainThreadHandler.updatePartialStore(ch - 1)
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation
-                                .CHANNEL_PST_ON_OFF
-                        )
-                    ) {
-                        let ch = message.address.split('/')[2]
-                        if (
-                            state.faders[0].fader[ch - 1] &&
-                            !state.faders[0].fader[ch - 1].ignoreAutomation
-                        ) {
-                            if (message.args[0] === 1) {
-                                store.dispatch(storeSetPst(ch - 1, true))
-                            } else if (message.args[0] === 2) {
-                                store.dispatch(storeSetPstVo(ch - 1, true))
-                            } else {
-                                store.dispatch(storeSetPst(ch - 1, false))
-                            }
-                            mixerGenericConnection.updateNextAux(ch - 1)
-                            global.mainThreadHandler.updatePartialStore(ch - 1)
-                        }
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation.CHANNEL_MUTE
-                        )
-                    ) {
-                        let ch = message.address.split('/')[2]
-                        if (
-                            state.faders[0].fader[ch - 1] &&
-                            !state.faders[0].fader[ch - 1].ignoreAutomation
-                        ) {
-                            store.dispatch(
-                                storeSetMute(ch - 1, message.args[0] === 1)
-                            )
-                            mixerGenericConnection.updateMuteState(ch - 1)
-                            global.mainThreadHandler.updatePartialStore(ch - 1)
-                        }
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation
-                                .CHANNEL_FADER_LEVEL
-                        )
-                    ) {
-                        let ch = message.address.split('/')[2]
-                        if (
-                            state.faders[0].fader[ch - 1] &&
-                            !state.faders[0].fader[ch - 1].ignoreAutomation
-                        ) {
-                            store.dispatch(
-                                storeFaderLevel(ch - 1, message.args[0])
-                            )
-                            mixerGenericConnection.updateOutLevel(ch - 1)
-                            global.mainThreadHandler.updatePartialStore(ch - 1)
-                        }
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation
-                                .INJECT_COMMAND
-                        )
-                    ) {
-                        let ch = message.address.split('/')[2]
-                        store.dispatch(storeFaderLabel(ch - 1, message.args[0]))
-                        mixerGenericConnection.injectCommand(message.args)
-                        global.mainThreadHandler.updatePartialStore(ch - 1)
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation.SNAP_RECALL
-                        )
-                    ) {
-                        let snapNumber = message.address.split('/')[2]
-                        store.dispatch({
-                            type: SNAP_RECALL,
-                            snapIndex: snapNumber - 1,
-                        })
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation.SET_LABEL
-                        )
-                    ) {
-                        let ch = message.address.split('/')[2]
-                        store.dispatch(storeFaderLabel(ch - 1, message.args[0]))
-                        mixerGenericConnection.updateChannelName(ch - 1)
-                        global.mainThreadHandler.updatePartialStore(ch - 1)
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation.X_MIX
-                        )
-                    ) {
-                        store.dispatch(storeXmix())
-                        mixerGenericConnection.updateOutLevels()
-                        global.mainThreadHandler.updateFullClientStore()
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation
-                                .CHANNEL_VISIBLE
-                        )
-                    ) {
-                        let ch = message.address.split('/')[2]
-                        store.dispatch(
-                            storeShowChannel(ch - 1, message.args[0] === 1)
-                        )
-                        global.mainThreadHandler.updatePartialStore(ch - 1)
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation.FADE_TO_BLACK
-                        )
-                    ) {
-                        store.dispatch(storeFadeToBlack())
-                        mixerGenericConnection.updateFadeToBlack()
-                        global.mainThreadHandler.updateFullClientStore()
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation.CLEAR_PST
-                        )
-                    ) {
-                        store.dispatch(storeClearPst())
-                        mixerGenericConnection.updateOutLevels()
-                        global.mainThreadHandler.updateFullClientStore()
-                        // Get state from Producers Audio Mixer:
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation.STATE_FULL
-                        )
-                    ) {
-                        this.sendOutMessage(
-                            this.automationProtocol.toAutomation.STATE_FULL,
-                            0,
-                            JSON.stringify({
-                                channel: state.faders[0].fader.map(
-                                    ({
-                                        faderLevel,
-                                        pgmOn,
-                                        voOn,
-                                        pstOn,
-                                        showChannel,
-                                    }: IFader) => ({
-                                        faderLevel,
-                                        pgmOn,
-                                        voOn,
-                                        pstOn,
-                                        showChannel,
-                                    })
-                                ),
-                            }),
-                            's',
-                            info
-                        )
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation
-                                .STATE_CHANNEL_PGM
-                        )
-                    ) {
-                        let ch = message.address.split('/')[3]
-                        this.sendOutMessage(
-                            this.automationProtocol.toAutomation
-                                .STATE_CHANNEL_PGM,
-                            ch,
-                            state.faders[0].fader[ch - 1].pgmOn,
-                            'i',
-                            info
-                        )
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation
-                                .STATE_CHANNEL_PST
-                        )
-                    ) {
-                        let ch = message.address.split('/')[3]
-                        this.sendOutMessage(
-                            this.automationProtocol.toAutomation
-                                .STATE_CHANNEL_PST,
-                            ch,
-                            state.faders[0].fader[ch - 1].pstOn,
-                            'i',
-                            info
-                        )
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation
-                                .STATE_CHANNEL_MUTE
-                        )
-                    ) {
-                        let ch = message.address.split('/')[3]
-                        this.sendOutMessage(
-                            this.automationProtocol.toAutomation
-                                .STATE_CHANNEL_MUTE,
-                            ch,
-                            state.faders[0].fader[ch - 1].muteOn,
-                            'i',
-                            info
-                        )
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation
-                                .STATE_CHANNEL_FADER_LEVEL
-                        )
-                    ) {
-                        let ch = message.address.split('/')[3]
-                        this.sendOutMessage(
-                            this.automationProtocol.toAutomation
-                                .STATE_CHANNEL_FADER_LEVEL,
-                            ch,
-                            state.faders[0].fader[ch - 1].faderLevel,
-                            'f',
-                            info
-                        )
-                    } else if (
-                        this.checkOscCommand(
-                            message.address,
-                            this.automationProtocol.fromAutomation.PING
-                        )
-                    ) {
-                        let pingValue = state.settings[0].mixers[0].mixerOnline
-                            ? message.address.split('/')[2]
-                            : 'offline'
-
-                        this.sendOutMessage(
-                            this.automationProtocol.toAutomation.PONG,
-                            0,
-                            pingValue,
-                            's',
-                            info
-                        )
-                    }
-                }
-            )
+            .on('message', messageHandler)
             .on('error', (error: any) => {
                 logger.error('Error : ', error)
                 logger.info('Lost OSC Automation connection', {})
