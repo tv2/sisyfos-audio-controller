@@ -2,6 +2,7 @@ import { ICustomPages, PageType } from './settingsReducer'
 
 export const TOGGLE_SHOW_SETTINGS = 'TOGGLE_SHOW_SETTINGS'
 export const TOGGLE_SHOW_PAGES_SETUP = 'TOGGLE_SHOW_PAGES_SETUP'
+export const TOGGLE_SHOW_LABEL_SETTINGS = 'TOGGLE_SHOW_LABEL_SETTINGS'
 export const TOGGLE_SHOW_CHAN_STRIP = 'TOGGLE_SHOW_CHAN_STRIP'
 export const TOGGLE_SHOW_CHAN_STRIP_FULL = 'TOGGLE_SHOW_CHAN_STRIP_FULL'
 export const TOGGLE_SHOW_OPTION = 'TOGGLE_SHOW_OPTION'
@@ -21,6 +22,11 @@ export const storeShowSettings = () => {
 export const storeShowPagesSetup = () => {
     return {
         type: TOGGLE_SHOW_PAGES_SETUP,
+    }
+}
+export const storeShowLabelSetup = () => {
+    return {
+        type: TOGGLE_SHOW_LABEL_SETTINGS,
     }
 }
 export const storeShowChanStrip = (faderIndex: number) => {

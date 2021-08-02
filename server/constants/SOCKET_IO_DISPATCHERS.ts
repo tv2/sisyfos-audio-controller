@@ -36,6 +36,7 @@ export const SOCKET_SAVE_CCG_FILE = 'saveCcgFile'
 export const SOCKET_GET_PAGES_LIST = 'getPagesList'
 export const SOCKET_RETURN_PAGES_LIST = 'getPagesList'
 export const SOCKET_TOGGLE_ALL_MANUAL = 'toggleAllManual'
+export const SOCKET_GET_LABELS = 'getLabels'
 
 // Store updates:
 export const SOCKET_SET_FULL_STORE = 'setFullStore'
@@ -43,3 +44,5 @@ export const SOCKET_SET_STORE_FADER = 'setStoreFader'
 export const SOCKET_SET_STORE_CHANNEL = 'setStoreChannel'
 export const SOCKET_SET_MIXER_ONLINE = 'setStoreSettings'
 export const SOCKET_SET_PAGES_LIST = 'setPagesList'
+export const SOCKET_SET_LABELS = 'setLabels'
+export const SOCKET_FLUSH_LABELS = 'flushLabels'

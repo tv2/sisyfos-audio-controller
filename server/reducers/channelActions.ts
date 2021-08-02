@@ -7,6 +7,8 @@ export const SET_SINGLE_CH_STATE = 'SET_SINGLE_CH_STATE'
 export const FADE_ACTIVE = 'FADE_ACTIVE'
 export const SET_ASSIGNED_FADER = 'SET_ASSIGNED_FADER'
 export const SET_PRIVATE = 'SET_PRIVATE'
+export const SET_CHANNEL_LABEL = 'SET_CHANNEL_LABEL'
+export const FLUSH_CHANNEL_LABELS = 'FLUSH_CHANNEL_LABELS'
 
 export const storeSetOutputLevel = (
     mixerIndex: number,
@@ -90,5 +92,24 @@ export const storeSetChPrivate = (channel: number, tag: string, value: any) => {
         channel: channel,
         tag: tag,
         value: value,
+    }
+}
+
+export const storeSetChLabel = (
+    mixerIndex: number,
+    channel: number,
+    label: string
+) => {
+    return {
+        type: SET_CHANNEL_LABEL,
+        mixerIndex: mixerIndex,
+        channel: channel,
+        label: label,
+    }
+}
+
+export const storeFlushChLabels = () => {
+    return {
+        type: FLUSH_CHANNEL_LABELS,
     }
 }

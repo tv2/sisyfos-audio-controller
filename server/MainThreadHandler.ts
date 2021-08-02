@@ -58,6 +58,9 @@ import {
     SOCKET_TOGGLE_ALL_MANUAL,
     SOCKET_SET_PAGES_LIST,
     SOCKET_SET_MIXER_ONLINE,
+    SOCKET_SET_LABELS,
+    SOCKET_GET_LABELS,
+    SOCKET_FLUSH_LABELS,
 } from './constants/SOCKET_IO_DISPATCHERS'
 import {
     storeFaderLevel,
@@ -78,8 +81,11 @@ import {
     storeInputSelector,
     removeAllAssignedChannels,
     storeSetAssignedChannel,
+    updateLabels,
+    flushExtLabels,
 } from './reducers/faderActions'
 import {
+    storeFlushChLabels,
     storeSetAssignedFader,
     storeSetAuxLevel,
 } from './reducers/channelActions'
@@ -455,6 +461,19 @@ export class MainThreadHandlers {
                 logger.verbose('Toggle manual mode for all')
                 store.dispatch(storeAllManual())
                 this.updateFullClientStore()
+            })
+            .on(SOCKET_SET_LABELS, (payload: any) => {
+                store.dispatch(updateLabels(payload.update))
+            })
+            .on(SOCKET_GET_LABELS, () => {
+                socketServer.emit(
+                    SOCKET_GET_LABELS,
+                    state.faders[0].fader.map((f) => f.userLabel)
+                )
+            })
+            .on(SOCKET_FLUSH_LABELS, () => {
+                store.dispatch(flushExtLabels())
+                store.dispatch(storeFlushChLabels())
             })
     }
 }

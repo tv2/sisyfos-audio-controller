@@ -7,6 +7,7 @@ import '../assets/css/Channels.css'
 import { Store } from 'redux'
 import {
     storeSetPage,
+    storeShowLabelSetup,
     storeShowPagesSetup,
     storeShowSettings,
     storeShowStorage,
@@ -97,6 +98,10 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
 
     handleShowPagesSetting() {
         this.props.dispatch(storeShowPagesSetup())
+    }
+
+    handleShowLabelSetting() {
+        this.props.dispatch(storeShowLabelSetup())
     }
 
     handlePages(type: PageType, i: number | string) {
@@ -300,6 +305,17 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                                 }}
                             >
                                 PAGES SETUP
+                            </button>
+                        ) : null}
+
+                        {window.location.search.includes('settings=1') ? (
+                            <button
+                                className="button half channels-show-settings-button"
+                                onClick={() => {
+                                    this.handleShowLabelSetting()
+                                }}
+                            >
+                                LABELS
                             </button>
                         ) : null}
                     </div>

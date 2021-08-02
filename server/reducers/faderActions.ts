@@ -7,7 +7,8 @@ export const SET_SINGLE_FADER_STATE = 'SET_SINGLE_FADER_STATE'
 export const SET_FADER_LEVEL = 'SET_FADER_LEVEL'
 export const SET_INPUT_GAIN = 'SET_INPUT_GAIN'
 export const SET_INPUT_SELECTOR = 'SET_INPUT_SELECTOR'
-export const SET_CHANNEL_LABEL = 'SET_CHANNEL_LABEL'
+export const SET_FADER_LABEL = 'SET_FADER_LABEL'
+export const SET_USER_LABEL = 'SET_USER_LABEL'
 export const SET_FADER_FX = 'SET_FADER_FX'
 export const SET_FADER_MONITOR = 'SET_FADER_MONITOR'
 export const SET_ASSIGNED_CHANNEL = 'SET_ASSIGNED_CHANNEL'
@@ -30,6 +31,8 @@ export const X_MIX = 'X_MIX'
 export const NEXT_MIX = 'NEXT_MIX'
 export const FADE_TO_BLACK = 'FADE_TO_BLACK'
 
+export const UPDATE_LABEL_LIST = 'UPDATE_LABEL_LIST'
+export const FLUSH_FADER_LABELS = 'FLUSH_FADER_LABELS'
 export const CLEAR_PST = 'CLEAR_PST'
 export const SNAP_RECALL = 'SNAP_RECALL'
 export const SET_CHANNEL_DISABLED = 'SET_CHANNEL_DISABLED'
@@ -91,7 +94,15 @@ export const storeInputSelector = (faderIndex: number, selected: number) => {
 
 export const storeFaderLabel = (faderIndex: number, label: string) => {
     return {
-        type: SET_CHANNEL_LABEL,
+        type: SET_FADER_LABEL,
+        faderIndex: faderIndex,
+        label: label,
+    }
+}
+
+export const storeUserLabel = (faderIndex: number, label: string) => {
+    return {
+        type: SET_USER_LABEL,
         faderIndex: faderIndex,
         label: label,
     }
@@ -311,5 +322,18 @@ export const storeCapability = (
 export const storeAllManual = () => {
     return {
         type: TOGGLE_ALL_MANUAL,
+    }
+}
+
+export const updateLabels = (update: Record<number, string>) => {
+    return {
+        type: UPDATE_LABEL_LIST,
+        update,
+    }
+}
+
+export const flushExtLabels = () => {
+    return {
+        type: FLUSH_FADER_LABELS,
     }
 }

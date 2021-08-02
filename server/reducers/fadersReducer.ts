@@ -2,7 +2,7 @@ import {
     CLEAR_PST,
     FADE_TO_BLACK,
     NEXT_MIX,
-    SET_CHANNEL_LABEL,
+    SET_FADER_LABEL,
     SET_COMPLETE_FADER_STATE,
     SET_FADER_LEVEL,
     SET_INPUT_GAIN,
@@ -33,6 +33,8 @@ import {
     TOGGLE_ALL_MANUAL,
     SET_ASSIGNED_CHANNEL,
     REMOVE_ALL_ASSIGNED_CHANNELS,
+    UPDATE_LABEL_LIST,
+    FLUSH_FADER_LABELS,
 } from './faderActions'
 
 export interface IFaders {
@@ -50,6 +52,7 @@ export interface IFader {
     inputGain: number
     inputSelector: number
     label: string
+    userLabel?: string
     pgmOn: boolean
     voOn: boolean
     pstOn: boolean
@@ -186,7 +189,7 @@ export const faders = (
         case SET_FADER_MONITOR:
             nextState[0].fader[action.faderIndex].monitor = action.auxIndex
             return nextState
-        case SET_CHANNEL_LABEL:
+        case SET_FADER_LABEL:
             if (!nextState[0].fader[action.faderIndex]) return nextState
             nextState[0].fader[action.faderIndex].label = action.label
             return nextState
@@ -374,6 +377,21 @@ export const faders = (
                 nextState[0].fader.forEach((f) => {
                     f.ignoreAutomation = true
                 })
+            }
+            return nextState
+        case UPDATE_LABEL_LIST:
+            console.log('update labels', action.update)
+            Object.entries(action.update).forEach(
+                ([index, label]: [string, string]) => {
+                    nextState[0].fader[Number(index)].userLabel =
+                        label === '' ? undefined : label
+                    console.log(index, label)
+                }
+            )
+            return nextState
+        case FLUSH_FADER_LABELS:
+            for (const fader of nextState[0].fader) {
+                fader.label = undefined
             }
             return nextState
         default:

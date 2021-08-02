@@ -24,6 +24,7 @@ import { storeShowChanStrip } from '../../server/reducers/settingsActions'
 import { withTranslation } from 'react-i18next'
 import { VuLabelConversionType } from '../../server/constants/MixerProtocolInterface'
 import { Conversions } from '../../server/utils/dbConversion'
+import { getFaderLabel } from '../utils/labels'
 
 interface IChannelInjectProps {
     t: any
@@ -31,6 +32,7 @@ interface IChannelInjectProps {
     settings: ISettings
     channelType: number
     channelTypeIndex: number
+    label: string
 }
 
 interface IChannelProps {
@@ -65,7 +67,7 @@ class Channel extends React.Component<
                 this.props.fader.ignoreAutomation ||
             nextProps.fader.showChannel != this.props.fader.showChannel ||
             nextProps.fader.faderLevel != this.props.fader.faderLevel ||
-            nextProps.fader.label != this.props.fader.label ||
+            nextProps.label != this.props.label ||
             nextProps.settings.mixers[0].mixerProtocol !=
                 this.props.settings.mixers[0].mixerProtocol ||
             nextProps.settings.showPfl != this.props.settings.showPfl ||
@@ -251,9 +253,7 @@ class Channel extends React.Component<
                     this.handlePgm()
                 }}
             >
-                {this.props.fader.label != ''
-                    ? this.props.fader.label
-                    : 'CH ' + (this.faderIndex + 1)}
+                {this.props.label}
             </button>
         )
     }
@@ -315,9 +315,7 @@ class Channel extends React.Component<
                     this.handleShowChanStrip()
                 }}
             >
-                {this.props.fader.label != ''
-                    ? this.props.fader.label
-                    : 'CH ' + (this.faderIndex + 1)}
+                {this.props.label}
             </button>
         )
     }
@@ -462,6 +460,7 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         channelType: 0 /* TODO: state.channels[0].channel[props.channelIndex].channelType, */,
         channelTypeIndex:
             props.faderIndex /* TODO: state.channels[0].channel[props.channelIndex].channelTypeIndex, */,
+        label: getFaderLabel(props.faderIndex)
     }
 }
 

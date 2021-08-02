@@ -14,8 +14,10 @@ import {
     fxParamsList,
 } from '../../constants/MixerProtocolInterface'
 import { IChannel } from '../../reducers/channelsReducer'
-import { storeSetChPrivate } from '../../reducers/channelActions'
-import { storeFaderLabel } from '../../reducers/faderActions'
+import {
+    storeSetChLabel,
+    storeSetChPrivate,
+} from '../../reducers/channelActions'
 import { logger } from '../logger'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { IFader } from '../../reducers/fadersReducer'
@@ -239,7 +241,9 @@ export class CasparCGConnection {
         // Set source labels from geometry definition
         if (this.mixerProtocol.channelLabels) {
             this.mixerProtocol.channelLabels.forEach((label, channelIndex) => {
-                store.dispatch(storeFaderLabel(channelIndex, label))
+                store.dispatch(
+                    storeSetChLabel(this.mixerIndex, channelIndex, label)
+                )
             })
         }
     }

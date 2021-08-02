@@ -11,7 +11,6 @@ import {
     SET_INPUT_SELECTOR,
     storeFaderLevel,
     storeInputGain,
-    storeFaderLabel,
     storeChannelDisabled,
     storeSetAMix,
     storeCapability,
@@ -19,6 +18,7 @@ import {
 } from '../../reducers/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
+import { storeSetChLabel } from '../../reducers/channelActions'
 
 // TODO - should these be util functions?
 export function floatToDB(f: number): number {
@@ -156,7 +156,8 @@ export class LawoRubyMixerConnection {
                     if (this.faders[channelTypeIndex + 1]) {
                         // enable
                         store.dispatch(
-                            storeFaderLabel(
+                            storeSetChLabel(
+                                this.mixerIndex,
                                 channelTypeIndex,
                                 this.faders[channelTypeIndex + 1]
                             )
@@ -170,7 +171,13 @@ export class LawoRubyMixerConnection {
                         store.dispatch(
                             storeChannelDisabled(channelTypeIndex, true)
                         )
-                        store.dispatch(storeFaderLabel(channelTypeIndex, ''))
+                        store.dispatch(
+                            storeSetChLabel(
+                                this.mixerIndex,
+                                channelTypeIndex,
+                                ''
+                            )
+                        )
                         store.dispatch(
                             storeShowChannel(channelTypeIndex, false)
                         )
