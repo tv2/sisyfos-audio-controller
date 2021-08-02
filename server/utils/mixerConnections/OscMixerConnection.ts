@@ -18,11 +18,11 @@ import {
 import { midasMeter } from './productSpecific/midas'
 import {
     storeSetAuxLevel,
+    storeSetChLabel,
     storeSetOutputLevel,
 } from '../../reducers/channelActions'
 import {
     storeFaderLevel,
-    storeFaderLabel,
     storeFaderFx,
     storeTogglePgm,
     storeSetMute,
@@ -289,9 +289,9 @@ export class OscMixerConnection {
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
                     store.dispatch(
-                        storeFaderLabel(
-                            state.channels[0].chMixerConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader,
+                        storeSetChLabel(
+                            this.mixerIndex,
+                            ch - 1,
                             message.args[0]
                         )
                     )

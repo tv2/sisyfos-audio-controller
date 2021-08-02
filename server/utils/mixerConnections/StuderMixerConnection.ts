@@ -8,8 +8,9 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../constants/MixerProtocolInterface'
-import { storeFaderLabel, storeFaderLevel } from '../../reducers/faderActions'
+import { storeFaderLevel } from '../../reducers/faderActions'
 import { logger } from '../logger'
+import { storeSetChLabel } from '../../reducers/channelActions'
 
 export class StuderMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -153,7 +154,13 @@ export class StuderMixerConnection {
             )
             .then((node: any) => {
                 this.emberConnection.subscribe(node, () => {
-                    store.dispatch(storeFaderLabel(ch - 1, node.contents.value))
+                    store.dispatch(
+                        storeSetChLabel(
+                            this.mixerIndex,
+                            ch - 1,
+                            node.contents.value
+                        )
+                    )
                 })
             })
     }

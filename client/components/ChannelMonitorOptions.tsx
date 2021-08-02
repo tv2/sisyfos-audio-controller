@@ -11,6 +11,7 @@ import {
     SOCKET_SET_FADER_MONITOR,
     SOCKET_SHOW_IN_MINI_MONITOR,
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import { getFaderLabel } from '../utils/labels'
 
 interface IMonitorSettingsInjectProps {
     label: string
@@ -119,7 +120,7 @@ class ChannelMonitorOptions extends React.PureComponent<
         return (
             <div className="channel-monitor-body">
                 <h2>MONITOR ROUTE</h2>
-                <h2>{this.props.label || 'FADER ' + (this.faderIndex + 1)}</h2>
+                <h2>{this.props.label}</h2>
                 <button className="close" onClick={() => this.handleClose()}>
                     X
                 </button>
@@ -195,7 +196,7 @@ const mapStateToProps = (
     props: any
 ): IMonitorSettingsInjectProps => {
     return {
-        label: state.faders[0].fader[props.faderIndex].label,
+        label: getFaderLabel(props.faderIndex, 'FADER'),
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
         numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
         channel: state.channels[0].chMixerConnection[0].channel,

@@ -6,6 +6,7 @@ import { Store } from 'redux'
 import { connect } from 'react-redux'
 import { IFader } from '../../server/reducers/fadersReducer'
 import { SOCKET_SET_AUX_LEVEL } from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import { getFaderLabel } from '../utils/labels'
 
 interface IChanStripInjectProps {
     label: string
@@ -39,14 +40,7 @@ class MiniChanStrip extends React.PureComponent<
     monitor(channelIndex: number) {
         let faderIndex = this.props.channel[channelIndex].assignedFader
         if (faderIndex === -1) return null
-        let monitorName = this.props.fader[faderIndex]
-            ? this.props.fader[faderIndex].label
-            : ''
-        if (monitorName === '') {
-            monitorName =
-                'Fader ' +
-                String(this.props.channel[channelIndex].assignedFader + 1)
-        }
+        let monitorName = getFaderLabel(faderIndex, 'Fader')
         return (
             <li key={channelIndex}>
                 {monitorName}
@@ -115,7 +109,7 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
     }
     if (props.faderIndex >= 0) {
         inject = {
-            label: state.faders[0].fader[props.faderIndex].label,
+            label: getFaderLabel(props.faderIndex),
             selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
             numberOfChannelsInType:
                 state.settings[0].mixers[0].numberOfChannelsInType,

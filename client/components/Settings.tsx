@@ -92,10 +92,10 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         this.setState({ settings: settingsCopy })
     }
 
-    handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         let settingsCopy = Object.assign({}, this.state.settings)
         if (event.target.type === 'checkbox') {
-            ;(settingsCopy as any)[event.target.name] = !!event.target.checked
+            ;(settingsCopy as any)[event.target.name] = !!(event.target as HTMLInputElement).checked
         } else {
             ;(settingsCopy as any)[event.target.name] = event.target.value
         }
@@ -461,6 +461,20 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                         value={this.state.settings.numberOfMixers}
                         onChange={this.handleNumberOfMixers}
                     />
+                </label>
+                <br />
+                <label className="settings-input-field">
+                    LABEL TYPE :
+                    <select
+                        name="labelType"
+                        value={this.state.settings.labelType}
+                        onChange={this.handleChange}
+                    >
+                        <option value="automatic">Automatic</option>
+                        <option value="user">User labels</option>
+                        <option value="automation">Automation labels</option>
+                        <option value="channel">Channel labels</option>
+                    </select>
                 </label>
                 <br />
                 <label className="settings-input-field">

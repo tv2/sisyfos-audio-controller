@@ -12,7 +12,6 @@ import {
 import {
     storeFaderLevel,
     storeInputGain,
-    storeFaderLabel,
     storeSetPgm,
     storeSetPfl,
     storeShowChannel,
@@ -23,7 +22,10 @@ import {
 import { logger } from '../logger'
 import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
-import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
+import {
+    SET_OUTPUT_LEVEL,
+    storeSetChLabel,
+} from '../../reducers/channelActions'
 import { storeSetMixerOnline } from '../../reducers/settingsActions'
 
 export class EmberMixerConnection {
@@ -329,8 +331,9 @@ export class EmberMixerConnection {
                         `Receiving Label from Ch "${ch}", val: ${node.contents.description}`
                     )
                     store.dispatch(
-                        storeFaderLabel(
-                            channel.assignedFader,
+                        storeSetChLabel(
+                            this.mixerIndex,
+                            channelTypeIndex,
                             node.contents.description
                         )
                     )
@@ -341,8 +344,9 @@ export class EmberMixerConnection {
                         }`
                     )
                     store.dispatch(
-                        storeFaderLabel(
-                            channel.assignedFader,
+                        storeSetChLabel(
+                            this.mixerIndex,
+                            channelTypeIndex,
                             String((node.contents as Model.Parameter).value)
                         )
                     )

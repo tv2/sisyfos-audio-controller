@@ -6,6 +6,8 @@ import {
     FADE_ACTIVE,
     SET_AUX_LEVEL,
     SET_SINGLE_CH_STATE,
+    SET_CHANNEL_LABEL,
+    FLUSH_CHANNEL_LABELS,
 } from './channelActions'
 
 export interface IChannels {
@@ -20,6 +22,7 @@ export interface IChannel {
     channelType: number
     channelTypeIndex: number
     assignedFader: number
+    label?: string
     fadeActive: boolean
     outputLevel: number
     auxLevel: number[]
@@ -132,16 +135,29 @@ export const channels = (
             return nextState
         case SET_PRIVATE:
             if (
-                !nextState[0].chMixerConnection[0].channel[action.channel]
-                    .private
+                !nextState[0].chMixerConnection[action.mixerIndex].channel[
+                    action.channel
+                ].private
             ) {
-                nextState[0].chMixerConnection[0].channel[
+                nextState[0].chMixerConnection[action.mixerIndex].channel[
                     action.channel
                 ].private = {}
             }
-            nextState[0].chMixerConnection[0].channel[action.channel].private![
-                action.tag
-            ] = action.value
+            nextState[0].chMixerConnection[action.mixerIndex].channel[
+                action.channel
+            ].private![action.tag] = action.value
+            return nextState
+        case SET_CHANNEL_LABEL:
+            nextState[0].chMixerConnection[action.mixerIndex].channel[
+                action.channel
+            ].label = action.label
+            return nextState
+        case FLUSH_CHANNEL_LABELS:
+            for (const mixer of nextState[0].chMixerConnection) {
+                for (const ch of mixer.channel) {
+                    ch.label = undefined
+                }
+            }
             return nextState
         default:
             return nextState

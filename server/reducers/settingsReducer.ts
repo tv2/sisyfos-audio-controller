@@ -12,6 +12,7 @@ import {
     TOGGLE_SHOW_PAGES_SETUP,
     SET_PAGES_LIST,
     TOGGLE_SHOW_CHAN_STRIP_FULL,
+    TOGGLE_SHOW_LABEL_SETTINGS,
 } from '../reducers/settingsActions'
 
 export enum PageType {
@@ -26,6 +27,7 @@ export interface ISettings {
     /** UI state (non persistant) */
     showSettings: boolean
     showPagesSetup: boolean
+    showLabelSettings: boolean
     showChanStrip: number
     showChanStripFull: number
     showOptions: number | false
@@ -55,6 +57,7 @@ export interface ISettings {
     enablePages: boolean
     numberOfCustomPages: number
     chanStripFollowsPFL: boolean
+    labelType: 'automatic' | 'user' | 'automation' | 'channel'
 
     /** Connection state */
     serverOnline: boolean
@@ -85,6 +88,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
     {
         showSettings: false,
         showPagesSetup: false,
+        showLabelSettings: false,
         showChanStrip: -1,
         showChanStripFull: -1,
         showOptions: false,
@@ -124,6 +128,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
         numberOfCustomPages: 4,
         chanStripFollowsPFL: true,
         serverOnline: true,
+        labelType: 'automatic',
     },
 ]
 
@@ -139,6 +144,9 @@ export const settings = (
             return nextState
         case TOGGLE_SHOW_PAGES_SETUP:
             nextState[0].showPagesSetup = !nextState[0].showPagesSetup
+            return nextState
+        case TOGGLE_SHOW_LABEL_SETTINGS:
+            nextState[0].showLabelSettings = !nextState[0].showLabelSettings
             return nextState
         case TOGGLE_SHOW_CHAN_STRIP:
             if (nextState[0].showChanStrip !== action.channel) {
