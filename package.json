@@ -57,6 +57,7 @@
         ]
     },
     "dependencies": {
+        "add": "^2.0.6",
         "asn1": "github:evs-broadcast/node-asn1",
         "bufferutil": "^4.0.3",
         "casparcg-connection": "^5.1.0",
@@ -69,6 +70,7 @@
         "i18next-browser-languagedetector": "^6.1.1",
         "jquery": "^3.6.0",
         "node-emberplus": "https://github.com/olzzon/node-emberplus#feat/export-ber",
+        "node-vmix": "^1.5.2",
         "nouislider": "^14.6.3",
         "nouislider-react": "^3.4.0",
         "osc": "https://github.com/olzzon/tv2-osc.js-no-serialport.git",
@@ -84,9 +86,11 @@
         "socket.io": "^4.0.0",
         "socket.io-client": "^4.0.0",
         "utf-8-validate": "^5.0.4",
+        "vmix-js-utils": "^4.0.6",
         "web-midi-api": "^2.0.8",
         "webmidi": "^2.5.2",
-        "winston": "^3.3.3"
+        "winston": "^3.3.3",
+        "yarn": "^1.22.10"
     },
     "devDependencies": {
         "@babel/core": "^7.13.10",

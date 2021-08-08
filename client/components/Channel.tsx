@@ -136,7 +136,7 @@ class Channel extends React.Component<
     }
 
     handleVuMeter() {
-        if (window.mixerProtocol.protocol === 'CasparCG') {
+        if (window.mixerProtocol.protocol === 'CasparCG' || window.mixerProtocol.protocol === 'VMIX') {
             return (
                 <React.Fragment>
                     {!window.location.search.includes('vu=0') &&
