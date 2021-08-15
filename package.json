@@ -86,7 +86,7 @@
         "socket.io": "^4.0.0",
         "socket.io-client": "^4.0.0",
         "utf-8-validate": "^5.0.4",
-        "vmix-js-utils": "^4.0.6",
+        "vmix-js-utils": "https://github.com/olzzon/vmix-js-utils",
         "web-midi-api": "^2.0.8",
         "webmidi": "^2.5.2",
         "winston": "^3.3.3",
@@ -135,7 +135,6 @@
         "serialize-javascript": "^3.1.0",
         "dot-prop": "^5.1.1",
         "browserslist": "^4.16.5",
-        "ws": "^7.4.6",
-        "xmldom": "^0.7.0"
+        "ws": "^7.4.6"
     }
 }
