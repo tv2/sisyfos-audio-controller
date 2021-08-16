@@ -40,7 +40,7 @@ jobs:
 
   dockerhub-release:
     runs-on: ubuntu-latest
-    needs: [build-and-test]
+    needs: [run-yarn-build]
     if: (github.ref == 'refs/heads/master' || 'refs/heads/develop') && github.event_name != 'pull_request' 
     permissions:
       contents: read
