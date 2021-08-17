@@ -28,7 +28,7 @@ jobs:
         run: yarn build
 
       - name: yarn unit test 
-        run: yarn yarn unit
+        run: yarn unit
 
       - name: yarn install production
         run: yarn install --check-files --frozen-lockfile --production --force
