@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.10.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.9.1...v4.10.0) (2021-08-18)
+
+### Features
+
+-   label system with user, automation & channel labels ([81e9d5b](https://github.com/tv2/sisyfos-audio-controller/commit/81e9d5b6a83fa6c4ef63c128facad72c30c23ecc))
+-   use labels in automation protocol ([04d454c](https://github.com/tv2/sisyfos-audio-controller/commit/04d454ce3893d46140aa37d977bb6876afc79fea))
+
+### Bug Fixes
+
+-   wrong test command ([0e4d69a](https://github.com/tv2/sisyfos-audio-controller/commit/0e4d69a2f0074780359162647c9c9f621c82dc73))
+
 ### [4.9.1](https://github.com/olzzon/sisyfos-audio-controller/compare/v4.9.0...v4.9.1) (2021-07-26)
 
 ### Bug Fixes
