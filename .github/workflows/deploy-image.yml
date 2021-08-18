@@ -21,8 +21,8 @@ jobs:
       - name: yarn install
         run: yarn install --check-files --frozen-lockfile
 
-      - name: yarn validate:prodDependencies
-        run: yarn validate:prodDependencies
+      - name: yarn validate:dependencies
+        run: yarn validate:dependencies
 
       - name: yarn build
         run: yarn build
@@ -30,8 +30,8 @@ jobs:
       - name: yarn unit test 
         run: yarn unit
 
-      - name: yarn install production
-        run: yarn install --check-files --frozen-lockfile --production --force
+      # - name: yarn install production
+      #   run: yarn install --check-files --frozen-lockfile --production --force
 
       - uses: actions/upload-artifact@main
         with:
