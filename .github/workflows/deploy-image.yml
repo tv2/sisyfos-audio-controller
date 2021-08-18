@@ -21,8 +21,8 @@ jobs:
       - name: yarn install
         run: yarn install --check-files --frozen-lockfile
 
-      - name: yarn validate:dependencies
-        run: yarn validate:dependencies
+      - name: yarn validate:prodDependencies
+        run: yarn validate:prodDependencies
 
       - name: yarn build
         run: yarn build
@@ -41,7 +41,7 @@ jobs:
   dockerhub-release:
     runs-on: ubuntu-latest
     needs: [run-yarn-build]
-    if: (github.ref == 'refs/heads/master' || 'refs/heads/develop') && github.event_name != 'pull_request' 
+    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') && github.event_name != 'pull_request' 
     permissions:
       contents: read
       packages: write

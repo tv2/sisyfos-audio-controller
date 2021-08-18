@@ -44,9 +44,9 @@
         "release": "standard-version",
         "prepareChangelog": "standard-version --prerelease",
         "watch": "jest --watch",
-        "validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
+        "validate:prodDependencies": "yarn audit --groups dependencies && yarn license-validate",
         "validate:devDependencies": "yarn audit --groups devDependencies && yarn license-validate",
-        "validate:all": "yarn audit && yarn license-validate",
+        "validate:allDependencies": "yarn audit && yarn license-validate",
         "license-validate": "node-license-validator -p -d --allow-licenses MIT MIT/X11 BSD BSD-3-Clause BSD-2-Clause ISC Apache Apache-2.0 WTFPL CC-BY-3.0 CC-BY-4.0 CC0-1.0 Unlicense --allow-packages cycle"
     },
     "simple-git-hooks": {
