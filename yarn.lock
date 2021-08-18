@@ -7102,9 +7102,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"vmix-js-utils@https://github.com/olzzon/vmix-js-utils":
-  version "4.0.6"
-  resolved "https://github.com/olzzon/vmix-js-utils#2d76615d3ee945acb602a23065680521b6f40558"
+vmix-js-utils@^4.0.7:
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/vmix-js-utils/-/vmix-js-utils-4.0.7.tgz#39454ef2636686b373c601f28d398347b963e7ba"
+  integrity sha512-BSuADYkycG2iJesPzGR6xdeQ153YbMIxwVC9s6aLC4hscIYnvgooP7mmIfbQsrmx7Kg4zwscA/rFmJuGD6WEuA==
   dependencies:
     lodash "^4.17.21"
     querystring "^0.2.1"
@@ -7410,9 +7411,9 @@ xmlchars@^2.2.0:
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
 
-"xmldom@https://github.com/xmldom/xmldom#v0.7.0":
+"xmldom@git+https://github.com/xmldom/xmldom.git#v0.7.0":
   version "0.7.0"
-  resolved "https://github.com/xmldom/xmldom#c568938641cc1f121cef5b4df80fcfda1e489b6e"
+  resolved "git+https://github.com/xmldom/xmldom.git#c568938641cc1f121cef5b4df80fcfda1e489b6e"
 
 xpath@^0.0.32:
   version "0.0.32"
