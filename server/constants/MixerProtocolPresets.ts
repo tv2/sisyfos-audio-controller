@@ -12,6 +12,7 @@ import { YamahaQLCL } from './mixerProtocols/yamahaQLCL'
 import { SSLSystemT } from './mixerProtocols/SSLsystemT'
 import { StuderOnAirMaster } from './mixerProtocols/StuderOnAirEmber'
 import { StuderVistaMaster } from './mixerProtocols/StuderVistaEmber'
+import { VMix } from './mixerProtocols/vMix'
 
 // Interface:
 import { IMixerProtocolGeneric } from './MixerProtocolInterface'
@@ -33,6 +34,7 @@ export const MixerProtocolPresets: {
         sslSystemT: SSLSystemT,
         studerOnAirMaster: StuderOnAirMaster,
         studerVistaMaster: StuderVistaMaster,
+        vMix: VMix,
     },
     {
         casparCGMaster: CasparCGMaster,
