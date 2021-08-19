@@ -89,8 +89,7 @@
         "vmix-js-utils": "^4.0.7",
         "web-midi-api": "^2.0.8",
         "webmidi": "^2.5.2",
-        "winston": "^3.3.3",
-        "yarn": "^1.22.10"
+        "winston": "^3.3.3"
     },
     "devDependencies": {
         "@babel/core": "^7.13.10",
