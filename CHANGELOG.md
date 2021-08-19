@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.11.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.10.0...v4.11.0) (2021-08-19)
+
+### Features
+
+-   vMix - basic receive data and connetiont established ([a2d99da](https://github.com/tv2/sisyfos-audio-controller/commit/a2d99da3f22948060c0ae5c00bdfc5a6912a94e0))
+-   VMix - Faders, Mute, PFL, Gain & Matrix Select ([6551e22](https://github.com/tv2/sisyfos-audio-controller/commit/6551e2221e69aa3d88911d740bda340d6648ac53))
+-   vmix - initial vmix setup (copy form osc) ([7784eb2](https://github.com/tv2/sisyfos-audio-controller/commit/7784eb25e19a78d4697c434d966db7eeb7b61e98))
+-   vMix - initial working on 2 way connection ([bfbce5b](https://github.com/tv2/sisyfos-audio-controller/commit/bfbce5b9635a4dd50f06f6d9867a17cab45b00d8))
+-   vmix add vmix protocol files ([e7354f1](https://github.com/tv2/sisyfos-audio-controller/commit/e7354f1507340805fcc4c4ba45526b7dcee13257))
+
+### Bug Fixes
+
+-   yarn had been added to dependencies ([db82974](https://github.com/tv2/sisyfos-audio-controller/commit/db8297451f7d036c379057c6ffe5ffaba8fb16a0))
+
 ## [4.10.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.9.1...v4.10.0) (2021-08-18)
 
 ### Features
