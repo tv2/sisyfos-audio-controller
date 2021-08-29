@@ -268,12 +268,16 @@ export const faders = (
             return nextState
         case X_MIX: //none
             nextState[0].fader.forEach((item, index) => {
-                let nextPgmOn = state[0].fader[index].pstOn
-                let nextVoOn = state[0].fader[index].pstVoOn
-                nextState[0].fader[index].pstOn = state[0].fader[index].pgmOn
-                nextState[0].fader[index].pstVoOn = state[0].fader[index].voOn
-                nextState[0].fader[index].pgmOn = nextPgmOn
-                nextState[0].fader[index].voOn = nextVoOn
+                if (!state[0].fader[index].ignoreAutomation) {
+                    let nextPgmOn = state[0].fader[index].pstOn
+                    let nextVoOn = state[0].fader[index].pstVoOn
+                    nextState[0].fader[index].pstOn =
+                        state[0].fader[index].pgmOn
+                    nextState[0].fader[index].pstVoOn =
+                        state[0].fader[index].voOn
+                    nextState[0].fader[index].pgmOn = nextPgmOn
+                    nextState[0].fader[index].voOn = nextVoOn
+                }
             })
             return nextState
         case NEXT_MIX: //none
