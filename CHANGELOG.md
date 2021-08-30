@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.11.0...v4.11.1) (2021-08-30)
+
+### Bug Fixes
+
+-   Automation protocol should not crossfade on channels with ignoreAutomation active ([3fbe07e](https://github.com/tv2/sisyfos-audio-controller/commit/3fbe07ef9216c297e82eaa811e5d564d02cdb0d9))
+
 ## [4.11.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.10.0...v4.11.0) (2021-08-19)
 
 ### Features
