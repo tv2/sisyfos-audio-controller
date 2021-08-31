@@ -1,5 +1,7 @@
 # Sisyfos Audio Controller
 
+[![Node CI](https://github.com/tv2/sisyfos-audio-controller/actions/workflows/deploy-image.yml/badge.svg)](https://github.com/tv2/sisyfos-audio-controller/actions/workflows/deploy-image.yml)
+
 ## Audiomixer control build for intelligent automation.
 
 You use the fader for the level, and PGM on/off for fade-in/out.
