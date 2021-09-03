@@ -7411,9 +7411,9 @@ xmlchars@^2.2.0:
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
 
-"xmldom@git+https://github.com/xmldom/xmldom.git#v0.7.0":
+"xmldom@https://github.com/xmldom/xmldom#v0.7.0":
   version "0.7.0"
-  resolved "git+https://github.com/xmldom/xmldom.git#c568938641cc1f121cef5b4df80fcfda1e489b6e"
+  resolved "https://github.com/xmldom/xmldom#c568938641cc1f121cef5b4df80fcfda1e489b6e"
 
 xpath@^0.0.32:
   version "0.0.32"
@@ -7507,11 +7507,6 @@ yargs@~1.2.6:
   integrity sha1-nHtKgv1dWVsr8Xq23MQxNUMv40s=
   dependencies:
     minimist "^0.1.0"
-
-yarn@^1.22.10:
-  version "1.22.10"
-  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.22.10.tgz#c99daa06257c80f8fa2c3f1490724e394c26b18c"
-  integrity sha512-IanQGI9RRPAN87VGTF7zs2uxkSyQSrSPsju0COgbsKQOOXr5LtcVPeyXWgwVa0ywG3d8dg6kSYKGBuYK021qeA==
 
 yeast@0.1.2:
   version "0.1.2"
