@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.2](https://github.com/tv2/sisyfos-audio-controller/compare/v4.11.1...v4.11.2) (2021-09-03)
+
+### Bug Fixes
+
+-   docker image workflow ([d4f733c](https://github.com/tv2/sisyfos-audio-controller/commit/d4f733ce70347e5c0bc2d1199edc703031a9bb4b))
+
 ### [4.11.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.11.0...v4.11.1) (2021-08-30)
 
 ### Bug Fixes
