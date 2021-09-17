@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.11.3](https://github.com/tv2/sisyfos-audio-controller/compare/v4.11.2...v4.11.3) (2021-09-17)
+
+### Bug Fixes
+
+-   emit labels over automation protocol ([46eff39](https://github.com/tv2/sisyfos-audio-controller/commit/46eff39965514505af9287017978ec1c7efa8500))
+
 ### [4.11.2](https://github.com/tv2/sisyfos-audio-controller/compare/v4.11.1...v4.11.2) (2021-09-03)
 
 ### Bug Fixes
