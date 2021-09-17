@@ -23,6 +23,7 @@ import {
     storeFadeToBlack,
     storeClearPst,
 } from '../reducers/faderActions'
+import { getFaderLabel } from './labels'
 import { logger } from './logger'
 
 const AUTOMATION_OSC_PORT = 5255
@@ -196,18 +197,22 @@ export class AutomationConnection {
                     0,
                     JSON.stringify({
                         channel: state.faders[0].fader.map(
-                            ({
+                            (
+                                {
+                                    faderLevel,
+                                    pgmOn,
+                                    voOn,
+                                    pstOn,
+                                    showChannel,
+                                }: IFader,
+                                index
+                            ) => ({
                                 faderLevel,
                                 pgmOn,
                                 voOn,
                                 pstOn,
                                 showChannel,
-                            }: IFader) => ({
-                                faderLevel,
-                                pgmOn,
-                                voOn,
-                                pstOn,
-                                showChannel,
+                                label: getFaderLabel(index),
                             })
                         ),
                     }),
