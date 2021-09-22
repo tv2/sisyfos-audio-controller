@@ -31,18 +31,19 @@ export function getFaderLabel(faderIndex: number, defaultName = 'CH'): string {
     const channelLabel = getChannelLabel(state, faderIndex)
 
     switch (state.settings[0].labelType) {
-        case 'automatic':
-            return (
-                userLabel ||
-                automationLabel ||
-                channelLabel ||
-                defaultName + ' ' + (faderIndex + 1)
-            )
         case 'automation':
             return automationLabel || defaultName + ' ' + (faderIndex + 1)
         case 'user':
             return userLabel || defaultName + ' ' + (faderIndex + 1)
         case 'channel':
             return channelLabel || defaultName + ' ' + (faderIndex + 1)
+        case 'automatic':
+        default:
+            return (
+                userLabel ||
+                automationLabel ||
+                channelLabel ||
+                defaultName + ' ' + (faderIndex + 1)
+            )
     }
 }
