@@ -2,7 +2,7 @@ import winston from 'winston'
 const processArgs = require('minimist')(process.argv.slice(2))
 
 const loggerConsoleLevel =
-    process.env.loggerConsoleLevel || processArgs.loggerConsoleLevel || 'error'
+    process.env.loggerLevel || processArgs.loggerLevel || 'error'
 
 const logger = winston.createLogger({
     level: 'info',
