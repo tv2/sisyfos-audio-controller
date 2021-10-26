@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.12.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.11.3...v4.12.0) (2021-10-26)
+
+### Features
+
+-   added mixer timeout in mixer protocol interface. ([c9c49ca](https://github.com/tv2/sisyfos-audio-controller/commit/c9c49ca4f9757af99425c845cc632fc2e5121cbd))
+-   Added mixertimeout support for Midas mixers. For a fast warning if mixer is not responding. ([b25efd5](https://github.com/tv2/sisyfos-audio-controller/commit/b25efd5d70392761999ed7dba093d6494ed87508))
+-   Input Gain on Small channel strip ([a1e0be1](https://github.com/tv2/sisyfos-audio-controller/commit/a1e0be1c8f8cd4b3a2b833664f53eabcc3227669))
+-   Update Winston logger and README.md after Elastic plugin was updated ([c9b3367](https://github.com/tv2/sisyfos-audio-controller/commit/c9b33672e98d8807131728ec13c4432e6490b9ba))
+
 ### [4.11.3](https://github.com/tv2/sisyfos-audio-controller/compare/v4.11.2...v4.11.3) (2021-09-17)
 
 ### Bug Fixes
