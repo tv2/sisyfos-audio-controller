@@ -135,6 +135,8 @@
         "dot-prop": "^5.1.1",
         "browserslist": "^4.16.5",
         "ws": "^7.4.6",
-        "path-parse": "^1.0.7"
+        "path-parse": "^1.0.7",
+        "ansi-regex": "^5.0.1",
+        "axios": "^0.21.2"
     }
 }
