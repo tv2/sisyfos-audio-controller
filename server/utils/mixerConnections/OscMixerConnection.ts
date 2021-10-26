@@ -41,7 +41,8 @@ export class OscMixerConnection {
     mixerIndex: number
     cmdChannelIndex: number
     oscConnection: any
-    mixerOnlineTimer: any
+    mixerOnlineTimer: NodeJS.Timeout
+    timeoutTimer: NodeJS.Timeout
     commandBuffer: IOscCommand[] = []
 
     constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
@@ -92,7 +93,11 @@ export class OscMixerConnection {
             })
             .on('message', (message: any) => {
                 clearTimeout(this.mixerOnlineTimer)
+                this.resetMixerTimeout()
                 if (!state.settings[0].mixers[this.mixerIndex].mixerOnline) {
+                    logger.info(
+                        `Audio Mixer number: ${this.mixerIndex + 1} is Online`
+                    )
                     this.mixerOnline(true)
                 }
                 logger.verbose('Received OSC message: ' + message.address, {})
@@ -413,15 +418,28 @@ export class OscMixerConnection {
 
     pingMixerCommand() {
         //Ping OSC mixer if mixerProtocol needs it.
-        this.mixerProtocol.pingCommand.map((command) => {
+        this.mixerProtocol.pingCommand.forEach((command) => {
             let value = command.value || 0
             let type = command.type || 'i'
             this.sendOutMessage(command.mixerMessage, 0, value, type)
         })
         global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
+            logger.warn(`Audio Mixer number: ${this.mixerIndex + 1} is Offline`)
             store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
         }, this.mixerProtocol.pingTime)
+    }
+
+    resetMixerTimeout() {
+        // Check mixer Timeout response if protocol needs it:
+        if (this.mixerProtocol.mixerTimeout > 0) {
+            clearTimeout(this.timeoutTimer)
+            this.timeoutTimer = setTimeout(() => {
+                logger.warn(
+                    `Audio Mixer number: ${this.mixerIndex + 1} timeout`
+                )
+            }, this.mixerProtocol.mixerTimeout)
+        }
     }
 
     checkFxCommands(message: any) {

@@ -23,6 +23,7 @@ export const MidasMaster: IMixerProtocol = {
         },
     ],
     pingTime: 9500,
+    mixerTimeout: 2000,
     initializeCommands: [
         {
             mixerMessage: '/ch/{channel}/mix/fader',
