@@ -74,24 +74,18 @@ git clone https://github.com/olzzon/sisyfos-audio-controller.git
 cd sisyfos-audio-controller
 yarn
 yarn build
-yarn start --loggerConsoleLevel='info'
-```
-
-Running Server with Elastic Search:
-(no args will default to: 0.0.0.0:9200)
-
-```
-yarn start --loggerIp '192.168.12.12' --loggerPort 9302
+yarn start --loggerLevel='info'
 ```
 
 ### Logger levels:
 
 When running Sisyfos you can define the log level by:
-loggerLevel (Kibana log level) and loggerFileLevel (local log file level) and loggerConsoleLevel (local log to console)
+adding --loggerLevel='xxxx'
 The levels are:
 
--   error (only error)
--   info (standard info regarding connectiviy and data from Automation protocol etc.)
+-   error (only errors)
+-   warn (errors and warning)
+-   info (standard info regarding connectiviy and data from Automation protocol etc. including errors and warnings)
 -   verbose (info level plus: data send and received from Audiomixer)
 
 ### Open GUI in browser:

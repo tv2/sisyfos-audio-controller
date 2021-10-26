@@ -311,6 +311,10 @@ class ChanStrip extends React.PureComponent<
                     .CHANNEL_INPUT_GAIN ||
                 window.mixerProtocol.channelTypes[0].toMixer
                     .CHANNEL_INPUT_SELECTOR
+            const hasGainTrim =
+                window.mixerProtocol.channelTypes[0].toMixer[
+                    fxParamsList.GainTrim
+                ]
             const hasComp =
                 window.mixerProtocol.channelTypes[0].toMixer[
                     fxParamsList.CompThrs
@@ -348,6 +352,18 @@ class ChanStrip extends React.PureComponent<
                                     <div className="content">
                                         {this.inputSelector()}
                                         {this.inputGain()}
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        )}
+                                                {hasGainTrim && (
+                            <React.Fragment>
+                                <div className="item">
+                                    <div className="title">INPUT</div>
+                                    <div className="content">
+                                        {this.fxParamFader(
+                                            fxParamsList.GainTrim
+                                        )}
                                     </div>
                                 </div>
                             </React.Fragment>

@@ -53,9 +53,10 @@ export interface IMixerProtocolGeneric {
 
 export interface IMixerProtocol extends IMixerProtocolGeneric {
     leadingZeros?: boolean
-    pingCommand?: Array<IMixerMessageProtocol>
-    pingResponseCommand?: Array<IMixerMessageProtocol>
-    pingTime?: number
+    pingCommand?: Array<IMixerMessageProtocol> // Simple command for pinging Audio mixer
+    pingResponseCommand?: Array<IMixerMessageProtocol> // Ping commands that expects responses
+    pingTime?: number // How often should mixer ping the pingCommands
+    mixerTimeout?: number // Max time between responses from AudioMixer
     initializeCommands?: Array<IMixerMessageProtocol>
 }
 
