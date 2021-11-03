@@ -8,9 +8,11 @@ import Channels from './Channels'
 import Settings from './Settings'
 import Storage from './RoutingStorage'
 import MiniChannels from './MiniChannels'
+import MicTally from './MicTally'
 import { withTranslation } from 'react-i18next'
 import PagesSettings from './PagesSettings'
 import LabelSettings from './Labels'
+import { url } from 'inspector'
 
 export interface IAppProps {
     store: IStore
@@ -107,6 +109,9 @@ class App extends React.Component<IAppProps> {
     }
 
     render() {
+        const urlParams = new URLSearchParams(window.location.search)
+        const viewId = urlParams.get('view')
+        const isMiniMonitor = urlParams.get('minimonitor') === '1'
         return (
             <div>
                 {!this.props.store.settings[0].serverOnline && (
@@ -114,11 +119,12 @@ class App extends React.Component<IAppProps> {
                         {this.props.t('TRYING TO CONNECT TO SISYFOS SERVER')}
                     </div>
                 )}
-                {!window.location.search.includes('minimonitor=1') && (
-                    <Channels />
-                )}
-                {window.location.search.includes('minimonitor=1') && (
+                { (viewId === 'minimonitor' || isMiniMonitor) ? (
                     <MiniChannels />
+                ) : (viewId === 'mic-tally') ? (
+                    <MicTally />
+                ) : (
+                    <Channels />
                 )}
                 {this.props.store.settings[0].showLabelSettings && <LabelSettings />}
                 {this.props.store.settings[0].showPagesSetup && <PagesSettings />}
