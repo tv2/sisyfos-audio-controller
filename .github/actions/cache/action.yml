@@ -1,0 +1,10 @@
+name: "Cache dependencies"
+description: "Cache dependencies"
+runs:
+  using: "composite"
+  steps:
+      - name: Cache dependencies
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node-version }}
+          cache: ${{ env.node-package-manager }}

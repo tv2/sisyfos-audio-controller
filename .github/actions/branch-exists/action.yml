@@ -1,0 +1,28 @@
+#######################################################################################################################
+#  NOTE: DOES NOT WORK YET
+#######################################################################################################################
+
+name: 'Branch exists'
+description: 'Check that branch exists'
+inputs:
+  branch:
+    description: 'branch to check existence for'
+    required: true
+outputs:
+  exists: 
+    description: "Boolean of whether branch exists"
+    value: ${{ steps.branch.outputs.exists }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Check branch
+      id: branch
+      env:
+        branch: ${{ inputs.branch }}
+      shell: bash
+      run: |
+        if [ -z $(git show-ref -- heads/$branch) ]; then
+          echo ::set-output name=exists::false
+        else
+          echo ::set-output name=exists::true
+        fi
