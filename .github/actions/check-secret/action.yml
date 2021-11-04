@@ -1,0 +1,24 @@
+name: 'Check secret'
+description: 'Check secret'
+inputs:
+  secret:
+    description: 'Secret to check'
+    required: true
+outputs:
+  defined: 
+    description: "Boolean of whether secret is defined"
+    value: ${{ steps.secret.outputs.defined }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Check secrets
+      id: secret
+      env:
+        secret: ${{ inputs.secret }}
+      shell: bash
+      run: |
+        if [ "$secret" == "" ]; then
+          echo ::set-output name=defined::false
+        else
+          echo ::set-output name=defined::true
+        fi

@@ -1,0 +1,12 @@
+name: "Test"
+description: "Test"
+runs:
+  using: "composite"
+  steps:
+    - uses: ./.github/actions/cache
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+      shell: bash
+    - name: Run tests
+      run: yarn test
+      shell: bash

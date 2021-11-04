@@ -1,0 +1,8 @@
+name: "Validate dependencies"
+description: "Validate dependencies"
+runs:
+  using: "composite"
+  steps:
+      - name: Check dependencies
+        run: yarn audit --groups "dependencies" --level moderate
+        shell: bash
