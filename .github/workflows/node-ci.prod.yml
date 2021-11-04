@@ -1,0 +1,308 @@
+#######################################################################################################################
+#
+#   Node CI - Production
+#
+#   The workflow ensures quality for the build, builds the project and publishes it to the configured destinations.
+#   There are the following destinations:
+#
+#   [Github Release]
+#     The destination is only triggered if the secret 'RELEASE_TO_GITHUB' is set to a non-empty value.
+#
+#   [NPM]
+#     The destination is only triggered if the secret 'NPM_TOKEN' is provided.
+#
+#   [Docker Hub]
+#     The destination is only triggered if the secrets 'DOCKER_USERNAME' and 'DOCKER_PASSWORD' are 
+#     provided.
+#
+#######################################################################################################################
+
+name: Prod Node CI
+
+env:
+  node-version: 16
+  node-package-manager: yarn
+
+on:
+  push:
+    branches:
+      - "master"
+      - "main"
+
+jobs:
+  cache-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - uses: ./.github/actions/cache
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+  prebuild:
+    runs-on: ubuntu-latest
+    needs: cache-dependencies
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - uses: ./.github/actions/cache
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+
+  test:
+    runs-on: ubuntu-latest
+    needs: cache-dependencies
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+
+      - uses: ./.github/actions/test
+
+  validate-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - uses: ./.github/actions/validate-dependencies
+
+  bump-version:
+    runs-on: ubuntu-latest
+    needs:
+      - prebuild
+      - test
+      - validate-dependencies
+    outputs:
+      tag_version: ${{ steps.tag_version.outputs.new_tag || steps.tag_version.outputs.previous_tag }}
+      version: ${{ steps.tag_version.outputs.new_version || steps.tag_version.outputs.previous_version }}
+      changelog: ${{ steps.tag_version.outputs.changelog }}
+      bumped: ${{ steps.tag_version.outputs.new_tag != '' }}
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - name: Configure committer
+        run: |
+          git config user.name "${{ github.event.pusher.name }}"
+          git config user.email "${{ github.event.pusher.email }}"
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: false
+      - name: Update package.json
+        if: steps.tag_version.outputs.new_tag != ''
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: package.json
+          field: version
+          value: ${{ steps.tag_version.outputs.new_version }}
+      - name: Update CHANGELOG.md
+        env:
+          changes: ${{ steps.tag_version.outputs.changelog }}
+        run: |
+          echo "$changes" > /tmp/tmp-changelog.md
+          [ -f CHANGELOG.md ] && cat CHANGELOG.md >> /tmp/tmp-changelog.md
+          mv /tmp/tmp-changelog.md CHANGELOG.md
+
+      - name: Commit and push changes to package.json and CHANGELOG.md
+        if: steps.tag_version.outputs.new_tag != ''
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: "['package.json', 'CHANGELOG.md']"
+
+  create-pull-request-develop:
+    runs-on: ubuntu-latest
+    if: needs.bump-version.outputs.bumped == 'true'
+    needs:
+      - bump-version
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - name: Pull request to develop
+        id: develop
+        continue-on-error: true
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "develop"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: "release, automated-pr"
+          pr_title: "Release ${{ needs.bump-version.outputs.version }} -> develop"
+      - name: Report status
+        env:
+          report: ${{ toJSON(steps.develop.outcome) }} - ${{ toJSON(steps.develop.conclusion) }}
+        run: echo $report
+
+  build:
+    runs-on: ubuntu-latest
+    needs:
+      - bump-version
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - name: Ensure commits from bump-version
+        run: git pull
+      - uses: ./.github/actions/cache
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}
+          path: dist
+
+  check-github-release:
+    runs-on: ubuntu-latest
+    needs: build
+    outputs:
+      defined: ${{ steps.release.outputs.defined == 'true' }}
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - name: Check if is set to release
+        id: release
+        uses: ./.github/actions/check-secret
+        with:
+          secret: ${{ secrets.RELEASE_TO_GITHUB }}
+
+  publish-github-release:
+    runs-on: ubuntu-latest
+    if: needs.bump-version.outputs.bumped == 'true' && needs.check-github-release.outputs.defined == 'true'
+    needs:
+      - bump-version
+      - check-github-release
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}
+          path: dist
+      - name: Compress artifact to zip
+        uses: papeloto/action-zip@v1
+        with:
+          files: dist
+          dest: "${{ github.event.repository.name }}-${{ needs.bump-version.outputs.version }}.zip"
+      - name: Create a GitHub release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.bump-version.outputs.tag_version }}
+          release_name: Release ${{ needs.bump-version.outputs.tag_version }}
+          body: ${{ needs.bump-version.outputs.changelog }}
+      - name: Upload zip file to release
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: "${{ github.event.repository.name }}-${{ needs.bump-version.outputs.version }}.zip"
+          asset_name: "${{ github.event.repository.name }}-${{ needs.bump-version.outputs.version }}.zip"
+          asset_content_type: application/zip
+
+  check-npm-token:
+    runs-on: ubuntu-latest
+    needs: build
+    outputs:
+      defined: ${{ steps.token.outputs.defined == 'true' }}
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - name: Check if has username
+        id: token
+        uses: ./.github/actions/check-secret
+        with:
+          secret: ${{ secrets.NPM_TOKEN }}
+
+  publish-npm-package:
+    runs-on: ubuntu-latest
+    if: needs.check-npm-token.outputs.defined == 'true'
+    needs:
+      - bump-version
+      - check-npm-token
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - name: Configure publisher
+        run: |
+          git config user.name "${{ github.event.pusher.name }}"
+          git config user.email "${{ github.event.pusher.email }}"
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}
+          path: dist
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
+      - name: Publish package
+        run: yarn publish --access=public --tag latest --new-version "${{ needs.bump-version.outputs.version }}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  check-docker-credentials:
+    runs-on: ubuntu-latest
+    needs: build
+    outputs:
+      defined: ${{ steps.username.outputs.defined == 'true' && steps.password.outputs.defined == 'true' }}
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+      - name: Check if has username
+        id: username
+        uses: ./.github/actions/check-secret
+        with:
+          secret: ${{ secrets.DOCKER_USERNAME }}
+      - name: Check if has password
+        id: password
+        uses: ./.github/actions/check-secret
+        with:
+          secret: ${{ secrets.DOCKER_PASSWORD }}
+
+  publish-docker-image:
+    runs-on: ubuntu-latest
+    if: needs.check-docker-credentials.outputs.defined == 'true'
+    needs:
+      - bump-version
+      - check-docker-credentials
+    steps:
+      - name: Access repository
+        uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}
+          path: dist
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: "tv2media/${{ github.event.repository.name }}"
+          tags: |
+            latest
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
