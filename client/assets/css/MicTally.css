@@ -1,0 +1,56 @@
+body.v-mic-tally {
+    background: transparent;
+}
+
+.mic-tally-view {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 100%;
+    height: 100%;
+}
+
+.mic-tally-list {
+    display: flex;
+    list-style: none;
+    align-items: stretch;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+}
+.c-mic-tally {
+    margin: 8px;
+    flex: 1 1 80px;
+    min-width: 80px;
+    text-align: center;
+}
+.c-mic-tally:not(:first-child) {
+    margin-left: 8px;
+}
+.c-mic-tally__status {
+    box-sizing: border-box;
+    display: block;
+    font-weight: bold;
+    padding: 20px 10px;
+    border-radius: 100%;
+    margin: 0 auto;
+    background-color: #444444;
+    border: 2px solid #888888;
+    width: 60px;
+    height: 60px;
+}
+
+.c-mic-tally__status.on {
+    color: red;
+    background-color: #ffaaaa;
+    border-color: red;
+    font-size: 1em;
+}
+
+.c-mic-tally__label {
+    display: block;
+    color: white;
+    font-weight: bold;
+    margin-top: 6px;
+    font-size: 0.9em;
+}
