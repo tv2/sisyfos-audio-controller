@@ -1,3 +1,11 @@
+### [4.13.2](https://github.com/tv2/sisyfos-audio-controller/compare/v4.13.1...v4.13.2) (2021-11-09)
+
+
+### Bug Fixes
+
+* Updated github actions workflow for dockerhub tag generation ([47e6ea9](https://github.com/tv2/sisyfos-audio-controller/commit/47e6ea9da8ad7385c600dc948ac18408569faa92))
+
+
 ### [4.13.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.13.0...v4.13.1) (2021-11-09)
 
 
