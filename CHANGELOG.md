@@ -1,3 +1,16 @@
+### [4.13.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.13.0...v4.13.1) (2021-11-09)
+
+
+### Bug Fixes
+
+* Dockerfile installs all dependencies ([115e9d6](https://github.com/tv2/sisyfos-audio-controller/commit/115e9d629c72dc205347b9830b66cb8b7d90e142))
+
+
+### Code Refactoring
+
+* Removed standard-version ([b933276](https://github.com/tv2/sisyfos-audio-controller/commit/b933276bc676cda0e98e717c81a8168f766c03af))
+
+
 ## [4.13.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.12.0...v4.13.0) (2021-11-09)
 
 ### Features
