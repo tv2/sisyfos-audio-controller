@@ -256,11 +256,20 @@ class ChanStrip extends React.PureComponent<
                     }
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
-                            {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            )}
+                            {!window.mixerProtocol.channelTypes[0].fromMixer[
+                                fxParam
+                            ]?.[0].valueAsLabels
+                                ? Math.round(
+                                      (maxLabel - minLabel) *
+                                          parseFloat(state.valueNow) +
+                                          minLabel
+                                  )
+                                : window.mixerProtocol.channelTypes[0]
+                                      .fromMixer[fxParam]?.[0].valueAsLabels[
+                                      Math.round(
+                                          parseFloat(state.valueNow) * 10
+                                      )
+                                  ]}
                             {valueLabel}
                         </div>
                     )}
@@ -356,7 +365,7 @@ class ChanStrip extends React.PureComponent<
                                 </div>
                             </React.Fragment>
                         )}
-                                                {hasGainTrim && (
+                        {hasGainTrim && (
                             <React.Fragment>
                                 <div className="item">
                                     <div className="title">INPUT</div>

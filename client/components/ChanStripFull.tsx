@@ -613,11 +613,20 @@ class ChanStripFull extends React.PureComponent<
                     }
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
-                            {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            )}
+                            {!window.mixerProtocol.channelTypes[0].fromMixer[
+                                fxParam
+                            ]?.[0].valueAsLabels
+                                ? Math.round(
+                                      (maxLabel - minLabel) *
+                                          parseFloat(state.valueNow) +
+                                          minLabel
+                                  )
+                                : window.mixerProtocol.channelTypes[0]
+                                      .fromMixer[fxParam]?.[0].valueAsLabels[
+                                      Math.round(
+                                          parseFloat(state.valueNow) * 10
+                                      )
+                                  ]}
                             {valueLabel}
                         </div>
                     )}
@@ -793,9 +802,7 @@ class ChanStripFull extends React.PureComponent<
                         >
                             X
                         </button>
-                        {window.location.search.includes(
-                            'settings=1'
-                        ) ? (
+                        {window.location.search.includes('settings=1') ? (
                             <button
                                 className="button half"
                                 onClick={() => this.handleShowRoutingOptions()}
@@ -803,9 +810,7 @@ class ChanStripFull extends React.PureComponent<
                                 Channel-Fader Routing
                             </button>
                         ) : null}
-                        {window.location.search.includes(
-                            'settings=1'
-                        ) ?  (
+                        {window.location.search.includes('settings=1') ? (
                             <button
                                 className="button half"
                                 onClick={() => this.handleShowMonitorOptions()}
