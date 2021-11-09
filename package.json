@@ -41,8 +41,6 @@
         "build": "yarn build-server && yarn build-client",
         "unit": "jest",
         "test": "yarn unit",
-        "release": "standard-version",
-        "prepareChangelog": "standard-version --prerelease",
         "watch": "jest --watch",
         "validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
         "license-validate": "node-license-validator -p -d --allow-licenses MIT MIT/X11 BSD BSD-3-Clause BSD-2-Clause ISC Apache Apache-2.0 WTFPL CC-BY-3.0 CC-BY-4.0 CC0-1.0 Unlicense --allow-packages cycle"
@@ -115,7 +113,6 @@
         "prop-types": "^15.7.2",
         "react-test-renderer": "^17.0.1",
         "simple-git-hooks": "^2.0.3",
-        "standard-version": "^9.3.0",
         "style-loader": "^2.0.0",
         "ts-jest": "^26.5.3",
         "ts-loader": "^8.0.18",
