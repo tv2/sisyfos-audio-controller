@@ -360,7 +360,7 @@ export class OscMixerConnection {
             if (this.commandBuffer.length > 0) {
                 this.oscConnection.send(this.commandBuffer.shift())
             }
-        }, 0.5)
+        }, 2)
     }
 
     initialCommands() {
