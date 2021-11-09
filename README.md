@@ -34,11 +34,7 @@ The Advanced channelstrip has all the features the seleced Mixer Protol supports
 
 ### If you need a MiniMonitorView for a client:
 
-Run webpage with either
-
-```
-localhost/?minimonitor=1
-```
+Run webpage with
 
 ```
 localhost/?view=minimonitor
