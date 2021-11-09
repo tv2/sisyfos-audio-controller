@@ -1,6 +1,6 @@
 {
     "name": "sisyfos-audio-controller",
-    "version": "4.12.0",
+    "version": "4.13.0",
     "description": "Audio mixer build with the logic from a video mixer",
     "license": "MIT",
     "private": false,
