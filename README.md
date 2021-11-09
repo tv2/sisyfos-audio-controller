@@ -34,13 +34,27 @@ The Advanced channelstrip has all the features the seleced Mixer Protol supports
 
 ### If you need a MiniMonitorView for a client:
 
-run webpage with
+Run webpage with either
 
 ```
 localhost/?minimonitor=1
 ```
 
+```
+localhost/?view=minimonitor
+```
+
 <img src="Docs/pix/minimonitorview.png">
+
+### If you need a Microphone Tally View for a client:
+
+Run webpage with
+
+```
+localhost/?view=mic-tally
+```
+
+<img src="Docs/pix/mic-tally-view.png" alt="Microphone Tally View" style="zoom: 150%;" />
 
 ### Routing of Faders to Channels
 

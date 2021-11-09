@@ -1,6 +1,15 @@
-# Changelog
+## [4.13.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.12.0...v4.13.0) (2021-11-09)
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+### Features
+
+-   Added dev github actions workflow ([1c1454b](https://github.com/tv2/sisyfos-audio-controller/commit/1c1454b13ad68c49de6f4c7108b85c147e212575))
+-   Mic tally view added + better routing ([f607b7e](https://github.com/tv2/sisyfos-audio-controller/commit/f607b7e2c583d2500fee63b2ce4556ac08a4fcb6))
+-   Updated github actions workflow. ([765d9ad](https://github.com/tv2/sisyfos-audio-controller/commit/765d9ad964426ab6114d753a9275e0378401edb2))
+
+### Bug Fixes
+
+-   Only install production dependencies when building Dockerfile ([8ab2e7d](https://github.com/tv2/sisyfos-audio-controller/commit/8ab2e7dfe476ca373c6845fbeb609cc9aa125092))
+-   raising buffer interval for Midas to 2ms, as this stabilize the crash happening on full load from 24hours to at least 7 days. ([1d0e4a8](https://github.com/tv2/sisyfos-audio-controller/commit/1d0e4a81158ca6f8c8b169979405afbaacfec68a))
 
 ## [4.12.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.11.3...v4.12.0) (2021-10-26)
 
