@@ -281,16 +281,18 @@ jobs:
           name: ${{ github.event.repository.name }}
           path: dist
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
+      - name: Get raw version
+        id: raw-version
+        uses: notiz-dev/github-action-json-property@release
+        with: 
+            path: 'package.json'
+            prop_path: 'version'
+
+      - name: Extract version for tags
+        id: version
+        uses: ./.github/actions/extract-version
         with:
-          images: "tv2media/${{ github.event.repository.name }}"
-          tags: |
-            latest
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}.{{minor}}.{{patch}}
+          version: ${{ steps.raw-version.outputs.prop }}
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
@@ -303,6 +305,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            "tv2media/${{ github.event.repository.name }}:latest"
+            "tv2media/${{ github.event.repository.name }}:${{ steps.version.outputs.version }}"
+            "tv2media/${{ github.event.repository.name }}:${{ steps.version.outputs.major }}"
+            "tv2media/${{ github.event.repository.name }}:${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}"
 
