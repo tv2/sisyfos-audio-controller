@@ -60,7 +60,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                         const isOn = (fader.pgmOn || fader.voOn) && !fader.muteOn
                         return (
                             <li className="c-mic-tally" key={index}>
-                                <div onClick={() => this.toggleFader(index)} className={`c-mic-tally__status${isOn ? ' on': ''} `}>
+                                <div onClick={() => this.toggleFader(index)} className={`c-mic-tally__status${isOn ? ' on': ''}${fader.muteOn ? ' muted' : ''}`}>
                                   <div className="c-mic-tally__status__content">
                                     { isOn ? 'ON' : 'OFF' }
                                   </div>

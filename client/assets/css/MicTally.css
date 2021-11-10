@@ -44,7 +44,7 @@ body.v-mic-tally {
     cursor: pointer;
 }
 
-.c-mic-tally__status:active {
+.c-mic-tally__status:active:not(.muted) {
     background-color: #888888;
 }
 
@@ -58,6 +58,10 @@ body.v-mic-tally {
 .c-mic-tally__status.on:active {
     background-color: red;
     color: white;
+}
+
+.c-mic-tally__status.muted {
+    cursor: not-allowed;
 }
 
 .c-mic-tally__label {
