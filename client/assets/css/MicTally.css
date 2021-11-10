@@ -23,21 +23,29 @@ body.v-mic-tally {
     flex: 1 1 80px;
     min-width: 80px;
     text-align: center;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .c-mic-tally:not(:first-child) {
     margin-left: 8px;
 }
 .c-mic-tally__status {
-    box-sizing: border-box;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: bold;
-    padding: 20px 10px;
     border-radius: 100%;
     margin: 0 auto;
     background-color: #444444;
     border: 2px solid #888888;
     width: 60px;
     height: 60px;
+    cursor: pointer;
+}
+
+.c-mic-tally__status:active {
+    background-color: #888888;
 }
 
 .c-mic-tally__status.on {
@@ -45,6 +53,11 @@ body.v-mic-tally {
     background-color: #ffaaaa;
     border-color: red;
     font-size: 1em;
+}
+
+.c-mic-tally__status.on:active {
+    background-color: red;
+    color: white;
 }
 
 .c-mic-tally__label {
