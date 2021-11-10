@@ -8,6 +8,11 @@ import { IFader } from '../../server/reducers/fadersReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
 import { getFaderLabel } from '../utils/labels'
 
+import {
+    SOCKET_TOGGLE_PGM,
+    SOCKET_TOGGLE_VO,
+} from '../../server/constants/SOCKET_IO_DISPATCHERS'
+
 
 interface IChannelsInjectProps {
     channels: IChannels
@@ -29,19 +34,42 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         document.body.classList.remove('v-mic-tally')
     }
 
+    toggleFader(index: number) {
+      const fader = this.props.faders[index]
+
+      if (fader.muteOn) {
+        return
+      }
+
+      if (fader.voOn) {
+        window.socketIoClient.emit(SOCKET_TOGGLE_VO, index)
+      } else {
+        window.socketIoClient.emit(SOCKET_TOGGLE_PGM, index)
+      }
+    }
+
     render() {
         return (
             <div className="mic-tally-view">
                 <ul className="mic-tally-list">
-                { this.props.faders.map((fader) => {
-                    const isOn = fader.pgmOn || fader.voOn
-                    return (
-                        <li className="c-mic-tally">
-                            <span className={`c-mic-tally__status${isOn ? ' on': ''} `}>{ isOn ? 'ON' : 'OFF' }</span>
-                            <span className={`c-mic-tally__label`}>{getFaderLabel(fader.monitor - 1)}</span>
-                        </li>
-                    )
-                })}
+                { this.props.faders
+                    .map((fader, index) => {
+                        if (!fader.showInMiniMonitor) {
+                            return
+                        }
+                        const isOn = (fader.pgmOn || fader.voOn) && !fader.muteOn
+                        return (
+                            <li className="c-mic-tally" key={index}>
+                                <div onClick={() => this.toggleFader(index)} className={`c-mic-tally__status${isOn ? ' on': ''} `}>
+                                  <div className="c-mic-tally__status__content">
+                                    { isOn ? 'ON' : 'OFF' }
+                                  </div>
+                                </div>
+                                <span className={`c-mic-tally__label`}>{getFaderLabel(index)}</span>
+                            </li>
+                        )
+                    })
+                  }
                 </ul>
             </div>
         )
