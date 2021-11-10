@@ -243,7 +243,9 @@ class ChanStrip extends React.PureComponent<
                 {window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
                     .label ?? ''}
                 <div className="parameter-mini-text">
-                    {maxLabel + valueLabel}
+                    {!valueAsLabels
+                        ? maxLabel + valueLabel
+                        : valueAsLabels[valueAsLabels.length - 1] + valueLabel}
                 </div>
                 <ReactSlider
                     className="chan-strip-fader"
@@ -267,7 +269,8 @@ class ChanStrip extends React.PureComponent<
                                   )
                                 : valueAsLabels[
                                       Math.round(
-                                          parseFloat(state.valueNow) * (maxLabel - minLabel)
+                                          parseFloat(state.valueNow) *
+                                              (maxLabel - minLabel)
                                       )
                                   ]}
                             {valueLabel}
@@ -278,7 +281,9 @@ class ChanStrip extends React.PureComponent<
                     }}
                 />
                 <div className="parameter-mini-text">
-                    {minLabel + valueLabel}
+                    {!valueAsLabels
+                        ? minLabel + valueLabel
+                        : valueAsLabels[0] + valueLabel}
                 </div>
             </div>
         )
