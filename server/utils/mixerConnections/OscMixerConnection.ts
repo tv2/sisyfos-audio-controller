@@ -449,21 +449,19 @@ export class OscMixerConnection {
             }
 
             let fxKey = keyName as keyof typeof fxParamsList
-            if (
-                this.checkOscCommand(
-                    message.address,
-                    this.mixerProtocol.channelTypes[0].fromMixer[
-                        fxParamsList[fxKey]
-                    ][0].mixerMessage
-                )
-            ) {
+            let fxMessage = this.mixerProtocol.channelTypes[0].fromMixer[
+                fxParamsList[fxKey]
+            ][0]
+            if (this.checkOscCommand(message.address, fxMessage.mixerMessage)) {
                 let ch = message.address.split('/')[this.cmdChannelIndex]
+
                 store.dispatch(
                     storeFaderFx(
                         fxParamsList[fxKey],
                         state.channels[0].chMixerConnection[this.mixerIndex]
                             .channel[ch - 1].assignedFader,
-                        message.args[0]
+                        message.args[0] /
+                            (fxMessage.maxLabel - fxMessage.minLabel)
                     )
                 )
                 global.mainThreadHandler.updatePartialStore(

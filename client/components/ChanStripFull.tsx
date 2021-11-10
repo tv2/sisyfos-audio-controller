@@ -589,35 +589,44 @@ class ChanStripFull extends React.PureComponent<
         let valueLabel =
             window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
                 .valueLabel ?? ''
-
+        let valueAsLabels =
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
+                .valueAsLabels
         return (
             <div className="parameter-text">
-                {
-                    window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
-                        .label
-                }
+                {window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
+                    .label ?? ''}
                 <div className="parameter-mini-text">
-                    {maxLabel + valueLabel}
+                    {!valueAsLabels
+                        ? maxLabel + valueLabel
+                        : valueAsLabels[valueAsLabels.length - 1] + valueLabel}
                 </div>
                 <ReactSlider
-                    className="chan-strip-full-fader"
-                    thumbClassName="chan-strip-full-thumb"
+                    className="chan-strip-fader"
+                    thumbClassName="chan-strip-thumb"
                     orientation="vertical"
+                    invert
                     min={0}
                     max={1}
                     step={0.001}
-                    invert="false"
                     value={
                         this.props.fader[this.props.faderIndex][fxParam]?.[0] ??
                         0
                     }
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
-                            {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            )}
+                            {!valueAsLabels
+                                ? Math.round(
+                                      (maxLabel - minLabel) *
+                                          parseFloat(state.valueNow) +
+                                          minLabel
+                                  )
+                                : valueAsLabels[
+                                      Math.round(
+                                          parseFloat(state.valueNow) *
+                                              (maxLabel - minLabel)
+                                      )
+                                  ]}
                             {valueLabel}
                         </div>
                     )}
@@ -626,7 +635,9 @@ class ChanStripFull extends React.PureComponent<
                     }}
                 />
                 <div className="parameter-mini-text">
-                    {minLabel + valueLabel}
+                    {!valueAsLabels
+                        ? minLabel + valueLabel
+                        : valueAsLabels[0] + valueLabel}
                 </div>
             </div>
         )
@@ -793,9 +804,7 @@ class ChanStripFull extends React.PureComponent<
                         >
                             X
                         </button>
-                        {window.location.search.includes(
-                            'settings=1'
-                        ) ? (
+                        {window.location.search.includes('settings=1') ? (
                             <button
                                 className="button half"
                                 onClick={() => this.handleShowRoutingOptions()}
@@ -803,9 +812,7 @@ class ChanStripFull extends React.PureComponent<
                                 Channel-Fader Routing
                             </button>
                         ) : null}
-                        {window.location.search.includes(
-                            'settings=1'
-                        ) ?  (
+                        {window.location.search.includes('settings=1') ? (
                             <button
                                 className="button half"
                                 onClick={() => this.handleShowMonitorOptions()}
