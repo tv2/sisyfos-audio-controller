@@ -235,6 +235,9 @@ class ChanStrip extends React.PureComponent<
         let valueLabel =
             window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
                 .valueLabel ?? ''
+        let valueAsLabels =
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
+                .valueAsLabels
         return (
             <div className="parameter-text">
                 {window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
@@ -256,18 +259,15 @@ class ChanStrip extends React.PureComponent<
                     }
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
-                            {!window.mixerProtocol.channelTypes[0].fromMixer[
-                                fxParam
-                            ]?.[0].valueAsLabels
+                            {!valueAsLabels
                                 ? Math.round(
                                       (maxLabel - minLabel) *
                                           parseFloat(state.valueNow) +
                                           minLabel
                                   )
-                                : window.mixerProtocol.channelTypes[0]
-                                      .fromMixer[fxParam]?.[0].valueAsLabels[
+                                : valueAsLabels[
                                       Math.round(
-                                          parseFloat(state.valueNow) * 10
+                                          parseFloat(state.valueNow) * (maxLabel - minLabel)
                                       )
                                   ]}
                             {valueLabel}

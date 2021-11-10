@@ -147,11 +147,12 @@ export const MidasMaster: IMixerProtocol = {
                 [fxParamsList.CompRatio]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/ratio',
-                        minLabel: 1,
-                        maxLabel: 10,
+                        minLabel: 0,
+                        maxLabel: 11,
                         label: 'Ratio',
                         valueAsLabels: [
                             '1.1',
+                            '1.3',
                             '1.5',
                             '2.0',
                             '2.5',
