@@ -17,6 +17,7 @@ export const TOGGLE_PGM = 'TOGGLE_PGM'
 export const SET_PGM = 'SET_PGM'
 export const TOGGLE_VO = 'TOGGLE_VO'
 export const SET_VO = 'SET_VO'
+export const TOGGLE_SLOW_FADE = 'TOGGLE_SLOW_FADE'
 export const TOGGLE_PST = 'TOGGLE_PST'
 export const SET_PST = 'SET_PST'
 export const SET_PST_VO = 'SET_PST_VO'
@@ -156,6 +157,13 @@ export const storeSetVo = (faderIndex: number, voOn: boolean) => {
         type: SET_VO,
         faderIndex: faderIndex,
         voOn: voOn,
+    }
+}
+
+export const storeToggleSlowFade = (faderIndex: number) => {
+    return {
+        type: TOGGLE_SLOW_FADE,
+        faderIndex: faderIndex,
     }
 }
 
