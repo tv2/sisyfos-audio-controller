@@ -8,16 +8,7 @@ import '../assets/css/NoUiSlider.css'
 
 //assets:
 import '../assets/css/Channel.css'
-import {
-    SOCKET_TOGGLE_PGM,
-    SOCKET_TOGGLE_VO,
-    SOCKET_TOGGLE_PST,
-    SOCKET_TOGGLE_PFL,
-    SOCKET_TOGGLE_MUTE,
-    SOCKET_SET_FADERLEVEL,
-    SOCKET_TOGGLE_IGNORE,
-    SOCKET_TOGGLE_AMIX,
-} from '../../server/constants/SOCKET_IO_DISPATCHERS'
+import * as IO from '../../server/constants/SOCKET_IO_DISPATCHERS'
 import { IChannelReference, IFader } from '../../server/reducers/fadersReducer'
 import { ISettings } from '../../server/reducers/settingsReducer'
 import { storeShowChanStrip } from '../../server/reducers/settingsActions'
@@ -63,6 +54,7 @@ class Channel extends React.Component<
             nextProps.fader.pstOn != this.props.fader.pstOn ||
             nextProps.fader.pflOn != this.props.fader.pflOn ||
             nextProps.fader.muteOn != this.props.fader.muteOn ||
+            nextProps.fader.slowFadeOn != this.props.fader.slowFadeOn ||
             nextProps.fader.ignoreAutomation !=
                 this.props.fader.ignoreAutomation ||
             nextProps.fader.showChannel != this.props.fader.showChannel ||
@@ -90,19 +82,23 @@ class Channel extends React.Component<
     }
 
     handlePgm() {
-        window.socketIoClient.emit(SOCKET_TOGGLE_PGM, this.faderIndex)
+        window.socketIoClient.emit(IO.SOCKET_TOGGLE_PGM, this.faderIndex)
     }
 
     handleVo() {
-        window.socketIoClient.emit(SOCKET_TOGGLE_VO, this.faderIndex)
+        window.socketIoClient.emit(IO.SOCKET_TOGGLE_VO, this.faderIndex)
+    }
+
+    handleSlowFade() {
+        window.socketIoClient.emit(IO.SOCKET_TOGGLE_SLOW_FADE, this.faderIndex)
     }
 
     handlePst() {
-        window.socketIoClient.emit(SOCKET_TOGGLE_PST, this.faderIndex)
+        window.socketIoClient.emit(IO.SOCKET_TOGGLE_PST, this.faderIndex)
     }
 
     handlePfl() {
-        window.socketIoClient.emit(SOCKET_TOGGLE_PFL, this.faderIndex)
+        window.socketIoClient.emit(IO.SOCKET_TOGGLE_PFL, this.faderIndex)
         if (
             this.props.settings.chanStripFollowsPFL &&
             !this.props.fader.pflOn &&
@@ -113,19 +109,19 @@ class Channel extends React.Component<
     }
 
     handleMute() {
-        window.socketIoClient.emit(SOCKET_TOGGLE_MUTE, this.faderIndex)
+        window.socketIoClient.emit(IO.SOCKET_TOGGLE_MUTE, this.faderIndex)
     }
 
     handleAmix() {
-        window.socketIoClient.emit(SOCKET_TOGGLE_AMIX, this.faderIndex)
+        window.socketIoClient.emit(IO.SOCKET_TOGGLE_AMIX, this.faderIndex)
     }
 
     handleIgnore() {
-        window.socketIoClient.emit(SOCKET_TOGGLE_IGNORE, this.faderIndex)
+        window.socketIoClient.emit(IO.SOCKET_TOGGLE_IGNORE, this.faderIndex)
     }
 
     handleLevel(event: any) {
-        window.socketIoClient.emit(SOCKET_SET_FADERLEVEL, {
+        window.socketIoClient.emit(IO.SOCKET_SET_FADERLEVEL, {
             faderIndex: this.faderIndex,
             level: parseFloat(event),
         })
@@ -136,7 +132,10 @@ class Channel extends React.Component<
     }
 
     handleVuMeter() {
-        if (window.mixerProtocol.protocol === 'CasparCG' || window.mixerProtocol.protocol === 'VMIX') {
+        if (
+            window.mixerProtocol.protocol === 'CasparCG' ||
+            window.mixerProtocol.protocol === 'VMIX'
+        ) {
             return (
                 <React.Fragment>
                     {!window.location.search.includes('vu=0') &&
@@ -156,12 +155,14 @@ class Channel extends React.Component<
             return (
                 <React.Fragment>
                     {!window.location.search.includes('vu=0') &&
-                        assignedChannels?.map((assigned: IChannelReference, index) => (
-                            <VuMeter
-                                faderIndex={this.faderIndex}
-                                channel={index}
-                            />
-                        ))}{' '}
+                        assignedChannels?.map(
+                            (assigned: IChannelReference, index) => (
+                                <VuMeter
+                                    faderIndex={this.faderIndex}
+                                    channel={index}
+                                />
+                            )
+                        )}{' '}
                 </React.Fragment>
             )
         }
@@ -275,6 +276,27 @@ class Channel extends React.Component<
                 }}
             >
                 {this.props.t('VO')}
+            </button>
+        )
+    }
+
+    slowButton = () => {
+        return (
+            <button
+                className={ClassNames('channel-vo-button', {
+                    on: this.props.fader.slowFadeOn,
+                    mute: this.props.fader.muteOn,
+                })}
+                onClick={(event) => {
+                    event.preventDefault()
+                    this.handleSlowFade()
+                }}
+                onTouchEnd={(event) => {
+                    event.preventDefault()
+                    this.handleSlowFade()
+                }}
+            >
+                {this.props.t('SLOW FADE')}
             </button>
         )
     }
@@ -431,21 +453,17 @@ class Channel extends React.Component<
                 </div>
                 <div className="out-control">
                     {this.pgmButton()}
-                    {this.props.settings.automationMode ? (
-                        <React.Fragment>
-                            {this.voButton()}
-                            <br />
-                        </React.Fragment>
-                    ) : null}
+
+                    {this.props.settings.automationMode
+                        ? this.voButton()
+                        : this.slowButton()}
+                    <br />
                 </div>
                 <div className="channel-control">
                     {this.chanStripButton()}
-                    {!this.props.settings.showPfl ? (
-                        <React.Fragment>{this.pstButton()}</React.Fragment>
-                    ) : null}
-                    {this.props.settings.showPfl ? (
-                        <React.Fragment>{this.pflButton()}</React.Fragment>
-                    ) : null}
+                    {this.props.settings.showPfl
+                        ? this.pflButton()
+                        : this.pstButton()}
                 </div>
             </div>
         )
@@ -460,7 +478,7 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
         channelType: 0 /* TODO: state.channels[0].channel[props.channelIndex].channelType, */,
         channelTypeIndex:
             props.faderIndex /* TODO: state.channels[0].channel[props.channelIndex].channelTypeIndex, */,
-        label: getFaderLabel(props.faderIndex)
+        label: getFaderLabel(props.faderIndex),
     }
 }
 

@@ -180,6 +180,14 @@ export class MixerGenericConnection {
                 fadeTime = state.settings[0].voFadeTime
             } else {
                 fadeTime = state.settings[0].fadeTime
+
+                // When in manual mode - test if SLOW FADE Button is ON:
+                if (
+                    !state.settings[0].automationMode &&
+                    state.faders[0].fader[faderIndex].slowFadeOn
+                ) {
+                    fadeTime = state.settings[0].voFadeTime
+                }
             }
         }
 
