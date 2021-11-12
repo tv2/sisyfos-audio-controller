@@ -24,8 +24,9 @@ export const midasMeter = (mixerIndex: number, message: any) => {
             assignedFader < state.settings[0].numberOfFaders
         ) {
             level = calcVuLevel(dataview.getFloat32(4 * i + DATA_OFFSET, true))
-            reductionLevel = calcVuLevel(
-                dataview.getFloat32(4 * (i + 64) + DATA_OFFSET, true)
+            reductionLevel = dataview.getFloat32(
+                4 * (i + 64) + DATA_OFFSET,
+                true
             )
             let vuIndex: number = state.faders[0].fader[
                 assignedFader
