@@ -81,6 +81,9 @@ export const MidasMaster: IMixerProtocol = {
             mixerMessage: '/ch/{channel}/dyn/ratio',
         },
         {
+            mixerMessage: '/ch/{channel}/dyn/on',
+        },
+        {
             mixerMessage: '/ch/{channel}/delay/time',
         },
         {
@@ -133,6 +136,14 @@ export const MidasMaster: IMixerProtocol = {
                         maxLabel: 18,
                         label: 'Gain Trim',
                         valueLabel: ' dB',
+                    },
+                ],
+                [fxParamsList.CompOnOff]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/on',
+                        minLabel: 0,
+                        maxLabel: 1,
+                        label: 'Comp On/Off',
                     },
                 ],
                 [fxParamsList.CompThrs]: [
@@ -353,6 +364,14 @@ export const MidasMaster: IMixerProtocol = {
                         maxLabel: 18,
                         label: 'Gain Trim',
                         valueLabel: ' dB',
+                    },
+                ],
+                [fxParamsList.CompOnOff]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/on',
+                        minLabel: 0,
+                        maxLabel: 1,
+                        label: 'Comp On/Off',
                     },
                 ],
                 [fxParamsList.CompThrs]: [

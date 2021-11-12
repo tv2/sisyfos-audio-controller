@@ -20,6 +20,7 @@ export enum fxParamsList {
     CompAttack,
     CompHold,
     CompRelease,
+    CompOnOff,
 }
 export enum VuLabelConversionType {
     Linear = 'linear',
