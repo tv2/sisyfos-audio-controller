@@ -650,9 +650,12 @@ class ChanStripFull extends React.PureComponent<
         let value = this.props.fader[this.props.faderIndex][fxParam]?.[0]
         return (
             <div className="parameter-text">
-                {window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
-                    .label ?? ''}
+                <div className="parameter-button-text">
+                    {window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
+                        .label ?? ''}
+                </div>
                 <button
+                    className="parameter-button"
                     onClick={(event: any) => {
                         this.handleFx(
                             fxParam,

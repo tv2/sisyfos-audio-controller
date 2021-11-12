@@ -137,6 +137,30 @@
     font-size: 14px;
 }
 
+.parameter-button-text {
+    list-style-type: none;
+    text-align: center;
+    margin-top: 70px;
+    line-height: 10px;
+    font-size: 14px;
+}
+.parameter-button {
+    margin-left: -68px;
+    margin-top: 60px;
+    outline: none;
+    -moz-outline: none;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    color: white;
+    height: 50px;
+    width: 60px;
+    font-size: 105%;
+    background-color: rgb(80, 80, 80);
+    border-radius: 7px;
+    border-color: rgb(99, 99, 99);
+}
+
 .parameter-text > .parameter-mini-text,
 .content > .parameter-mini-text {
     list-style-type: none;
