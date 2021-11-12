@@ -11,6 +11,7 @@ i18n.use(LanguageDetector).init({
                 PFL: 'PFL',
                 'CUE NEXT': 'CUE NEXT',
                 PST: 'PST',
+                'SLOW FADE': 'SLOW FADE',
             },
         },
         nn: {
