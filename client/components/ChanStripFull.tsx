@@ -643,6 +643,36 @@ class ChanStripFull extends React.PureComponent<
         )
     }
 
+    fxParamButton(fxParam: fxParamsList) {
+        if (!this.doesParamExists(fxParam)) {
+            return
+        }
+        let value = this.props.fader[this.props.faderIndex][fxParam]?.[0]
+        return (
+            <div className="parameter-text">
+                <div className="parameter-button-text">
+                    {window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
+                        .label ?? ''}
+                </div>
+                <button
+                    className="parameter-button"
+                    onClick={(event: any) => {
+                        this.handleFx(
+                            fxParam,
+                            this.props.fader[this.props.faderIndex][
+                                fxParam
+                            ]?.[0]
+                                ? 0
+                                : 1
+                        )
+                    }}
+                >
+                    {value ? 'ON' : 'OFF'}
+                </button>
+            </div>
+        )
+    }
+
     monitor(channelIndex: number) {
         let faderIndex = this.props.channel[channelIndex].assignedFader
         if (faderIndex === -1) return null
@@ -714,6 +744,9 @@ class ChanStripFull extends React.PureComponent<
                                 <div className="item">
                                     <div className="title">COMPRESSOR</div>
                                     <div className="content">
+                                        {this.fxParamButton(
+                                            fxParamsList.CompOnOff
+                                        )}
                                         {this.fxParamFader(
                                             fxParamsList.CompThrs
                                         )}
@@ -724,7 +757,9 @@ class ChanStripFull extends React.PureComponent<
                                         <p className="zero-comp">______</p>
                                         {this.gainReduction()}
                                         <p className="reduction-6db">___6dB</p>
-                                        <p className="reduction-12db">___12dB</p>
+                                        <p className="reduction-12db">
+                                            ___12dB
+                                        </p>
                                         {this.fxParamFader(
                                             fxParamsList.CompMakeUp
                                         )}
