@@ -257,6 +257,17 @@
     left: 37px;
 }
 
+.channel-zero-button {
+    background-color: rgba(134, 134, 134, 0.048);
+    color: #20202000;
+    border-color: #20202000;
+    position: absolute;
+    top: 222px;
+    right: 5px;
+    height: 40px;
+    width: 80%;
+}
+
 .not-found::after {
     content: ' ';
     z-index: 1;

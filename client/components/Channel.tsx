@@ -127,6 +127,13 @@ class Channel extends React.Component<
         })
     }
 
+    handleZeroLevel() {
+        window.socketIoClient.emit(IO.SOCKET_SET_FADERLEVEL, {
+            faderIndex: this.faderIndex,
+            level: window.mixerProtocol.meter.zero,
+        })
+    }
+
     handleShowChanStrip() {
         this.props.dispatch(storeShowChanStrip(this.faderIndex))
     }
@@ -235,6 +242,23 @@ class Channel extends React.Component<
                     },
                 }}
             />
+        )
+    }
+
+    zeroButton = () => {
+        return (
+            <button
+                className={ClassNames('channel-zero-button', {
+                    on: this.props.fader.pgmOn,
+                    mute: this.props.fader.muteOn,
+                })}
+                onDoubleClick={(event) => {
+                    event.preventDefault()
+                    this.handleZeroLevel()
+                }}
+            >
+                {this.props.label}
+            </button>
         )
     }
 
@@ -450,6 +474,7 @@ class Channel extends React.Component<
                 <div className="fader">
                     {this.handleVuMeter()}
                     {this.fader()}
+                    {this.zeroButton()}
                 </div>
                 <div className="out-control">
                     {this.pgmButton()}
