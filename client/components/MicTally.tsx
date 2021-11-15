@@ -14,16 +14,23 @@ import {
 } from '../../server/constants/SOCKET_IO_DISPATCHERS'
 
 
-interface IChannelsInjectProps {
+interface IMicTallyInjectProps {
     channels: IChannels
     faders: IFader[]
     settings: ISettings
 }
 
-class Channels extends React.Component<IChannelsInjectProps & Store> {
+interface IMicTallyState {
+    toggleTargetIndex: number | null
+}
+
+class MicTally extends React.Component<IMicTallyInjectProps & Store, IMicTallyState> {
     constructor(props: any) {
         super(props)
         this.props.settings.showMonitorOptions = -1
+        this.state = {
+          toggleTargetIndex: null
+        }
     }
 
     componentWillMount() {
@@ -34,8 +41,20 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
         document.body.classList.remove('v-mic-tally')
     }
 
+    preToggleFader(index: number) {
+      const fader = this.props.faders[index]
+      if (!fader || fader.muteOn) {
+        return
+      }
+      this.setState({ toggleTargetIndex: index })
+    }
+    clearToggleFaderIndex() {
+      this.setState({ toggleTargetIndex: null })
+    }
+
     toggleFader(index: number) {
       const fader = this.props.faders[index]
+      const faderLabel = getFaderLabel(index)
 
       if (fader.muteOn) {
         return
@@ -46,21 +65,28 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
       } else {
         window.socketIoClient.emit(SOCKET_TOGGLE_PGM, index)
       }
+      this.clearToggleFaderIndex()
+    }
+
+    faderIsOn(index: number) {
+      const fader = this.props.faders[index]
+      return Boolean(fader && (fader.pgmOn || fader.voOn) && !fader.muteOn)
     }
 
     render() {
+        const hasToggleTargetIndex = this.state.toggleTargetIndex !== null
         return (
             <div className="mic-tally-view">
-                <ul className="mic-tally-list">
+                <ul className={`mic-tally-list${ !hasToggleTargetIndex ? ' active' : '' }`}>
                 { this.props.faders
                     .map((fader, index) => {
                         if (!fader.showInMiniMonitor) {
                             return
                         }
-                        const isOn = (fader.pgmOn || fader.voOn) && !fader.muteOn
+                        const isOn = this.faderIsOn(index)
                         return (
                             <li className="c-mic-tally" key={index}>
-                                <div onClick={() => this.toggleFader(index)} className={`c-mic-tally__status${isOn ? ' on': ''}${fader.muteOn ? ' muted' : ''}`}>
+                                <div onClick={() => this.preToggleFader(index)} className={`c-mic-tally__status${isOn ? ' on': ''}${fader.muteOn ? ' muted' : ''}`}>
                                   <div className="c-mic-tally__status__content">
                                     { isOn ? 'ON' : 'OFF' }
                                   </div>
@@ -71,12 +97,21 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                     })
                   }
                 </ul>
+                <div className={`c-mic-tally__toggle-prompt${hasToggleTargetIndex ? ' active' : ''}`}>
+                    <div className="c-mic-tally__toggle-prompt__content">
+                    <p>Are you sure you want to turn '{ getFaderLabel(this.state.toggleTargetIndex) }' {this.faderIsOn(this.state.toggleTargetIndex) ? 'OFF' : 'ON'}?</p>
+                    <div className='c-mic-tally__toggle-prompt__actions'>
+                      <button className="apply" onClick={() => this.toggleFader(this.state.toggleTargetIndex)}>Turn {this.faderIsOn(this.state.toggleTargetIndex) ? 'OFF' : 'ON'}</button>
+                      <button className="cancel" onClick={() => this.clearToggleFaderIndex()}>Cancel</button>
+                    </div>
+                    </div>
+                </div>
             </div>
         )
     }
 }
 
-const mapStateToProps = (state: any): IChannelsInjectProps => {
+const mapStateToProps = (state: any): IMicTallyInjectProps => {
     return {
         channels: state.channels[0].chMixerConnection[0].channel,
         faders: state.faders[0].fader,
@@ -84,6 +119,6 @@ const mapStateToProps = (state: any): IChannelsInjectProps => {
     }
 }
 
-export default connect<IChannelsInjectProps, any, any>(mapStateToProps)(
-    Channels
+export default connect<IMicTallyInjectProps, any, any>(mapStateToProps)(
+    MicTally
 )
