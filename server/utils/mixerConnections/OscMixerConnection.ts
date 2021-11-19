@@ -85,7 +85,7 @@ export class OscMixerConnection {
     setupMixerConnection() {
         this.oscConnection
             .on('ready', () => {
-                logger.info('Receiving state of desk', {})
+                logger.info('Receiving state of desk')
                 this.initialCommands()
 
                 this.mixerOnline(true)
@@ -100,7 +100,7 @@ export class OscMixerConnection {
                     )
                     this.mixerOnline(true)
                 }
-                logger.verbose('Received OSC message: ' + message.address, {})
+                logger.trace(`Received OSC message: ${message.address}`)
 
                 if (
                     this.checkOscCommand(
@@ -264,13 +264,8 @@ export class OscMixerConnection {
                         state.channels[0].chMixerConnection[this.mixerIndex]
                             .channel[ch - 1].auxLevel[auxIndex] > -1
                     ) {
-                        logger.verbose(
-                            'Aux Message Channel : ' +
-                                ch +
-                                '  Aux Index :' +
-                                auxIndex +
-                                ' Level : ' +
-                                message.args[0]
+                        logger.trace(
+                            `Aux Message Channel: ${ch}\n  Aux Index: ${auxIndex}\n  Level: ${message.args[0]}`
                         )
                         store.dispatch(
                             storeSetAuxLevel(
@@ -325,33 +320,30 @@ export class OscMixerConnection {
                     )
                 } else {
                     this.checkFxCommands(message)
-                    logger.verbose(
-                        'Unknown OSC message: ' + message.address,
-                        {}
-                    )
+                    logger.trace(`Unknown OSC message: ${message.address}`)
                 }
             })
             .on('error', (error: any) => {
                 global.mainThreadHandler.updateFullClientStore()
-                logger.error('Error : ' + String(error), {})
+                logger.error(`Error: ${error}`)
             })
             .on('disconnect', () => {
                 this.mixerOnline(false)
-                logger.info('Lost OSC connection', {})
+                logger.info('Lost OSC connection')
             })
 
         this.oscConnection.open()
         logger.info(
-            `OSC listening on port ` +
-                String(state.settings[0].mixers[this.mixerIndex].localOscPort),
-            {}
+            `OSC listening on port ${
+                state.settings[0].mixers[this.mixerIndex].localOscPort
+            }`
         )
 
         //Ping OSC mixer if mixerProtocol needs it.
         if (this.mixerProtocol.pingTime > 0) {
             let oscTimer = setInterval(() => {
                 this.pingMixerCommand()
-                logger.debug(`Send buffer Size : ${this.commandBuffer.length}`)
+                logger.debug(`Send buffer Size: ${this.commandBuffer.length}`)
             }, this.mixerProtocol.pingTime)
         }
 
@@ -470,7 +462,7 @@ export class OscMixerConnection {
                 )
             }
 
-            console.log(fxKey)
+            logger.trace(fxKey)
         })
     }
 
@@ -510,7 +502,7 @@ export class OscMixerConnection {
             : channel.toString()
         let message = oscMessage.replace('{channel}', channelString)
         if (message != 'none') {
-            logger.verbose('Sending OSC command :' + message, {})
+            logger.trace(`Sending OSC command: ${message}`)
             this.sendBuffered({
                 address: message,
                 args: [
@@ -544,7 +536,7 @@ export class OscMixerConnection {
             ? ('0' + String(auxSend)).slice(-2)
             : String(auxSend)
         message = message.replace('{argument}', auxSendNumber)
-        logger.verbose('Initial Aux Message : ' + message)
+        logger.trace(`Initial Aux Message: ${message}`)
         if (message != 'none') {
             this.sendBuffered({
                 address: message,
@@ -724,7 +716,7 @@ export class OscMixerConnection {
     }
 
     loadMixerPreset(presetName: string) {
-        logger.info('Loading preset : ' + presetName)
+        logger.info(`Loading preset: ${presetName}`)
         if (this.mixerProtocol.presetFileExtension === 'X32') {
             let data = JSON.parse(
                 fs.readFileSync(path.resolve('storage', presetName))

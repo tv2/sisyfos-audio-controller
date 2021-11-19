@@ -216,16 +216,13 @@ export class CasparCGConnection {
                     }
                 })
                 .on('error', (error: any) => {
-                    logger.error('Error : ' + JSON.stringify(error))
-                    logger.info('Lost OSC connection')
+                    logger.data(error).error('Lost OSC connection')
                 })
 
             this.oscClient.open()
+            const remoteIp = state.settings[0].mixers[this.mixerIndex].deviceIp
             logger.info(
-                'Listening for status on CasparCG: ' +
-                    state.settings[0].mixers[this.mixerIndex].deviceIp +
-                    ':' +
-                    remotePort
+                `Listening for status on CasparCG: ${remoteIp}:${remotePort}`
             )
         }
 
@@ -278,7 +275,7 @@ export class CasparCGConnection {
         return Math.min(Math.max(volume, 0), 3.2) // clamp between 0 and 3.2
     }
     controlVolume = (channel: number, layer: number, value: number) => {
-        logger.verbose(`Set ${channel}-${layer} volume = ${value}`)
+        logger.trace(`Set ${channel}-${layer} volume = ${value}`)
         this.syncCommand = this.syncCommand
             .then(() =>
                 this.connection
@@ -290,9 +287,7 @@ export class CasparCGConnection {
                         undefined
                     )
                     .catch((e: any) => {
-                        logger.error(
-                            'Failed to send command' + JSON.stringify(e)
-                        )
+                        logger.data(e).error('Failed to send command')
                     })
             )
             .then(() => {})
@@ -362,9 +357,7 @@ export class CasparCGConnection {
             })
             .then(() => {})
             .catch((e: any) => {
-                logger.error(
-                    'Failed to change channel setting' + JSON.stringify(e)
-                )
+                logger.data(e).error('Failed to change channel setting')
             })
     }
 
@@ -381,7 +374,7 @@ export class CasparCGConnection {
         ) {
             return
         }
-        logger.verbose('Update PFL state for ' + channelIndex)
+        logger.trace(`Update PFL state for ${channelIndex}`)
         const channel: IChannel =
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
@@ -474,7 +467,7 @@ export class CasparCGConnection {
         ) {
             return
         }
-        logger.verbose('Update NEXT AUX for ' + channelIndex)
+        logger.trace(`Update NEXT AUX for ${channelIndex}`)
         if (this.mixerProtocol.toMixer.NEXT_AUX_FADER_LEVEL) {
             const faderIndex: number =
                 state.channels[0].chMixerConnection[this.mixerIndex].channel[
@@ -546,7 +539,7 @@ export class CasparCGConnection {
             return
         }
 
-        logger.verbose(
+        logger.trace(
             `updateFadeIOLevel: channelId: ${channelIndex}, fader.pflOn = "${state.faders[0].fader[channelIndex].pflOn}". faderLevel = "${state.faders[0].fader[channelIndex].faderLevel}"`
         )
 

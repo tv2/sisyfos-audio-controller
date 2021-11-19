@@ -56,11 +56,11 @@ export class StuderVistaMixerConnection {
         this.mixerConnection
             .on('end', () => {
                 // When connection disconnected.
-                logger.info('Ember Client socket disconnect. ')
+                logger.info('Ember Client socket disconnect.')
                 this.mixerOnline(false)
             })
             .on('error', (err: any) => {
-                logger.error(JSON.stringify(err))
+                logger.error(err)
                 this.mixerOnline(false)
             })
             .on('connect', () => {
@@ -105,10 +105,7 @@ export class StuderVistaMixerConnection {
                 ) {
                     this.handleEmberMuteCommand(message)
                 } else {
-                    logger.verbose(
-                        'Unknown Vista message message: ' + message,
-                        {}
-                    )
+                    logger.trace(`Unknown Vista message message: ${message}`)
                 }
             })
         })
@@ -366,7 +363,7 @@ export class StuderVistaMixerConnection {
                 )
                 this.mixerConnection.write(buf)
             }
-            logger.verbose('WRITING PING TO MIXER')
+            logger.trace('WRITING PING TO MIXER')
         })
     }
 
@@ -394,7 +391,7 @@ export class StuderVistaMixerConnection {
                                 return parseInt(val, 16)
                             })
                         )
-                        // console.log('Pinging : ', buf)
+                        // logger.debug(`Pinging: ${buf}`)
                         this.mixerConnection.write(buf)
                     }
                 }
@@ -418,7 +415,7 @@ export class StuderVistaMixerConnection {
                     return parseInt(val, 16)
                 })
             )
-            // console.log('Pinging : ', buf)
+            // logger.debug(`Pinging: ${buf}`)
             this.mixerConnection.write(buf)
         }
     }
@@ -469,7 +466,7 @@ export class StuderVistaMixerConnection {
             })
         )
         this.mixerConnection.write(buf)
-        logger.verbose('Send HEX: ' + mixerMessage)
+        logger.trace(`Send HEX: ${mixerMessage}`)
     }
 
     sendOutLevelMessage(channel: number, value: number) {
@@ -490,7 +487,7 @@ export class StuderVistaMixerConnection {
 
         let channelByte = new Uint8Array([channelVal & 0x000000ff])
 
-        logger.verbose('Fader value : ' + Math.floor(value))
+        logger.trace(`Fader value: ${Math.floor(value)}`)
         let BERwriter = new BER.Writer()
 
         BERwriter.startSequence()
@@ -517,7 +514,7 @@ export class StuderVistaMixerConnection {
             })
         )
         this.mixerConnection.write(buf)
-        logger.verbose('Send HEX: ' + levelMessage)
+        logger.trace(`Send HEX: ${levelMessage}`)
     }
 
     sendOutRequest(mixerMessage: string, channel: number) {
@@ -533,7 +530,7 @@ export class StuderVistaMixerConnection {
         if (level < -90) {
             level = -90
         }
-        // console.log('Log level :', level)
+        // logger.debug(`Log level: ${level}`)
 
         this.sendOutLevelMessage(channelIndex + 1, level)
     }
@@ -543,7 +540,7 @@ export class StuderVistaMixerConnection {
         if (level < -90) {
             level = -90
         }
-        // console.log('Log level :', level)
+        // logger.debug(`Log level: ${level}`)
 
         this.sendOutLevelMessage(channelIndex + 1, level)
     }

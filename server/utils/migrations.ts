@@ -18,11 +18,8 @@ export const checkVersion = (currentSettings: ISettings): ISettings => {
 }
 
 const migrateVersion = (currentSettings: ISettings): ISettings => {
-    console.log(
-        'Migrating VERSION from',
-        currentSettings.sisyfosVersion,
-        ' to ',
-        version
+    logger.info(
+        `Migrating VERSION from ${currentSettings.sisyfosVersion} to ${version}`
     )
     let newSettings = currentSettings
     if (versionAsNumber(version) >= versionAsNumber('4.7.0')) {
@@ -59,12 +56,9 @@ const migrate45to47 = (currentSettings: ISettings): ISettings => {
             'utf8',
             (error: any) => {
                 if (error) {
-                    logger.error('Error saving Snapshot' + String(error), {})
+                    logger.data(error).error('Error saving Snapshot')
                 } else {
-                    logger.verbose(
-                        'Snapshot ' + fileName + ' Saved to storage folder',
-                        {}
-                    )
+                    logger.trace(`Snapshot ${fileName} Saved to storage folder`)
                 }
             }
         )
@@ -76,10 +70,9 @@ const migrate45to47 = (currentSettings: ISettings): ISettings => {
         JSON.stringify(currentSettings),
         'utf8',
         (error: any) => {
-            logger.error(
-                'Migration failed - error writing settings.json file: ',
-                error
-            )
+            logger
+                .data(error)
+                .error('Migration failed - error writing settings.json file')
         }
     )
     return currentSettings

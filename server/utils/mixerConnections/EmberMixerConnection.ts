@@ -61,10 +61,7 @@ export class EmberMixerConnection {
             ) {
                 logger.error('Ember connection not establised')
             } else {
-                logger.error(
-                    'Ember connection unknown error, ' + error.message,
-                    error
-                )
+                logger.data(error).error('Ember connection unknown error')
             }
         })
         this.emberConnection.on('disconnected', () => {
@@ -229,13 +226,11 @@ export class EmberMixerConnection {
         mixerMessage: string,
         cb: (node: Model.TreeElement<Model.EmberElement>) => void
     ) {
-        logger.verbose(
-            'subscribe to ' +
-                this._insertChannelName(
-                    mixerMessage,
-                    String(channelTypeIndex + 1)
-                )
+        const channelName = this._insertChannelName(
+            mixerMessage,
+            String(channelTypeIndex + 1)
         )
+        logger.trace(`Subscribe to ${channelName}`)
         try {
             const node = await this.emberConnection.getElementByPath(
                 this._insertChannelName(
@@ -249,7 +244,7 @@ export class EmberMixerConnection {
 
             cb(node)
         } catch (e) {
-            logger.debug('error when subscribing to fader label', e)
+            logger.data(e).debug('Error when subscribing to fader label')
         }
     }
 
@@ -275,7 +270,7 @@ export class EmberMixerConnection {
                     state.channels[0].chMixerConnection[this.mixerIndex]
                         .channel[ch - 1]
 
-                logger.verbose(
+                logger.trace(
                     `Receiving Level from Ch "${ch}", val: ${val}, level: ${level}`
                 )
 
@@ -291,7 +286,7 @@ export class EmberMixerConnection {
                     })
 
                     // toggle pgm based on level
-                    logger.verbose(`Set Channel ${ch} pgmOn ${level > 0}`)
+                    logger.trace(`Set Channel ${ch} pgmOn ${level > 0}`)
                     store.dispatch(
                         storeSetPgm(channel.assignedFader, level > 0)
                     )
@@ -327,7 +322,7 @@ export class EmberMixerConnection {
             mixerMessage,
             (node) => {
                 if (node.contents.type === Model.ElementType.Node) {
-                    logger.verbose(
+                    logger.trace(
                         `Receiving Label from Ch "${ch}", val: ${node.contents.description}`
                     )
                     store.dispatch(
@@ -338,7 +333,7 @@ export class EmberMixerConnection {
                         )
                     )
                 } else {
-                    logger.verbose(
+                    logger.trace(
                         `Receiving Label from Ch "${ch}", val: ${
                             (node.contents as Model.Parameter).value
                         }`
@@ -372,7 +367,7 @@ export class EmberMixerConnection {
             channelTypeIndex,
             mixerMessage,
             (node) => {
-                logger.verbose(
+                logger.trace(
                     `Receiving PFL from Ch "${ch}", val: ${
                         (node.contents as Model.Parameter).value
                     }`
@@ -404,7 +399,7 @@ export class EmberMixerConnection {
             channelTypeIndex,
             mixerMessage,
             (node) => {
-                logger.verbose(
+                logger.trace(
                     `Receiving input gain from Ch "${ch}", val: ${
                         (node.contents as Model.Parameter).value
                     }`
@@ -445,7 +440,7 @@ export class EmberMixerConnection {
                 channelTypeIndex,
                 mixerMessage,
                 (node) => {
-                    logger.verbose(
+                    logger.trace(
                         `Receiving input selector from Ch "${ch}", val: ${i}: ${
                             (node.contents as Model.Parameter).value
                         }`
@@ -454,7 +449,7 @@ export class EmberMixerConnection {
                     let value = (node.contents as Model.Parameter).value
 
                     if (value === proto.value) {
-                        logger.verbose(
+                        logger.trace(
                             `Dispatching input selector Ch "${ch}", selected: ${
                                 i + 1
                             }`
@@ -487,7 +482,7 @@ export class EmberMixerConnection {
             channelTypeIndex,
             mixerMessage,
             (node) => {
-                logger.verbose(
+                logger.trace(
                     `Update received for ch inp sel capability: ${
                         (node.contents as Model.Parameter).value
                     }`
@@ -510,13 +505,13 @@ export class EmberMixerConnection {
 
         const updateState = () => {
             if (llState && !rrState) {
-                logger.verbose(`Input selector state: ll`)
+                logger.trace(`Input selector state: ll`)
                 store.dispatch(storeInputSelector(channel.assignedFader, 2))
             } else if (rrState && !llState) {
-                logger.verbose(`Input selector state: rr`)
+                logger.trace(`Input selector state: rr`)
                 store.dispatch(storeInputSelector(channel.assignedFader, 3))
             } else {
-                logger.verbose(`Input selector state: lr`)
+                logger.trace(`Input selector state: lr`)
                 store.dispatch(storeInputSelector(channel.assignedFader, 1))
             }
             global.mainThreadHandler.updatePartialStore(channel.assignedFader)
@@ -531,7 +526,7 @@ export class EmberMixerConnection {
             channelTypeIndex,
             llMixerMessage,
             (node) => {
-                logger.verbose(
+                logger.trace(
                     `Update received for ch inp sel: ll: ${
                         (node.contents as Model.Parameter).value
                     }`
@@ -544,7 +539,7 @@ export class EmberMixerConnection {
             channelTypeIndex,
             rrMixerMessage,
             (node) => {
-                logger.verbose(
+                logger.trace(
                     `Update received for ch inp sel: rr: ${
                         (node.contents as Model.Parameter).value
                     }`
@@ -570,7 +565,7 @@ export class EmberMixerConnection {
                 channelTypeIndex,
                 mixerMessage,
                 (node) => {
-                    logger.verbose(
+                    logger.trace(
                         `Update received for amix capability: ${
                             (node.contents as Model.Parameter).value
                         }`
@@ -597,7 +592,7 @@ export class EmberMixerConnection {
             channelTypeIndex,
             mixerMessage,
             (node) => {
-                logger.verbose(
+                logger.trace(
                     `Receiving AMix from Ch "${ch}", val: ${
                         (node.contents as Model.Parameter).value
                     }`
@@ -635,7 +630,7 @@ export class EmberMixerConnection {
         type: string
     ) {
         let message = this._insertChannelName(mixerMessage, channel.toString())
-        logger.verbose('Sending out message : ' + message + ', val: ' + value)
+        logger.trace('Sending out message : ' + message + ', val: ' + value)
 
         this.emberConnection
             .getElementByPath(message)
@@ -643,28 +638,18 @@ export class EmberMixerConnection {
                 if (element.contents.factor && typeof value === 'number') {
                     value *= element.contents.factor
                 }
-                logger.verbose(
-                    'Sending out message : ' +
-                        message +
-                        ', val: ' +
-                        value +
-                        ', typeof: ' +
-                        typeof value
+                logger.trace(
+                    `Sending out message: ${message}\n  val: ${value}\n  typeof: ${typeof value}`
                 )
                 this.emberConnection.setValue(element, value)
             })
             .catch((error: any) => {
-                console.log('Ember Error ', error)
+                logger.data(error).error('Ember Error')
             })
     }
 
     sendOutLevelMessage(channel: number, value: number) {
-        logger.verbose(
-            'Sending out Level: ' +
-                String(value) +
-                ' To CH : ' +
-                String(channel)
-        )
+        logger.trace(`Sending out Level: ${value}\n  To CH: ${channel}`)
         const node = this.emberNodeObject[channel - 1]
         if (!node) return
         if (node.contents.factor) {
@@ -673,7 +658,7 @@ export class EmberMixerConnection {
         this.emberConnection
             .setValue(this.emberNodeObject[channel - 1], value, false)
             .catch((error: any) => {
-                console.log('Ember Error ', error)
+                logger.data(error).error('Ember Error')
             })
     }
 
@@ -800,7 +785,7 @@ export class EmberMixerConnection {
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
 
-        console.log('select in', channelIndex, inputSelected)
+        logger.debug(`select in ${channelIndex} ${inputSelected}`)
 
         if (this.mixerProtocol.label === LawoMC2.label) {
             if (inputSelected === 1) {
@@ -888,7 +873,7 @@ export class EmberMixerConnection {
     }
 
     async loadMixerPreset(presetName: string) {
-        logger.info('Loading preset : ' + presetName)
+        logger.info(`Loading preset: ${presetName}`)
         if (this.mixerProtocol.presetFileExtension === 'MC2') {
             let data = JSON.parse(
                 fs.readFileSync(path.resolve('storage', presetName)).toString()
