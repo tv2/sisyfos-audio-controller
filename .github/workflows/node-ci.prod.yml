@@ -78,6 +78,7 @@ jobs:
       version: ${{ steps.tag_version.outputs.new_version || steps.tag_version.outputs.previous_version }}
       changelog: ${{ steps.tag_version.outputs.changelog }}
       bumped: ${{ steps.tag_version.outputs.new_tag != '' }}
+      commit_sha: ${{ steps.commit_sha.outputs.commit_sha }}
     steps:
       - name: Access repository
         uses: actions/checkout@v2
@@ -107,6 +108,7 @@ jobs:
           mv /tmp/tmp-changelog.md CHANGELOG.md
 
       - name: Commit and push changes to package.json and CHANGELOG.md
+        id: commit_sha
         if: steps.tag_version.outputs.new_tag != ''
         uses: EndBug/add-and-commit@v7
         with:
@@ -141,6 +143,8 @@ jobs:
     steps:
       - name: Access repository
         uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.bump-version.outputs.commit_sha }}
       - name: Ensure commits from bump-version
         run: git pull
       - uses: ./.github/actions/cache
@@ -177,6 +181,8 @@ jobs:
     steps:
       - name: Access repository
         uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.bump-version.outputs.commit_sha }}
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
