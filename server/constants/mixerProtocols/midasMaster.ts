@@ -81,6 +81,9 @@ export const MidasMaster: IMixerProtocol = {
             mixerMessage: '/ch/{channel}/dyn/ratio',
         },
         {
+            mixerMessage: '/ch/{channel}/dyn/on',
+        },
+        {
             mixerMessage: '/ch/{channel}/delay/time',
         },
         {
@@ -135,6 +138,14 @@ export const MidasMaster: IMixerProtocol = {
                         valueLabel: ' dB',
                     },
                 ],
+                [fxParamsList.CompOnOff]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/on',
+                        minLabel: 0,
+                        maxLabel: 1,
+                        label: 'Comp On/Off',
+                    },
+                ],
                 [fxParamsList.CompThrs]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/thr',
@@ -147,9 +158,25 @@ export const MidasMaster: IMixerProtocol = {
                 [fxParamsList.CompRatio]: [
                     {
                         mixerMessage: '/ch/{channel}/dyn/ratio',
-                        minLabel: 1,
-                        maxLabel: 10,
+                        min: 0,
+                        max: 11,
+                        minLabel: 0,
+                        maxLabel: 11,
                         label: 'Ratio',
+                        valueAsLabels: [
+                            '1.1',
+                            '1.3',
+                            '1.5',
+                            '2.0',
+                            '2.5',
+                            '3.0',
+                            '4.0',
+                            '5.0',
+                            '7.0',
+                            '10',
+                            '20',
+                            '100',
+                        ],
                         valueLabel: ' :1',
                     },
                 ],
@@ -339,6 +366,14 @@ export const MidasMaster: IMixerProtocol = {
                         maxLabel: 18,
                         label: 'Gain Trim',
                         valueLabel: ' dB',
+                    },
+                ],
+                [fxParamsList.CompOnOff]: [
+                    {
+                        mixerMessage: '/ch/{channel}/dyn/on',
+                        minLabel: 0,
+                        maxLabel: 1,
+                        label: 'Comp On/Off',
                     },
                 ],
                 [fxParamsList.CompThrs]: [

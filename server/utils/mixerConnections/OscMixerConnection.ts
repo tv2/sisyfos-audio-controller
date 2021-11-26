@@ -449,21 +449,19 @@ export class OscMixerConnection {
             }
 
             let fxKey = keyName as keyof typeof fxParamsList
-            if (
-                this.checkOscCommand(
-                    message.address,
-                    this.mixerProtocol.channelTypes[0].fromMixer[
-                        fxParamsList[fxKey]
-                    ][0].mixerMessage
-                )
-            ) {
+            let fxMessage = this.mixerProtocol.channelTypes[0].fromMixer[
+                fxParamsList[fxKey]
+            ][0]
+            let range: number = fxMessage.max - fxMessage.min || 1
+            if (this.checkOscCommand(message.address, fxMessage.mixerMessage)) {
                 let ch = message.address.split('/')[this.cmdChannelIndex]
+
                 store.dispatch(
                     storeFaderFx(
                         fxParamsList[fxKey],
                         state.channels[0].chMixerConnection[this.mixerIndex]
                             .channel[ch - 1].assignedFader,
-                        message.args[0]
+                        message.args[0] / range
                     )
                 )
                 global.mainThreadHandler.updatePartialStore(
@@ -745,6 +743,9 @@ export class OscMixerConnection {
                     },
                 ],
             })
+            setTimeout(() => {
+                this.initialCommands()
+            }, 1000)
         }
     }
 

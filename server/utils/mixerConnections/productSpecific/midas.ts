@@ -1,6 +1,10 @@
 import { state } from '../../../reducers/store'
 import { sendVuLevel, VuType } from '../../vuServer'
 
+const calcVuLevel = (level: number) => {
+    return Math.log(level) / Math.log(600) + 1
+}
+
 export const midasMeter = (mixerIndex: number, message: any) => {
     const DATA_OFFSET = 4
     let uint8bytes = Uint8Array.from(message[0])
@@ -19,7 +23,7 @@ export const midasMeter = (mixerIndex: number, message: any) => {
             assignedFader >= 0 &&
             assignedFader < state.settings[0].numberOfFaders
         ) {
-            level = dataview.getFloat32(4 * i + DATA_OFFSET, true)
+            level = calcVuLevel(dataview.getFloat32(4 * i + DATA_OFFSET, true))
             reductionLevel = dataview.getFloat32(
                 4 * (i + 64) + DATA_OFFSET,
                 true

@@ -235,12 +235,17 @@ class ChanStrip extends React.PureComponent<
         let valueLabel =
             window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
                 .valueLabel ?? ''
+        let valueAsLabels =
+            window.mixerProtocol.channelTypes[0].fromMixer[fxParam]?.[0]
+                .valueAsLabels
         return (
             <div className="parameter-text">
                 {window.mixerProtocol.channelTypes[0].fromMixer[fxParam][0]
                     .label ?? ''}
                 <div className="parameter-mini-text">
-                    {maxLabel + valueLabel}
+                    {!valueAsLabels
+                        ? maxLabel + valueLabel
+                        : valueAsLabels[valueAsLabels.length - 1] + valueLabel}
                 </div>
                 <ReactSlider
                     className="chan-strip-fader"
@@ -256,11 +261,18 @@ class ChanStrip extends React.PureComponent<
                     }
                     renderThumb={(props: any, state: any) => (
                         <div {...props}>
-                            {Math.round(
-                                (maxLabel - minLabel) *
-                                    parseFloat(state.valueNow) +
-                                    minLabel
-                            )}
+                            {!valueAsLabels
+                                ? Math.round(
+                                      (maxLabel - minLabel) *
+                                          parseFloat(state.valueNow) +
+                                          minLabel
+                                  )
+                                : valueAsLabels[
+                                      Math.round(
+                                          parseFloat(state.valueNow) *
+                                              (maxLabel - minLabel)
+                                      )
+                                  ]}
                             {valueLabel}
                         </div>
                     )}
@@ -269,7 +281,9 @@ class ChanStrip extends React.PureComponent<
                     }}
                 />
                 <div className="parameter-mini-text">
-                    {minLabel + valueLabel}
+                    {!valueAsLabels
+                        ? minLabel + valueLabel
+                        : valueAsLabels[0] + valueLabel}
                 </div>
             </div>
         )
@@ -356,7 +370,7 @@ class ChanStrip extends React.PureComponent<
                                 </div>
                             </React.Fragment>
                         )}
-                                                {hasGainTrim && (
+                        {hasGainTrim && (
                             <React.Fragment>
                                 <div className="item">
                                     <div className="title">INPUT</div>
@@ -382,6 +396,8 @@ class ChanStrip extends React.PureComponent<
                                         )}
                                         <p className="zero-comp">______</p>
                                         {this.gainReduction()}
+                                        <p className="reduction-6db">___6dB</p>
+                                        <p className="reduction-12db">___12dB</p>
                                     </div>
                                 </div>
                             </React.Fragment>

@@ -1,41 +1,4 @@
-import {
-    CLEAR_PST,
-    FADE_TO_BLACK,
-    NEXT_MIX,
-    SET_FADER_LABEL,
-    SET_COMPLETE_FADER_STATE,
-    SET_FADER_LEVEL,
-    SET_INPUT_GAIN,
-    SET_MUTE,
-    SET_PFL,
-    SET_PGM,
-    SET_PST,
-    SET_PST_VO,
-    SET_VO,
-    SET_VU_REDUCTION_LEVEL,
-    SHOW_CHANNEL,
-    IGNORE_AUTOMATION,
-    TOGGLE_MUTE,
-    TOGGLE_PFL,
-    TOGGLE_PGM,
-    TOGGLE_PST,
-    TOGGLE_VO,
-    X_MIX,
-    SET_FADER_FX,
-    SET_FADER_MONITOR,
-    SET_SINGLE_FADER_STATE,
-    SHOW_IN_MINI_MONITOR,
-    SET_INPUT_SELECTOR,
-    SET_CHANNEL_DISABLED,
-    TOGGLE_AMIX,
-    SET_AMIX,
-    SET_CAPABILITY,
-    TOGGLE_ALL_MANUAL,
-    SET_ASSIGNED_CHANNEL,
-    REMOVE_ALL_ASSIGNED_CHANNELS,
-    UPDATE_LABEL_LIST,
-    FLUSH_FADER_LABELS,
-} from './faderActions'
+import * as FADER_ACTIONS from './faderActions'
 
 export interface IFaders {
     fader: Array<IFader>
@@ -55,6 +18,7 @@ export interface IFader {
     userLabel?: string
     pgmOn: boolean
     voOn: boolean
+    slowFadeOn: boolean
     pstOn: boolean
     pstVoOn: boolean
     pflOn: boolean
@@ -98,6 +62,7 @@ const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
             label: '',
             pgmOn: false,
             voOn: false,
+            slowFadeOn: false,
             pstOn: false,
             pstVoOn: false,
             pflOn: false,
@@ -135,7 +100,7 @@ export const faders = (
     }
 
     switch (action.type) {
-        case SET_VU_REDUCTION_LEVEL:
+        case FADER_ACTIONS.SET_VU_REDUCTION_LEVEL:
             if (
                 typeof nextState[0].vuMeters[action.faderIndex] !== 'undefined'
             ) {
@@ -144,7 +109,7 @@ export const faders = (
                 ].reductionVal = parseFloat(action.level)
             }
             return nextState
-        case SET_COMPLETE_FADER_STATE:
+        case FADER_ACTIONS.SET_COMPLETE_FADER_STATE:
             let emptyState = defaultFadersReducerState(
                 action.numberOfTypeChannels
             )
@@ -160,25 +125,25 @@ export const faders = (
                 })
             }
             return nextState
-        case SET_SINGLE_FADER_STATE:
+        case FADER_ACTIONS.SET_SINGLE_FADER_STATE:
             nextState[0].fader[action.faderIndex] = action.state
             return nextState
-        case SET_FADER_LEVEL:
+        case FADER_ACTIONS.SET_FADER_LEVEL:
             nextState[0].fader[action.faderIndex].faderLevel = parseFloat(
                 action.level
             )
             return nextState
-        case SET_INPUT_GAIN:
+        case FADER_ACTIONS.SET_INPUT_GAIN:
             nextState[0].fader[action.faderIndex].inputGain = parseFloat(
                 action.level
             )
             return nextState
-        case SET_INPUT_SELECTOR:
+        case FADER_ACTIONS.SET_INPUT_SELECTOR:
             nextState[0].fader[action.faderIndex].inputSelector = parseFloat(
                 action.selected
             )
             return nextState
-        case SET_FADER_FX:
+        case FADER_ACTIONS.SET_FADER_FX:
             if (!nextState[0].fader[action.faderIndex][action.fxParam]) {
                 nextState[0].fader[action.faderIndex][action.fxParam] = []
             }
@@ -186,34 +151,38 @@ export const faders = (
                 action.fxParam
             ][0] = parseFloat(action.level ?? 0)
             return nextState
-        case SET_FADER_MONITOR:
+        case FADER_ACTIONS.SET_FADER_MONITOR:
             nextState[0].fader[action.faderIndex].monitor = action.auxIndex
             return nextState
-        case SET_FADER_LABEL:
+        case FADER_ACTIONS.SET_FADER_LABEL:
             if (!nextState[0].fader[action.faderIndex]) return nextState
             nextState[0].fader[action.faderIndex].label = action.label
             return nextState
-        case TOGGLE_PGM:
+        case FADER_ACTIONS.TOGGLE_PGM:
             nextState[0].fader[action.faderIndex].pgmOn = !nextState[0].fader[
                 action.faderIndex
             ].pgmOn
             nextState[0].fader[action.faderIndex].voOn = false
             return nextState
-        case SET_PGM:
+        case FADER_ACTIONS.SET_PGM:
             nextState[0].fader[action.faderIndex].pgmOn = !!action.pgmOn
             nextState[0].fader[action.faderIndex].voOn = false
             return nextState
-        case TOGGLE_VO:
+        case FADER_ACTIONS.TOGGLE_VO:
             nextState[0].fader[action.faderIndex].voOn = !nextState[0].fader[
                 action.faderIndex
             ].voOn
             nextState[0].fader[action.faderIndex].pgmOn = false
             return nextState
-        case SET_VO:
+        case FADER_ACTIONS.SET_VO:
             nextState[0].fader[action.faderIndex].voOn = !!action.voOn
             nextState[0].fader[action.faderIndex].pgmOn = false
             return nextState
-        case TOGGLE_PST:
+        case FADER_ACTIONS.TOGGLE_SLOW_FADE:
+            nextState[0].fader[action.faderIndex].slowFadeOn = !nextState[0]
+                .fader[action.faderIndex].slowFadeOn
+            return nextState
+        case FADER_ACTIONS.TOGGLE_PST:
             if (nextState[0].fader[action.faderIndex].pstOn) {
                 nextState[0].fader[action.faderIndex].pstOn = false
                 // Disable toggle to pstVoOn, to enable change pstVoOn: true here:
@@ -226,47 +195,47 @@ export const faders = (
                 nextState[0].fader[action.faderIndex].pstVoOn = false
             }
             return nextState
-        case SET_PST:
+        case FADER_ACTIONS.SET_PST:
             nextState[0].fader[action.faderIndex].pstOn = !!action.pstOn
             nextState[0].fader[action.faderIndex].pstVoOn = false
             return nextState
-        case SET_PST_VO:
+        case FADER_ACTIONS.SET_PST_VO:
             nextState[0].fader[action.faderIndex].pstVoOn = !!action.pstVoOn
             nextState[0].fader[action.faderIndex].pstOn = false
             return nextState
-        case TOGGLE_PFL:
+        case FADER_ACTIONS.TOGGLE_PFL:
             nextState[0].fader[action.faderIndex].pflOn = !nextState[0].fader[
                 action.faderIndex
             ].pflOn
             return nextState
-        case SET_PFL:
+        case FADER_ACTIONS.SET_PFL:
             nextState[0].fader[action.faderIndex].pflOn = !!action.pflOn
             return nextState
-        case TOGGLE_MUTE:
+        case FADER_ACTIONS.TOGGLE_MUTE:
             nextState[0].fader[action.faderIndex].muteOn = !nextState[0].fader[
                 action.faderIndex
             ].muteOn
             return nextState
-        case SET_MUTE:
+        case FADER_ACTIONS.SET_MUTE:
             nextState[0].fader[action.faderIndex].muteOn = !!action.muteOn
             return nextState
-        case SHOW_CHANNEL:
+        case FADER_ACTIONS.SHOW_CHANNEL:
             nextState[0].fader[
                 action.faderIndex
             ].showChannel = !!action.showChannel
             return nextState
-        case SHOW_IN_MINI_MONITOR: //faderIndexz // showInMiniMonitor
+        case FADER_ACTIONS.SHOW_IN_MINI_MONITOR: //faderIndexz // showInMiniMonitor
             nextState[0].fader[
                 action.faderIndex
             ].showInMiniMonitor = !!action.showInMiniMonitor
             return nextState
-        case IGNORE_AUTOMATION: //channel // ignoreAutomation
+        case FADER_ACTIONS.IGNORE_AUTOMATION: //channel // ignoreAutomation
             nextState[0].fader[
                 action.faderIndex
             ].ignoreAutomation = !nextState[0].fader[action.faderIndex]
                 .ignoreAutomation
             return nextState
-        case X_MIX: //none
+        case FADER_ACTIONS.X_MIX: //none
             nextState[0].fader.forEach((item, index) => {
                 if (!state[0].fader[index].ignoreAutomation) {
                     let nextPgmOn = state[0].fader[index].pstOn
@@ -280,7 +249,7 @@ export const faders = (
                 }
             })
             return nextState
-        case NEXT_MIX: //none
+        case FADER_ACTIONS.NEXT_MIX: //none
             nextState[0].fader.forEach((item, index) => {
                 nextState[0].fader[index].pgmOn = state[0].fader[index].pstOn
                 nextState[0].fader[index].voOn = state[0].fader[index].pstVoOn
@@ -288,36 +257,36 @@ export const faders = (
                 nextState[0].fader[index].pstVoOn = false
             })
             return nextState
-        case FADE_TO_BLACK: //none
+        case FADER_ACTIONS.FADE_TO_BLACK: //none
             nextState[0].fader.forEach((item, index) => {
                 nextState[0].fader[index].pgmOn = false
                 nextState[0].fader[index].voOn = false
             })
             return nextState
-        case CLEAR_PST: //none
+        case FADER_ACTIONS.CLEAR_PST: //none
             nextState[0].fader.forEach((item, index) => {
                 nextState[0].fader[index].pstOn = false
                 nextState[0].fader[index].pstVoOn = false
             })
             return nextState
-        case SET_CHANNEL_DISABLED:
+        case FADER_ACTIONS.SET_CHANNEL_DISABLED:
             if (!nextState[0].fader[action.faderIndex]) return nextState
             nextState[0].fader[action.faderIndex].disabled = action.disabled
             return nextState
-        case TOGGLE_AMIX: //channel
+        case FADER_ACTIONS.TOGGLE_AMIX: //channel
             nextState[0].fader[action.faderIndex].amixOn = !nextState[0].fader[
                 action.faderIndex
             ].amixOn
             return nextState
-        case SET_AMIX: //channel
+        case FADER_ACTIONS.SET_AMIX: //channel
             nextState[0].fader[action.faderIndex].amixOn = action.state
             return nextState
-        case REMOVE_ALL_ASSIGNED_CHANNELS: //channel
+        case FADER_ACTIONS.REMOVE_ALL_ASSIGNED_CHANNELS: //channel
             nextState[0].fader.forEach((fader) => {
                 fader.assignedChannels = []
             })
             return nextState
-        case SET_ASSIGNED_CHANNEL:
+        case FADER_ACTIONS.SET_ASSIGNED_CHANNEL:
             if (action.assigned) {
                 let assignedChannels: IChannelReference[] =
                     nextState[0].fader[action.faderIndex].assignedChannels || []
@@ -354,7 +323,7 @@ export const faders = (
                 ].assignedChannels = assignedChannels
             }
             return nextState
-        case SET_CAPABILITY:
+        case FADER_ACTIONS.SET_CAPABILITY:
             nextState[0].fader[action.faderIndex].capabilities = {
                 ...nextState[0].fader[action.faderIndex].capabilities,
                 [action.capability]: action.enabled,
@@ -368,7 +337,7 @@ export const faders = (
                 delete nextState[0].fader[action.faderIndex].capabilities
             }
             return nextState
-        case TOGGLE_ALL_MANUAL:
+        case FADER_ACTIONS.TOGGLE_ALL_MANUAL:
             const isAllManual =
                 nextState[0].fader.find((f) => f.ignoreAutomation !== true) ===
                 undefined
@@ -383,7 +352,7 @@ export const faders = (
                 })
             }
             return nextState
-        case UPDATE_LABEL_LIST:
+        case FADER_ACTIONS.UPDATE_LABEL_LIST:
             console.log('update labels', action.update)
             Object.entries(action.update).forEach(
                 ([index, label]: [string, string]) => {
@@ -393,7 +362,7 @@ export const faders = (
                 }
             )
             return nextState
-        case FLUSH_FADER_LABELS:
+        case FADER_ACTIONS.FLUSH_FADER_LABELS:
             for (const fader of nextState[0].fader) {
                 fader.label = undefined
             }

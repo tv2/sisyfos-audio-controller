@@ -98,6 +98,23 @@
     margin-top: 81px;
 }
 
+.reduction-6db {
+    color: #445f4a;
+    width: 63px;
+    height: 2px;
+    margin-left: -58px;
+    margin-right: 30px;
+    margin-top: 108px;
+}
+.reduction-12db {
+    color: #5c3939;
+    width: 63px;
+    height: 2px;
+    margin-left: -88px;
+    margin-right: 30px;
+    margin-top: 152px;
+}
+
 .zero-monitor {
     width: 2px;
     height: 20px;

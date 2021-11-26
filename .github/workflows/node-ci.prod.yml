@@ -281,18 +281,11 @@ jobs:
           name: ${{ github.event.repository.name }}
           path: dist
 
-      - name: Get raw version
-        id: raw-version
-        uses: notiz-dev/github-action-json-property@release
-        with: 
-            path: 'package.json'
-            prop_path: 'version'
-
       - name: Extract version for tags
         id: version
         uses: ./.github/actions/extract-version
         with:
-          version: ${{ steps.raw-version.outputs.prop }}
+          version: ${{ needs.bump-version.outputs.version }}
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1

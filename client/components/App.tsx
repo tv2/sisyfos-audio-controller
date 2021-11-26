@@ -111,7 +111,6 @@ class App extends React.Component<IAppProps> {
     render() {
         const urlParams = new URLSearchParams(window.location.search)
         const viewId = urlParams.get('view')
-        const isMiniMonitor = urlParams.get('minimonitor') === '1'
         return (
             <div>
                 {!this.props.store.settings[0].serverOnline && (
@@ -119,7 +118,7 @@ class App extends React.Component<IAppProps> {
                         {this.props.t('TRYING TO CONNECT TO SISYFOS SERVER')}
                     </div>
                 )}
-                { (viewId === 'minimonitor' || isMiniMonitor) ? (
+                { (viewId === 'minimonitor') ? (
                     <MiniChannels />
                 ) : (viewId === 'mic-tally') ? (
                     <MicTally />

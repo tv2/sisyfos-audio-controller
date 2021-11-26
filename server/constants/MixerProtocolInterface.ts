@@ -20,6 +20,7 @@ export enum fxParamsList {
     CompAttack,
     CompHold,
     CompRelease,
+    CompOnOff,
 }
 export enum VuLabelConversionType {
     Linear = 'linear',
@@ -102,6 +103,7 @@ interface IMixerMessageProtocol {
     max?: number
     zero?: number
     label?: string
+    valueAsLabels?: Array<string>
     valueLabel?: string
     minLabel?: number
     maxLabel?: number
