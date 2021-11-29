@@ -227,22 +227,21 @@ class ChanStripFull extends React.PureComponent<
         // Draw X-Y axis:
         context.beginPath()
         context.strokeStyle = 'white'
-        context.moveTo(175, 0)
-        context.lineTo(175, 405)
-        context.lineTo(1700, 405)
+        context.moveTo(55, 0)
+        context.lineTo(55, this.canvas.height)
         context.stroke()
         // Draw zero gain line:
         context.beginPath()
         context.strokeStyle = 'rgba(128, 128, 128, 0.244) 10px'
-        context.moveTo(175, 200)
-        context.lineTo(1700, 200)
+        context.moveTo(55, this.canvas.height/2)
+        context.lineTo(this.canvas.width, this.canvas.height/2)
         context.stroke()
         // Freq on zero gain line:
         context.beginPath()
         EQ_FREQ_LABELS.forEach((freq: IFreqLabels) => {
-            context.font = '20px Ariel'
+            context.font = String(this.canvas.height/ 20) + 'px Ariel'
             context.strokeStyle = 'white'
-            context.strokeText(freq.label, freq.posY, 220)
+            context.strokeText(freq.label, freq.posY, this.canvas.height/2 + 20)
         })
         // Freq on zero gain line:
         context.strokeText(
@@ -251,18 +250,18 @@ class ChanStripFull extends React.PureComponent<
                     fxParamsList.EqGain01
                 ]?.[0].maxLabel
             ) + ' dB',
-            120,
+            1,
             20
         )
-        context.strokeText('0 dB', 120, 210)
+        context.strokeText('0 dB', 1, this.canvas.height/2 + 20)
         context.strokeText(
             String(
                 window.mixerProtocol.channelTypes[0].fromMixer[
                     fxParamsList.EqGain01
                 ]?.[0].maxLabel
             ) + ' dB',
-            120,
-            400
+            1,
+            this.canvas.height
         )
         context.stroke()
     }
@@ -602,8 +601,8 @@ class ChanStripFull extends React.PureComponent<
                         : valueAsLabels[valueAsLabels.length - 1] + valueLabel}
                 </div>
                 <ReactSlider
-                    className="chan-strip-fader"
-                    thumbClassName="chan-strip-thumb"
+                    className="chan-strip-full-fader"
+                    thumbClassName="chan-strip-full-thumb"
                     orientation="vertical"
                     invert
                     min={0}

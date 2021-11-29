@@ -1,9 +1,9 @@
 .chan-strip-full-body {
     position: fixed;
-    top: 50px;
-    left: 150px;
-    width: 1700px;
-    height: 1000px;
+    top: 5vh;
+    left: 5vw;
+    width: 90vw;
+    height: 90vh;
     overflow: auto;
     background-color: rgb(36, 36, 36);
     border-color: rgb(149, 149, 149);
@@ -17,20 +17,21 @@
 }
 
 .chan-strip-full-body > .ch-strip-full-header {
-    margin-left: 40px;
-    margin-top: 10px;
-    margin-right: 80px;
+    margin-left: 5vw;
+    margin-top: 1vh;
+    margin-right: 10vw;
     /* width: 420px; */
-    font-size: 240%;
+    font-size: 3vh;
     color: #fff;
     white-space: nowrap;
 }
 
 .chan-strip-full-body > .parameters {
-    top: 5px;
-    left: 2px;
-    height: 900px;
+    top: 2vh;
+    left: 2vw;
+    height: 100vh;
     overflow: auto;
+    font-size: 1.5vh;
     text-align: center;
     color: #fff;
 }
@@ -39,37 +40,32 @@
     display: flex;
     justify-content: space-evenly;
 }
-.chan-strip-full-body .parameters .horizontal .item {
-}
+
 .chan-strip-full-body .parameters .horizontal .item .content {
     display: flex;
 }
 
 .parameters > .inp-comp-del-group {
     display: flex;
-    top: 5px;
-    left: 2px;
-    margin-left: 5px;
+    top: 2vh;
+    left: 2vw;
+    margin-left: 2vw;
     overflow: auto;
+    font-size: 1.5vh;
     text-align: center;
     color: #fff;
 }
 
-.inp-comp-del-group > .horizontal-space {
-    width: 40px;
-    height: 50px;
-}
-
 .eq-full > .eq-window {
-    top: 5px;
-    left: 2px;
-    height: 400px;
-    width: 1500px;
-    margin-left: 150px;
-    margin-top: 10px;
+    top: 2vh;
+    left: 2vw;
+    margin-top: 3vh;
+    margin-left: 14vw;
+    height: 30vh;
+    width: 70vw;
     overflow: auto;
     text-align: left;
-    font-size: 14px;
+    font-size: 1.5vh;
     color: #fff;
     background-color: #2a42274d;
     border-style: solid;
@@ -78,47 +74,42 @@
 }
 .eq-full > .eq-canvas {
     position: absolute;
-    margin-left: -850px;
-    margin-top: 30px;
-    height: 410px;
-    width: 1675px;
+    margin-left: -36.5vw;
+    margin-top: 5vh;
+    height: 30vh;
+    width: 72vw;
 }
 
 .eq-full > .eq-text {
     display: flex;
     justify-content: space-evenly;
-    top: 5px;
-    left: 2px;
-    height: 150px;
-    width: 1500px;
-    margin-left: 150px;
-    margin-top: 10px;
+    top: 2vh;
+    left: 2vw;
+    width: 80vw;
+    height: 10vh;
+    margin-left: 1vw;
+    margin-top: 2vh;
     overflow: auto;
     text-align: center;
-    font-size: 20px;
+    font-size: 1.5vh;
     color: #fff;
     border-style: solid;
     border-color: rgb(128, 128, 128);
     border-width: 4px;
 }
 
-.eq-window > .horizontal-space {
-    width: 150px;
-    height: 50px;
-}
-
 .eq-window > .dot {
     position: absolute;
-    font-size: 60px;
-    height: 60px;
+    font-size: 5vh;
+    height: 10vh;
 }
 
 .zero-comp {
-    width: 63px;
-    height: 2px;
-    margin-left: -68px;
-    margin-right: 30px;
-    margin-top: 81px;
+    width: 1vw;
+    height: 0.2vh;
+    margin-left: -6.5vw;
+    margin-top: 15vh;
+    font-size: 0.8vw;
 }
 
 .zero-monitor {
@@ -132,30 +123,27 @@
 .content > .parameter-text {
     list-style-type: none;
     text-align: center;
-    margin-top: 15px;
-    line-height: 10px;
-    font-size: 14px;
+    margin-top: 2vh;
+    font-size: 1.5vh;
 }
 
 .parameter-button-text {
     list-style-type: none;
     text-align: center;
-    margin-top: 70px;
-    line-height: 10px;
-    font-size: 14px;
+    margin-top: 2vh;
+    font-size: 1.2vh;
 }
 .parameter-button {
-    margin-left: -68px;
-    margin-top: 60px;
+    margin-left: -8vw;
+    margin-top: 2vh;
     outline: none;
     -moz-outline: none;
     margin-left: 3px;
     margin-right: 3px;
-    margin-top: 3px;
     color: white;
-    height: 50px;
-    width: 60px;
-    font-size: 105%;
+    height: 4vh;
+    width: 4vw;
+    font-size: 1.2vh;
     background-color: rgb(80, 80, 80);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
@@ -165,15 +153,15 @@
 .content > .parameter-mini-text {
     list-style-type: none;
     text-align: center;
-    margin-top: 5px;
-    line-height: 10px;
-    font-size: 80%;
+    max-width: 9vw;
+    margin-top: 1vh;
+    font-size: 0.8vh;
 }
 
 .inp-comp-del-group > .delayButtons {
-    width: 30px;
-    margin-top: 24px;
-    margin-left: 50px;
+    width: 5vw;
+    margin-top: 3vh;
+    margin-left: 3vw;
 }
 .content > .delayButtons {
     width: 30px;
@@ -190,8 +178,8 @@
     outline: none;
     -moz-outline: none;
     color: white;
-    height: 45px;
-    width: 70px;
+    height: 5vh;
+    width: 5vw;
     border-color: rgb(71, 71, 71);
     background-color: rgb(53, 53, 53);
     margin-left: -50px;
@@ -251,11 +239,11 @@
     background-color: rgb(27, 27, 27);
     border-radius: 20px;
     color: #fff;
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
+    width: 5vh;
+    height: 5vh;
+    font-size: 2vw;
     /* margin-top: 5px; */
-    right: 10px;
+    right: 3vw;
 }
 
 .ch-strip-full-header > .button {
@@ -264,33 +252,31 @@
     background-color: rgb(27, 27, 27);
     border-radius: 7px;
     margin-left: 10px;
-    width: 160px;
-    height: 50px;
-    font-size: 12px;
-    line-height: 30px;
+    width: 10vw;
+    height: 4vh;
+    font-size: 0.8vw;
     color: #fff;
 }
 
 .chan-strip-full-fader {
-    width: 10px;
-    height: 190px;
-    margin-left: 35px;
-    margin-right: 30px;
-    margin-top: 10px;
+    width: 0.5vw;
+    height: 15vh;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    margin-top: 3vh;
     border-width: 0px;
     border-style: solid;
     border-radius: 8px;
     background-color: rgb(17, 17, 17);
 }
 .chan-strip-full-thumb {
-    margin-left: -20px;
+    margin-left: -0.5vw;
     color: #3a3a3a;
-    font-size: 90%;
-    line-height: 50px;
-    width: 45px;
-    height: 49px;
+    font-size: 1vh;
+    width: 3vw;
+    height: 4vh;
     border: 1px solid #c5c2c2;
-    border-radius: 8px;
+    border-radius: 0.4vw;
     background: linear-gradient(
         to top,
         #3a3a3a 0%,
@@ -304,23 +290,22 @@
 }
 
 .chan-strip-q {
-    width: 300px;
-    height: 10px;
-    margin-left: 35px;
-    margin-right: 30px;
-    margin-top: 30px;
+    width: 15vw;
+    height: 0.5vh;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    margin-top: 1vh;
     border-width: 0px;
     border-style: solid;
     border-radius: 8px;
     background-color: rgb(17, 17, 17);
 }
 .chan-strip-q-thumb {
-    margin-top: -20px;
+    margin-top: -1vh;
     color: #3a3a3a;
-    font-size: 90%;
-    line-height: 50px;
-    width: 45px;
-    height: 49px;
+    font-size: 0.8vh;
+    width: 3vw;
+    height: 4vh;
     border: 1px solid #c5c2c2;
     border-radius: 8px;
     background: linear-gradient(
