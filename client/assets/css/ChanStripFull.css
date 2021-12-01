@@ -1,4 +1,4 @@
-.chan-strip-full-body {
+.chstrip-full-body {
     position: fixed;
     top: 5vh;
     left: 5vw;
@@ -12,66 +12,52 @@
     border-radius: 8px;
     text-align: left;
     z-index: 2;
-
     color: #fff;
 }
 
-.chan-strip-full-body > .ch-strip-full-header {
+.chstrip-full-body > .ch-strip-full-header {
     margin-left: 5vw;
     margin-top: 1vh;
     margin-right: 10vw;
     /* width: 420px; */
     font-size: 3vh;
-    color: #fff;
     white-space: nowrap;
 }
 
-.chan-strip-full-body > .parameters {
+.chstrip-full-body > .chstrip-full-parameters {
     top: 2vh;
     left: 2vw;
     height: 100vh;
     overflow: auto;
     font-size: 1.5vh;
     text-align: center;
-    color: #fff;
 }
 
-.chan-strip-full-body .parameters .horizontal {
+.chstrip-full-body .chstrip-full-parameters .horizontal {
     display: flex;
     justify-content: space-evenly;
 }
 
-.chan-strip-full-body .parameters .horizontal .item .content {
+.chstrip-full-content {
     display: flex;
 }
 
-.parameters > .inp-comp-del-group {
+.chstrip-full-parameters > .inp-comp-del-group {
     display: flex;
     top: 2vh;
     left: 2vw;
     margin-left: 2vw;
-    overflow: auto;
-    font-size: 1.5vh;
-    text-align: center;
-    color: #fff;
 }
 
 .eq-full > .eq-window {
     top: 2vh;
     left: 2vw;
     margin-top: 3vh;
-    margin-left: 14vw;
+    margin-left: 10vw;
     height: 30vh;
-    width: 70vw;
-    overflow: auto;
-    text-align: left;
-    font-size: 1.5vh;
-    color: #fff;
-    background-color: #2a42274d;
-    border-style: solid;
-    border-color: rgba(128, 128, 128, 0.144);
-    border-width: 4px;
+    width: 0vw;
 }
+
 .eq-full > .eq-canvas {
     position: absolute;
     margin-left: -36.5vw;
@@ -85,17 +71,10 @@
     justify-content: space-evenly;
     top: 2vh;
     left: 2vw;
-    width: 80vw;
+    width: 85vw;
     height: 10vh;
-    margin-left: 1vw;
+    margin-left: 2vw;
     margin-top: 2vh;
-    overflow: auto;
-    text-align: center;
-    font-size: 1.5vh;
-    color: #fff;
-    border-style: solid;
-    border-color: rgb(128, 128, 128);
-    border-width: 4px;
 }
 
 .eq-window > .dot {
@@ -104,7 +83,7 @@
     height: 10vh;
 }
 
-.zero-comp {
+.chstrip-full-zero-comp {
     width: 1vw;
     height: 0.2vh;
     margin-left: -6.5vw;
@@ -112,15 +91,14 @@
     font-size: 0.8vw;
 }
 
-.zero-monitor {
-    width: 2px;
-    height: 20px;
-    margin-left: 10px;
-    margin-top: -150px;
+.chstrip-full-zero-monitor {
+    width: 1vw;
+    height: 0.2vh;
+    margin-left: 3.5vw;
+    margin-top: -12vh;
 }
 
-.parameters > .parameter-text,
-.content > .parameter-text {
+.chstrip-full-parameter-text {
     list-style-type: none;
     text-align: center;
     margin-top: 2vh;
@@ -149,8 +127,7 @@
     border-color: rgb(99, 99, 99);
 }
 
-.parameter-text > .parameter-mini-text,
-.content > .parameter-mini-text {
+.chstrip-full-mini-text {
     list-style-type: none;
     text-align: center;
     max-width: 9vw;
@@ -158,49 +135,34 @@
     font-size: 0.8vh;
 }
 
-.inp-comp-del-group > .delayButtons {
-    width: 5vw;
+.chstrip-full-delay-buttons {
     margin-top: 3vh;
-    margin-left: 3vw;
-}
-.content > .delayButtons {
-    width: 30px;
-    min-height: 220px;
-    margin-top: 24px;
-    margin-left: 50px;
+    margin-left: 1vw;
 }
 .noDelayButtons {
     margin-top: 24px;
     min-height: 220px;
 }
 
-.delayButtons > .delayTime {
+.chstrip-full-delay-buttons > .delayTime {
     outline: none;
     -moz-outline: none;
     color: white;
     height: 5vh;
-    width: 5vw;
+    width: 4vw;
     border-color: rgb(71, 71, 71);
     background-color: rgb(53, 53, 53);
-    margin-left: -50px;
-    margin-top: 5px;
+    margin-left: 0vw;
+    margin-top: 1vh;
     border-radius: 7px;
 }
 
-.inp-comp-del-group > .input-buttons {
+.chstrip-full-content > .input-buttons {
     width: 30px;
     margin-top: 24px;
     margin-left: 50px;
 }
-.inp-comp-del-group .input-buttons.disabled {
-    visibility: hidden;
-}
-.content > .input-buttons {
-    width: 30px;
-    margin-top: 24px;
-    margin-left: 50px;
-}
-.content > .input-buttons.disabled {
+.chstrip-full-content > .input-buttons.disabled {
     visibility: hidden;
 }
 
@@ -220,16 +182,12 @@
     background-color: #2f475b;
 }
 
-.parameters > .monitor-sends,
-.content > .monitor-sends {
+.chstrip-full-monitor-sends {
     list-style-type: none;
     display: flex;
     text-align: center;
-    margin-top: 15px;
-    margin-left: 1px;
-    padding: 0px;
-    line-height: 10px;
-    font-size: 95%;
+    margin-top: 2vh;
+    margin-left: 1vw;
 }
 
 .ch-strip-full-header > .close {
@@ -242,7 +200,6 @@
     width: 5vh;
     height: 5vh;
     font-size: 2vw;
-    /* margin-top: 5px; */
     right: 3vw;
 }
 
@@ -251,14 +208,13 @@
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
     border-radius: 7px;
-    margin-left: 10px;
+    margin-left: 3vw;
     width: 10vw;
     height: 4vh;
     font-size: 0.8vw;
-    color: #fff;
 }
 
-.chan-strip-full-fader {
+.chstrip-full-fader {
     width: 0.5vw;
     height: 15vh;
     margin-left: 5vw;
@@ -269,10 +225,11 @@
     border-radius: 8px;
     background-color: rgb(17, 17, 17);
 }
-.chan-strip-full-thumb {
-    margin-left: -0.5vw;
+.chstrip-full-thumb {
+    margin-left: -1.2vw;
     color: #3a3a3a;
     font-size: 1vh;
+    line-height: 4vh;
     width: 3vw;
     height: 4vh;
     border: 1px solid #c5c2c2;
@@ -289,7 +246,7 @@
     );
 }
 
-.chan-strip-q {
+.chstrip-q {
     width: 15vw;
     height: 0.5vh;
     margin-left: 5vw;
@@ -300,12 +257,13 @@
     border-radius: 8px;
     background-color: rgb(17, 17, 17);
 }
-.chan-strip-q-thumb {
-    margin-top: -1vh;
+.chstrip-q-thumb {
+    margin-top: -2vh;
     color: #3a3a3a;
     font-size: 0.8vh;
     width: 3vw;
     height: 4vh;
+    line-height: 4vh;
     border: 1px solid #c5c2c2;
     border-radius: 8px;
     background: linear-gradient(

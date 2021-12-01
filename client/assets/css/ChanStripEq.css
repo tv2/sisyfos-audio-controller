@@ -1,0 +1,22 @@
+.eq-full > .eq-window {
+    top: 2vh;
+    left: 2vw;
+    margin-top: 3vh;
+    margin-left: 10vw;
+    height: 30vh;
+    width: 0vw;
+}
+
+.eq-full > .eq-canvas {
+    position: absolute;
+    margin-left: -36.5vw;
+    margin-top: 5vh;
+    height: 30vh;
+    width: 72vw;
+}
+
+.eq-window > .dot {
+    position: absolute;
+    font-size: 5vh;
+    height: 10vh;
+}
