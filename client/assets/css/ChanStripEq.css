@@ -7,17 +7,21 @@
     justify-content: space-evenly;
     top: 2vh;
     left: 2vw;
-    width: 85vw;
+    width: 75vw;
     height: 10vh;
-    margin-left: 2vw;
+    margin-left: 1vw;
     margin-top: 2vh;
+}
+
+.eq-text-parameters {
+    max-width: 22vw;
 }
 
 .eq-full > .eq-window {
     top: 2vh;
     left: 2vw;
     margin-top: 3vh;
-    margin-left: 10vw;
+    margin-left: 4vw;
     height: 30vh;
     width: 0vw;
 }

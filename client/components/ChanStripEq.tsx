@@ -321,6 +321,7 @@ class ChanStripEq extends React.PureComponent<
 
                         return (
                             <div
+                                className="eq-text-parameters"
                                 key={index}
                                 style={{
                                     color: EqColors[fxParamsList[fxKey]],

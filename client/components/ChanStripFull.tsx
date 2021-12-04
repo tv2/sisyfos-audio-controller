@@ -337,7 +337,7 @@ class ChanStripFull extends React.PureComponent<
         if (faderIndex === -1) return null
         let monitorName = getFaderLabel(faderIndex, 'Fader')
         return (
-            <li key={channelIndex}>
+            <li className="chstrip-full-monitor-text" key={channelIndex}>
                 {monitorName}
                 <div className="chstrip-full-mini-text">&nbsp;</div>
                 <ReactSlider
@@ -375,112 +375,98 @@ class ChanStripFull extends React.PureComponent<
                     .CHANNEL_INPUT_SELECTOR
             return (
                 <div className="chstrip-full-parameters">
-                        {hasInput && (
-                            <React.Fragment>
-                                <div className="chstrip-full-content">
-                                    <div className="title">INPUT</div>
-                                    <div className="chstrip-full-content">
-                                        {this.inputSelector()}
-                                        {this.inputGain()}
-                                    </div>
-                                </div>
-                            </React.Fragment>
-                        )}
+                    {hasInput && (
                         <React.Fragment>
-                            {this.doesParamExists(fxParamsList.GainTrim) ? (
+                            <div className="chstrip-full-content-group">
+                                <div className="title">INPUT</div>
                                 <div className="chstrip-full-content">
-                                    <div className="title">INPUT</div>
-                                    <div className="chstrip-full-content">
-                                        {this.fxParamFader(
-                                            fxParamsList.GainTrim
-                                        )}
-                                    </div>
-                                </div>
-                            ) : (
-                                <React.Fragment></React.Fragment>
-                            )}
-                            {this.doesParamExists(fxParamsList.CompThrs) ? (
-                                <div className="chstrip-full-content">
-                                    <div className="title">COMPRESSOR</div>
-                                    <div className="chstrip-full-content">
-                                        {this.fxParamButton(
-                                            fxParamsList.CompOnOff
-                                        )}
-                                        {this.fxParamFader(
-                                            fxParamsList.CompThrs
-                                        )}
-                                        <p className="chstrip-full-zero-comp">
-                                            ______
-                                        </p>
-                                        {this.fxParamFader(
-                                            fxParamsList.CompRatio
-                                        )}
-                                        <p className="chstrip-full-zero-comp">
-                                            ______
-                                        </p>
-                                        {this.gainReduction()}
-                                        {this.fxParamFader(
-                                            fxParamsList.CompMakeUp
-                                        )}
-                                        <p className="chstrip-full-zero-comp">
-                                            ______
-                                        </p>
-                                        {this.fxParamFader(
-                                            fxParamsList.CompAttack
-                                        )}
-                                        <p className="chstrip-full-zero-comp">
-                                            ______
-                                        </p>
-                                        {this.fxParamFader(
-                                            fxParamsList.CompHold
-                                        )}
-                                        <p className="chstrip-full-zero-comp">
-                                            ______
-                                        </p>
-                                        {this.fxParamFader(
-                                            fxParamsList.CompRelease
-                                        )}
-                                        <p className="chstrip-full-zero-comp">
-                                            ______
-                                        </p>
-                                    </div>
-                                </div>
-                            ) : (
-                                <React.Fragment></React.Fragment>
-                            )}
-                            {this.doesParamExists(fxParamsList.DelayTime) ? (
-                                <div className="chstrip-full-content-group">
-                                    <div className="title">DELAY</div>
-                                    <div className="chstrip-full-content">
-                                        {this.delay()}
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="noDelayButtons"></div>
-                            )}
-                            <div className="chstrip-full-content">
-                                <div className="title">
-                                    {this.props.label}
-                                    {' - MONITOR MIX MINUS'}
-                                </div>
-                                <div className="chstrip-full-content">
-                                    <ul className="chstrip-full-monitor-sends">
-                                        {this.props.channel.map(
-                                            (ch: any, index: number) => {
-                                                if (
-                                                    ch.auxLevel[
-                                                        this.props.auxSendIndex
-                                                    ] >= 0
-                                                ) {
-                                                    return this.monitor(index)
-                                                }
-                                            }
-                                        )}
-                                    </ul>
+                                    {this.inputSelector()}
+                                    {this.inputGain()}
                                 </div>
                             </div>
                         </React.Fragment>
-                    </div>
+                    )}
+                    <React.Fragment>
+                        {this.doesParamExists(fxParamsList.GainTrim) ? (
+                            <div className="chstrip-full-content-group">
+                                <div className="title">INPUT</div>
+                                <div className="chstrip-full-content">
+                                    {this.fxParamFader(fxParamsList.GainTrim)}
+                                </div>
+                            </div>
+                        ) : (
+                            <React.Fragment></React.Fragment>
+                        )}
+                        {this.doesParamExists(fxParamsList.CompThrs) ? (
+                            <div className="chstrip-full-content-group">
+                                <div className="title">COMPRESSOR</div>
+                                <div className="chstrip-full-content">
+                                    {this.fxParamButton(fxParamsList.CompOnOff)}
+                                    {this.fxParamFader(fxParamsList.CompThrs)}
+                                    <p className="chstrip-full-zero-comp">
+                                        ______
+                                    </p>
+                                    {this.fxParamFader(fxParamsList.CompRatio)}
+                                    <p className="chstrip-full-zero-comp">
+                                        ______
+                                    </p>
+                                    {this.gainReduction()}
+                                    {this.fxParamFader(fxParamsList.CompMakeUp)}
+                                    <p className="chstrip-full-zero-comp">
+                                        ______
+                                    </p>
+                                    {this.fxParamFader(fxParamsList.CompAttack)}
+                                    <p className="chstrip-full-zero-comp">
+                                        ______
+                                    </p>
+                                    {this.fxParamFader(fxParamsList.CompHold)}
+                                    <p className="chstrip-full-zero-comp">
+                                        ______
+                                    </p>
+                                    {this.fxParamFader(
+                                        fxParamsList.CompRelease
+                                    )}
+                                    <p className="chstrip-full-zero-comp">
+                                        ______
+                                    </p>
+                                </div>
+                            </div>
+                        ) : (
+                            <React.Fragment></React.Fragment>
+                        )}
+                        {this.doesParamExists(fxParamsList.DelayTime) ? (
+                            <div className="chstrip-full-content-group">
+                                <div className="title">DELAY</div>
+                                <div className="chstrip-full-content">
+                                    {this.delay()}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="noDelayButtons"></div>
+                        )}
+                        <div className="chstrip-full-content-group">
+                            <div className="title">
+                                {this.props.label}
+                                {' - MONITOR MIX MINUS'}
+                            </div>
+                            <div className="chstrip-full-content">
+                                <ul className="chstrip-full-monitor-sends">
+                                    {this.props.channel.map(
+                                        (ch: any, index: number) => {
+                                            if (
+                                                ch.auxLevel[
+                                                    this.props.auxSendIndex
+                                                ] >= 0
+                                            ) {
+                                                return this.monitor(index)
+                                            }
+                                        }
+                                    )}
+                                </ul>
+                            </div>
+                        </div>
+                    </React.Fragment>
+                </div>
             )
         } else {
             return null

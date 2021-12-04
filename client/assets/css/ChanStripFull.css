@@ -27,7 +27,7 @@
 
 .chstrip-full-parameters {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: left;
     top: 2vh;
     left: 2vw;
     height: 30vh;
@@ -53,6 +53,7 @@
 .chstrip-full-content-group {
     display: flex;
     flex-direction: column;
+    margin-right: 2vw;
 }
 
 .chstrip-full-content {
@@ -166,7 +167,15 @@
     display: flex;
     text-align: center;
     margin-top: 2vh;
-    margin-left: 1vw;
+    min-width: 20vw;
+}
+
+.chstrip-full-monitor-text {
+    list-style-type: none;
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 1.5vh;
+    margin-left: -5vw;
 }
 
 .ch-strip-full-header > .close {
