@@ -1,17 +1,17 @@
 .reductionmeter-body {
     top: 0.8vh;
     width: 2vw;
-    margin-top: 3vh;
-    margin-left: 3vw;
+    margin-top: 15px;
+    margin-left: 5px;
     background-color: black;
     border-radius: 7px;
 }
 
 .reductionmeter-canvas {
-    width: 2vw;
-    margin-left: -2vw;
+    width: 10px;
+    margin-left: -5px;
     bottom: 0px;
-    height: 100vh;
+    height: 100%;
 }
 
 .reductionmeter-lower-part {
