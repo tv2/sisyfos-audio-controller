@@ -173,8 +173,8 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
                     width={10}
                     ref={this.setRef}
                 ></canvas>
-                <span className="reduction-6db">___6dB</span>
-                <span className="reduction-12db">___12dB</span>
+                <p className="reduction-6db">___6dB</p>
+                <p className="reduction-12db">12dB</p>
             </div>
         )
     }
