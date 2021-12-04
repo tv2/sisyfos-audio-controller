@@ -39,7 +39,7 @@ interface IFreqLabels {
 const EQ_FREQ_LABELS: IFreqLabels[] = [
     {
         label: '50',
-        posY: 400,
+        posY: 340,
     },
     {
         label: '100',
@@ -47,41 +47,41 @@ const EQ_FREQ_LABELS: IFreqLabels[] = [
     },
     {
         label: '250',
-        posY: 700,
+        posY: 780,
     },
     {
         label: '500',
-        posY: 850,
+        posY: 950,
     },
     {
         label: '1k',
-        posY: 1025,
+        posY: 1135,
     },
     {
         label: '2k',
-        posY: 1160,
-    },
-    {
-        label: '5k',
         posY: 1350,
     },
     {
+        label: '5k',
+        posY: 1575,
+    },
+    {
         label: '10k',
-        posY: 1490,
+        posY: 1755,
+    },
+    {
+        label: '20k',
+        posY: 1950,
     },
 ]
 
 // Constant for calculation Eq dot positions:
 const EQ_MIN_HZ = 20
 const EQ_MAX_HZ = 20000
-const EQ_X_SIZE = 1150
-const EQ_WIN_X = 450
-const EQ_Y_SIZE = 250
-const EQ_X_OFFSET = 315
-const EQ_Y_OFFSET = 740
-
-// Constants for Delay buttons:
-const DEL_VALUES = [10, 1, -1, -10]
+const EQ_X_SIZE = 0.66
+const EQ_X_OFFSET = 0.18
+const EQ_Y_SIZE = 0.25
+const EQ_Y_OFFSET = 0.55
 
 class ChanStripEq extends React.PureComponent<
     IChanStripFullProps & IChanStripFullInjectProps & Store
@@ -117,7 +117,7 @@ class ChanStripEq extends React.PureComponent<
         })
     }
 
-    handleDragCaptureEq(key: number, event: any) {
+    handleDragCaptureEq(key: number, totalWidth: number, totalHeight: number, event: any) {
         let eqFreqKey =
             fxParamsList[
                 String(fxParamsList[key]).replace(
@@ -127,18 +127,24 @@ class ChanStripEq extends React.PureComponent<
             ]
         let eventX = event.clientX ?? event.touches[0].clientX
         let eventY = event.clientY ?? event.touches[0].clientY
-        this.handleFx(eqFreqKey, this.freqPositionToValue(eventX))
-        this.handleFx(
-            key,
-            Math.round((100 * (EQ_Y_OFFSET - eventY)) / EQ_Y_SIZE) / 100
-        )
+        this.handleFx(eqFreqKey, this.freqPositionToValue(eventX, totalWidth))
+        this.handleFx(key, this.gainPositionToValue(eventY, totalHeight))
     }
 
-    valueToFreqPosition(value: number) {
-        return EQ_X_SIZE * value
+    valueToFreqPosition(value: number, totalWidth: number) {
+        return value * totalWidth * EQ_X_SIZE
     }
-    freqPositionToValue(position: number) {
-        return (position - EQ_X_OFFSET) / EQ_X_SIZE
+    freqPositionToValue(position: number, totalWidth: number) {
+        return (position - totalWidth * EQ_X_OFFSET) / (totalWidth * EQ_X_SIZE)
+    }
+
+    valueToGainPosition(value: number, totalHeight: number) {
+        return totalHeight * EQ_Y_SIZE - value * (totalHeight * EQ_Y_SIZE)
+    }
+    gainPositionToValue(position: number, totalHeight: number) {
+        return (
+            (totalHeight * EQ_Y_SIZE - (position - totalHeight * EQ_Y_OFFSET)) / (totalHeight * EQ_Y_SIZE)
+        )
     }
 
     logOscToLinFreq(value: number) {
@@ -160,8 +166,8 @@ class ChanStripEq extends React.PureComponent<
         if (!this.canvas) {
             return
         }
-        this.canvas.width = this.canvas.clientWidth
-        this.canvas.height = this.canvas.clientHeight
+        this.canvas.width = 2000
+        this.canvas.height = 600
         const context = this.canvas.getContext('2d', {
             antialias: false,
             stencil: false,
@@ -172,30 +178,30 @@ class ChanStripEq extends React.PureComponent<
 
         // Fill background color:
 
-        context.rect(55, 0, this.canvas.width, this.canvas.height)
+        context.rect(70, 0, this.canvas.width, this.canvas.height)
         context.fillStyle = '#2a42274d'
         context.fill()
         // Draw X-Y axis:
         context.beginPath()
         context.strokeStyle = 'white'
-        context.moveTo(55, 0)
-        context.lineTo(55, this.canvas.height)
+        context.moveTo(70, 0)
+        context.lineTo(70, this.canvas.height)
         context.stroke()
         // Draw zero gain line:
         context.beginPath()
         context.strokeStyle = 'rgba(128, 128, 128, 0.244) 10px'
-        context.moveTo(55, this.canvas.height / 2)
+        context.moveTo(70, this.canvas.height / 2)
         context.lineTo(this.canvas.width, this.canvas.height / 2)
         context.stroke()
         // Freq on zero gain line:
         context.beginPath()
         EQ_FREQ_LABELS.forEach((freq: IFreqLabels) => {
-            context.font = String(this.canvas.height / 20) + 'px Ariel'
+            context.font = '30px Ariel'
             context.strokeStyle = 'white'
             context.strokeText(
                 freq.label,
                 freq.posY,
-                this.canvas.height / 2 + 20
+                this.canvas.height / 2 + 30
             )
         })
         // Freq on zero gain line:
@@ -243,20 +249,23 @@ class ChanStripEq extends React.PureComponent<
                                     x: this.valueToFreqPosition(
                                         this.props.fader[this.props.faderIndex][
                                             eqFreqKey
-                                        ]?.[0]
+                                        ]?.[0],
+                                        window.innerWidth
                                     ),
-                                    y:
-                                        EQ_Y_SIZE -
+                                    y: this.valueToGainPosition(
                                         this.props.fader[this.props.faderIndex][
                                             fxParamsList[fxKey]
-                                        ]?.[0] *
-                                            EQ_Y_SIZE,
+                                        ]?.[0],
+                                        window.innerHeight
+                                    ),
                                 }}
                                 grid={[20, 20]}
                                 scale={100}
                                 onDrag={(event) =>
                                     this.handleDragCaptureEq(
                                         fxParamsList[fxKey],
+                                        window.innerWidth,
+                                        window.innerHeight,
                                         event
                                     )
                                 }
@@ -285,7 +294,7 @@ class ChanStripEq extends React.PureComponent<
                     .filter((fxKey: number | string) => {
                         return String(fxKey).includes('EqGain')
                     })
-                    .map((keyName: string) => {
+                    .map((keyName: string, index: number) => {
                         let fxKey = keyName as keyof typeof fxParamsList
                         let eqFreqKey =
                             fxParamsList[
@@ -312,6 +321,7 @@ class ChanStripEq extends React.PureComponent<
 
                         return (
                             <div
+                                key={index}
                                 style={{
                                     color: EqColors[fxParamsList[fxKey]],
                                 }}

@@ -1,4 +1,5 @@
 .chstrip-full-body {
+    justify-content: space-evenly;
     position: fixed;
     top: 5vh;
     left: 5vw;
@@ -15,7 +16,7 @@
     color: #fff;
 }
 
-.chstrip-full-body > .ch-strip-full-header {
+.ch-strip-full-header {
     margin-left: 5vw;
     margin-top: 1vh;
     margin-right: 10vw;
@@ -24,63 +25,55 @@
     white-space: nowrap;
 }
 
-.chstrip-full-body > .chstrip-full-parameters {
+.chstrip-full-parameters {
+    display: flex;
+    justify-content: space-evenly;
     top: 2vh;
     left: 2vw;
-    height: 100vh;
+    height: 30vh;
     overflow: auto;
     font-size: 1.5vh;
     text-align: center;
 }
 
-.chstrip-full-body .chstrip-full-parameters .horizontal {
+.chstrip-full-eq-window {
     display: flex;
     justify-content: space-evenly;
+    font-size: 1.5vh;
+    text-align: center;
+}
+
+.chstrip-full-parameter-text {
+    list-style-type: none;
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 1.5vh;
+}
+
+.chstrip-full-content-group {
+    display: flex;
+    flex-direction: column;
 }
 
 .chstrip-full-content {
     display: flex;
+    flex-direction: row;
 }
 
-.chstrip-full-parameters > .inp-comp-del-group {
-    display: flex;
-    top: 2vh;
-    left: 2vw;
-    margin-left: 2vw;
-}
-
-.eq-full > .eq-window {
-    top: 2vh;
-    left: 2vw;
-    margin-top: 3vh;
-    margin-left: 10vw;
-    height: 30vh;
-    width: 0vw;
-}
-
-.eq-full > .eq-canvas {
-    position: absolute;
-    margin-left: -36.5vw;
-    margin-top: 5vh;
-    height: 30vh;
-    width: 72vw;
-}
-
-.eq-full > .eq-text {
-    display: flex;
-    justify-content: space-evenly;
-    top: 2vh;
-    left: 2vw;
-    width: 85vw;
-    height: 10vh;
-    margin-left: 2vw;
+.chstrip-full-parameter-reduction {
+    list-style-type: none;
+    text-align: center;
     margin-top: 2vh;
+    font-size: 1.5vh;
+    margin-left: 3vw;
 }
 
-.eq-window > .dot {
-    position: absolute;
-    font-size: 5vh;
-    height: 10vh;
+.chstrip-full-mini-text {
+    list-style-type: none;
+    text-align: center;
+    max-width: 9vw;
+    margin-top: 1vh;
+    font-size: 0.8vh;
 }
 
 .chstrip-full-zero-comp {
@@ -98,20 +91,14 @@
     margin-top: -12vh;
 }
 
-.chstrip-full-parameter-text {
-    list-style-type: none;
-    text-align: center;
-    margin-top: 2vh;
-    font-size: 1.5vh;
-}
-
-.parameter-button-text {
+.chstrip-full-parameter-text > .parameter-button-text {
     list-style-type: none;
     text-align: center;
     margin-top: 2vh;
     font-size: 1.2vh;
 }
-.parameter-button {
+
+.chstrip-full-parameter-text > .parameter-button {
     margin-left: -8vw;
     margin-top: 2vh;
     outline: none;
@@ -125,14 +112,6 @@
     background-color: rgb(80, 80, 80);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
-}
-
-.chstrip-full-mini-text {
-    list-style-type: none;
-    text-align: center;
-    max-width: 9vw;
-    margin-top: 1vh;
-    font-size: 0.8vh;
 }
 
 .chstrip-full-delay-buttons {
@@ -236,38 +215,6 @@
     border-radius: 0.4vw;
     background: linear-gradient(
         to top,
-        #3a3a3a 0%,
-        #c2c2c2 20%,
-        hsl(0, 0%, 57%) 50%,
-        #00a 1px,
-        #919191 52%,
-        #c2c2c2 80%,
-        #3a3a3a 100%
-    );
-}
-
-.chstrip-q {
-    width: 15vw;
-    height: 0.5vh;
-    margin-left: 5vw;
-    margin-right: 5vw;
-    margin-top: 1vh;
-    border-width: 0px;
-    border-style: solid;
-    border-radius: 8px;
-    background-color: rgb(17, 17, 17);
-}
-.chstrip-q-thumb {
-    margin-top: -2vh;
-    color: #3a3a3a;
-    font-size: 0.8vh;
-    width: 3vw;
-    height: 4vh;
-    line-height: 4vh;
-    border: 1px solid #c5c2c2;
-    border-radius: 8px;
-    background: linear-gradient(
-        to right,
         #3a3a3a 0%,
         #c2c2c2 20%,
         hsl(0, 0%, 57%) 50%,

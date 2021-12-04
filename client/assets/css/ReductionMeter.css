@@ -1,17 +1,17 @@
 .reductionmeter-body {
-    top: 2px;
-    width: 24px;
-    margin-top: 15px;
-    margin-left: 5px;
+    top: 0.8vh;
+    width: 2vw;
+    margin-top: 3vh;
+    margin-left: 3vw;
     background-color: black;
     border-radius: 7px;
 }
 
 .reductionmeter-canvas {
-    width: 10px;
-    margin-left: -5px;
-    bottom: 0;
-    height: 100%;
+    width: 2vw;
+    margin-left: -2vw;
+    bottom: 0px;
+    height: 100vh;
 }
 
 .reductionmeter-lower-part {
@@ -28,4 +28,21 @@
     width: 10px;
     margin-left: 10px;
     background-color: rgb(206, 0, 0);
+}
+
+.reduction-6db {
+    color: #445f4a;
+    width: 63px;
+    height: 2px;
+    margin-left: -58px;
+    margin-right: 30px;
+    margin-top: 108px;
+}
+.reduction-12db {
+    color: #5c3939;
+    width: 63px;
+    height: 2px;
+    margin-left: -88px;
+    margin-right: 30px;
+    margin-top: 152px;
 }

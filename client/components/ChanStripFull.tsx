@@ -201,7 +201,7 @@ class ChanStripFull extends React.PureComponent<
 
     gainReduction() {
         return (
-            <div className="chstrip-full-parameter-text">
+            <div className="chstrip-full-parameter-reduction">
                 Redution
                 <ReductionMeter faderIndex={this.props.faderIndex} />
             </div>
@@ -375,7 +375,6 @@ class ChanStripFull extends React.PureComponent<
                     .CHANNEL_INPUT_SELECTOR
             return (
                 <div className="chstrip-full-parameters">
-                    <div className="horizontal">
                         {hasInput && (
                             <React.Fragment>
                                 <div className="chstrip-full-content">
@@ -420,10 +419,6 @@ class ChanStripFull extends React.PureComponent<
                                             ______
                                         </p>
                                         {this.gainReduction()}
-                                        <p className="reduction-6db">___6dB</p>
-                                        <p className="reduction-12db">
-                                            ___12dB
-                                        </p>
                                         {this.fxParamFader(
                                             fxParamsList.CompMakeUp
                                         )}
@@ -454,7 +449,7 @@ class ChanStripFull extends React.PureComponent<
                                 <React.Fragment></React.Fragment>
                             )}
                             {this.doesParamExists(fxParamsList.DelayTime) ? (
-                                <div className="chstrip-full-content">
+                                <div className="chstrip-full-content-group">
                                     <div className="title">DELAY</div>
                                     <div className="chstrip-full-content">
                                         {this.delay()}
@@ -486,25 +481,25 @@ class ChanStripFull extends React.PureComponent<
                             </div>
                         </React.Fragment>
                     </div>
-                    <React.Fragment>
-                        <hr />
-                        {this.doesParamExists(fxParamsList.EqGain01) ? (
-                            <div className="horizontal">
-                                <ChanStripEq
-                                    faderIndex={this.props.faderIndex}
-                                />
-                            </div>
-                        ) : (
-                            <React.Fragment></React.Fragment>
-                        )}
-                    </React.Fragment>
-                </div>
             )
         } else {
             return null
         }
     }
 
+    eq() {
+        return (
+            <React.Fragment>
+                {this.doesParamExists(fxParamsList.EqGain01) ? (
+                    <div className="chstrip-full-eq-window">
+                        <ChanStripEq faderIndex={this.props.faderIndex} />
+                    </div>
+                ) : (
+                    <React.Fragment></React.Fragment>
+                )}
+            </React.Fragment>
+        )
+    }
     render() {
         if (this.props.faderIndex >= 0) {
             return (
@@ -536,6 +531,8 @@ class ChanStripFull extends React.PureComponent<
                     </div>
                     <hr />
                     {this.parameters()}
+                    <hr />
+                    {this.eq()}
                 </div>
             )
         } else {
