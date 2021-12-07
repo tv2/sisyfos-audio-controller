@@ -55,7 +55,7 @@
         ]
     },
     "dependencies": {
-        "@tv2media/logger": "^1.0.4",
+        "@tv2media/logger": "1.0.4",
         "add": "^2.0.6",
         "asn1": "github:evs-broadcast/node-asn1",
         "bufferutil": "^4.0.3",
