@@ -79,7 +79,7 @@ export class LawoRubyMixerConnection {
             ) {
                 logger.error('Ember connection not establised')
             } else {
-                logger.error('Ember connection unknown error' + error.message)
+                logger.data(error).error('Ember connection unknown error')
             }
         })
         this.emberConnection.on('disconnected', () => {
@@ -103,10 +103,10 @@ export class LawoRubyMixerConnection {
                 )
                 const r = await req.response
 
-                logger.debug('Directory :', r)
+                logger.data(r).debug('Directory:')
                 this.setupMixerConnection()
             })
-            .then((r: any) => {})
+            .then(() => {})
             .catch((e: any) => {
                 logger.debug(e.stack)
             })
@@ -197,7 +197,7 @@ export class LawoRubyMixerConnection {
                 channelTypeIndex < numberOfChannels;
                 channelTypeIndex++
             ) {
-                logger.debug('running subscriptions for ' + this.faders[ch])
+                logger.debug(`Running subscriptions for ${this.faders[ch]}`)
                 try {
                     await this.subscribeFaderLevel(
                         ch,
@@ -221,11 +221,11 @@ export class LawoRubyMixerConnection {
                     )
                     ch++
                 } catch (e) {
-                    logger.error(
-                        'error during subscriptions of parameters for ' +
-                            this.faders[ch],
-                        e
-                    )
+                    logger
+                        .data(e)
+                        .error(
+                            `error during subscriptions of parameters for ${this.faders[ch]}`
+                        )
                 }
             }
         }
@@ -250,9 +250,9 @@ export class LawoRubyMixerConnection {
             const node = await this.emberConnection.getElementByPath(command)
             if (node.contents.type !== Model.ElementType.Parameter) return
 
-            logger.debug('Subscription of channel level: ' + command)
+            logger.debug(`Subscription of channel level: ${command}`)
             this.emberConnection.subscribe(node, () => {
-                logger.verbose('Receiving Level from Ch ' + String(ch))
+                logger.trace(`Receiving Level from Ch ${ch}`)
                 if (
                     !state.channels[0].chMixerConnection[this.mixerIndex]
                         .channel[ch - 1].fadeActive &&
@@ -282,7 +282,7 @@ export class LawoRubyMixerConnection {
                 }
             })
         } catch (e) {
-            logger.debug('error when subscribing to fader level', e)
+            logger.data(e).debug('error when subscribing to fader level')
         }
     }
     async subscribeGainLevel(
@@ -301,9 +301,9 @@ export class LawoRubyMixerConnection {
             const node = await this.emberConnection.getElementByPath(command)
             if (node.contents.type !== Model.ElementType.Parameter) return
 
-            logger.debug('Subscription of channel gain: ' + command)
+            logger.debug(`Subscription of channel gain: ${command}`)
             this.emberConnection.subscribe(node, () => {
-                logger.verbose('Receiving Gain from Ch ' + String(ch))
+                logger.trace(`Receiving Gain from Ch ${ch}`)
                 const value = (node.contents as Model.Parameter).value as number
                 const level = (value - proto.min) / (proto.max - proto.min)
                 if ((node.contents as Model.Parameter).value > proto.min) {
@@ -312,7 +312,7 @@ export class LawoRubyMixerConnection {
                 }
             })
         } catch (e) {
-            logger.debug('error when subscribing to gain level', e)
+            logger.data(e).debug('Error when subscribing to gain level')
         }
     }
     async subscribeInputSelector(
@@ -332,15 +332,15 @@ export class LawoRubyMixerConnection {
 
         try {
             const node = await this.emberConnection.getElementByPath(command)
-            console.log('set_cap', ch, 'hasInputSel', true)
+            logger.debug(`set_cap ${ch} hasInputSel true`)
             store.dispatch(storeCapability(ch - 1, 'hasInputSelector', true))
             if (node.contents.type !== Model.ElementType.Parameter) {
                 return
             }
 
-            logger.debug('Subscription of channel input selector: ' + command)
+            logger.debug(`Subscription of channel input selector: ${command}`)
             this.emberConnection.subscribe(node, () => {
-                logger.verbose('Receiving InpSelector from Ch ' + String(ch))
+                logger.trace(`Receiving InpSelector from Ch ${ch}`)
                 this.mixerProtocol.channelTypes[
                     typeIndex
                 ].fromMixer.CHANNEL_INPUT_SELECTOR.forEach((selector, i) => {
@@ -359,12 +359,12 @@ export class LawoRubyMixerConnection {
             })
         } catch (e) {
             if (e.message.match(/could not find node/i)) {
-                console.log('set_cap', ch, 'hasInputSel', false)
+                logger.debug(`set_cap ${ch} hasInputSel false`)
                 store.dispatch(
                     storeCapability(ch - 1, 'hasInputSelector', false)
                 )
             }
-            logger.debug('error when subscribing to input selector', e)
+            logger.data(e).debug('Error when subscribing to input selector')
         }
     }
     async subscribeAMixState(
@@ -384,15 +384,15 @@ export class LawoRubyMixerConnection {
 
         try {
             const node = await this.emberConnection.getElementByPath(command)
-            console.log('set_cap', ch - 1, 'hasAMix', true)
+            logger.debug(`set_cap ${ch - 1} hasAMix true`)
             store.dispatch(storeCapability(ch - 1, 'hasAMix', true))
             if (node.contents.type !== Model.ElementType.Parameter) {
                 return
             }
 
-            logger.debug('Subscription of AMix state: ' + command)
+            logger.debug(`Subscription of AMix state: ${command}`)
             this.emberConnection.subscribe(node, () => {
-                logger.verbose('Receiving AMix state from Ch ' + String(ch))
+                logger.trace(`Receiving AMix state from Ch ${ch}`)
                 store.dispatch(
                     storeSetAMix(
                         ch - 1,
@@ -403,10 +403,10 @@ export class LawoRubyMixerConnection {
             })
         } catch (e) {
             if (e.message.match(/could not find node/i)) {
-                console.log('set_cap', ch - 1, 'hasAMix', false)
+                logger.debug(`set_cap ${ch - 1} hasAMix false`)
                 store.dispatch(storeCapability(ch - 1, 'hasAMix', false))
             }
-            logger.debug('error when subscribing to input selector', e)
+            logger.data(e).debug('error when subscribing to input selector')
         }
     }
 
@@ -433,14 +433,14 @@ export class LawoRubyMixerConnection {
         this.emberConnection
             .getElementByPath(message)
             .then((element: any) => {
-                logger.verbose('Sending out message : ' + message)
+                logger.trace(`Sending out message: ${message}`)
                 this.emberConnection.setValue(
                     element,
                     typeof value === 'string' ? parseFloat(value) : value
                 )
             })
             .catch((error: any) => {
-                logger.error('Ember Error ', error)
+                logger.data(error).error('Ember Error ')
             })
     }
 
@@ -451,7 +451,7 @@ export class LawoRubyMixerConnection {
         const mixerMessage = this.mixerProtocol.channelTypes[0].toMixer
             .CHANNEL_OUT_GAIN[0].mixerMessage
 
-        logger.verbose('Sending out Level: ' + String(value) + ' To ' + source)
+        logger.trace(`Sending out Level: ${value}  To ${source}`)
 
         this.sendOutMessage(mixerMessage, channel, value)
     }
@@ -574,7 +574,7 @@ export class LawoRubyMixerConnection {
         )
     }
     updateInputSelector(channelIndex: number, inputSelected: number) {
-        logger.debug('input select', channelIndex, inputSelected)
+        logger.debug(`input select ${channelIndex} ${inputSelected}`)
         const channel =
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex

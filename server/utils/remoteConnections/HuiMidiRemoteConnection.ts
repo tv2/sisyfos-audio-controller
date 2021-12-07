@@ -16,6 +16,7 @@ import {
     MidiReceiveTypes,
 } from '../../constants/remoteProtocols/HuiRemoteFaderPresets'
 import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
+import { logger } from '../logger'
 
 export class HuiMidiRemoteConnection {
     store: any
@@ -42,10 +43,11 @@ export class HuiMidiRemoteConnection {
 
         WebMidi.enable((err) => {
             if (err) {
-                console.log(
-                    'Remote MidiController connection could not be enabled.',
-                    err
-                )
+                logger
+                    .data(err)
+                    .error(
+                        'Remote MidiController connection could not be enabled.'
+                    )
             }
 
             this.midiInput = WebMidi.getInputByName(
@@ -56,19 +58,16 @@ export class HuiMidiRemoteConnection {
             )
 
             if (this.midiInput && this.midiOutput) {
-                console.log('Remote Midi Controller connected on port')
-                console.log(
-                    'Midi input :',
-                    state.settings[0].remoteFaderMidiInputPort
+                logger.info('Remote Midi Controller connected on port')
+                logger.info(
+                    `Midi input : ${state.settings[0].remoteFaderMidiInputPort}`
                 )
-                console.log(
-                    'Midi output :',
-                    state.settings[0].remoteFaderMidiOutputPort
+                logger.info(
+                    `Midi output : ${state.settings[0].remoteFaderMidiOutputPort}`
                 )
-
                 this.setupRemoteFaderConnection()
             } else {
-                console.log(
+                logger.error(
                     'Remote Midi Controller not found or not configured.'
                 )
             }
@@ -84,9 +83,7 @@ export class HuiMidiRemoteConnection {
             (message: any) => {
                 if (message.data[1] < 9) {
                     //Fader changed:
-                    console.log(
-                        'Received Fader message (' + message.data + ').'
-                    )
+                    logger.info(`Received Fader message (${message.data}).`)
                     store.dispatch(
                         storeFaderLevel(
                             message.data[1],
@@ -99,7 +96,7 @@ export class HuiMidiRemoteConnection {
                         this.convertFromRemoteLevel(message.data[2])
                     )
                 } else if ((message.data[1] = 15)) {
-                    console.log('Received message (' + message.data + ').')
+                    logger.info(`Received message (${message.data}).`)
                     if (message.data[2] < 9) {
                         //Set active channel for next midi message:
                         this.activeHuiChannel = message.data[2]
@@ -123,11 +120,8 @@ export class HuiMidiRemoteConnection {
         )
         //for testing:
         this.midiInput.addListener('noteon', 'all', (error: any) => {
-            console.log(
-                "Received 'noteon' message (" +
-                    error.note.name +
-                    error.note.octave +
-                    ').'
+            logger.info(
+                `Received 'noteon' message (${error.note.name} ${error.note.octave}).`
             )
         })
     }
@@ -159,12 +153,10 @@ export class HuiMidiRemoteConnection {
         if (!this.midiOutput) {
             return
         }
-        console.log(
-            'Send fader update :',
-            'Channel index : ',
-            channelIndex,
-            'OutputLevel : ',
-            this.convertToRemoteLevel(outputLevel)
+        logger.info(
+            `Send fader update : Channel index : ${channelIndex} OutputLevel : ${this.convertToRemoteLevel(
+                outputLevel
+            )}`
         )
         this.midiOutput.sendControlChange(
             channelIndex,

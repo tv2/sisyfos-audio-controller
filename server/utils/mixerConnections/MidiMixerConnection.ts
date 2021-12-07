@@ -21,6 +21,7 @@ import {
 } from '../../constants/MixerProtocolInterface'
 import { storeSetOutputLevel } from '../../reducers/channelActions'
 import { storeFaderLevel, storeTogglePgm } from '../../reducers/faderActions'
+import { logger } from '../logger'
 
 export class MidiMixerConnection {
     store: any
@@ -38,15 +39,18 @@ export class MidiMixerConnection {
 
         WebMidi.enable((err: any) => {
             if (err) {
-                console.log('WebMidi could not be enabled.', err)
+                logger.data(err).error('WebMidi could not be enabled.')
             }
-            console.log(
-                'Connecting Mixer Midi input on port :',
-                state.settings[0].mixers[this.mixerIndex].mixerMidiInputPort
+            logger.info(
+                `Connecting Mixer Midi input on port: ${
+                    state.settings[0].mixers[this.mixerIndex].mixerMidiInputPort
+                }`
             )
-            console.log(
-                'Connecting Mixer Midi output on port :',
-                state.settings[0].mixers[this.mixerIndex].mixerMidiOutputPort
+            logger.info(
+                `Connecting Mixer Midi output on port: ${
+                    state.settings[0].mixers[this.mixerIndex]
+                        .mixerMidiOutputPort
+                }`
             )
             this.midiInput = WebMidi.getInputByName(
                 state.settings[0].mixers[this.mixerIndex].mixerMidiInputPort
@@ -61,9 +65,7 @@ export class MidiMixerConnection {
 
     setupMixerConnection() {
         this.midiInput.addListener('controlchange', 1, (message: any) => {
-            console.log(
-                "Received 'controlchange' message (" + message.data + ').'
-            )
+            logger.debug(`Received 'controlchange' message (${message.data}).`)
             if (
                 message.data[1] >=
                     parseInt(
@@ -117,11 +119,8 @@ export class MidiMixerConnection {
             }
         })
         this.midiInput.addListener('noteon', 'all', (error: any) => {
-            console.log(
-                "Received 'noteon' message (" +
-                    error.note.name +
-                    error.note.octave +
-                    ').'
+            logger.debug(
+                `Received 'noteon' message (${error.note.name}${error.note.octave}).`
             )
         })
         /*
@@ -148,7 +147,7 @@ export class MidiMixerConnection {
                         channel: ch - 1,
                         label: message.args[0]
                     });
-                console.log("OSC message: ", message.address);
+                logger.debug(`OSC message: ${message.address}`);
             }
 */
         return true

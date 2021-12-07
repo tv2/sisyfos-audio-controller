@@ -41,14 +41,14 @@ export class SkaarhojRemoteConnection {
     setupRemoteFaderConnection(client: any) {
         client
             .on('data', (data: any) => {
-                console.log('Skaarhoj Data Received: ' + data.toString())
+                logger.debug('Skaarhoj Data Received: ' + data.toString())
                 data.toString()
                     .split('\n')
                     .forEach((command: string) => {
                         if (command === 'RDY') {
                             client.write('ready ok\n')
                         } else if (command === 'list') {
-                            console.log('Activating Skaarhoj panel')
+                            logger.info('Activating Skaarhoj panel')
                             client.write('ActivePanel=1\n')
                         } else if (command.includes('map=')) {
                             this.initializeMapping(command)
@@ -65,22 +65,22 @@ export class SkaarhojRemoteConnection {
                 if (this.clientList) {
                     this.clientList.splice(this.clientList.find(client), 1)
                 }
-                console.log('Lost Connection to Skaarhoj panel')
+                logger.error('Lost Connection to Skaarhoj panel')
             })
             .on('close', function () {
                 if (this.clientList) {
                     this.clientList.splice(this.clientList.find(client), 1)
                 }
-                console.log('Skaarhoj Connection closed')
+                logger.info('Skaarhoj Connection closed')
             })
     }
 
     initializeMapping(command: string) {
         let hwButton = parseInt(command.substring(command.indexOf(':') + 1))
         // Initialize:
-        console.log('Initializing Skaarhoj remote')
+        logger.info('Initializing Skaarhoj remote')
         if (hwButton <= state.faders[0].fader.length) {
-            console.log('Initializing skaahoj fader - Button:', hwButton)
+            logger.data(hwButton).info('Initializing skaahoj fader - Button')
             this.updateRemoteFaderState(
                 hwButton - 1,
                 state.faders[0].fader[hwButton - 1].faderLevel
@@ -119,9 +119,7 @@ export class SkaarhojRemoteConnection {
                 }
             }
             //Fader changed:
-            console.log(
-                'Received Fader ' + (channelIndex + 1) + ' Level : ' + level
-            )
+            logger.debug(`Received Fader ${channelIndex + 1} Level : ${level}`)
             store.dispatch(storeFaderLevel(channelIndex, level))
             mixerGenericConnection.updateOutLevel(channelIndex)
             global.mainThreadHandler.updatePartialStore(channelIndex)
@@ -185,13 +183,10 @@ export class SkaarhojRemoteConnection {
             }
         }
         //Fader changed:
-        console.log(
-            'Received Aux Panel ' +
-                String(panelNumber) +
-                'Ch ' +
-                String(chIndex + 1) +
-                ' Level : ' +
-                level
+        logger.info(
+            `Received Aux Panel ${panelNumber} Ch ${
+                chIndex + 1
+            } Level: ${level}`
         )
         store.dispatch(storeSetAuxLevel(0, chIndex, auxSendIndex, level))
         mixerGenericConnection.updateAuxLevel(chIndex, auxSendIndex + 1)
@@ -213,7 +208,7 @@ export class SkaarhojRemoteConnection {
             formatLabel +
             '\n'
         // 32767|||||label
-        logger.verbose('Sending command to Skaarhoj :' + formattetString)
+        logger.trace(`Sending command to Skaarhoj : ${formattetString}`)
         this.clientList.forEach((client) => {
             client.write(formattetString)
         })

@@ -1,24 +1,3 @@
-import winston from 'winston'
-const processArgs = require('minimist')(process.argv.slice(2))
+import { createDefaultLogger } from '@tv2media/logger'
 
-const loggerConsoleLevel =
-    process.env.loggerLevel || processArgs.loggerLevel || 'error'
-
-const logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.Console({ level: loggerConsoleLevel }), //save errors on console
-    ],
-})
-
-if (process.env.NODE_ENV !== 'production') {
-    logger.add(
-        new winston.transports.Console({
-            //we also log to console if we're not in production
-            format: winston.format.simple(),
-        })
-    )
-}
-
-export { logger }
+export const logger = createDefaultLogger()

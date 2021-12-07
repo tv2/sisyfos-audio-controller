@@ -1,3 +1,4 @@
+import { logger } from '../utils/logger'
 import * as FADER_ACTIONS from './faderActions'
 
 export interface IFaders {
@@ -353,12 +354,14 @@ export const faders = (
             }
             return nextState
         case FADER_ACTIONS.UPDATE_LABEL_LIST:
-            console.log('update labels', action.update)
+            logger.tag('update labels').info(action.update)
             Object.entries(action.update).forEach(
                 ([index, label]: [string, string]) => {
                     nextState[0].fader[Number(index)].userLabel =
                         label === '' ? undefined : label
-                    console.log(index, label)
+                    logger
+                        .tag('update labels')
+                        .info(`index: ${index} label: ${label}`)
                 }
             )
             return nextState

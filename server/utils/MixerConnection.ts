@@ -1,4 +1,5 @@
 import { store, state } from '../reducers/store'
+import { logger } from './logger'
 import { remoteConnections } from '../mainClasses'
 
 //Utils:
@@ -231,7 +232,7 @@ export class MixerGenericConnection {
 
     updateInputSelector = (faderIndex: number) => {
         let inputSelected = state.faders[0].fader[faderIndex].inputSelector
-        console.log(faderIndex, inputSelected)
+        logger.trace(`${faderIndex} ${inputSelected}`)
         state.channels[0].chMixerConnection.forEach(
             (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
                 chMixerConnection.channel.forEach(
