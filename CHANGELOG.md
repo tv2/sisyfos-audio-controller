@@ -1,3 +1,36 @@
+## [4.14.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.13.2...v4.14.0) (2021-11-26)
+
+
+### Features
+
+* Added fader-toggling to mic tally view ([803ffda](https://github.com/tv2/sisyfos-audio-controller/commit/803ffdaf31731a878aee8d97c6027243c0c09737))
+* Comp On/Off - CSS styling ([f981d77](https://github.com/tv2/sisyfos-audio-controller/commit/f981d7746e139277ef135c15156b162b36d3fbe6))
+* Double click on Fader in the 0dB area will set the Fader to 0dB ([e29c939](https://github.com/tv2/sisyfos-audio-controller/commit/e29c939d924430a5d270d2778399c8e0023b6c39))
+* Midas - Comp On/Off functionality implemented - ToDo GUI - CSS ([d3f816a](https://github.com/tv2/sisyfos-audio-controller/commit/d3f816a32275676d99a97b845435a1a9a869a56f))
+* Midas - GUI Ratio on compressor is now from a list of values ([cb48a27](https://github.com/tv2/sisyfos-audio-controller/commit/cb48a274519409efc640f085a9a57f955b0fa369))
+* Midas reduction meter, add 6db and 12db reduction on scale ([7f79ff6](https://github.com/tv2/sisyfos-audio-controller/commit/7f79ff611172b2647740fd1fc8c8a97da57f7764))
+* valuesAsLabels - show min and max in GUI ([a5489f8](https://github.com/tv2/sisyfos-audio-controller/commit/a5489f8b7c2de4bbca42c248ec4a9419840fb3b2))
+* When using Sisyfos in manual mode (automation mode off) a SlowFade toogle option is added to faders ([67855fd](https://github.com/tv2/sisyfos-audio-controller/commit/67855fd02e14c7c78c0107c3730e428fdf4bc3e8))
+
+
+### Bug Fixes
+
+* Added 'SLOW FADE' to translation list (i18n.ts) ([dbb3160](https://github.com/tv2/sisyfos-audio-controller/commit/dbb3160580230778ed3c3ed7a73f287fbe1f5141))
+* Added modal for confirming toggling for mic-tally ([27183f2](https://github.com/tv2/sisyfos-audio-controller/commit/27183f22e5a32eca08c15523a2b755690d939496))
+* Midas - when loading a new preset, settings was not received ([a4505b7](https://github.com/tv2/sisyfos-audio-controller/commit/a4505b7b48076f4eca956f0bf6e4769b825cb53f))
+* Midas metering convert dB to Lin ([cc26cc7](https://github.com/tv2/sisyfos-audio-controller/commit/cc26cc725a6f4b6066b787f7a39e895d5c2fbb11))
+* Midas Reduction meter should not be converted to log ([63e05b7](https://github.com/tv2/sisyfos-audio-controller/commit/63e05b7d16df2094030f3cb0a1869b5708adc65b))
+* Removed ?minimonitor=1 from code and README. ([d74b69b](https://github.com/tv2/sisyfos-audio-controller/commit/d74b69b73452ca74b97b8f72e35522ad774cce78))
+* use minLabel AND maxLabel when calculating received OSC message ([c93a0b0](https://github.com/tv2/sisyfos-audio-controller/commit/c93a0b0fcd0f353a2a90f0bfd5e9c30d6e802c4e))
+* Use version from bump-version instead of package.json in node-ci.prod ([ef8c1d7](https://github.com/tv2/sisyfos-audio-controller/commit/ef8c1d747076b4e57df319256774c68a754fe5b4))
+
+
+### Styles
+
+* Added small indications for muted mic tally ([c9a266f](https://github.com/tv2/sisyfos-audio-controller/commit/c9a266f1a1a619d748be58389cf44c3fe4478320))
+* Updated mic tally appearance and responsiveness ([6c6f65d](https://github.com/tv2/sisyfos-audio-controller/commit/6c6f65ddd840395948b78d788d19237921d697b1))
+
+
 ### [4.13.2](https://github.com/tv2/sisyfos-audio-controller/compare/v4.13.1...v4.13.2) (2021-11-09)
 
 
