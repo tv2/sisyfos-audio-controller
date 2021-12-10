@@ -1,3 +1,24 @@
+## [4.15.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.14.0...v4.15.0) (2021-12-10)
+
+
+### Features
+
+* Changed logger from winston to tv2 mediatech logger. ([ab20456](https://github.com/tv2/sisyfos-audio-controller/commit/ab204564e1b0e276332715195b7421dd21ff74c1))
+* Full Ch Strip overall is scaling correct now ([1401a55](https://github.com/tv2/sisyfos-audio-controller/commit/1401a551011da5bdaf2a20e0c9be1e75fcf02b30))
+* Full channelstrip GUI scaling - initial changes ([4d49bcc](https://github.com/tv2/sisyfos-audio-controller/commit/4d49bcc0345808dcf6c2d409f1b2dfeccb34a2fb))
+* fullch strip GUI - split Eq part to own component. ([eb6fa42](https://github.com/tv2/sisyfos-audio-controller/commit/eb6fa4259d50672bf40377da2f6fb4bbf150b940))
+* Graphical Eq scaleable - prepared Reduction meter ([8ade6da](https://github.com/tv2/sisyfos-audio-controller/commit/8ade6da02ddae688a2b9d748b9ffc8a1dcd156a7))
+
+
+### Bug Fixes
+
+* Bumped github actions workflows. ([e98080b](https://github.com/tv2/sisyfos-audio-controller/commit/e98080bb0dbb0af0478719a57c602e67c8c639d3))
+* don't scale reduction meters for now ([901df87](https://github.com/tv2/sisyfos-audio-controller/commit/901df875b0e2dc442bd515018314621c5e127dba))
+* Fixated logger version to 1.0.4, since newer uses fs. ([652e4ae](https://github.com/tv2/sisyfos-audio-controller/commit/652e4ae82455a9261568514a61f4f409d0281d62))
+* reduction meter align -6dB ([87d9f33](https://github.com/tv2/sisyfos-audio-controller/commit/87d9f3303ffb34d77789505dc4c2513ef3966350))
+* Updated yarn.lock. ([9fd96a9](https://github.com/tv2/sisyfos-audio-controller/commit/9fd96a9b5e77525a00dde174e93110fffb8abb0e))
+
+
 ## [4.14.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.13.2...v4.14.0) (2021-11-26)
 
 
