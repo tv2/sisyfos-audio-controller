@@ -41,7 +41,7 @@ export class SSLMixerConnection {
             state.settings[0].mixers[this.mixerIndex].devicePort,
             state.settings[0].mixers[this.mixerIndex].deviceIp,
             () => {
-                logger.info('Connected to SSL', {})
+                logger.info('Connected to SSL')
             }
         )
         this.setupMixerConnection()
@@ -223,10 +223,12 @@ export class SSLMixerConnection {
                         let commandHex = buffer.toString('hex')
                         let channelIndex = buffer[6]
                         let value: boolean = buffer[7] === 0 ? true : false
-                        logger.verbose(
-                            'Receive Buffer Channel On/off: ' +
-                                this.formatHexWithSpaces(commandHex, ' ', 2),
-                            {}
+                        logger.trace(
+                            `Receive Buffer Channel On/off: ${this.formatHexWithSpaces(
+                                commandHex,
+                                ' ',
+                                2
+                            )}`
                         )
 
                         let assignedFaderIndex =
@@ -260,10 +262,12 @@ export class SSLMixerConnection {
                         )
                     } else {
                         let commandHex = buffer.toString('hex')
-                        logger.verbose(
-                            'Receieve Buffer Hex: ' +
-                                this.formatHexWithSpaces(commandHex, ' ', 2),
-                            {}
+                        logger.trace(
+                            `Receieve Buffer Hex: ${this.formatHexWithSpaces(
+                                commandHex,
+                                ' ',
+                                2
+                            )}`
                         )
                     }
                     if (buffer[0] === 4) {
@@ -274,8 +278,8 @@ export class SSLMixerConnection {
                 })
             })
             .on('error', (error: any) => {
-                logger.error('Error : ' + String(error), {})
-                logger.info('Lost SCP connection', {})
+                logger.error(`Error: ${error}`)
+                logger.info('Lost SCP connection')
             })
 
         //Ping mixer to get mixerOnlineState
@@ -375,7 +379,7 @@ export class SSLMixerConnection {
             })
         )
 
-        logger.verbose('Send HEX: ' + sslMessage, {})
+        logger.trace(`Send HEX: ${sslMessage}`)
         this.SSLConnection.write(buf)
     }
 
@@ -400,7 +404,7 @@ export class SSLMixerConnection {
             })
         )
 
-        logger.verbose('Send HEX: ' + sslMessage, {})
+        logger.trace(`Send HEX: ${sslMessage}`)
         this.SSLConnection.write(buf)
     }
 
@@ -415,7 +419,7 @@ export class SSLMixerConnection {
             })
         )
 
-        logger.verbose('Send HEX: ' + sslMessage, {})
+        logger.trace(`Send HEX: ${sslMessage}`)
         this.SSLConnection.write(buf)
     }
 

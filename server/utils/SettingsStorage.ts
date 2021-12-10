@@ -28,7 +28,9 @@ export const loadSettings = (storeRedux: any): ISettings => {
         checkVersion(newSettings)
         return newSettings
     } catch (error) {
-        logger.error('Couldn´t read Settings.json file, creating af new', error)
+        logger
+            .data(error)
+            .error('Couldn´t read Settings.json file, creating af new')
         saveSettings(newSettings)
         return newSettings
     }
@@ -46,7 +48,7 @@ export const saveSettings = (settings: any) => {
         json,
         'utf8',
         (error: any) => {
-            logger.error('Error writing settings.json file: ', error)
+            logger.data(error).error('Error writing settings.json file: ')
         }
     )
 }
@@ -79,7 +81,7 @@ export const loadSnapshotState = (
             )
         }
     } catch (error) {
-        logger.error('Error loading Snapshot' + String(error), {})
+        logger.data(error).error('Error loading Snapshot')
     }
 }
 
@@ -87,12 +89,9 @@ export const saveSnapshotState = (stateSnapshot: any, fileName: string) => {
     let json = JSON.stringify(stateSnapshot)
     fs.writeFile(fileName, json, 'utf8', (error: any) => {
         if (error) {
-            logger.error('Error saving Snapshot' + String(error), {})
+            logger.data(error).error('Error saving Snapshot')
         } else {
-            logger.verbose(
-                'Snapshot ' + fileName + ' Saved to storage folder',
-                {}
-            )
+            logger.trace('Snapshot ' + fileName + ' Saved to storage folder')
         }
     })
 }
@@ -140,22 +139,16 @@ export const setCcgDefault = (fileName: string) => {
     try {
         data = fs.readFileSync(path.join('storage', fileName))
     } catch (error) {
-        logger.error('Couldn´t read ' + fileName + ' file', {})
+        logger.error('Couldn´t read ' + fileName + ' file')
         return
     }
 
     const defaultFile = path.join('storage', 'default-casparcg.ccg')
     fs.writeFile(defaultFile, data, 'utf8', (error: any) => {
         if (error) {
-            logger.error(
-                'Error setting default CasparCG setting' + String(error),
-                {}
-            )
+            logger.data(error).error('Error setting default CasparCG setting')
         } else {
-            logger.info(
-                'CasparCG' + fileName + ' Saved as default CasparCG',
-                {}
-            )
+            logger.info('CasparCG' + fileName + ' Saved as default CasparCG')
         }
     })
 }
@@ -166,7 +159,7 @@ export const getCustomPages = (): ICustomPages[] => {
             fs.readFileSync(path.resolve('storage', 'pages.json'))
         )
     } catch (error) {
-        logger.error('Couldn´t read pages.json file', {})
+        logger.error('Couldn´t read pages.json file')
         return []
     }
 }
@@ -178,9 +171,9 @@ export const saveCustomPages = (
     let json = JSON.stringify(stateCustomPages)
     fs.writeFile(path.join('storage', fileName), json, 'utf8', (error: any) => {
         if (error) {
-            logger.error('Error saving pages file' + String(error), {})
+            logger.data(error).error('Error saving pages file')
         } else {
-            logger.info('Pages ' + fileName + ' Saved to storage folder', {})
+            logger.info('Pages ' + fileName + ' Saved to storage folder')
         }
     })
 }

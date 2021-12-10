@@ -13,9 +13,7 @@ interface IVuMeterProps {
     faderIndex: number
 }
 
-export class ReductionMeter extends React.Component<
-    IReductionMeterInjectedProps
-> {
+export class ReductionMeter extends React.Component<IReductionMeterInjectedProps> {
     canvas: HTMLCanvasElement | undefined
 
     totalPeak: number = 0
@@ -40,10 +38,7 @@ export class ReductionMeter extends React.Component<
     }
 
     totalHeight = () => {
-        return (
-            170 /
-            (this.meterMax - this.meterMin)
-        )
+        return 170 / (this.meterMax - this.meterMin)
     }
 
     getTotalPeak = () => {
@@ -77,9 +72,7 @@ export class ReductionMeter extends React.Component<
         if (val < this.meterTest) {
             val = 0
         } else if (val >= this.meterZero) {
-            val =
-                this.meterZero -
-                this.meterTest
+            val = this.meterZero - this.meterTest
         } else {
             val = this.props.reductionVal - this.meterTest
         }
@@ -180,6 +173,8 @@ export class ReductionMeter extends React.Component<
                     width={10}
                     ref={this.setRef}
                 ></canvas>
+                <p className="reduction-6db">___6dB</p>
+                <p className="reduction-12db">12dB</p>
             </div>
         )
     }

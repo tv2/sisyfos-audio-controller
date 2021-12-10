@@ -43,7 +43,7 @@ export class QlClMixerConnection {
             50000,
             state.settings[0].mixers[this.mixerIndex].deviceIp,
             () => {
-                logger.info('Connected to Yamaha mixer', {})
+                logger.info('Connected to Yamaha mixer')
             }
         )
         this.setupMixerConnection()
@@ -52,7 +52,7 @@ export class QlClMixerConnection {
     setupMixerConnection() {
         this.midiConnection
             .on('ready', () => {
-                logger.info('Receiving state of desk', {})
+                logger.info('Receiving state of desk')
                 this.mixerProtocol.initializeCommands.map((item) => {
                     if (item.mixerMessage.includes('{channel}')) {
                         state.channels[0].chMixerConnection[
@@ -93,8 +93,8 @@ export class QlClMixerConnection {
                 }
 
                 buffers.forEach((message) => {
-                    logger.verbose(
-                        'Received Midi Message : ' + message.toString('hex')
+                    logger.trace(
+                        `Received Midi Message : ${message.toString('hex')}`
                     )
                     if (
                         this.checkMidiCommand(
@@ -186,11 +186,10 @@ export class QlClMixerConnection {
                         let channelIndex = message[11] | (message[10] << 8)
 
                         let value: boolean = message[16] === 0 ? true : false
-                        logger.verbose(
-                            'Receive Buffer Channel On/off - Channel ' +
-                                String(channelIndex + 1) +
-                                ' Val :' +
-                                String(message[16])
+                        logger.trace(
+                            `Receive Buffer Channel On/off - Channel ${
+                                channelIndex + 1
+                            } Val :${message[16]}`
                         )
 
                         let assignedFaderIndex =
@@ -226,8 +225,7 @@ export class QlClMixerConnection {
                 })
             })
             .on('error', (error: any) => {
-                logger.error('Error : ' + String(error), {})
-                logger.info('Lost QlCl connection', {})
+                logger.data(error).error('Lost QlCl connection')
             })
 
         //Ping OSC mixer if mixerProtocol needs it.
@@ -299,7 +297,7 @@ export class QlClMixerConnection {
                 return parseInt(val, 16)
             })
         )
-        logger.verbose('Sending Command :' + command)
+        logger.trace(`Sending Command :${command}`)
         this.midiConnection.write(buf)
     }
 

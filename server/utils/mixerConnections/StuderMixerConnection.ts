@@ -40,7 +40,9 @@ export class StuderMixerConnection {
             ) {
                 logger.error('Ember connection not establised')
             } else {
-                logger.error('Ember connection unknown error' + error.message)
+                logger
+                    .data(error)
+                    .error(`Ember connection unknown error: ${error.message}`)
             }
         })
         this.emberConnection.on('disconnected', () => {
@@ -54,7 +56,7 @@ export class StuderMixerConnection {
                 this.setupMixerConnection()
             })
             .catch((e: any) => {
-                console.log(e.stack)
+                logger.error(e.stack)
             })
     }
 
@@ -107,10 +109,10 @@ export class StuderMixerConnection {
         this.emberConnection
             .getElementByPath(command)
             .then((node: any) => {
-                logger.info('Subscription of channel : ' + command)
+                logger.info(`Subscription of channel: ${command}`)
                 this.emberNodeObject[ch - 1] = node
                 this.emberConnection.subscribe(node, () => {
-                    logger.verbose('Receiving Level from Ch ' + String(ch))
+                    logger.trace(`Receiving Level from Ch ${ch}`)
                     if (
                         !state.channels[0].chMixerConnection[this.mixerIndex]
                             .channel[ch - 1].fadeActive &&
@@ -193,14 +195,14 @@ export class StuderMixerConnection {
         /*
         this.emberConnection.getElementByPath(message)
         .then((element: any) => {
-            logger.verbose('Sending out message : ' + message)
+            logger.trace(`Sending out message: ${message}`)
             this.emberConnection.setValue(
                 this.emberNodeObject[channel-1],
                 typeof value === 'number' ? value : parseFloat(value)
             )
         })
         .catch((error: any) => {
-            console.log("Ember Error ", error)
+            logger.data(error).error("Ember Error")
         })
         */
     }
@@ -252,7 +254,7 @@ export class StuderMixerConnection {
             })
         )
         this.emberConnection._client.socket.write(buf)
-        logger.verbose('Send HEX: ' + levelMessage)
+        logger.trace(`Send HEX: ${levelMessage}`)
     }
 
     sendOutRequest(mixerMessage: string, channel: number) {
@@ -282,7 +284,7 @@ export class StuderMixerConnection {
         if (level < -90) {
             level = -90
         }
-        // console.log('Log level :', level)
+        // logger.debug(`Log level: ${level}`)
 
         this.sendOutLevelMessage(channelTypeIndex + 1, level)
     }
@@ -296,7 +298,7 @@ export class StuderMixerConnection {
         if (level < -90) {
             level = -90
         }
-        // console.log('Log level :', level)
+        // logger.debug(`Log level: ${level}`)
 
         this.sendOutLevelMessage(channelTypeIndex + 1, level)
     }

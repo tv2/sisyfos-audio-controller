@@ -396,8 +396,6 @@ class ChanStrip extends React.PureComponent<
                                         )}
                                         <p className="zero-comp">______</p>
                                         {this.gainReduction()}
-                                        <p className="reduction-6db">___6dB</p>
-                                        <p className="reduction-12db">___12dB</p>
                                     </div>
                                 </div>
                             </React.Fragment>

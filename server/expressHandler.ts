@@ -19,11 +19,11 @@ server.on('connection', () => {
 })
 
 socketServer.on('connection', (socket: any) => {
-    logger.info('Client connected :' + String(socket.client.id), {})
+    logger.info(`Client connected: ${socket.client.id}`)
     global.mainThreadHandler.socketServerHandlers(socket)
 
     socket.on('subscribe-vu-meter', () => {
-        console.log('socket subscribe vu')
+        logger.debug('Socket subscribe vu')
         socketSubscribeVu(socket)
     })
     socket.on('disconnect', () => {

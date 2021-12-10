@@ -84,7 +84,7 @@ export class VMixMixerConnection {
     setupMixerConnection() {
         this.vmixConnection._socket
             .on('connect', () => {
-                logger.info('Receiving state of desk', {})
+                logger.info('Receiving state of desk')
                 this.initialCommands()
 
                 this.mixerOnline(true)
@@ -92,7 +92,7 @@ export class VMixMixerConnection {
             })
             .on('data', (data: any) => {
                 const message = data.toString()
-                // console.log(XmlApi.DataParser.parse(message))
+                // logger.trace(XmlApi.DataParser.parse(message))
                 clearTimeout(this.mixerOnlineTimer)
                 if (!state.settings[0].mixers[this.mixerIndex].mixerOnline) {
                     this.mixerOnline(true)
@@ -100,17 +100,17 @@ export class VMixMixerConnection {
             })
             .on('error', (error: any) => {
                 global.mainThreadHandler.updateFullClientStore()
-                logger.error('Error : ' + String(error), {})
+                logger.error(error)
             })
             .on('disconnect', () => {
                 this.mixerOnline(false)
-                logger.info('Lost VMix connection', {})
+                logger.info('Lost VMix connection')
             })
 
         logger.info(
-            `OSC listening on port ` +
-                String(state.settings[0].mixers[this.mixerIndex].localOscPort),
-            {}
+            `OSC listening on port ${
+                state.settings[0].mixers[this.mixerIndex].localOscPort
+            }`
         )
 
         //Ping OSC mixer if mixerProtocol needs it.
@@ -358,7 +358,7 @@ export class VMixMixerConnection {
                 )
             }
 
-            //            console.log(fxKey)
+            //            logger.trace(fxKey)
         })
     }
 
@@ -395,7 +395,7 @@ export class VMixMixerConnection {
         type: string
     ) {
         if (state.settings[0].mixers[this.mixerIndex].mixerOnline) {
-            logger.verbose(`send${vMixMessage} Input=1&Value=${value}`)
+            logger.trace(`send${vMixMessage} Input=1&Value=${value}`)
             this.vmixConnection.send({
                 Function: vMixMessage,
                 Input: channel, // todo - should we map these?
@@ -425,7 +425,7 @@ export class VMixMixerConnection {
             ? ('0' + String(auxSend)).slice(-2)
             : String(auxSend)
         message = message.replace('{argument}', auxSendNumber)
-        logger.verbose('Initial Aux Message : ' + message)
+        logger.trace(`Initial Aux Message : ${message}`)
         if (message != 'none') {
             this.vmixConnection.send({
                 address: message,
@@ -664,7 +664,7 @@ export class VMixMixerConnection {
     }
 
     loadMixerPreset(presetName: string) {
-        logger.info('Loading preset : ' + presetName)
+        logger.info(`Loading preset : ${presetName}`)
         if (this.mixerProtocol.presetFileExtension === 'X32') {
             let data = JSON.parse(
                 '{}' // ''fs.readFileSync(path.resolve('storage', presetName))

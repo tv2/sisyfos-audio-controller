@@ -38,7 +38,7 @@ export class MainThreadHandlers {
     snapshotHandler: SnapshotHandler
 
     constructor() {
-        logger.info('Setting up MainThreadHandlers', {})
+        logger.info('Setting up MainThreadHandlers')
 
         this.snapshotHandler = new SnapshotHandler()
         store.dispatch(storeUpdateSettings(loadSettings(state)))
@@ -101,16 +101,13 @@ export class MainThreadHandlers {
     }
 
     socketServerHandlers(socket: any) {
-        logger.info('SETTING UP SOCKET IO MAIN HANDLERS', {})
+        logger.info('Setting up socket IO main handlers.')
 
         // get-store get-settings and get-mixerprotocol will be replaces with
         // serverside Redux middleware emitter when moved to Socket IO:
         socket
             .on('get-store', () => {
-                logger.info(
-                    'Settings initial store on :' + String(socket.client.id),
-                    {}
-                )
+                logger.info(`Setting initial store on: ${socket.client.id}`)
                 this.updateFullClientStore()
             })
             .on('get-settings', () => {
@@ -127,14 +124,14 @@ export class MainThreadHandlers {
                 })
             })
             .on(IO.SOCKET_GET_SNAPSHOT_LIST, () => {
-                logger.info('Get snapshot list', {})
+                logger.info('Get snapshot list')
                 socketServer.emit(
                     IO.SOCKET_RETURN_SNAPSHOT_LIST,
                     getSnapShotList()
                 )
             })
             .on(IO.SOCKET_LOAD_SNAPSHOT, (payload: string) => {
-                logger.info('Load Snapshot', {})
+                logger.info('Load Snapshot')
                 this.snapshotHandler.loadSnapshotSettings(
                     path.resolve('storage', payload),
                     true
@@ -142,7 +139,7 @@ export class MainThreadHandlers {
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_SAVE_SNAPSHOT, (payload: string) => {
-                logger.info('Save Snapshot', {})
+                logger.info('Save Snapshot')
                 this.snapshotHandler.saveSnapshotSettings(
                     path.resolve('storage', payload)
                 )
@@ -153,14 +150,14 @@ export class MainThreadHandlers {
                 )
             })
             .on(IO.SOCKET_GET_CCG_LIST, () => {
-                logger.info('Get CCG settings list', {})
+                logger.info('Get CCG settings list')
                 socketServer.emit(
                     IO.SOCKET_RETURN_CCG_LIST,
                     getCcgSettingsList()
                 )
             })
             .on(IO.SOCKET_GET_MIXER_PRESET_LIST, () => {
-                logger.info('Get Preset list', {})
+                logger.info('Get Preset list')
                 socketServer.emit(
                     IO.SOCKET_RETURN_MIXER_PRESET_LIST,
                     getMixerPresetList(
@@ -169,17 +166,17 @@ export class MainThreadHandlers {
                 )
             })
             .on(IO.SOCKET_SAVE_CCG_FILE, (payload: any) => {
-                logger.info('Set default CCG File :' + String(payload), {})
+                logger.info(`Set default CCG File: ${payload}`)
                 setCcgDefault(payload)
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_LOAD_MIXER_PRESET, (payload: any) => {
-                logger.info('Set Mixer Preset :' + String(payload), {})
+                logger.info(`Set Mixer Preset: ${payload}`)
                 mixerGenericConnection.loadMixerPreset(payload)
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_GET_PAGES_LIST, () => {
-                logger.info('Get custom pages list', {})
+                logger.info('Get custom pages list')
                 let customPages: ICustomPages[] = getCustomPages()
                 if (
                     customPages.length === state.settings[0].numberOfCustomPages
@@ -210,10 +207,10 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_SET_PAGES_LIST, (payload: any) => {
                 saveCustomPages(payload)
-                logger.info('Save custom pages list: ' + String(payload), {})
+                logger.info(`Save custom pages list: ${payload}`)
             })
             .on(IO.SOCKET_SAVE_SETTINGS, (payload: any) => {
-                logger.info('Save settings :' + String(payload), {})
+                logger.data(payload).info('Save settings:')
                 saveSettings(payload)
                 this.updateFullClientStore()
             })
@@ -221,14 +218,12 @@ export class MainThreadHandlers {
                 process.exit(0)
             })
             .on(IO.SOCKET_SET_ASSIGNED_FADER, (payload: any) => {
-                logger.verbose(
-                    'Set assigned fader. Mixer:' +
-                        String(payload.mixerIndex + 1) +
-                        'Channel:' +
-                        String(payload.channel) +
-                        'Fader :' +
-                        String(payload.faderAssign),
-                    {}
+                logger.trace(
+                    `Set assigned fader.\n  Mixer: ${
+                        payload.mixerIndex + 1
+                    }\n  Channel: ${payload.channel}\n  Fader: ${
+                        payload.faderAssign
+                    }`
                 )
                 store.dispatch(
                     storeSetAssignedFader(
@@ -266,10 +261,7 @@ export class MainThreadHandlers {
                 )
             })
             .on(IO.SOCKET_SET_AUX_LEVEL, (payload: any) => {
-                logger.verbose(
-                    'Set Auxlevel Channel:' + String(payload.channel),
-                    {}
-                )
+                logger.trace(`Set Auxlevel Channel: ${payload.channel}`)
                 store.dispatch(
                     storeSetAuxLevel(
                         0,
@@ -286,12 +278,8 @@ export class MainThreadHandlers {
                 remoteConnections.updateRemoteAuxPanels()
             })
             .on(IO.SOCKET_SET_FX, (payload: any) => {
-                logger.verbose(
-                    'Set ' +
-                        fxParamsList[payload.fxParam] +
-                        ': ' +
-                        String(payload.channel),
-                    {}
+                logger.trace(
+                    `Set ${fxParamsList[payload.fxParam]}: ${payload.channel}`
                 )
                 store.dispatch(
                     FADER_ACTIONS.storeFaderFx(
@@ -359,11 +347,10 @@ export class MainThreadHandlers {
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_SET_FADERLEVEL, (payload: any) => {
-                logger.verbose(
-                    'Set faderlevel  Channel : ' +
-                        String(payload.faderIndex + 1) +
-                        '  Level : ' +
-                        String(payload.level)
+                logger.trace(
+                    `Set fader level\n  Channel: ${
+                        payload.faderIndex + 1
+                    }\n  Level: ${payload.level}`
                 )
                 store.dispatch(
                     FADER_ACTIONS.storeFaderLevel(
@@ -376,11 +363,10 @@ export class MainThreadHandlers {
                 this.updatePartialStore(payload.faderIndex)
             })
             .on(IO.SOCKET_SET_INPUT_GAIN, (payload: any) => {
-                logger.verbose(
-                    'Set fInput Gain Channel : ' +
-                        String(payload.faderIndex + 1) +
-                        '  Level : ' +
-                        String(payload.level)
+                logger.trace(
+                    `Set fInput\n  Gain Channel: ${
+                        payload.faderIndex + 1
+                    }\n  Level: ${payload.level}`
                 )
                 store.dispatch(
                     FADER_ACTIONS.storeInputGain(
@@ -392,13 +378,12 @@ export class MainThreadHandlers {
                 this.updatePartialStore(payload.faderIndex)
             })
             .on(IO.SOCKET_SET_INPUT_SELECTOR, (payload: any) => {
-                logger.verbose(
-                    'Set Input selector : ' +
-                        String(payload.faderIndex + 1) +
-                        '  Selected : ' +
-                        String(payload.selected)
+                logger.trace(
+                    `Set Input selector: ${
+                        payload.faderIndex + 1
+                    }\n  Selected: ${payload.selected}`
                 )
-                console.log(payload)
+                logger.debug(payload)
                 store.dispatch(
                     FADER_ACTIONS.storeInputSelector(
                         payload.faderIndex,
@@ -409,7 +394,7 @@ export class MainThreadHandlers {
                 this.updatePartialStore(payload.faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_ALL_MANUAL, () => {
-                logger.verbose('Toggle manual mode for all')
+                logger.trace('Toggle manual mode for all')
                 store.dispatch(FADER_ACTIONS.storeAllManual())
                 this.updateFullClientStore()
             })

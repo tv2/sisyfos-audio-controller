@@ -11,7 +11,7 @@ export class SnapshotHandler {
     settingsPath: string = ''
 
     constructor() {
-        logger.info('SETTINGS UP STATE', {})
+        logger.info('Setting up state')
 
         this.snapShopStoreTimer()
 

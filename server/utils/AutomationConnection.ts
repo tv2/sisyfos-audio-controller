@@ -83,7 +83,7 @@ export class AutomationConnection {
                         ch = channel.assignedFader + 1
                     } else {
                         logger.error(
-                            'Could not find fader with label ' + chMessage
+                            `Could not find fader with label: ${chMessage}`
                         )
                         return
                     }
@@ -101,11 +101,7 @@ export class AutomationConnection {
             }
 
             logger.info(
-                'RECIEVED AUTOMATION MESSAGE :' +
-                    message.address +
-                    ', ' +
-                    message.args[0],
-                {}
+                `RECIEVED AUTOMATION MESSAGE :${message.address}, ${message.args[0]}`
             )
 
             // Set state of Sisyfos:
@@ -279,23 +275,16 @@ export class AutomationConnection {
             .on('ready', () => {
                 this.automationProtocol.initializeCommands.map((item) => {
                     // this.sendOutMessage(item.oscMessage, 1, item.value, item.type);
-                    logger.info(
-                        'Listening for Automation via OSC over UDP.',
-                        {}
-                    )
+                    logger.info('Listening for Automation via OSC over UDP.')
                 })
             })
             .on('message', messageHandler)
             .on('error', (error: any) => {
-                logger.error('Error : ', error)
-                logger.info('Lost OSC Automation connection', {})
+                logger.data(error).error('Error OSC')
             })
 
         this.oscConnection.open()
-        logger.info(
-            'OSC Automation listening on port ' + String(AUTOMATION_OSC_PORT),
-            {}
-        )
+        logger.info(`OSC Automation listening on port ${AUTOMATION_OSC_PORT}`)
     }
 
     checkOscCommand(message: string, command: string) {
