@@ -1,9 +1,10 @@
-.chan-strip-full-body {
+.chstrip-full-body {
+    justify-content: space-evenly;
     position: fixed;
-    top: 50px;
-    left: 150px;
-    width: 1700px;
-    height: 1000px;
+    top: 5vh;
+    left: 5vw;
+    width: 90vw;
+    height: 90vh;
     overflow: auto;
     background-color: rgb(36, 36, 36);
     border-color: rgb(149, 149, 149);
@@ -12,207 +13,136 @@
     border-radius: 8px;
     text-align: left;
     z-index: 2;
-
     color: #fff;
 }
 
-.chan-strip-full-body > .ch-strip-full-header {
-    margin-left: 40px;
-    margin-top: 10px;
-    margin-right: 80px;
+.ch-strip-full-header {
+    margin-left: 5vw;
+    margin-top: 1vh;
+    margin-right: 10vw;
     /* width: 420px; */
-    font-size: 240%;
-    color: #fff;
+    font-size: 3vh;
     white-space: nowrap;
 }
 
-.chan-strip-full-body > .parameters {
-    top: 5px;
-    left: 2px;
-    height: 900px;
+.chstrip-full-parameters {
+    display: flex;
+    justify-content: left;
+    top: 2vh;
+    left: 2vw;
+    height: 30vh;
     overflow: auto;
+    font-size: 1.5vh;
     text-align: center;
-    color: #fff;
 }
 
-.chan-strip-full-body .parameters .horizontal {
+.chstrip-full-eq-window {
     display: flex;
     justify-content: space-evenly;
-}
-.chan-strip-full-body .parameters .horizontal .item {
-}
-.chan-strip-full-body .parameters .horizontal .item .content {
-    display: flex;
-}
-
-.parameters > .inp-comp-del-group {
-    display: flex;
-    top: 5px;
-    left: 2px;
-    margin-left: 5px;
-    overflow: auto;
+    font-size: 1.5vh;
     text-align: center;
-    color: #fff;
 }
 
-.inp-comp-del-group > .horizontal-space {
-    width: 40px;
-    height: 50px;
-}
-
-.eq-full > .eq-window {
-    top: 5px;
-    left: 2px;
-    height: 400px;
-    width: 1500px;
-    margin-left: 150px;
-    margin-top: 10px;
-    overflow: auto;
-    text-align: left;
-    font-size: 14px;
-    color: #fff;
-    background-color: #2a42274d;
-    border-style: solid;
-    border-color: rgba(128, 128, 128, 0.144);
-    border-width: 4px;
-}
-.eq-full > .eq-canvas {
-    position: absolute;
-    margin-left: -850px;
-    margin-top: 30px;
-    height: 410px;
-    width: 1675px;
-}
-
-.eq-full > .eq-text {
-    display: flex;
-    justify-content: space-evenly;
-    top: 5px;
-    left: 2px;
-    height: 150px;
-    width: 1500px;
-    margin-left: 150px;
-    margin-top: 10px;
-    overflow: auto;
-    text-align: center;
-    font-size: 20px;
-    color: #fff;
-    border-style: solid;
-    border-color: rgb(128, 128, 128);
-    border-width: 4px;
-}
-
-.eq-window > .horizontal-space {
-    width: 150px;
-    height: 50px;
-}
-
-.eq-window > .dot {
-    position: absolute;
-    font-size: 60px;
-    height: 60px;
-}
-
-.zero-comp {
-    width: 63px;
-    height: 2px;
-    margin-left: -68px;
-    margin-right: 30px;
-    margin-top: 81px;
-}
-
-.zero-monitor {
-    width: 2px;
-    height: 20px;
-    margin-left: 10px;
-    margin-top: -150px;
-}
-
-.parameters > .parameter-text,
-.content > .parameter-text {
+.chstrip-full-parameter-text {
     list-style-type: none;
     text-align: center;
-    margin-top: 15px;
-    line-height: 10px;
-    font-size: 14px;
+    margin-top: 2vh;
+    font-size: 1.5vh;
 }
 
-.parameter-button-text {
+.chstrip-full-content-group {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2vw;
+}
+
+.chstrip-full-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.chstrip-full-parameter-reduction {
     list-style-type: none;
     text-align: center;
-    margin-top: 70px;
-    line-height: 10px;
-    font-size: 14px;
+    margin-top: 2vh;
+    font-size: 1.5vh;
+    margin-left: 3vw;
 }
-.parameter-button {
-    margin-left: -68px;
-    margin-top: 60px;
+
+.chstrip-full-mini-text {
+    list-style-type: none;
+    text-align: center;
+    max-width: 9vw;
+    margin-top: 1vh;
+    font-size: 0.8vh;
+}
+
+.chstrip-full-zero-comp {
+    width: 1vw;
+    height: 0.2vh;
+    margin-left: -6.5vw;
+    margin-top: 15vh;
+    font-size: 0.8vw;
+}
+
+.chstrip-full-zero-monitor {
+    width: 1vw;
+    height: 0.2vh;
+    margin-left: 3.5vw;
+    margin-top: -12vh;
+}
+
+.chstrip-full-parameter-text > .parameter-button-text {
+    list-style-type: none;
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 1.2vh;
+}
+
+.chstrip-full-parameter-text > .parameter-button {
+    margin-left: -8vw;
+    margin-top: 2vh;
     outline: none;
     -moz-outline: none;
     margin-left: 3px;
     margin-right: 3px;
-    margin-top: 3px;
     color: white;
-    height: 50px;
-    width: 60px;
-    font-size: 105%;
+    height: 4vh;
+    width: 4vw;
+    font-size: 1.2vh;
     background-color: rgb(80, 80, 80);
     border-radius: 7px;
     border-color: rgb(99, 99, 99);
 }
 
-.parameter-text > .parameter-mini-text,
-.content > .parameter-mini-text {
-    list-style-type: none;
-    text-align: center;
-    margin-top: 5px;
-    line-height: 10px;
-    font-size: 80%;
-}
-
-.inp-comp-del-group > .delayButtons {
-    width: 30px;
-    margin-top: 24px;
-    margin-left: 50px;
-}
-.content > .delayButtons {
-    width: 30px;
-    min-height: 220px;
-    margin-top: 24px;
-    margin-left: 50px;
+.chstrip-full-delay-buttons {
+    margin-top: 3vh;
+    margin-left: 1vw;
 }
 .noDelayButtons {
     margin-top: 24px;
     min-height: 220px;
 }
 
-.delayButtons > .delayTime {
+.chstrip-full-delay-buttons > .delayTime {
     outline: none;
     -moz-outline: none;
     color: white;
-    height: 45px;
-    width: 70px;
+    height: 5vh;
+    width: 4vw;
     border-color: rgb(71, 71, 71);
     background-color: rgb(53, 53, 53);
-    margin-left: -50px;
-    margin-top: 5px;
+    margin-left: 0vw;
+    margin-top: 1vh;
     border-radius: 7px;
 }
 
-.inp-comp-del-group > .input-buttons {
+.chstrip-full-content > .input-buttons {
     width: 30px;
     margin-top: 24px;
     margin-left: 50px;
 }
-.inp-comp-del-group .input-buttons.disabled {
-    visibility: hidden;
-}
-.content > .input-buttons {
-    width: 30px;
-    margin-top: 24px;
-    margin-left: 50px;
-}
-.content > .input-buttons.disabled {
+.chstrip-full-content > .input-buttons.disabled {
     visibility: hidden;
 }
 
@@ -232,16 +162,20 @@
     background-color: #2f475b;
 }
 
-.parameters > .monitor-sends,
-.content > .monitor-sends {
+.chstrip-full-monitor-sends {
     list-style-type: none;
     display: flex;
     text-align: center;
-    margin-top: 15px;
-    margin-left: 1px;
-    padding: 0px;
-    line-height: 10px;
-    font-size: 95%;
+    margin-top: 2vh;
+    min-width: 20vw;
+}
+
+.chstrip-full-monitor-text {
+    list-style-type: none;
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 1.5vh;
+    margin-left: -5vw;
 }
 
 .ch-strip-full-header > .close {
@@ -251,11 +185,10 @@
     background-color: rgb(27, 27, 27);
     border-radius: 20px;
     color: #fff;
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
-    /* margin-top: 5px; */
-    right: 10px;
+    width: 5vh;
+    height: 5vh;
+    font-size: 2vw;
+    right: 3vw;
 }
 
 .ch-strip-full-header > .button {
@@ -263,68 +196,34 @@
     border-color: rgb(99, 99, 99);
     background-color: rgb(27, 27, 27);
     border-radius: 7px;
-    margin-left: 10px;
-    width: 160px;
-    height: 50px;
-    font-size: 12px;
-    line-height: 30px;
-    color: #fff;
+    margin-left: 3vw;
+    width: 10vw;
+    height: 4vh;
+    font-size: 0.8vw;
 }
 
-.chan-strip-full-fader {
-    width: 10px;
-    height: 190px;
-    margin-left: 35px;
-    margin-right: 30px;
-    margin-top: 10px;
+.chstrip-full-fader {
+    width: 0.5vw;
+    height: 15vh;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    margin-top: 3vh;
     border-width: 0px;
     border-style: solid;
     border-radius: 8px;
     background-color: rgb(17, 17, 17);
 }
-.chan-strip-full-thumb {
-    margin-left: -20px;
+.chstrip-full-thumb {
+    margin-left: -1.2vw;
     color: #3a3a3a;
-    font-size: 90%;
-    line-height: 50px;
-    width: 45px;
-    height: 49px;
+    font-size: 1vh;
+    line-height: 4vh;
+    width: 3vw;
+    height: 4vh;
     border: 1px solid #c5c2c2;
-    border-radius: 8px;
+    border-radius: 0.4vw;
     background: linear-gradient(
         to top,
-        #3a3a3a 0%,
-        #c2c2c2 20%,
-        hsl(0, 0%, 57%) 50%,
-        #00a 1px,
-        #919191 52%,
-        #c2c2c2 80%,
-        #3a3a3a 100%
-    );
-}
-
-.chan-strip-q {
-    width: 300px;
-    height: 10px;
-    margin-left: 35px;
-    margin-right: 30px;
-    margin-top: 30px;
-    border-width: 0px;
-    border-style: solid;
-    border-radius: 8px;
-    background-color: rgb(17, 17, 17);
-}
-.chan-strip-q-thumb {
-    margin-top: -20px;
-    color: #3a3a3a;
-    font-size: 90%;
-    line-height: 50px;
-    width: 45px;
-    height: 49px;
-    border: 1px solid #c5c2c2;
-    border-radius: 8px;
-    background: linear-gradient(
-        to right,
         #3a3a3a 0%,
         #c2c2c2 20%,
         hsl(0, 0%, 57%) 50%,
