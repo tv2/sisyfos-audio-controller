@@ -8,7 +8,7 @@ builds/
 dist/
 coverage/
 node_modules/
-public/
+release/
 *.compiled.*
 settings.json
 pages.json
