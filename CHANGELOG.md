@@ -1,3 +1,11 @@
+### [4.15.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.0...v4.15.1) (2021-12-13)
+
+
+### Bug Fixes
+
+* Added dummy procces.env to client side. ([322e573](https://github.com/tv2/sisyfos-audio-controller/commit/322e5732408a61019847f5bc2adc7fcc0d3dd7ce))
+
+
 ## [4.15.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.14.0...v4.15.0) (2021-12-10)
 
 
