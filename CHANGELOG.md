@@ -1,3 +1,11 @@
+### [4.15.2](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.1...v4.15.2) (2021-12-13)
+
+
+### Bug Fixes
+
+* Change node version in Docker build to match github action tests ([012027f](https://github.com/tv2/sisyfos-audio-controller/commit/012027fca0b3caf9ec7c8827f7f2fc080606eea0))
+
+
 ### [4.15.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.0...v4.15.1) (2021-12-13)
 
 
