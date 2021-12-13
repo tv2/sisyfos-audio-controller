@@ -4,6 +4,12 @@
     <!-- NB: Various Webpack settings are exposed in the template through the htmlWebpackPlugin object -->
     <!-- The title property maps onto whatever title you set in electron-webpack.json. -->
     <title>SISYFOS INTELLIGENT AUDIO CONTROLLER</title>
+    <script>
+      // This is a temp hack for the server-side logger package
+      window.process = {
+        env: {}
+      }
+    </script>
   </head>
   <body>
     <div id="root">
