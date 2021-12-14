@@ -9,7 +9,7 @@ import { storeSetCompleteChState } from '../reducers/channelActions'
 import { storeSetCompleteFaderState } from '../reducers/faderActions'
 import { logger } from './logger'
 import { InumberOfChannels } from '../reducers/channelsReducer'
-import { IFaders } from '../reducers/fadersReducer'
+import { defaultFadersReducerState, IFaders } from '../reducers/fadersReducer'
 import { IChannels } from '../reducers/channelsReducer'
 
 import { ICustomPages, ISettings } from '../reducers/settingsReducer'
@@ -81,7 +81,17 @@ export const loadSnapshotState = (
             )
         }
     } catch (error) {
-        logger.data(error).error('Error loading Snapshot')
+        if (fileName.includes('default.shot')) {
+            store.dispatch(
+                storeSetCompleteFaderState(
+                    defaultFadersReducerState(numberOfFaders)[0],
+                    numberOfFaders
+                )
+            )
+            logger.data(error).error('Initializing empty faders')
+        } else {
+            logger.data(error).error('Error loading Snapshot')
+        }
     }
 }
 

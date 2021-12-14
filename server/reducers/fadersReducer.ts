@@ -47,7 +47,9 @@ export interface IVuMeters {
     reductionVal: number
 }
 
-const defaultFadersReducerState = (numberOfFaders: number): IFaders[] => {
+export const defaultFadersReducerState = (
+    numberOfFaders: number
+): IFaders[] => {
     let defaultObj: Array<IFaders> = [
         {
             fader: [],
@@ -120,7 +122,10 @@ export const faders = (
                 emptyState[0].vuMeters = [...state[0].vuMeters]
             }
             nextState = emptyState
-            if (action.allState.fader.length == nextState[0].fader.length) {
+            if (
+                action.allState.fader.length > 0 &&
+                action.allState.fader.length == nextState[0].fader.length
+            ) {
                 action.allState.fader.map((channel: any, index: number) => {
                     nextState[0].fader[index] = channel
                 })
