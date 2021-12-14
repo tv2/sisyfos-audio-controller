@@ -1,3 +1,24 @@
+## [4.16.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.2...v4.16.0) (2021-12-14)
+
+
+### Features
+
+* Electron build for Mac and Windows ([cb52d03](https://github.com/tv2/sisyfos-audio-controller/commit/cb52d033b5274c2be88c0632a98fda86dd98bfe2))
+
+
+### Bug Fixes
+
+* add electron.js file ([f839292](https://github.com/tv2/sisyfos-audio-controller/commit/f8392929e0c102574f123286fcd3537f8fd85a17))
+* Docker image size - add ./public/ to .dockerignore ([57e6f64](https://github.com/tv2/sisyfos-audio-controller/commit/57e6f644772c519885732740f02d57e26b2dd2fe))
+* Dockerfile - build node_modules as production ([41b39e9](https://github.com/tv2/sisyfos-audio-controller/commit/41b39e94b6f2503acdede75266c7b72ca6ed84f0))
+* Dockerfile - cache clean added ([11860af](https://github.com/tv2/sisyfos-audio-controller/commit/11860af9c77d943a14d04ee3aed43b022a815f4f))
+* package.json was not following .editorconfig 4 space indent_size ([72c2fea](https://github.com/tv2/sisyfos-audio-controller/commit/72c2fea19c95df4e1e90f18b3c862dad18ce1439))
+* remove electron and electron builder from Dockerimage ([cf33b6e](https://github.com/tv2/sisyfos-audio-controller/commit/cf33b6e70806057d03dba10825c6ff697d6b35be))
+* remove typescript and prettier from dockerbuild ([7d21d39](https://github.com/tv2/sisyfos-audio-controller/commit/7d21d399ee59d6c344ce0715b352ed29f749316e))
+* type - added double yarn in last commit ([d2bdff8](https://github.com/tv2/sisyfos-audio-controller/commit/d2bdff81e422b13f8f63e6712dd9af0b465a6208))
+* when start Sisyfos for the first time, it will crash if you touch faders ([102e58a](https://github.com/tv2/sisyfos-audio-controller/commit/102e58a2e45c96da5d4888bb94f4cf8e8dc491e4))
+
+
 ### [4.15.2](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.1...v4.15.2) (2021-12-13)
 
 
