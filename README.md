@@ -144,6 +144,8 @@ As NEXT has been implemented, and PFL usually only work on on channel at a time,
         -   Eq, Comp, Delay, Mix minus
 -   Lawo Mc2
     -   Ember Protocol
+-   vMix
+    -   vMix port 8099
 -   reaper
     -   OSC protocol for control Reaper (reaper.fm)
 -   Ardour Master
