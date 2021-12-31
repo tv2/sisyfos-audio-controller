@@ -1,6 +1,5 @@
 //Node Modules:
 import { store, state } from '../../reducers/store'
-import { remoteConnections } from '../../mainClasses'
 import { ConnectionTCP } from 'node-vmix'
 import { XmlApi } from 'vmix-js-utils'
 
@@ -9,16 +8,10 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../constants/MixerProtocolInterface'
-import {
-    SET_OUTPUT_LEVEL,
-    storeSetAuxLevel,
-    storeSetOutputLevel,
-} from '../../reducers/channelActions'
+import { SET_OUTPUT_LEVEL } from '../../reducers/channelActions'
 import {
     storeFaderLevel,
-    storeFaderLabel,
     storeFaderFx,
-    storeTogglePgm,
     storeSetMute,
     storeInputGain,
     storeSetPfl,
@@ -92,7 +85,7 @@ export class VMixMixerConnection {
             })
             .on('data', (data: any) => {
                 const message = data.toString()
-                // logger.trace(XmlApi.DataParser.parse(message))
+                logger.trace(XmlApi.DataParser.parse(message))
                 clearTimeout(this.mixerOnlineTimer)
                 if (!state.settings[0].mixers[this.mixerIndex].mixerOnline) {
                     this.mixerOnline(true)
@@ -170,80 +163,87 @@ export class VMixMixerConnection {
                         dbToFloat(input.meterF2 + 12)
                     ) // add +15 to convert from dBFS
                 }
+                if (
+                    state.channels[0].chMixerConnection[this.mixerIndex].channel
+                        .length <
+                    input.number - 1
+                ) {
+                    const {
+                        outputLevel,
+                        fadeActive,
+                        assignedFader,
+                    } = state.channels[0].chMixerConnection[
+                        this.mixerIndex
+                    ].channel[input.number - 1]
+                    const {
+                        inputGain,
+                        muteOn,
+                        pflOn,
+                        pgmOn,
+                        voOn,
+                    } = state.faders[0].fader[assignedFader]
+                    let sendUpdate = false
+                    const dispatch = (update: any) => {
+                        store.dispatch(update)
+                        sendUpdate = true
+                    }
 
-                const {
-                    outputLevel,
-                    fadeActive,
-                    assignedFader,
-                } = state.channels[0].chMixerConnection[
-                    this.mixerIndex
-                ].channel[input.number - 1]
-                const {
-                    inputGain,
-                    muteOn,
-                    pflOn,
-                    pgmOn,
-                    voOn,
-                } = state.faders[0].fader[assignedFader]
-                let sendUpdate = false
-                const dispatch = (update: any) => {
-                    store.dispatch(update)
-                    sendUpdate = true
-                }
+                    if ('muted' in input) {
+                        if (input.muted === false) {
+                            if (
+                                !fadeActive &&
+                                outputLevel > 0 &&
+                                Math.abs(outputLevel - input.volume) > 0.01
+                            ) {
+                                dispatch(
+                                    storeFaderLevel(assignedFader, input.volume)
+                                )
+                                store.dispatch({
+                                    type: SET_OUTPUT_LEVEL,
+                                    channel: assignedFader,
+                                    mixerIndex: this.mixerIndex,
+                                    level: voOn
+                                        ? input.volume /
+                                          (state.settings[0].voLevel / 100)
+                                        : input.volume,
+                                })
+                            }
+                            if (muteOn) {
+                                dispatch(storeSetMute(assignedFader, false))
+                            }
+                            if (!fadeActive && !pgmOn && !voOn) {
+                                dispatch(storeSetPgm(assignedFader, true))
+                                store.dispatch({
+                                    type: SET_OUTPUT_LEVEL,
+                                    channel: assignedFader,
+                                    mixerIndex: this.mixerIndex,
+                                    level: input.volume,
+                                })
+                            }
+                        } else if (!muteOn) {
+                            if (pgmOn) {
+                                dispatch(storeSetPgm(assignedFader, false))
+                            }
+                            if (voOn) {
+                                dispatch(storeSetVo(assignedFader, false))
+                            }
+                        }
 
-                if ('muted' in input) {
-                    if (input.muted === false) {
-                        if (
-                            !fadeActive &&
-                            outputLevel > 0 &&
-                            Math.abs(outputLevel - input.volume) > 0.01
-                        ) {
+                        if (inputGain !== input.gainDb) {
                             dispatch(
-                                storeFaderLevel(assignedFader, input.volume)
+                                storeInputGain(assignedFader, input.gainDb)
                             )
-                            store.dispatch({
-                                type: SET_OUTPUT_LEVEL,
-                                channel: assignedFader,
-                                mixerIndex: this.mixerIndex,
-                                level: voOn
-                                    ? input.volume /
-                                      (state.settings[0].voLevel / 100)
-                                    : input.volume,
-                            })
                         }
-                        if (muteOn) {
-                            dispatch(storeSetMute(assignedFader, false))
-                        }
-                        if (!fadeActive && !pgmOn && !voOn) {
-                            dispatch(storeSetPgm(assignedFader, true))
-                            store.dispatch({
-                                type: SET_OUTPUT_LEVEL,
-                                channel: assignedFader,
-                                mixerIndex: this.mixerIndex,
-                                level: input.volume,
-                            })
-                        }
-                    } else if (!muteOn) {
-                        if (pgmOn) {
-                            dispatch(storeSetPgm(assignedFader, false))
-                        }
-                        if (voOn) {
-                            dispatch(storeSetVo(assignedFader, false))
+                        if (pflOn !== input.solo) {
+                            dispatch(storeSetPfl(assignedFader, input.solo))
                         }
                     }
 
-                    if (inputGain !== input.gainDb) {
-                        dispatch(storeInputGain(assignedFader, input.gainDb))
+                    if (sendUpdate) {
+                        global.mainThreadHandler.updatePartialStore(
+                            input.number - 1
+                        )
                     }
-                    if (pflOn !== input.solo) {
-                        dispatch(storeSetPfl(assignedFader, input.solo))
-                    }
-                }
-
-                if (sendUpdate) {
-                    global.mainThreadHandler.updatePartialStore(
-                        input.number - 1
-                    )
                 }
             })
         })
@@ -257,57 +257,6 @@ export class VMixMixerConnection {
     initialCommands() {
         this.vmixConnection.send('XML')
         this.vmixConnection.send({ Function: 'SUBSCRIBE TALLY' })
-        return
-        // To prevent network overload, timers will delay the requests.
-        this.mixerProtocol.initializeCommands?.forEach(
-            (item, itemIndex: number) => {
-                setTimeout(() => {
-                    if (item.mixerMessage.includes('{channel}')) {
-                        if (item.type !== undefined && item.type === 'aux') {
-                            state.channels[0].chMixerConnection[
-                                this.mixerIndex
-                            ].channel.forEach((channel: any) => {
-                                channel.auxLevel.forEach(
-                                    (auxLevel: any, auxIndex: number) => {
-                                        if (channel.assignedFader >= 0) {
-                                            if (
-                                                state.faders[0].fader[
-                                                    channel.assignedFader
-                                                ]
-                                            ) {
-                                                setTimeout(() => {
-                                                    this.sendOutRequestAux(
-                                                        item.mixerMessage,
-                                                        auxIndex + 1,
-                                                        state.faders[0].fader[
-                                                            channel
-                                                                .assignedFader
-                                                        ].monitor
-                                                    )
-                                                }, state.faders[0].fader[channel.assignedFader].monitor * 10 + auxIndex * 100)
-                                            }
-                                        }
-                                    }
-                                )
-                            })
-                        } else {
-                            state.channels[0].chMixerConnection[
-                                this.mixerIndex
-                            ].channel.forEach((channel: any, index: any) => {
-                                this.sendOutRequest(
-                                    item.mixerMessage,
-                                    index + 1
-                                )
-                            })
-                        }
-                    } else {
-                        let value = item.value || 0
-                        let type = item.type || 'i'
-                        this.sendOutMessage(item.mixerMessage, 1, value, type)
-                    }
-                }, itemIndex * 100)
-            }
-        )
     }
 
     pingMixerCommand() {
@@ -357,35 +306,12 @@ export class VMixMixerConnection {
                         .channel[ch - 1].assignedFader
                 )
             }
-
-            //            logger.trace(fxKey)
         })
     }
 
     checkVMixCommand(message: string, command: string | undefined): boolean {
         if (!command) return false
         if (message === command) return true
-        return
-        let messageArray: string[] = message.split('/')
-        let commandArray: string[] = command.split('/')
-        let status: boolean = true
-        if (messageArray.length !== commandArray.length) {
-            return false
-        }
-        commandArray.forEach((commandPart: string, index: number) => {
-            if (commandPart === '{channel}') {
-                if (typeof parseFloat(messageArray[index]) !== 'number') {
-                    status = false
-                }
-            } else if (commandPart === '{argument}') {
-                if (typeof parseFloat(messageArray[index]) !== 'number') {
-                    status = false
-                }
-            } else if (commandPart !== messageArray[index]) {
-                status = false
-            }
-        })
-        return status
     }
 
     sendOutMessage(
@@ -644,22 +570,6 @@ export class VMixMixerConnection {
     }
 
     updateChannelName(channelIndex: number) {
-        // let channelType =
-        //     state.channels[0].chMixerConnection[this.mixerIndex].channel[
-        //         channelIndex
-        //     ].channelType
-        // let channelTypeIndex =
-        //     state.channels[0].chMixerConnection[this.mixerIndex].channel[
-        //         channelIndex
-        //     ].channelTypeIndex
-        // let channelName = state.faders[0].fader[channelIndex].label
-        // this.sendOutMessage(
-        //     this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0]
-        //         .mixerMessage,
-        //     channelTypeIndex + 1,
-        //     channelName,
-        //     's'
-        // )
         return true
     }
 
