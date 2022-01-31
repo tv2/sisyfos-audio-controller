@@ -152,10 +152,10 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
                             SAVE
                         </button>
                         <hr />
+                        <h3>LOAD ROUTING :</h3>
+                        <this.ListSnapshotFiles />
                     </React.Fragment>
                 ) : null}
-                <h3>LOAD ROUTING :</h3>
-                <this.ListSnapshotFiles />
                 {window.mixerPresetList.length > 0 ? (
                     <React.Fragment>
                         <br />
