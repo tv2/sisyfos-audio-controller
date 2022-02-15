@@ -213,6 +213,10 @@ export class MainThreadHandlers {
                 logger.data(payload).info('Save settings:')
                 saveSettings(payload)
                 this.updateFullClientStore()
+                /** Delay restart to ensure the async saveSettings is done before restarting*/
+                setTimeout(() => {
+                    process.exit(0)
+                }, 1000)
             })
             .on(IO.SOCKET_RESTART_SERVER, () => {
                 process.exit(0)
