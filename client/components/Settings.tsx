@@ -10,7 +10,7 @@ import { ISettings } from '../../server/reducers/settingsReducer'
 import { Store } from 'redux'
 import { ChangeEvent } from 'react'
 import { SOCKET_SAVE_SETTINGS } from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import { storeShowSettings } from '../../server/reducers/settingsActions'
+import { storeSetServerOnline, storeShowSettings } from '../../server/reducers/settingsActions'
 
 //Set style for Select dropdown component:
 const selectorColorStyles = {
@@ -169,7 +169,13 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         let settingsCopy = Object.assign({}, this.state.settings)
         settingsCopy.showSettings = false
         window.socketIoClient.emit(SOCKET_SAVE_SETTINGS, settingsCopy)
-        location.reload()
+        this.props.dispatch(storeShowSettings())
+        window.alert(
+            'restarting Sisyfos'
+        )
+        setTimeout(()=> {
+            location.reload()
+        }, 2000)
     }
 
     handleCancel = () => {
@@ -553,7 +559,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                         this.handleSave()
                     }}
                 >
-                    SAVE SETTINGS
+                    SAVE & RESTART
                 </button>
             </div>
         )
