@@ -197,7 +197,7 @@ export class SkaarhojRemoteConnection {
     updateRemoteFaderState(channelIndex: number, outputLevel: number) {
         let formatLevel = (outputLevel * 100).toFixed()
         let formatLabel =
-            state.faders[0].fader[channelIndex].label ||
+            state.faders[0].fader[channelIndex]?.label ||
             'CH' + String(channelIndex + 1)
         let formattetString =
             'HWCt#' +
@@ -237,7 +237,7 @@ export class SkaarhojRemoteConnection {
                         ch.auxLevel[auxSendIndex] * 100
                     ).toFixed()
                     let formatLabel =
-                        state.faders[0].fader[ch.assignedFader].label ||
+                        state.faders[0].fader[ch.assignedFader]?.label ||
                         'CH' + String(index + 1)
                     let formattetString =
                         'HWCt#' +
