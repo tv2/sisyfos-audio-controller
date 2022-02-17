@@ -113,23 +113,12 @@ export const faders = (
             }
             return nextState
         case FADER_ACTIONS.SET_COMPLETE_FADER_STATE:
-            let emptyState = defaultFadersReducerState(
-                action.numberOfTypeChannels
-            )
-            if (
-                emptyState[0].vuMeters.length === nextState[0].vuMeters.length
-            ) {
-                emptyState[0].vuMeters = [...state[0].vuMeters]
-            }
-            nextState = emptyState
-            if (
-                action.allState.fader.length > 0 &&
-                action.allState.fader.length == nextState[0].fader.length
-            ) {
-                action.allState.fader.map((channel: any, index: number) => {
-                    nextState[0].fader[index] = channel
-                })
-            }
+            nextState = defaultFadersReducerState(action.numberOfTypeChannels)
+            action.allState.fader.forEach((fader: any, index: number) => {
+                if (index < nextState[0].fader.length) {
+                    nextState[0].fader[index] = fader
+                }
+            })
             return nextState
         case FADER_ACTIONS.SET_SINGLE_FADER_STATE:
             nextState[0].fader[action.faderIndex] = action.state
