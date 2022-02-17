@@ -492,7 +492,9 @@ class ChanStrip extends React.PureComponent<
                                         if (
                                             ch.auxLevel[
                                                 this.props.auxSendIndex
-                                            ] >= 0
+                                            ] >= 0 && ch.auxLevel[
+                                                this.props.auxSendIndex
+                                            ] !== null
                                         ) {
                                             return this.monitor(index)
                                         }
