@@ -4,7 +4,7 @@ import ClassNames from 'classnames'
 import '../assets/css/ChannelMonitorOptions.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { storeShowMonitorOptions, } from '../../server/reducers/settingsActions'
+import { storeShowMonitorOptions } from '../../server/reducers/settingsActions'
 import { ISettings } from '../../server/reducers/settingsReducer'
 import {
     SOCKET_SET_AUX_LEVEL,
@@ -154,35 +154,26 @@ class ChannelMonitorOptions extends React.PureComponent<
                 />
                 <hr />
                 {this.props.channel.map((channel: any, index: number) => {
+                    let isSelected: boolean =
+                        this.props.channel[index].auxLevel[
+                            this.props.fader[this.faderIndex].monitor - 1
+                        ]
                     return (
                         <div
                             key={index}
                             className={ClassNames('channel-monitor-text', {
-                                checked:
-                                    this.props.channel[index].auxLevel[
-                                        this.props.fader[this.faderIndex]
-                                            .monitor - 1
-                                    ] >= 0 || false,
+                                checked: isSelected,
                             })}
                         >
                             {' Channel ' + (index + 1) + ' : '}
                             <input
                                 type="checkbox"
-                                checked={
-                                    this.props.channel[index].auxLevel[
-                                        this.props.fader[this.faderIndex]
-                                            .monitor - 1
-                                    ] >= 0
-                                }
+                                checked={isSelected}
                                 onChange={(event) =>
                                     this.handleAssignChannel(index, event)
                                 }
                             />
-                            {this.props.channel[index].auxLevel[
-                                this.props.fader[this.faderIndex].monitor - 1
-                            ] >= 0
-                                ? 'Monitor this'
-                                : null}
+                            {isSelected ? 'Monitor this' : null}
                         </div>
                     )
                 })}
@@ -198,7 +189,8 @@ const mapStateToProps = (
     return {
         label: getFaderLabel(props.faderIndex, 'FADER'),
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
-        numberOfChannelsInType: state.settings[0].mixers[0].numberOfChannelsInType,
+        numberOfChannelsInType:
+            state.settings[0].mixers[0].numberOfChannelsInType,
         channel: state.channels[0].chMixerConnection[0].channel,
         fader: state.faders[0].fader,
         settings: state.settings[0],

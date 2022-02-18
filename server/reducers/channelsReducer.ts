@@ -129,9 +129,21 @@ export const channels = (
             ].assignedFader = action.faderNumber
             return nextState
         case SET_AUX_LEVEL:
+            let auxLevels =
+                nextState[0].chMixerConnection[action.mixerIndex].channel[
+                    action.channel
+                ].auxLevel
+            if (action.auxIndex >= auxLevels.length) {
+                for (let i = 0; i < action.auxIndex; i++) {
+                    if (auxLevels[i] === null) {
+                        auxLevels[action.auxIndex] = -1
+                    }
+                }
+            }
+            auxLevels[action.auxIndex] = parseFloat(action.level)
             nextState[0].chMixerConnection[action.mixerIndex].channel[
                 action.channel
-            ].auxLevel[action.auxIndex] = parseFloat(action.level)
+            ].auxLevel = auxLevels
             return nextState
         case SET_PRIVATE:
             if (
