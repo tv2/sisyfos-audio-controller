@@ -262,9 +262,7 @@ export class OscMixerConnection {
                     )
                     if (
                         state.channels[0].chMixerConnection[this.mixerIndex]
-                            .channel[ch - 1].auxLevel[auxIndex] > -1 &&
-                        state.channels[0].chMixerConnection[this.mixerIndex]
-                            .channel[ch - 1].auxLevel[auxIndex] !== null
+                            .channel[ch - 1].auxLevel[auxIndex] > -1
                     ) {
                         logger.trace(
                             `Aux Message Channel: ${ch}\n  Aux Index: ${auxIndex}\n  Level: ${message.args[0]}`

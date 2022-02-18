@@ -157,10 +157,7 @@ class ChannelMonitorOptions extends React.PureComponent<
                     let isSelected: boolean =
                         this.props.channel[index].auxLevel[
                             this.props.fader[this.faderIndex].monitor - 1
-                        ] >= 0 &&
-                        this.props.channel[index].auxLevel[
-                            this.props.fader[this.faderIndex].monitor - 1
-                        ] !== null
+                        ]
                     return (
                         <div
                             key={index}
