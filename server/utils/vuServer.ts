@@ -1,7 +1,4 @@
-export enum VuType {
-    Channel = 'vuChannel',
-    Reduction = 'vuReduction',
-}
+import { VuType } from '../../shared/vu-server-types'
 
 const sockets: Array<any> = []
 

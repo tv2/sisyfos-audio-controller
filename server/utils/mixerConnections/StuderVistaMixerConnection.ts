@@ -7,21 +7,21 @@ const net = require('net')
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../constants/MixerProtocolInterface'
+} from '../../../shared/MixerProtocolInterface'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../reducers/settingsActions'
+import { storeSetMixerOnline } from '../../../shared/actions/settingsActions'
 import {
     storeFaderLevel,
     storeSetMute,
     storeTogglePgm,
-} from '../../reducers/faderActions'
+} from '../../../shared/actions/faderActions'
 import {
     storeSetAuxLevel,
     storeSetOutputLevel,
-} from '../../reducers/channelActions'
+} from '../../../shared/actions/channelActions'
 import { remoteConnections } from '../../mainClasses'
-import { IFader } from '../../reducers/fadersReducer'
-import { IChannel } from '../../reducers/channelsReducer'
+import { IFader } from '../../../shared/faders-types'
+import { IChannel } from '../../../shared/channel-types'
 
 export class StuderVistaMixerConnection {
     mixerProtocol: IMixerProtocol

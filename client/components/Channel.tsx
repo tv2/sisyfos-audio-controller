@@ -8,13 +8,13 @@ import '../assets/css/NoUiSlider.css'
 
 //assets:
 import '../assets/css/Channel.css'
-import * as IO from '../../server/constants/SOCKET_IO_DISPATCHERS'
-import { IChannelReference, IFader } from '../../server/reducers/fadersReducer'
-import { ISettings } from '../../server/reducers/settingsReducer'
-import { storeShowChanStrip } from '../../server/reducers/settingsActions'
+import * as IO from '../../shared/SOCKET_IO_DISPATCHERS'
+import { IChannelReference, IFader } from '../../shared/faders-types'
+import { ISettings } from '../../shared/settings-types'
+import { storeShowChanStrip } from '../../shared/actions/settingsActions'
 import { withTranslation } from 'react-i18next'
-import { VuLabelConversionType } from '../../server/constants/MixerProtocolInterface'
-import { Conversions } from '../../server/utils/dbConversion'
+import { VuLabelConversionType } from '../../shared/MixerProtocolInterface'
+import { Conversions } from '../../shared/actions/utils/dbConversion'
 import { getFaderLabel } from '../utils/labels'
 
 interface IChannelInjectProps {

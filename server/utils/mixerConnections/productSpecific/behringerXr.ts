@@ -1,5 +1,6 @@
 import { state } from '../../../reducers/store'
-import { sendVuLevel, VuType } from '../../vuServer'
+import { sendVuLevel } from '../../vuServer'
+import { VuType } from '../../../../shared/vu-server-types'
 
 const DATA_OFFSET = 4
 

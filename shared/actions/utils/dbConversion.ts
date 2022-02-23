@@ -1,4 +1,4 @@
-import { VuLabelConversionType } from '../constants/MixerProtocolInterface'
+import { VuLabelConversionType } from '../../MixerProtocolInterface'
 
 export const Conversions = {
     [VuLabelConversionType.Decibel]: {

@@ -14,13 +14,13 @@ import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 
 //Utils:
-import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
+import { MixerProtocolPresets } from '../../../shared/MixerProtocolPresets'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from '../../reducers/channelActions'
-import { storeFaderLevel, storeTogglePgm } from '../../reducers/faderActions'
+} from '../../../shared/MixerProtocolInterface'
+import { storeSetOutputLevel } from '../../../shared/actions/channelActions'
+import { storeFaderLevel, storeTogglePgm } from '../../../shared/actions/faderActions'
 import { logger } from '../logger'
 
 export class MidiMixerConnection {
@@ -123,40 +123,8 @@ export class MidiMixerConnection {
                 `Received 'noteon' message (${error.note.name}${error.note.octave}).`
             )
         })
-        /*
-            if (
-                this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_VU)
-            ) {
-                if (state.settings[0].mixers[this.mixerIndex].mixerProtocol === 'behringer') {
-                    behringerMeter(message.args);
-                } else {
-                    let ch = message.address.split("/")[2];
-                    store.dispatch({
-                        type:SET_VU_LEVEL,
-                        channel: ch - 1,
-                        level: message.args[0]
-                    });
-                }
-            }
-            if (
-                this.checkOscCommand(message.address, this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_NAME)
-            ) {
-                    let ch = message.address.split("/")[2];
-                    store.dispatch({
-                        type: SET_CHANNEL_LABEL,
-                        channel: ch - 1,
-                        label: message.args[0]
-                    });
-                logger.debug(`OSC message: ${message.address}`);
-            }
-*/
+
         return true
-        //Ping OSC mixer if mixerProtocol needs it.
-        if (this.mixerProtocol.pingTime > 0) {
-            let oscTimer = setInterval(() => {
-                this.pingMixerCommand()
-            }, this.mixerProtocol.pingTime)
-        }
     }
 
     pingMixerCommand() {

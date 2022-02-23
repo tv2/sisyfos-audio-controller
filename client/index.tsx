@@ -1,4 +1,4 @@
-import React, { ReducerState } from 'react'
+import React from 'react'
 import ReactDom from 'react-dom'
 import App from './components/App'
 import { socketClientHandlers } from './utils/SocketClientHandlers'
@@ -7,17 +7,17 @@ import io from 'socket.io-client'
 //Redux:
 import { createStore } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
-import indexReducer from '../server/reducers/indexReducer'
+import indexReducer from '../shared/reducers/indexReducer'
 import {
     SOCKET_GET_SNAPSHOT_LIST,
     SOCKET_GET_CCG_LIST,
     SOCKET_GET_MIXER_PRESET_LIST,
     SOCKET_GET_PAGES_LIST,
-} from '../server/constants/SOCKET_IO_DISPATCHERS'
+} from '../shared/SOCKET_IO_DISPATCHERS'
 
 import { I18nextProvider } from 'react-i18next'
 import i18n from './i18n'
-import { IMixerProtocol } from '../server/constants/MixerProtocolInterface'
+import { IMixerProtocol } from '../shared/MixerProtocolInterface'
 
 declare global {
     interface Window {

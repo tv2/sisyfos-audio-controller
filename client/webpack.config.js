@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 // Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
 const defaultInclude = [
-  path.resolve(__dirname, 'client'),
-  path.resolve(__dirname, 'server')
+  path.resolve(__dirname, '../client'),
+  path.resolve(__dirname, '../shared')
 ]
 
 module.exports = {
@@ -16,8 +16,11 @@ module.exports = {
         use:['style-loader', 'css-loader']
       },
       {
-          test: /\.(tsx?|ts)$/,
-          loader: 'ts-loader'
+          test: /\.tsx?$/,
+          loader: 'ts-loader',
+          options: {
+            configFile: 'tsconfig.json',
+          },
       },
       {
         test: /\.(jpe?g|png|gif)$/,
@@ -31,14 +34,14 @@ module.exports = {
       }
     ]
   },
-  entry: "./client",
+  entry: "../client",
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ]
   },
   target: 'web',
   plugins: [
     new HtmlWebpackPlugin({
-      template: './client/index.ejs',
+      template: './index.ejs',
       inject: true
     }),
     new webpack.DefinePlugin({

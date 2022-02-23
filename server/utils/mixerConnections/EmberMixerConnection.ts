@@ -8,7 +8,7 @@ import fs from 'fs'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../constants/MixerProtocolInterface'
+} from '../../../shared/MixerProtocolInterface'
 import {
     storeFaderLevel,
     storeInputGain,
@@ -18,15 +18,15 @@ import {
     storeSetAMix,
     storeCapability,
     storeInputSelector,
-} from '../../reducers/faderActions'
+} from '../../../shared/actions/faderActions'
 import { logger } from '../logger'
-import { LawoMC2 } from '../../constants/mixerProtocols/LawoMC2'
+import { LawoMC2 } from '../../../shared/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import {
     SET_OUTPUT_LEVEL,
     storeSetChLabel,
-} from '../../reducers/channelActions'
-import { storeSetMixerOnline } from '../../reducers/settingsActions'
+} from '../../../shared/actions/channelActions'
+import { storeSetMixerOnline } from '../../../shared/actions/settingsActions'
 
 export class EmberMixerConnection {
     mixerProtocol: IMixerProtocol

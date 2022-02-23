@@ -8,13 +8,15 @@ import { store } from '../reducers/store'
 import { checkVersion } from './migrations'
 
 // Redux:
-import { storeSetCompleteChState } from '../reducers/channelActions'
-import { storeSetCompleteFaderState } from '../reducers/faderActions'
+import { storeSetCompleteChState } from '../../shared/actions/channelActions'
+import { storeSetCompleteFaderState } from '../../shared/actions/faderActions'
 import { logger } from './logger'
-import { defaultFadersReducerState, IFaders } from '../reducers/fadersReducer'
-import { IChannels, InumberOfChannels } from '../reducers/channelsReducer'
+import { defaultFadersReducerState } from '../reducers/fadersReducer'
 
-import { ICustomPages, ISettings } from '../reducers/settingsReducer'
+import { IChannels, InumberOfChannels } from '../../shared/channel-types'
+
+import { ICustomPages, ISettings } from '../../shared/settings-types'
+import { IFaders } from '../../shared/faders-types'
 
 export interface IShotStorage {
     channelState: IChannels

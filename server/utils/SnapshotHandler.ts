@@ -3,7 +3,7 @@ import { loadSnapshotState, saveSnapshotState } from './SettingsStorage'
 import { mixerProtocolPresets } from '../mainClasses'
 import { state } from '../reducers/store'
 import { logger } from './logger'
-import { InumberOfChannels } from '../reducers/channelsReducer'
+import { InumberOfChannels } from '../../shared/channel-types'
 
 const path = require('path')
 export class SnapshotHandler {

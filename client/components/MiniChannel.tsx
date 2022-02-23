@@ -6,10 +6,10 @@ import '../assets/css/NoUiSlider.css'
 
 //assets:
 import '../assets/css/MiniChannel.css'
-import { IFader } from '../../server/reducers/fadersReducer'
-import { IChannels } from '../../server/reducers/channelsReducer'
-import { ISettings } from '../../server/reducers/settingsReducer'
-import { storeShowChanStrip } from '../../server/reducers/settingsActions'
+import { IFader } from '../../shared/faders-types'
+import { IChannels } from '../../shared/channel-types'
+import { ISettings } from '../../shared/settings-types'
+import { storeShowChanStrip } from '../../shared/actions/settingsActions'
 import { getFaderLabel } from '../utils/labels'
 
 interface IChannelInjectProps {

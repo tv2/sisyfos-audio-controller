@@ -1,4 +1,4 @@
-import { IStore } from '../../server/reducers/indexReducer'
+import { IStore } from '../../shared/store-types'
 
 export function getChannelLabel(
     state: IStore,

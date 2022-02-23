@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { IStore } from '../../server/reducers/indexReducer'
+import { IStore } from '../../shared/store-types'
 
 import '../assets/css/App.css'
 import Channels from './Channels'
@@ -12,7 +12,6 @@ import MicTally from './MicTally'
 import { withTranslation } from 'react-i18next'
 import PagesSettings from './PagesSettings'
 import LabelSettings from './Labels'
-import { url } from 'inspector'
 
 export interface IAppProps {
     store: IStore

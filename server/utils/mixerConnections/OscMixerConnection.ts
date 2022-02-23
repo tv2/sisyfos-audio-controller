@@ -10,26 +10,26 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../constants/MixerProtocolInterface'
+} from '../../../shared/MixerProtocolInterface'
 import {
     behringerXrMeter,
-    behringerReductionMeter,
 } from './productSpecific/behringerXr'
 import { midasMeter } from './productSpecific/midas'
 import {
     storeSetAuxLevel,
     storeSetChLabel,
     storeSetOutputLevel,
-} from '../../reducers/channelActions'
+} from '../../../shared/actions/channelActions'
 import {
     storeFaderLevel,
     storeFaderFx,
     storeTogglePgm,
     storeSetMute,
-} from '../../reducers/faderActions'
-import { storeSetMixerOnline } from '../../reducers/settingsActions'
+} from '../../../shared/actions/faderActions'
+import { storeSetMixerOnline } from '../../../shared/actions/settingsActions'
 import { logger } from '../logger'
-import { sendVuLevel, VuType } from '../vuServer'
+import { sendVuLevel } from '../vuServer'
+import { VuType } from '../../../shared/vu-server-types'
 
 interface IOscCommand {
     address: string

@@ -8,18 +8,18 @@ import {
     storeShowOptions,
     storeShowMonitorOptions,
     storeShowChanStripFull,
-} from '../../server/reducers/settingsActions'
-import { IFader } from '../../server/reducers/fadersReducer'
+} from '../../shared/actions/settingsActions'
+import { IFader } from '../../shared/faders-types'
 import {
     SOCKET_SET_FX,
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_INPUT_GAIN,
     SOCKET_SET_INPUT_SELECTOR,
-} from '../../server/constants/SOCKET_IO_DISPATCHERS'
+} from '../../shared/SOCKET_IO_DISPATCHERS'
 import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
-import { fxParamsList } from '../../server/constants/MixerProtocolInterface'
-import { IChannel } from '../../server/reducers/channelsReducer'
+import { fxParamsList } from '../../shared/MixerProtocolInterface'
+import { IChannel } from '../../shared/channel-types'
 import { getFaderLabel } from '../utils/labels'
 import ChanStripEq from './ChanStripEq'
 

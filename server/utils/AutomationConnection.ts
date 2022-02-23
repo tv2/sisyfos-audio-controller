@@ -7,8 +7,8 @@ import { mixerGenericConnection } from '../mainClasses'
 import {
     IAutomationProtocol,
     AutomationPresets,
-} from '../constants/AutomationPresets'
-import { IFader } from '../reducers/fadersReducer'
+} from '../../shared/AutomationPresets'
+import { IFader } from '../../shared/faders-types'
 import {
     SNAP_RECALL,
     storeFaderLevel,
@@ -22,7 +22,7 @@ import {
     storeXmix,
     storeFadeToBlack,
     storeClearPst,
-} from '../reducers/faderActions'
+} from '../../shared/actions/faderActions'
 import { getFaderLabel } from './labels'
 import { logger } from './logger'
 

@@ -7,15 +7,15 @@ import {
     storeFaderLevel,
     storeTogglePgm,
     storeTogglePfl,
-} from '../../reducers/faderActions'
+} from '../../../shared/actions/faderActions'
 
 //Utils:
 import {
     IRemoteProtocol,
     RemoteFaderPresets,
     MidiReceiveTypes,
-} from '../../constants/remoteProtocols/HuiRemoteFaderPresets'
-import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
+} from '../../../shared/remoteProtocols/HuiRemoteFaderPresets'
+import { MixerProtocolPresets } from '../../../shared/MixerProtocolPresets'
 import { logger } from '../logger'
 
 export class HuiMidiRemoteConnection {

@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "",
+    "watch": "",
+    "test": "",
+    "test:watch": "",
+    "lint": ""
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.20",
+    "@types/redux": "^3.6.0"
+  },
+  "dependencies": {
+    "@babel/core": "7.13.10",
+    "@tv2media/logger": "^1.2.2",
+    "casparcg-connection": "^5.1.0",
+    "emberplus-connection": "^0.1.2",
+    "node-vmix": "1.6.0",
+    "redux": "^4.1.2",
+    "vmix-js-utils": "^4.0.7",
+    "webmidi": "^2.5.2"
+  }
+}

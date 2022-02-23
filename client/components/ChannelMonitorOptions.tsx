@@ -4,13 +4,13 @@ import ClassNames from 'classnames'
 import '../assets/css/ChannelMonitorOptions.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { storeShowMonitorOptions } from '../../server/reducers/settingsActions'
-import { ISettings } from '../../server/reducers/settingsReducer'
+import { storeShowMonitorOptions } from '../../shared/actions/settingsActions'
+import { ISettings } from '../../shared/settings-types'
 import {
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_FADER_MONITOR,
     SOCKET_SHOW_IN_MINI_MONITOR,
-} from '../../server/constants/SOCKET_IO_DISPATCHERS'
+} from '../../shared/SOCKET_IO_DISPATCHERS'
 import { getFaderLabel } from '../utils/labels'
 
 interface IMonitorSettingsInjectProps {

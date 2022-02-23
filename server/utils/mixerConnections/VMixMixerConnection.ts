@@ -1,6 +1,5 @@
 //Node Modules:
 import { store, state } from '../../reducers/store'
-import { remoteConnections } from '../../mainClasses'
 import { ConnectionTCP } from 'node-vmix'
 import { XmlApi } from 'vmix-js-utils'
 
@@ -8,26 +7,23 @@ import { XmlApi } from 'vmix-js-utils'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../constants/MixerProtocolInterface'
+} from '../../../shared/MixerProtocolInterface'
 import {
     SET_OUTPUT_LEVEL,
-    storeSetAuxLevel,
-    storeSetOutputLevel,
-} from '../../reducers/channelActions'
+} from '../../../shared/actions/channelActions'
 import {
     storeFaderLevel,
-    storeFaderLabel,
     storeFaderFx,
-    storeTogglePgm,
     storeSetMute,
     storeInputGain,
     storeSetPfl,
     storeSetPgm,
     storeSetVo,
-} from '../../reducers/faderActions'
-import { storeSetMixerOnline } from '../../reducers/settingsActions'
+} from '../../../shared/actions/faderActions'
+import { storeSetMixerOnline } from '../../../shared/actions/settingsActions'
 import { logger } from '../logger'
-import { sendVuLevel, VuType } from '../vuServer'
+import { sendVuLevel } from '../vuServer'
+import { VuType } from '../../../shared/vu-server-types'
 import { dbToFloat } from './LawoRubyConnection'
 
 export class VMixMixerConnection {

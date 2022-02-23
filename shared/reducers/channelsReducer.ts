@@ -8,32 +8,9 @@ import {
     SET_SINGLE_CH_STATE,
     SET_CHANNEL_LABEL,
     FLUSH_CHANNEL_LABELS,
-} from './channelActions'
+} from '../actions/channelActions'
 
-export interface IChannels {
-    chMixerConnection: IchMixerConnection[]
-}
-
-export interface IchMixerConnection {
-    channel: Array<IChannel>
-}
-
-export interface IChannel {
-    channelType: number
-    channelTypeIndex: number
-    assignedFader: number
-    label?: string
-    fadeActive: boolean
-    outputLevel: number
-    auxLevel: number[]
-    private?: {
-        [key: string]: string
-    }
-}
-
-export interface InumberOfChannels {
-    numberOfTypeInCh: number[]
-}
+import { IChannels, IchMixerConnection, InumberOfChannels } from '../channel-types'
 
 const defaultChannelsReducerState = (
     numberOfChannels: InumberOfChannels[]

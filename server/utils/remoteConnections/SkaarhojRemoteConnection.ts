@@ -3,16 +3,16 @@ const net = require('net')
 import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
-import { storeFaderLevel } from '../../reducers/faderActions'
+import { storeFaderLevel } from '../../../shared/actions/faderActions'
 
 //Utils:
 import {
     IRemoteProtocol,
     RemoteFaderPresets,
-} from '../../constants/remoteProtocols/SkaarhojProtocol'
-import { MixerProtocolPresets } from '../../constants/MixerProtocolPresets'
+} from '../../../shared/remoteProtocols/SkaarhojProtocol'
+import { MixerProtocolPresets } from '../../../shared/MixerProtocolPresets'
 import { logger } from '../logger'
-import { storeSetAuxLevel } from '../../reducers/channelActions'
+import { storeSetAuxLevel } from '../../../shared/actions/channelActions'
 
 export class SkaarhojRemoteConnection {
     store: any

@@ -3,7 +3,6 @@ const osc = require('osc')
 const fs = require('fs')
 import * as path from 'path'
 import { CasparCG } from 'casparcg-connection'
-import { socketServer } from '../../expressHandler'
 
 //Utils:
 import { store, state } from '../../reducers/store'
@@ -12,17 +11,18 @@ import {
     ICasparCGChannelLayerPair,
     ICasparCGMixerGeometryFile,
     fxParamsList,
-} from '../../constants/MixerProtocolInterface'
-import { IChannel } from '../../reducers/channelsReducer'
+} from '../../../shared/MixerProtocolInterface'
+import { IChannel } from '../../../shared/channel-types'
 import {
     storeSetChLabel,
     storeSetChPrivate,
-} from '../../reducers/channelActions'
+} from '../../../shared/actions/channelActions'
 import { logger } from '../logger'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
-import { IFader } from '../../reducers/fadersReducer'
-import { sendVuLevel, VuType } from '../vuServer'
-import { storeSetMixerOnline } from '../../reducers/settingsActions'
+import { IFader } from '../../../shared/faders-types'
+import { sendVuLevel } from '../vuServer'
+import { VuType } from '../../../shared/vu-server-types'
+import { storeSetMixerOnline } from '../../../shared/actions/settingsActions'
 
 interface CommandChannelMap {
     [key: string]: number

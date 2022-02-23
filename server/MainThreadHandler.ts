@@ -9,8 +9,8 @@ import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
 import { storeUpdateSettings } from './reducers/settingsActions'
-import * as IO from './constants/SOCKET_IO_DISPATCHERS'
-import * as FADER_ACTIONS from './reducers/faderActions'
+import * as IO from '../shared/SOCKET_IO_DISPATCHERS'
+import * as FADER_ACTIONS from '../shared/actions/faderActions'
 
 import {
     loadSettings,
@@ -27,11 +27,11 @@ import {
     storeFlushChLabels,
     storeSetAssignedFader,
     storeSetAuxLevel,
-} from './reducers/channelActions'
-import { IChannel } from './reducers/channelsReducer'
+} from '../shared/actions/channelActions'
+import { IChannel } from '../shared/channel-types'
 import { logger } from './utils/logger'
-import { ICustomPages } from './reducers/settingsReducer'
-import { fxParamsList } from './constants/MixerProtocolInterface'
+import { ICustomPages } from '../shared/settings-types'
+import { fxParamsList } from '../shared/MixerProtocolInterface'
 const path = require('path')
 
 export class MainThreadHandlers {
