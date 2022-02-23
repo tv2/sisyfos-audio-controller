@@ -4,8 +4,8 @@ import {
     storeSetAssignedFader,
     storeSetCompleteChState,
     storeSetOutputLevel,
-} from '../reducers/channelActions'
-import { IChannel, InumberOfChannels } from '../reducers/channelsReducer'
+} from '../../shared/actions/channelActions'
+import { IChannel, InumberOfChannels } from '../../shared/channel-types'
 
 let fs = require('fs')
 const parsedFullStoreJSON = fs.readFileSync(

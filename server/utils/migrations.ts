@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 import { logger } from './logger'
-import { ISettings } from '../reducers/settingsReducer'
+import { ISettings } from '../../shared/settings-types'
 import { getSnapShotList, IShotStorage } from './SettingsStorage'
 
 const version = process.env.npm_package_version

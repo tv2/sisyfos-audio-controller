@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         // Target latest version of ECMAScript.
-        "target": "ES5",
+        "target": "ESNEXT",
+        "lib": ["ESNEXT", "dom"],
         // Search under node_modules for non-relative imports.
         "moduleResolution": "node",
         // Process & infer types from .js files.
@@ -16,7 +17,9 @@
         "noImplicitAny": true,
         "resolveJsonModule": true,
         "module": "commonjs",
-        "outDir": "../dist/server"
+        "outDir": "../dist",
+        "typeRoots": ["@types", "node_modules/@types"],
     },
-    "include": ["*"]
+    "include": ["../server", "../shared"],
+    "exclude": ["../**/node_modules/*", "../**/dist/*", "../**/*.spec.ts"]
 }

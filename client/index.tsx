@@ -7,7 +7,7 @@ import io from 'socket.io-client'
 //Redux:
 import { createStore } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
-import indexReducer from '../shared/reducers/indexReducer'
+import indexReducer from './reducers/indexReducer'
 import {
     SOCKET_GET_SNAPSHOT_LIST,
     SOCKET_GET_CCG_LIST,

@@ -8,7 +8,7 @@ import {
 import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
-import { storeUpdateSettings } from './reducers/settingsActions'
+import { storeUpdateSettings } from '../shared/actions/settingsActions'
 import * as IO from '../shared/SOCKET_IO_DISPATCHERS'
 import * as FADER_ACTIONS from '../shared/actions/faderActions'
 

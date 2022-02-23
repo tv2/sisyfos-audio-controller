@@ -11,7 +11,7 @@ import { checkVersion } from './migrations'
 import { storeSetCompleteChState } from '../../shared/actions/channelActions'
 import { storeSetCompleteFaderState } from '../../shared/actions/faderActions'
 import { logger } from './logger'
-import { defaultFadersReducerState } from '../reducers/fadersReducer'
+import { defaultFadersReducerState } from '../../shared/reducers/fadersReducer'
 
 import { IChannels, InumberOfChannels } from '../../shared/channel-types'
 

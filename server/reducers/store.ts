@@ -1,6 +1,6 @@
 import { createStore } from 'redux'
 import indexReducer from './indexReducer'
-import { storeUpdateSettings } from './settingsActions'
+import { storeUpdateSettings } from '../../shared/actions/settingsActions'
 import { loadSettings } from '../utils/SettingsStorage'
 
 let storeRedux = createStore(indexReducer)
