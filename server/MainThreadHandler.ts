@@ -213,6 +213,10 @@ export class MainThreadHandlers {
                 logger.data(payload).info('Save settings:')
                 saveSettings(payload)
                 this.updateFullClientStore()
+                /** Delay restart to ensure the async saveSettings is done before restarting*/
+                setTimeout(() => {
+                    process.exit(0)
+                }, 1000)
             })
             .on(IO.SOCKET_RESTART_SERVER, () => {
                 process.exit(0)
@@ -261,7 +265,9 @@ export class MainThreadHandlers {
                 )
             })
             .on(IO.SOCKET_SET_AUX_LEVEL, (payload: any) => {
-                logger.trace(`Set Auxlevel Channel: ${payload.channel}`)
+                logger.trace(
+                    `Set Auxlevel Channel: ${payload.channel} Auxindex : ${payload.auxIndex} level : ${payload.level}`
+                )
                 store.dispatch(
                     storeSetAuxLevel(
                         0,

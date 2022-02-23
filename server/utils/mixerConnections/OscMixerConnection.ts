@@ -93,7 +93,6 @@ export class OscMixerConnection {
             })
             .on('message', (message: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                this.resetMixerTimeout()
                 if (!state.settings[0].mixers[this.mixerIndex].mixerOnline) {
                     logger.info(
                         `Audio Mixer number: ${this.mixerIndex + 1} is Online`
@@ -120,6 +119,7 @@ export class OscMixerConnection {
                             this.mixerIndex
                         ].mixerProtocol.includes('midas')
                     ) {
+                        this.resetMixerTimeout()
                         midasMeter(this.mixerIndex, message.args)
                     } else {
                         let ch = message.address.split('/')[
