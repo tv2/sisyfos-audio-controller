@@ -1,3 +1,23 @@
+## [4.17.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.16.0...v4.17.0) (2022-02-23)
+
+
+### Features
+
+* better restart handling after updating settings ([0db1dab](https://github.com/tv2/sisyfos-audio-controller/commit/0db1dab9aaa178460dd8025e913f560377efbd18))
+* Hide load routing - when Sisyfos is not in settings=1 mode ([21e7e24](https://github.com/tv2/sisyfos-audio-controller/commit/21e7e2436441be447542727002bc6ee86bfa034b))
+
+
+### Bug Fixes
+
+* automation labels fallback ([f854be0](https://github.com/tv2/sisyfos-audio-controller/commit/f854be0431a7f488d0b9372620d1702d674dffcb))
+* default label setting if undefined ([eab45ac](https://github.com/tv2/sisyfos-audio-controller/commit/eab45ac6c2ae904b4969d4a271a87a1be6e2ff06))
+* Midas - mixerTimeout should not start before metering data are recieved ([59b1857](https://github.com/tv2/sisyfos-audio-controller/commit/59b1857ccb215d982a88700fc07ad4d27fe85f37))
+* update mock data to match VuMeter ([2e56010](https://github.com/tv2/sisyfos-audio-controller/commit/2e560100d337541b2059178c6248497857d151db))
+* when adding a new channel to monitor send, other channels could have the same send active (because of expanded array having null values) ([fe6a34b](https://github.com/tv2/sisyfos-audio-controller/commit/fe6a34b96461708eea72d243f8ca62d448b58966))
+* When chaning number of faders, all monitor settings and routing was lost. ([d40a44c](https://github.com/tv2/sisyfos-audio-controller/commit/d40a44c8793bec50a3bc0bafc8ff7fada4954f03))
+* When setting Auxlevel on an index higher than the length of the array, unused items would be set as undefined instead of -1 ([0fbbcfc](https://github.com/tv2/sisyfos-audio-controller/commit/0fbbcfc5287688240e27295fd733da8d4caed6c9))
+
+
 ## [4.16.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.2...v4.16.0) (2021-12-14)
 
 
