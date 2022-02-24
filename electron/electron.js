@@ -1,7 +1,7 @@
 const path = require('path')
 
 const { app, BrowserWindow } = require('electron')
-const server = require('../dist/server/index.js')
+const server = require('../server/dist/server/index.js')
 
 function createWindow() {
     // Create the browser window.

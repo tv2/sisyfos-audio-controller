@@ -1,5 +1,5 @@
 //Node Modules:
-const osc = require('osc')
+import osc from 'osc'
 import { store, state } from '../reducers/store'
 import { mixerGenericConnection } from '../mainClasses'
 

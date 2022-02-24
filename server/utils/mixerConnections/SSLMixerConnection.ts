@@ -1,5 +1,5 @@
 //Node Modules:
-const net = require('net')
+import net from 'net'
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 
@@ -186,7 +186,7 @@ export class SSLMixerConnection {
                                     )
                                     state.channels[0].chMixerConnection[
                                         this.mixerIndex
-                                    ].channel.forEach((item, index) => {
+                                    ].channel.forEach((item: { assignedFader: any }, index: number) => {
                                         if (
                                             item.assignedFader ===
                                             assignedFaderIndex

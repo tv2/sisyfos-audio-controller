@@ -19,6 +19,8 @@
   "dependencies": {
     "@babel/core": "^7.13.10",
     "@tv2media/logger": "^1.2.2",
+    "@types/socket.io": "^3.0.2",
+    "@types/webmidi": "^2.0.6",
     "casparcg-connection": "^5.1.0",
     "emberplus-connection": "^0.0.4",
     "express": "^4.17.1",
@@ -27,6 +29,7 @@
     "node-emberplus": "https://github.com/olzzon/node-emberplus#feat/export-ber",
     "node-vmix": "^1.6.0",
     "osc": "^2.4.2",
+    "performance-now": "^2.1.0",
     "redux": "^4.1.2",
     "socket.io": "^4.4.1",
     "ts-jest": "^26.5.3",

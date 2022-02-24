@@ -1,5 +1,5 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
 import { logger } from './logger'
 import { ISettings } from '../../shared/settings-types'
@@ -34,7 +34,7 @@ const migrate45to47 = (currentSettings: ISettings): ISettings => {
 
     files.forEach((fileName: string) => {
         let stateFromShot = JSON.parse(
-            fs.readFileSync(path.resolve('storage', fileName))
+            fs.readFileSync(path.resolve('storage', fileName), 'utf8')
         )
         // As this is the first implemented migration it also looks .shot files from ealier versions than 4.xx
         if (stateFromShot.channelState.chConnection) {
@@ -50,31 +50,28 @@ const migrate45to47 = (currentSettings: ISettings): ISettings => {
             delete stateFromShot.channelState.channel
         }
         let migratedShot: IShotStorage = stateFromShot
-        fs.writeFileSync(
-            path.resolve('storage', fileName),
-            JSON.stringify(migratedShot),
-            'utf8',
-            (error: any) => {
-                if (error) {
-                    logger.data(error).error('Error saving Snapshot')
-                } else {
-                    logger.trace(`Snapshot ${fileName} Saved to storage folder`)
-                }
-            }
-        )
+        try {
+            fs.writeFileSync(
+                path.resolve('storage', fileName),
+                JSON.stringify(migratedShot),
+                'utf8'
+            )
+            logger.trace(`Snapshot ${fileName} Saved to storage folder`)
+        } catch (error: any) {
+            logger.data(error).error('Error saving Snapshot')
+        }
     })
     currentSettings.sisyfosVersion = version
     delete currentSettings.customPages
-    fs.writeFileSync(
-        path.resolve('storage', 'settings.json'),
-        JSON.stringify(currentSettings),
-        'utf8',
-        (error: any) => {
-            logger
-                .data(error)
-                .error('Migration failed - error writing settings.json file')
-        }
-    )
+    try {
+        fs.writeFileSync(
+            path.resolve('storage', 'settings.json'),
+            JSON.stringify(currentSettings),
+            'utf8'
+        )
+    } catch (error: any){
+        logger.data(error).error('Migration failed - error writing settings.json file')
+    }
     return currentSettings
 }
 

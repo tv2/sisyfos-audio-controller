@@ -1,7 +1,7 @@
 //@ts-ignore
 import { BER } from 'node-emberplus'
 import { store, state } from '../../reducers/store'
-const net = require('net')
+import net from 'net'
 
 //Utils:
 import {
@@ -203,7 +203,7 @@ export class StuderVistaMixerConnection {
             store.dispatch(storeFaderLevel(assignedFader, value))
             state.channels[0].chMixerConnection[
                 this.mixerIndex
-            ].channel.forEach((item, index) => {
+            ].channel.forEach((item: { assignedFader: any }, index: number) => {
                 if (item.assignedFader === assignedFader) {
                     store.dispatch(
                         storeSetOutputLevel(this.mixerIndex, index, value)

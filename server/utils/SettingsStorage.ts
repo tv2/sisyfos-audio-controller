@@ -1,8 +1,9 @@
 // Node Modules:
-const fs = require('fs')
-const path = require('path')
-const homeDir = require('os').homedir()
-const platform = require('os').platform()
+import fs from 'fs'
+import path from 'path'
+import { homedir, platform as getPlatform } from 'os'
+const platform = getPlatform()
+const homeDir = homedir()
 
 import { store } from '../reducers/store'
 import { checkVersion } from './migrations'
@@ -36,7 +37,7 @@ export const loadSettings = (storeRedux: any): ISettings => {
     let newSettings = storeRedux.settings[0]
     try {
         newSettings = JSON.parse(
-            fs.readFileSync(path.resolve(storageFolder, 'settings.json'))
+            fs.readFileSync(path.resolve(storageFolder, 'settings.json'), 'utf8')
         )
         checkVersion(newSettings)
         return newSettings
@@ -76,7 +77,7 @@ export const loadSnapshotState = (
 ) => {
     try {
         const stateFromFile: IShotStorage = JSON.parse(
-            fs.readFileSync(fileName)
+            fs.readFileSync(fileName, 'utf8')
         )
 
         if (loadAll) {
@@ -179,7 +180,7 @@ export const setCcgDefault = (fileName: string) => {
 export const getCustomPages = (): ICustomPages[] => {
     try {
         return JSON.parse(
-            fs.readFileSync(path.resolve(storageFolder, 'pages.json'))
+            fs.readFileSync(path.resolve(storageFolder, 'pages.json'), 'utf8')
         )
     } catch (error) {
         logger.error('Couldn´t read pages.json file')

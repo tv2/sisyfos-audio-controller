@@ -1,7 +1,7 @@
 //Node Modules:
-const osc = require('osc')
-const fs = require('fs')
-const path = require('path')
+import osc from 'osc'
+import fs from 'fs'
+import path from 'path'
 
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
@@ -178,7 +178,7 @@ export class OscMixerConnection {
                             )
                             state.channels[0].chMixerConnection[
                                 this.mixerIndex
-                            ].channel.forEach((item, index) => {
+                            ].channel.forEach((item: { assignedFader: any }, index: number) => {
                                 if (item.assignedFader === assignedFaderIndex) {
                                     store.dispatch(
                                         storeSetOutputLevel(
@@ -214,7 +214,7 @@ export class OscMixerConnection {
                             )
                             state.channels[0].chMixerConnection[
                                 this.mixerIndex
-                            ].channel.forEach((item, index) => {
+                            ].channel.forEach((item: { assignedFader: any }, index: number) => {
                                 if (item.assignedFader === assignedFaderIndex) {
                                     store.dispatch(
                                         storeSetOutputLevel(
@@ -719,7 +719,7 @@ export class OscMixerConnection {
         logger.info(`Loading preset: ${presetName}`)
         if (this.mixerProtocol.presetFileExtension === 'X32') {
             let data = JSON.parse(
-                fs.readFileSync(path.resolve('storage', presetName))
+                fs.readFileSync(path.resolve('storage', presetName), 'utf8')
             )
 
             this.sendBuffered({

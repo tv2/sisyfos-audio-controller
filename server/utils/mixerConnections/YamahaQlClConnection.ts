@@ -1,5 +1,5 @@
 //Node Modules:
-const net = require('net')
+import net from 'net'
 import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 
@@ -54,7 +54,7 @@ export class QlClMixerConnection {
         this.midiConnection
             .on('ready', () => {
                 logger.info('Receiving state of desk')
-                this.mixerProtocol.initializeCommands.map((item) => {
+                this.mixerProtocol.initializeCommands.forEach((item) => {
                     if (item.mixerMessage.includes('{channel}')) {
                         state.channels[0].chMixerConnection[
                             this.mixerIndex

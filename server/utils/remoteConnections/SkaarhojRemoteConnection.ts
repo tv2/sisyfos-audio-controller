@@ -1,5 +1,5 @@
 //Node Modules:
-const net = require('net')
+import net from 'net'
 import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
@@ -144,7 +144,7 @@ export class SkaarhojRemoteConnection {
         let chIndex = 0
         let btnIndex = 1
         state.channels[0].chMixerConnection[0].channel.forEach(
-            (ch: any, index) => {
+            (ch: any, index: number) => {
                 if (ch.auxLevel[auxSendIndex] >= 0) {
                     if (btnIndex === auxBtnNumber) {
                         chIndex = index

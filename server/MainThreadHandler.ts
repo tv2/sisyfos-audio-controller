@@ -32,7 +32,7 @@ import { IChannel } from '../shared/channel-types'
 import { logger } from './utils/logger'
 import { ICustomPages } from '../shared/settings-types'
 import { fxParamsList } from '../shared/MixerProtocolInterface'
-const path = require('path')
+import path from 'path'
 
 export class MainThreadHandlers {
     snapshotHandler: SnapshotHandler

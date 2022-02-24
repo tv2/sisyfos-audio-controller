@@ -5,7 +5,7 @@ import { state } from '../reducers/store'
 import { logger } from './logger'
 import { InumberOfChannels } from '../../shared/channel-types'
 
-const path = require('path')
+import path from 'path'
 export class SnapshotHandler {
     numberOfChannels: InumberOfChannels[] = []
     settingsPath: string = ''

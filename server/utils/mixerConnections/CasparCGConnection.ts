@@ -1,6 +1,6 @@
 //Node Modules:
-const osc = require('osc')
-const fs = require('fs')
+import osc from 'osc'
+import fs from 'fs'
 import * as path from 'path'
 import { CasparCG } from 'casparcg-connection'
 
