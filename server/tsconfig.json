@@ -17,7 +17,7 @@
         "noImplicitAny": true,
         "resolveJsonModule": true,
         "module": "commonjs",
-        "outDir": "dist",
+        "outDir": "../dist",
         "typeRoots": ["@types", "node_modules/@types"],
     },
     "include": ["../server", "../shared"],

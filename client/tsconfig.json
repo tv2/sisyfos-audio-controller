@@ -20,7 +20,8 @@
       "noImplicitAny": true,
       "module": "commonjs",
       "resolveJsonModule": true,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
+      "outDir": "../dist"
   },
   "include": ["../client", "../shared"],
   "exclude": ["../**/node_modules/*", "../**/dist", "../**/*.spec.ts"]

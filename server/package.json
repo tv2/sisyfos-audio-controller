@@ -35,7 +35,8 @@
     "ts-jest": "^26.5.3",
     "vmix-js-utils": "^4.0.7",
     "web-midi-api": "^2.0.8",
-    "webmidi": "^2.5.2"
+    "webmidi": "^2.5.2",
+    "shared": "^0.0.0"
   },
   "peerDependencies": {}
 }

@@ -1,9 +1,6 @@
-import { createStore } from 'redux'
-import indexReducer from './indexReducer'
+import storeRedux from '../../shared/reducers/store'
 import { storeUpdateSettings } from '../../shared/actions/settingsActions'
 import { loadSettings } from '../utils/SettingsStorage'
-
-let storeRedux = createStore(indexReducer)
 
 storeRedux.dispatch(storeUpdateSettings(loadSettings(storeRedux.getState())))
 

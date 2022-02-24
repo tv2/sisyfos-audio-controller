@@ -42,6 +42,7 @@
     "reactjs-popup": "^2.0.5",
     "redux": "^4.0.5",
     "socket.io-client": "^4.4.1",
-    "webmidi": "^2.5.2"
+    "webmidi": "^2.5.2",
+    "shared": "^0.0.0"
   }
 }

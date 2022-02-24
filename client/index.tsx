@@ -5,9 +5,8 @@ import { socketClientHandlers } from './utils/SocketClientHandlers'
 import io from 'socket.io-client'
 
 //Redux:
-import { createStore } from 'redux'
+import storeRedux from '../shared/reducers/store'
 import { Provider as ReduxProvider } from 'react-redux'
-import indexReducer from './reducers/indexReducer'
 import {
     SOCKET_GET_SNAPSHOT_LIST,
     SOCKET_GET_CCG_LIST,
@@ -37,7 +36,6 @@ declare global {
 // *** Uncomment to log Socket I/O:
 // localStorage.debug = 'socket.io-client:socket';
 
-const storeRedux = createStore(indexReducer)
 window.storeRedux = storeRedux
 
 //Subscribe to redux store:
