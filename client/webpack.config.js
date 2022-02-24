@@ -34,7 +34,7 @@ module.exports = {
       }
     ]
   },
-  entry: "../client",
+  entry: ".",
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ]
   },

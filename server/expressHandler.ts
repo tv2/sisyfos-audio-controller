@@ -1,22 +1,19 @@
 import { logger } from './utils/logger'
 import { socketSubscribeVu, socketUnsubscribeVu } from './utils/vuServer'
 
-const express = require('express')
-const path = require('path')
+import express from 'express'
+import path from 'path'
+import { Server } from 'http'
+import { Server as SocketServer } from 'socket.io'
 const app = express()
-const server = require('http').Server(app)
-const socketServer = require('socket.io')(server)
+const server = new Server(app)
+const socketServer = new SocketServer(server)
 const SERVER_PORT = 1176
-
-app.use('/', express.static(path.join(__dirname, '..')))
+const staticPath = path.join(__dirname, '../../..', 'client/dist')
+logger.data(staticPath).debug('Express static file path:')
+app.use('/', express.static(staticPath))
 server.listen(SERVER_PORT)
 logger.info(`Server started at http://localhost:${SERVER_PORT}`)
-
-server.on('connection', () => {
-    app.get('/', (req: any, res: any) => {
-        res.sendFile(path.resolve('dist/index.html'))
-    })
-})
 
 socketServer.on('connection', (socket: any) => {
     logger.info(`Client connected: ${socket.client.id}`)
