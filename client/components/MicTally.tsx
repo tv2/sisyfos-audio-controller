@@ -11,7 +11,7 @@ import { getFaderLabel } from '../utils/labels'
 import {
     SOCKET_TOGGLE_PGM,
     SOCKET_TOGGLE_VO,
-} from '../../shared/SOCKET_IO_DISPATCHERS'
+} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 
 
 interface IMicTallyInjectProps {

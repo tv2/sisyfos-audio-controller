@@ -7,8 +7,8 @@ import { Store } from 'redux'
 import { connect } from 'react-redux'
 import { IFader } from '../../shared/faders-types'
 import { IChannel } from '../../shared/channel-types'
-import { SOCKET_SET_FX } from '../../shared/SOCKET_IO_DISPATCHERS'
-import { fxParamsList } from '../../shared/MixerProtocolInterface'
+import { SOCKET_SET_FX } from '../../shared/constants/SOCKET_IO_DISPATCHERS'
+import { fxParamsList } from '../../shared/constants/MixerProtocolInterface'
 import { getFaderLabel } from '../utils/labels'
 
 interface IChanStripFullInjectProps {

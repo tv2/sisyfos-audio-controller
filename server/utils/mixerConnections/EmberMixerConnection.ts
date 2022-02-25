@@ -8,7 +8,7 @@ import fs from 'fs'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/MixerProtocolInterface'
+} from '../../../shared/constants/MixerProtocolInterface'
 import {
     storeFaderLevel,
     storeInputGain,
@@ -20,7 +20,7 @@ import {
     storeInputSelector,
 } from '../../../shared/actions/faderActions'
 import { logger } from '../logger'
-import { LawoMC2 } from '../../../shared/mixerProtocols/LawoMC2'
+import { LawoMC2 } from '../../../shared/constants/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import {
     SET_OUTPUT_LEVEL,

@@ -11,7 +11,7 @@ import {
     ICasparCGChannelLayerPair,
     ICasparCGMixerGeometryFile,
     fxParamsList,
-} from '../../../shared/MixerProtocolInterface'
+} from '../../../shared/constants/MixerProtocolInterface'
 import { IChannel } from '../../../shared/channel-types'
 import {
     storeSetChLabel,

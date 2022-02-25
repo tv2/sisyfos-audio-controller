@@ -28,7 +28,7 @@ import {
     SOCKET_CLEAR_PST,
     SOCKET_RESTART_SERVER,
     SOCKET_TOGGLE_ALL_MANUAL,
-} from '../../shared/SOCKET_IO_DISPATCHERS'
+} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 import ChanStripFull from './ChanStripFull'
 
 interface IChannelsInjectProps {

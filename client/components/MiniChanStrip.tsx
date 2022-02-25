@@ -5,7 +5,7 @@ import '../assets/css/MiniChanStrip.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
 import { IFader } from '../../shared/faders-types'
-import { SOCKET_SET_AUX_LEVEL } from '../../shared/SOCKET_IO_DISPATCHERS'
+import { SOCKET_SET_AUX_LEVEL } from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 import { getFaderLabel } from '../utils/labels'
 
 interface IChanStripInjectProps {

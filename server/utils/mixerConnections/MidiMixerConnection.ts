@@ -16,11 +16,11 @@ import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 
 //Utils:
-import { MixerProtocolPresets } from '../../../shared/MixerProtocolPresets'
+import { MixerProtocolPresets } from '../../../shared/constants/MixerProtocolPresets'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/MixerProtocolInterface'
+} from '../../../shared/constants/MixerProtocolInterface'
 import { storeSetOutputLevel } from '../../../shared/actions/channelActions'
 import { storeFaderLevel, storeTogglePgm } from '../../../shared/actions/faderActions'
 import { logger } from '../logger'

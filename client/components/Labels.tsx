@@ -10,7 +10,7 @@ import { IFader } from '../../shared/faders-types'
 import {
     SOCKET_FLUSH_LABELS,
     SOCKET_SET_LABELS,
-} from '../../shared/SOCKET_IO_DISPATCHERS'
+} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 import { ICustomPages } from '../../shared/settings-types'
 import { getChannelLabel } from '../utils/labels'
 import { flushExtLabels, updateLabels } from '../../shared/actions/faderActions'

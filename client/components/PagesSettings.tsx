@@ -13,7 +13,7 @@ import Select from 'react-select'
 import {
     SOCKET_GET_PAGES_LIST,
     SOCKET_SET_PAGES_LIST,
-} from '../../shared/SOCKET_IO_DISPATCHERS'
+} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 import { ICustomPages } from '../../shared/settings-types'
 import { getFaderLabel } from '../utils/labels'
 

@@ -9,8 +9,8 @@ import { storeFaderLevel } from '../../../shared/actions/faderActions'
 import {
     IRemoteProtocol,
     RemoteFaderPresets,
-} from '../../../shared/remoteProtocols/SkaarhojProtocol'
-import { MixerProtocolPresets } from '../../../shared/MixerProtocolPresets'
+} from '../../../shared/constants/remoteProtocols/SkaarhojProtocol'
+import { MixerProtocolPresets } from '../../../shared/constants/MixerProtocolPresets'
 import { logger } from '../logger'
 import { storeSetAuxLevel } from '../../../shared/actions/channelActions'
 

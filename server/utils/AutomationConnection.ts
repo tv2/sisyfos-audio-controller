@@ -7,7 +7,7 @@ import { mixerGenericConnection } from '../mainClasses'
 import {
     IAutomationProtocol,
     AutomationPresets,
-} from '../../shared/AutomationPresets'
+} from '../../shared/constants/AutomationPresets'
 import { IFader } from '../../shared/faders-types'
 import {
     SNAP_RECALL,

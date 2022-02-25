@@ -7,7 +7,7 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/MixerProtocolInterface'
+} from '../../../shared/constants/MixerProtocolInterface'
 import { storeFaderLevel } from '../../../shared/actions/faderActions'
 import { logger } from '../logger'
 import { storeSetChLabel } from '../../../shared/actions/channelActions'

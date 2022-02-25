@@ -9,7 +9,7 @@ import '../assets/css/Settings.css'
 import { ISettings } from '../../shared/settings-types'
 import { Store } from 'redux'
 import { ChangeEvent } from 'react'
-import { SOCKET_SAVE_SETTINGS } from '../../shared/SOCKET_IO_DISPATCHERS'
+import { SOCKET_SAVE_SETTINGS } from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 import { storeShowSettings } from '../../shared/actions/settingsActions'
 
 //Set style for Select dropdown component:

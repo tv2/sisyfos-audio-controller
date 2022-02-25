@@ -12,11 +12,11 @@ import {
     SOCKET_GET_CCG_LIST,
     SOCKET_GET_MIXER_PRESET_LIST,
     SOCKET_GET_PAGES_LIST,
-} from '../shared/SOCKET_IO_DISPATCHERS'
+} from '../shared/constants/SOCKET_IO_DISPATCHERS'
 
 import { I18nextProvider } from 'react-i18next'
 import i18n from './i18n'
-import { IMixerProtocol } from '../shared/MixerProtocolInterface'
+import { IMixerProtocol } from '../shared/constants/MixerProtocolInterface'
 
 declare global {
     interface Window {

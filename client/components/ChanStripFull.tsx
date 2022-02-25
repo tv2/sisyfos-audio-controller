@@ -15,10 +15,10 @@ import {
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_INPUT_GAIN,
     SOCKET_SET_INPUT_SELECTOR,
-} from '../../shared/SOCKET_IO_DISPATCHERS'
+} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
-import { fxParamsList } from '../../shared/MixerProtocolInterface'
+import { fxParamsList } from '../../shared/constants/MixerProtocolInterface'
 import { IChannel } from '../../shared/channel-types'
 import { getFaderLabel } from '../utils/labels'
 import ChanStripEq from './ChanStripEq'

@@ -9,7 +9,7 @@ import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
 import { storeUpdateSettings } from '../shared/actions/settingsActions'
-import * as IO from '../shared/SOCKET_IO_DISPATCHERS'
+import * as IO from '../shared/constants/SOCKET_IO_DISPATCHERS'
 import * as FADER_ACTIONS from '../shared/actions/faderActions'
 
 import {
@@ -31,7 +31,7 @@ import {
 import { IChannel } from '../shared/channel-types'
 import { logger } from './utils/logger'
 import { ICustomPages } from '../shared/settings-types'
-import { fxParamsList } from '../shared/MixerProtocolInterface'
+import { fxParamsList } from '../shared/constants/MixerProtocolInterface'
 import path from 'path'
 
 export class MainThreadHandlers {

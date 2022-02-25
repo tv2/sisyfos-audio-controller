@@ -7,7 +7,7 @@ import { XmlApi } from 'vmix-js-utils'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/MixerProtocolInterface'
+} from '../../../shared/constants/MixerProtocolInterface'
 import {
     SET_OUTPUT_LEVEL,
 } from '../../../shared/actions/channelActions'

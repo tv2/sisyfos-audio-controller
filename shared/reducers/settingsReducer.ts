@@ -1,4 +1,4 @@
-import { MixerProtocolPresets } from '../MixerProtocolPresets'
+import { MixerProtocolPresets } from '../constants/MixerProtocolPresets'
 import {
     TOGGLE_SHOW_CHAN_STRIP,
     TOGGLE_SHOW_OPTION,

@@ -1,7 +1,7 @@
 import {
     MixerProtocolPresets,
     MixerProtocolList,
-} from '../shared/MixerProtocolPresets'
+} from '../shared/constants/MixerProtocolPresets'
 import { MixerGenericConnection } from './utils/MixerConnection'
 import { AutomationConnection } from './utils/AutomationConnection'
 import { RemoteConnection } from './utils/RemoteConnection'

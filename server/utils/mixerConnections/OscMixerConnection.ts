@@ -10,7 +10,7 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/MixerProtocolInterface'
+} from '../../../shared/constants/MixerProtocolInterface'
 import {
     behringerXrMeter,
 } from './productSpecific/behringerXr'

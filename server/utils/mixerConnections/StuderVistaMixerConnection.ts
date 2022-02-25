@@ -7,7 +7,7 @@ import net from 'net'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/MixerProtocolInterface'
+} from '../../../shared/constants/MixerProtocolInterface'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../../shared/actions/settingsActions'
 import {

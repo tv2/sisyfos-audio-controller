@@ -22,7 +22,7 @@ import {
     SOCKET_SET_MIXER_ONLINE,
     SOCKET_RETURN_MIXER_PRESET_LIST,
     SOCKET_RETURN_PAGES_LIST,
-} from '../../shared/SOCKET_IO_DISPATCHERS'
+} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 import {
     IchMixerConnection,
     InumberOfChannels,

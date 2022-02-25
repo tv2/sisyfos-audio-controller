@@ -10,7 +10,7 @@ import {
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_FADER_MONITOR,
     SOCKET_SHOW_IN_MINI_MONITOR,
-} from '../../shared/SOCKET_IO_DISPATCHERS'
+} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 import { getFaderLabel } from '../utils/labels'
 
 interface IMonitorSettingsInjectProps {

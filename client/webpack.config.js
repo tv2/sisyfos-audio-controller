@@ -39,6 +39,9 @@ module.exports = {
     extensions: [ '.tsx', '.ts', '.js' ]
   },
   target: 'web',
+  output: {
+    path: path.resolve(__dirname, '../dist'),
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.ejs',

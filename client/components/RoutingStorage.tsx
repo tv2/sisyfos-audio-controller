@@ -12,7 +12,7 @@ import {
     SOCKET_SAVE_CCG_FILE,
     SOCKET_GET_MIXER_PRESET_LIST,
     SOCKET_LOAD_MIXER_PRESET,
-} from '../../shared/SOCKET_IO_DISPATCHERS'
+} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
 
 interface IStorageProps {
     load: any
