@@ -28,7 +28,7 @@ import {
     InumberOfChannels,
 } from '../../shared/channel-types'
 import { VuType } from '../../shared/vu-server-types'
-import { IMixerSettings } from '../../shared/settings-types'
+import { IMixerSettings } from '../../shared/reducers/settingsReducer'
 
 export const vuMeters: number[][] = []
 

@@ -5,7 +5,7 @@ import '../assets/css/MicTally.css'
 import { Store } from 'redux'
 import { IFader } from '../../shared/faders-types'
 import { IChannels } from '../../shared/channel-types'
-import { ISettings } from '../../shared/settings-types'
+import { ISettings } from '../../shared/reducers/settingsReducer'
 import { getFaderLabel } from '../utils/labels'
 
 import {

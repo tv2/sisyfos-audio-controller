@@ -1,4 +1,4 @@
-import indexReducer from '../reducers/indexReducer'
+import indexReducer from '../../shared/reducers/indexReducer'
 import { IFader, IFaders } from '../../shared/faders-types'
 import {
     storeClearPst,
@@ -24,10 +24,10 @@ import {
 
 let fs = require('fs')
 const parsedSimpleStoreJSON = fs.readFileSync(
-    'server/__tests__/__mocks__/parsedSimpleStore.json'
+    '__tests__/__mocks__/parsedSimpleStore.json'
 )
 const parsedFullStoreJSON = fs.readFileSync(
-    'server/__tests__/__mocks__/parsedFullStore.json'
+    '__tests__/__mocks__/parsedFullStore.json'
 )
 
 describe('Test redux faderReducers actions', () => {

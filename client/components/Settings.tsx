@@ -6,7 +6,7 @@ import { IAppProps } from './App'
 
 //Utils:
 import '../assets/css/Settings.css'
-import { ISettings } from '../../shared/settings-types'
+import { ISettings } from '../../shared/reducers/settingsReducer'
 import { Store } from 'redux'
 import { ChangeEvent } from 'react'
 import { SOCKET_SAVE_SETTINGS } from '../../shared/constants/SOCKET_IO_DISPATCHERS'

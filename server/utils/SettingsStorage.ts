@@ -16,7 +16,7 @@ import { defaultFadersReducerState } from '../../shared/reducers/fadersReducer'
 
 import { IChannels, InumberOfChannels } from '../../shared/channel-types'
 
-import { ICustomPages, ISettings } from '../../shared/settings-types'
+import { ICustomPages, ISettings } from '../../shared/reducers/settingsReducer'
 import { IFaders } from '../../shared/faders-types'
 
 export interface IShotStorage {

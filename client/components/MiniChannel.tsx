@@ -8,7 +8,7 @@ import '../assets/css/NoUiSlider.css'
 import '../assets/css/MiniChannel.css'
 import { IFader } from '../../shared/faders-types'
 import { IChannels } from '../../shared/channel-types'
-import { ISettings } from '../../shared/settings-types'
+import { ISettings } from '../../shared/reducers/settingsReducer'
 import { storeShowChanStrip } from '../../shared/actions/settingsActions'
 import { getFaderLabel } from '../utils/labels'
 

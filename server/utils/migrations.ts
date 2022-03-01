@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { logger } from './logger'
-import { ISettings } from '../../shared/settings-types'
+import { ISettings } from '../../shared/reducers/settingsReducer'
 import { getSnapShotList, IShotStorage } from './SettingsStorage'
 
 const version = process.env.npm_package_version

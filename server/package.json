@@ -5,15 +5,16 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "test": "",
-    "test:watch": "",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "lint": ""
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^26.0.20",
     "@types/node": "^14.14.35",
     "@types/redux": "^3.6.0",
+    "jest": "^26.6.3",
     "typescript": "^4.5.5"
   },
   "dependencies": {
@@ -25,18 +26,17 @@
     "emberplus-connection": "^0.0.4",
     "express": "^4.17.1",
     "express-csp-header": "^4.0.0",
-    "jest": "^26.6.3",
     "node-emberplus": "https://github.com/olzzon/node-emberplus#feat/export-ber",
     "node-vmix": "^1.6.0",
     "osc": "^2.4.2",
     "performance-now": "^2.1.0",
     "redux": "^4.1.2",
+    "shared": "^0.0.0",
     "socket.io": "^4.4.1",
     "ts-jest": "^26.5.3",
     "vmix-js-utils": "^4.0.7",
     "web-midi-api": "^2.0.8",
-    "webmidi": "^2.5.2",
-    "shared": "^0.0.0"
+    "webmidi": "^2.5.2"
   },
   "peerDependencies": {}
 }

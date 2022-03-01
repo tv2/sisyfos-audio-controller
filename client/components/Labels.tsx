@@ -11,7 +11,7 @@ import {
     SOCKET_FLUSH_LABELS,
     SOCKET_SET_LABELS,
 } from '../../shared/constants/SOCKET_IO_DISPATCHERS'
-import { ICustomPages } from '../../shared/settings-types'
+import { ICustomPages } from '../../shared/reducers/settingsReducer'
 import { getChannelLabel } from '../utils/labels'
 import { flushExtLabels, updateLabels } from '../../shared/actions/faderActions'
 import { storeFlushChLabels } from '../../shared/actions/channelActions'

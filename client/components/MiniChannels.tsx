@@ -5,7 +5,7 @@ import '../assets/css/MiniChannels.css'
 import { Store } from 'redux'
 import { IFader } from '../../shared/faders-types'
 import { IChannels } from '../../shared/channel-types'
-import { ISettings } from '../../shared/settings-types'
+import { ISettings } from '../../shared/reducers/settingsReducer'
 import MiniChannel from './MiniChannel'
 import MiniChanStrip from './MiniChanStrip'
 

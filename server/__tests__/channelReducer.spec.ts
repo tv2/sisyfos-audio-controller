@@ -1,4 +1,4 @@
-import indexReducer from '../reducers/indexReducer'
+import indexReducer from '../../shared/reducers/indexReducer'
 import {
     storeFadeActive,
     storeSetAssignedFader,
@@ -9,7 +9,7 @@ import { IChannel, InumberOfChannels } from '../../shared/channel-types'
 
 let fs = require('fs')
 const parsedFullStoreJSON = fs.readFileSync(
-    'server/__tests__/__mocks__/parsedFullStore.json'
+    '__tests__/__mocks__/parsedFullStore.json'
 )
 
 describe('Test redux channelReducer actions', () => {

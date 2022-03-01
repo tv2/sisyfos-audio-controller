@@ -1,4 +1,4 @@
-import { ICustomPages, PageType } from '../settings-types'
+import { ICustomPages, PageType } from '../reducers/settingsReducer'
 
 export const TOGGLE_SHOW_SETTINGS = 'TOGGLE_SHOW_SETTINGS'
 export const TOGGLE_SHOW_PAGES_SETUP = 'TOGGLE_SHOW_PAGES_SETUP'

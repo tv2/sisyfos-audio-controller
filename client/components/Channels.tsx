@@ -22,7 +22,7 @@ import {
     IMixerSettings,
     ISettings,
     PageType,
-} from '../../shared/settings-types'
+} from '../../shared/reducers/settingsReducer'
 import {
     SOCKET_NEXT_MIX,
     SOCKET_CLEAR_PST,

@@ -30,7 +30,7 @@ import {
 } from '../shared/actions/channelActions'
 import { IChannel } from '../shared/channel-types'
 import { logger } from './utils/logger'
-import { ICustomPages } from '../shared/settings-types'
+import { ICustomPages } from '../shared/reducers/settingsReducer'
 import { fxParamsList } from '../shared/constants/MixerProtocolInterface'
 import path from 'path'
 

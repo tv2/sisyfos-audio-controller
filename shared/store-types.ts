@@ -1,6 +1,6 @@
 import { IChannels } from "./channel-types";
 import { IFaders } from "./faders-types";
-import { ISettings } from "./settings-types";
+import { ISettings } from "./reducers/settingsReducer";
 
 export interface IStore {
   settings: Array<ISettings>

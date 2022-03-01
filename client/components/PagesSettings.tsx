@@ -14,7 +14,7 @@ import {
     SOCKET_GET_PAGES_LIST,
     SOCKET_SET_PAGES_LIST,
 } from '../../shared/constants/SOCKET_IO_DISPATCHERS'
-import { ICustomPages } from '../../shared/settings-types'
+import { ICustomPages } from '../../shared/reducers/settingsReducer'
 import { getFaderLabel } from '../utils/labels'
 
 //Set style for Select dropdown component:
