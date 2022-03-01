@@ -6,11 +6,11 @@ import { IAppProps } from './App'
 
 //Utils:
 import '../assets/css/Settings.css'
-import { ISettings } from '../../shared/src/reducers/settingsReducer'
+import { ISettings } from '../../../shared/src/reducers/settingsReducer'
 import { Store } from 'redux'
 import { ChangeEvent } from 'react'
-import { SOCKET_SAVE_SETTINGS } from '../../shared/src/constants/SOCKET_IO_DISPATCHERS'
-import { storeShowSettings } from '../../shared/src/actions/settingsActions'
+import { SOCKET_SAVE_SETTINGS } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
+import { storeShowSettings } from '../../../shared/src/actions/settingsActions'
 
 //Set style for Select dropdown component:
 const selectorColorStyles = {

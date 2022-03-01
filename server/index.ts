@@ -1,5 +1,5 @@
-import { MainThreadHandlers } from './MainThreadHandler'
-import { expressInit } from './expressHandler'
+import { MainThreadHandlers } from './src/MainThreadHandler'
+import { expressInit } from './src/expressHandler'
 
 declare global {
     namespace NodeJS {

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { IStore } from '../../shared/src/reducers/store'
+import { IStore } from '../../../shared/src/reducers/store'
 
 import '../assets/css/App.css'
 import Channels from './Channels'
