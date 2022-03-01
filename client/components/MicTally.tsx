@@ -3,15 +3,15 @@ import { connect } from 'react-redux'
 
 import '../assets/css/MicTally.css'
 import { Store } from 'redux'
-import { IFader } from '../../shared/faders-types'
-import { IChannels } from '../../shared/channel-types'
-import { ISettings } from '../../shared/reducers/settingsReducer'
+import { IFader } from '../../shared/src/reducers/fadersReducer'
+import { IChannels } from '../../shared/src/reducers/channelsReducer'
+import { ISettings } from '../../shared/src/reducers/settingsReducer'
 import { getFaderLabel } from '../utils/labels'
 
 import {
     SOCKET_TOGGLE_PGM,
     SOCKET_TOGGLE_VO,
-} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
+} from '../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 
 
 interface IMicTallyInjectProps {

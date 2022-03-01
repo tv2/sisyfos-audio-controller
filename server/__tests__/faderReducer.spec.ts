@@ -1,5 +1,5 @@
-import indexReducer from '../../shared/reducers/indexReducer'
-import { IFader, IFaders } from '../../shared/faders-types'
+import indexReducer from '../../shared/src/reducers/indexReducer'
+import { IFader, IFaders } from '../../shared/src/reducers/fadersReducer'
 import {
     storeClearPst,
     storeFaderLabel,
@@ -20,7 +20,7 @@ import {
     storeTogglePst,
     storeToggleVo,
     storeXmix,
-} from '../../shared/actions/faderActions'
+} from '../../shared/src/actions/faderActions'
 
 let fs = require('fs')
 const parsedSimpleStoreJSON = fs.readFileSync(

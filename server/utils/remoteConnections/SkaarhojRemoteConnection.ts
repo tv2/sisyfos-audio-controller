@@ -3,16 +3,16 @@ import net from 'net'
 import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
-import { storeFaderLevel } from '../../../shared/actions/faderActions'
+import { storeFaderLevel } from '../../../shared/src/actions/faderActions'
 
 //Utils:
 import {
     IRemoteProtocol,
     RemoteFaderPresets,
-} from '../../../shared/constants/remoteProtocols/SkaarhojProtocol'
-import { MixerProtocolPresets } from '../../../shared/constants/MixerProtocolPresets'
+} from '../../../shared/src/constants/remoteProtocols/SkaarhojProtocol'
+import { MixerProtocolPresets } from '../../../shared/src/constants/MixerProtocolPresets'
 import { logger } from '../logger'
-import { storeSetAuxLevel } from '../../../shared/actions/channelActions'
+import { storeSetAuxLevel } from '../../../shared/src/actions/channelActions'
 
 export class SkaarhojRemoteConnection {
     store: any

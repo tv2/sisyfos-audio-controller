@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 
 import '../assets/css/MiniChannels.css'
 import { Store } from 'redux'
-import { IFader } from '../../shared/faders-types'
-import { IChannels } from '../../shared/channel-types'
-import { ISettings } from '../../shared/reducers/settingsReducer'
+import { IFader } from '../../shared/src/reducers/fadersReducer'
+import { IChannels } from '../../shared/src/reducers/channelsReducer'
+import { ISettings } from '../../shared/src/reducers/settingsReducer'
 import MiniChannel from './MiniChannel'
 import MiniChanStrip from './MiniChanStrip'
 

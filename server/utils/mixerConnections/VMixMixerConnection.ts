@@ -7,10 +7,10 @@ import { XmlApi } from 'vmix-js-utils'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/constants/MixerProtocolInterface'
+} from '../../../shared/src/constants/MixerProtocolInterface'
 import {
     SET_OUTPUT_LEVEL,
-} from '../../../shared/actions/channelActions'
+} from '../../../shared/src/actions/channelActions'
 import {
     storeFaderLevel,
     storeFaderFx,
@@ -19,11 +19,11 @@ import {
     storeSetPfl,
     storeSetPgm,
     storeSetVo,
-} from '../../../shared/actions/faderActions'
-import { storeSetMixerOnline } from '../../../shared/actions/settingsActions'
+} from '../../../shared/src/actions/faderActions'
+import { storeSetMixerOnline } from '../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
 import { sendVuLevel } from '../vuServer'
-import { VuType } from '../../../shared/vu-server-types'
+import { VuType } from '../../../shared/src/utils/vu-server-types'
 import { dbToFloat } from './LawoRubyConnection'
 
 export class VMixMixerConnection {

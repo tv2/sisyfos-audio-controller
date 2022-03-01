@@ -5,18 +5,18 @@ import { socketClientHandlers } from './utils/SocketClientHandlers'
 import io from 'socket.io-client'
 
 //Redux:
-import storeRedux from '../shared/reducers/store'
+import storeRedux from '../shared/src/reducers/store'
 import { Provider as ReduxProvider } from 'react-redux'
 import {
     SOCKET_GET_SNAPSHOT_LIST,
     SOCKET_GET_CCG_LIST,
     SOCKET_GET_MIXER_PRESET_LIST,
     SOCKET_GET_PAGES_LIST,
-} from '../shared/constants/SOCKET_IO_DISPATCHERS'
+} from '../shared/src/constants/SOCKET_IO_DISPATCHERS'
 
 import { I18nextProvider } from 'react-i18next'
 import i18n from './i18n'
-import { IMixerProtocol } from '../shared/constants/MixerProtocolInterface'
+import { IMixerProtocol } from '../shared/src/constants/MixerProtocolInterface'
 
 declare global {
     interface Window {

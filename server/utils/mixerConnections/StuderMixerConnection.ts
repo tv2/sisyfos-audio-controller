@@ -7,10 +7,10 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/constants/MixerProtocolInterface'
-import { storeFaderLevel } from '../../../shared/actions/faderActions'
+} from '../../../shared/src/constants/MixerProtocolInterface'
+import { storeFaderLevel } from '../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetChLabel } from '../../../shared/actions/channelActions'
+import { storeSetChLabel } from '../../../shared/src/actions/channelActions'
 
 export class StuderMixerConnection {
     mixerProtocol: IMixerProtocol

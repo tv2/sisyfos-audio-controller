@@ -1,4 +1,4 @@
-import { IChannel, IChannels, InumberOfChannels } from '../../shared/channel-types'
+import { IChannel, IChannels, InumberOfChannels } from '../reducers/channelsReducer'
 
 export const SET_OUTPUT_LEVEL = 'SET_OUTPUT_LEVEL'
 export const SET_AUX_LEVEL = 'SET_AUX_LEVEL'

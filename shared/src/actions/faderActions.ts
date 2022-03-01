@@ -1,5 +1,5 @@
 import { fxParamsList } from '../constants/MixerProtocolInterface'
-import { IFader, IFaders } from '../faders-types'
+import { IFader, IFaders } from '../reducers/fadersReducer'
 
 export const SET_VU_REDUCTION_LEVEL = 'SET_REDUCTION_LEVEL'
 export const SET_COMPLETE_FADER_STATE = 'SET_COMPLETE_FADER_STATE'

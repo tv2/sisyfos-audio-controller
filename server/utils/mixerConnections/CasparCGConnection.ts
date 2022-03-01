@@ -11,18 +11,18 @@ import {
     ICasparCGChannelLayerPair,
     ICasparCGMixerGeometryFile,
     fxParamsList,
-} from '../../../shared/constants/MixerProtocolInterface'
-import { IChannel } from '../../../shared/channel-types'
+} from '../../../shared/src/constants/MixerProtocolInterface'
+import { IChannel } from '../../../shared/src/reducers/channelsReducer'
 import {
     storeSetChLabel,
     storeSetChPrivate,
-} from '../../../shared/actions/channelActions'
+} from '../../../shared/src/actions/channelActions'
 import { logger } from '../logger'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
-import { IFader } from '../../../shared/faders-types'
+import { IFader } from '../../../shared/src/reducers/fadersReducer'
 import { sendVuLevel } from '../vuServer'
-import { VuType } from '../../../shared/vu-server-types'
-import { storeSetMixerOnline } from '../../../shared/actions/settingsActions'
+import { VuType } from '../../../shared/src/utils/vu-server-types'
+import { storeSetMixerOnline } from '../../../shared/src/actions/settingsActions'
 
 interface CommandChannelMap {
     [key: string]: number

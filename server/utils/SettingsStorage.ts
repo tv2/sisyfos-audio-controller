@@ -9,15 +9,15 @@ import { store } from '../reducers/store'
 import { checkVersion } from './migrations'
 
 // Redux:
-import { storeSetCompleteChState } from '../../shared/actions/channelActions'
-import { storeSetCompleteFaderState } from '../../shared/actions/faderActions'
+import { storeSetCompleteChState } from '../../shared/src/actions/channelActions'
+import { storeSetCompleteFaderState } from '../../shared/src/actions/faderActions'
 import { logger } from './logger'
-import { defaultFadersReducerState } from '../../shared/reducers/fadersReducer'
+import { defaultFadersReducerState } from '../../shared/src/reducers/fadersReducer'
 
-import { IChannels, InumberOfChannels } from '../../shared/channel-types'
+import { IChannels, InumberOfChannels } from '../../shared/src/reducers/channelsReducer'
 
-import { ICustomPages, ISettings } from '../../shared/reducers/settingsReducer'
-import { IFaders } from '../../shared/faders-types'
+import { ICustomPages, ISettings } from '../../shared/src/reducers/settingsReducer'
+import { IFaders } from '../../shared/src/reducers/fadersReducer'
 
 export interface IShotStorage {
     channelState: IChannels

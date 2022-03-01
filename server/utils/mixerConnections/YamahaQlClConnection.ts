@@ -7,17 +7,17 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from '../../../shared/actions/channelActions'
+} from '../../../shared/src/constants/MixerProtocolInterface'
+import { storeSetOutputLevel } from '../../../shared/src/actions/channelActions'
 import {
     storeFaderLevel,
     storeTogglePgm,
     storeSetMute,
-} from '../../../shared/actions/faderActions'
+} from '../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../shared/actions/settingsActions'
+import { storeSetMixerOnline } from '../../../shared/src/actions/settingsActions'
 import { sendVuLevel } from '../vuServer'
-import { VuType } from '../../../shared/vu-server-types'
+import { VuType } from '../../../shared/src/utils/vu-server-types'
 
 export class QlClMixerConnection {
     mixerProtocol: IMixerProtocol

@@ -1,4 +1,4 @@
-import { VuType } from '../../shared/vu-server-types'
+import { VuType } from '../../shared/src/utils/vu-server-types'
 
 const sockets: Array<any> = []
 

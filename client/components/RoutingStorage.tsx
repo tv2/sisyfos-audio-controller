@@ -3,7 +3,7 @@ import React from 'react'
 import '../assets/css/RoutingStorage.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { TOGGLE_SHOW_STORAGE } from '../../shared/actions/settingsActions'
+import { TOGGLE_SHOW_STORAGE } from '../../shared/src/actions/settingsActions'
 import {
     SOCKET_GET_SNAPSHOT_LIST,
     SOCKET_LOAD_SNAPSHOT,
@@ -12,7 +12,7 @@ import {
     SOCKET_SAVE_CCG_FILE,
     SOCKET_GET_MIXER_PRESET_LIST,
     SOCKET_LOAD_MIXER_PRESET,
-} from '../../shared/constants/SOCKET_IO_DISPATCHERS'
+} from '../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 
 interface IStorageProps {
     load: any

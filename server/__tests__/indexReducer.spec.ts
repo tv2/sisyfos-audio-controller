@@ -1,4 +1,4 @@
-import indexReducer from '../../shared/reducers/indexReducer'
+import indexReducer from '../../shared/src/reducers/indexReducer'
 
 let fs = require('fs')
 const parsedEmptyStoreJSON = fs.readFileSync(
