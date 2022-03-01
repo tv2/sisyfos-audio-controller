@@ -7,14 +7,14 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/src/constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from '../../../shared/src/actions/channelActions'
+} from '../../../../shared/src/constants/MixerProtocolInterface'
+import { storeSetOutputLevel } from '../../../../shared/src/actions/channelActions'
 import {
     storeFaderLevel,
     storeSetMute,
     storeTogglePgm,
-} from '../../../shared/src/actions/faderActions'
-import { storeSetMixerOnline } from '../../../shared/src/actions/settingsActions'
+} from '../../../../shared/src/actions/faderActions'
+import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
 
 export class SSLMixerConnection {

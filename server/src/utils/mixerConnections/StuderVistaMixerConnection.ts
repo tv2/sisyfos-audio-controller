@@ -7,21 +7,21 @@ import net from 'net'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/src/constants/MixerProtocolInterface'
+} from '../../../../shared/src/constants/MixerProtocolInterface'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../shared/src/actions/settingsActions'
+import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
 import {
     storeFaderLevel,
     storeSetMute,
     storeTogglePgm,
-} from '../../../shared/src/actions/faderActions'
+} from '../../../../shared/src/actions/faderActions'
 import {
     storeSetAuxLevel,
     storeSetOutputLevel,
-} from '../../../shared/src/actions/channelActions'
+} from '../../../../shared/src/actions/channelActions'
 import { remoteConnections } from '../../mainClasses'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
-import { IChannel } from '../../../shared/src/reducers/channelsReducer'
+import { IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 
 export class StuderVistaMixerConnection {
     mixerProtocol: IMixerProtocol

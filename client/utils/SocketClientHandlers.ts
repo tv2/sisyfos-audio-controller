@@ -27,7 +27,7 @@ import {
     IchMixerConnection,
     InumberOfChannels,
 } from '../../shared/src/reducers/channelsReducer'
-import { VuType } from '../../shared/src/vu-server-types'
+import { VuType } from '../../shared/src/utils/vu-server-types'
 import { IMixerSettings } from '../../shared/src/reducers/settingsReducer'
 
 export const vuMeters: number[][] = []

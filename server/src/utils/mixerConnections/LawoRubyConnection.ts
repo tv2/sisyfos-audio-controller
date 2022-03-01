@@ -6,7 +6,7 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/src/constants/MixerProtocolInterface'
+} from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
     SET_INPUT_SELECTOR,
     storeFaderLevel,
@@ -15,10 +15,10 @@ import {
     storeSetAMix,
     storeCapability,
     storeShowChannel,
-} from '../../../shared/src/actions/faderActions'
+} from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../shared/src/actions/settingsActions'
-import { storeSetChLabel } from '../../../shared/src/actions/channelActions'
+import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
 
 // TODO - should these be util functions?
 export function floatToDB(f: number): number {

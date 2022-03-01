@@ -12,6 +12,6 @@
         "module": "commonjs",
         "outDir": "../dist"
     },
-    "include": ["../server", "../shared"],
+    "include": ["../server", "../../shared"],
     "exclude": ["node_modules/*", "dist/*", "**/*.spec.ts"]
 }

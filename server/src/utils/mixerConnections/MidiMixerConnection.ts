@@ -16,13 +16,13 @@ import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 
 //Utils:
-import { MixerProtocolPresets } from '../../../shared/src/constants/MixerProtocolPresets'
+import { MixerProtocolPresets } from '../../../../shared/src/constants/MixerProtocolPresets'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../shared/src/constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from '../../../shared/src/actions/channelActions'
-import { storeFaderLevel, storeTogglePgm } from '../../../shared/src/actions/faderActions'
+} from '../../../../shared/src/constants/MixerProtocolInterface'
+import { storeSetOutputLevel } from '../../../../shared/src/actions/channelActions'
+import { storeFaderLevel, storeTogglePgm } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 
 export class MidiMixerConnection {
