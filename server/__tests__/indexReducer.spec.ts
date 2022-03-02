@@ -1,8 +1,9 @@
 import indexReducer from '../../shared/src/reducers/indexReducer'
 
-let fs = require('fs')
+import fs from 'fs'
 const parsedEmptyStoreJSON = fs.readFileSync(
-    '__tests__/__mocks__/parsedEmptyStore.json'
+    '__tests__/__mocks__/parsedEmptyStore.json',
+    'utf-8'
 )
 
 describe('Test initialize store', () => {

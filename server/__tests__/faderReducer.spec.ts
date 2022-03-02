@@ -22,12 +22,14 @@ import {
     storeXmix,
 } from '../../shared/src/actions/faderActions'
 
-let fs = require('fs')
+import fs from 'fs'
 const parsedSimpleStoreJSON = fs.readFileSync(
-    '__tests__/__mocks__/parsedSimpleStore.json'
+    '__tests__/__mocks__/parsedSimpleStore.json',
+    'utf-8'
 )
 const parsedFullStoreJSON = fs.readFileSync(
-    '__tests__/__mocks__/parsedFullStore.json'
+    '__tests__/__mocks__/parsedFullStore.json',
+    'utf-8'
 )
 
 describe('Test redux faderReducers actions', () => {

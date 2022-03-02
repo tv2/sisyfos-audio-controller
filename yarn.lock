@@ -1987,11 +1987,6 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.1, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-csp-header@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/csp-header/-/csp-header-2.2.0.tgz#cb1f83179b2e5b43f5759281458357b22511a626"
-  integrity sha512-uxhyJpDpH1yuqjMLz2Ve8OXsjkVzRtJ0skXxVUx81iUBbTbd5qBYwwKOZ6WXZFGveM2pAb/fHwtDJb5T42URMA==
-
 css-loader@^6.6.0:
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-6.6.0.tgz#c792ad5510bd1712618b49381bd0310574fafbd3"
@@ -2529,14 +2524,6 @@ expect@^26.6.2:
     jest-matcher-utils "^26.6.2"
     jest-message-util "^26.6.2"
     jest-regex-util "^26.0.0"
-
-express-csp-header@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/express-csp-header/-/express-csp-header-4.1.0.tgz#0ce723d9ef1c74d1a46e1cfb3e483af09c60d6d3"
-  integrity sha512-es9RwKPRriINOhJoMGhw6Iz5Ia/SrjHMfxgsNlje08gbPukdfi5S5kLMpUVTwQ1MPp5tmRhvIdkq2SMisPA6Wg==
-  dependencies:
-    csp-header "^2.2.0"
-    psl "^1.8.0"
 
 express@^4.17.1:
   version "4.17.3"
@@ -4645,7 +4632,7 @@ proxy-addr@~2.0.7:
     forwarded "0.2.0"
     ipaddr.js "1.9.1"
 
-psl@^1.1.33, psl@^1.8.0:
+psl@^1.1.33:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
   integrity sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==
