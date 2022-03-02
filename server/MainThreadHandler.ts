@@ -50,7 +50,6 @@ export class MainThreadHandlers {
     }
 
     updatePartialStore(faderIndex: number) {
-        this.recalcAssignedChannels()
         socketServer.emit(IO.SOCKET_SET_STORE_FADER, {
             faderIndex: faderIndex,
             state: state.faders[0].fader[faderIndex],
