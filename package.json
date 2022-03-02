@@ -1,6 +1,6 @@
 {
     "name": "sisyfos-audio-controller",
-    "version": "4.16.0",
+    "version": "4.17.0",
     "description": "Audio mixer build with the logic from a video mixer",
     "license": "MIT",
     "author": {
@@ -30,7 +30,11 @@
     },
     "main": "electron/electron.js",
     "private": true,
-    "workspaces": ["client", "server", "shared"],
+    "workspaces": [
+        "client",
+        "server",
+        "shared"
+    ],
     "scripts": {
         "start": "cross-env NODE_ENV=production node dist/server",
         "start:dev": "cross-env NODE_ENV=development node --inspect dist/server",
@@ -67,11 +71,20 @@
             "output": "release"
         }
     },
+    "simple-git-hooks": {
+        "pre-commit": "yarn lint-staged"
+    },
+    "lint-staged": {
+        "*.{js,ts,css,json,md}": [
+            "prettier --write"
+        ]
+    },
     "dependencies": {
         "concurrently": "^7.0.0",
         "cross-env": "^7.0.3"
     },
     "devDependencies": {
+        "lint-staged": "^12.3.4",
         "rimraf": "^3.0.2"
     }
 }

@@ -1,114 +1,112 @@
-## [4.16.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.2...v4.16.0) (2021-12-14)
-
+## [4.17.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.16.0...v4.17.0) (2022-02-23)
 
 ### Features
 
-* Electron build for Mac and Windows ([cb52d03](https://github.com/tv2/sisyfos-audio-controller/commit/cb52d033b5274c2be88c0632a98fda86dd98bfe2))
-
+-   better restart handling after updating settings ([0db1dab](https://github.com/tv2/sisyfos-audio-controller/commit/0db1dab9aaa178460dd8025e913f560377efbd18))
+-   Hide load routing - when Sisyfos is not in settings=1 mode ([21e7e24](https://github.com/tv2/sisyfos-audio-controller/commit/21e7e2436441be447542727002bc6ee86bfa034b))
 
 ### Bug Fixes
 
-* add electron.js file ([f839292](https://github.com/tv2/sisyfos-audio-controller/commit/f8392929e0c102574f123286fcd3537f8fd85a17))
-* Docker image size - add ./public/ to .dockerignore ([57e6f64](https://github.com/tv2/sisyfos-audio-controller/commit/57e6f644772c519885732740f02d57e26b2dd2fe))
-* Dockerfile - build node_modules as production ([41b39e9](https://github.com/tv2/sisyfos-audio-controller/commit/41b39e94b6f2503acdede75266c7b72ca6ed84f0))
-* Dockerfile - cache clean added ([11860af](https://github.com/tv2/sisyfos-audio-controller/commit/11860af9c77d943a14d04ee3aed43b022a815f4f))
-* package.json was not following .editorconfig 4 space indent_size ([72c2fea](https://github.com/tv2/sisyfos-audio-controller/commit/72c2fea19c95df4e1e90f18b3c862dad18ce1439))
-* remove electron and electron builder from Dockerimage ([cf33b6e](https://github.com/tv2/sisyfos-audio-controller/commit/cf33b6e70806057d03dba10825c6ff697d6b35be))
-* remove typescript and prettier from dockerbuild ([7d21d39](https://github.com/tv2/sisyfos-audio-controller/commit/7d21d399ee59d6c344ce0715b352ed29f749316e))
-* type - added double yarn in last commit ([d2bdff8](https://github.com/tv2/sisyfos-audio-controller/commit/d2bdff81e422b13f8f63e6712dd9af0b465a6208))
-* when start Sisyfos for the first time, it will crash if you touch faders ([102e58a](https://github.com/tv2/sisyfos-audio-controller/commit/102e58a2e45c96da5d4888bb94f4cf8e8dc491e4))
+-   automation labels fallback ([f854be0](https://github.com/tv2/sisyfos-audio-controller/commit/f854be0431a7f488d0b9372620d1702d674dffcb))
+-   default label setting if undefined ([eab45ac](https://github.com/tv2/sisyfos-audio-controller/commit/eab45ac6c2ae904b4969d4a271a87a1be6e2ff06))
+-   Midas - mixerTimeout should not start before metering data are recieved ([59b1857](https://github.com/tv2/sisyfos-audio-controller/commit/59b1857ccb215d982a88700fc07ad4d27fe85f37))
+-   update mock data to match VuMeter ([2e56010](https://github.com/tv2/sisyfos-audio-controller/commit/2e560100d337541b2059178c6248497857d151db))
+-   when adding a new channel to monitor send, other channels could have the same send active (because of expanded array having null values) ([fe6a34b](https://github.com/tv2/sisyfos-audio-controller/commit/fe6a34b96461708eea72d243f8ca62d448b58966))
+-   When chaning number of faders, all monitor settings and routing was lost. ([d40a44c](https://github.com/tv2/sisyfos-audio-controller/commit/d40a44c8793bec50a3bc0bafc8ff7fada4954f03))
+-   When setting Auxlevel on an index higher than the length of the array, unused items would be set as undefined instead of -1 ([0fbbcfc](https://github.com/tv2/sisyfos-audio-controller/commit/0fbbcfc5287688240e27295fd733da8d4caed6c9))
 
+## [4.16.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.2...v4.16.0) (2021-12-14)
+
+### Features
+
+-   Electron build for Mac and Windows ([cb52d03](https://github.com/tv2/sisyfos-audio-controller/commit/cb52d033b5274c2be88c0632a98fda86dd98bfe2))
+
+### Bug Fixes
+
+-   add electron.js file ([f839292](https://github.com/tv2/sisyfos-audio-controller/commit/f8392929e0c102574f123286fcd3537f8fd85a17))
+-   Docker image size - add ./public/ to .dockerignore ([57e6f64](https://github.com/tv2/sisyfos-audio-controller/commit/57e6f644772c519885732740f02d57e26b2dd2fe))
+-   Dockerfile - build node_modules as production ([41b39e9](https://github.com/tv2/sisyfos-audio-controller/commit/41b39e94b6f2503acdede75266c7b72ca6ed84f0))
+-   Dockerfile - cache clean added ([11860af](https://github.com/tv2/sisyfos-audio-controller/commit/11860af9c77d943a14d04ee3aed43b022a815f4f))
+-   package.json was not following .editorconfig 4 space indent_size ([72c2fea](https://github.com/tv2/sisyfos-audio-controller/commit/72c2fea19c95df4e1e90f18b3c862dad18ce1439))
+-   remove electron and electron builder from Dockerimage ([cf33b6e](https://github.com/tv2/sisyfos-audio-controller/commit/cf33b6e70806057d03dba10825c6ff697d6b35be))
+-   remove typescript and prettier from dockerbuild ([7d21d39](https://github.com/tv2/sisyfos-audio-controller/commit/7d21d399ee59d6c344ce0715b352ed29f749316e))
+-   type - added double yarn in last commit ([d2bdff8](https://github.com/tv2/sisyfos-audio-controller/commit/d2bdff81e422b13f8f63e6712dd9af0b465a6208))
+-   when start Sisyfos for the first time, it will crash if you touch faders ([102e58a](https://github.com/tv2/sisyfos-audio-controller/commit/102e58a2e45c96da5d4888bb94f4cf8e8dc491e4))
 
 ### [4.15.2](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.1...v4.15.2) (2021-12-13)
 
-
 ### Bug Fixes
 
-* Change node version in Docker build to match github action tests ([012027f](https://github.com/tv2/sisyfos-audio-controller/commit/012027fca0b3caf9ec7c8827f7f2fc080606eea0))
-
+-   Change node version in Docker build to match github action tests ([012027f](https://github.com/tv2/sisyfos-audio-controller/commit/012027fca0b3caf9ec7c8827f7f2fc080606eea0))
 
 ### [4.15.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.15.0...v4.15.1) (2021-12-13)
 
-
 ### Bug Fixes
 
-* Added dummy procces.env to client side. ([322e573](https://github.com/tv2/sisyfos-audio-controller/commit/322e5732408a61019847f5bc2adc7fcc0d3dd7ce))
-
+-   Added dummy procces.env to client side. ([322e573](https://github.com/tv2/sisyfos-audio-controller/commit/322e5732408a61019847f5bc2adc7fcc0d3dd7ce))
 
 ## [4.15.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.14.0...v4.15.0) (2021-12-10)
 
-
 ### Features
 
-* Changed logger from winston to tv2 mediatech logger. ([ab20456](https://github.com/tv2/sisyfos-audio-controller/commit/ab204564e1b0e276332715195b7421dd21ff74c1))
-* Full Ch Strip overall is scaling correct now ([1401a55](https://github.com/tv2/sisyfos-audio-controller/commit/1401a551011da5bdaf2a20e0c9be1e75fcf02b30))
-* Full channelstrip GUI scaling - initial changes ([4d49bcc](https://github.com/tv2/sisyfos-audio-controller/commit/4d49bcc0345808dcf6c2d409f1b2dfeccb34a2fb))
-* fullch strip GUI - split Eq part to own component. ([eb6fa42](https://github.com/tv2/sisyfos-audio-controller/commit/eb6fa4259d50672bf40377da2f6fb4bbf150b940))
-* Graphical Eq scaleable - prepared Reduction meter ([8ade6da](https://github.com/tv2/sisyfos-audio-controller/commit/8ade6da02ddae688a2b9d748b9ffc8a1dcd156a7))
-
+-   Changed logger from winston to tv2 mediatech logger. ([ab20456](https://github.com/tv2/sisyfos-audio-controller/commit/ab204564e1b0e276332715195b7421dd21ff74c1))
+-   Full Ch Strip overall is scaling correct now ([1401a55](https://github.com/tv2/sisyfos-audio-controller/commit/1401a551011da5bdaf2a20e0c9be1e75fcf02b30))
+-   Full channelstrip GUI scaling - initial changes ([4d49bcc](https://github.com/tv2/sisyfos-audio-controller/commit/4d49bcc0345808dcf6c2d409f1b2dfeccb34a2fb))
+-   fullch strip GUI - split Eq part to own component. ([eb6fa42](https://github.com/tv2/sisyfos-audio-controller/commit/eb6fa4259d50672bf40377da2f6fb4bbf150b940))
+-   Graphical Eq scaleable - prepared Reduction meter ([8ade6da](https://github.com/tv2/sisyfos-audio-controller/commit/8ade6da02ddae688a2b9d748b9ffc8a1dcd156a7))
 
 ### Bug Fixes
 
-* Bumped github actions workflows. ([e98080b](https://github.com/tv2/sisyfos-audio-controller/commit/e98080bb0dbb0af0478719a57c602e67c8c639d3))
-* don't scale reduction meters for now ([901df87](https://github.com/tv2/sisyfos-audio-controller/commit/901df875b0e2dc442bd515018314621c5e127dba))
-* Fixated logger version to 1.0.4, since newer uses fs. ([652e4ae](https://github.com/tv2/sisyfos-audio-controller/commit/652e4ae82455a9261568514a61f4f409d0281d62))
-* reduction meter align -6dB ([87d9f33](https://github.com/tv2/sisyfos-audio-controller/commit/87d9f3303ffb34d77789505dc4c2513ef3966350))
-* Updated yarn.lock. ([9fd96a9](https://github.com/tv2/sisyfos-audio-controller/commit/9fd96a9b5e77525a00dde174e93110fffb8abb0e))
-
+-   Bumped github actions workflows. ([e98080b](https://github.com/tv2/sisyfos-audio-controller/commit/e98080bb0dbb0af0478719a57c602e67c8c639d3))
+-   don't scale reduction meters for now ([901df87](https://github.com/tv2/sisyfos-audio-controller/commit/901df875b0e2dc442bd515018314621c5e127dba))
+-   Fixated logger version to 1.0.4, since newer uses fs. ([652e4ae](https://github.com/tv2/sisyfos-audio-controller/commit/652e4ae82455a9261568514a61f4f409d0281d62))
+-   reduction meter align -6dB ([87d9f33](https://github.com/tv2/sisyfos-audio-controller/commit/87d9f3303ffb34d77789505dc4c2513ef3966350))
+-   Updated yarn.lock. ([9fd96a9](https://github.com/tv2/sisyfos-audio-controller/commit/9fd96a9b5e77525a00dde174e93110fffb8abb0e))
 
 ## [4.14.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.13.2...v4.14.0) (2021-11-26)
 
-
 ### Features
 
-* Added fader-toggling to mic tally view ([803ffda](https://github.com/tv2/sisyfos-audio-controller/commit/803ffdaf31731a878aee8d97c6027243c0c09737))
-* Comp On/Off - CSS styling ([f981d77](https://github.com/tv2/sisyfos-audio-controller/commit/f981d7746e139277ef135c15156b162b36d3fbe6))
-* Double click on Fader in the 0dB area will set the Fader to 0dB ([e29c939](https://github.com/tv2/sisyfos-audio-controller/commit/e29c939d924430a5d270d2778399c8e0023b6c39))
-* Midas - Comp On/Off functionality implemented - ToDo GUI - CSS ([d3f816a](https://github.com/tv2/sisyfos-audio-controller/commit/d3f816a32275676d99a97b845435a1a9a869a56f))
-* Midas - GUI Ratio on compressor is now from a list of values ([cb48a27](https://github.com/tv2/sisyfos-audio-controller/commit/cb48a274519409efc640f085a9a57f955b0fa369))
-* Midas reduction meter, add 6db and 12db reduction on scale ([7f79ff6](https://github.com/tv2/sisyfos-audio-controller/commit/7f79ff611172b2647740fd1fc8c8a97da57f7764))
-* valuesAsLabels - show min and max in GUI ([a5489f8](https://github.com/tv2/sisyfos-audio-controller/commit/a5489f8b7c2de4bbca42c248ec4a9419840fb3b2))
-* When using Sisyfos in manual mode (automation mode off) a SlowFade toogle option is added to faders ([67855fd](https://github.com/tv2/sisyfos-audio-controller/commit/67855fd02e14c7c78c0107c3730e428fdf4bc3e8))
-
+-   Added fader-toggling to mic tally view ([803ffda](https://github.com/tv2/sisyfos-audio-controller/commit/803ffdaf31731a878aee8d97c6027243c0c09737))
+-   Comp On/Off - CSS styling ([f981d77](https://github.com/tv2/sisyfos-audio-controller/commit/f981d7746e139277ef135c15156b162b36d3fbe6))
+-   Double click on Fader in the 0dB area will set the Fader to 0dB ([e29c939](https://github.com/tv2/sisyfos-audio-controller/commit/e29c939d924430a5d270d2778399c8e0023b6c39))
+-   Midas - Comp On/Off functionality implemented - ToDo GUI - CSS ([d3f816a](https://github.com/tv2/sisyfos-audio-controller/commit/d3f816a32275676d99a97b845435a1a9a869a56f))
+-   Midas - GUI Ratio on compressor is now from a list of values ([cb48a27](https://github.com/tv2/sisyfos-audio-controller/commit/cb48a274519409efc640f085a9a57f955b0fa369))
+-   Midas reduction meter, add 6db and 12db reduction on scale ([7f79ff6](https://github.com/tv2/sisyfos-audio-controller/commit/7f79ff611172b2647740fd1fc8c8a97da57f7764))
+-   valuesAsLabels - show min and max in GUI ([a5489f8](https://github.com/tv2/sisyfos-audio-controller/commit/a5489f8b7c2de4bbca42c248ec4a9419840fb3b2))
+-   When using Sisyfos in manual mode (automation mode off) a SlowFade toogle option is added to faders ([67855fd](https://github.com/tv2/sisyfos-audio-controller/commit/67855fd02e14c7c78c0107c3730e428fdf4bc3e8))
 
 ### Bug Fixes
 
-* Added 'SLOW FADE' to translation list (i18n.ts) ([dbb3160](https://github.com/tv2/sisyfos-audio-controller/commit/dbb3160580230778ed3c3ed7a73f287fbe1f5141))
-* Added modal for confirming toggling for mic-tally ([27183f2](https://github.com/tv2/sisyfos-audio-controller/commit/27183f22e5a32eca08c15523a2b755690d939496))
-* Midas - when loading a new preset, settings was not received ([a4505b7](https://github.com/tv2/sisyfos-audio-controller/commit/a4505b7b48076f4eca956f0bf6e4769b825cb53f))
-* Midas metering convert dB to Lin ([cc26cc7](https://github.com/tv2/sisyfos-audio-controller/commit/cc26cc725a6f4b6066b787f7a39e895d5c2fbb11))
-* Midas Reduction meter should not be converted to log ([63e05b7](https://github.com/tv2/sisyfos-audio-controller/commit/63e05b7d16df2094030f3cb0a1869b5708adc65b))
-* Removed ?minimonitor=1 from code and README. ([d74b69b](https://github.com/tv2/sisyfos-audio-controller/commit/d74b69b73452ca74b97b8f72e35522ad774cce78))
-* use minLabel AND maxLabel when calculating received OSC message ([c93a0b0](https://github.com/tv2/sisyfos-audio-controller/commit/c93a0b0fcd0f353a2a90f0bfd5e9c30d6e802c4e))
-* Use version from bump-version instead of package.json in node-ci.prod ([ef8c1d7](https://github.com/tv2/sisyfos-audio-controller/commit/ef8c1d747076b4e57df319256774c68a754fe5b4))
-
+-   Added 'SLOW FADE' to translation list (i18n.ts) ([dbb3160](https://github.com/tv2/sisyfos-audio-controller/commit/dbb3160580230778ed3c3ed7a73f287fbe1f5141))
+-   Added modal for confirming toggling for mic-tally ([27183f2](https://github.com/tv2/sisyfos-audio-controller/commit/27183f22e5a32eca08c15523a2b755690d939496))
+-   Midas - when loading a new preset, settings was not received ([a4505b7](https://github.com/tv2/sisyfos-audio-controller/commit/a4505b7b48076f4eca956f0bf6e4769b825cb53f))
+-   Midas metering convert dB to Lin ([cc26cc7](https://github.com/tv2/sisyfos-audio-controller/commit/cc26cc725a6f4b6066b787f7a39e895d5c2fbb11))
+-   Midas Reduction meter should not be converted to log ([63e05b7](https://github.com/tv2/sisyfos-audio-controller/commit/63e05b7d16df2094030f3cb0a1869b5708adc65b))
+-   Removed ?minimonitor=1 from code and README. ([d74b69b](https://github.com/tv2/sisyfos-audio-controller/commit/d74b69b73452ca74b97b8f72e35522ad774cce78))
+-   use minLabel AND maxLabel when calculating received OSC message ([c93a0b0](https://github.com/tv2/sisyfos-audio-controller/commit/c93a0b0fcd0f353a2a90f0bfd5e9c30d6e802c4e))
+-   Use version from bump-version instead of package.json in node-ci.prod ([ef8c1d7](https://github.com/tv2/sisyfos-audio-controller/commit/ef8c1d747076b4e57df319256774c68a754fe5b4))
 
 ### Styles
 
-* Added small indications for muted mic tally ([c9a266f](https://github.com/tv2/sisyfos-audio-controller/commit/c9a266f1a1a619d748be58389cf44c3fe4478320))
-* Updated mic tally appearance and responsiveness ([6c6f65d](https://github.com/tv2/sisyfos-audio-controller/commit/6c6f65ddd840395948b78d788d19237921d697b1))
-
+-   Added small indications for muted mic tally ([c9a266f](https://github.com/tv2/sisyfos-audio-controller/commit/c9a266f1a1a619d748be58389cf44c3fe4478320))
+-   Updated mic tally appearance and responsiveness ([6c6f65d](https://github.com/tv2/sisyfos-audio-controller/commit/6c6f65ddd840395948b78d788d19237921d697b1))
 
 ### [4.13.2](https://github.com/tv2/sisyfos-audio-controller/compare/v4.13.1...v4.13.2) (2021-11-09)
 
-
 ### Bug Fixes
 
-* Updated github actions workflow for dockerhub tag generation ([47e6ea9](https://github.com/tv2/sisyfos-audio-controller/commit/47e6ea9da8ad7385c600dc948ac18408569faa92))
-
+-   Updated github actions workflow for dockerhub tag generation ([47e6ea9](https://github.com/tv2/sisyfos-audio-controller/commit/47e6ea9da8ad7385c600dc948ac18408569faa92))
 
 ### [4.13.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.13.0...v4.13.1) (2021-11-09)
 
-
 ### Bug Fixes
 
-* Dockerfile installs all dependencies ([115e9d6](https://github.com/tv2/sisyfos-audio-controller/commit/115e9d629c72dc205347b9830b66cb8b7d90e142))
-
+-   Dockerfile installs all dependencies ([115e9d6](https://github.com/tv2/sisyfos-audio-controller/commit/115e9d629c72dc205347b9830b66cb8b7d90e142))
 
 ### Code Refactoring
 
-* Removed standard-version ([b933276](https://github.com/tv2/sisyfos-audio-controller/commit/b933276bc676cda0e98e717c81a8168f766c03af))
-
+-   Removed standard-version ([b933276](https://github.com/tv2/sisyfos-audio-controller/commit/b933276bc676cda0e98e717c81a8168f766c03af))
 
 ## [4.13.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.12.0...v4.13.0) (2021-11-09)
 
