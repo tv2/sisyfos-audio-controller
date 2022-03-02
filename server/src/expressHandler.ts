@@ -9,7 +9,10 @@ const app = express()
 const server = new Server(app)
 const socketServer = new SocketServer(server)
 const SERVER_PORT = 1176
-const staticPath = path.join(__dirname, '../..')
+const staticPath = path.join(
+    path.dirname(require.resolve('client/package.json')),
+    'dist'
+)
 logger.data(staticPath).debug('Express static file path:')
 app.use('/', express.static(staticPath))
 server.listen(SERVER_PORT)

@@ -32,21 +32,21 @@
         "node": ">=14.17.6",
         "yarn": ">=1.0.0"
     },
-    "main": "electron/electron.js",
     "private": true,
     "workspaces": [
         "client",
         "server",
-        "shared"
+        "shared",
+        "electron"
     ],
     "scripts": {
-        "start": "cross-env NODE_ENV=production node dist/server",
-        "start:dev": "cross-env NODE_ENV=development node --inspect dist/server",
-        "start:local": "cross-env NODE_ENV=local node --inspect dist/server",
+        "start": "cross-env NODE_ENV=production node server/dist/server",
+        "start:dev": "cross-env NODE_ENV=development node --inspect server/dist/server",
+        "start:local": "cross-env NODE_ENV=local node --inspect server/dist/server",
         "build": "yarn build:client && yarn build:server",
         "build:client": "yarn --cwd ./client build",
         "build:server": "yarn --cwd ./server build",
-        "build:electron": "yarn --cwd ./server electron",
+        "build:electron": "yarn --cwd ./electron build",
         "watch": "concurrently --kill-others \"yarn watch:server\" \"yarn watch:client\"",
         "watch:client": "yarn --cwd ./client watch",
         "watch:server": "yarn --cwd ./server watch",
@@ -60,20 +60,8 @@
         "validate": "yarn validate:dependencies && yarn validate:license",
         "validate:dependencies": "yarn audit --groups dependencies && yarn --cwd ./client audit --groups dependencies && yarn --cwd ./server audit --groups dependencies",
         "validate:license": "node-license-validator -p -d --allow-licenses MIT MIT/X11 BSD 0BSD BSD-3-Clause BSD-2-Clause ISC Apache Apache-2.0 WTFPL CC-BY-3.0 CC-BY-4.0 CC0-1.0 Unlicense --allow-packages cycle",
-        "clean": "rimraf **/dist",
+        "clean": "rimraf **/dist **/release",
         "reset": "yarn clean && rimraf **/node_modules node_modules"
-    },
-    "build": {
-        "appId": "com.sisyfos-audio-controller.app",
-        "asar": true,
-        "files": [
-            "client/dist/**/*",
-            "electron/**/*",
-            "!release/**/*"
-        ],
-        "directories": {
-            "output": "release"
-        }
     },
     "simple-git-hooks": {
         "pre-commit": "yarn lint-staged"

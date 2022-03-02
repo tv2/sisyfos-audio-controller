@@ -1,13 +1,23 @@
 {
-  "name": "electron",
-  "version": "0.0.0",
-  "main": "electron.js",
-  "license": "MIT",
-  "scripts": {
-    "build": "electron-build -mw"
-  },
-  "devDependencies": {
-    "electron": "^16.0.4",
-    "electron-builder": "^22.14.5"
-  }
+    "name": "electron",
+    "version": "0.0.0",
+    "main": "electron.js",
+    "license": "MIT",
+    "scripts": {
+        "build": "electron-builder -m"
+    },
+    "dependencies": {
+        "server": "^0.0.0"
+    },
+    "devDependencies": {
+        "electron": "^16.0.4",
+        "electron-builder": "^22.14.5"
+    },
+    "build": {
+        "appId": "com.sisyfos-audio-controller.app",
+        "asar": false,
+        "directories": {
+            "output": "../release"
+        }
+    }
 }

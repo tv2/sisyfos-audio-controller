@@ -33,9 +33,10 @@
         "shared": "^0.0.0",
         "socket.io": "^4.4.1",
         "ts-jest": "^26.5.3",
+        "tslib": "^2.3.1",
         "vmix-js-utils": "^4.0.7",
         "web-midi-api": "^2.0.8",
-        "webmidi": "^2.5.2"
-    },
-    "peerDependencies": {}
+        "webmidi": "^2.5.2",
+        "client": "^0.0.0"
+    }
 }
