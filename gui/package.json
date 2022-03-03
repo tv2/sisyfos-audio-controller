@@ -1,5 +1,5 @@
 {
-    "name": "electron-helper",
+    "name": "gui",
     "version": "4.17.0",
     "main": "electron.js",
     "license": "MIT",
@@ -11,8 +11,8 @@
         "server": "^0.0.0"
     },
     "devDependencies": {
-        "electron": "^16.0.4",
-        "electron-builder": "^22.14.5"
+        "electron": "16.0.4",
+        "electron-builder": "22.14.5"
     },
     "build": {
         "appId": "com.sisyfos-audio-controller.app",
