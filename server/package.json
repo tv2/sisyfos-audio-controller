@@ -6,8 +6,7 @@
         "build": "tsc",
         "watch": "tsc --watch",
         "test": "jest",
-        "test:watch": "jest --watch",
-        "lint": ""
+        "test:watch": "jest --watch"
     },
     "devDependencies": {
         "@types/express": "^4.17.13",
