@@ -8,7 +8,7 @@ import { InumberOfChannels } from '../../../shared/src/reducers/channelsReducer'
 import path from 'path'
 export class SnapshotHandler {
     numberOfChannels: InumberOfChannels[] = []
-    settingsPath: string = ''
+    settingsPath: string = path.resolve(__dirname, '../../../storage')
 
     constructor() {
         logger.info('Setting up state')
@@ -32,7 +32,10 @@ export class SnapshotHandler {
                 )
             })
         }
-        this.loadSnapshotSettings(path.resolve('storage', 'default.shot'), true)
+        this.loadSnapshotSettings(
+            path.resolve(this.settingsPath, 'default.shot'),
+            true
+        )
 
         // ** UNCOMMENT TO DUMP A FULL STORE:
         //const fs = require('fs')
@@ -47,7 +50,7 @@ export class SnapshotHandler {
             }
             saveSnapshotState(
                 snapshot,
-                path.resolve(this.settingsPath, 'storage', 'default.shot')
+                path.resolve(this.settingsPath, 'default.shot')
             )
         }, 2000)
     }
