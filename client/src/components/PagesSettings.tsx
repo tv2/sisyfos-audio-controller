@@ -7,14 +7,14 @@ import { connect } from 'react-redux'
 import {
     storeShowPagesSetup,
     storeUpdatePagesList,
-} from '../../../shared/src/actions/settingsActions'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
+} from 'shared/src/actions/settingsActions'
+import { IFader } from 'shared/src/reducers/fadersReducer'
 import Select from 'react-select'
 import {
     SOCKET_GET_PAGES_LIST,
     SOCKET_SET_PAGES_LIST,
-} from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
-import { ICustomPages } from '../../../shared/src/reducers/settingsReducer'
+} from 'shared/src/constants/SOCKET_IO_DISPATCHERS'
+import { ICustomPages } from 'shared/src/reducers/settingsReducer'
 import { getFaderLabel } from '../utils/labels'
 
 //Set style for Select dropdown component:

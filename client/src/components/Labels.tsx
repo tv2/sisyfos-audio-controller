@@ -5,16 +5,16 @@ import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
     storeShowLabelSetup,
-} from '../../../shared/src/actions/settingsActions'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
+} from 'shared/src/actions/settingsActions'
+import { IFader } from 'shared/src/reducers/fadersReducer'
 import {
     SOCKET_FLUSH_LABELS,
     SOCKET_SET_LABELS,
-} from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
-import { ICustomPages } from '../../../shared/src/reducers/settingsReducer'
+} from 'shared/src/constants/SOCKET_IO_DISPATCHERS'
+import { ICustomPages } from 'shared/src/reducers/settingsReducer'
 import { getChannelLabel } from '../utils/labels'
-import { flushExtLabels, updateLabels } from '../../../shared/src/actions/faderActions'
-import { storeFlushChLabels } from '../../../shared/src/actions/channelActions'
+import { flushExtLabels, updateLabels } from 'shared/src/actions/faderActions'
+import { storeFlushChLabels } from 'shared/src/actions/channelActions'
 
 interface ILabelSettingsInjectProps {
     customPages: ICustomPages[]

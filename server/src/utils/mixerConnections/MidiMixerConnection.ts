@@ -7,8 +7,7 @@ global.navigator = webMidiApi
 // WebMidi.js depends on the browser's performance.now() so we fake it with the `performance-now`
 // Node module (which is installed as a dependency of `web-midi-api`).
 import performanceNow from 'performance-now'
-if (!global.performance)
-    global.performance = { now: performanceNow }
+if (!global.performance) global.performance = { now: performanceNow }
 //Node Modules:
 import WebMidi from 'webmidi'
 
@@ -16,13 +15,16 @@ import { store, state } from '../../reducers/store'
 import { remoteConnections } from '../../mainClasses'
 
 //Utils:
-import { MixerProtocolPresets } from '../../../../shared/src/constants/MixerProtocolPresets'
+import { MixerProtocolPresets } from 'shared/src/constants/MixerProtocolPresets'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../../shared/src/constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from '../../../../shared/src/actions/channelActions'
-import { storeFaderLevel, storeTogglePgm } from '../../../../shared/src/actions/faderActions'
+} from 'shared/src/constants/MixerProtocolInterface'
+import { storeSetOutputLevel } from 'shared/src/actions/channelActions'
+import {
+    storeFaderLevel,
+    storeTogglePgm,
+} from 'shared/src/actions/faderActions'
 import { logger } from '../logger'
 
 export class MidiMixerConnection {

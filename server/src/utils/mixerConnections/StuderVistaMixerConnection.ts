@@ -7,21 +7,21 @@ import net from 'net'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../../shared/src/constants/MixerProtocolInterface'
+} from 'shared/src/constants/MixerProtocolInterface'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { storeSetMixerOnline } from 'shared/src/actions/settingsActions'
 import {
     storeFaderLevel,
     storeSetMute,
     storeTogglePgm,
-} from '../../../../shared/src/actions/faderActions'
+} from 'shared/src/actions/faderActions'
 import {
     storeSetAuxLevel,
     storeSetOutputLevel,
-} from '../../../../shared/src/actions/channelActions'
+} from 'shared/src/actions/channelActions'
 import { remoteConnections } from '../../mainClasses'
-import { IFader } from '../../../../shared/src/reducers/fadersReducer'
-import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
+import { IFader } from 'shared/src/reducers/fadersReducer'
+import { IChannel } from 'shared/src/reducers/channelsReducer'
 
 export class StuderVistaMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -222,15 +222,12 @@ export class StuderVistaMixerConnection {
 
     handleEmberAuxCommand(message: string) {
         // Extract Channel number, Aux and Type (mono-st-51)
-        let {
-            channelTypeIndex,
-            channelType,
-            auxIndex,
-        } = this.extractMessageIndex(
-            this.mixerProtocol.channelTypes[0].fromMixer.AUX_LEVEL[0]
-                .mixerMessage,
-            message
-        )
+        let { channelTypeIndex, channelType, auxIndex } =
+            this.extractMessageIndex(
+                this.mixerProtocol.channelTypes[0].fromMixer.AUX_LEVEL[0]
+                    .mixerMessage,
+                message
+            )
 
         // Extract value:
         let value = this.extractValue(message)
@@ -481,8 +478,9 @@ export class StuderVistaMixerConnection {
                 channel - 1
             ].channelTypeIndex
 
-        levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer
-            .CHANNEL_OUT_GAIN[0].mixerMessage
+        levelMessage =
+            this.mixerProtocol.channelTypes[channelType].toMixer
+                .CHANNEL_OUT_GAIN[0].mixerMessage
         channelVal = 160 + channelTypeIndex + 1
 
         let channelByte = new Uint8Array([channelVal & 0x000000ff])
@@ -559,16 +557,18 @@ export class StuderVistaMixerConnection {
                 channelIndex
             ].channelTypeIndex
         if (muteOn === true) {
-            let mute = this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_MUTE_ON[0]
+            let mute =
+                this.mixerProtocol.channelTypes[channelType].toMixer
+                    .CHANNEL_MUTE_ON[0]
             this.sendOutMessage(
                 mute.mixerMessage,
                 channelTypeIndex + 1,
                 mute.value
             )
         } else {
-            let mute = this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_MUTE_OFF[0]
+            let mute =
+                this.mixerProtocol.channelTypes[channelType].toMixer
+                    .CHANNEL_MUTE_OFF[0]
             this.sendOutMessage(
                 mute.mixerMessage,
                 channelTypeIndex + 1,
@@ -604,8 +604,8 @@ export class StuderVistaMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex + 1
-        let auxSendCmd = this.mixerProtocol.channelTypes[channelType].toMixer
-            .AUX_LEVEL[0]
+        let auxSendCmd =
+            this.mixerProtocol.channelTypes[channelType].toMixer.AUX_LEVEL[0]
         let auxSendNumber = 160 + auxSendIndex + 1
 
         let auxByte = new Uint8Array([auxSendNumber & 0x000000ff])

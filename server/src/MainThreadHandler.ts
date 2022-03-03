@@ -8,9 +8,9 @@ import {
 import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
-import { storeUpdateSettings } from '../../shared/src/actions/settingsActions'
-import * as IO from '../../shared/src/constants/SOCKET_IO_DISPATCHERS'
-import * as FADER_ACTIONS from '../../shared/src/actions/faderActions'
+import { storeUpdateSettings } from 'shared/src/actions/settingsActions'
+import * as IO from 'shared/src/constants/SOCKET_IO_DISPATCHERS'
+import * as FADER_ACTIONS from 'shared/src/actions/faderActions'
 
 import {
     loadSettings,
@@ -27,12 +27,12 @@ import {
     storeFlushChLabels,
     storeSetAssignedFader,
     storeSetAuxLevel,
-} from '../../shared/src/actions/channelActions'
+} from 'shared/src/actions/channelActions'
 import { logger } from './utils/logger'
-import { ICustomPages } from '../../shared/src/reducers/settingsReducer'
-import { fxParamsList } from '../../shared/src/constants/MixerProtocolInterface'
+import { ICustomPages } from 'shared/src/reducers/settingsReducer'
+import { fxParamsList } from 'shared/src/constants/MixerProtocolInterface'
 import path from 'path'
-import { IChannel } from '../../shared/src/reducers/channelsReducer'
+import { IChannel } from 'shared/src/reducers/channelsReducer'
 
 export class MainThreadHandlers {
     snapshotHandler: SnapshotHandler

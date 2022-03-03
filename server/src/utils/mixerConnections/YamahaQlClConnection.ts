@@ -7,17 +7,17 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from '../../../../shared/src/constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from '../../../../shared/src/actions/channelActions'
+} from 'shared/src/constants/MixerProtocolInterface'
+import { storeSetOutputLevel } from 'shared/src/actions/channelActions'
 import {
     storeFaderLevel,
     storeTogglePgm,
     storeSetMute,
-} from '../../../../shared/src/actions/faderActions'
+} from 'shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { storeSetMixerOnline } from 'shared/src/actions/settingsActions'
 import { sendVuLevel } from '../vuServer'
-import { VuType } from '../../../../shared/src/utils/vu-server-types'
+import { VuType } from 'shared/src/utils/vu-server-types'
 
 export class QlClMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -35,9 +35,10 @@ export class QlClMixerConnection {
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
 
-        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
-            .split('/')
-            .findIndex((ch) => ch === '{channel}')
+        this.cmdChannelIndex =
+            this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
+                .split('/')
+                .findIndex((ch) => ch === '{channel}')
 
         this.midiConnection = new net.Socket()
         this.midiConnection.connect(

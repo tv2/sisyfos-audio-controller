@@ -2,17 +2,17 @@ import {
     storeSetCompleteFaderState,
     storeSetSingleFaderState,
     storeVuReductionLevel,
-} from '../../../shared/src/actions/faderActions'
+} from 'shared/src/actions/faderActions'
 import {
     storeSetCompleteChState,
     storeSetSingleChState,
-} from '../../../shared/src/actions/channelActions'
+} from 'shared/src/actions/channelActions'
 import {
     storeSetMixerOnline,
     storeSetServerOnline,
     storeUpdatePagesList,
     storeUpdateSettings,
-} from '../../../shared/src/actions/settingsActions'
+} from 'shared/src/actions/settingsActions'
 import {
     SOCKET_RETURN_SNAPSHOT_LIST,
     SOCKET_SET_FULL_STORE,
@@ -22,13 +22,13 @@ import {
     SOCKET_SET_MIXER_ONLINE,
     SOCKET_RETURN_MIXER_PRESET_LIST,
     SOCKET_RETURN_PAGES_LIST,
-} from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
+} from 'shared/src/constants/SOCKET_IO_DISPATCHERS'
 import {
     IchMixerConnection,
     InumberOfChannels,
-} from '../../../shared/src/reducers/channelsReducer'
-import { VuType } from '../../../shared/src/utils/vu-server-types'
-import { IMixerSettings } from '../../../shared/src/reducers/settingsReducer'
+} from 'shared/src/reducers/channelsReducer'
+import { VuType } from 'shared/src/utils/vu-server-types'
+import { IMixerSettings } from 'shared/src/reducers/settingsReducer'
 
 export const vuMeters: number[][] = []
 
