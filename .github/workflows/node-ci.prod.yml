@@ -152,11 +152,16 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build
         run: yarn build
-      - name: Upload build artifact
+      - name: Upload client build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}
-          path: dist
+          name: ${{ github.event.repository.name }}-client
+          path: client/dist
+      - name: Upload server build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-server
+          path: server/dist
 
   check-github-release:
     runs-on: ubuntu-latest
@@ -284,8 +289,13 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}
-          path: dist
+          name: ${{ github.event.repository.name }}-client
+          path: client/dist
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-server
+          path: server/dist
 
       - name: Extract version for tags
         id: version

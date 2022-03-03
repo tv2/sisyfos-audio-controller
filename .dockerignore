@@ -5,7 +5,11 @@ public
 Dockerfile
 
 client
+!client/dist
 server
+!server/dist
+shared
+electron
 
 .gitignore
 .dockerignore
