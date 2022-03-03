@@ -1,14 +1,14 @@
-import indexReducer from 'shared/src/reducers/indexReducer'
+import indexReducer from '../../shared/src/reducers/indexReducer'
 import {
     storeFadeActive,
     storeSetAssignedFader,
     storeSetCompleteChState,
     storeSetOutputLevel,
-} from 'shared/src/actions/channelActions'
+} from '../../shared/src/actions/channelActions'
 import {
     IChannel,
     InumberOfChannels,
-} from 'shared/src/reducers/channelsReducer'
+} from '../../shared/src/reducers/channelsReducer'
 
 import fs from 'fs'
 const parsedFullStoreJSON = fs.readFileSync(

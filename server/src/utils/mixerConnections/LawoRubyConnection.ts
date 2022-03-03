@@ -6,7 +6,7 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from 'shared/src/constants/MixerProtocolInterface'
+} from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
     SET_INPUT_SELECTOR,
     storeFaderLevel,
@@ -15,10 +15,10 @@ import {
     storeSetAMix,
     storeCapability,
     storeShowChannel,
-} from 'shared/src/actions/faderActions'
+} from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from 'shared/src/actions/settingsActions'
-import { storeSetChLabel } from 'shared/src/actions/channelActions'
+import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
 
 // TODO - should these be util functions?
 export function floatToDB(f: number): number {
@@ -293,9 +293,8 @@ export class LawoRubyMixerConnection {
         const sourceName = this.faders[ch]
         if (!sourceName) return
 
-        const proto =
-            this.mixerProtocol.channelTypes[typeIndex].fromMixer
-                .CHANNEL_INPUT_GAIN[0]
+        const proto = this.mixerProtocol.channelTypes[typeIndex].fromMixer
+            .CHANNEL_INPUT_GAIN[0]
         let command = proto.mixerMessage.replace('{channel}', sourceName)
 
         try {
@@ -449,9 +448,8 @@ export class LawoRubyMixerConnection {
         const source = this.faders[channel]
         if (!channel) return
 
-        const mixerMessage =
-            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0]
-                .mixerMessage
+        const mixerMessage = this.mixerProtocol.channelTypes[0].toMixer
+            .CHANNEL_OUT_GAIN[0].mixerMessage
 
         logger.trace(`Sending out Level: ${value}  To ${source}`)
 
@@ -467,9 +465,8 @@ export class LawoRubyMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let protocol =
-            this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_OUT_GAIN[0]
+        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
+            .CHANNEL_OUT_GAIN[0]
         let level =
             (state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
@@ -488,9 +485,8 @@ export class LawoRubyMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let protocol =
-            this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_OUT_GAIN[0]
+        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
+            .CHANNEL_OUT_GAIN[0]
 
         const level = floatToDB(outputLevel)
 
@@ -543,8 +539,8 @@ export class LawoRubyMixerConnection {
             ]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
-        let protocol =
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_AMIX[0]
+        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
+            .CHANNEL_AMIX[0]
 
         this.sendOutMessage(
             protocol.mixerMessage,
@@ -565,9 +561,8 @@ export class LawoRubyMixerConnection {
             ]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
-        let protocol =
-            this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_INPUT_GAIN[0]
+        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
+            .CHANNEL_INPUT_GAIN[0]
 
         let level = gain * (protocol.max - protocol.min) + protocol.min
 
@@ -586,9 +581,8 @@ export class LawoRubyMixerConnection {
             ]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
-        let msg =
-            this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_INPUT_SELECTOR[inputSelected - 1]
+        let msg = this.mixerProtocol.channelTypes[channelType].toMixer
+            .CHANNEL_INPUT_SELECTOR[inputSelected - 1]
 
         this.sendOutMessage(
             msg.mixerMessage,

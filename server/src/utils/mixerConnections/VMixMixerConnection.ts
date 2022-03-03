@@ -7,8 +7,10 @@ import { XmlApi } from 'vmix-js-utils'
 import {
     fxParamsList,
     IMixerProtocol,
-} from 'shared/src/constants/MixerProtocolInterface'
-import { SET_OUTPUT_LEVEL } from 'shared/src/actions/channelActions'
+} from '../../../../shared/src/constants/MixerProtocolInterface'
+import {
+    SET_OUTPUT_LEVEL,
+} from '../../../../shared/src/actions/channelActions'
 import {
     storeFaderLevel,
     storeFaderFx,
@@ -17,11 +19,11 @@ import {
     storeSetPfl,
     storeSetPgm,
     storeSetVo,
-} from 'shared/src/actions/faderActions'
-import { storeSetMixerOnline } from 'shared/src/actions/settingsActions'
+} from '../../../../shared/src/actions/faderActions'
+import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
 import { sendVuLevel } from '../vuServer'
-import { VuType } from 'shared/src/utils/vu-server-types'
+import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { dbToFloat } from './LawoRubyConnection'
 
 export class VMixMixerConnection {
@@ -47,10 +49,9 @@ export class VMixMixerConnection {
             }
         }
 
-        this.cmdChannelIndex =
-            this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
-                .split('/')
-                .findIndex((ch) => ch === '{channel}')
+        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
+            .split('/')
+            .findIndex((ch) => ch === '{channel}')
 
         this.vmixConnection = new ConnectionTCP(
             state.settings[0].mixers[this.mixerIndex].deviceIp,
@@ -166,11 +167,20 @@ export class VMixMixerConnection {
                     ) // add +15 to convert from dBFS
                 }
 
-                const { outputLevel, fadeActive, assignedFader } =
-                    state.channels[0].chMixerConnection[this.mixerIndex]
-                        .channel[input.number - 1]
-                const { inputGain, muteOn, pflOn, pgmOn, voOn } =
-                    state.faders[0].fader[assignedFader]
+                const {
+                    outputLevel,
+                    fadeActive,
+                    assignedFader,
+                } = state.channels[0].chMixerConnection[
+                    this.mixerIndex
+                ].channel[input.number - 1]
+                const {
+                    inputGain,
+                    muteOn,
+                    pflOn,
+                    pgmOn,
+                    voOn,
+                } = state.faders[0].fader[assignedFader]
                 let sendUpdate = false
                 const dispatch = (update: any) => {
                     store.dispatch(update)
@@ -443,10 +453,13 @@ export class VMixMixerConnection {
     }
 
     updatePflState(channelIndex: number) {
-        let { channelType, channelTypeIndex, outputLevel } =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ]
+        let {
+            channelType,
+            channelTypeIndex,
+            outputLevel,
+        } = state.channels[0].chMixerConnection[this.mixerIndex].channel[
+            channelIndex
+        ]
 
         if (state.faders[0].fader[channelIndex].pflOn === true) {
             if (outputLevel === 0) {
@@ -480,15 +493,17 @@ export class VMixMixerConnection {
     }
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
-        const { channelType, channelTypeIndex, outputLevel } =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ]
+        const {
+            channelType,
+            channelTypeIndex,
+            outputLevel,
+        } = state.channels[0].chMixerConnection[this.mixerIndex].channel[
+            channelIndex
+        ]
 
         if (muteOn === true && outputLevel > 0) {
-            let mute =
-                this.mixerProtocol.channelTypes[channelType].toMixer
-                    .CHANNEL_MUTE_ON[0]
+            let mute = this.mixerProtocol.channelTypes[channelType].toMixer
+                .CHANNEL_MUTE_ON[0]
             this.sendOutMessage(
                 mute.mixerMessage,
                 channelTypeIndex + 1,
@@ -496,9 +511,8 @@ export class VMixMixerConnection {
                 mute.type
             )
         } else if (muteOn === false && outputLevel > 0) {
-            let mute =
-                this.mixerProtocol.channelTypes[channelType].toMixer
-                    .CHANNEL_MUTE_OFF[0]
+            let mute = this.mixerProtocol.channelTypes[channelType].toMixer
+                .CHANNEL_MUTE_OFF[0]
             this.sendOutMessage(
                 mute.mixerMessage,
                 channelTypeIndex + 1,
@@ -525,9 +539,8 @@ export class VMixMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let mixerMessage =
-            this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_INPUT_GAIN[0]
+        let mixerMessage = this.mixerProtocol.channelTypes[channelType].toMixer
+            .CHANNEL_INPUT_GAIN[0]
         if (mixerMessage.min !== undefined && mixerMessage.max !== undefined) {
             level =
                 mixerMessage.min + (mixerMessage.max - mixerMessage.min) * level
@@ -540,13 +553,15 @@ export class VMixMixerConnection {
         )
     }
     updateInputSelector(channelIndex: number, inputSelected: number) {
-        const { channelType, channelTypeIndex } =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ]
-        let { mixerMessage, value } =
-            this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_INPUT_SELECTOR[inputSelected - 1]
+        const {
+            channelType,
+            channelTypeIndex,
+        } = state.channels[0].chMixerConnection[this.mixerIndex].channel[
+            channelIndex
+        ]
+        let { mixerMessage, value } = this.mixerProtocol.channelTypes[
+            channelType
+        ].toMixer.CHANNEL_INPUT_SELECTOR[inputSelected - 1]
 
         this.sendOutMessage(mixerMessage, channelTypeIndex + 1, value, '')
     }
@@ -560,8 +575,9 @@ export class VMixMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let fx =
-            this.mixerProtocol.channelTypes[channelType].toMixer[fxParam][0]
+        let fx = this.mixerProtocol.channelTypes[channelType].toMixer[
+            fxParam
+        ][0]
         if (fx.min !== undefined && fx.max !== undefined) {
             level = fx.min + (fx.max - fx.min) * level
         }
@@ -582,8 +598,8 @@ export class VMixMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex + 1
-        let auxSendCmd =
-            this.mixerProtocol.channelTypes[channelType].toMixer.AUX_LEVEL[0]
+        let auxSendCmd = this.mixerProtocol.channelTypes[channelType].toMixer
+            .AUX_LEVEL[0]
         let auxSendNumber = this.mixerProtocol.leadingZeros
             ? ('0' + String(auxSendIndex + 1)).slice(-2)
             : String(auxSendIndex + 1)
@@ -596,10 +612,12 @@ export class VMixMixerConnection {
     }
 
     updateFadeIOLevel(channelIndex: number, outputLevel: number) {
-        let { channelType, channelTypeIndex } =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ]
+        let {
+            channelType,
+            channelTypeIndex,
+        } = state.channels[0].chMixerConnection[this.mixerIndex].channel[
+            channelIndex
+        ]
         let { muteOn } = state.faders[0].fader[channelIndex]
         outputLevel = Math.round(100 * outputLevel)
 

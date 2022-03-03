@@ -7,14 +7,14 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from 'shared/src/constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from 'shared/src/actions/channelActions'
+} from '../../../../shared/src/constants/MixerProtocolInterface'
+import { storeSetOutputLevel } from '../../../../shared/src/actions/channelActions'
 import {
     storeFaderLevel,
     storeSetMute,
     storeTogglePgm,
-} from 'shared/src/actions/faderActions'
-import { storeSetMixerOnline } from 'shared/src/actions/settingsActions'
+} from '../../../../shared/src/actions/faderActions'
+import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
 
 export class SSLMixerConnection {
@@ -32,10 +32,9 @@ export class SSLMixerConnection {
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
 
-        this.cmdChannelIndex =
-            this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
-                .split('/')
-                .findIndex((ch) => ch === '{channel}')
+        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
+            .split('/')
+            .findIndex((ch) => ch === '{channel}')
 
         this.SSLConnection = new net.Socket()
         this.SSLConnection.connect(
@@ -187,25 +186,20 @@ export class SSLMixerConnection {
                                     )
                                     state.channels[0].chMixerConnection[
                                         this.mixerIndex
-                                    ].channel.forEach(
-                                        (
-                                            item: { assignedFader: any },
-                                            index: number
-                                        ) => {
-                                            if (
-                                                item.assignedFader ===
-                                                assignedFaderIndex
-                                            ) {
-                                                store.dispatch(
-                                                    storeSetOutputLevel(
-                                                        this.mixerIndex,
-                                                        index,
-                                                        value
-                                                    )
+                                    ].channel.forEach((item: { assignedFader: any }, index: number) => {
+                                        if (
+                                            item.assignedFader ===
+                                            assignedFaderIndex
+                                        ) {
+                                            store.dispatch(
+                                                storeSetOutputLevel(
+                                                    this.mixerIndex,
+                                                    index,
+                                                    value
                                                 )
-                                            }
+                                            )
                                         }
-                                    )
+                                    })
                                 }
                                 global.mainThreadHandler.updatePartialStore(
                                     assignedFaderIndex

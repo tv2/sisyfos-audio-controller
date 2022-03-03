@@ -3,13 +3,13 @@ import { logger } from './logger'
 import { remoteConnections } from '../mainClasses'
 
 //Utils:
-import { MixerProtocolPresets } from 'shared/src/constants/MixerProtocolPresets'
+import { MixerProtocolPresets } from '../../../shared/src/constants/MixerProtocolPresets'
 import {
     IMixerProtocol,
     IMixerProtocolGeneric,
     ICasparCGMixerGeometry,
     fxParamsList,
-} from 'shared/src/constants/MixerProtocolInterface'
+} from '../../../shared/src/constants/MixerProtocolInterface'
 import { OscMixerConnection } from './mixerConnections/OscMixerConnection'
 import { VMixMixerConnection } from './mixerConnections/VMixMixerConnection'
 import { MidiMixerConnection } from './mixerConnections/MidiMixerConnection'
@@ -20,15 +20,12 @@ import { LawoRubyMixerConnection } from './mixerConnections/LawoRubyConnection'
 import { StuderMixerConnection } from './mixerConnections/StuderMixerConnection'
 import { StuderVistaMixerConnection } from './mixerConnections/StuderVistaMixerConnection'
 import { CasparCGConnection } from './mixerConnections/CasparCGConnection'
-import {
-    IChannel,
-    IchMixerConnection,
-} from 'shared/src/reducers/channelsReducer'
+import { IChannel, IchMixerConnection } from '../../../shared/src/reducers/channelsReducer'
 import {
     storeFadeActive,
     storeSetOutputLevel,
-} from 'shared/src/actions/channelActions'
-import { storeFaderLevel } from 'shared/src/actions/faderActions'
+} from '../../../shared/src/actions/channelActions'
+import { storeFaderLevel } from '../../../shared/src/actions/faderActions'
 
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
 // The lower the more CPU

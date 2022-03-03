@@ -1,11 +1,11 @@
-import indexReducer from 'shared/src/reducers/indexReducer'
+import indexReducer from '../../shared/src/reducers/indexReducer'
 import {
     TOGGLE_SHOW_CHAN_STRIP,
     TOGGLE_SHOW_OPTION,
     TOGGLE_SHOW_SETTINGS,
     TOGGLE_SHOW_STORAGE,
     UPDATE_SETTINGS,
-} from 'shared/src/actions/settingsActions'
+} from '../../shared/src/actions/settingsActions'
 
 import fs from 'fs'
 const parsedFullStoreJSON = fs.readFileSync(

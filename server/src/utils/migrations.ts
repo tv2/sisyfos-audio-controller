@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { logger } from './logger'
-import { ISettings } from 'shared/src/reducers/settingsReducer'
+import { ISettings } from '../../../shared/src/reducers/settingsReducer'
 import { getSnapShotList, IShotStorage } from './SettingsStorage'
 
 const version = process.env.npm_package_version
@@ -69,10 +69,8 @@ const migrate45to47 = (currentSettings: ISettings): ISettings => {
             JSON.stringify(currentSettings),
             'utf8'
         )
-    } catch (error: any) {
-        logger
-            .data(error)
-            .error('Migration failed - error writing settings.json file')
+    } catch (error: any){
+        logger.data(error).error('Migration failed - error writing settings.json file')
     }
     return currentSettings
 }

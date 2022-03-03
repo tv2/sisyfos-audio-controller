@@ -7,10 +7,10 @@ import { remoteConnections } from '../../mainClasses'
 import {
     fxParamsList,
     IMixerProtocol,
-} from 'shared/src/constants/MixerProtocolInterface'
-import { storeFaderLevel } from 'shared/src/actions/faderActions'
+} from '../../../../shared/src/constants/MixerProtocolInterface'
+import { storeFaderLevel } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetChLabel } from 'shared/src/actions/channelActions'
+import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
 
 export class StuderMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -220,14 +220,12 @@ export class StuderMixerConnection {
             ].channelTypeIndex
 
         if (channel < 25) {
-            levelMessage =
-                this.mixerProtocol.channelTypes[channelType].toMixer
-                    .CHANNEL_OUT_GAIN[0].mixerMessage
+            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer
+                .CHANNEL_OUT_GAIN[0].mixerMessage
             channelVal = 160 + channelTypeIndex + 1
         } else {
-            levelMessage =
-                this.mixerProtocol.channelTypes[channelType].toMixer
-                    .CHANNEL_OUT_GAIN[1].mixerMessage
+            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer
+                .CHANNEL_OUT_GAIN[1].mixerMessage
             channelVal = channelTypeIndex + 1
         }
 

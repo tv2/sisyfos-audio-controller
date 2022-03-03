@@ -11,24 +11,24 @@ import {
     storeShowPagesSetup,
     storeShowSettings,
     storeShowStorage,
-} from 'shared/src/actions/settingsActions'
+} from '../../../shared/src/actions/settingsActions'
 import ChannelRouteSettings from './ChannelRouteSettings'
 import ChanStrip from './ChanStrip'
 import ChannelMonitorOptions from './ChannelMonitorOptions'
-import { IFader } from 'shared/src/reducers/fadersReducer'
-import { IChannels } from 'shared/src/reducers/channelsReducer'
+import { IFader } from '../../../shared/src/reducers/fadersReducer'
+import { IChannels } from '../../../shared/src/reducers/channelsReducer'
 import {
     ICustomPages,
     IMixerSettings,
     ISettings,
     PageType,
-} from 'shared/src/reducers/settingsReducer'
+} from '../../../shared/src/reducers/settingsReducer'
 import {
     SOCKET_NEXT_MIX,
     SOCKET_CLEAR_PST,
     SOCKET_RESTART_SERVER,
     SOCKET_TOGGLE_ALL_MANUAL,
-} from 'shared/src/constants/SOCKET_IO_DISPATCHERS'
+} from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import ChanStripFull from './ChanStripFull'
 
 interface IChannelsInjectProps {
