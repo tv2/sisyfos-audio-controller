@@ -14,9 +14,15 @@ import { storeSetCompleteFaderState } from '../../../shared/src/actions/faderAct
 import { logger } from './logger'
 import { defaultFadersReducerState } from '../../../shared/src/reducers/fadersReducer'
 
-import { IChannels, InumberOfChannels } from '../../../shared/src/reducers/channelsReducer'
+import {
+    IChannels,
+    InumberOfChannels,
+} from '../../../shared/src/reducers/channelsReducer'
 
-import { ICustomPages, ISettings } from '../../../shared/src/reducers/settingsReducer'
+import {
+    ICustomPages,
+    ISettings,
+} from '../../../shared/src/reducers/settingsReducer'
 import { IFaders } from '../../../shared/src/reducers/fadersReducer'
 
 export interface IShotStorage {
@@ -37,7 +43,10 @@ export const loadSettings = (storeRedux: any): ISettings => {
     let newSettings = storeRedux.settings[0]
     try {
         newSettings = JSON.parse(
-            fs.readFileSync(path.resolve(storageFolder, 'settings.json'), 'utf8')
+            fs.readFileSync(
+                path.resolve(storageFolder, 'settings.json'),
+                'utf8'
+            )
         )
         checkVersion(newSettings)
         return newSettings
@@ -62,7 +71,9 @@ export const saveSettings = (settings: any) => {
         json,
         'utf8',
         (error: any) => {
-            logger.data(error).error('Error writing settings.json file: ')
+            if (error) {
+                logger.data(error).error('Error writing settings.json file: ')
+            }
         }
     )
 }
