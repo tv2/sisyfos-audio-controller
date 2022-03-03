@@ -15,7 +15,7 @@
     },
     "build": {
         "appId": "com.sisyfos-audio-controller.app",
-        "asar": false,
+        "asar": true,
         "directories": {
             "output": "../release"
         }
