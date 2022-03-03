@@ -1,5 +1,5 @@
 {
-    "name": "gui",
+    "name": "electron",
     "version": "4.17.0",
     "main": "electron.js",
     "license": "MIT",
