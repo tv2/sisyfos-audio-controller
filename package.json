@@ -37,7 +37,7 @@
         "client",
         "server",
         "shared",
-        "electron"
+        "desktop"
     ],
     "scripts": {
         "start": "cross-env NODE_ENV=production node server/dist/server",
@@ -46,7 +46,7 @@
         "build": "yarn build:client && yarn build:server",
         "build:client": "yarn --cwd ./client build",
         "build:server": "yarn --cwd ./server build",
-        "build:electron": "yarn --cwd ./electron build",
+        "build:desktop": "yarn --cwd ./desktop build",
         "watch": "concurrently --kill-others \"yarn watch:server\" \"yarn watch:client\"",
         "watch:client": "yarn --cwd ./client watch",
         "watch:server": "yarn --cwd ./server watch",
