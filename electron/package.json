@@ -1,10 +1,11 @@
 {
-    "name": "electron",
-    "version": "0.0.0",
+    "name": "sisyfos-audio-controller",
+    "version": "4.17.0",
     "main": "electron.js",
     "license": "MIT",
     "scripts": {
-        "build": "electron-builder -m"
+        "build": "yarn build:prepare && electron-builder -m",
+        "build:prepare": "node prepare-package.js"
     },
     "dependencies": {
         "server": "^0.0.0"
@@ -18,6 +19,28 @@
         "asar": true,
         "directories": {
             "output": "../release"
+        },
+        "productName": "Sisyfos Audio Controller"
+    },
+    "description": "Audio mixer build with the logic from a video mixer",
+    "author": {
+        "name": "Kasper Olsson Hans (TV2 Denmark)",
+        "email": "github@olzzon.dk"
+    },
+    "contributors": [
+        {
+            "name": "Balte de Wit",
+            "email": "balte@superfly.tv",
+            "url": "https://superfly.tv"
+        },
+        {
+            "name": "Jan Starzak",
+            "email": "jan@superfly.tv",
+            "url": "https://superfly.tv"
+        },
+        {
+            "name": "Anders Frederik Jørgensen",
+            "email": "afjo@tv2.dk"
         }
-    }
+    ]
 }
