@@ -4,8 +4,10 @@
     "main": "electron.js",
     "license": "MIT",
     "scripts": {
-        "build": "yarn build:prepare && electron-builder -m",
-        "build:prepare": "node prepare-package.js"
+        "build": "yarn build:windows",
+        "build:macos": "yarn prepare && electron-builder -m",
+        "build:windows": "yarn prepare && electron-builder -w",
+        "prepare": "node prepare-package.js"
     },
     "dependencies": {
         "server": "^0.0.0"
