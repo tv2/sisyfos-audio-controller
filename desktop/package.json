@@ -20,7 +20,7 @@
         "appId": "com.sisyfos-audio-controller.app",
         "asar": true,
         "directories": {
-            "output": "../release"
+            "output": "dist"
         },
         "productName": "Sisyfos Audio Controller"
     },
