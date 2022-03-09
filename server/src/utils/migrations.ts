@@ -6,6 +6,7 @@ import { ISettings } from '../../../shared/src/reducers/settingsReducer'
 import { getSnapShotList, IShotStorage } from './SettingsStorage'
 
 const version = process.env.npm_package_version
+const settingsPath: string = path.resolve(process.cwd(), 'storage')
 
 export const checkVersion = (currentSettings: ISettings): ISettings => {
     if (
@@ -34,7 +35,7 @@ const migrate45to47 = (currentSettings: ISettings): ISettings => {
 
     files.forEach((fileName: string) => {
         let stateFromShot = JSON.parse(
-            fs.readFileSync(path.resolve('storage', fileName), 'utf8')
+            fs.readFileSync(path.join(settingsPath, fileName), 'utf8')
         )
         // As this is the first implemented migration it also looks .shot files from ealier versions than 4.xx
         if (stateFromShot.channelState.chConnection) {
@@ -52,7 +53,7 @@ const migrate45to47 = (currentSettings: ISettings): ISettings => {
         let migratedShot: IShotStorage = stateFromShot
         try {
             fs.writeFileSync(
-                path.resolve('storage', fileName),
+                path.join(settingsPath, fileName),
                 JSON.stringify(migratedShot),
                 'utf8'
             )
@@ -65,12 +66,14 @@ const migrate45to47 = (currentSettings: ISettings): ISettings => {
     delete currentSettings.customPages
     try {
         fs.writeFileSync(
-            path.resolve('storage', 'settings.json'),
+            path.join(settingsPath, 'settings.json'),
             JSON.stringify(currentSettings),
             'utf8'
         )
-    } catch (error: any){
-        logger.data(error).error('Migration failed - error writing settings.json file')
+    } catch (error: any) {
+        logger
+            .data(error)
+            .error('Migration failed - error writing settings.json file')
     }
     return currentSettings
 }

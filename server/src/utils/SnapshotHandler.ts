@@ -8,7 +8,7 @@ import { InumberOfChannels } from '../../../shared/src/reducers/channelsReducer'
 import path from 'path'
 export class SnapshotHandler {
     numberOfChannels: InumberOfChannels[] = []
-    settingsPath: string = path.resolve(__dirname, '../../../storage')
+    settingsPath: string = path.resolve(process.cwd(), 'storage')
 
     constructor() {
         logger.info('Setting up state')

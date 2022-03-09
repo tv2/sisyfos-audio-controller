@@ -34,7 +34,7 @@ export interface IShotStorage {
 // Windows and Mac place the storagefolder in home -> sisyfos-storage
 let storageFolder: string
 if (platform === 'linux') {
-    storageFolder = path.resolve(__dirname, '../../../storage')
+    storageFolder = path.resolve(process.cwd(), 'storage')
 } else {
     storageFolder = path.resolve(homeDir, 'sisyfos-storage')
 }

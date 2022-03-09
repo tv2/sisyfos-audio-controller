@@ -132,7 +132,7 @@ export class MainThreadHandlers {
             .on(IO.SOCKET_LOAD_SNAPSHOT, (payload: string) => {
                 logger.info('Load Snapshot')
                 this.snapshotHandler.loadSnapshotSettings(
-                    path.resolve('storage', payload),
+                    path.join(this.snapshotHandler.settingsPath, payload),
                     true
                 )
                 this.updateFullClientStore()
@@ -140,7 +140,7 @@ export class MainThreadHandlers {
             .on(IO.SOCKET_SAVE_SNAPSHOT, (payload: string) => {
                 logger.info('Save Snapshot')
                 this.snapshotHandler.saveSnapshotSettings(
-                    path.resolve('storage', payload)
+                    path.join(this.snapshotHandler.settingsPath, payload)
                 )
 
                 socketServer.emit(
