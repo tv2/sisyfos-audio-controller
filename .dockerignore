@@ -1,15 +1,17 @@
 node_modules
-public
 *.vscode
 *.github
 Dockerfile
 
 client
 !client/dist
+!client/package.json
 server
 !server/dist
+!server/package.json
 shared
-electron
+!shared/package.json
+desktop
 
 .gitignore
 .dockerignore
