@@ -2,15 +2,9 @@ node_modules
 *.vscode
 *.github
 Dockerfile
+Docs
 
-client
-!client/dist
-!client/package.json
-server
-!server/dist
-!server/package.json
-shared
-!shared/package.json
+*/dist
 desktop
 
 .gitignore
