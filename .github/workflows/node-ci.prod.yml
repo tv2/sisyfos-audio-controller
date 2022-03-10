@@ -310,16 +310,6 @@ jobs:
       - name: Access repository
         uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-client
-          path: client/dist
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-server
-          path: server/dist
-
       - name: Extract version for tags
         id: version
         uses: ./.github/actions/extract-version

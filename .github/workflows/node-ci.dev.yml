@@ -92,13 +92,6 @@ jobs:
       - name: Access repository
         uses: actions/checkout@v2
 
-      - name: get version
-        id: version
-        uses: notiz-dev/github-action-json-property@release
-        with: 
-            path: 'package.json'
-            prop_path: 'version'
-
       - uses: actions/download-artifact@v2
         with:
           name: ${{ github.event.repository.name }}-client-develop
