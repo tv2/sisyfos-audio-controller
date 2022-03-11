@@ -1,3 +1,38 @@
+### [4.17.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.17.0...v4.17.1) (2022-03-11)
+
+
+### Bug Fixes
+
+* Added check if fails when writing to storage. ([df7da74](https://github.com/tv2/sisyfos-audio-controller/commit/df7da74fead132525312619dc11ac7b5f47b3a0f))
+* Client bugs + moved server code to src folder. ([79e639d](https://github.com/tv2/sisyfos-audio-controller/commit/79e639da2429477350f6c5b7e53a0ddf9c43ccc4))
+* Converted the last require() to import. ([1879b7d](https://github.com/tv2/sisyfos-audio-controller/commit/1879b7deefb4a8d21c4a3e7f2264e119ee7bcd07))
+* Downgraded nouislider due to breaking changes in previous upgrade. ([7229e2c](https://github.com/tv2/sisyfos-audio-controller/commit/7229e2c610545d70fcf2b9f6b0367d249406f54e))
+* Moved client code to src folder + server serving correct static files. ([cd0fdfa](https://github.com/tv2/sisyfos-audio-controller/commit/cd0fdfa5bf282fa5fd85d5f09abe3271f8ac8fe3))
+* remove recalcAssignedChannels from hot path ([c5bf42b](https://github.com/tv2/sisyfos-audio-controller/commit/c5bf42b7b04f9d854a656dff0f59fdf936e95ea1))
+* Updated github actions prod workflow to build desktop. ([31df0a0](https://github.com/tv2/sisyfos-audio-controller/commit/31df0a050c1e9cf22f74c3bade8c9583c1878e9b))
+* Updated snapshotHandler and SettingsStorage to use absolute path. ([fd559ef](https://github.com/tv2/sisyfos-audio-controller/commit/fd559efa40dce34d8f638de66c0223903e875dc8))
+* Use 2 step dockerfile. ([d9be891](https://github.com/tv2/sisyfos-audio-controller/commit/d9be8916faa2118153d8cf88f08de0f94d38a3b2))
+
+
+### Performance Improvements
+
+* Decreased build size. ([ebf9218](https://github.com/tv2/sisyfos-audio-controller/commit/ebf921847568865cfa22d846f74cabf0e1b02684))
+
+
+### Continuous Integration
+
+* Removed unnecessary steps. ([4270cde](https://github.com/tv2/sisyfos-audio-controller/commit/4270cdef1967eda262d927b82f7cd18d5e210a05))
+
+
+### Code Refactoring
+
+* Cleanup + prettier moved to root package. ([9d66b5e](https://github.com/tv2/sisyfos-audio-controller/commit/9d66b5ee4f072e548c3d047cb522ebb9ac5b5a9e))
+* Moved release folder to desktop/dist. ([48d012f](https://github.com/tv2/sisyfos-audio-controller/commit/48d012ff6b7ba53c52202930dfb19c7b8112e4ee))
+* Moved shared constants into 'constants' folder. ([2b807a8](https://github.com/tv2/sisyfos-audio-controller/commit/2b807a8cf50133ffb8ee3dfd80b2390e6c32edbc))
+* Updated dockerfile + dockerignore to respect new project structure. ([755c8c0](https://github.com/tv2/sisyfos-audio-controller/commit/755c8c04e39ebd3e4334a89cefe0350709e86f8e))
+* Using process.cwd to find storage folder. ([195eb03](https://github.com/tv2/sisyfos-audio-controller/commit/195eb0334a2892359185597a089ba2187ddfb404))
+
+
 ## [4.17.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.16.0...v4.17.0) (2022-02-23)
 
 ### Features
