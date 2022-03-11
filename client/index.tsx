@@ -1,23 +1,22 @@
-import React, { ReducerState } from 'react'
+import React from 'react'
 import ReactDom from 'react-dom'
-import App from './components/App'
-import { socketClientHandlers } from './utils/SocketClientHandlers'
+import App from './src/components/App'
+import { socketClientHandlers } from './src/utils/SocketClientHandlers'
 import io from 'socket.io-client'
 
 //Redux:
-import { createStore } from 'redux'
+import storeRedux from '../shared/src/reducers/store'
 import { Provider as ReduxProvider } from 'react-redux'
-import indexReducer from '../server/reducers/indexReducer'
 import {
     SOCKET_GET_SNAPSHOT_LIST,
     SOCKET_GET_CCG_LIST,
     SOCKET_GET_MIXER_PRESET_LIST,
     SOCKET_GET_PAGES_LIST,
-} from '../server/constants/SOCKET_IO_DISPATCHERS'
+} from '../shared/src/constants/SOCKET_IO_DISPATCHERS'
 
 import { I18nextProvider } from 'react-i18next'
-import i18n from './i18n'
-import { IMixerProtocol } from '../server/constants/MixerProtocolInterface'
+import i18n from './src/utils/i18n'
+import { IMixerProtocol } from '../shared/src/constants/MixerProtocolInterface'
 
 declare global {
     interface Window {
@@ -37,7 +36,6 @@ declare global {
 // *** Uncomment to log Socket I/O:
 // localStorage.debug = 'socket.io-client:socket';
 
-const storeRedux = createStore(indexReducer)
 window.storeRedux = storeRedux
 
 //Subscribe to redux store:

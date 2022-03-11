@@ -1,15 +1,16 @@
-import indexReducer from '../reducers/indexReducer'
+import indexReducer from '../../shared/src/reducers/indexReducer'
 import {
     TOGGLE_SHOW_CHAN_STRIP,
     TOGGLE_SHOW_OPTION,
     TOGGLE_SHOW_SETTINGS,
     TOGGLE_SHOW_STORAGE,
     UPDATE_SETTINGS,
-} from '../reducers/settingsActions'
+} from '../../shared/src/actions/settingsActions'
 
-let fs = require('fs')
+import fs from 'fs'
 const parsedFullStoreJSON = fs.readFileSync(
-    'server/__tests__/__mocks__/parsedFullStore.json'
+    '__tests__/__mocks__/parsedFullStore.json',
+    'utf-8'
 )
 
 describe('Test redux settingsReducer actions', () => {

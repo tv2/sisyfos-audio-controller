@@ -1,11 +1,11 @@
 node_modules
-public
 *.vscode
 *.github
 Dockerfile
+Docs
 
-client
-server
+*/dist
+desktop
 
 .gitignore
 .dockerignore

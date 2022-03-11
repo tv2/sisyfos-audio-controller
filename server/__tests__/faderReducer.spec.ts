@@ -1,5 +1,5 @@
-import indexReducer from '../reducers/indexReducer'
-import { IFader, IFaders } from '../reducers/fadersReducer'
+import indexReducer from '../../shared/src/reducers/indexReducer'
+import { IFader, IFaders } from '../../shared/src/reducers/fadersReducer'
 import {
     storeClearPst,
     storeFaderLabel,
@@ -20,15 +20,16 @@ import {
     storeTogglePst,
     storeToggleVo,
     storeXmix,
-} from '../reducers/faderActions'
-import { storeSetCompleteChState } from '../reducers/channelActions'
+} from '../../shared/src/actions/faderActions'
 
-let fs = require('fs')
+import fs from 'fs'
 const parsedSimpleStoreJSON = fs.readFileSync(
-    'server/__tests__/__mocks__/parsedSimpleStore.json'
+    '__tests__/__mocks__/parsedSimpleStore.json',
+    'utf-8'
 )
 const parsedFullStoreJSON = fs.readFileSync(
-    'server/__tests__/__mocks__/parsedFullStore.json'
+    '__tests__/__mocks__/parsedFullStore.json',
+    'utf-8'
 )
 
 describe('Test redux faderReducers actions', () => {
