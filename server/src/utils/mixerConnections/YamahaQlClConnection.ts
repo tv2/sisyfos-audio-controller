@@ -35,9 +35,10 @@ export class QlClMixerConnection {
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
 
-        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
-            .split('/')
-            .findIndex((ch) => ch === '{channel}')
+        this.cmdChannelIndex =
+            this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
+                .split('/')
+                .findIndex((ch) => ch === '{channel}')
 
         this.midiConnection = new net.Socket()
         this.midiConnection.connect(
@@ -293,7 +294,7 @@ export class QlClMixerConnection {
             valueByte[0].toString(16) + ' ' + valueByte[1].toString(16)
         )
         let a = command.split(' ')
-        let buf = new Buffer(
+        let buf = Buffer.from(
             a.map((val: string) => {
                 return parseInt(val, 16)
             })
