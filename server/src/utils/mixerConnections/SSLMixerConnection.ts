@@ -32,9 +32,10 @@ export class SSLMixerConnection {
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
 
-        this.cmdChannelIndex = this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
-            .split('/')
-            .findIndex((ch) => ch === '{channel}')
+        this.cmdChannelIndex =
+            this.mixerProtocol.channelTypes[0].fromMixer.CHANNEL_OUT_GAIN[0].mixerMessage
+                .split('/')
+                .findIndex((ch) => ch === '{channel}')
 
         this.SSLConnection = new net.Socket()
         this.SSLConnection.connect(
@@ -186,20 +187,25 @@ export class SSLMixerConnection {
                                     )
                                     state.channels[0].chMixerConnection[
                                         this.mixerIndex
-                                    ].channel.forEach((item: { assignedFader: any }, index: number) => {
-                                        if (
-                                            item.assignedFader ===
-                                            assignedFaderIndex
-                                        ) {
-                                            store.dispatch(
-                                                storeSetOutputLevel(
-                                                    this.mixerIndex,
-                                                    index,
-                                                    value
+                                    ].channel.forEach(
+                                        (
+                                            item: { assignedFader: any },
+                                            index: number
+                                        ) => {
+                                            if (
+                                                item.assignedFader ===
+                                                assignedFaderIndex
+                                            ) {
+                                                store.dispatch(
+                                                    storeSetOutputLevel(
+                                                        this.mixerIndex,
+                                                        index,
+                                                        value
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    })
+                                    )
                                 }
                                 global.mainThreadHandler.updatePartialStore(
                                     assignedFaderIndex
@@ -373,7 +379,7 @@ export class SSLMixerConnection {
         )
         sslMessage = sslMessage + this.calculate_checksum8(sslMessage.slice(9))
         let a = sslMessage.split(' ')
-        let buf = new Buffer(
+        let buf = Buffer.from(
             a.map((val: string) => {
                 return parseInt(val, 16)
             })
@@ -398,7 +404,7 @@ export class SSLMixerConnection {
         sslMessage =
             sslMessage + ' ' + this.calculate_checksum8(sslMessage.slice(9))
         let a = sslMessage.split(' ')
-        let buf = new Buffer(
+        let buf = Buffer.from(
             a.map((val: string) => {
                 return parseInt(val, 16)
             })
@@ -413,7 +419,7 @@ export class SSLMixerConnection {
         sslMessage =
             sslMessage + ' ' + this.calculate_checksum8(sslMessage.slice(9))
         let a = sslMessage.split(' ')
-        let buf = new Buffer(
+        let buf = Buffer.from(
             a.map((val: string) => {
                 return parseInt(val, 16)
             })

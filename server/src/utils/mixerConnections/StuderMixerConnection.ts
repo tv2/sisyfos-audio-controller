@@ -220,12 +220,14 @@ export class StuderMixerConnection {
             ].channelTypeIndex
 
         if (channel < 25) {
-            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_OUT_GAIN[0].mixerMessage
+            levelMessage =
+                this.mixerProtocol.channelTypes[channelType].toMixer
+                    .CHANNEL_OUT_GAIN[0].mixerMessage
             channelVal = 160 + channelTypeIndex + 1
         } else {
-            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_OUT_GAIN[1].mixerMessage
+            levelMessage =
+                this.mixerProtocol.channelTypes[channelType].toMixer
+                    .CHANNEL_OUT_GAIN[1].mixerMessage
             channelVal = channelTypeIndex + 1
         }
 
@@ -248,7 +250,7 @@ export class StuderMixerConnection {
         )
 
         let hexArray = levelMessage.split(' ')
-        let buf = new Buffer(
+        let buf = Buffer.from(
             hexArray.map((val: string) => {
                 return parseInt(val, 16)
             })
