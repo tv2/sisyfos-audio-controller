@@ -100,9 +100,7 @@ export class AutomationConnection {
                 global.mainThreadHandler.updatePartialStore(ch - 1)
             }
 
-            logger.info(
-                `RECIEVED AUTOMATION MESSAGE :${message.address}, ${message.args[0]}`
-            )
+            logger.data(message).debug(`RECIEVED AUTOMATION MESSAGE: ${message.address}`)
 
             // Set state of Sisyfos:
             if (check('CHANNEL_PGM_ON_OFF')) {
