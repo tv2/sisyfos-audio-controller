@@ -344,7 +344,7 @@ export class VMixMixerConnection {
                 )
             }
 
-            //            logger.trace(fxKey)
+            logger.trace(fxKey)
         })
     }
 
