@@ -58,3 +58,6 @@ ehthumbs.db
 # Windows shortcuts #
 #####################
 *.lnk
+
+# Exclude JetBrains specific files
+.idea
