@@ -425,7 +425,7 @@ export class MixerGenericConnection {
         this.fade(fadeTime, mixerIndex, channelIndex, outputLevel, targetVal)
     }
 
-    fade = (fadeTime: number, mixerIndex: number, channelIndex: number, startLevel: number, endLevel: number) => {
+    fade(fadeTime: number, mixerIndex: number, channelIndex: number, startLevel: number, endLevel: number) {
         const startTimeAsMs = Date.now()
         const updateInterval: number =  Math.floor(1000 / this.mixerProtocol[mixerIndex].MAX_UPDATES_PR_SECOND)
 
