@@ -10,7 +10,7 @@ export const VMix: IMixerProtocol = {
             mixerMessage: '/load',
         },
     ],
-    FADE_DISPATCH_RESOLUTION: 5,
+    MAX_UPDATES_PER_SECOND: 10,
     leadingZeros: true,
     pingCommand: [
         // {

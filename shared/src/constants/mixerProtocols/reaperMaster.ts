@@ -4,7 +4,7 @@ export const ReaperMaster: IMixerProtocol = {
     protocol: 'OSC',
     label: 'Reaper DAW Master mode(reaper.fm)',
     presetFileExtension: '',
-    FADE_DISPATCH_RESOLUTION: 5,
+    MAX_UPDATES_PER_SECOND: 10,
     leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
     pingTime: 0, //Set to value to get MixerOnline status
     channelTypes: [

@@ -27,10 +27,6 @@ import {
 } from '../../../shared/src/actions/channelActions'
 import { storeFaderLevel } from '../../../shared/src/actions/faderActions'
 
-// FADE_INOUT_SPEED defines the resolution of the fade in ms
-// The lower the more CPU
-const FADE_INOUT_SPEED = 3
-
 export class MixerGenericConnection {
     store: any
     mixerProtocol: IMixerProtocolGeneric[]
@@ -416,161 +412,65 @@ export class MixerGenericConnection {
         fadeTime: number,
         faderIndex: number
     ) => {
-        let outputLevel =
+        const outputLevel =
             state.channels[0].chMixerConnection[mixerIndex].channel[
                 channelIndex
-            ].outputLevel
+                ].outputLevel
         let targetVal = state.faders[0].fader[faderIndex].faderLevel
 
         if (state.faders[0].fader[faderIndex].voOn) {
             targetVal = (targetVal * (100 - state.settings[0].voLevel)) / 100
         }
-        const step: number =
-            (targetVal - outputLevel) / (fadeTime / FADE_INOUT_SPEED)
-        const dispatchResolution: number =
-            this.mixerProtocol[mixerIndex].FADE_DISPATCH_RESOLUTION * step
-        let dispatchTrigger: number = 0
+
+        this.fade(fadeTime, mixerIndex, channelIndex, outputLevel, targetVal)
+    }
+
+    fade(fadeTime: number, mixerIndex: number, channelIndex: number, startLevel: number, endLevel: number) {
+        const startTimeAsMs = Date.now()
+        const updateInterval: number =  Math.floor(1000 / this.mixerProtocol[mixerIndex].MAX_UPDATES_PER_SECOND)
+
         this.clearTimer(mixerIndex, channelIndex)
 
-        if (fadeTime === 0) {
-            // dispatch immediately
+        this.mixerTimers[mixerIndex].chTimer[channelIndex] = setInterval(() => this.updateOutputLevel(startTimeAsMs, fadeTime, mixerIndex, channelIndex, startLevel, endLevel), updateInterval)
+        this.updateOutputLevel(startTimeAsMs, fadeTime, mixerIndex, channelIndex, startLevel, endLevel)
+    }
+
+    private updateOutputLevel(startTimeAsMs: number, fadeTime: number, mixerIndex: number, channelIndex: number, startLevel: number, endLevel: number  ) {
+        const currentTimeMS = Date.now()
+        const elapsedTimeMS = currentTimeMS - startTimeAsMs
+
+        if (elapsedTimeMS >= fadeTime) {
+
             this.mixerConnection[mixerIndex].updateFadeIOLevel(
                 channelIndex,
-                targetVal
+                endLevel
             )
+            this.clearTimer(mixerIndex, channelIndex)
             store.dispatch(
-                storeSetOutputLevel(mixerIndex, channelIndex, targetVal)
+                storeSetOutputLevel(mixerIndex, channelIndex, endLevel)
             )
             this.delayedFadeActiveDisable(mixerIndex, channelIndex)
-            dispatchTrigger = 0
-            return
+            return true
         }
-        if (targetVal < outputLevel) {
-            this.mixerTimers[mixerIndex].chTimer[channelIndex] = setInterval(
-                () => {
-                    outputLevel += step
-                    dispatchTrigger += step
 
-                    if (dispatchTrigger > dispatchResolution) {
-                        this.mixerConnection[mixerIndex].updateFadeIOLevel(
-                            channelIndex,
-                            outputLevel
-                        )
-                        store.dispatch(
-                            storeSetOutputLevel(
-                                mixerIndex,
-                                channelIndex,
-                                outputLevel
-                            )
-                        )
-                        dispatchTrigger = 0
-                    }
+        const currentOutputLevel = startLevel + ((endLevel - startLevel) * Math.max(0, Math.min(1, elapsedTimeMS / fadeTime)))
 
-                    if (outputLevel <= targetVal) {
-                        outputLevel = targetVal
-                        this.mixerConnection[mixerIndex].updateFadeIOLevel(
-                            channelIndex,
-                            outputLevel
-                        )
-                        this.clearTimer(mixerIndex, channelIndex)
+        this.mixerConnection[mixerIndex].updateFadeIOLevel(
+            channelIndex,
+            currentOutputLevel
+        )
 
-                        store.dispatch(
-                            storeSetOutputLevel(
-                                mixerIndex,
-                                channelIndex,
-                                outputLevel
-                            )
-                        )
-                        this.delayedFadeActiveDisable(mixerIndex, channelIndex)
-                        return true
-                    }
-                },
-                FADE_INOUT_SPEED
-            )
-        } else {
-            this.mixerTimers[mixerIndex].chTimer[channelIndex] = setInterval(
-                () => {
-                    outputLevel += step
-                    dispatchTrigger += step
-                    this.mixerConnection[mixerIndex].updateFadeIOLevel(
-                        channelIndex,
-                        outputLevel
-                    )
-
-                    if (dispatchTrigger > dispatchResolution) {
-                        store.dispatch(
-                            storeSetOutputLevel(
-                                mixerIndex,
-                                channelIndex,
-                                outputLevel
-                            )
-                        )
-                        dispatchTrigger = 0
-                    }
-
-                    if (outputLevel >= targetVal) {
-                        outputLevel = targetVal
-                        this.mixerConnection[mixerIndex].updateFadeIOLevel(
-                            channelIndex,
-                            outputLevel
-                        )
-                        this.clearTimer(mixerIndex, channelIndex)
-                        store.dispatch(
-                            storeSetOutputLevel(
-                                mixerIndex,
-                                channelIndex,
-                                outputLevel
-                            )
-                        )
-                        this.delayedFadeActiveDisable(mixerIndex, channelIndex)
-                        return true
-                    }
-                },
-                FADE_INOUT_SPEED
-            )
-        }
+        store.dispatch(
+            storeSetOutputLevel(mixerIndex, channelIndex, currentOutputLevel)
+        )
     }
 
     fadeDown = (mixerIndex: number, channelIndex: number, fadeTime: number) => {
-        let outputLevel =
+        const outputLevel =
             state.channels[0].chMixerConnection[mixerIndex].channel[
                 channelIndex
-            ].outputLevel
-        const step = outputLevel / (fadeTime / FADE_INOUT_SPEED)
-        const dispatchResolution: number =
-            this.mixerProtocol[mixerIndex].FADE_DISPATCH_RESOLUTION * step
-        let dispatchTrigger: number = 0
+                ].outputLevel
 
-        this.clearTimer(mixerIndex, channelIndex)
-
-        this.mixerTimers[mixerIndex].chTimer[channelIndex] = setInterval(() => {
-            outputLevel -= step
-            dispatchTrigger += step
-            if (dispatchTrigger > dispatchResolution) {
-                this.mixerConnection[mixerIndex].updateFadeIOLevel(
-                    channelIndex,
-                    outputLevel
-                )
-
-                store.dispatch(
-                    storeSetOutputLevel(mixerIndex, channelIndex, outputLevel)
-                )
-                dispatchTrigger = 0
-            }
-
-            if (outputLevel <= 0) {
-                outputLevel = 0
-                this.mixerConnection[mixerIndex].updateFadeIOLevel(
-                    channelIndex,
-                    outputLevel
-                )
-                this.clearTimer(mixerIndex, channelIndex)
-                store.dispatch(
-                    storeSetOutputLevel(mixerIndex, channelIndex, outputLevel)
-                )
-                this.delayedFadeActiveDisable(mixerIndex, channelIndex)
-                return true
-            }
-        }, FADE_INOUT_SPEED)
+        this.fade(fadeTime, mixerIndex, channelIndex, outputLevel, 0)
     }
 }

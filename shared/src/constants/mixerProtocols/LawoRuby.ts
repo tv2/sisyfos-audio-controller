@@ -9,7 +9,7 @@ export const LawoRuby: IMixerProtocol = {
     label: 'Lawo Ruby',
     presetFileExtension: '',
     loadPresetCommand: [emptyMixerMessage()],
-    FADE_DISPATCH_RESOLUTION: 15,
+    MAX_UPDATES_PER_SECOND: 10,
     leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],

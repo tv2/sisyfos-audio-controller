@@ -5,7 +5,7 @@ export const GenericMidi: IMixerProtocol = {
     label: 'Generic Midi',
     presetFileExtension: '',
     loadPresetCommand: [emptyMixerMessage()],
-    FADE_DISPATCH_RESOLUTION: 5,
+    MAX_UPDATES_PER_SECOND: 10,
     leadingZeros: false,
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],
