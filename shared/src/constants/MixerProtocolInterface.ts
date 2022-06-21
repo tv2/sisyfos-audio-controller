@@ -34,7 +34,7 @@ export interface IMixerProtocolGeneric {
     label: string
     presetFileExtension?: string
     loadPresetCommand?: Array<IMixerMessageProtocol>
-    MAX_UPDATES_PR_SECOND: number
+    MAX_UPDATES_PER_SECOND: number
     vuLabelConversionType?: VuLabelConversionType
     vuLabelValues?: Array<number>
     fader?: {

@@ -5,7 +5,7 @@ export const StuderOnAirMaster: IMixerProtocol = {
     label: 'Studer OnAir 3000',
     presetFileExtension: '',
     loadPresetCommand: [emptyMixerMessage()],
-    MAX_UPDATES_PR_SECOND: 10,
+    MAX_UPDATES_PER_SECOND: 10,
     leadingZeros: false, //some OSC protocols needs channels to be 01, 02 etc.
     pingCommand: [emptyMixerMessage()],
     pingResponseCommand: [emptyMixerMessage()],
