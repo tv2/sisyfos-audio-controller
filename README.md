@@ -88,6 +88,7 @@ When running Sisyfos you can define the log level by setting the environment var
 -   warn (errors and warning)
 -   info (standard info regarding connectiviy and data from Automation protocol etc. including errors and warnings)
 -   debug (info level plus: data send and received from Audiomixer)
+-   trace (debug level plus: data send and received from Automation protocol)
 
 ### Open GUI in browser:
 

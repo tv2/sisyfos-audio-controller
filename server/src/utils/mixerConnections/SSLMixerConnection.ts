@@ -57,6 +57,119 @@ export class SSLMixerConnection {
         return str.substring(1)
     }
 
+    handleReceivedFaderLevelCommand = (buffer: any) => {
+        try {
+            let channelIndex = buffer[6]
+            let value = buffer.readUInt16BE(7) / 1024
+            const ch = state.channels[0].chMixerConnection[this.mixerIndex].channel
+
+            if (
+                !ch[channelIndex].fadeActive
+            ) {
+                if (
+                    value >
+                    this.mixerProtocol.fader.min +
+                        (this.mixerProtocol.fader.max *
+                            state.settings[0].autoResetLevel) /
+                            100
+                ) {
+                    if (
+                        ch[channelIndex].outputLevel !== value
+                    ) {
+                        store.dispatch(
+                            storeFaderLevel(ch[channelIndex].assignedFader, value)
+                        )
+                        if (!state.faders[0].fader[ch[channelIndex].assignedFader].pgmOn) {
+                            store.dispatch(storeTogglePgm(ch[channelIndex].assignedFader))
+                        }
+
+                        if (remoteConnections) {
+                            remoteConnections.updateRemoteFaderState(
+                                ch[channelIndex].assignedFader,
+                                value
+                            )
+                        }
+                        if (state.faders[0].fader[ch[channelIndex].assignedFader].pgmOn) {
+                            ch.forEach((channel: any, index: number) => {
+                                if (
+                                    channel.assignedFader === ch[channelIndex].assignedFader
+                                ) {
+                                    this.updateOutLevel(index)
+                                }
+                            })
+                        }
+                    }
+                } else if (
+                    state.faders[0].fader[ch[channelIndex].assignedFader].pgmOn ||
+                    state.faders[0].fader[ch[channelIndex].assignedFader].voOn
+                ) {
+                    store.dispatch(storeFaderLevel(ch[channelIndex].assignedFader, value))
+                    ch.forEach(
+                        (item: { assignedFader: any }, index: number) => {
+                            if (item.assignedFader === ch[channelIndex].assignedFader) {
+                                store.dispatch(
+                                    storeSetOutputLevel(
+                                        this.mixerIndex,
+                                        index,
+                                        value
+                                    )
+                                )
+                            }
+                        }
+                    )
+                }
+                global.mainThreadHandler.updatePartialStore(ch[channelIndex].assignedFader)
+            }
+        } catch (error) {
+            logger.error(
+                'Error translating received message :' + String(error),
+                {}
+            )
+        }
+    }
+
+    handleReceivedMuteCommand = (buffer: any) => {
+        // MUTE ON/OFF COMMAND
+        let commandHex = buffer.toString('hex')
+        let channelIndex = buffer[6]
+        let value: boolean = buffer[7] === 0 ? true : false
+        logger.trace(
+            `Receive Buffer Channel On/off: ${this.formatHexWithSpaces(
+                commandHex,
+                ' ',
+                2
+            )}`
+        )
+
+        let assignedFaderIndex =
+            state.channels[0].chMixerConnection[this.mixerIndex].channel[
+                channelIndex
+            ].assignedFader
+
+        store.dispatch(storeSetMute(assignedFaderIndex, value))
+
+        if (remoteConnections) {
+            remoteConnections.updateRemoteFaderState(
+                assignedFaderIndex,
+                value ? 1 : 0
+            )
+        }
+        state.channels[0].chMixerConnection[this.mixerIndex].channel.forEach(
+            (channel: any, index: number) => {
+                if (
+                    channel.assignedFader === assignedFaderIndex &&
+                    index !== channelIndex
+                ) {
+                    this.updateMuteState(
+                        index,
+                        state.faders[0].fader[assignedFaderIndex].muteOn
+                    )
+                }
+            }
+        )
+        global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
+    }
+
     setupMixerConnection() {
         // Return command was an acknowledge:
         let lastWasAck = false
@@ -65,7 +178,7 @@ export class SSLMixerConnection {
             store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
 
             logger.info('Receiving state of desk', {})
-            this.mixerProtocol.initializeCommands.map((item) => {
+            this.mixerProtocol.initializeCommands.forEach((item) => {
                 if (item.mixerMessage.includes('{channel}')) {
                     state.channels[0].chMixerConnection[
                         this.mixerIndex
@@ -98,126 +211,7 @@ export class SSLMixerConnection {
                     if (buffer[1] === 6 && buffer[2] === 255 && !lastWasAck) {
                         lastWasAck = false
                         // FADERLEVEL COMMAND:
-                        try {
-                            let commandHex = buffer.toString('hex')
-                            let channelIndex = buffer[6]
-                            let value = buffer.readUInt16BE(7) / 1024
-
-                            let assignedFaderIndex =
-                                state.channels[0].chMixerConnection[
-                                    this.mixerIndex
-                                ].channel[channelIndex].assignedFader
-                            if (
-                                !state.channels[0].chMixerConnection[
-                                    this.mixerIndex
-                                ].channel[channelIndex].fadeActive
-                            ) {
-                                if (
-                                    value >
-                                    this.mixerProtocol.fader.min +
-                                        (this.mixerProtocol.fader.max *
-                                            state.settings[0].autoResetLevel) /
-                                            100
-                                ) {
-                                    if (
-                                        state.channels[0].chMixerConnection[
-                                            this.mixerIndex
-                                        ].channel[channelIndex].outputLevel !==
-                                        value
-                                    ) {
-                                        store.dispatch(
-                                            storeFaderLevel(
-                                                assignedFaderIndex,
-                                                value
-                                            )
-                                        )
-                                        if (
-                                            !state.faders[0].fader[
-                                                assignedFaderIndex
-                                            ].pgmOn
-                                        ) {
-                                            store.dispatch(
-                                                storeTogglePgm(
-                                                    assignedFaderIndex
-                                                )
-                                            )
-                                        }
-
-                                        if (remoteConnections) {
-                                            remoteConnections.updateRemoteFaderState(
-                                                assignedFaderIndex,
-                                                value
-                                            )
-                                        }
-                                        if (
-                                            state.faders[0].fader[
-                                                assignedFaderIndex
-                                            ].pgmOn
-                                        ) {
-                                            state.channels[0].chMixerConnection[
-                                                this.mixerIndex
-                                            ].channel.forEach(
-                                                (
-                                                    channel: any,
-                                                    index: number
-                                                ) => {
-                                                    if (
-                                                        channel.assignedFader ===
-                                                        assignedFaderIndex
-                                                    ) {
-                                                        this.updateOutLevel(
-                                                            index
-                                                        )
-                                                    }
-                                                }
-                                            )
-                                        }
-                                    }
-                                } else if (
-                                    state.faders[0].fader[assignedFaderIndex]
-                                        .pgmOn ||
-                                    state.faders[0].fader[assignedFaderIndex]
-                                        .voOn
-                                ) {
-                                    store.dispatch(
-                                        storeFaderLevel(
-                                            assignedFaderIndex,
-                                            value
-                                        )
-                                    )
-                                    state.channels[0].chMixerConnection[
-                                        this.mixerIndex
-                                    ].channel.forEach(
-                                        (
-                                            item: { assignedFader: any },
-                                            index: number
-                                        ) => {
-                                            if (
-                                                item.assignedFader ===
-                                                assignedFaderIndex
-                                            ) {
-                                                store.dispatch(
-                                                    storeSetOutputLevel(
-                                                        this.mixerIndex,
-                                                        index,
-                                                        value
-                                                    )
-                                                )
-                                            }
-                                        }
-                                    )
-                                }
-                                global.mainThreadHandler.updatePartialStore(
-                                    assignedFaderIndex
-                                )
-                            }
-                        } catch (error) {
-                            logger.error(
-                                'Error translating received message :' +
-                                    String(error),
-                                {}
-                            )
-                        }
+                        this.handleReceivedFaderLevelCommand(buffer)
                     } else if (
                         buffer[1] === 5 &&
                         buffer[2] === 255 &&
@@ -226,47 +220,9 @@ export class SSLMixerConnection {
                     ) {
                         lastWasAck = false
                         // MUTE ON/OFF COMMAND
-                        let commandHex = buffer.toString('hex')
-                        let channelIndex = buffer[6]
-                        let value: boolean = buffer[7] === 0 ? true : false
-                        logger.trace(
-                            `Receive Buffer Channel On/off: ${this.formatHexWithSpaces(
-                                commandHex,
-                                ' ',
-                                2
-                            )}`
-                        )
-
-                        let assignedFaderIndex =
-                            state.channels[0].chMixerConnection[this.mixerIndex]
-                                .channel[channelIndex].assignedFader
-
-                        store.dispatch(storeSetMute(assignedFaderIndex, value))
-
-                        if (remoteConnections) {
-                            remoteConnections.updateRemoteFaderState(
-                                assignedFaderIndex,
-                                value ? 1 : 0
-                            )
-                        }
-                        state.channels[0].chMixerConnection[
-                            this.mixerIndex
-                        ].channel.forEach((channel: any, index: number) => {
-                            if (
-                                channel.assignedFader === assignedFaderIndex &&
-                                index !== channelIndex
-                            ) {
-                                this.updateMuteState(
-                                    index,
-                                    state.faders[0].fader[assignedFaderIndex]
-                                        .muteOn
-                                )
-                            }
-                        })
-                        global.mainThreadHandler.updatePartialStore(
-                            assignedFaderIndex
-                        )
+                        this.handleReceivedMuteCommand(buffer)
                     } else {
+                        // UNKNOWN COMMAND
                         let commandHex = buffer.toString('hex')
                         logger.trace(
                             `Receieve Buffer Hex: ${this.formatHexWithSpaces(
@@ -549,22 +505,7 @@ export class SSLMixerConnection {
     }
 
     updateChannelName(channelIndex: number) {
-        let channelType =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelType
-        let channelTypeIndex =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ].channelTypeIndex
-        let channelName = state.faders[0].fader[channelIndex].label
-        /*
-        this.sendOutLevelMessage(
-            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_NAME[0].mixerMessage,
-            channelTypeIndex,
-            channelName
-        );
-        */
+        return true
     }
 
     loadMixerPreset(presetName: string) {}
