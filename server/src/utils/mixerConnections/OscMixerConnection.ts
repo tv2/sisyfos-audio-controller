@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { store, state } from '../../reducers/store'
-import { remoteConnections } from '../../mainClasses'
+import { mixerGenericConnection, remoteConnections } from '../../mainClasses'
 
 //Utils:
 import {
@@ -243,7 +243,7 @@ export class OscMixerConnection {
                         global.mainThreadHandler.updatePartialStore(
                             assignedFaderIndex
                         )
-
+                        mixerGenericConnection.updateOutLevel(assignedFaderIndex, 0, this.mixerIndex)
                         if (remoteConnections) {
                             remoteConnections.updateRemoteFaderState(
                                 assignedFaderIndex,
