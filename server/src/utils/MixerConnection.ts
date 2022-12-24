@@ -261,19 +261,23 @@ export class MixerGenericConnection {
         this.mixerConnection[0].updatePflState(channelIndex)
     }
 
-    updateMuteState = (faderIndex: number) => {
+    updateMuteState = (faderIndex: number, allMixersButThis: number = -1) => {
         state.channels[0].chMixerConnection.forEach(
             (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
-                chMixerConnection.channel.forEach(
-                    (channel: IChannel, channelIndex: number) => {
-                        if (faderIndex === channel.assignedFader) {
-                            this.mixerConnection[mixerIndex].updateMuteState(
-                                channelIndex,
-                                state.faders[0].fader[faderIndex].muteOn
-                            )
+                if (mixerIndex !== allMixersButThis) {
+                    chMixerConnection.channel.forEach(
+                        (channel: IChannel, channelIndex: number) => {
+                            if (faderIndex === channel.assignedFader) {
+                                this.mixerConnection[
+                                    mixerIndex
+                                ].updateMuteState(
+                                    channelIndex,
+                                    state.faders[0].fader[faderIndex].muteOn
+                                )
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         )
     }

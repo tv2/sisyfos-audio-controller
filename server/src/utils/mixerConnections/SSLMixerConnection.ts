@@ -169,6 +169,7 @@ export class SSLMixerConnection {
                 }
             }
         )
+        mixerGenericConnection.updateMuteState(assignedFaderIndex, this.mixerIndex)
         global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
     }
 
