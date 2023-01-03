@@ -1,7 +1,7 @@
 //Node Modules:
 import net from 'net'
 import { store, state } from '../../reducers/store'
-import { remoteConnections } from '../../mainClasses'
+import { mixerGenericConnection, remoteConnections } from '../../mainClasses'
 
 //Utils:
 import {
@@ -95,6 +95,7 @@ export class SSLMixerConnection {
                                     channel.assignedFader === ch[channelIndex].assignedFader
                                 ) {
                                     this.updateOutLevel(index)
+
                                 }
                             })
                         }
@@ -119,6 +120,7 @@ export class SSLMixerConnection {
                     )
                 }
                 global.mainThreadHandler.updatePartialStore(ch[channelIndex].assignedFader)
+                mixerGenericConnection.updateOutLevel(ch[channelIndex].assignedFader, 0, this.mixerIndex)
             }
         } catch (error) {
             logger.error(
@@ -167,6 +169,7 @@ export class SSLMixerConnection {
                 }
             }
         )
+        mixerGenericConnection.updateMuteState(assignedFaderIndex, this.mixerIndex)
         global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
     }
 

@@ -312,13 +312,13 @@ export class MainThreadHandlers {
             .on(IO.SOCKET_TOGGLE_PGM, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 store.dispatch(FADER_ACTIONS.storeTogglePgm(faderIndex))
-                mixerGenericConnection.updateOutLevel(faderIndex)
+                mixerGenericConnection.updateOutLevel(faderIndex, -1)
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_VO, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 store.dispatch(FADER_ACTIONS.storeToggleVo(faderIndex))
-                mixerGenericConnection.updateOutLevel(faderIndex)
+                mixerGenericConnection.updateOutLevel(faderIndex, -1)
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_SLOW_FADE, (faderIndex: any) => {

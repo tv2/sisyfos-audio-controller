@@ -20,7 +20,10 @@ import { LawoRubyMixerConnection } from './mixerConnections/LawoRubyConnection'
 import { StuderMixerConnection } from './mixerConnections/StuderMixerConnection'
 import { StuderVistaMixerConnection } from './mixerConnections/StuderVistaMixerConnection'
 import { CasparCGConnection } from './mixerConnections/CasparCGConnection'
-import { IChannel, IchMixerConnection } from '../../../shared/src/reducers/channelsReducer'
+import {
+    IChannel,
+    IchMixerConnection,
+} from '../../../shared/src/reducers/channelsReducer'
 import {
     storeFadeActive,
     storeSetOutputLevel,
@@ -160,18 +163,22 @@ export class MixerGenericConnection {
 
     updateFadeToBlack = () => {
         state.faders[0].fader.forEach((channel: any, index: number) => {
-            this.updateOutLevel(index)
+            this.updateOutLevel(index, -1)
         })
     }
 
     updateOutLevels = () => {
         state.faders[0].fader.forEach((channel: any, index: number) => {
-            this.updateOutLevel(index)
+            this.updateOutLevel(index, -1)
             this.updateNextAux(index)
         })
     }
 
-    updateOutLevel = (faderIndex: number, fadeTime: number = -1) => {
+    updateOutLevel = (
+        faderIndex: number,
+        fadeTime: number,
+        mixerIndexToSkip: number = -1
+    ) => {
         if (fadeTime === -1) {
             if (state.faders[0].fader[faderIndex].voOn) {
                 fadeTime = state.settings[0].voFadeTime
@@ -190,13 +197,19 @@ export class MixerGenericConnection {
 
         state.channels[0].chMixerConnection.forEach(
             (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
-                chMixerConnection.channel.forEach(
-                    (channel: IChannel, channelIndex: number) => {
-                        if (faderIndex === channel.assignedFader) {
-                            this.fadeInOut(mixerIndex, channelIndex, fadeTime)
+                if (mixerIndex !== mixerIndexToSkip) {
+                    chMixerConnection.channel.forEach(
+                        (channel: IChannel, channelIndex: number) => {
+                            if (faderIndex === channel.assignedFader) {
+                                this.fadeInOut(
+                                    mixerIndex,
+                                    channelIndex,
+                                    fadeTime
+                                )
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         )
 
@@ -248,19 +261,23 @@ export class MixerGenericConnection {
         this.mixerConnection[0].updatePflState(channelIndex)
     }
 
-    updateMuteState = (faderIndex: number) => {
+    updateMuteState = (faderIndex: number, mixerIndexToSkip: number = -1) => {
         state.channels[0].chMixerConnection.forEach(
             (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
-                chMixerConnection.channel.forEach(
-                    (channel: IChannel, channelIndex: number) => {
-                        if (faderIndex === channel.assignedFader) {
-                            this.mixerConnection[mixerIndex].updateMuteState(
-                                channelIndex,
-                                state.faders[0].fader[faderIndex].muteOn
-                            )
+                if (mixerIndex !== mixerIndexToSkip) {
+                    chMixerConnection.channel.forEach(
+                        (channel: IChannel, channelIndex: number) => {
+                            if (faderIndex === channel.assignedFader) {
+                                this.mixerConnection[
+                                    mixerIndex
+                                ].updateMuteState(
+                                    channelIndex,
+                                    state.faders[0].fader[faderIndex].muteOn
+                                )
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         )
     }
@@ -415,7 +432,7 @@ export class MixerGenericConnection {
         const outputLevel =
             state.channels[0].chMixerConnection[mixerIndex].channel[
                 channelIndex
-                ].outputLevel
+            ].outputLevel
         let targetVal = state.faders[0].fader[faderIndex].faderLevel
 
         if (state.faders[0].fader[faderIndex].voOn) {
@@ -425,22 +442,54 @@ export class MixerGenericConnection {
         this.fade(fadeTime, mixerIndex, channelIndex, outputLevel, targetVal)
     }
 
-    fade(fadeTime: number, mixerIndex: number, channelIndex: number, startLevel: number, endLevel: number) {
+    fade(
+        fadeTime: number,
+        mixerIndex: number,
+        channelIndex: number,
+        startLevel: number,
+        endLevel: number
+    ) {
         const startTimeAsMs = Date.now()
-        const updateInterval: number =  Math.floor(1000 / this.mixerProtocol[mixerIndex].MAX_UPDATES_PER_SECOND)
+        const updateInterval: number = Math.floor(
+            1000 / this.mixerProtocol[mixerIndex].MAX_UPDATES_PER_SECOND
+        )
 
         this.clearTimer(mixerIndex, channelIndex)
 
-        this.mixerTimers[mixerIndex].chTimer[channelIndex] = setInterval(() => this.updateOutputLevel(startTimeAsMs, fadeTime, mixerIndex, channelIndex, startLevel, endLevel), updateInterval)
-        this.updateOutputLevel(startTimeAsMs, fadeTime, mixerIndex, channelIndex, startLevel, endLevel)
+        this.mixerTimers[mixerIndex].chTimer[channelIndex] = setInterval(
+            () =>
+                this.updateOutputLevel(
+                    startTimeAsMs,
+                    fadeTime,
+                    mixerIndex,
+                    channelIndex,
+                    startLevel,
+                    endLevel
+                ),
+            updateInterval
+        )
+        this.updateOutputLevel(
+            startTimeAsMs,
+            fadeTime,
+            mixerIndex,
+            channelIndex,
+            startLevel,
+            endLevel
+        )
     }
 
-    private updateOutputLevel(startTimeAsMs: number, fadeTime: number, mixerIndex: number, channelIndex: number, startLevel: number, endLevel: number  ) {
+    private updateOutputLevel(
+        startTimeAsMs: number,
+        fadeTime: number,
+        mixerIndex: number,
+        channelIndex: number,
+        startLevel: number,
+        endLevel: number
+    ) {
         const currentTimeMS = Date.now()
         const elapsedTimeMS = currentTimeMS - startTimeAsMs
 
         if (elapsedTimeMS >= fadeTime) {
-
             this.mixerConnection[mixerIndex].updateFadeIOLevel(
                 channelIndex,
                 endLevel
@@ -453,7 +502,10 @@ export class MixerGenericConnection {
             return true
         }
 
-        const currentOutputLevel = startLevel + ((endLevel - startLevel) * Math.max(0, Math.min(1, elapsedTimeMS / fadeTime)))
+        const currentOutputLevel =
+            startLevel +
+            (endLevel - startLevel) *
+                Math.max(0, Math.min(1, elapsedTimeMS / fadeTime))
 
         this.mixerConnection[mixerIndex].updateFadeIOLevel(
             channelIndex,
@@ -469,7 +521,7 @@ export class MixerGenericConnection {
         const outputLevel =
             state.channels[0].chMixerConnection[mixerIndex].channel[
                 channelIndex
-                ].outputLevel
+            ].outputLevel
 
         this.fade(fadeTime, mixerIndex, channelIndex, outputLevel, 0)
     }
