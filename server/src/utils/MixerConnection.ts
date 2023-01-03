@@ -167,7 +167,7 @@ export class MixerGenericConnection {
         })
     }
 
-    updateOutLevels = (allMixersButThis: number = -1) => {
+    updateOutLevels = () => {
         state.faders[0].fader.forEach((channel: any, index: number) => {
             this.updateOutLevel(index, -1)
             this.updateNextAux(index)
@@ -177,7 +177,7 @@ export class MixerGenericConnection {
     updateOutLevel = (
         faderIndex: number,
         fadeTime: number,
-        allMixersButThis: number = -1
+        mixerIndexToSkip: number = -1
     ) => {
         if (fadeTime === -1) {
             if (state.faders[0].fader[faderIndex].voOn) {
@@ -197,7 +197,7 @@ export class MixerGenericConnection {
 
         state.channels[0].chMixerConnection.forEach(
             (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
-                if (mixerIndex !== allMixersButThis) {
+                if (mixerIndex !== mixerIndexToSkip) {
                     chMixerConnection.channel.forEach(
                         (channel: IChannel, channelIndex: number) => {
                             if (faderIndex === channel.assignedFader) {
@@ -261,10 +261,10 @@ export class MixerGenericConnection {
         this.mixerConnection[0].updatePflState(channelIndex)
     }
 
-    updateMuteState = (faderIndex: number, allMixersButThis: number = -1) => {
+    updateMuteState = (faderIndex: number, mixerIndexToSkip: number = -1) => {
         state.channels[0].chMixerConnection.forEach(
             (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
-                if (mixerIndex !== allMixersButThis) {
+                if (mixerIndex !== mixerIndexToSkip) {
                     chMixerConnection.channel.forEach(
                         (channel: IChannel, channelIndex: number) => {
                             if (faderIndex === channel.assignedFader) {
