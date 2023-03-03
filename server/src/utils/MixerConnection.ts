@@ -20,12 +20,16 @@ import { LawoRubyMixerConnection } from './mixerConnections/LawoRubyConnection'
 import { StuderMixerConnection } from './mixerConnections/StuderMixerConnection'
 import { StuderVistaMixerConnection } from './mixerConnections/StuderVistaMixerConnection'
 import { CasparCGConnection } from './mixerConnections/CasparCGConnection'
-import { IChannel, IchMixerConnection } from '../../../shared/src/reducers/channelsReducer'
+import {
+    IChannel,
+    IchMixerConnection,
+} from '../../../shared/src/reducers/channelsReducer'
 import {
     storeFadeActive,
     storeSetOutputLevel,
 } from '../../../shared/src/actions/channelActions'
 import { storeFaderLevel } from '../../../shared/src/actions/faderActions'
+import { AtemMixerConnection } from './mixerConnections/AtemConnection'
 
 // FADE_INOUT_SPEED defines the resolution of the fade in ms
 // The lower the more CPU
@@ -101,15 +105,20 @@ export class MixerGenericConnection {
                     this.mixerProtocol[index] as IMixerProtocol,
                     index
                 )
+            } else if (this.mixerProtocol[index].protocol === 'ATEM') {
+                this.mixerConnection[index] = new AtemMixerConnection(
+                    this.mixerProtocol[index],
+                    index
+                )
             }
         })
 
-        //Setup timers for fade in & out
+        // Setup timers for fade in & out
         this.initializeTimers()
     }
 
     initializeTimers = () => {
-        //Setup timers for fade in & out
+        // Setup timers for fade in & out
         this.mixerTimers = []
         state.channels[0].chMixerConnection.forEach(
             (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
@@ -573,4 +582,29 @@ export class MixerGenericConnection {
             }
         }, FADE_INOUT_SPEED)
     }
+}
+
+export interface MixerConnection {
+    updatePflState: (channelIndex: number) => void
+    updateMuteState: (channelIndex: number, muteOn: boolean) => void
+    updateAMixState: (channelIndex: number, amixOn: boolean) => void
+    updateNextAux: (channelIndex: number, level: number) => void
+    updateFx: (
+        fxParam: fxParamsList,
+        channelIndex: number,
+        level: number
+    ) => void
+    updateAuxLevel: (
+        channelIndex: number,
+        auxSendIndex: number,
+        auxLevel: number
+    ) => void
+    updateChannelName: (channelIndex: number) => void
+    injectCommand: (command: string[]) => void
+    updateChannelSetting: (
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) => void
+    updateFadeIOLevel: (channelIndex: number, level: number) => void
 }
