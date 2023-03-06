@@ -532,9 +532,7 @@ export class LawoRubyMixerConnection {
                     type: Model.ParameterType.Boolean,
                 }
             )
-            if (response) {
-                await response
-            }
+            await response
         } catch (e) {
             logger.data(e).error('Ember Error ')
         }
