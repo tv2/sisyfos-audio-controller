@@ -11,7 +11,6 @@ import { IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import {
-    AudioMixOption,
     FairlightAudioMixOption,
     FairlightInputConfiguration,
 } from 'atem-connection/dist/enums'
@@ -25,12 +24,18 @@ import {
 import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
 import { FairlightAudioSource } from 'atem-connection/dist/state/fairlight'
 
+enum TrackIndex {
+    Stereo = '-65280',
+    Right = '-255',
+    Left = '-256',
+}
+
 export class AtemMixerConnection {
     private _connection: Atem
 
     private _chNoToSource: Record<number, number> = {}
     private _sourceToChNo: Record<number, number> = {}
-    private _sourceTracks: Record<number, '-65280' | '-255' | '-256'> = {}
+    private _sourceTracks: Record<number, TrackIndex> = {}
     private _firstConnection = true
 
     constructor(
@@ -54,11 +59,13 @@ export class AtemMixerConnection {
 
         this._connection
             .connect(state.settings[0].mixers[this.mixerIndex].deviceIp)
-            .catch(() => {
-                logger.error(
-                    'Failed to connect to atem ' +
-                        state.settings[0].mixers[this.mixerIndex].deviceIp
-                )
+            .catch((error) => {
+                logger
+                    .data(error)
+                    .error(
+                        'Failed to connect to atem ' +
+                            state.settings[0].mixers[this.mixerIndex].deviceIp
+                    )
             })
     }
 
@@ -77,12 +84,7 @@ export class AtemMixerConnection {
                 this._chNoToSource[index] = Number(source)
                 this._sourceToChNo[Number(source)] = index
 
-                this._sourceTracks[index] = '-65280'
-                // '-65280' in
-                // this._connection.state.fairlight.inputs[Number(source)]
-                //     .sources
-                //     ? '-65280'
-                //     : '-255'
+                this._sourceTracks[index] = TrackIndex.Stereo
 
                 let name = sourceToName[source]
                 this.setChannelLabel(this._sourceToChNo[Number(source)], name)
@@ -208,13 +210,13 @@ export class AtemMixerConnection {
                 if (pgmOn || pflOn) {
                     this._connection.setFairlightAudioMixerSourceProps(
                         this._chNoToSource[channelIndex],
-                        '-65280',
+                        TrackIndex.Stereo,
                         {
                             mixOption: FairlightAudioMixOption.On,
                         }
                     )
                 }
-                this._sourceTracks[channelTypeIndex] = '-65280'
+                this._sourceTracks[channelTypeIndex] = TrackIndex.Stereo
                 break
             case 'LL':
                 this._connection.setFairlightAudioMixerInputProps(
@@ -226,7 +228,7 @@ export class AtemMixerConnection {
                 )
                 this._connection.setFairlightAudioMixerSourceProps(
                     this._chNoToSource[channelIndex],
-                    '-255',
+                    TrackIndex.Right,
                     {
                         mixOption: FairlightAudioMixOption.Off,
                     }
@@ -234,13 +236,13 @@ export class AtemMixerConnection {
                 if (pgmOn || pflOn) {
                     this._connection.setFairlightAudioMixerSourceProps(
                         this._chNoToSource[channelIndex],
-                        '-256',
+                        TrackIndex.Left,
                         {
                             mixOption: FairlightAudioMixOption.On,
                         }
                     )
                 }
-                this._sourceTracks[channelTypeIndex] = '-256'
+                this._sourceTracks[channelTypeIndex] = TrackIndex.Left
                 break
             case 'RR':
                 this._connection.setFairlightAudioMixerInputProps(
@@ -252,7 +254,7 @@ export class AtemMixerConnection {
                 )
                 this._connection.setFairlightAudioMixerSourceProps(
                     this._chNoToSource[channelIndex],
-                    '-256',
+                    TrackIndex.Left,
                     {
                         mixOption: FairlightAudioMixOption.Off,
                     }
@@ -260,14 +262,14 @@ export class AtemMixerConnection {
                 if (pgmOn || pflOn) {
                     this._connection.setFairlightAudioMixerSourceProps(
                         this._chNoToSource[channelIndex],
-                        '-255',
+                        TrackIndex.Right,
                         {
                             mixOption: FairlightAudioMixOption.On,
                         }
                     )
                 }
 
-                this._sourceTracks[channelTypeIndex] = '-255'
+                this._sourceTracks[channelTypeIndex] = TrackIndex.Right
                 break
         }
     }
@@ -374,19 +376,23 @@ export class AtemMixerConnection {
     private setFaderGain(
         faderIndex: number,
         gain: number,
-        update = true
+        update: boolean = true
     ): void {
         store.dispatch(storeInputGain(faderIndex, gain))
         if (update) global.mainThreadHandler.updatePartialStore(faderIndex)
     }
-    private setMute(faderIndex: number, muteOn: boolean, update = true): void {
+    private setMute(
+        faderIndex: number,
+        muteOn: boolean,
+        update: boolean = true
+    ): void {
         store.dispatch(storeSetMute(faderIndex, muteOn))
         if (update) global.mainThreadHandler.updatePartialStore(faderIndex)
     }
     private setFaderPgm(
         faderIndex: number,
         pgmOn: boolean,
-        update = true
+        update: boolean = true
     ): void {
         store.dispatch(storeSetPgm(faderIndex, pgmOn))
         if (update) global.mainThreadHandler.updatePartialStore(faderIndex)
@@ -398,7 +404,7 @@ export class AtemMixerConnection {
     private setFaderLevel(
         faderIndex: number,
         level: number,
-        update = true
+        update: boolean = true
     ): void {
         store.dispatch(storeFaderLevel(faderIndex, level))
         if (update) global.mainThreadHandler.updatePartialStore(faderIndex)
@@ -406,7 +412,7 @@ export class AtemMixerConnection {
     private setChannelLabel(
         channelIndex: number,
         label: string,
-        update = true
+        update: boolean = true
     ): void {
         store.dispatch(storeSetChLabel(this.mixerIndex, channelIndex, label))
         if (update) global.mainThreadHandler.updatePartialStore(channelIndex)
