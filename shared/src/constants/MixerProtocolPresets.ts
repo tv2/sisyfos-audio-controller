@@ -13,6 +13,7 @@ import { SSLSystemT } from './mixerProtocols/SSLsystemT'
 import { StuderOnAirMaster } from './mixerProtocols/StuderOnAirEmber'
 import { StuderVistaMaster } from './mixerProtocols/StuderVistaEmber'
 import { VMix } from './mixerProtocols/vMix'
+import { Atem } from './mixerProtocols/atem'
 
 // Interface:
 import { IMixerProtocolGeneric } from './MixerProtocolInterface'
@@ -35,6 +36,7 @@ export const MixerProtocolPresets: {
         studerOnAirMaster: StuderOnAirMaster,
         studerVistaMaster: StuderVistaMaster,
         vMix: VMix,
+        atem: Atem,
     },
     {
         casparCGMaster: CasparCGMaster,
