@@ -168,10 +168,7 @@ export class VMixMixerConnection {
 
                 // If vMix has more channels than Sisyfos is configured to handle,
                 // then do nothing with those additional channels.
-                if (
-                    !state.channels[0].chMixerConnection[this.mixerIndex]
-                        .channel[input.number - 1]
-                ) {
+                if (!this.doesChannelExists(input.number - 1)) {
                     return
                 }
 
@@ -675,5 +672,11 @@ export class VMixMixerConnection {
 
     injectCommand(command: string[]) {
         return true
+    }
+
+    doesChannelExists(channelNumber: number): boolean {
+        return !!state.channels[0].chMixerConnection[this.mixerIndex].channel[
+            channelNumber
+        ]
     }
 }
