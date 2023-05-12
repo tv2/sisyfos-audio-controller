@@ -166,6 +166,12 @@ export class VMixMixerConnection {
                     ) // add +15 to convert from dBFS
                 }
 
+                // If vMix has more channels than Sisyfos is configured to handle,
+                // then do nothing with those additional channels.
+                if (!this.doesChannelExists(input.number - 1)) {
+                    return
+                }
+
                 const { outputLevel, fadeActive, assignedFader } =
                     state.channels[0].chMixerConnection[this.mixerIndex]
                         .channel[input.number - 1]
@@ -666,5 +672,11 @@ export class VMixMixerConnection {
 
     injectCommand(command: string[]) {
         return true
+    }
+
+    doesChannelExists(channelNumber: number): boolean {
+        return !!state.channels[0].chMixerConnection[this.mixerIndex].channel[
+            channelNumber
+        ]
     }
 }
