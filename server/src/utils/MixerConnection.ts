@@ -29,6 +29,7 @@ import {
     storeSetOutputLevel,
 } from '../../../shared/src/actions/channelActions'
 import { storeFaderLevel } from '../../../shared/src/actions/faderActions'
+import { AtemMixerConnection } from './mixerConnections/AtemConnection'
 
 export class MixerGenericConnection {
     store: any
@@ -100,15 +101,20 @@ export class MixerGenericConnection {
                     this.mixerProtocol[index] as IMixerProtocol,
                     index
                 )
+            } else if (this.mixerProtocol[index].protocol === 'ATEM') {
+                this.mixerConnection[index] = new AtemMixerConnection(
+                    this.mixerProtocol[index],
+                    index
+                )
             }
         })
 
-        //Setup timers for fade in & out
+        // Setup timers for fade in & out
         this.initializeTimers()
     }
 
     initializeTimers = () => {
-        //Setup timers for fade in & out
+        // Setup timers for fade in & out
         this.mixerTimers = []
         state.channels[0].chMixerConnection.forEach(
             (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
@@ -525,4 +531,29 @@ export class MixerGenericConnection {
 
         this.fade(fadeTime, mixerIndex, channelIndex, outputLevel, 0)
     }
+}
+
+export interface MixerConnection {
+    updatePflState: (channelIndex: number) => void
+    updateMuteState: (channelIndex: number, muteOn: boolean) => void
+    updateAMixState: (channelIndex: number, amixOn: boolean) => void
+    updateNextAux: (channelIndex: number, level: number) => void
+    updateFx: (
+        fxParam: fxParamsList,
+        channelIndex: number,
+        level: number
+    ) => void
+    updateAuxLevel: (
+        channelIndex: number,
+        auxSendIndex: number,
+        auxLevel: number
+    ) => void
+    updateChannelName: (channelIndex: number) => void
+    injectCommand: (command: string[]) => void
+    updateChannelSetting: (
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) => void
+    updateFadeIOLevel: (channelIndex: number, level: number) => void
 }

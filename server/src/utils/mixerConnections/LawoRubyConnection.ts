@@ -293,8 +293,9 @@ export class LawoRubyMixerConnection {
         const sourceName = this.faders[ch]
         if (!sourceName) return
 
-        const proto = this.mixerProtocol.channelTypes[typeIndex].fromMixer
-            .CHANNEL_INPUT_GAIN[0]
+        const proto =
+            this.mixerProtocol.channelTypes[typeIndex].fromMixer
+                .CHANNEL_INPUT_GAIN[0]
         let command = proto.mixerMessage.replace('{channel}', sourceName)
 
         try {
@@ -434,11 +435,12 @@ export class LawoRubyMixerConnection {
             .getElementByPath(message)
             .then((element: any) => {
                 logger.trace(`Sending out message: ${message}`)
-                this.emberConnection.setValue(
+                return this.emberConnection.setValue(
                     element,
                     typeof value === 'string' ? parseFloat(value) : value
                 )
             })
+            .then((req) => req.response)
             .catch((error: any) => {
                 logger.data(error).error('Ember Error ')
             })
@@ -448,8 +450,9 @@ export class LawoRubyMixerConnection {
         const source = this.faders[channel]
         if (!channel) return
 
-        const mixerMessage = this.mixerProtocol.channelTypes[0].toMixer
-            .CHANNEL_OUT_GAIN[0].mixerMessage
+        const mixerMessage =
+            this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0]
+                .mixerMessage
 
         logger.trace(`Sending out Level: ${value}  To ${source}`)
 
@@ -465,8 +468,9 @@ export class LawoRubyMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
-            .CHANNEL_OUT_GAIN[0]
+        let protocol =
+            this.mixerProtocol.channelTypes[channelType].toMixer
+                .CHANNEL_OUT_GAIN[0]
         let level =
             (state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
@@ -485,8 +489,9 @@ export class LawoRubyMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
-            .CHANNEL_OUT_GAIN[0]
+        let protocol =
+            this.mixerProtocol.channelTypes[channelType].toMixer
+                .CHANNEL_OUT_GAIN[0]
 
         const level = floatToDB(outputLevel)
 
@@ -515,17 +520,22 @@ export class LawoRubyMixerConnection {
                 'Oops could not find node or function to update PFL state'
             )
 
-        this.emberConnection.invoke(
-            fn,
-            {
-                value: fader,
-                type: Model.ParameterType.String,
-            },
-            {
-                value: state.faders[0].fader[channelIndex].pflOn,
-                type: Model.ParameterType.Boolean,
-            }
-        )
+        try {
+            const { response } = await this.emberConnection.invoke(
+                fn,
+                {
+                    value: fader,
+                    type: Model.ParameterType.String,
+                },
+                {
+                    value: state.faders[0].fader[channelIndex].pflOn,
+                    type: Model.ParameterType.Boolean,
+                }
+            )
+            await response
+        } catch (e) {
+            logger.data(e).error('Ember Error ')
+        }
     }
 
     updateMuteState(channelIndex: number, muteOn: boolean) {
@@ -539,8 +549,8 @@ export class LawoRubyMixerConnection {
             ]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
-        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
-            .CHANNEL_AMIX[0]
+        let protocol =
+            this.mixerProtocol.channelTypes[channelType].toMixer.CHANNEL_AMIX[0]
 
         this.sendOutMessage(
             protocol.mixerMessage,
@@ -561,8 +571,9 @@ export class LawoRubyMixerConnection {
             ]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
-        let protocol = this.mixerProtocol.channelTypes[channelType].toMixer
-            .CHANNEL_INPUT_GAIN[0]
+        let protocol =
+            this.mixerProtocol.channelTypes[channelType].toMixer
+                .CHANNEL_INPUT_GAIN[0]
 
         let level = gain * (protocol.max - protocol.min) + protocol.min
 
@@ -581,8 +592,9 @@ export class LawoRubyMixerConnection {
             ]
         let channelType = channel.channelType
         let channelTypeIndex = channel.channelTypeIndex
-        let msg = this.mixerProtocol.channelTypes[channelType].toMixer
-            .CHANNEL_INPUT_SELECTOR[inputSelected - 1]
+        let msg =
+            this.mixerProtocol.channelTypes[channelType].toMixer
+                .CHANNEL_INPUT_SELECTOR[inputSelected - 1]
 
         this.sendOutMessage(
             msg.mixerMessage,
