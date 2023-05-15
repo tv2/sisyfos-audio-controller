@@ -10,7 +10,7 @@
         "prepare": "node prepare-package.js"
     },
     "dependencies": {
-        "server": "^0.0.0"
+        "server": "^1.0.38"
     },
     "devDependencies": {
         "electron": "16.2.6",
