@@ -280,33 +280,31 @@ export const faders = (
             })
             return nextState
         case FADER_ACTIONS.SET_ASSIGNED_CHANNEL:
-            let newAssignment: IChannelReference[] =
+            let newAssignments: IChannelReference[] =
                 nextState[0].fader[action.faderIndex].assignedChannels || []
 
             if (action.assigned) {
                 if (
-                    !newAssignment.includes({
+                    !newAssignments.includes({
                         mixerIndex: action.mixerIndex,
                         channelIndex: action.channelIndex,
                     })
                 ) {
-                    newAssignment.push({
+                    newAssignments.push({
                         mixerIndex: action.mixerIndex,
                         channelIndex: action.channelIndex,
                     })
-                    // sort by channelIndex:
-                    newAssignment.sort(
+                    newAssignments.sort(
                         (n1: IChannelReference, n2: IChannelReference) =>
                             n1.channelIndex - n2.channelIndex
                     )
-                    // sort by mixerIndex:
-                    newAssignment.sort(
+                    newAssignments.sort(
                         (n1: IChannelReference, n2: IChannelReference) =>
                             n1.mixerIndex - n2.mixerIndex
                     )
                 }
             } else {
-                newAssignment = newAssignment.filter((channel) => {
+                newAssignments = newAssignments.filter((channel) => {
                     return (
                         channel.channelIndex !== action.channelIndex &&
                         channel.mixerIndex !== action.mixerIndex
@@ -315,7 +313,7 @@ export const faders = (
             }
 
             nextState[0].fader[action.faderIndex].assignedChannels =
-                newAssignment
+                newAssignments
             return nextState
         case FADER_ACTIONS.SET_CAPABILITY:
             nextState[0].fader[action.faderIndex].capabilities = {
