@@ -7,7 +7,7 @@
         "strict": false,
         "isolatedModules": false,
         "esModuleInterop": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "resolveJsonModule": true,
         "module": "commonjs",
         "outDir": "dist"

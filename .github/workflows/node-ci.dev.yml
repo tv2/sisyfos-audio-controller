@@ -1,7 +1,7 @@
 name: Dev Node CI
 
 env:
-  node-version: 16
+  node-version: 18
   node-package-manager: yarn
 
 on:

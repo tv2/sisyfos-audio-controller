@@ -5,9 +5,9 @@ import {
 } from '../MixerProtocolInterface'
 
 export const Atem: IMixerProtocol = {
+    MAX_UPDATES_PER_SECOND: 10,
     protocol: 'ATEM',
     label: 'ATEM Audio Control',
-    FADE_DISPATCH_RESOLUTION: 1,
     vuLabelConversionType: VuLabelConversionType.Decibel,
     vuLabelValues: [0, 0.125, 0.25, 0.375, 0.5, 0.75, 1],
     fader: {
