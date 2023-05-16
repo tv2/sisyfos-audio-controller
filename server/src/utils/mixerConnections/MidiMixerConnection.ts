@@ -1,15 +1,5 @@
-// *** Work around to run Web-midi on nodejs ***
-
-// The `web-midi-api` module takes care of importing the `jazz-midi` module (which needs to be
-// installed) and the WebMIDIAPI shim (which is already part of `web-midi-api`).
-import webMidiApi from 'web-midi-api'
-global.navigator = webMidiApi
-// WebMidi.js depends on the browser's performance.now() so we fake it with the `performance-now`
-// Node module (which is installed as a dependency of `web-midi-api`).
-import performanceNow from 'performance-now'
-if (!global.performance)
-    global.performance = { now: performanceNow }
 //Node Modules:
+//@ts-ignore
 import WebMidi from 'webmidi'
 
 import { store, state } from '../../reducers/store'

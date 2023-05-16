@@ -15,7 +15,7 @@ import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
 export class StuderMixerConnection {
     mixerProtocol: IMixerProtocol
     mixerIndex: number
-    emberConnection: EmberClient
+    emberConnection: any
     deviceRoot: any
     emberNodeObject: Array<any>
 
@@ -28,10 +28,10 @@ export class StuderMixerConnection {
         this.mixerIndex = mixerIndex
 
         logger.info('Setting up Ember connection')
-        this.emberConnection = new EmberClient(
-            state.settings[0].mixers[this.mixerIndex].deviceIp,
-            state.settings[0].mixers[this.mixerIndex].devicePort
-        )
+        this.emberConnection = new EmberClient({
+            host: state.settings[0].mixers[this.mixerIndex].deviceIp,
+            port: state.settings[0].mixers[this.mixerIndex].devicePort,
+        })
 
         this.emberConnection.on('error', (error: any) => {
             if (
