@@ -36,7 +36,7 @@
         "react-slider": "^2.0.4",
         "reactjs-popup": "^2.0.5",
         "redux": "^4.2.1",
-        "socket.io-client": "^4.6.1",
+        "socket.io-client": "^4.6.2",
         "webmidi": "^2.5.1"
     }
 }
