@@ -155,6 +155,12 @@ export class VMixMixerConnection {
             })
 
             mappedInputs.forEach((input) => {
+                if (
+                    !state.channels[0].chMixerConnection[this.mixerIndex]
+                        .channel[input.number - 1]
+                )
+                    return
+
                 if ('number' in input) {
                     sendVuLevel(
                         input.number - 1,
