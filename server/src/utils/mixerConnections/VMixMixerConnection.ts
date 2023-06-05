@@ -32,6 +32,9 @@ export class VMixMixerConnection {
     vmixVuConnection: ConnectionTCP
     mixerOnlineTimer: any
 
+    audioOn: Record<string, boolean> = {}
+    lastLevel: Record<string, number> = {}
+
     constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
@@ -58,6 +61,7 @@ export class VMixMixerConnection {
                 port: parseInt(
                     state.settings[0].mixers[this.mixerIndex].devicePort + ''
                 ),
+                debug: true,
             }
         )
         this.vmixVuConnection = new ConnectionTCP(
@@ -609,8 +613,8 @@ export class VMixMixerConnection {
         let { muteOn } = state.faders[0].fader[channelIndex]
         outputLevel = Math.round(100 * outputLevel)
 
-        if (!muteOn && outputLevel > 0) {
-            this.sendOutMessage('AudioOn', channelTypeIndex + 1, 1, '')
+        if (this.lastLevel[channelIndex] === outputLevel) {
+            return
         }
 
         this.sendOutMessage(
@@ -620,10 +624,22 @@ export class VMixMixerConnection {
             String(outputLevel),
             'f'
         )
+        this.lastLevel[channelIndex] = outputLevel
 
-        if (outputLevel <= 1) {
+        if (!muteOn && outputLevel > 0 && !this.audioOn[channelIndex]) {
+            this.sendOutMessage('AudioOn', channelTypeIndex + 1, 1, '')
+            this.audioOn[channelIndex] = true
+        }
+
+        if (outputLevel < 1 && this.audioOn[channelIndex]) {
             this.sendOutMessage('AudioOff', channelTypeIndex + 1, 1, '')
-            this.sendOutMessage('SetVolume', channelTypeIndex + 1, 75, '')
+            // audio off command is a bit slow...
+            setTimeout(() => {
+                console.log('turn off')
+                this.sendOutMessage('SetVolume', channelTypeIndex + 1, 75, '')
+            }, 80)
+            // this.sendOutMessage('SetVolume', channelTypeIndex + 1, 75, '')
+            this.audioOn[channelIndex] = false
         }
     }
 
