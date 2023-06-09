@@ -4,11 +4,11 @@ import { mixerProtocolPresets } from '../mainClasses'
 import { state } from '../reducers/store'
 import { logger } from './logger'
 import { InumberOfChannels } from '../../../shared/src/reducers/channelsReducer'
+import { STORAGE_FOLDER } from './SettingsStorage'
 
 import path from 'path'
 export class SnapshotHandler {
     numberOfChannels: InumberOfChannels[] = []
-    settingsPath: string = path.resolve(process.cwd(), 'storage')
 
     constructor() {
         logger.info('Setting up state')
@@ -33,7 +33,7 @@ export class SnapshotHandler {
             })
         }
         this.loadSnapshotSettings(
-            path.resolve(this.settingsPath, 'default.shot'),
+            path.resolve(STORAGE_FOLDER, 'default.shot'),
             true
         )
 
@@ -50,7 +50,7 @@ export class SnapshotHandler {
             }
             saveSnapshotState(
                 snapshot,
-                path.resolve(this.settingsPath, 'default.shot')
+                path.resolve(STORAGE_FOLDER, 'default.shot')
             )
         }, 2000)
     }
