@@ -29,8 +29,8 @@
         "open-source"
     ],
     "engines": {
-        "node": ">=14.17.6",
-        "yarn": ">=1.0.0"
+        "node": ">=18.15.0",
+        "yarn": ">=1.22.0"
     },
     "private": true,
     "workspaces": [
