@@ -15,7 +15,7 @@ import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
 export class StuderMixerConnection {
     mixerProtocol: IMixerProtocol
     mixerIndex: number
-    emberConnection: EmberClient
+    emberConnection: any
     deviceRoot: any
     emberNodeObject: Array<any>
 
@@ -28,10 +28,10 @@ export class StuderMixerConnection {
         this.mixerIndex = mixerIndex
 
         logger.info('Setting up Ember connection')
-        this.emberConnection = new EmberClient(
-            state.settings[0].mixers[this.mixerIndex].deviceIp,
-            state.settings[0].mixers[this.mixerIndex].devicePort
-        )
+        this.emberConnection = new EmberClient({
+            host: state.settings[0].mixers[this.mixerIndex].deviceIp,
+            port: state.settings[0].mixers[this.mixerIndex].devicePort,
+        })
 
         this.emberConnection.on('error', (error: any) => {
             if (
@@ -220,12 +220,14 @@ export class StuderMixerConnection {
             ].channelTypeIndex
 
         if (channel < 25) {
-            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_OUT_GAIN[0].mixerMessage
+            levelMessage =
+                this.mixerProtocol.channelTypes[channelType].toMixer
+                    .CHANNEL_OUT_GAIN[0].mixerMessage
             channelVal = 160 + channelTypeIndex + 1
         } else {
-            levelMessage = this.mixerProtocol.channelTypes[channelType].toMixer
-                .CHANNEL_OUT_GAIN[1].mixerMessage
+            levelMessage =
+                this.mixerProtocol.channelTypes[channelType].toMixer
+                    .CHANNEL_OUT_GAIN[1].mixerMessage
             channelVal = channelTypeIndex + 1
         }
 
@@ -248,7 +250,7 @@ export class StuderMixerConnection {
         )
 
         let hexArray = levelMessage.split(' ')
-        let buf = new Buffer(
+        let buf = Buffer.from(
             hexArray.map((val: string) => {
                 return parseInt(val, 16)
             })

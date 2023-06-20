@@ -100,9 +100,7 @@ export class AutomationConnection {
                 global.mainThreadHandler.updatePartialStore(ch - 1)
             }
 
-            logger.info(
-                `RECIEVED AUTOMATION MESSAGE :${message.address}, ${message.args[0]}`
-            )
+            logger.data(message).debug(`RECIEVED AUTOMATION MESSAGE: ${message.address}`)
 
             // Set state of Sisyfos:
             if (check('CHANNEL_PGM_ON_OFF')) {
@@ -127,7 +125,7 @@ export class AutomationConnection {
                             parseFloat(message.args[1])
                         )
                     } else {
-                        mixerGenericConnection.updateOutLevel(ch - 1)
+                        mixerGenericConnection.updateOutLevel(ch - 1, -1)
                     }
                 })
             } else if (check('CHANNEL_PST_ON_OFF')) {
@@ -149,7 +147,7 @@ export class AutomationConnection {
             } else if (check('CHANNEL_FADER_LEVEL')) {
                 wrapChannelCommand((ch: any) => {
                     store.dispatch(storeFaderLevel(ch - 1, message.args[0]))
-                    mixerGenericConnection.updateOutLevel(ch - 1)
+                    mixerGenericConnection.updateOutLevel(ch - 1, -1)
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                 })
             } else if (check('INJECT_COMMAND')) {

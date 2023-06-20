@@ -12,7 +12,7 @@
 #     The destination is only triggered if the secret 'NPM_TOKEN' is provided.
 #
 #   [Docker Hub]
-#     The destination is only triggered if the secrets 'DOCKER_USERNAME' and 'DOCKER_PASSWORD' are 
+#     The destination is only triggered if the secrets 'DOCKER_USERNAME' and 'DOCKER_PASSWORD' are
 #     provided.
 #
 #######################################################################################################################
@@ -20,7 +20,7 @@
 name: Prod Node CI
 
 env:
-  node-version: 16
+  node-version: 18
   node-package-manager: yarn
 
 on:
@@ -274,7 +274,7 @@ jobs:
           path: dist
       - uses: actions/setup-node@v2
         with:
-          node-version: "16.x"
+          node-version: "18.x"
           registry-url: "https://registry.npmjs.org"
       - name: Publish package
         run: yarn publish --access=public --tag latest --new-version "${{ needs.bump-version.outputs.version }}"

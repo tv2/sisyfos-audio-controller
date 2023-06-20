@@ -121,7 +121,7 @@ export class SkaarhojRemoteConnection {
             //Fader changed:
             logger.debug(`Received Fader ${channelIndex + 1} Level : ${level}`)
             store.dispatch(storeFaderLevel(channelIndex, level))
-            mixerGenericConnection.updateOutLevel(channelIndex)
+            mixerGenericConnection.updateOutLevel(channelIndex, -1)
             global.mainThreadHandler.updatePartialStore(channelIndex)
             this.updateRemoteFaderState(channelIndex, level)
         } else if (btnNumber > 80) {

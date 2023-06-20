@@ -256,7 +256,7 @@ export class LawoRubyMixerConnection {
                 if (
                     !state.channels[0].chMixerConnection[this.mixerIndex]
                         .channel[ch - 1].fadeActive &&
-                    (node.contents as Model.Parameter).value >
+                    (node.contents as Model.Parameter).value as number >
                         this.mixerProtocol.channelTypes[typeIndex].fromMixer
                             .CHANNEL_OUT_GAIN[0].min
                 ) {
@@ -307,7 +307,7 @@ export class LawoRubyMixerConnection {
                 logger.trace(`Receiving Gain from Ch ${ch}`)
                 const value = (node.contents as Model.Parameter).value as number
                 const level = (value - proto.min) / (proto.max - proto.min)
-                if ((node.contents as Model.Parameter).value > proto.min) {
+                if ((node.contents as Model.Parameter).value as number > proto.min) {
                     store.dispatch(storeInputGain(ch - 1, level))
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                 }

@@ -21,6 +21,7 @@ import {
     getMixerPresetList,
     getCustomPages,
     saveCustomPages,
+    STORAGE_FOLDER,
 } from './utils/SettingsStorage'
 
 import {
@@ -132,7 +133,7 @@ export class MainThreadHandlers {
             .on(IO.SOCKET_LOAD_SNAPSHOT, (payload: string) => {
                 logger.info('Load Snapshot')
                 this.snapshotHandler.loadSnapshotSettings(
-                    path.join(this.snapshotHandler.settingsPath, payload),
+                    path.join(STORAGE_FOLDER, payload),
                     true
                 )
                 this.updateFullClientStore()
@@ -140,7 +141,7 @@ export class MainThreadHandlers {
             .on(IO.SOCKET_SAVE_SNAPSHOT, (payload: string) => {
                 logger.info('Save Snapshot')
                 this.snapshotHandler.saveSnapshotSettings(
-                    path.join(this.snapshotHandler.settingsPath, payload)
+                    path.join(STORAGE_FOLDER, payload)
                 )
 
                 socketServer.emit(
@@ -312,13 +313,13 @@ export class MainThreadHandlers {
             .on(IO.SOCKET_TOGGLE_PGM, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 store.dispatch(FADER_ACTIONS.storeTogglePgm(faderIndex))
-                mixerGenericConnection.updateOutLevel(faderIndex)
+                mixerGenericConnection.updateOutLevel(faderIndex, -1)
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_VO, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
                 store.dispatch(FADER_ACTIONS.storeToggleVo(faderIndex))
-                mixerGenericConnection.updateOutLevel(faderIndex)
+                mixerGenericConnection.updateOutLevel(faderIndex, -1)
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_SLOW_FADE, (faderIndex: any) => {

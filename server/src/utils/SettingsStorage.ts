@@ -32,19 +32,17 @@ export interface IShotStorage {
 
 // Linux place in "app"/storage to be backward compatible with Docker containers.
 // Windows and Mac place the storagefolder in home -> sisyfos-storage
-let storageFolder: string
-if (platform === 'linux') {
-    storageFolder = path.resolve(process.cwd(), 'storage')
-} else {
-    storageFolder = path.resolve(homeDir, 'sisyfos-storage')
-}
+export const STORAGE_FOLDER = (platform === 'linux') ?
+    path.resolve(process.cwd(), 'storage') :
+    path.resolve(homeDir, 'sisyfos-storage')
+
 
 export const loadSettings = (storeRedux: any): ISettings => {
     let newSettings = storeRedux.settings[0]
     try {
         newSettings = JSON.parse(
             fs.readFileSync(
-                path.resolve(storageFolder, 'settings.json'),
+                path.resolve(STORAGE_FOLDER, 'settings.json'),
                 'utf8'
             )
         )
@@ -63,11 +61,11 @@ export const saveSettings = (settings: any) => {
     const settingsCopy = { ...settings }
     delete settingsCopy.customPages
     let json = JSON.stringify(settingsCopy)
-    if (!fs.existsSync(storageFolder)) {
-        fs.mkdirSync(storageFolder)
+    if (!fs.existsSync(STORAGE_FOLDER)) {
+        fs.mkdirSync(STORAGE_FOLDER)
     }
     fs.writeFile(
-        path.resolve(storageFolder, 'settings.json'),
+        path.resolve(STORAGE_FOLDER, 'settings.json'),
         json,
         'utf8',
         (error: any) => {
@@ -133,7 +131,7 @@ export const saveSnapshotState = (stateSnapshot: any, fileName: string) => {
 
 export const getSnapShotList = (): string[] => {
     const files = fs
-        .readdirSync(path.resolve(storageFolder))
+        .readdirSync(path.resolve(STORAGE_FOLDER))
         .filter((file: string) => {
             if (file.includes('.shot') && file !== 'default.shot') {
                 return true
@@ -147,7 +145,7 @@ export const getMixerPresetList = (fileExtension: string): string[] => {
         return []
     }
     const files = fs
-        .readdirSync(path.resolve(storageFolder))
+        .readdirSync(path.resolve(STORAGE_FOLDER))
         .filter((file: string) => {
             if (
                 file.toUpperCase().includes('.' + fileExtension.toUpperCase())
@@ -160,7 +158,7 @@ export const getMixerPresetList = (fileExtension: string): string[] => {
 
 export const getCcgSettingsList = () => {
     const files = fs
-        .readdirSync(path.resolve(storageFolder))
+        .readdirSync(path.resolve(STORAGE_FOLDER))
         .filter((file: string) => {
             if (file.includes('.ccg') && file !== 'default-casparcg.ccg') {
                 return true
@@ -172,13 +170,13 @@ export const getCcgSettingsList = () => {
 export const setCcgDefault = (fileName: string) => {
     let data: any
     try {
-        data = fs.readFileSync(path.join(storageFolder, fileName))
+        data = fs.readFileSync(path.join(STORAGE_FOLDER, fileName))
     } catch (error) {
         logger.error('Couldn´t read ' + fileName + ' file')
         return
     }
 
-    const defaultFile = path.join(storageFolder, 'default-casparcg.ccg')
+    const defaultFile = path.join(STORAGE_FOLDER, 'default-casparcg.ccg')
     fs.writeFile(defaultFile, data, 'utf8', (error: any) => {
         if (error) {
             logger.data(error).error('Error setting default CasparCG setting')
@@ -191,7 +189,7 @@ export const setCcgDefault = (fileName: string) => {
 export const getCustomPages = (): ICustomPages[] => {
     try {
         return JSON.parse(
-            fs.readFileSync(path.resolve(storageFolder, 'pages.json'), 'utf8')
+            fs.readFileSync(path.resolve(STORAGE_FOLDER, 'pages.json'), 'utf8')
         )
     } catch (error) {
         logger.error('Couldn´t read pages.json file')
@@ -205,7 +203,7 @@ export const saveCustomPages = (
 ) => {
     let json = JSON.stringify(stateCustomPages)
     fs.writeFile(
-        path.join(storageFolder, fileName),
+        path.join(STORAGE_FOLDER, fileName),
         json,
         'utf8',
         (error: any) => {

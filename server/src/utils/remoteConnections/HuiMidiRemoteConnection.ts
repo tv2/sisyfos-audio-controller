@@ -90,7 +90,7 @@ export class HuiMidiRemoteConnection {
                             this.convertFromRemoteLevel(message.data[2])
                         )
                     )
-                    mixerGenericConnection.updateOutLevel(message.data[1])
+                    mixerGenericConnection.updateOutLevel(message.data[1], -1)
                     this.updateRemoteFaderState(
                         message.data[1],
                         this.convertFromRemoteLevel(message.data[2])
@@ -104,14 +104,14 @@ export class HuiMidiRemoteConnection {
                         //SELECT button - toggle PGM ON/OFF
                         store.dispatch(storeTogglePgm(this.activeHuiChannel))
                         mixerGenericConnection.updateOutLevel(
-                            this.activeHuiChannel
+                            this.activeHuiChannel, -1
                         )
                         this.updateRemotePgmPstPfl(this.activeHuiChannel)
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
                         store.dispatch(storeTogglePfl(this.activeHuiChannel))
                         mixerGenericConnection.updateOutLevel(
-                            this.activeHuiChannel
+                            this.activeHuiChannel, -1
                         )
                         this.updateRemotePgmPstPfl(this.activeHuiChannel)
                     }

@@ -280,41 +280,40 @@ export const faders = (
             })
             return nextState
         case FADER_ACTIONS.SET_ASSIGNED_CHANNEL:
+            let newAssignments: IChannelReference[] =
+                nextState[0].fader[action.faderIndex].assignedChannels || []
+
             if (action.assigned) {
-                let assignedChannels: IChannelReference[] =
-                    nextState[0].fader[action.faderIndex].assignedChannels || []
-                assignedChannels.push({
-                    mixerIndex: action.mixerIndex,
-                    channelIndex: action.channelIndex,
-                })
-                assignedChannels.sort(
-                    (n1: IChannelReference, n2: IChannelReference) =>
-                        n1.channelIndex - n2.channelIndex
-                )
-                nextState[0].fader[
-                    action.faderIndex
-                ].assignedChannels = assignedChannels
-            } else {
-                let assignedChannels =
-                    nextState[0].fader[action.faderIndex].assignedChannels
                 if (
-                    assignedChannels.find(
-                        (channelReference: IChannelReference) => {
-                            return (
-                                channelReference.channelIndex ===
-                                action.channelIndex
-                            )
-                        }
-                    )
-                ) {
-                    assignedChannels = assignedChannels.filter((channel) => {
-                        return channel !== action.channelIndex
+                    !newAssignments.includes({
+                        mixerIndex: action.mixerIndex,
+                        channelIndex: action.channelIndex,
                     })
+                ) {
+                    newAssignments.push({
+                        mixerIndex: action.mixerIndex,
+                        channelIndex: action.channelIndex,
+                    })
+                    newAssignments.sort(
+                        (n1: IChannelReference, n2: IChannelReference) =>
+                            n1.channelIndex - n2.channelIndex
+                    )
+                    newAssignments.sort(
+                        (n1: IChannelReference, n2: IChannelReference) =>
+                            n1.mixerIndex - n2.mixerIndex
+                    )
                 }
-                nextState[0].fader[
-                    action.faderIndex
-                ].assignedChannels = assignedChannels
+            } else {
+                newAssignments = newAssignments.filter((channel) => {
+                    return (
+                        channel.channelIndex !== action.channelIndex &&
+                        channel.mixerIndex !== action.mixerIndex
+                    )
+                })
             }
+
+            nextState[0].fader[action.faderIndex].assignedChannels =
+                newAssignments
             return nextState
         case FADER_ACTIONS.SET_CAPABILITY:
             nextState[0].fader[action.faderIndex].capabilities = {

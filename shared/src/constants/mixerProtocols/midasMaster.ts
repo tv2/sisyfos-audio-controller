@@ -10,7 +10,7 @@ export const MidasMaster: IMixerProtocol = {
             mixerMessage: '/load',
         },
     ],
-    FADE_DISPATCH_RESOLUTION: 5,
+    MAX_UPDATES_PER_SECOND: 15,
     leadingZeros: true,
     pingCommand: [
         {
