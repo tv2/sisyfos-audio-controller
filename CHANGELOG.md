@@ -1,3 +1,11 @@
+### [4.18.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.18.0...v4.18.1) (2023-06-22)
+
+
+### Bug Fixes
+
+* Corrected package version to 4.18.0. ([94a605c](https://github.com/tv2/sisyfos-audio-controller/commit/94a605cae9f49cfdcb29cf1dcdd7f6980b12b21f))
+
+
 ### [4.17.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.17.0...v4.17.1) (2022-03-11)
 
 
