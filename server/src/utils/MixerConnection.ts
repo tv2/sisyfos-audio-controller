@@ -208,6 +208,7 @@ export class MixerGenericConnection {
                     this.fadeInOut(
                         assignedChannel.mixerIndex,
                         assignedChannel.channelIndex,
+                        faderIndex,
                         fadeTime,
                     )
                 }
@@ -345,12 +346,9 @@ export class MixerGenericConnection {
     fadeInOut = (
         mixerIndex: number,
         channelIndex: number,
+        faderIndex: number,
         fadeTime: number
     ) => {
-        let faderIndex =
-            state.channels[0].chMixerConnection[mixerIndex].channel[
-                channelIndex
-            ].assignedFader
         if (
             !state.faders[0].fader[faderIndex].pgmOn &&
             !state.faders[0].fader[faderIndex].voOn &&
