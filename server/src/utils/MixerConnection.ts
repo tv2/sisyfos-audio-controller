@@ -30,6 +30,7 @@ import {
 } from '../../../shared/src/actions/channelActions'
 import { storeFaderLevel } from '../../../shared/src/actions/faderActions'
 import { AtemMixerConnection } from './mixerConnections/AtemConnection'
+import { IChannelReference } from '../../../shared/src/reducers/fadersReducer'
 
 export class MixerGenericConnection {
     store: any
@@ -47,7 +48,7 @@ export class MixerGenericConnection {
         state.settings[0].mixers.forEach((none: any, index: number) => {
             this.mixerProtocol.push(
                 MixerProtocolPresets[
-                    state.settings[0].mixers[index].mixerProtocol
+                state.settings[0].mixers[index].mixerProtocol
                 ] || MixerProtocolPresets.sslSystemT
             )
             this.mixerConnection.push({})
@@ -201,19 +202,14 @@ export class MixerGenericConnection {
             }
         }
 
-        state.channels[0].chMixerConnection.forEach(
-            (chMixerConnection: IchMixerConnection, mixerIndex: number) => {
-                if (mixerIndex !== mixerIndexToSkip) {
-                    chMixerConnection.channel.forEach(
-                        (channel: IChannel, channelIndex: number) => {
-                            if (faderIndex === channel.assignedFader) {
-                                this.fadeInOut(
-                                    mixerIndex,
-                                    channelIndex,
-                                    fadeTime
-                                )
-                            }
-                        }
+
+        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+            (assignedChannel: IChannelReference) => {
+                if (assignedChannel.mixerIndex !== mixerIndexToSkip) {
+                    this.fadeInOut(
+                        assignedChannel.mixerIndex,
+                        assignedChannel.channelIndex,
+                        fadeTime,
                     )
                 }
             }
@@ -511,7 +507,7 @@ export class MixerGenericConnection {
         const currentOutputLevel =
             startLevel +
             (endLevel - startLevel) *
-                Math.max(0, Math.min(1, elapsedTimeMS / fadeTime))
+            Math.max(0, Math.min(1, elapsedTimeMS / fadeTime))
 
         this.mixerConnection[mixerIndex].updateFadeIOLevel(
             channelIndex,
