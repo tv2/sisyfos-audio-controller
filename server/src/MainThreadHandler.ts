@@ -11,6 +11,7 @@ import { socketServer } from './expressHandler'
 import { storeUpdateSettings } from '../../shared/src/actions/settingsActions'
 import * as IO from '../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import * as FADER_ACTIONS from '../../shared/src/actions/faderActions'
+import * as CHANNEL_ACTIONS from '../../shared/src/actions/channelActions'
 
 import {
     loadSettings,
@@ -26,7 +27,6 @@ import {
 
 import {
     storeFlushChLabels,
-    storeSetAssignedFader,
     storeSetAuxLevel,
 } from '../../shared/src/actions/channelActions'
 import { logger } from './utils/logger'
@@ -34,6 +34,7 @@ import { ICustomPages } from '../../shared/src/reducers/settingsReducer'
 import { fxParamsList } from '../../shared/src/constants/MixerProtocolInterface'
 import path from 'path'
 import { IChannel } from '../../shared/src/reducers/channelsReducer'
+import { IChannelReference } from '../../shared/src/reducers/fadersReducer'
 
 export class MainThreadHandlers {
     snapshotHandler: SnapshotHandler
@@ -46,7 +47,7 @@ export class MainThreadHandlers {
     }
 
     updateFullClientStore() {
-        this.recalcAssignedChannels()
+        this.reIndexAssignedChannelsRelation()
         socketServer.emit(IO.SOCKET_SET_FULL_STORE, state)
     }
 
@@ -55,18 +56,16 @@ export class MainThreadHandlers {
             faderIndex: faderIndex,
             state: state.faders[0].fader[faderIndex],
         })
-        state.channels[0].chMixerConnection.forEach((chMixerConnection) => {
-            chMixerConnection.channel.forEach(
-                (channel: IChannel, index: number) => {
-                    if (channel.assignedFader === faderIndex) {
-                        socketServer.emit(IO.SOCKET_SET_STORE_CHANNEL, {
-                            channelIndex: index,
-                            state: channel,
-                        })
-                    }
-                }
-            )
-        })
+        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+            (channel: IChannelReference) => {
+                socketServer.emit(IO.SOCKET_SET_STORE_CHANNEL, {
+                    channelIndex: channel.channelIndex,
+                    state: state.channels[0].chMixerConnection[channel.mixerIndex]
+                        .channel[channel.channelIndex],
+                })
+            }
+        )
+
     }
 
     updateMixerOnline(mixerIndex: number, onLineState?: boolean) {
@@ -77,25 +76,16 @@ export class MainThreadHandlers {
         })
     }
 
-    // Assigned channel to faders are right now based on Channel.assignedFader
-    // Plan is to change it so fader.assignedChannel will be the master (a lot of change in code is needed)
-    recalcAssignedChannels() {
-        store.dispatch(FADER_ACTIONS.removeAllAssignedChannels())
-        state.channels[0].chMixerConnection.forEach((mixer, mixerIndex) => {
-            mixer.channel.forEach((channel: IChannel, channelIndex) => {
-                if (
-                    channel.assignedFader >= 0 &&
-                    state.faders[0].fader[channel.assignedFader]
-                ) {
-                    store.dispatch(
-                        FADER_ACTIONS.storeSetAssignedChannel(
-                            channel.assignedFader,
-                            mixerIndex,
-                            channelIndex,
-                            true
-                        )
+    reIndexAssignedChannelsRelation() {
+        state.faders[0].fader.forEach((fader, faderIndex) => {
+            fader.assignedChannels.forEach((channel: IChannelReference) => {
+                store.dispatch(
+                    CHANNEL_ACTIONS.storeSetAssignedFader(
+                        channel.mixerIndex,
+                        channel.channelIndex,
+                        faderIndex
                     )
-                }
+                )
             })
         })
     }
@@ -117,7 +107,7 @@ export class MainThreadHandlers {
                 socketServer.emit('set-mixerprotocol', {
                     mixerProtocol:
                         mixerProtocolPresets[
-                            state.settings[0].mixers[0].mixerProtocol
+                        state.settings[0].mixers[0].mixerProtocol
                         ],
                     mixerProtocolPresets: mixerProtocolPresets,
                     mixerProtocolList: mixerProtocolList,
@@ -221,23 +211,29 @@ export class MainThreadHandlers {
             .on(IO.SOCKET_RESTART_SERVER, () => {
                 process.exit(0)
             })
-            .on(IO.SOCKET_SET_ASSIGNED_FADER, (payload: any) => {
+            .on(IO.SOCKET_ASSIGN_CH_TO_FADER, (payload: any) => {
                 logger.trace(
-                    `Set assigned fader.\n  Mixer: ${
-                        payload.mixerIndex + 1
-                    }\n  Channel: ${payload.channel}\n  Fader: ${
-                        payload.faderAssign
+                    `Set assigned fader.\n  Mixer: ${payload.mixerIndex + 1
+                    }\n  Channel: ${payload.channel}\n  Fader: ${payload.faderAssign
                     }`
                 )
                 store.dispatch(
-                    storeSetAssignedFader(
+                    FADER_ACTIONS.storeSetAssignedChannel(
+                        payload.faderIdex,
                         payload.mixerIndex,
                         payload.channel,
-                        payload.faderAssign
+                        payload.assigned
                     )
                 )
 
                 this.updateFullClientStore()
+            })
+            .on(IO.SOCKET_REMOVE_ALL_CH_ASSIGNMENTS, () => {
+                logger.trace(
+                    `Remove all channel assignments.\n`)
+                store.dispatch(
+                    FADER_ACTIONS.removeAllAssignedChannels()
+                )
             })
             .on(IO.SOCKET_SET_FADER_MONITOR, (payload: any) => {
                 store.dispatch(
@@ -354,8 +350,7 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_SET_FADERLEVEL, (payload: any) => {
                 logger.trace(
-                    `Set fader level\n  Channel: ${
-                        payload.faderIndex + 1
+                    `Set fader level\n  Channel: ${payload.faderIndex + 1
                     }\n  Level: ${payload.level}`
                 )
                 store.dispatch(
@@ -370,8 +365,7 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_SET_INPUT_GAIN, (payload: any) => {
                 logger.trace(
-                    `Set fInput\n  Gain Channel: ${
-                        payload.faderIndex + 1
+                    `Set fInput\n  Gain Channel: ${payload.faderIndex + 1
                     }\n  Level: ${payload.level}`
                 )
                 store.dispatch(
@@ -385,8 +379,7 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_SET_INPUT_SELECTOR, (payload: any) => {
                 logger.trace(
-                    `Set Input selector: ${
-                        payload.faderIndex + 1
+                    `Set Input selector: ${payload.faderIndex + 1
                     }\n  Selected: ${payload.selected}`
                 )
                 logger.debug(payload)
