@@ -42,6 +42,21 @@ class ChannelRouteSettings extends React.PureComponent<
                 String(this.faderIndex + 1)
             )
         ) {
+            // Check if channel already is assigned to another fader and remove that binding prior to bind it to the new fader
+            if (event.target.checked) {
+                this.props.fader.forEach((fader: any, index: number) => {
+                    if (fader.assignedChannels.includes({ mixerIndex: mixerIndex, channelIndex: channel })) {
+                        window.socketIoClient.emit(SOCKET_ASSIGN_CH_TO_FADER, {
+                            mixerIndex: mixerIndex,
+                            channel: channel,
+                            faderIndex: index,
+                            assigned: false
+                        })
+                    }
+                })
+            }
+
+
             window.socketIoClient.emit(SOCKET_ASSIGN_CH_TO_FADER, {
                 mixerIndex: mixerIndex,
                 channel: channel,
