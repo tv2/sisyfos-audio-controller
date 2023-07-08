@@ -88,7 +88,6 @@ export class OscMixerConnection {
         )
     }
 
-
     setupMixerConnection() {
         this.oscConnection
             .on('ready', () => {
@@ -115,7 +114,7 @@ export class OscMixerConnection {
                             .CHANNEL_VU?.[0].mixerMessage
                     )
                 ) {
-                    let assignedFaderIndex = this.getAssignedFaderIndex(message.address.split('/')[this.cmdChannelIndex])
+                    const assignedFaderIndex = this.getAssignedFaderIndex(message.address.split('/')[this.cmdChannelIndex])
                     if (
                         state.settings[0].mixers[
                             this.mixerIndex
@@ -146,7 +145,7 @@ export class OscMixerConnection {
                             .CHANNEL_VU_REDUCTION?.[0].mixerMessage
                     )
                 ) {
-                    let assignedFaderIndex = this.getAssignedFaderIndex(message.address.split('/')[this.cmdChannelIndex])
+                    const assignedFaderIndex = this.getAssignedFaderIndex(message.address.split('/')[this.cmdChannelIndex])
 
                     sendVuLevel(
                         assignedFaderIndex,
@@ -162,7 +161,7 @@ export class OscMixerConnection {
                     )
                 ) {
                     let ch = message.address.split('/')[this.cmdChannelIndex]
-                    let assignedFaderIndex = this.getAssignedFaderIndex(ch - 1)
+                    const assignedFaderIndex = this.getAssignedFaderIndex(ch - 1)
 
                     if (
                         assignedFaderIndex >= 0 &&
