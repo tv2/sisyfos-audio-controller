@@ -64,7 +64,7 @@ export class AtemMixerConnection {
                     .data(error)
                     .error(
                         'Failed to connect to atem ' +
-                            state.settings[0].mixers[this.mixerIndex].deviceIp
+                        state.settings[0].mixers[this.mixerIndex].deviceIp
                     )
             })
     }
@@ -104,7 +104,7 @@ export class AtemMixerConnection {
                 if (
                     channelIndex === undefined ||
                     !state.fairlight.inputs[input].sources[
-                        this._sourceTracks[channelIndex]
+                    this._sourceTracks[channelIndex]
                     ]
                 ) {
                     continue
@@ -114,7 +114,7 @@ export class AtemMixerConnection {
                 const fader = this.getFaderFromChannelIndex(channelIndex)
                 const source =
                     state.fairlight.inputs[input].sources[
-                        this._sourceTracks[channelIndex]
+                    this._sourceTracks[channelIndex]
                     ]
 
                 this.setPropsFromChannel(channelIndex, channel, fader, source)
@@ -197,7 +197,7 @@ export class AtemMixerConnection {
         const { pgmOn, pflOn } = this.getFaderFromChannelIndex(channelIndex)
         const tracks =
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_INPUT_SELECTOR?.[
-                inputSelected - 1
+            inputSelected - 1
             ]
         if (!tracks) return
 
@@ -312,13 +312,11 @@ export class AtemMixerConnection {
     }
 
     private getFaderFromChannelIndex(channelIndex: number): IFader {
-        const faderIndex =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ].assignedFader
-
-        return state.faders[0].fader[faderIndex]
+        return state.faders[0].fader.find(
+            (fader: IFader) => fader.assignedChannels.includes({ mixerIndex: this.mixerIndex, channelIndex })
+        )
     }
+    
     private getChannel(channelIndex: number): IChannel {
         return state.channels[0].chMixerConnection[this.mixerIndex].channel[
             channelIndex
