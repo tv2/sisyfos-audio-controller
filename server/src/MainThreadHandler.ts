@@ -78,7 +78,7 @@ export class MainThreadHandlers {
 
     reIndexAssignedChannelsRelation() {
         state.faders[0].fader.forEach((fader, faderIndex) => {
-            fader.assignedChannels.forEach((channel: IChannelReference) => {
+            fader.assignedChannels?.forEach((channel: IChannelReference) => {
                 store.dispatch(
                     CHANNEL_ACTIONS.storeSetAssignedFader(
                         channel.mixerIndex,
