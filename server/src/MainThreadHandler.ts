@@ -225,7 +225,6 @@ export class MainThreadHandlers {
                         payload.assigned
                     )
                 )
-
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_REMOVE_ALL_CH_ASSIGNMENTS, () => {
@@ -234,6 +233,7 @@ export class MainThreadHandlers {
                 store.dispatch(
                     FADER_ACTIONS.removeAllAssignedChannels()
                 )
+                this.updateFullClientStore()
             })
             .on(IO.SOCKET_SET_FADER_MONITOR, (payload: any) => {
                 store.dispatch(
