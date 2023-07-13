@@ -202,7 +202,7 @@ export class MixerGenericConnection {
         }
 
 
-        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+        state.faders[0].fader[faderIndex].assignedChannels?.forEach(
             (assignedChannel: IChannelReference) => {
                 if (assignedChannel.mixerIndex !== mixerIndexToSkip) {
                     this.fadeInOut(
@@ -225,7 +225,7 @@ export class MixerGenericConnection {
 
     updateInputGain = (faderIndex: number) => {
         let level = state.faders[0].fader[faderIndex].inputGain
-        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+        state.faders[0].fader[faderIndex].assignedChannels?.forEach(
             (assignedChannel: IChannelReference) => {
                 this.mixerConnection[assignedChannel.mixerIndex].updateInputGain(
                     assignedChannel.channelIndex,
@@ -238,7 +238,7 @@ export class MixerGenericConnection {
     updateInputSelector = (faderIndex: number) => {
         let inputSelected = state.faders[0].fader[faderIndex].inputSelector
         logger.trace(`${faderIndex} ${inputSelected}`)
-        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+        state.faders[0].fader[faderIndex].assignedChannels?.forEach(
             (assignedChannel: IChannelReference) => {
                 this.mixerConnection[assignedChannel.mixerIndex].updateInputSelector(
                     assignedChannel.channelIndex,
@@ -253,7 +253,7 @@ export class MixerGenericConnection {
     }
 
     updateMuteState = (faderIndex: number, mixerIndexToSkip: number = -1) => {
-        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+        state.faders[0].fader[faderIndex].assignedChannels?.forEach(
             (assignedChannel: IChannelReference) => {
                 if (assignedChannel.mixerIndex !== mixerIndexToSkip) {
                     this.mixerConnection[assignedChannel.mixerIndex].updateMuteState(
@@ -266,7 +266,7 @@ export class MixerGenericConnection {
     }
 
     updateAMixState = (faderIndex: number) => {
-        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+        state.faders[0].fader[faderIndex].assignedChannels?.forEach(
             (assignedChannel: IChannelReference) => {
                 this.mixerConnection[assignedChannel.mixerIndex].updateAMixState(
                     assignedChannel.channelIndex,
@@ -286,7 +286,7 @@ export class MixerGenericConnection {
                     (100 - state.settings[0].voLevel)) /
                 100
         }
-        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+        state.faders[0].fader[faderIndex].assignedChannels?.forEach(
             (assignedChannel: IChannelReference) => {
                 this.mixerConnection[assignedChannel.mixerIndex].updateNextAux(
                     assignedChannel.channelIndex,
@@ -298,7 +298,7 @@ export class MixerGenericConnection {
 
     updateFx = (fxParam: fxParamsList, faderIndex: number) => {
         let level: number = state.faders[0].fader[faderIndex][fxParam][0]
-        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+        state.faders[0].fader[faderIndex].assignedChannels?.forEach(
             (assignedChannel: IChannelReference) => {
                 this.mixerConnection[assignedChannel.mixerIndex].updateFx(
                     fxParam,

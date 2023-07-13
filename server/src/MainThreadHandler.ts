@@ -56,7 +56,7 @@ export class MainThreadHandlers {
             faderIndex: faderIndex,
             state: state.faders[0].fader[faderIndex],
         })
-        state.faders[0].fader[faderIndex].assignedChannels.forEach(
+        state.faders[0].fader[faderIndex].assignedChannels?.forEach(
             (channel: IChannelReference) => {
                 socketServer.emit(IO.SOCKET_SET_STORE_CHANNEL, {
                     channelIndex: channel.channelIndex,
