@@ -64,16 +64,27 @@ export class OscMixerConnection {
                 .split('/')
                 .findIndex((ch) => ch === '{channel}')
 
-        this.oscConnection = new osc.UDPPort({
-            localAddress: state.settings[0].mixers[this.mixerIndex].localIp,
-            localPort: parseInt(
-                state.settings[0].mixers[this.mixerIndex].localOscPort + ''
-            ),
-            remoteAddress: state.settings[0].mixers[this.mixerIndex].deviceIp,
-            remotePort: parseInt(
-                state.settings[0].mixers[this.mixerIndex].devicePort + ''
-            ),
-        })
+        try {
+
+            this.oscConnection = new osc.UDPPort({
+                localAddress: state.settings[0].mixers[this.mixerIndex].localIp,
+                localPort: parseInt(
+                    state.settings[0].mixers[this.mixerIndex].localOscPort + ''
+                ),
+                remoteAddress: state.settings[0].mixers[this.mixerIndex].deviceIp,
+                remotePort: parseInt(
+                    state.settings[0].mixers[this.mixerIndex].devicePort + ''
+                ),
+            })
+        }
+        catch (error) {
+            logger.error(
+                `Error creating OSC connection to ${state.settings[0].mixers[this.mixerIndex].deviceIp}:${state.settings[0].mixers[this.mixerIndex].devicePort}`
+            )
+            logger.error(error)
+            return
+        }
+
         this.setupMixerConnection()
     }
 
