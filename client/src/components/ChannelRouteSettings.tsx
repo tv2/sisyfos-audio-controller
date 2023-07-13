@@ -92,7 +92,7 @@ class ChannelRouteSettings extends React.PureComponent<
     }
 
     isChannelAssignedToFader = (channel: IChannelReference) => {
-        return (this.props.fader[this.faderIndex].assignedChannels.includes(channel))
+        return (this.props.fader[this.faderIndex].assignedChannels?.includes(channel))
     }
 
 
