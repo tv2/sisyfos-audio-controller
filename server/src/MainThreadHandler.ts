@@ -219,7 +219,7 @@ export class MainThreadHandlers {
                 )
                 store.dispatch(
                     FADER_ACTIONS.storeSetAssignedChannel(
-                        payload.faderIdex,
+                        payload.faderIndex,
                         payload.mixerIndex,
                         payload.channel,
                         payload.assigned

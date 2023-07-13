@@ -79,7 +79,7 @@ class ChannelRouteSettings extends React.PureComponent<
                     window.socketIoClient.emit(SOCKET_ASSIGN_CH_TO_FADER, {
                         mixerIndex: 0,
                         channel: index,
-                        faderAssign: index,
+                        faderIndex: index,
                         assign: true
                     })
                 }
