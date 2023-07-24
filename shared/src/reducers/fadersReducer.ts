@@ -286,7 +286,7 @@ export const faders = (
             if (action.assigned) {
                 if (
                     !newAssignments.some((channel) => {
-                        return !(channel.mixerIndex === action.mixerIndex &&
+                        return (channel.mixerIndex === action.mixerIndex &&
                             channel.channelIndex === action.channelIndex)
                     })
                 ) {
