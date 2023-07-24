@@ -64,7 +64,7 @@ class ChannelMonitorOptions extends React.PureComponent<
         if (
             window.confirm(
                 'This will remove all monitor assignments to Aux :' +
-                    String(this.props.fader[this.faderIndex].monitor)
+                String(this.props.fader[this.faderIndex].monitor)
             )
         ) {
             this.props.channel.forEach((channel: any, index: number) => {
@@ -81,7 +81,7 @@ class ChannelMonitorOptions extends React.PureComponent<
         if (
             window.confirm(
                 'Send all channels to Aux: ' +
-                    String(this.props.fader[this.faderIndex].monitor)
+                String(this.props.fader[this.faderIndex].monitor)
             )
         ) {
             this.props.channel.forEach((channel: any, index: number) => {
@@ -154,10 +154,11 @@ class ChannelMonitorOptions extends React.PureComponent<
                 />
                 <hr />
                 {this.props.channel.map((channel: any, index: number) => {
-                    let isSelected: boolean =
-                        this.props.channel[index].auxLevel[
+                    let isSelected: boolean = (
+                        channel.auxLevel[
                             this.props.fader[this.faderIndex].monitor - 1
-                        ]
+                        ] >= 0
+                    )
                     return (
                         <div
                             key={index}
