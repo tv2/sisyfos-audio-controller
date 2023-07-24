@@ -27,7 +27,7 @@ import {
     storeSetChLabel,
 } from '../../../../shared/src/actions/channelActions'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
-import { IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 
 export class EmberMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -50,7 +50,9 @@ export class EmberMixerConnection {
 
     private getAssignedFaderIndex(channelIndex: number) {
         return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels.includes({ mixerIndex: this.mixerIndex, channelIndex })
+            (fader: IFader) => fader.assignedChannels.some((assigned: IChannelReference) => {
+                return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
+            })
         )
     }
 

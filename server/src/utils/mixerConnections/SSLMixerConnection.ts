@@ -60,7 +60,9 @@ export class SSLMixerConnection {
 
     private getAssignedFaderIndex(channelIndex: number) {
         return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels.includes({ mixerIndex: this.mixerIndex, channelIndex })
+            (fader: IFader) => fader.assignedChannels.some((assigned: IChannelReference) => {
+                return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
+            })
         )
     }
 

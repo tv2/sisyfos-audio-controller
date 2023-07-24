@@ -23,7 +23,7 @@ import { logger } from '../logger'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { dbToFloat } from './LawoRubyConnection'
-import { IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 
 export class VMixMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -83,7 +83,9 @@ export class VMixMixerConnection {
 
     private getAssignedFaderIndex(channelIndex: number) {
         return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels.includes({ mixerIndex: this.mixerIndex, channelIndex })
+            (fader: IFader) => fader.assignedChannels.some((assigned: IChannelReference) => {
+                return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
+            })
         )
     }
 
