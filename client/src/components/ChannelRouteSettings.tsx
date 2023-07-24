@@ -68,7 +68,7 @@ class ChannelRouteSettings extends React.PureComponent<
         }
     }
 
-    handleClearRouting() {
+    handleClearAllRouting() {
         if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
             window.socketIoClient.emit(SOCKET_REMOVE_ALL_CH_ASSIGNMENTS)
         }
@@ -158,7 +158,7 @@ class ChannelRouteSettings extends React.PureComponent<
                 </button>
                 <button
                     className="button"
-                    onClick={() => this.handleClearRouting()}
+                    onClick={() => this.handleClearAllRouting()}
                 >
                     CLEAR ALL
                 </button>
