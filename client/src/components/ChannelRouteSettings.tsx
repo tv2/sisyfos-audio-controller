@@ -115,19 +115,20 @@ class ChannelRouteSettings extends React.PureComponent<
                     {'MIXER ' + (mixerIndex + 1)}
                 </p>
                 {chMixerConnection.channel.map((channel: any, index: number) => {
+                    const assignedFaderIndex = this.getAssignedToFaderIndex({ mixerIndex: mixerIndex, channelIndex: index })
                     return (
                         <div
                             key={index}
                             className={ClassNames('channel-route-text', {
                                 checked:
-                                    this.getAssignedToFaderIndex({ mixerIndex: mixerIndex, channelIndex: index }) === this.faderIndex,
+                                    assignedFaderIndex === this.faderIndex,
                             })}
                         >
                             {' Channel ' + (index + 1) + ' : '}
                             <input
                                 type="checkbox"
                                 checked={
-                                    this.getAssignedToFaderIndex({ mixerIndex: mixerIndex, channelIndex: index }) === this.faderIndex
+                                    assignedFaderIndex === this.faderIndex
                                 }
                                 onChange={(event) =>
                                     this.handleAssignChannel(
@@ -137,9 +138,9 @@ class ChannelRouteSettings extends React.PureComponent<
                                     )
                                 }
                             />
-                            {this.getAssignedToFaderIndex({ mixerIndex: mixerIndex, channelIndex: index }) >= 0
+                            {assignedFaderIndex >= 0
                                 ? '   (Fader ' +
-                                (channel.assignedFader + 1) +
+                                (assignedFaderIndex + 1) +
                                 ')'
                                 : ' (not assigned)'}
                         </div>

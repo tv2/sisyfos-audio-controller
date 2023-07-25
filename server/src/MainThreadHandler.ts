@@ -44,10 +44,10 @@ export class MainThreadHandlers {
 
         this.snapshotHandler = new SnapshotHandler()
         store.dispatch(storeUpdateSettings(loadSettings(state)))
+        this.reIndexAssignedChannelsRelation()
     }
 
     updateFullClientStore() {
-        this.reIndexAssignedChannelsRelation()
         socketServer.emit(IO.SOCKET_SET_FULL_STORE, state)
     }
 
@@ -93,11 +93,10 @@ export class MainThreadHandlers {
     socketServerHandlers(socket: any) {
         logger.info('Setting up socket IO main handlers.')
 
-        // get-store get-settings and get-mixerprotocol will be replaces with
-        // serverside Redux middleware emitter when moved to Socket IO:
         socket
             .on('get-store', () => {
                 logger.info(`Setting initial store on: ${socket.client.id}`)
+                this.reIndexAssignedChannelsRelation()
                 this.updateFullClientStore()
             })
             .on('get-settings', () => {
@@ -126,6 +125,7 @@ export class MainThreadHandlers {
                     path.join(STORAGE_FOLDER, payload),
                     true
                 )
+                this.reIndexAssignedChannelsRelation()
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_SAVE_SNAPSHOT, (payload: string) => {
@@ -158,11 +158,13 @@ export class MainThreadHandlers {
             .on(IO.SOCKET_SAVE_CCG_FILE, (payload: any) => {
                 logger.info(`Set default CCG File: ${payload}`)
                 setCcgDefault(payload)
+                this.reIndexAssignedChannelsRelation()
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_LOAD_MIXER_PRESET, (payload: any) => {
                 logger.info(`Set Mixer Preset: ${payload}`)
                 mixerGenericConnection.loadMixerPreset(payload)
+                this.reIndexAssignedChannelsRelation()
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_GET_PAGES_LIST, () => {
@@ -202,6 +204,7 @@ export class MainThreadHandlers {
             .on(IO.SOCKET_SAVE_SETTINGS, (payload: any) => {
                 logger.data(payload).info('Save settings:')
                 saveSettings(payload)
+                this.reIndexAssignedChannelsRelation()
                 this.updateFullClientStore()
                 /** Delay restart to ensure the async saveSettings is done before restarting*/
                 setTimeout(() => {
@@ -225,6 +228,7 @@ export class MainThreadHandlers {
                         payload.assigned
                     )
                 )
+                this.reIndexAssignedChannelsRelation()
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_REMOVE_ALL_CH_ASSIGNMENTS, () => {
@@ -233,6 +237,7 @@ export class MainThreadHandlers {
                 store.dispatch(
                     FADER_ACTIONS.removeAllAssignedChannels()
                 )
+                this.reIndexAssignedChannelsRelation()
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_SET_FADER_MONITOR, (payload: any) => {
@@ -286,15 +291,15 @@ export class MainThreadHandlers {
                 store.dispatch(
                     FADER_ACTIONS.storeFaderFx(
                         payload.fxParam,
-                        payload.channel,
+                        payload.faderIndex,
                         payload.level
                     )
                 )
                 mixerGenericConnection.updateFx(
                     payload.fxParam,
-                    payload.channel
+                    payload.faderIndex
                 )
-                this.updatePartialStore(payload.channel)
+                this.updatePartialStore(payload.faderIndex)
             })
             .on(IO.SOCKET_NEXT_MIX, () => {
                 store.dispatch(FADER_ACTIONS.storeNextMix())

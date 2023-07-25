@@ -85,7 +85,7 @@ class ChanStrip extends React.PureComponent<
     changeDelay(currentValue: number, addValue: number) {
         window.socketIoClient.emit(SOCKET_SET_FX, {
             fxParam: fxParamsList.DelayTime,
-            channel: this.props.faderIndex,
+            faderIndex: this.props.faderIndex,
             level: currentValue + addValue,
         })
     }
@@ -93,7 +93,7 @@ class ChanStrip extends React.PureComponent<
     handleFx(fxParam: fxParamsList, event: any) {
         window.socketIoClient.emit(SOCKET_SET_FX, {
             fxParam: fxParam,
-            channel: this.props.faderIndex,
+            faderIndex: this.props.faderIndex,
             level: parseFloat(event),
         })
     }
