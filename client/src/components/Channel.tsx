@@ -66,6 +66,7 @@ class Channel extends React.Component<
             nextProps.settings.showChanStrip !=
                 this.props.settings.showChanStrip ||
             nextProps.fader.amixOn != this.props.fader.amixOn ||
+            nextProps.fader.assignedChannels != this.props.fader.assignedChannels ||
             XOR(nextProps.fader.capabilities, this.props.fader.capabilities) ||
             XOR(
                 nextProps.fader.capabilities?.hasAMix,
