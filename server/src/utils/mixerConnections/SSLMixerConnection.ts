@@ -60,7 +60,7 @@ export class SSLMixerConnection {
 
     private getAssignedFaderIndex(channelIndex: number) {
         return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels.some((assigned: IChannelReference) => {
+            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
                 return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
             })
         )
@@ -101,7 +101,7 @@ export class SSLMixerConnection {
                             )
                         }
                         if (state.faders[0].fader[assignedFaderIndex].pgmOn) {
-                            state.faders[0].fader[assignedFaderIndex].assignedChannels.forEach(
+                            state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
                                 (item: IChannelReference) => {
                                     if (item.mixerIndex === this.mixerIndex) {
                                         this.updateOutLevel(item.channelIndex)
@@ -115,7 +115,7 @@ export class SSLMixerConnection {
                     state.faders[0].fader[assignedFaderIndex].voOn
                 ) {
                     store.dispatch(storeFaderLevel(assignedFaderIndex, value))
-                    state.faders[0].fader[assignedFaderIndex].assignedChannels.forEach(
+                    state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
                         (item: IChannelReference) => {
                             if (item.mixerIndex === this.mixerIndex) {
                                 store.dispatch(
@@ -163,7 +163,7 @@ export class SSLMixerConnection {
             )
         }
 
-        state.faders[0].fader[assignedFaderIndex].assignedChannels.forEach(
+        state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
             (item: IChannelReference) => {
                 if (item.mixerIndex === this.mixerIndex && item.channelIndex !== channelIndex) {
                     this.updateMuteState(item.channelIndex, value)

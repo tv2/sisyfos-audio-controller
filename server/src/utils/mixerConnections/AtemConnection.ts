@@ -314,7 +314,7 @@ export class AtemMixerConnection {
     private getAssignedFader(channelIndex: number): IFader {
         return (state.faders[0].fader.find((fader: IFader) => {
             return (
-                fader.assignedChannels.some((assignedChannel: IChannelReference) => {
+                fader.assignedChannels?.some((assignedChannel: IChannelReference) => {
                     return (
                         assignedChannel.mixerIndex === this.mixerIndex &&
                         assignedChannel.channelIndex === channelIndex

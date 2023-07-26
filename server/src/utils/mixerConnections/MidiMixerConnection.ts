@@ -56,7 +56,7 @@ export class MidiMixerConnection {
 
     private getAssignedFaderIndex(channelIndex: number) {
         return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels.some((assigned: IChannelReference) => {
+            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
                 return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
             })
         )
@@ -103,7 +103,7 @@ export class MidiMixerConnection {
                     )
                 }
                 if (state.faders[0].fader[faderChannel - 1].pgmOn) {
-                    state.faders[0].fader[faderChannel - 1].assignedChannels.forEach(
+                    state.faders[0].fader[faderChannel - 1].assignedChannels?.forEach(
                         (channel: IChannelReference) => {
                             if (channel.mixerIndex === this.mixerIndex) {
                                 this.updateOutLevel(channel.channelIndex, faderChannel - 1)

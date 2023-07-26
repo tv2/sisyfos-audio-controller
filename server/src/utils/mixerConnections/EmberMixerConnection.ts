@@ -50,7 +50,7 @@ export class EmberMixerConnection {
 
     private getAssignedFaderIndex(channelIndex: number) {
         return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels.some((assigned: IChannelReference) => {
+            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
                 return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
             })
         )

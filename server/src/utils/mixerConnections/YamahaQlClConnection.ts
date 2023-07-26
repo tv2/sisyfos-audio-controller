@@ -158,7 +158,7 @@ export class QlClMixerConnection {
                             if (
                                 state.faders[0].fader[assignedFader - 1].pgmOn
                             ) {
-                                state.faders[0].fader[assignedFader - 1].assignedChannels.forEach(
+                                state.faders[0].fader[assignedFader - 1].assignedChannels?.forEach(
                                     (ch: IChannelReference) => {
                                         if (ch.mixerIndex === this.mixerIndex) {
                                             this.updateOutLevel(ch.channelIndex)
@@ -196,7 +196,7 @@ export class QlClMixerConnection {
                                 value ? 1 : 0
                             )
                         }
-                        state.faders[0].fader[assignedFaderIndex].assignedChannels.forEach(
+                        state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
                             (ch: IChannelReference) => {
                                 if (ch.mixerIndex === this.mixerIndex) {
                                     this.updateMuteState(ch.channelIndex, state.faders[0].fader[assignedFaderIndex]
@@ -230,7 +230,7 @@ export class QlClMixerConnection {
 
     private getAssignedFaderIndex(channelIndex: number) {
         return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels.some((assigned: IChannelReference) => {
+            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
                 return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
             })
         )

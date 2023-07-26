@@ -140,7 +140,7 @@ export class StuderVistaMixerConnection {
 
     private getAssignedFaderIndex(channelIndex: number) {
         return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels.some((assigned: IChannelReference) => {
+            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
                 return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
             })
         )
@@ -206,7 +206,7 @@ export class StuderVistaMixerConnection {
             state.faders[0].fader[assignedFaderIndex].voOn
         ) {
             store.dispatch(storeFaderLevel(assignedFaderIndex, value))
-            state.faders[0].fader[assignedFaderIndex].assignedChannels.forEach(
+            state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
                 (assignedChannel: IChannelReference) => {
                     if (
                         assignedChannel.mixerIndex === this.mixerIndex &&
@@ -372,7 +372,7 @@ export class StuderVistaMixerConnection {
 
     pingChannel(mixerMessage: string) {
         state.faders[0].fader.forEach((fader: IFader, index: number) => {
-            fader.assignedChannels.forEach((channelReference: IChannelReference) => {
+            fader.assignedChannels?.forEach((channelReference: IChannelReference) => {
                 if (channelReference.mixerIndex === this.mixerIndex) {
                     const channel = state.channels[0].chMixerConnection[
                         this.mixerIndex
