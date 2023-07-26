@@ -29,6 +29,7 @@ import { logger } from '../logger'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 
 interface IOscCommand {
     address: string
@@ -386,26 +387,20 @@ export class OscMixerConnection {
                         if (item.type !== undefined && item.type === 'aux') {
                             state.channels[0].chMixerConnection[
                                 this.mixerIndex
-                            ].channel.forEach((channel: any) => {
+                            ].channel.forEach((channel: IChannel, index: number) => {
+                                const assignedFaderIndex = this.getAssignedFaderIndex(index)
                                 channel.auxLevel.forEach(
                                     (auxLevel: any, auxIndex: number) => {
-                                        if (channel.assignedFader >= 0) {
-                                            if (
-                                                state.faders[0].fader[
-                                                channel.assignedFader
-                                                ]
-                                            ) {
-                                                setTimeout(() => {
-                                                    this.sendOutRequestAux(
-                                                        item.mixerMessage,
-                                                        auxIndex + 1,
-                                                        state.faders[0].fader[
-                                                            channel
-                                                                .assignedFader
-                                                        ].monitor
-                                                    )
-                                                }, state.faders[0].fader[channel.assignedFader].monitor * 10 + auxIndex * 100)
-                                            }
+                                        if (assignedFaderIndex >= 0) {
+                                            setTimeout(() => {
+                                                this.sendOutRequestAux(
+                                                    item.mixerMessage,
+                                                    auxIndex + 1,
+                                                    state.faders[0].fader[
+                                                        assignedFaderIndex
+                                                    ].monitor
+                                                )
+                                            }, state.faders[0].fader[assignedFaderIndex].monitor * 10 + auxIndex * 100)
                                         }
                                     }
                                 )
