@@ -170,19 +170,6 @@ export class SSLMixerConnection {
                 }
             }
         )
-        state.channels[0].chMixerConnection[this.mixerIndex].channel.forEach(
-            (channel: any, index: number) => {
-                if (
-                    channel.assignedFader === assignedFaderIndex &&
-                    index !== channelIndex
-                ) {
-                    this.updateMuteState(
-                        index,
-                        state.faders[0].fader[assignedFaderIndex].muteOn
-                    )
-                }
-            }
-        )
         mixerGenericConnection.updateMuteState(assignedFaderIndex, this.mixerIndex)
         global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
     }
@@ -411,10 +398,8 @@ export class SSLMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let faderIndex =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ].assignedFader
+        const faderIndex = this.getAssignedFaderIndex(channelIndex)
+
         if (state.faders[0].fader[faderIndex].pgmOn) {
             store.dispatch(
                 storeSetOutputLevel(
