@@ -12,13 +12,13 @@ import {
 
 export interface IChannels {
     chMixerConnection: IchMixerConnection[]
-  }
-  
-  export interface IchMixerConnection {
+}
+
+export interface IchMixerConnection {
     channel: Array<IChannel>
-  }
-  
-  export interface IChannel {
+}
+
+export interface IChannel {
     channelType: number
     channelTypeIndex: number
     assignedFader: number
@@ -29,11 +29,11 @@ export interface IChannels {
     private?: {
         [key: string]: string
     }
-  }
-  
-  export interface InumberOfChannels {
+}
+
+export interface InumberOfChannels {
     numberOfTypeInCh: number[]
-  }
+}
 
 const defaultChannelsReducerState = (
     numberOfChannels: InumberOfChannels[]
@@ -124,9 +124,11 @@ export const channels = (
             ].fadeActive = !!action.active
             return nextState
         case SET_ASSIGNED_FADER:
-            nextState[0].chMixerConnection[action.mixerIndex].channel[
-                action.channel
-            ].assignedFader = action.faderNumber
+            if (nextState[0].chMixerConnection[action.mixerIndex].channel.length > action.channel) {
+                nextState[0].chMixerConnection[action.mixerIndex].channel[
+                    action.channel
+                ].assignedFader = action.faderNumber
+            }
             return nextState
         case SET_AUX_LEVEL:
             let auxLevels =
