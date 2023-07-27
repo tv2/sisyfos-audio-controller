@@ -259,7 +259,6 @@ export class SSLMixerConnection {
         this.mixerProtocol.pingCommand.forEach((command) => {
             this.sendOutPingRequest()
         })
-        global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
             store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
         }, this.mixerProtocol.pingTime)
