@@ -495,7 +495,7 @@ export class MixerGenericConnection {
         const currentTimeMS = Date.now()
         const elapsedTimeMS = currentTimeMS - startTimeAsMs
 
-        if (elapsedTimeMS >= fadeTime) {
+        if (elapsedTimeMS >= fadeTime || endLevel === startLevel) {
             this.mixerConnection[mixerIndex].updateFadeIOLevel(
                 channelIndex,
                 endLevel
