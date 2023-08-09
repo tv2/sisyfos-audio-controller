@@ -94,16 +94,16 @@ class ChannelRouteSettings extends React.PureComponent<
         this.props.dispatch(storeShowOptions(this.faderIndex))
     }
 
-    getAssignedToFaderIndex = (channel: IChannelReference) => {
-        let isAssinged = -1
+    getAssignedToFaderIndex = (channel: IChannelReference): number => {
+        let assignedFaderIndex = -1
         this.props.fader.forEach((fader: any, index: number) => {
 
             if (fader.assignedChannels.some((assignedChan: IChannelReference) => {
                 return assignedChan.channelIndex === channel.channelIndex && assignedChan.mixerIndex === channel.mixerIndex
             }))
-                isAssinged = index
+                assignedFaderIndex = index
         })
-        return isAssinged
+        return assignedFaderIndex
     }
 
 
