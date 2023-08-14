@@ -74,7 +74,7 @@ class ChannelRouteSettings extends React.PureComponent<
         }
     }
 
-    handle1to1Routing() {
+    handleOneToOneRouting() {
         if (window.confirm('Reassign all Faders 1:1 to Channels????')) {
             window.socketIoClient.emit(SOCKET_REMOVE_ALL_CH_ASSIGNMENTS)
             this.props.fader.forEach((fader: any, index: number) => {
@@ -165,7 +165,7 @@ class ChannelRouteSettings extends React.PureComponent<
                 </button>
                 <button
                     className="button"
-                    onClick={() => this.handle1to1Routing()}
+                    onClick={() => this.handleOneToOneRouting()}
                 >
                     ROUTE 1.Mixer 1:1
                 </button>
