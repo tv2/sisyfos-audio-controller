@@ -112,7 +112,7 @@ class ChanStripEq extends React.PureComponent<
         //        window.storeRedux.dispatch(storeFaderFx(fxParam, this.props.faderIndex, parseFloat(level)))
         window.socketIoClient.emit(SOCKET_SET_FX, {
             fxParam: fxParam,
-            channel: this.props.faderIndex,
+            faderIndex: this.props.faderIndex,
             level: parseFloat(level),
         })
     }

@@ -20,7 +20,7 @@ import {
     storeSetOutputLevel,
 } from '../../../../shared/src/actions/channelActions'
 import { remoteConnections } from '../../mainClasses'
-import { IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 
 export class StuderVistaMixerConnection {
@@ -50,7 +50,7 @@ export class StuderVistaMixerConnection {
                 host: state.settings[0].mixers[this.mixerIndex].deviceIp,
                 timeout: 1000,
             },
-            () => {}
+            () => { }
         )
 
         this.mixerConnection
@@ -138,6 +138,14 @@ export class StuderVistaMixerConnection {
         return channelArrayIndex
     }
 
+    private getAssignedFaderIndex(channelIndex: number) {
+        return state.faders[0].fader.findIndex(
+            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
+                return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
+            })
+        )
+    }
+
     checkEmberCommand(message: string, protocolMessage: string): boolean {
         let messageArray = message.split('31 ')
         if (messageArray.length > 2) {
@@ -182,10 +190,7 @@ export class StuderVistaMixerConnection {
             channelType,
             channelTypeIndex
         )
-        let assignedFader =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelArrayIndex
-            ].assignedFader
+        let assignedFaderIndex = this.getAssignedFaderIndex(channelArrayIndex)
 
         if (
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
@@ -197,26 +202,30 @@ export class StuderVistaMixerConnection {
 
         if (
             value > state.settings[0].autoResetLevel / 100 ||
-            state.faders[0].fader[assignedFader].pgmOn ||
-            state.faders[0].fader[assignedFader].voOn
+            state.faders[0].fader[assignedFaderIndex].pgmOn ||
+            state.faders[0].fader[assignedFaderIndex].voOn
         ) {
-            store.dispatch(storeFaderLevel(assignedFader, value))
-            state.channels[0].chMixerConnection[
-                this.mixerIndex
-            ].channel.forEach((item: { assignedFader: any }, index: number) => {
-                if (item.assignedFader === assignedFader) {
-                    store.dispatch(
-                        storeSetOutputLevel(this.mixerIndex, index, value)
-                    )
+            store.dispatch(storeFaderLevel(assignedFaderIndex, value))
+            state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
+                (assignedChannel: IChannelReference) => {
+                    if (
+                        assignedChannel.mixerIndex === this.mixerIndex &&
+                        assignedChannel.channelIndex !== channelArrayIndex
+                    ) {
+                        store.dispatch(
+                            storeSetOutputLevel(this.mixerIndex, assignedChannel.channelIndex, value)
+                        )
+                    }
                 }
-            })
-            if (!state.faders[0].fader[assignedFader].pgmOn) {
+            )
+
+            if (!state.faders[0].fader[assignedFaderIndex].pgmOn) {
                 if (value > 0) {
-                    store.dispatch(storeTogglePgm(assignedFader))
+                    store.dispatch(storeTogglePgm(assignedFaderIndex))
                 }
             }
-            global.mainThreadHandler.updatePartialStore(assignedFader)
-            remoteConnections.updateRemoteFaderState(assignedFader, value)
+            global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
+            remoteConnections.updateRemoteFaderState(assignedFaderIndex, value)
         }
     }
 
@@ -272,10 +281,7 @@ export class StuderVistaMixerConnection {
                 : false
 
         // Update store:
-        let assignedFader =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                this.findChannelInArray(channelType, channelTypeIndex)
-            ].assignedFader
+        let assignedFader = this.getAssignedFaderIndex(this.findChannelInArray(channelType, channelTypeIndex))
 
         store.dispatch(storeSetMute(assignedFader, mute))
         global.mainThreadHandler.updatePartialStore(assignedFader)
@@ -366,10 +372,11 @@ export class StuderVistaMixerConnection {
 
     pingChannel(mixerMessage: string) {
         state.faders[0].fader.forEach((fader: IFader, index: number) => {
-            state.channels[0].chMixerConnection[
-                this.mixerIndex
-            ].channel.forEach((channel: IChannel) => {
-                if (channel.assignedFader === index) {
+            fader.assignedChannels?.forEach((channelReference: IChannelReference) => {
+                if (channelReference.mixerIndex === this.mixerIndex) {
+                    const channel = state.channels[0].chMixerConnection[
+                        this.mixerIndex
+                    ].channel[channelReference.channelIndex]
                     let message = mixerMessage
                         .replace(
                             '{ch-type}',
@@ -627,7 +634,7 @@ export class StuderVistaMixerConnection {
         return
     }
 
-    loadMixerPreset(presetName: string) {}
+    loadMixerPreset(presetName: string) { }
 
     injectCommand(command: string[]) {
         return true
