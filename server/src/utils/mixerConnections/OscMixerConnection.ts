@@ -128,7 +128,6 @@ export class OscMixerConnection {
                             .CHANNEL_VU?.[0].mixerMessage
                     )
                 ) {
-                    const assignedFaderIndex = this.getAssignedFaderIndex(message.address.split('/')[this.cmdChannelIndex])
                     if (
                         state.settings[0].mixers[
                             this.mixerIndex
@@ -141,8 +140,9 @@ export class OscMixerConnection {
                         ].mixerProtocol.includes('midas')
                     ) {
                         this.resetMixerTimeout()
-                        midasMeter(this.mixerIndex, message.args, assignedFaderIndex)
+                        midasMeter(this.mixerIndex, message.args)
                     } else {
+                        const assignedFaderIndex = this.getAssignedFaderIndex(message.address.split('/')[this.cmdChannelIndex])
                         let ch =
                             message.address.split('/')[this.cmdChannelIndex]
                         sendVuLevel(

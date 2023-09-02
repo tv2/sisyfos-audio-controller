@@ -44,6 +44,7 @@ export class MainThreadHandlers {
 
         this.snapshotHandler = new SnapshotHandler()
         store.dispatch(storeUpdateSettings(loadSettings(state)))
+        this.cleanUpAssignedChannelsOnFaders()
         this.reIndexAssignedChannelsRelation()
     }
 
@@ -94,6 +95,25 @@ export class MainThreadHandlers {
             })
         })
     }
+
+    cleanUpAssignedChannelsOnFaders() {
+        state.faders[0].fader.forEach((fader, faderIndex) => {
+            fader.assignedChannels?.forEach((channel: IChannelReference) => {
+                if (state.settings[0].numberOfMixers < channel.mixerIndex + 1) {
+                    store.dispatch(
+                        FADER_ACTIONS.storeSetAssignedChannel(
+                            faderIndex,
+                            channel.mixerIndex,
+                            channel.channelIndex,
+                            false
+                        )
+                    )
+                }
+            })
+        })
+    }
+
+
 
     socketServerHandlers(socket: any) {
         logger.info('Setting up socket IO main handlers.')
