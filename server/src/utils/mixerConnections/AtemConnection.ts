@@ -7,7 +7,7 @@ import {
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
-import { IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import {
@@ -64,7 +64,7 @@ export class AtemMixerConnection {
                     .data(error)
                     .error(
                         'Failed to connect to atem ' +
-                            state.settings[0].mixers[this.mixerIndex].deviceIp
+                        state.settings[0].mixers[this.mixerIndex].deviceIp
                     )
             })
     }
@@ -104,17 +104,17 @@ export class AtemMixerConnection {
                 if (
                     channelIndex === undefined ||
                     !state.fairlight.inputs[input].sources[
-                        this._sourceTracks[channelIndex]
+                    this._sourceTracks[channelIndex]
                     ]
                 ) {
                     continue
                 }
 
                 const channel = this.getChannel(channelIndex)
-                const fader = this.getFaderFromChannelIndex(channelIndex)
+                const fader = this.getAssignedFader(channelIndex)
                 const source =
                     state.fairlight.inputs[input].sources[
-                        this._sourceTracks[channelIndex]
+                    this._sourceTracks[channelIndex]
                     ]
 
                 this.setPropsFromChannel(channelIndex, channel, fader, source)
@@ -194,10 +194,10 @@ export class AtemMixerConnection {
 
     updateInputSelector(channelIndex: number, inputSelected: number) {
         const { channelTypeIndex } = this.getChannel(channelIndex)
-        const { pgmOn, pflOn } = this.getFaderFromChannelIndex(channelIndex)
+        const { pgmOn, pflOn } = this.getAssignedFader(channelIndex)
         const tracks =
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_INPUT_SELECTOR?.[
-                inputSelected - 1
+            inputSelected - 1
             ]
         if (!tracks) return
 
@@ -276,8 +276,8 @@ export class AtemMixerConnection {
 
     updateFadeIOLevel(channelIndex: number, level: number): void {
         const channel = this.getChannel(channelIndex)
-        const fader = this.getFaderFromChannelIndex(channelIndex)
-        const { muteOn } = this.getFaderFromChannelIndex(channelIndex)
+        const fader = this.getAssignedFader(channelIndex)
+        const { muteOn } = this.getAssignedFader(channelIndex)
         const sourceNo = this._chNoToSource[channel.channelTypeIndex]
 
         if (level > 0 && !muteOn) {
@@ -311,14 +311,20 @@ export class AtemMixerConnection {
         }
     }
 
-    private getFaderFromChannelIndex(channelIndex: number): IFader {
-        const faderIndex =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ].assignedFader
-
-        return state.faders[0].fader[faderIndex]
+    private getAssignedFader(channelIndex: number): IFader {
+        return (state.faders[0].fader.find((fader: IFader) => {
+            return (
+                fader.assignedChannels?.some((assignedChannel: IChannelReference) => {
+                    return (
+                        assignedChannel.mixerIndex === this.mixerIndex &&
+                        assignedChannel.channelIndex === channelIndex
+                    )
+                })
+            )
+        }
+        ))
     }
+
     private getChannel(channelIndex: number): IChannel {
         return state.channels[0].chMixerConnection[this.mixerIndex].channel[
             channelIndex

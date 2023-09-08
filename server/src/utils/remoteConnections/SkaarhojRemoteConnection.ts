@@ -95,8 +95,8 @@ export class SkaarhojRemoteConnection {
         )
         let event = command.slice(command.indexOf('=') + 1)
         if (btnNumber <= state.faders[0].fader.length) {
-            let channelIndex = btnNumber - 1
-            let level = state.faders[0].fader[channelIndex].faderLevel
+            let faderIndex = btnNumber - 1
+            let level = state.faders[0].fader[faderIndex].faderLevel
             if (event === 'Enc:1') {
                 level += 0.01
                 if (level > 1) {
@@ -119,11 +119,11 @@ export class SkaarhojRemoteConnection {
                 }
             }
             //Fader changed:
-            logger.debug(`Received Fader ${channelIndex + 1} Level : ${level}`)
-            store.dispatch(storeFaderLevel(channelIndex, level))
-            mixerGenericConnection.updateOutLevel(channelIndex, -1)
-            global.mainThreadHandler.updatePartialStore(channelIndex)
-            this.updateRemoteFaderState(channelIndex, level)
+            logger.debug(`Received Fader ${faderIndex + 1} Level : ${level}`)
+            store.dispatch(storeFaderLevel(faderIndex, level))
+            mixerGenericConnection.updateOutLevel(faderIndex, -1)
+            global.mainThreadHandler.updatePartialStore(faderIndex)
+            this.updateRemoteFaderState(faderIndex, level)
         } else if (btnNumber > 80) {
             this.handleAuxLevelCommand(command, btnNumber)
         }

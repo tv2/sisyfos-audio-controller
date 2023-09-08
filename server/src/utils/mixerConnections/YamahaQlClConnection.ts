@@ -18,6 +18,7 @@ import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
+import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 
 export class QlClMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -109,8 +110,7 @@ export class QlClMixerConnection {
                         let ch = parseInt(mixerValues[3])
                         let assignedFader =
                             1 +
-                            state.channels[0].chMixerConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader
+                            this.getAssignedFaderIndex(ch - 1)
                         let mixerValue = parseInt(mixerValues[6])
                         sendVuLevel(
                             assignedFader,
@@ -127,9 +127,7 @@ export class QlClMixerConnection {
                     ) {
                         let ch = 1 + (message[11] | (message[10] << 8))
                         let assignedFader =
-                            1 +
-                            state.channels[0].chMixerConnection[this.mixerIndex]
-                                .channel[ch - 1].assignedFader
+                            1 + this.getAssignedFaderIndex(ch - 1)
                         let mixerLevel: number =
                             message[16] | (message[15] << 8) // parseFloat(message[16])
                         let faderLevel = Math.pow(2, mixerLevel / 1920) - 1
@@ -160,15 +158,10 @@ export class QlClMixerConnection {
                             if (
                                 state.faders[0].fader[assignedFader - 1].pgmOn
                             ) {
-                                state.channels[0].chMixerConnection[
-                                    this.mixerIndex
-                                ].channel.forEach(
-                                    (channel: any, index: number) => {
-                                        if (
-                                            channel.assignedFader ===
-                                            assignedFader - 1
-                                        ) {
-                                            this.updateOutLevel(index)
+                                state.faders[0].fader[assignedFader - 1].assignedChannels?.forEach(
+                                    (ch: IChannelReference) => {
+                                        if (ch.mixerIndex === this.mixerIndex) {
+                                            this.updateOutLevel(ch.channelIndex)
                                         }
                                     }
                                 )
@@ -189,14 +182,11 @@ export class QlClMixerConnection {
 
                         let value: boolean = message[16] === 0 ? true : false
                         logger.trace(
-                            `Receive Buffer Channel On/off - Channel ${
-                                channelIndex + 1
+                            `Receive Buffer Channel On/off - Channel ${channelIndex + 1
                             } Val :${message[16]}`
                         )
 
-                        let assignedFaderIndex =
-                            state.channels[0].chMixerConnection[this.mixerIndex]
-                                .channel[channelIndex].assignedFader
+                        let assignedFaderIndex = this.getAssignedFaderIndex(channelIndex)
 
                         store.dispatch(storeSetMute(assignedFaderIndex, value))
 
@@ -206,20 +196,14 @@ export class QlClMixerConnection {
                                 value ? 1 : 0
                             )
                         }
-                        state.channels[0].chMixerConnection[
-                            this.mixerIndex
-                        ].channel.forEach((channel: any, index: number) => {
-                            if (
-                                channel.assignedFader === assignedFaderIndex &&
-                                index !== channelIndex
-                            ) {
-                                this.updateMuteState(
-                                    index,
-                                    state.faders[0].fader[assignedFaderIndex]
-                                        .muteOn
-                                )
+                        state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
+                            (ch: IChannelReference) => {
+                                if (ch.mixerIndex === this.mixerIndex) {
+                                    this.updateMuteState(ch.channelIndex, state.faders[0].fader[assignedFaderIndex]
+                                        .muteOn)
+                                }
                             }
-                        })
+                        )
                         global.mainThreadHandler.updatePartialStore(
                             assignedFaderIndex
                         )
@@ -242,6 +226,14 @@ export class QlClMixerConnection {
         this.mixerOnlineTimer = setTimeout(() => {
             store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
         }, this.mixerProtocol.pingTime)
+    }
+
+    private getAssignedFaderIndex(channelIndex: number) {
+        return state.faders[0].fader.findIndex(
+            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
+                return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
+            })
+        )
     }
 
     checkMidiCommand(midiMessage: number[], command: string) {
@@ -312,10 +304,7 @@ export class QlClMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        let faderIndex =
-            state.channels[0].chMixerConnection[this.mixerIndex].channel[
-                channelIndex
-            ].assignedFader
+        let faderIndex = this.getAssignedFaderIndex(channelIndex)
         if (state.faders[0].fader[faderIndex].pgmOn) {
             store.dispatch(
                 storeSetOutputLevel(
@@ -451,7 +440,7 @@ export class QlClMixerConnection {
         )
     }
 
-    loadMixerPreset(presetName: string) {}
+    loadMixerPreset(presetName: string) { }
 
     injectCommand(command: string[]) {
         return true

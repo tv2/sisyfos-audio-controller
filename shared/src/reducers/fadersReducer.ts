@@ -285,9 +285,9 @@ export const faders = (
 
             if (action.assigned) {
                 if (
-                    !newAssignments.includes({
-                        mixerIndex: action.mixerIndex,
-                        channelIndex: action.channelIndex,
+                    !newAssignments.some((channel) => {
+                        return (channel.mixerIndex === action.mixerIndex &&
+                            channel.channelIndex === action.channelIndex)
                     })
                 ) {
                     newAssignments.push({
@@ -304,10 +304,10 @@ export const faders = (
                     )
                 }
             } else {
-                newAssignments = newAssignments.filter((channel) => {
-                    return (
-                        channel.channelIndex !== action.channelIndex &&
-                        channel.mixerIndex !== action.mixerIndex
+                newAssignments = newAssignments.filter((channel: IChannelReference) => {
+                    return !(
+                        channel.channelIndex === action.channelIndex &&
+                        channel.mixerIndex === action.mixerIndex
                     )
                 })
             }

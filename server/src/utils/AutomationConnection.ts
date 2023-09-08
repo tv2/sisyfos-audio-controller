@@ -147,7 +147,14 @@ export class AutomationConnection {
             } else if (check('CHANNEL_FADER_LEVEL')) {
                 wrapChannelCommand((ch: any) => {
                     store.dispatch(storeFaderLevel(ch - 1, message.args[0]))
-                    mixerGenericConnection.updateOutLevel(ch - 1, -1)
+                    if (message.args.length > 1) {
+                        mixerGenericConnection.updateOutLevel(
+                            ch - 1,
+                            parseFloat(message.args[1])
+                        )
+                    } else {
+                        mixerGenericConnection.updateOutLevel(ch - 1, -1)
+                    }
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                 })
             } else if (check('INJECT_COMMAND')) {
