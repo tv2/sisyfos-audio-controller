@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Access repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - uses: ./.github/actions/cache
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -24,14 +24,14 @@ jobs:
     needs: cache-dependencies
     steps:
       - name: Access repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - uses: ./.github/actions/test
 
   validate-dependencies:
     runs-on: ubuntu-latest
     steps:
       - name: Access repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - uses: ./.github/actions/validate-dependencies
 
   build:
@@ -51,13 +51,13 @@ jobs:
         run: yarn build
 
       - name: Upload client build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}-client-develop
           path: client/dist
 
       - name: Upload server build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.repository.name }}-server-develop
           path: server/dist
@@ -69,7 +69,7 @@ jobs:
       defined: ${{ steps.username.outputs.defined == 'true' && steps.password.outputs.defined == 'true' }}
     steps:
       - name: Access repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Check if has username
         id: username
@@ -90,34 +90,34 @@ jobs:
       - check-docker-credentials
     steps:
       - name: Access repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: ${{ github.event.repository.name }}-client-develop
           path: client/dist
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: ${{ github.event.repository.name }}-server-develop
           path: server/dist
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: "tv2media/${{ github.event.repository.name }}"
           tags: |
             type=ref,event=branch
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: true
