@@ -28,7 +28,7 @@
         "node-vmix": "^1.6.1",
         "osc": "^2.4.4",
         "performance-now": "^2.1.0",
-        "redux": "^4.1.2",
+        "redux": "^4.2.1",
         "socket.io": "^4.6.2",
         "tslib": "^2.5.0",
         "vmix-js-utils": "^4.0.16",
