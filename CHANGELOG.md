@@ -1,3 +1,57 @@
+## [4.19.0](https://github.com/tv2/sisyfos-audio-controller/compare/v4.18.1...v4.19.0) (2023-09-08)
+
+
+### Features
+
+* Atem Fairlight Ch-Fader relation ([5bc654e](https://github.com/tv2/sisyfos-audio-controller/commit/5bc654e73cf565240be6c30b7d564f4c5b960533))
+* Ember Ch-Fader relation ([71b69c1](https://github.com/tv2/sisyfos-audio-controller/commit/71b69c11d9f1ab6f049d759685a392287ab9f9a2))
+* Midas channel-fader relation ([6a495d6](https://github.com/tv2/sisyfos-audio-controller/commit/6a495d6c9898f38d99f8fb3d95164afeda563eb9))
+* MidiMixer Channel-Fader relation ([4417b2f](https://github.com/tv2/sisyfos-audio-controller/commit/4417b2fe42ab1ab813b68f1818c6fb185883c2be))
+* Optionally allow the fade time to be specified with the fader level ([edf95b0](https://github.com/tv2/sisyfos-audio-controller/commit/edf95b0f2bc64f61707309529393e946bb1676f2))
+* OSC mixer remove last .assignedFader reference ([a72497a](https://github.com/tv2/sisyfos-audio-controller/commit/a72497a73f62811b97c339bf43657a3c7359a3d8))
+* rename channel to fader ([db40d02](https://github.com/tv2/sisyfos-audio-controller/commit/db40d02feefd4f2b50b423bfe8dfc8fe4c2f8d28))
+* rename channel to faderIndex & use fader ref in channelroutesettings ([454e3a2](https://github.com/tv2/sisyfos-audio-controller/commit/454e3a2c1f318334f64a80f720f4c2238b33fef7))
+* rename handle1to1Routing to handleOneToOneRouting ([6aba807](https://github.com/tv2/sisyfos-audio-controller/commit/6aba8076a07a9fa300c240583e6e6c4f33fe3640))
+* SSL ch-fader relation ([db25280](https://github.com/tv2/sisyfos-audio-controller/commit/db252800fddc38acad1f567a3ce5f70d2b9f717d))
+* VMix channel-fader realtion ([8240673](https://github.com/tv2/sisyfos-audio-controller/commit/8240673d6def0a426559554b98c9e593e2042898))
+* YamahaQl Channel-Fader relation ([6361e39](https://github.com/tv2/sisyfos-audio-controller/commit/6361e39e0e75b58890c5696f123b726f5e6df41f))
+
+
+### Bug Fixes
+
+* cleanup fader assignments when number of mixers are changed ([2741f1c](https://github.com/tv2/sisyfos-audio-controller/commit/2741f1c9c1b37c3a8df2779e9d6451277a4f72fb))
+* clear old assignment prior to recalculate them ([ca5373e](https://github.com/tv2/sisyfos-audio-controller/commit/ca5373e2854487e0e1e5091637931be7fae22cba))
+* Don't fade if the start and end levels are the same ([80a2cdf](https://github.com/tv2/sisyfos-audio-controller/commit/80a2cdfdd044b09f0b8062c5e3179c3562c85b03))
+* don't run auxLevel request loop if channel is not assigned to any fader ([ee29125](https://github.com/tv2/sisyfos-audio-controller/commit/ee29125229f30a71e65f10d09c2ff66194f4800f))
+* fader Ch assigment ([2232442](https://github.com/tv2/sisyfos-audio-controller/commit/2232442266815ddffed8101b989c83940b6718e2))
+* false false return gave true ([8890e06](https://github.com/tv2/sisyfos-audio-controller/commit/8890e0619ffcc4d0d4e939c95d140ba3e3c78196))
+* global store war updated everytime a ping was sent ([a2597d9](https://github.com/tv2/sisyfos-audio-controller/commit/a2597d9f558d9e0222dedd68330491a8a1df2ded))
+* if size of mixer changed, SET_ASSIGNED_FADER gave an error ([9371ae1](https://github.com/tv2/sisyfos-audio-controller/commit/9371ae134bb78255500225418ffc5bdadf4cf826))
+* index in iteration was unsused ([61a3b3a](https://github.com/tv2/sisyfos-audio-controller/commit/61a3b3a1306dbd2983b417cbb29336caab16ff8a))
+* Midas OSC messages gave an error when an Fxparameter was on a channel that was not assigned to a fader. ([ab9d7ff](https://github.com/tv2/sisyfos-audio-controller/commit/ab9d7ff0553bd70d2a2e94567f9625978caedcec))
+* more optionals when no channels are assigned to a fader ([991128a](https://github.com/tv2/sisyfos-audio-controller/commit/991128a3e7dd006d31fa9c382ef355e8a0d7bad7))
+* optional if no channels are assigned to a fader ([92b6091](https://github.com/tv2/sisyfos-audio-controller/commit/92b6091042ffde9671349d8cbbef7199f0785157))
+* optional if no cvhannels are assigned to a fader ([81b5beb](https://github.com/tv2/sisyfos-audio-controller/commit/81b5bebb9374e1bb09c2d72d6e386596f0e831df))
+* rename to handleClearAllRouting ([036cc89](https://github.com/tv2/sisyfos-audio-controller/commit/036cc8908c305a7087baa75809ffda5d9d2835ad))
+* return assignedfader instead of faderindex ([686b9de](https://github.com/tv2/sisyfos-audio-controller/commit/686b9de3700c0ab6846506e4cb8be2f03179a19e))
+* revert Midas metering back to code from last release. As metering comes in "all channels at once", so reference to Channel is way more performant. ([546367b](https://github.com/tv2/sisyfos-audio-controller/commit/546367bd1d0c42a93ee4d166418a108679a3df87))
+* spelling error in isAssinged. renamed to assignedFaderIndex ([f25d537](https://github.com/tv2/sisyfos-audio-controller/commit/f25d537166f0d03d90c69ed5126b7f3bb64ef550))
+* SSLmixer remove last references to channel.assignedFader ([fef38ed](https://github.com/tv2/sisyfos-audio-controller/commit/fef38ede5c2b52acbd0e07c79e02a13069c5daf2))
+* status of monitorrouting should be boolean ([3d5bd24](https://github.com/tv2/sisyfos-audio-controller/commit/3d5bd247c08bf83607c5326dc5841238e281511d))
+* throw error if OSC protocol ports are already in use ([42c2c8a](https://github.com/tv2/sisyfos-audio-controller/commit/42c2c8a518bfa3ec06024230ff9fd6510bd7a19b))
+* unbind channel prior to binding it to new channel ([99dc4a0](https://github.com/tv2/sisyfos-audio-controller/commit/99dc4a0556472f618252efb6f21af237bda46a72))
+* update fullClientStore after clearing all ch - fader assignments ([e147a6d](https://github.com/tv2/sisyfos-audio-controller/commit/e147a6d384a38de16364673fd2bc86bbcb005b9d))
+* update gui when assignments to a fader changes ([ee56778](https://github.com/tv2/sisyfos-audio-controller/commit/ee567786052267d5c9dcfae113bc98edf572cf59))
+* use .some instead of includes on objects ([055c82c](https://github.com/tv2/sisyfos-audio-controller/commit/055c82cb0e082c5d53aded9616de67f20dbe29b3))
+* use .some() instead of includes for objects. ([bff1425](https://github.com/tv2/sisyfos-audio-controller/commit/bff14251d6da815a76f0157e6ed97495d8bcdb4c))
+* use optional on .assignedChannels ([487d15c](https://github.com/tv2/sisyfos-audio-controller/commit/487d15c451e84ed6486567173432a7f5464f8765))
+
+
+### Documentation
+
+* Document fadeTime arg for faderLevel ([e69b7b1](https://github.com/tv2/sisyfos-audio-controller/commit/e69b7b11e382e341ef76af6299117299dcec3db2))
+
+
 ### [4.18.1](https://github.com/tv2/sisyfos-audio-controller/compare/v4.18.0...v4.18.1) (2023-06-22)
 
 
