@@ -195,6 +195,9 @@ export class VMixMixerConnection {
                     state.channels[0].chMixerConnection[this.mixerIndex]
                         .channel[input.number - 1]
                 const assignedFaderIndex = this.getAssignedFaderIndex(input.number - 1)
+                if (!state.faders[0].fader[assignedFaderIndex]) {
+                    return
+                }
                 const { inputGain, muteOn, pflOn, pgmOn, voOn } =
                     state.faders[0].fader[assignedFaderIndex]
                 let sendUpdate = false
