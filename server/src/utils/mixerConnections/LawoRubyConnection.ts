@@ -15,10 +15,12 @@ import {
     storeSetAMix,
     storeCapability,
     storeShowChannel,
+    storeSetPgm,
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
 import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
+import { EmberElement, NumberedTreeNode } from 'emberplus-connection/dist/model'
 
 // TODO - should these be util functions?
 export function floatToDB(f: number): number {
@@ -122,7 +124,9 @@ export class LawoRubyMixerConnection {
             'Ruby.Sources'
         )
         // get the sources
-        const req = await this.emberConnection.getDirectory(sourceNode)
+        const req = await this.emberConnection.getDirectory(
+            sourceNode as NumberedTreeNode<EmberElement>
+        )
         const sources = await req.response
 
         // map sourceNames to their fader number
@@ -251,36 +255,37 @@ export class LawoRubyMixerConnection {
             if (node.contents.type !== Model.ElementType.Parameter) return
 
             logger.debug(`Subscription of channel level: ${command}`)
-            this.emberConnection.subscribe(node, () => {
-                logger.trace(`Receiving Level from Ch ${ch}`)
-                if (
-                    !state.channels[0].chMixerConnection[this.mixerIndex]
-                        .channel[ch - 1].fadeActive &&
-                    (node.contents as Model.Parameter).value as number >
-                        this.mixerProtocol.channelTypes[typeIndex].fromMixer
-                            .CHANNEL_OUT_GAIN[0].min
-                ) {
-                    store.dispatch(
-                        storeFaderLevel(
-                            ch - 1,
-                            dbToFloat(
-                                (node.contents as Model.Parameter)
-                                    .value as number
+            this.emberConnection.subscribe(
+                node as NumberedTreeNode<EmberElement>,
+                () => {
+                    const levelDB = (node.contents as Model.Parameter)
+                        .value as number
+                    logger.debug(`Receiving Level from Ch ${ch}: ${levelDB}`)
+                    if (
+                        !state.channels[0].chMixerConnection[this.mixerIndex]
+                            .channel[ch - 1].fadeActive &&
+                        levelDB >=
+                            this.mixerProtocol.channelTypes[typeIndex].fromMixer
+                                .CHANNEL_OUT_GAIN[0].min
+                    ) {
+                        // update the fader
+                        const level = dbToFloat(levelDB)
+                        store.dispatch(storeFaderLevel(ch - 1, level))
+
+                        // toggle pgm based on level
+                        logger.trace(`Set Channel ${ch} pgmOn ${level > 0}`)
+                        store.dispatch(storeSetPgm(ch - 1, level > 0))
+
+                        global.mainThreadHandler.updatePartialStore(ch - 1)
+                        if (remoteConnections) {
+                            remoteConnections.updateRemoteFaderState(
+                                ch - 1,
+                                level
                             )
-                        )
-                    )
-                    global.mainThreadHandler.updatePartialStore(ch - 1)
-                    if (remoteConnections) {
-                        remoteConnections.updateRemoteFaderState(
-                            ch - 1,
-                            dbToFloat(
-                                (node.contents as Model.Parameter)
-                                    .value as number
-                            )
-                        )
+                        }
                     }
                 }
-            })
+            )
         } catch (e) {
             logger.data(e).debug('error when subscribing to fader level')
         }
@@ -303,15 +308,22 @@ export class LawoRubyMixerConnection {
             if (node.contents.type !== Model.ElementType.Parameter) return
 
             logger.debug(`Subscription of channel gain: ${command}`)
-            this.emberConnection.subscribe(node, () => {
-                logger.trace(`Receiving Gain from Ch ${ch}`)
-                const value = (node.contents as Model.Parameter).value as number
-                const level = (value - proto.min) / (proto.max - proto.min)
-                if ((node.contents as Model.Parameter).value as number > proto.min) {
-                    store.dispatch(storeInputGain(ch - 1, level))
-                    global.mainThreadHandler.updatePartialStore(ch - 1)
+            this.emberConnection.subscribe(
+                node as NumberedTreeNode<EmberElement>,
+                () => {
+                    logger.trace(`Receiving Gain from Ch ${ch}`)
+                    const value = (node.contents as Model.Parameter)
+                        .value as number
+                    const level = (value - proto.min) / (proto.max - proto.min)
+                    if (
+                        ((node.contents as Model.Parameter).value as number) >
+                        proto.min
+                    ) {
+                        store.dispatch(storeInputGain(ch - 1, level))
+                        global.mainThreadHandler.updatePartialStore(ch - 1)
+                    }
                 }
-            })
+            )
         } catch (e) {
             logger.data(e).debug('Error when subscribing to gain level')
         }
@@ -340,24 +352,31 @@ export class LawoRubyMixerConnection {
             }
 
             logger.debug(`Subscription of channel input selector: ${command}`)
-            this.emberConnection.subscribe(node, () => {
-                logger.trace(`Receiving InpSelector from Ch ${ch}`)
-                this.mixerProtocol.channelTypes[
-                    typeIndex
-                ].fromMixer.CHANNEL_INPUT_SELECTOR.forEach((selector, i) => {
-                    if (
-                        selector.value ===
-                        (node.contents as Model.Parameter).value
-                    ) {
-                        store.dispatch({
-                            type: SET_INPUT_SELECTOR,
-                            channel: ch - 1,
-                            selected: i + 1,
-                        })
-                        global.mainThreadHandler.updatePartialStore(ch - 1)
-                    }
-                })
-            })
+            this.emberConnection.subscribe(
+                node as NumberedTreeNode<EmberElement>,
+                () => {
+                    logger.trace(`Receiving InpSelector from Ch ${ch}`)
+                    this.mixerProtocol.channelTypes[
+                        typeIndex
+                    ].fromMixer.CHANNEL_INPUT_SELECTOR.forEach(
+                        (selector, i) => {
+                            if (
+                                selector.value ===
+                                (node.contents as Model.Parameter).value
+                            ) {
+                                store.dispatch({
+                                    type: SET_INPUT_SELECTOR,
+                                    channel: ch - 1,
+                                    selected: i + 1,
+                                })
+                                global.mainThreadHandler.updatePartialStore(
+                                    ch - 1
+                                )
+                            }
+                        }
+                    )
+                }
+            )
         } catch (e) {
             if (e.message.match(/could not find node/i)) {
                 logger.debug(`set_cap ${ch} hasInputSel false`)
@@ -392,16 +411,19 @@ export class LawoRubyMixerConnection {
             }
 
             logger.debug(`Subscription of AMix state: ${command}`)
-            this.emberConnection.subscribe(node, () => {
-                logger.trace(`Receiving AMix state from Ch ${ch}`)
-                store.dispatch(
-                    storeSetAMix(
-                        ch - 1,
-                        (node.contents as Model.Parameter).value === 1
+            this.emberConnection.subscribe(
+                node as NumberedTreeNode<EmberElement>,
+                () => {
+                    logger.trace(`Receiving AMix state from Ch ${ch}`)
+                    store.dispatch(
+                        storeSetAMix(
+                            ch - 1,
+                            (node.contents as Model.Parameter).value === 1
+                        )
                     )
-                )
-                global.mainThreadHandler.updatePartialStore(ch - 1)
-            })
+                    global.mainThreadHandler.updatePartialStore(ch - 1)
+                }
+            )
         } catch (e) {
             if (e.message.match(/could not find node/i)) {
                 logger.debug(`set_cap ${ch - 1} hasAMix false`)

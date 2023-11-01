@@ -27,7 +27,11 @@ import {
     storeSetChLabel,
 } from '../../../../shared/src/actions/channelActions'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
-import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
+import {
+    IChannelReference,
+    IFader,
+} from '../../../../shared/src/reducers/fadersReducer'
+import { EmberElement, NumberedTreeNode } from 'emberplus-connection/dist/model'
 
 export class EmberMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -49,9 +53,12 @@ export class EmberMixerConnection {
     }
 
     private getAssignedFaderIndex(channelIndex: number) {
-        return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
-                return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
+        return state.faders[0].fader.findIndex((fader: IFader) =>
+            fader.assignedChannels?.some((assigned: IChannelReference) => {
+                return (
+                    assigned.mixerIndex === this.mixerIndex &&
+                    assigned.channelIndex === channelIndex
+                )
             })
         )
     }
@@ -212,17 +219,13 @@ export class EmberMixerConnection {
                             channelTypeIndex
                         )
                     }
-                    store.dispatch(
-                        storeShowChannel(assignedFaderIndex, true)
-                    )
+                    store.dispatch(storeShowChannel(assignedFaderIndex, true))
                     global.mainThreadHandler.updatePartialStore(
                         assignedFaderIndex
                     )
                 } else {
                     logger.info(`Channel ${ch} offline`)
-                    store.dispatch(
-                        storeShowChannel(assignedFaderIndex, false)
-                    )
+                    store.dispatch(storeShowChannel(assignedFaderIndex, false))
                     global.mainThreadHandler.updatePartialStore(
                         assignedFaderIndex
                     )
@@ -249,7 +252,10 @@ export class EmberMixerConnection {
             )
             if (!node) return
 
-            await this.emberConnection.subscribe(node, cb)
+            await this.emberConnection.subscribe(
+                node as NumberedTreeNode<EmberElement>,
+                cb
+            )
 
             cb(node)
         } catch (e) {
@@ -285,9 +291,7 @@ export class EmberMixerConnection {
                 )
 
                 if (!channel.fadeActive && level >= 0 && level <= 1) {
-                    store.dispatch(
-                        storeFaderLevel(assignedFaderIndex, level)
-                    )
+                    store.dispatch(storeFaderLevel(assignedFaderIndex, level))
                     store.dispatch({
                         type: SET_OUTPUT_LEVEL,
                         channel: assignedFaderIndex,
@@ -297,9 +301,7 @@ export class EmberMixerConnection {
 
                     // toggle pgm based on level
                     logger.trace(`Set Channel ${ch} pgmOn ${level > 0}`)
-                    store.dispatch(
-                        storeSetPgm(assignedFaderIndex, level > 0)
-                    )
+                    store.dispatch(storeSetPgm(assignedFaderIndex, level > 0))
 
                     global.mainThreadHandler.updatePartialStore(
                         assignedFaderIndex
@@ -357,9 +359,7 @@ export class EmberMixerConnection {
                         )
                     )
                 }
-                global.mainThreadHandler.updatePartialStore(
-                    assignedFaderIndex
-                )
+                global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
         )
     }
@@ -390,9 +390,7 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value as boolean
                     )
                 )
-                global.mainThreadHandler.updatePartialStore(
-                    assignedFaderIndex
-                )
+                global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
         )
     }
@@ -429,9 +427,7 @@ export class EmberMixerConnection {
                 // assume it is in db now
                 level = this._faderLevelToFloat(Number(level), 0)
                 store.dispatch(storeInputGain(assignedFaderIndex, level))
-                global.mainThreadHandler.updatePartialStore(
-                    assignedFaderIndex
-                )
+                global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
         )
     }
@@ -510,9 +506,7 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value as boolean
                     )
                 )
-                global.mainThreadHandler.updatePartialStore(
-                    assignedFaderIndex
-                )
+                global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
         )
         // subscribe to input selectors
@@ -623,9 +617,7 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value as boolean
                     )
                 )
-                global.mainThreadHandler.updatePartialStore(
-                    assignedFaderIndex
-                )
+                global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
         )
     }
