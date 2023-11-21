@@ -418,7 +418,7 @@ export class LawoRubyMixerConnection {
                     store.dispatch(
                         storeSetAMix(
                             ch - 1,
-                            (node.contents as Model.Parameter).value === 1
+                            (node.contents as Model.Parameter).value === true
                         )
                     )
                     global.mainThreadHandler.updatePartialStore(ch - 1)
