@@ -258,18 +258,21 @@ export class LawoRubyMixerConnection {
             this.emberConnection.subscribe(
                 node as NumberedTreeNode<EmberElement>,
                 () => {
-                    const levelDB = (node.contents as Model.Parameter)
-                        .value as number
-                    logger.debug(`Receiving Level from Ch ${ch}: ${levelDB}`)
+                    const levelInDecibel: number = (
+                        node.contents as Model.Parameter
+                    ).value as number
+                    logger.trace(
+                        `Receiving Level from Ch ${ch}: ${levelInDecibel}`
+                    )
                     if (
                         !state.channels[0].chMixerConnection[this.mixerIndex]
                             .channel[ch - 1].fadeActive &&
-                        levelDB >=
+                        levelInDecibel >=
                             this.mixerProtocol.channelTypes[typeIndex].fromMixer
                                 .CHANNEL_OUT_GAIN[0].min
                     ) {
                         // update the fader
-                        const level = dbToFloat(levelDB)
+                        const level = dbToFloat(levelInDecibel)
                         store.dispatch(storeFaderLevel(ch - 1, level))
 
                         // toggle pgm based on level
