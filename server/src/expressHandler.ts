@@ -1,5 +1,6 @@
 import { logger } from './utils/logger'
 import { socketSubscribeVu, socketUnsubscribeVu } from './utils/vuServer'
+import { socketSubscribeOutputLevel, socketUnsubscribeOutputLevel } from './utils/outputLevelServer'
 
 import express from 'express'
 import path from 'path'
@@ -31,8 +32,13 @@ socketServer.on('connection', (socket: any) => {
         logger.debug('Socket subscribe vu')
         socketSubscribeVu(socket)
     })
+    socket.on('subscribe-output-level', () => {
+        logger.debug('Socket subscribe output')
+        socketSubscribeOutputLevel(socket)
+    })
     socket.on('disconnect', () => {
         socketUnsubscribeVu(socket)
+        socketUnsubscribeOutputLevel(socket)
     })
 })
 

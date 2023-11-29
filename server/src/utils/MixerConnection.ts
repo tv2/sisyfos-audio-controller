@@ -30,6 +30,7 @@ import {
 } from '../../../shared/src/actions/faderActions'
 import { AtemMixerConnection } from './mixerConnections/AtemConnection'
 import { ChannelReference } from '../../../shared/src/reducers/fadersReducer'
+import { sendOutputLevel } from './outputLevelServer'
 
 export class MixerGenericConnection {
     mixerProtocol: MixerProtocolGeneric[]
@@ -517,6 +518,7 @@ export class MixerGenericConnection {
                 channel: channelIndex,
                 level: endLevel,
             })
+            sendOutputLevel(mixerIndex, channelIndex, endLevel)
             this.delayedFadeActiveDisable(mixerIndex, channelIndex)
             return true
         }
@@ -537,6 +539,7 @@ export class MixerGenericConnection {
             channel: channelIndex,
             level: endLevel,
         })
+        sendOutputLevel(mixerIndex, channelIndex, currentOutputLevel)
     }
 
     fadeDown = (mixerIndex: number, channelIndex: number, fadeTime: number) => {
