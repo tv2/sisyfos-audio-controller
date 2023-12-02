@@ -591,7 +591,7 @@ export class OscMixerConnection {
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ].channelTypeIndex
-        if (state.faders[0].fader[channelIndex].pflOn === true) {
+        if (state.faders[0].fader[channelIndex].pflOn === true && this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
                     .mixerMessage,
@@ -601,7 +601,7 @@ export class OscMixerConnection {
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_ON[0]
                     .type
             )
-        } else {
+        } else if (state.faders[0].fader[channelIndex].pflOn === false && this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF) {
             this.sendOutMessage(
                 this.mixerProtocol.channelTypes[channelType].toMixer.PFL_OFF[0]
                     .mixerMessage,
