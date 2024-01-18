@@ -98,6 +98,11 @@ When running Sisyfos you can define the log level by setting the environment var
 -   debug (info level plus: data send and received from Audiomixer)
 -   trace (debug level plus: data send and received from Automation protocol)
 
+### Serve client on a different path:
+
+When running Sisyfos you can change the root path from the default of `/` to another value by setting the environment variable `ROOT_PATH`.
+
+
 ### Open GUI in browser:
 
 ```
