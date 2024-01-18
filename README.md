@@ -100,7 +100,8 @@ When running Sisyfos you can define the log level by setting the environment var
 
 ### Serve client on a different path:
 
-When running Sisyfos you can change the root path from the default of `/` to another value by setting the environment variable `ROOT_PATH`
+When running Sisyfos you can change the root path from the default of `/` to another value by setting the environment variable `ROOT_PATH`.
+
 
 ### Open GUI in browser:
 
