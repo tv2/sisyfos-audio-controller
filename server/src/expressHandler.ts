@@ -5,11 +5,15 @@ import express from 'express'
 import path from 'path'
 import { Server } from 'http'
 import { Server as SocketServer } from 'socket.io'
+const ROOT_PATH = process.env.ROOT_PATH ?? '/'
+const SOCKET_SERVER_PATH =
+    ROOT_PATH + (ROOT_PATH.endsWith('/') ? '' : '/') + 'socket.io/'
 const app = express()
 const server = new Server(app)
-const socketServer = new SocketServer(server)
+const socketServer = new SocketServer(server, {
+    path: SOCKET_SERVER_PATH,
+})
 const SERVER_PORT = 1176
-const ROOT_PATH = process.env.ROOT_PATH ?? '/'
 const staticPath = path.join(
     path.dirname(require.resolve('client/package.json')),
     'dist'

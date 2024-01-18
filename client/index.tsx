@@ -44,7 +44,12 @@ const unsubscribe = window.storeRedux.subscribe(() => {
     window.reduxState = window.storeRedux.getState()
 })
 
-window.socketIoClient = io()
+const { pathname } = window.location
+const socketServerPath =
+    pathname + (pathname.endsWith('/') ? '' : '/') + 'socket.io/'
+window.socketIoClient = io({
+    path: socketServerPath,
+})
 window.socketIoClient.emit(SOCKET_GET_SNAPSHOT_LIST)
 window.socketIoClient.emit(SOCKET_GET_CCG_LIST)
 window.socketIoClient.emit(SOCKET_GET_MIXER_PRESET_LIST)
