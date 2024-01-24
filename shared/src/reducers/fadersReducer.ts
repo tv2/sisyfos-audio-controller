@@ -1,4 +1,5 @@
 import * as FADER_ACTIONS from '../actions/faderActions'
+import { InumberOfChannels } from './channelsReducer'
 export interface IFaders {
     fader: Array<IFader>
     vuMeters: Array<IVuMeters>
@@ -46,7 +47,8 @@ export interface IVuMeters {
 }
 
 export const defaultFadersReducerState = (
-    numberOfFaders: number
+    numberOfFaders: number,
+    numberOfChannels?: InumberOfChannels[]
 ): IFaders[] => {
     let defaultObj: Array<IFaders> = [
         {
@@ -54,6 +56,19 @@ export const defaultFadersReducerState = (
             vuMeters: [],
         },
     ]
+
+    const channels: IChannelReference[] = []
+    for (let mixerIndex = 0; mixerIndex < numberOfChannels?.length ?? 0; mixerIndex++) {
+        const mixer = numberOfChannels[mixerIndex]
+        let channelIndex = 0
+        for (const typeCount of mixer.numberOfTypeInCh) {
+            for (let i = 0; i < typeCount; i++) {
+                channels.push({ mixerIndex, channelIndex })
+                channelIndex++
+            }
+        }
+    }
+    console.log(channels)
 
     for (let index = 0; index < numberOfFaders; index++) {
         defaultObj[0].fader[index] = {
@@ -74,6 +89,8 @@ export const defaultFadersReducerState = (
             showInMiniMonitor: false,
             ignoreAutomation: false,
             disabled: false,
+
+            assignedChannels: channels[index] ? [channels[index]] : []
         }
         defaultObj[0].vuMeters.push({
             reductionVal: 0.0,

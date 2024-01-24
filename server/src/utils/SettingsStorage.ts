@@ -108,7 +108,7 @@ export const loadSnapshotState = (
         if (fileName.includes('default.shot')) {
             store.dispatch(
                 storeSetCompleteFaderState(
-                    defaultFadersReducerState(numberOfFaders)[0],
+                    defaultFadersReducerState(numberOfFaders, numberOfChannels)[0],
                     numberOfFaders
                 )
             )
