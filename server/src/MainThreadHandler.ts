@@ -11,7 +11,7 @@ import { socketServer } from './expressHandler'
 import { storeUpdateSettings } from '../../shared/src/actions/settingsActions'
 import * as IO from '../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import * as FADER_ACTIONS from '../../shared/src/actions/faderActions'
-import * as CHANNEL_ACTIONS from '../../shared/src/actions/channelActions'
+import { ChannelActionTypes, ChannelActions } from '../../shared/src/actions/channelActions'
 
 import {
     loadSettings,
@@ -25,19 +25,17 @@ import {
     STORAGE_FOLDER,
 } from './utils/SettingsStorage'
 
-import {
-    storeFlushChLabels,
-    storeSetAuxLevel,
-} from '../../shared/src/actions/channelActions'
 import { logger } from './utils/logger'
 import { ICustomPages } from '../../shared/src/reducers/settingsReducer'
 import { fxParamsList } from '../../shared/src/constants/MixerProtocolInterface'
 import path from 'path'
 import { IChannel } from '../../shared/src/reducers/channelsReducer'
 import { IChannelReference } from '../../shared/src/reducers/fadersReducer'
+import { Dispatch } from '@reduxjs/toolkit'
 
 export class MainThreadHandlers {
     snapshotHandler: SnapshotHandler
+    dispatch: Dispatch<ChannelActions> = store.dispatch
 
     constructor() {
         logger.info('Setting up MainThreadHandlers')
@@ -85,13 +83,12 @@ export class MainThreadHandlers {
         })
         state.faders[0].fader.forEach((fader, faderIndex) => {
             fader.assignedChannels?.forEach((channel: IChannelReference) => {
-                store.dispatch(
-                    CHANNEL_ACTIONS.storeSetAssignedFader(
-                        channel.mixerIndex,
-                        channel.channelIndex,
-                        faderIndex
-                    )
-                )
+                this.dispatch({
+                    type: ChannelActionTypes.SET_ASSIGNED_FADER,
+                    mixerIndex: channel.mixerIndex,
+                    channel: channel.channelIndex,
+                    faderNumber: faderIndex,
+                })
             })
         })
     }
@@ -294,14 +291,13 @@ export class MainThreadHandlers {
                 logger.trace(
                     `Set Auxlevel Channel: ${payload.channel} Auxindex : ${payload.auxIndex} level : ${payload.level}`
                 )
-                store.dispatch(
-                    storeSetAuxLevel(
-                        0,
-                        payload.channel,
-                        payload.auxIndex,
-                        payload.level
-                    )
-                )
+                this.dispatch({
+                    type: ChannelActionTypes.SET_AUX_LEVEL,
+                    mixerIndex: 0,
+                    channel: payload.channel,
+                    auxIndex: payload.auxIndex,
+                    level: payload.level,
+                })
                 mixerGenericConnection.updateAuxLevel(
                     payload.channel,
                     payload.auxIndex
@@ -438,7 +434,9 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_FLUSH_LABELS, () => {
                 store.dispatch(FADER_ACTIONS.flushExtLabels())
-                store.dispatch(storeFlushChLabels())
+                this.dispatch({
+                    type: ChannelActionTypes.FLUSH_CHANNEL_LABELS,
+                })
             })
     }
 }

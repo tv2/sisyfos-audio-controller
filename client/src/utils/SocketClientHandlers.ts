@@ -4,8 +4,8 @@ import {
     storeVuReductionLevel,
 } from '../../../shared/src/actions/faderActions'
 import {
-    storeSetCompleteChState,
-    storeSetSingleChState,
+    ChannelActionTypes,
+    ChannelActions,
 } from '../../../shared/src/actions/channelActions'
 import {
     storeSetMixerOnline,
@@ -29,10 +29,12 @@ import {
 } from '../../../shared/src/reducers/channelsReducer'
 import { VuType } from '../../../shared/src/utils/vu-server-types'
 import { IMixerSettings } from '../../../shared/src/reducers/settingsReducer'
+import { Dispatch } from '@reduxjs/toolkit'
 
 export const vuMeters: number[][] = []
 
 export const socketClientHandlers = () => {
+    const dispatch: Dispatch<ChannelActions> = window.storeRedux.dispatch
     window.socketIoClient
         .on('connect', () => {
             window.storeRedux.dispatch(storeSetServerOnline(true))
@@ -64,12 +66,11 @@ export const socketClientHandlers = () => {
                         ]
                     }
                 )
-                window.storeRedux.dispatch(
-                    storeSetCompleteChState(
-                        payload.channels[0],
-                        numberOfChannels
-                    )
-                )
+                dispatch({
+                    type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
+                    numberOfTypeChannels: numberOfChannels,
+                    allState: payload.channels[0],
+                })
                 window.storeRedux.dispatch(
                     storeSetCompleteFaderState(
                         payload.faders[0],
@@ -109,9 +110,11 @@ export const socketClientHandlers = () => {
             }
         })
         .on(SOCKET_SET_STORE_CHANNEL, (payload: any) => {
-            window.storeRedux.dispatch(
-                storeSetSingleChState(payload.channelIndex, payload.state)
-            )
+            dispatch({
+                type: ChannelActionTypes.SET_SINGLE_CH_STATE,
+                channelIndex: payload.channelIndex,
+                state: payload.state,
+            })
         })
         .on(SOCKET_RETURN_SNAPSHOT_LIST, (payload: any) => {
             window.snapshotFileList = payload

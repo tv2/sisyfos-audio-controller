@@ -1,4 +1,4 @@
-import { createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 import { IFaders } from './fadersReducer'
 import { IChannels } from './channelsReducer'
 import indexReducer from './indexReducer'
@@ -10,5 +10,5 @@ export interface IStore {
   faders: Array<IFaders>
 }
 
-export default createStore(indexReducer)
+export default configureStore({reducer: indexReducer})
 export { Store } from 'redux'

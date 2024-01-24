@@ -21,8 +21,9 @@ import {
     storeSetPgm,
     storeSetVo,
 } from '../../../../shared/src/actions/faderActions'
-import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
+import { ChannelActions, ChannelActionTypes } from '../../../../shared/src/actions/channelActions'
 import { FairlightAudioSource } from 'atem-connection/dist/state/fairlight'
+import { Dispatch } from '@reduxjs/toolkit'
 
 enum TrackIndex {
     Stereo = '-65280',
@@ -31,6 +32,7 @@ enum TrackIndex {
 }
 
 export class AtemMixerConnection {
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     private _connection: Atem
 
     private _chNoToSource: Record<number, number> = {}
@@ -420,7 +422,12 @@ export class AtemMixerConnection {
         label: string,
         update: boolean = true
     ): void {
-        store.dispatch(storeSetChLabel(this.mixerIndex, channelIndex, label))
+        this.dispatch({
+            type: ChannelActionTypes.SET_CHANNEL_LABEL,
+            mixerIndex: this.mixerIndex,
+            channel: channelIndex,
+            label: label,
+        })
         if (update) global.mainThreadHandler.updatePartialStore(channelIndex)
     }
 }

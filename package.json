@@ -70,6 +70,7 @@
     ]
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.1.0",
     "cross-env": "^7.0.3"
   },
   "devDependencies": {
