@@ -30,6 +30,7 @@ import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
+import { STORAGE_FOLDER } from '../SettingsStorage'
 
 interface IOscCommand {
     address: string
@@ -739,7 +740,7 @@ export class OscMixerConnection {
         if (this.mixerProtocol.presetFileExtension === 'X32') {
             let data = JSON.parse(
                 fs.readFileSync(
-                    path.resolve(process.cwd(), 'storage', presetName),
+                    path.resolve(STORAGE_FOLDER, presetName),
                     'utf8'
                 )
             )
