@@ -28,7 +28,7 @@ export interface InumberOfChannels {
     numberOfTypeInCh: number[]
 }
 
-const defaultChannelsReducerState = (
+export const defaultChannelsReducerState = (
     numberOfChannels: InumberOfChannels[]
 ): IChannels[] => {
     let defaultObj: IChannels[] = [
@@ -75,6 +75,13 @@ export const channels = (
             chMixerConnection: [...state[0].chMixerConnection],
         },
     ]
+
+    if ('mixerIndex' in action && nextState[0].chMixerConnection[action.mixerIndex] === undefined) {
+        return nextState
+    }
+    if ('mixerIndex' in action && 'channel' in action && nextState[0].chMixerConnection[action.mixerIndex]?.channel[action.channel] === undefined) {
+        return nextState
+    }
 
     switch (action.type) {
         case ChannelActionTypes.SET_OUTPUT_LEVEL:

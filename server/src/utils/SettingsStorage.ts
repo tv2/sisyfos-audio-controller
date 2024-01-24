@@ -18,6 +18,7 @@ import { Dispatch } from '@reduxjs/toolkit'
 import {
     IChannels,
     InumberOfChannels,
+    defaultChannelsReducerState,
 } from '../../../shared/src/reducers/channelsReducer'
 
 import {
@@ -106,11 +107,17 @@ export const loadSnapshotState = (
         if (fileName.includes('default.shot')) {
             store.dispatch(
                 storeSetCompleteFaderState(
-                    defaultFadersReducerState(numberOfFaders)[0],
+                    defaultFadersReducerState(numberOfFaders, numberOfChannels)[0],
                     numberOfFaders
                 )
             )
-            logger.data(error).error('Initializing empty faders')
+            store.dispatch(
+                storeSetCompleteChState(
+                    defaultChannelsReducerState(numberOfChannels)[0],
+                    numberOfChannels
+                )
+            )
+            logger.data(error).error('Initializing empty faders/channels')
         } else {
             logger.data(error).error('Error loading Snapshot')
         }

@@ -52,6 +52,8 @@ export class MainThreadHandlers {
     }
 
     updatePartialStore(faderIndex: number) {
+        if (faderIndex >= state.settings[0].numberOfFaders) return
+
         socketServer.emit(IO.SOCKET_SET_STORE_FADER, {
             faderIndex: faderIndex,
             state: state.faders[0].fader[faderIndex],

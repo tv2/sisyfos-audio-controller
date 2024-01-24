@@ -16,6 +16,7 @@ import {
     storeCapability,
     storeShowChannel,
     storeSetPgm,
+    storeInputSelector,
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
@@ -367,11 +368,10 @@ export class LawoRubyMixerConnection {
                                 selector.value ===
                                 (node.contents as Model.Parameter).value
                             ) {
-                                store.dispatch({
-                                    type: SET_INPUT_SELECTOR,
-                                    channel: ch - 1,
-                                    selected: i + 1,
-                                })
+                                store.dispatch(storeInputSelector(
+                                    ch - 1,
+                                    i + 1
+                                ))
                                 global.mainThreadHandler.updatePartialStore(
                                     ch - 1
                                 )
