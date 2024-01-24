@@ -11,13 +11,14 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from '../../../../shared/src/actions/channelActions'
+import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import { storeFaderLevel, storeTogglePgm } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { Dispatch } from '@reduxjs/toolkit'
 
 export class MidiMixerConnection {
-    store: any
+    dispatch: Dispatch<ChannelActions>
     mixerProtocol: any
     mixerIndex: number
     midiInput: any
@@ -142,13 +143,12 @@ export class MidiMixerConnection {
 
     updateOutLevel(channelIndex: number, faderIndex: number) {
         if (state.faders[0].fader[faderIndex].pgmOn) {
-            store.dispatch(
-                storeSetOutputLevel(
-                    this.mixerIndex,
-                    channelIndex,
-                    state.faders[0].fader[faderIndex].faderLevel
-                )
-            )
+            this.dispatch({
+                type: ChannelActionTypes.SET_OUTPUT_LEVEL,
+                channel: channelIndex,
+                mixerIndex: this.mixerIndex,
+                level: state.faders[0].fader[faderIndex].faderLevel,
+            })
         }
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[0].toMixer.CHANNEL_OUT_GAIN[0]

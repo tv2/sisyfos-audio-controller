@@ -23,8 +23,8 @@ import { logger } from '../logger'
 import { LawoMC2 } from '../../../../shared/src/constants/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import {
-    SET_OUTPUT_LEVEL,
-    storeSetChLabel,
+    ChannelActionTypes,
+    ChannelActions,
 } from '../../../../shared/src/actions/channelActions'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
 import {
@@ -32,8 +32,10 @@ import {
     IFader,
 } from '../../../../shared/src/reducers/fadersReducer'
 import { EmberElement, NumberedTreeNode } from 'emberplus-connection/dist/model'
+import { Dispatch } from '@reduxjs/toolkit'
 
 export class EmberMixerConnection {
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     emberConnection: EmberClient
@@ -292,11 +294,11 @@ export class EmberMixerConnection {
 
                 if (!channel.fadeActive && level >= 0 && level <= 1) {
                     store.dispatch(storeFaderLevel(assignedFaderIndex, level))
-                    store.dispatch({
-                        type: SET_OUTPUT_LEVEL,
+                    this.dispatch({
+                        type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                         channel: assignedFaderIndex,
                         mixerIndex: this.mixerIndex,
-                        level,
+                        level: level,
                     })
 
                     // toggle pgm based on level
@@ -338,26 +340,24 @@ export class EmberMixerConnection {
                     logger.trace(
                         `Receiving Label from Ch "${ch}", val: ${node.contents.description}`
                     )
-                    store.dispatch(
-                        storeSetChLabel(
-                            this.mixerIndex,
-                            channelTypeIndex,
-                            node.contents.description
-                        )
-                    )
+                    this.dispatch({
+                        type: ChannelActionTypes.SET_CHANNEL_LABEL,
+                        mixerIndex: this.mixerIndex,
+                        channel: channelTypeIndex,
+                        label: node.contents.description,
+                    })
                 } else {
                     logger.trace(
                         `Receiving Label from Ch "${ch}", val: ${
                             (node.contents as Model.Parameter).value
                         }`
                     )
-                    store.dispatch(
-                        storeSetChLabel(
-                            this.mixerIndex,
-                            channelTypeIndex,
-                            String((node.contents as Model.Parameter).value)
-                        )
-                    )
+                    this.dispatch({
+                        type: ChannelActionTypes.SET_CHANNEL_LABEL,
+                        mixerIndex: this.mixerIndex,
+                        channel: channelTypeIndex,
+                        label: String((node.contents as Model.Parameter).value),
+                    })
                 }
                 global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }

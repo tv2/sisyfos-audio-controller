@@ -8,7 +8,7 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from '../../../../shared/src/actions/channelActions'
+import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import {
     storeFaderLevel,
     storeSetMute,
@@ -17,8 +17,10 @@ import {
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { Dispatch } from '@reduxjs/toolkit'
 
 export class SSLMixerConnection {
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -118,13 +120,12 @@ export class SSLMixerConnection {
                     state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
                         (item: IChannelReference) => {
                             if (item.mixerIndex === this.mixerIndex) {
-                                store.dispatch(
-                                    storeSetOutputLevel(
-                                        this.mixerIndex,
-                                        item.channelIndex,
-                                        value
-                                    )
-                                )
+                                this.dispatch({
+                                    type: ChannelActionTypes.SET_OUTPUT_LEVEL,
+                                    mixerIndex: this.mixerIndex,
+                                    channel: item.channelIndex,
+                                    level: value,
+                                })
                             }
                         }
                     )
@@ -400,13 +401,12 @@ export class SSLMixerConnection {
         const faderIndex = this.getAssignedFaderIndex(channelIndex)
 
         if (state.faders[0].fader[faderIndex].pgmOn) {
-            store.dispatch(
-                storeSetOutputLevel(
-                    this.mixerIndex,
-                    channelIndex,
-                    state.faders[0].fader[faderIndex].faderLevel
-                )
-            )
+            this.dispatch({
+                type: ChannelActionTypes.SET_OUTPUT_LEVEL,
+                mixerIndex: this.mixerIndex,
+                channel: channelIndex,
+                level: state.faders[0].fader[faderIndex].faderLevel,
+            })
         }
         this.sendOutLevelMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer

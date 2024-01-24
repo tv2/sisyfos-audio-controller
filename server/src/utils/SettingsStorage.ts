@@ -9,10 +9,11 @@ import { store } from '../reducers/store'
 import { checkVersion } from './migrations'
 
 // Redux:
-import { storeSetCompleteChState } from '../../../shared/src/actions/channelActions'
+import {  ChannelActionTypes, ChannelActions } from '../../../shared/src/actions/channelActions'
 import { storeSetCompleteFaderState } from '../../../shared/src/actions/faderActions'
 import { logger } from './logger'
 import { defaultFadersReducerState } from '../../../shared/src/reducers/fadersReducer'
+import { Dispatch } from '@reduxjs/toolkit'
 
 import {
     IChannels,
@@ -77,25 +78,23 @@ export const saveSettings = (settings: any) => {
 }
 
 export const loadSnapshotState = (
-    stateSnapshot: IFaders,
-    stateChannelSnapshot: IChannels,
     numberOfChannels: InumberOfChannels[],
     numberOfFaders: number,
     fileName: string,
     loadAll: boolean
 ) => {
     try {
+        const dispatch: Dispatch<ChannelActions> = store.dispatch
         const stateFromFile: IShotStorage = JSON.parse(
             fs.readFileSync(fileName, 'utf8')
         )
 
         if (loadAll) {
-            store.dispatch(
-                storeSetCompleteChState(
-                    stateFromFile.channelState as IChannels,
-                    numberOfChannels
-                )
-            )
+            dispatch({
+                type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
+                numberOfTypeChannels: numberOfChannels,
+                allState: stateFromFile.channelState as IChannels,
+            })
             store.dispatch(
                 storeSetCompleteFaderState(
                     stateFromFile.faderState as IFaders,

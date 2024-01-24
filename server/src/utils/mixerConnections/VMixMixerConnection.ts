@@ -8,7 +8,7 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
-import { SET_OUTPUT_LEVEL } from '../../../../shared/src/actions/channelActions'
+import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import {
     storeFaderLevel,
     storeFaderFx,
@@ -24,8 +24,10 @@ import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { dbToFloat } from './LawoRubyConnection'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { Dispatch } from 'redux'
 
 export class VMixMixerConnection {
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -216,8 +218,8 @@ export class VMixMixerConnection {
                             dispatch(
                                 storeFaderLevel(assignedFaderIndex, input.volume)
                             )
-                            store.dispatch({
-                                type: SET_OUTPUT_LEVEL,
+                            this.dispatch({
+                                type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                                 channel: assignedFaderIndex,
                                 mixerIndex: this.mixerIndex,
                                 level: voOn
@@ -231,8 +233,8 @@ export class VMixMixerConnection {
                         }
                         if (!fadeActive && !pgmOn && !voOn) {
                             dispatch(storeSetPgm(assignedFaderIndex, true))
-                            store.dispatch({
-                                type: SET_OUTPUT_LEVEL,
+                            this.dispatch({
+                                type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                                 channel: assignedFaderIndex,
                                 mixerIndex: this.mixerIndex,
                                 level: input.volume,

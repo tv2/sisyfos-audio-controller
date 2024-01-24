@@ -14,8 +14,8 @@ import {
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 import {
-    storeSetChLabel,
-    storeSetChPrivate,
+    ChannelActionTypes,
+    ChannelActions,
 } from '../../../../shared/src/actions/channelActions'
 import { logger } from '../logger'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
@@ -23,6 +23,7 @@ import { IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { Dispatch } from '@reduxjs/toolkit'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -41,6 +42,7 @@ const OSC_PATH_PRODUCER_CHANNEL_LAYOUT =
     /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/channel_layout/
 
 export class CasparCGConnection {
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: ICasparCGMixerGeometry
     mixerIndex: number
     connection: CasparCG
@@ -174,13 +176,13 @@ export class CasparCGConnection {
                                         i.layer === parseInt(m[5])
                                 )
                             if (index >= 0) {
-                                store.dispatch(
-                                    storeSetChPrivate(
-                                        index,
-                                        'producer',
-                                        message.args[0]
-                                    )
-                                )
+                                this.dispatch({
+                                    type: ChannelActionTypes.SET_PRIVATE,
+                                    mixerIndex: this.mixerIndex,
+                                    channel: index,
+                                    tag: 'producer',
+                                    value: message.args[0],
+                                })
                             }
                         } else if (
                             m[1] === 'channel' &&
@@ -194,13 +196,13 @@ export class CasparCGConnection {
                                         i.layer === parseInt(m[5])
                                 )
                             if (index >= 0) {
-                                store.dispatch(
-                                    storeSetChPrivate(
-                                        index,
-                                        'channel_layout',
-                                        message.args[0]
-                                    )
-                                )
+                                this.dispatch({
+                                    type: ChannelActionTypes.SET_PRIVATE,
+                                    mixerIndex: this.mixerIndex,
+                                    channel: index,
+                                    tag: 'channel_layout',
+                                    value: message.args[0],
+                                })
                             }
                         } else if (
                             m[1] === 'channel' &&
@@ -218,9 +220,13 @@ export class CasparCGConnection {
                                     typeof message.args[0] === 'string'
                                         ? message.args[0]
                                         : message.args[0].low
-                                store.dispatch(
-                                    storeSetChPrivate(index, 'file_path', value)
-                                )
+                                this.dispatch({
+                                    type: ChannelActionTypes.SET_PRIVATE,
+                                    mixerIndex: this.mixerIndex,
+                                    channel: index,
+                                    tag: 'file_path',
+                                    value: value,
+                                })
                             }
                         }
                     }
@@ -248,9 +254,12 @@ export class CasparCGConnection {
         // Set source labels from geometry definition
         if (this.mixerProtocol.channelLabels) {
             this.mixerProtocol.channelLabels.forEach((label, channelIndex) => {
-                store.dispatch(
-                    storeSetChLabel(this.mixerIndex, channelIndex, label)
-                )
+                this.dispatch({
+                    type: ChannelActionTypes.SET_CHANNEL_LABEL,
+                    mixerIndex: this.mixerIndex,
+                    channel: channelIndex,
+                    label: label,
+                })
             })
         }
     }

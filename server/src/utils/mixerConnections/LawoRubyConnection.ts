@@ -19,8 +19,9 @@ import {
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
-import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
+import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import { EmberElement, NumberedTreeNode } from 'emberplus-connection/dist/model'
+import { Dispatch } from '@reduxjs/toolkit'
 
 // TODO - should these be util functions?
 export function floatToDB(f: number): number {
@@ -54,6 +55,7 @@ export function dbToFloat(d: number): number {
 }
 
 export class LawoRubyMixerConnection {
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     emberConnection: EmberClient
@@ -159,13 +161,12 @@ export class LawoRubyMixerConnection {
                 ) {
                     if (this.faders[channelTypeIndex + 1]) {
                         // enable
-                        store.dispatch(
-                            storeSetChLabel(
-                                this.mixerIndex,
-                                channelTypeIndex,
-                                this.faders[channelTypeIndex + 1]
-                            )
-                        )
+                        this.dispatch({
+                            type: ChannelActionTypes.SET_CHANNEL_LABEL,
+                            mixerIndex: this.mixerIndex,
+                            channel: channelTypeIndex,
+                            label: this.faders[channelTypeIndex + 1],
+                        })
                         store.dispatch(
                             storeChannelDisabled(channelTypeIndex, false)
                         )
@@ -175,13 +176,12 @@ export class LawoRubyMixerConnection {
                         store.dispatch(
                             storeChannelDisabled(channelTypeIndex, true)
                         )
-                        store.dispatch(
-                            storeSetChLabel(
-                                this.mixerIndex,
-                                channelTypeIndex,
-                                ''
-                            )
-                        )
+                        this.dispatch({
+                            type: ChannelActionTypes.SET_CHANNEL_LABEL,
+                            mixerIndex: this.mixerIndex,
+                            channel: channelTypeIndex,
+                            label: '',
+                        })
                         store.dispatch(
                             storeShowChannel(channelTypeIndex, false)
                         )

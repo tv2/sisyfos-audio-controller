@@ -14,7 +14,8 @@ import {
 import { ICustomPages } from '../../../shared/src/reducers/settingsReducer'
 import { getChannelLabel } from '../utils/labels'
 import { flushExtLabels, updateLabels } from '../../../shared/src/actions/faderActions'
-import { storeFlushChLabels } from '../../../shared/src/actions/channelActions'
+import { ChannelActionTypes, ChannelActions } from '../../../shared/src/actions/channelActions'
+import { Dispatch } from '@reduxjs/toolkit'
 
 interface ILabelSettingsInjectProps {
     customPages: ICustomPages[]
@@ -27,6 +28,7 @@ class LabelSettings extends React.PureComponent<
     state = {
         mutations: {} as Record<string, string>
     }
+    dispatch: Dispatch<ChannelActions> = this.props.dispatch
 
     constructor(props: any) {
         super(props)
@@ -57,7 +59,7 @@ class LabelSettings extends React.PureComponent<
     handleFlushLabels() {
         if (window.confirm('Flush all external (automation and channel) labels?')) {
             this.props.dispatch(flushExtLabels())
-            this.props.dispatch(storeFlushChLabels())
+            this.dispatch({ type: ChannelActionTypes.FLUSH_CHANNEL_LABELS })
             window.socketIoClient.emit(SOCKET_FLUSH_LABELS)
         }
     }
