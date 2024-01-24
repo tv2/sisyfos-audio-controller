@@ -17,6 +17,7 @@ import { defaultFadersReducerState } from '../../../shared/src/reducers/fadersRe
 import {
     IChannels,
     InumberOfChannels,
+    defaultChannelsReducerState,
 } from '../../../shared/src/reducers/channelsReducer'
 
 import {
@@ -111,7 +112,13 @@ export const loadSnapshotState = (
                     numberOfFaders
                 )
             )
-            logger.data(error).error('Initializing empty faders')
+            store.dispatch(
+                storeSetCompleteChState(
+                    defaultChannelsReducerState(numberOfChannels)[0],
+                    numberOfChannels
+                )
+            )
+            logger.data(error).error('Initializing empty faders/channels')
         } else {
             logger.data(error).error('Error loading Snapshot')
         }
