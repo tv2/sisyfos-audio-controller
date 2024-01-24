@@ -32,6 +32,7 @@ import {
     IFader,
 } from '../../../../shared/src/reducers/fadersReducer'
 import { EmberElement, NumberedTreeNode } from 'emberplus-connection/dist/model'
+import { STORAGE_FOLDER } from '../SettingsStorage'
 
 export class EmberMixerConnection {
     mixerProtocol: IMixerProtocol
@@ -892,7 +893,7 @@ export class EmberMixerConnection {
             let data = JSON.parse(
                 fs
                     .readFileSync(
-                        path.resolve(process.cwd(), 'storage', presetName)
+                        path.resolve(STORAGE_FOLDER, presetName)
                     )
                     .toString()
             )

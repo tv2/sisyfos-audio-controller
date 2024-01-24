@@ -23,6 +23,7 @@ import { IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { STORAGE_FOLDER } from '../SettingsStorage'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -85,8 +86,7 @@ export class CasparCGConnection {
 
     injectCasparCGSetting() {
         const geometryFile = path.resolve(
-            process.cwd(),
-            'storage',
+            STORAGE_FOLDER,
             'default-casparcg.ccg'
         )
 

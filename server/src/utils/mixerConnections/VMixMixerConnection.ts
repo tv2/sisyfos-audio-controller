@@ -685,7 +685,7 @@ export class VMixMixerConnection {
         logger.info(`Loading preset : ${presetName}`)
         if (this.mixerProtocol.presetFileExtension === 'X32') {
             let data = JSON.parse(
-                '{}' // ''fs.readFileSync(path.resolve(process.cwd(), 'storage', presetName))
+                '{}' // ''fs.readFileSync(path.resolve(STORAGE_FOLDER, presetName))
             )
 
             this.vmixConnection.send({
