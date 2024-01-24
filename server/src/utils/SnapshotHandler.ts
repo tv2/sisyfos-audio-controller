@@ -57,8 +57,6 @@ export class SnapshotHandler {
 
     loadSnapshotSettings(fileName: string, loadAll: boolean) {
         loadSnapshotState(
-            state.faders[0],
-            state.channels[0],
             this.numberOfChannels,
             state.settings[0].numberOfFaders,
             fileName,

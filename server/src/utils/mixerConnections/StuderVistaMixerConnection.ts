@@ -16,14 +16,15 @@ import {
     storeTogglePgm,
 } from '../../../../shared/src/actions/faderActions'
 import {
-    storeSetAuxLevel,
-    storeSetOutputLevel,
+  ChannelActionTypes, ChannelActions
 } from '../../../../shared/src/actions/channelActions'
 import { remoteConnections } from '../../mainClasses'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
+import { Dispatch } from '@reduxjs/toolkit'
 
 export class StuderVistaMixerConnection {
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     deviceRoot: any
@@ -212,9 +213,12 @@ export class StuderVistaMixerConnection {
                         assignedChannel.mixerIndex === this.mixerIndex &&
                         assignedChannel.channelIndex !== channelArrayIndex
                     ) {
-                        store.dispatch(
-                            storeSetOutputLevel(this.mixerIndex, assignedChannel.channelIndex, value)
-                        )
+                        this.dispatch({
+                            type: ChannelActionTypes.SET_OUTPUT_LEVEL,
+                            mixerIndex: this.mixerIndex,
+                            channel: assignedChannel.channelIndex,
+                            level: value
+                        })
                     }
                 }
             )
@@ -252,14 +256,13 @@ export class StuderVistaMixerConnection {
             channelTypeIndex
         )
 
-        store.dispatch(
-            storeSetAuxLevel(
-                this.mixerIndex,
-                channelArrayIndex,
-                auxIndex,
-                value
-            )
-        )
+        this.dispatch({
+            type: ChannelActionTypes.SET_AUX_LEVEL,
+            mixerIndex: this.mixerIndex,
+            channel: channelArrayIndex,
+            auxIndex: auxIndex,
+            level: value
+        })
 
         global.mainThreadHandler.updateFullClientStore()
         remoteConnections.updateRemoteAuxPanels()

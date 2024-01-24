@@ -8,7 +8,7 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
-import { storeSetOutputLevel } from '../../../../shared/src/actions/channelActions'
+import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import {
     storeFaderLevel,
     storeTogglePgm,
@@ -19,8 +19,10 @@ import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActi
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { Dispatch } from 'redux'
 
 export class QlClMixerConnection {
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -306,13 +308,12 @@ export class QlClMixerConnection {
             ].channelTypeIndex
         let faderIndex = this.getAssignedFaderIndex(channelIndex)
         if (state.faders[0].fader[faderIndex].pgmOn) {
-            store.dispatch(
-                storeSetOutputLevel(
-                    this.mixerIndex,
-                    channelIndex,
-                    state.faders[0].fader[faderIndex].faderLevel
-                )
-            )
+            this.dispatch({
+                type: ChannelActionTypes.SET_OUTPUT_LEVEL,
+                mixerIndex: this.mixerIndex,
+                channel: channelIndex,
+                level: state.faders[0].fader[faderIndex].faderLevel,
+            })
         }
         this.sendOutMessage(
             this.mixerProtocol.channelTypes[channelType].toMixer

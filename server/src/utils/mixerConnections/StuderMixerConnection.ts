@@ -10,9 +10,11 @@ import {
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { storeFaderLevel } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetChLabel } from '../../../../shared/src/actions/channelActions'
+import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
+import { Dispatch } from '@reduxjs/toolkit'
 
 export class StuderMixerConnection {
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     emberConnection: any
@@ -156,13 +158,12 @@ export class StuderMixerConnection {
             )
             .then((node: any) => {
                 this.emberConnection.subscribe(node, () => {
-                    store.dispatch(
-                        storeSetChLabel(
-                            this.mixerIndex,
-                            ch - 1,
-                            node.contents.value
-                        )
-                    )
+                    this.dispatch({
+                        type: ChannelActionTypes.SET_CHANNEL_LABEL,
+                        mixerIndex: this.mixerIndex,
+                        channel: ch - 1,
+                        label: node.contents.value,
+                    })
                 })
             })
     }

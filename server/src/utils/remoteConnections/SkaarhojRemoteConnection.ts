@@ -12,10 +12,11 @@ import {
 } from '../../../../shared/src/constants/remoteProtocols/SkaarhojProtocol'
 import { MixerProtocolPresets } from '../../../../shared/src/constants/MixerProtocolPresets'
 import { logger } from '../logger'
-import { storeSetAuxLevel } from '../../../../shared/src/actions/channelActions'
+import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
+import { Dispatch } from 'redux'
 
 export class SkaarhojRemoteConnection {
-    store: any
+    dispatch: Dispatch<ChannelActions> = store.dispatch
     remoteProtocol: IRemoteProtocol
     mixerProtocol: any
     clientList: any[]
@@ -188,7 +189,13 @@ export class SkaarhojRemoteConnection {
                 chIndex + 1
             } Level: ${level}`
         )
-        store.dispatch(storeSetAuxLevel(0, chIndex, auxSendIndex, level))
+        this.dispatch({
+            type: ChannelActionTypes.SET_AUX_LEVEL,
+            mixerIndex: 0,
+            channel: chIndex,
+            auxIndex: auxSendIndex,
+            level: level,
+        })
         mixerGenericConnection.updateAuxLevel(chIndex, auxSendIndex + 1)
         global.mainThreadHandler.updateFullClientStore()
         this.updateRemoteAuxPanel(panelNumber)

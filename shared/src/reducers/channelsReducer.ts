@@ -1,13 +1,6 @@
 import {
-    SET_OUTPUT_LEVEL,
-    SET_ASSIGNED_FADER,
-    SET_COMPLETE_CH_STATE,
-    SET_PRIVATE,
-    FADE_ACTIVE,
-    SET_AUX_LEVEL,
-    SET_SINGLE_CH_STATE,
-    SET_CHANNEL_LABEL,
-    FLUSH_CHANNEL_LABELS,
+    ChannelActions,
+    ChannelActionTypes,
 } from '../actions/channelActions'
 
 export interface IChannels {
@@ -75,7 +68,7 @@ export const defaultChannelsReducerState = (
 
 export const channels = (
     state = defaultChannelsReducerState([{ numberOfTypeInCh: [1] }]),
-    action: any
+    action: ChannelActions
 ): Array<IChannels> => {
     let nextState = [
         {
@@ -91,12 +84,12 @@ export const channels = (
     }
 
     switch (action.type) {
-        case SET_OUTPUT_LEVEL:
+        case ChannelActionTypes.SET_OUTPUT_LEVEL:
             nextState[0].chMixerConnection[action.mixerIndex].channel[
                 action.channel
-            ].outputLevel = parseFloat(action.level)
+            ].outputLevel = action.level
             return nextState
-        case SET_COMPLETE_CH_STATE:
+        case ChannelActionTypes.SET_COMPLETE_CH_STATE:
             nextState = defaultChannelsReducerState(action.numberOfTypeChannels)
 
             nextState[0].chMixerConnection.forEach(
@@ -121,23 +114,23 @@ export const channels = (
             )
 
             return nextState
-        case SET_SINGLE_CH_STATE:
+        case ChannelActionTypes.SET_SINGLE_CH_STATE:
             nextState[0].chMixerConnection[0].channel[action.channelIndex] =
                 action.state
             return nextState
-        case FADE_ACTIVE:
+        case ChannelActionTypes.FADE_ACTIVE:
             nextState[0].chMixerConnection[action.mixerIndex].channel[
                 action.channel
             ].fadeActive = !!action.active
             return nextState
-        case SET_ASSIGNED_FADER:
+        case ChannelActionTypes.SET_ASSIGNED_FADER:
             if (nextState[0].chMixerConnection[action.mixerIndex].channel.length > action.channel) {
                 nextState[0].chMixerConnection[action.mixerIndex].channel[
                     action.channel
                 ].assignedFader = action.faderNumber
             }
             return nextState
-        case SET_AUX_LEVEL:
+        case ChannelActionTypes.SET_AUX_LEVEL:
             let auxLevels =
                 nextState[0].chMixerConnection[action.mixerIndex].channel[
                     action.channel
@@ -149,12 +142,12 @@ export const channels = (
                     }
                 }
             }
-            auxLevels[action.auxIndex] = parseFloat(action.level)
+            auxLevels[action.auxIndex] = action.level
             nextState[0].chMixerConnection[action.mixerIndex].channel[
                 action.channel
             ].auxLevel = auxLevels
             return nextState
-        case SET_PRIVATE:
+        case ChannelActionTypes.SET_PRIVATE:
             if (
                 !nextState[0].chMixerConnection[action.mixerIndex].channel[
                     action.channel
@@ -168,12 +161,12 @@ export const channels = (
                 action.channel
             ].private![action.tag] = action.value
             return nextState
-        case SET_CHANNEL_LABEL:
+        case ChannelActionTypes.SET_CHANNEL_LABEL:
             nextState[0].chMixerConnection[action.mixerIndex].channel[
                 action.channel
             ].label = action.label
             return nextState
-        case FLUSH_CHANNEL_LABELS:
+        case ChannelActionTypes.FLUSH_CHANNEL_LABELS:
             for (const mixer of nextState[0].chMixerConnection) {
                 for (const ch of mixer.channel) {
                     ch.label = undefined
