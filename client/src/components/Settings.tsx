@@ -10,7 +10,10 @@ import { ISettings } from '../../../shared/src/reducers/settingsReducer'
 import { Store } from 'redux'
 import { ChangeEvent } from 'react'
 import { SOCKET_SAVE_SETTINGS } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
-import { storeShowSettings } from '../../../shared/src/actions/settingsActions'
+import {
+    SettingsActionTypes,
+    SettingsActions,
+} from '../../../shared/src/actions/settingsActions'
 
 //Set style for Select dropdown component:
 const selectorColorStyles = {
@@ -92,10 +95,14 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         this.setState({ settings: settingsCopy })
     }
 
-    handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    handleChange = (
+        event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
         let settingsCopy = Object.assign({}, this.state.settings)
         if (event.target.type === 'checkbox') {
-            ;(settingsCopy as any)[event.target.name] = !!(event.target as HTMLInputElement).checked
+            ;(settingsCopy as any)[event.target.name] = !!(
+                event.target as HTMLInputElement
+            ).checked
         } else {
             ;(settingsCopy as any)[event.target.name] = event.target.value
         }
@@ -134,9 +141,8 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     ) => {
         let settingsCopy = Object.assign({}, this.state.settings)
         if (event.target.type === 'checkbox') {
-            ;(settingsCopy.mixers[mixerIndex] as any)[
-                event.target.name
-            ] = !!event.target.checked
+            ;(settingsCopy.mixers[mixerIndex] as any)[event.target.name] =
+                !!event.target.checked
         } else {
             ;(settingsCopy.mixers[mixerIndex] as any)[event.target.name] =
                 event.target.value
@@ -169,17 +175,18 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         let settingsCopy = Object.assign({}, this.state.settings)
         settingsCopy.showSettings = false
         window.socketIoClient.emit(SOCKET_SAVE_SETTINGS, settingsCopy)
-        this.props.dispatch(storeShowSettings())
-        window.alert(
-            'restarting Sisyfos'
-        )
-        setTimeout(()=> {
+        this.props.dispatch({
+            type: SettingsActionTypes.UPDATE_SETTINGS,
+            settings: settingsCopy,
+        })
+        window.alert('restarting Sisyfos')
+        setTimeout(() => {
             location.reload()
         }, 2000)
     }
 
     handleCancel = () => {
-        this.props.dispatch(storeShowSettings())
+        this.props.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_SETTINGS })
     }
 
     renderChannelTypeSettings = (mixerIndex: number) => {
@@ -266,10 +273,9 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                 <Select
                                     styles={selectorColorStyles}
                                     value={{
-                                        label:
-                                            window.mixerProtocolPresets[
-                                                mixer.mixerProtocol
-                                            ].label,
+                                        label: window.mixerProtocolPresets[
+                                            mixer.mixerProtocol
+                                        ].label,
                                         value: mixer.mixerProtocol,
                                     }}
                                     onChange={(event) =>
@@ -404,7 +410,9 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
         return (
             <div className="settings-body">
                 <div className="settings-header">GENERIC SETTINGS</div>
-                <div className="settings-input-field">Sisyfos v.{this.state.settings.sisyfosVersion}</div>
+                <div className="settings-input-field">
+                    Sisyfos v.{this.state.settings.sisyfosVersion}
+                </div>
                 <label className="settings-input-field">
                     FADE TIME :
                     <input

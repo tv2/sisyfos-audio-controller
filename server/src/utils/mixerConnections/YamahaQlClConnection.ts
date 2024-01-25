@@ -15,14 +15,14 @@ import {
     storeSetMute,
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { Dispatch } from 'redux'
 
 export class QlClMixerConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -33,7 +33,12 @@ export class QlClMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+        this.dispatch({
+            type: SettingsActionTypes.SET_MIXER_ONLINE,
+            mixerIndex: this.mixerIndex,
+            mixerOnline: false,
+        })
+
 
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
@@ -83,7 +88,12 @@ export class QlClMixerConnection {
             })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+                this.dispatch({
+                    type: SettingsActionTypes.SET_MIXER_ONLINE,
+                    mixerIndex: this.mixerIndex,
+                    mixerOnline: true,
+                })
+    
 
                 let buffers = []
                 let lastIndex = 0
@@ -226,7 +236,11 @@ export class QlClMixerConnection {
 
     pingMixerCommand() {
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
         }, this.mixerProtocol.pingTime)
     }
 

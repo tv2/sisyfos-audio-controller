@@ -2,12 +2,11 @@ import React from 'react'
 import ReactSlider from 'react-slider'
 
 import '../assets/css/ChanStripFull.css'
-import { Store } from 'redux'
+import { Dispatch, Store } from 'redux'
 import { connect } from 'react-redux'
 import {
-    storeShowOptions,
-    storeShowMonitorOptions,
-    storeShowChanStripFull,
+    SettingsActionTypes,
+    SettingsActions,
 } from '../../../shared/src/actions/settingsActions'
 import { IFader } from '../../../shared/src/reducers/fadersReducer'
 import {
@@ -43,34 +42,39 @@ const DEL_VALUES = [10, 1, -1, -10]
 class ChanStripFull extends React.PureComponent<
     IChanStripFullProps & IChanStripFullInjectProps & Store
 > {
-    canvas: HTMLCanvasElement | undefined
+    dispatch: Dispatch<SettingsActions> = this.props.dispatch
 
     constructor(props: any) {
         super(props)
     }
 
-    shouldComponentUpdate(
-        nextProps: IChanStripFullInjectProps & IChanStripFullProps
-    ) {
-        if (nextProps.faderIndex > -1) {
-            return true
-        } else {
-            return false
-        }
-    }
-
     handleShowRoutingOptions() {
-        this.props.dispatch(storeShowOptions(this.props.faderIndex))
-        this.props.dispatch(storeShowChanStripFull(-1))
+        this.dispatch({
+            type: SettingsActionTypes.TOGGLE_SHOW_OPTION,
+            channel: this.props.faderIndex,
+        })
+        this.dispatch({
+            type: SettingsActionTypes.TOGGLE_SHOW_CHAN_STRIP_FULL,
+            channel: -1,
+        })
     }
 
     handleShowMonitorOptions() {
-        this.props.dispatch(storeShowMonitorOptions(this.props.faderIndex))
-        this.props.dispatch(storeShowChanStripFull(-1))
+        this.dispatch({
+            type: SettingsActionTypes.TOGGLE_SHOW_MONITOR_OPTIONS,
+            channel: this.props.faderIndex,
+        })
+        this.dispatch({
+            type: SettingsActionTypes.TOGGLE_SHOW_CHAN_STRIP_FULL,
+            channel: -1,
+        })
     }
 
     handleClose = () => {
-        this.props.dispatch(storeShowChanStripFull(-1))
+        this.dispatch({
+            type: SettingsActionTypes.TOGGLE_SHOW_CHAN_STRIP_FULL,
+            channel: -1,
+        })
     }
     handleInputSelect(selected: number) {
         window.socketIoClient.emit(SOCKET_SET_INPUT_SELECTOR, {
@@ -175,24 +179,21 @@ class ChanStripFull extends React.PureComponent<
                 <div className="chstrip-full-mini-text">{maxLabel + ' dB'}</div>
                 {window.mixerProtocol.channelTypes[0].toMixer
                     .CHANNEL_INPUT_GAIN ? (
-                    <React.Fragment>
-                        <ReactSlider
-                            className="chstrip-full-fader"
-                            thumbClassName="chstrip-full-thumb"
-                            orientation="vertical"
-                            invert
-                            min={0}
-                            max={1}
-                            step={0.01}
-                            value={
-                                this.props.fader[this.props.faderIndex]
-                                    .inputGain
-                            }
-                            onChange={(event: any) => {
-                                this.handleInputGain(event)
-                            }}
-                        />
-                    </React.Fragment>
+                    <ReactSlider
+                        className="chstrip-full-fader"
+                        thumbClassName="chstrip-full-thumb"
+                        orientation="vertical"
+                        invert
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value={
+                            this.props.fader[this.props.faderIndex].inputGain
+                        }
+                        onChange={(event: any) => {
+                            this.handleInputGain(event)
+                        }}
+                    />
                 ) : null}
                 <div className="chstrip-full-mini-text">{minLabel + ' dB'}</div>
             </div>
@@ -212,9 +213,10 @@ class ChanStripFull extends React.PureComponent<
             <React.Fragment>
                 {this.fxParamFader(fxParamsList.DelayTime)}
                 <div className="chstrip-full-delay-buttons">
-                    {DEL_VALUES.map((value: number) => {
+                    {DEL_VALUES.map((value: number, index: number) => {
                         return (
                             <button
+                                key={index}
                                 className="delayTime"
                                 onClick={() => {
                                     this.changeDelay(
@@ -376,7 +378,6 @@ class ChanStripFull extends React.PureComponent<
             return (
                 <div className="chstrip-full-parameters">
                     {hasInput && (
-                        <React.Fragment>
                             <div className="chstrip-full-content-group">
                                 <div className="title">INPUT</div>
                                 <div className="chstrip-full-content">
@@ -384,9 +385,7 @@ class ChanStripFull extends React.PureComponent<
                                     {this.inputGain()}
                                 </div>
                             </div>
-                        </React.Fragment>
                     )}
-                    <React.Fragment>
                         {this.doesParamExists(fxParamsList.GainTrim) ? (
                             <div className="chstrip-full-content-group">
                                 <div className="title">INPUT</div>
@@ -395,7 +394,7 @@ class ChanStripFull extends React.PureComponent<
                                 </div>
                             </div>
                         ) : (
-                            <React.Fragment></React.Fragment>
+                            <div/>
                         )}
                         {this.doesParamExists(fxParamsList.CompThrs) ? (
                             <div className="chstrip-full-content-group">
@@ -432,7 +431,7 @@ class ChanStripFull extends React.PureComponent<
                                 </div>
                             </div>
                         ) : (
-                            <React.Fragment></React.Fragment>
+                            <div/>
                         )}
                         {this.doesParamExists(fxParamsList.DelayTime) ? (
                             <div className="chstrip-full-content-group">
@@ -465,7 +464,6 @@ class ChanStripFull extends React.PureComponent<
                                 </ul>
                             </div>
                         </div>
-                    </React.Fragment>
                 </div>
             )
         } else {
@@ -481,7 +479,7 @@ class ChanStripFull extends React.PureComponent<
                         <ChanStripEq faderIndex={this.props.faderIndex} />
                     </div>
                 ) : (
-                    <React.Fragment></React.Fragment>
+                    <div/>
                 )}
             </React.Fragment>
         )

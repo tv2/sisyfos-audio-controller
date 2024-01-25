@@ -23,7 +23,7 @@ import {
     storeTogglePgm,
     storeSetMute,
 } from '../../../../shared/src/actions/faderActions'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
@@ -41,7 +41,7 @@ interface IOscCommand {
 }
 
 export class OscMixerConnection {
-    dispatch: Dispatch<ChannelActions>
+    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -54,7 +54,12 @@ export class OscMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+        this.dispatch({
+            type: SettingsActionTypes.SET_MIXER_ONLINE,
+            mixerIndex: this.mixerIndex,
+            mixerOnline: false,
+        })
+
 
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
@@ -96,8 +101,12 @@ export class OscMixerConnection {
     }
 
     mixerOnline(onLineState: boolean) {
-        store.dispatch(storeSetMixerOnline(this.mixerIndex, onLineState))
-        global.mainThreadHandler.updateMixerOnline(this.mixerIndex, onLineState)
+        this.dispatch({
+            type: SettingsActionTypes.SET_MIXER_ONLINE,
+            mixerIndex: this.mixerIndex,
+            mixerOnline: onLineState,
+        })
+    global.mainThreadHandler.updateMixerOnline(this.mixerIndex, onLineState)
     }
 
     private getAssignedFaderIndex(channelIndex: number): number {
@@ -462,7 +471,11 @@ export class OscMixerConnection {
         global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
             logger.warn(`Audio Mixer number: ${this.mixerIndex + 1} is Offline`)
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
         }, this.mixerProtocol.pingTime)
     }
 

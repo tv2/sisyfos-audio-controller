@@ -22,7 +22,7 @@ import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
 import { STORAGE_FOLDER } from '../SettingsStorage'
 import { Dispatch } from '@reduxjs/toolkit'
 
@@ -43,7 +43,7 @@ const OSC_PATH_PRODUCER_CHANNEL_LAYOUT =
     /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/channel_layout/
 
 export class CasparCGConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
     mixerProtocol: ICasparCGMixerGeometry
     mixerIndex: number
     connection: CasparCG
@@ -67,7 +67,11 @@ export class CasparCGConnection {
         logger.info('Trying to connect to CasparCG...')
         this.connection.onConnected = () => {
             logger.info('CasparCG connected')
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: true,
+            })
             global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
 
             this.setupMixerConnection()
@@ -75,7 +79,12 @@ export class CasparCGConnection {
         this.connection.onDisconnected = () => {
             logger.info('CasparCG disconnected')
 
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
+
             global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         }
         this.connection.connect()

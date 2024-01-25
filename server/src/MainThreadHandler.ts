@@ -8,10 +8,9 @@ import {
 import { SnapshotHandler } from './utils/SnapshotHandler'
 import { socketServer } from './expressHandler'
 
-import { storeUpdateSettings } from '../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../shared/src/actions/settingsActions'
 import * as IO from '../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import * as FADER_ACTIONS from '../../shared/src/actions/faderActions'
-import * as CHANNEL_ACTIONS from '../../shared/src/actions/channelActions'
 
 import {
     loadSettings,
@@ -36,13 +35,17 @@ import { Dispatch } from '@reduxjs/toolkit'
 
 export class MainThreadHandlers {
     snapshotHandler: SnapshotHandler
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
 
     constructor() {
         logger.info('Setting up MainThreadHandlers')
 
         this.snapshotHandler = new SnapshotHandler()
-        store.dispatch(storeUpdateSettings(loadSettings(state)))
+        this.dispatch({
+            type: SettingsActionTypes.UPDATE_SETTINGS,
+            settings: loadSettings(state),
+        })
+
         this.cleanUpAssignedChannelsOnFaders()
         this.reIndexAssignedChannelsRelation()
     }

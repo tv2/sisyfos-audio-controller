@@ -4,7 +4,8 @@ import '../assets/css/LabelSettings.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
-    storeShowLabelSetup,
+    SettingsActionTypes,
+    SettingsActions
 } from '../../../shared/src/actions/settingsActions'
 import { IFader } from '../../../shared/src/reducers/fadersReducer'
 import {
@@ -28,7 +29,7 @@ class LabelSettings extends React.PureComponent<
     state = {
         mutations: {} as Record<string, string>
     }
-    dispatch: Dispatch<ChannelActions> = this.props.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions> = this.props.dispatch
 
     constructor(props: any) {
         super(props)
@@ -51,7 +52,7 @@ class LabelSettings extends React.PureComponent<
                 .reduce((a, b) => ({ ...a, [b.i]: '' }), {} as Record<string, string>)
                 
             this.props.dispatch(updateLabels(faders))
-            this.props.dispatch(storeShowLabelSetup())
+            this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS})
             window.socketIoClient.emit(SOCKET_SET_LABELS, { update: faders })
         }
     }
@@ -65,18 +66,16 @@ class LabelSettings extends React.PureComponent<
     }
 
     handleClose = () => {
-        // window.socketIoClient.emit(SOCKET_GET_PAGES_LIST)
-        this.props.dispatch(storeShowLabelSetup())
+        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS})
     }
 
     handleCancel = () => {
-        // window.socketIoClient.emit(SOCKET_GET_PAGES_LIST)
-        this.props.dispatch(storeShowLabelSetup())
+        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS})
     }
 
     handleSave = () => {
         this.props.dispatch(updateLabels(this.state.mutations))
-        this.props.dispatch(storeShowLabelSetup())
+        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS})
         window.socketIoClient.emit(SOCKET_SET_LABELS, { update: this.state.mutations })
     }
 

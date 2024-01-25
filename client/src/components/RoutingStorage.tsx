@@ -3,7 +3,7 @@ import React from 'react'
 import '../assets/css/RoutingStorage.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { TOGGLE_SHOW_STORAGE } from '../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes } from '../../../shared/src/actions/settingsActions'
 import {
     SOCKET_GET_SNAPSHOT_LIST,
     SOCKET_LOAD_SNAPSHOT,
@@ -39,7 +39,7 @@ class Storage extends React.PureComponent<IStorageProps & Store> {
 
     handleClose = () => {
         this.props.dispatch({
-            type: TOGGLE_SHOW_STORAGE,
+            type: SettingsActionTypes.TOGGLE_SHOW_STORAGE,
         })
     }
 

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import ClassNames from 'classnames'
 import { connect } from 'react-redux'
-import { Store } from 'redux'
+import { Dispatch, Store } from 'redux'
 import '../assets/css/NoUiSlider.css'
 
 //assets:
@@ -9,7 +9,7 @@ import '../assets/css/MiniChannel.css'
 import { IFader } from '../../../shared/src/reducers/fadersReducer'
 import { IChannels } from '../../../shared/src/reducers/channelsReducer'
 import { ISettings } from '../../../shared/src/reducers/settingsReducer'
-import { storeShowChanStrip } from '../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../../shared/src/actions/settingsActions'
 import { getFaderLabel } from '../utils/labels'
 
 interface IChannelInjectProps {
@@ -29,6 +29,7 @@ class MiniChannel extends React.Component<
     IChannelProps & IChannelInjectProps & Store
 > {
     faderIndex: number
+    dispatch: Dispatch<SettingsActions> = this.props.dispatch
 
     constructor(props: any) {
         super(props)
@@ -45,7 +46,10 @@ class MiniChannel extends React.Component<
     }
 
     handleShowChanStrip() {
-        this.props.dispatch(storeShowChanStrip(this.faderIndex))
+        this.dispatch({
+            type: SettingsActionTypes.TOGGLE_SHOW_CHAN_STRIP,
+            channel: this.faderIndex,
+        })
     }
 
     chanStripButton = () => {

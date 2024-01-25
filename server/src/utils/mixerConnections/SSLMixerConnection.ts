@@ -14,13 +14,13 @@ import {
     storeSetMute,
     storeTogglePgm,
 } from '../../../../shared/src/actions/faderActions'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class SSLMixerConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -30,7 +30,12 @@ export class SSLMixerConnection {
     constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
         this.sendOutLevelMessage = this.sendOutLevelMessage.bind(this)
 
-        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+        this.dispatch({
+            type: SettingsActionTypes.SET_MIXER_ONLINE,
+            mixerIndex: this.mixerIndex,
+            mixerOnline: false,
+        })
+
 
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
@@ -180,7 +185,11 @@ export class SSLMixerConnection {
         let lastWasAck = false
 
         this.SSLConnection.on('ready', () => {
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: true,
+            })
 
             logger.info('Receiving state of desk', {})
             this.mixerProtocol.initializeCommands.forEach((item) => {
@@ -198,8 +207,12 @@ export class SSLMixerConnection {
         })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
-
+                this.dispatch({
+                    type: SettingsActionTypes.SET_MIXER_ONLINE,
+                    mixerIndex: this.mixerIndex,
+                    mixerOnline: true,
+                })
+    
                 let buffers = []
                 let lastIndex = 0
                 for (let index = 1; index < data.length; index++) {
@@ -261,7 +274,11 @@ export class SSLMixerConnection {
             this.sendOutPingRequest()
         })
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
         }, this.mixerProtocol.pingTime)
     }
 

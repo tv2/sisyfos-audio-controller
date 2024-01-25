@@ -84,8 +84,8 @@ export const loadSnapshotState = (
     fileName: string,
     loadAll: boolean
 ) => {
+    const dispatch: Dispatch<ChannelActions> = store.dispatch
     try {
-        const dispatch: Dispatch<ChannelActions> = store.dispatch
         const stateFromFile: IShotStorage = JSON.parse(
             fs.readFileSync(fileName, 'utf8')
         )
@@ -111,12 +111,12 @@ export const loadSnapshotState = (
                     numberOfFaders
                 )
             )
-            store.dispatch(
-                storeSetCompleteChState(
-                    defaultChannelsReducerState(numberOfChannels)[0],
-                    numberOfChannels
-                )
-            )
+            dispatch({
+                type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
+                numberOfTypeChannels: numberOfChannels,
+                allState: defaultChannelsReducerState(numberOfChannels)[0],
+            })
+        
             logger.data(error).error('Initializing empty faders/channels')
         } else {
             logger.data(error).error('Error loading Snapshot')

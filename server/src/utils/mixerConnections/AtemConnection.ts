@@ -6,7 +6,7 @@ import {
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
@@ -32,7 +32,7 @@ enum TrackIndex {
 }
 
 export class AtemMixerConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
     private _connection: Atem
 
     private _chNoToSource: Record<number, number> = {}
@@ -48,14 +48,23 @@ export class AtemMixerConnection {
 
         this._connection.on('connected', () => {
             logger.info('Atem connected')
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: true,
+            })
             global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
 
             this.setupMixerConnection()
         })
         this._connection.on('disconnected', () => {
             logger.info('Atem disconnected')
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
+
             global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         })
 

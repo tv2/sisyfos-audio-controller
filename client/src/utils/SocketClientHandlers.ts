@@ -8,10 +8,8 @@ import {
     ChannelActions,
 } from '../../../shared/src/actions/channelActions'
 import {
-    storeSetMixerOnline,
-    storeSetServerOnline,
-    storeUpdatePagesList,
-    storeUpdateSettings,
+    SettingsActionTypes,
+    SettingsActions
 } from '../../../shared/src/actions/settingsActions'
 import {
     SOCKET_RETURN_SNAPSHOT_LIST,
@@ -34,10 +32,13 @@ import { Dispatch } from '@reduxjs/toolkit'
 export const vuMeters: number[][] = []
 
 export const socketClientHandlers = () => {
-    const dispatch: Dispatch<ChannelActions> = window.storeRedux.dispatch
+    const dispatch: Dispatch<ChannelActions | SettingsActions> = window.storeRedux.dispatch
     window.socketIoClient
         .on('connect', () => {
-            window.storeRedux.dispatch(storeSetServerOnline(true))
+            dispatch({
+                type: SettingsActionTypes.SET_SERVER_ONLINE,
+                serverOnline: true,
+            })
             console.log('CONNECTED TO SISYFOS SERVER')
             if (!window.location.search.includes('vu=0')) {
                 // subscribe to VU'
@@ -48,7 +49,10 @@ export const socketClientHandlers = () => {
             }
         })
         .on('disconnect', () => {
-            window.storeRedux.dispatch(storeSetServerOnline(false))
+            dispatch({
+                type: SettingsActionTypes.SET_SERVER_ONLINE,
+                serverOnline: false,
+            })
             console.log('LOST CONNECTION TO SISYFOS SERVER')
         })
         .on(SOCKET_SET_FULL_STORE, (payload: any) => {
@@ -79,17 +83,25 @@ export const socketClientHandlers = () => {
                 )
                 payload.settings[0].mixers.forEach(
                     (mixer: IMixerSettings, i: number) => {
-                        window.storeRedux.dispatch(
-                            storeSetMixerOnline(i, mixer.mixerOnline)
-                        )
+                        dispatch({
+                            type: SettingsActionTypes.SET_MIXER_ONLINE,
+                            mixerIndex: i,
+                            mixerOnline: mixer.mixerOnline,
+                        })
                     }
                 )
-                window.storeRedux.dispatch(storeSetServerOnline(true))
+                dispatch({
+                    type: SettingsActionTypes.SET_SERVER_ONLINE,
+                    serverOnline: true,
+                })
             }
         })
         .on('set-settings', (payload: any) => {
             // console.log('SETTINGS RECEIVED :', payload)
-            window.storeRedux.dispatch(storeUpdateSettings(payload))
+            dispatch({
+                type: SettingsActionTypes.UPDATE_SETTINGS,
+                settings: payload,
+            })
         })
         .on('set-mixerprotocol', (payload: any) => {
             // console.log('MIXERPROTOCOL RECEIVED :', payload)
@@ -98,9 +110,11 @@ export const socketClientHandlers = () => {
             window.mixerProtocolList = payload.mixerProtocolList
         })
         .on(SOCKET_SET_MIXER_ONLINE, (payload: any) => {
-            window.storeRedux.dispatch(
-                storeSetMixerOnline(payload.mixerIndex, payload.mixerOnline)
-            )
+            dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: payload.mixerIndex,
+                mixerOnline: payload.mixerOnline,
+            })
         })
         .on(SOCKET_SET_STORE_FADER, (payload: any) => {
             if ('faderIndex' in payload && 'state' in payload) {
@@ -128,7 +142,10 @@ export const socketClientHandlers = () => {
             window.mixerPresetList = payload
         })
         .on(SOCKET_RETURN_PAGES_LIST, (payload: any) => {
-            window.storeRedux.dispatch(storeUpdatePagesList(payload))
+            dispatch({
+                type: SettingsActionTypes.SET_PAGES_LIST,
+                customPages: payload,
+            })
         })
         .on(
             VuType.Channel,

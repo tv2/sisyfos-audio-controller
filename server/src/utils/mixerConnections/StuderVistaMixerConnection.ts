@@ -9,7 +9,7 @@ import {
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
 import {
     storeFaderLevel,
     storeSetMute,
@@ -24,7 +24,7 @@ import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class StuderVistaMixerConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     deviceRoot: any
@@ -352,7 +352,11 @@ export class StuderVistaMixerConnection {
     }
 
     mixerOnline(onLineState: boolean) {
-        store.dispatch(storeSetMixerOnline(this.mixerIndex, onLineState))
+        this.dispatch({
+            type: SettingsActionTypes.SET_MIXER_ONLINE,
+            mixerIndex: this.mixerIndex,
+            mixerOnline: onLineState,
+        })
         global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
     }
 

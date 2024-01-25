@@ -19,7 +19,7 @@ import {
     storeInputSelector,
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
 import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import { EmberElement, NumberedTreeNode } from 'emberplus-connection/dist/model'
 import { Dispatch } from '@reduxjs/toolkit'
@@ -56,7 +56,7 @@ export function dbToFloat(d: number): number {
 }
 
 export class LawoRubyMixerConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     emberConnection: EmberClient
@@ -75,7 +75,12 @@ export class LawoRubyMixerConnection {
             state.settings[0].mixers[this.mixerIndex].devicePort
         )
 
-        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+        this.dispatch({
+            type: SettingsActionTypes.SET_MIXER_ONLINE,
+            mixerIndex: this.mixerIndex,
+            mixerOnline: false,
+        })
+
 
         this.emberConnection.on('error', (error: any) => {
             if (
@@ -89,12 +94,20 @@ export class LawoRubyMixerConnection {
         })
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
             global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         })
         this.emberConnection.on('connected', () => {
             logger.info('Connected to Ember device')
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: true,
+            })
             global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
         })
 

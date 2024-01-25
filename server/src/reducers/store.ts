@@ -1,8 +1,16 @@
 import storeRedux from '../../../shared/src/reducers/store'
-import { storeUpdateSettings } from '../../../shared/src/actions/settingsActions'
+import {
+    SettingsActionTypes,
+    SettingsActions,
+} from '../../../shared/src/actions/settingsActions'
 import { loadSettings } from '../utils/SettingsStorage'
+import { Dispatch } from 'redux'
 
-storeRedux.dispatch(storeUpdateSettings(loadSettings(storeRedux.getState())))
+const dispatch: Dispatch<SettingsActions> = storeRedux.dispatch
+dispatch({
+    type: SettingsActionTypes.UPDATE_SETTINGS,
+    settings: loadSettings(storeRedux.getState()),
+})
 
 //Subscribe to redux store:
 let state = storeRedux.getState()

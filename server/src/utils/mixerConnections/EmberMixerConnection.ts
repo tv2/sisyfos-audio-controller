@@ -26,7 +26,7 @@ import {
     ChannelActionTypes,
     ChannelActions,
 } from '../../../../shared/src/actions/channelActions'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
 import {
     IChannelReference,
     IFader,
@@ -36,7 +36,7 @@ import { STORAGE_FOLDER } from '../SettingsStorage'
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class EmberMixerConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     emberConnection: EmberClient
@@ -86,7 +86,11 @@ export class EmberMixerConnection {
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
 
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
             global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
 
             this.emberNodeObject = []
@@ -99,7 +103,11 @@ export class EmberMixerConnection {
         this.emberConnection.on('connected', async () => {
             logger.info('Found Ember connection')
 
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+            this.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: true,
+            })
             global.mainThreadHandler.updateMixerOnline(this.mixerIndex)
 
             const req = await this.emberConnection.getDirectory(
