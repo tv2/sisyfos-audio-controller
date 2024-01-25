@@ -10,14 +10,8 @@ import {
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
-    storeFaderLevel,
-    storeInputGain,
-    storeSetPgm,
-    storeSetPfl,
-    storeShowChannel,
-    storeSetAMix,
-    storeCapability,
-    storeInputSelector,
+    FaderActionTypes,
+    FaderActions,
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import { LawoMC2 } from '../../../../shared/src/constants/mixerProtocols/LawoMC2'
@@ -26,7 +20,10 @@ import {
     ChannelActionTypes,
     ChannelActions,
 } from '../../../../shared/src/actions/channelActions'
-import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
+import {
+    SettingsActionTypes,
+    SettingsActions,
+} from '../../../../shared/src/actions/settingsActions'
 import {
     IChannelReference,
     IFader,
@@ -36,7 +33,7 @@ import { STORAGE_FOLDER } from '../SettingsStorage'
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class EmberMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     emberConnection: EmberClient
@@ -230,13 +227,21 @@ export class EmberMixerConnection {
                             channelTypeIndex
                         )
                     }
-                    store.dispatch(storeShowChannel(assignedFaderIndex, true))
+                    this.dispatch({
+                        type: FaderActionTypes.SHOW_CHANNEL,
+                        faderIndex: assignedFaderIndex,
+                        showChannel: true,
+                    })
                     global.mainThreadHandler.updatePartialStore(
                         assignedFaderIndex
                     )
                 } else {
                     logger.info(`Channel ${ch} offline`)
-                    store.dispatch(storeShowChannel(assignedFaderIndex, false))
+                    this.dispatch({
+                        type: FaderActionTypes.SHOW_CHANNEL,
+                        faderIndex: assignedFaderIndex,
+                        showChannel: false,
+                    })
                     global.mainThreadHandler.updatePartialStore(
                         assignedFaderIndex
                     )
@@ -302,7 +307,11 @@ export class EmberMixerConnection {
                 )
 
                 if (!channel.fadeActive && level >= 0 && level <= 1) {
-                    store.dispatch(storeFaderLevel(assignedFaderIndex, level))
+                    this.dispatch({
+                        type: FaderActionTypes.SET_FADER_LEVEL,
+                        faderIndex: assignedFaderIndex,
+                        level: level,
+                    })
                     this.dispatch({
                         type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                         channel: assignedFaderIndex,
@@ -312,7 +321,11 @@ export class EmberMixerConnection {
 
                     // toggle pgm based on level
                     logger.trace(`Set Channel ${ch} pgmOn ${level > 0}`)
-                    store.dispatch(storeSetPgm(assignedFaderIndex, level > 0))
+                    this.dispatch({
+                        type: FaderActionTypes.SET_PGM,
+                        faderIndex: assignedFaderIndex,
+                        pgmOn: level > 0,
+                    })
 
                     global.mainThreadHandler.updatePartialStore(
                         assignedFaderIndex
@@ -393,12 +406,11 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value
                     }`
                 )
-                store.dispatch(
-                    storeSetPfl(
-                        assignedFaderIndex,
-                        (node.contents as Model.Parameter).value as boolean
-                    )
-                )
+                this.dispatch({
+                    type: FaderActionTypes.SET_PFL,
+                    faderIndex: assignedFaderIndex,
+                    pflOn: (node.contents as Model.Parameter).value as boolean,
+                })
                 global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
         )
@@ -435,7 +447,11 @@ export class EmberMixerConnection {
 
                 // assume it is in db now
                 level = this._faderLevelToFloat(Number(level), 0)
-                store.dispatch(storeInputGain(assignedFaderIndex, level))
+                this.dispatch({
+                    type: FaderActionTypes.SET_INPUT_GAIN,
+                    faderIndex: assignedFaderIndex,
+                    level: level,
+                })
                 global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
         )
@@ -474,12 +490,11 @@ export class EmberMixerConnection {
                                 i + 1
                             }`
                         )
-                        store.dispatch(
-                            storeInputSelector(
-                                assignedFaderIndex,
-                                Number(i) + 1
-                            )
-                        )
+                        this.dispatch({
+                            type: FaderActionTypes.SET_INPUT_SELECTOR,
+                            faderIndex: assignedFaderIndex,
+                            selected: Number(i) + 1,
+                        })
                     }
                     global.mainThreadHandler.updatePartialStore(
                         assignedFaderIndex
@@ -508,13 +523,12 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value
                     }`
                 )
-                store.dispatch(
-                    storeCapability(
-                        assignedFaderIndex,
-                        'hasInputSelector',
-                        (node.contents as Model.Parameter).value as boolean
-                    )
-                )
+                this.dispatch({
+                    type: FaderActionTypes.SET_CAPABILITY,
+                    faderIndex: assignedFaderIndex,
+                    capability: 'hasInputSelector',
+                    enabled: (node.contents as Model.Parameter).value as boolean,
+                })
                 global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
         )
@@ -525,13 +539,26 @@ export class EmberMixerConnection {
         const updateState = () => {
             if (llState && !rrState) {
                 logger.trace(`Input selector state: ll`)
-                store.dispatch(storeInputSelector(assignedFaderIndex, 2))
+                this.dispatch({
+                    type: FaderActionTypes.SET_INPUT_SELECTOR,
+                    faderIndex: assignedFaderIndex,
+                    selected: 2,
+                })
             } else if (rrState && !llState) {
                 logger.trace(`Input selector state: rr`)
-                store.dispatch(storeInputSelector(assignedFaderIndex, 3))
+                this.dispatch({
+                    type: FaderActionTypes.SET_INPUT_SELECTOR,
+                    faderIndex: assignedFaderIndex,
+                    selected: 3,
+                })
+
             } else {
                 logger.trace(`Input selector state: lr`)
-                store.dispatch(storeInputSelector(assignedFaderIndex, 1))
+                this.dispatch({
+                    type: FaderActionTypes.SET_INPUT_SELECTOR,
+                    faderIndex: assignedFaderIndex,
+                    selected: 1,
+                })
             }
             global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
         }
@@ -592,15 +619,15 @@ export class EmberMixerConnection {
                             (node.contents as Model.Parameter).value
                         }`
                     )
-                    store.dispatch(
-                        storeCapability(
-                            assignedFaderIndex,
-                            'hasAMix',
+                    this.dispatch({
+                        type: FaderActionTypes.SET_CAPABILITY,
+                        faderIndex: assignedFaderIndex,
+                        capability: 'hasAMix',
+                        enabled:
                             (node.contents as Model.Parameter).value !==
-                                ((node.contents as Model.Parameter).maximum ||
-                                    63) // max is unassigned, max = 63 in firmware 6.4
-                        )
-                    )
+                            ((node.contents as Model.Parameter).maximum ||
+                                63), // max is unassigned, max = 63 in firmware 6.4
+                    })
                     global.mainThreadHandler.updatePartialStore(
                         assignedFaderIndex
                     )
@@ -620,12 +647,11 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value
                     }`
                 )
-                store.dispatch(
-                    storeSetAMix(
-                        assignedFaderIndex,
-                        (node.contents as Model.Parameter).value as boolean
-                    )
-                )
+                this.dispatch({
+                    type: FaderActionTypes.SET_AMIX,
+                    faderIndex: assignedFaderIndex,
+                    state: (node.contents as Model.Parameter).value as boolean,
+                })
                 global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
         )
@@ -900,9 +926,7 @@ export class EmberMixerConnection {
         if (this.mixerProtocol.presetFileExtension === 'MC2') {
             let data = JSON.parse(
                 fs
-                    .readFileSync(
-                        path.resolve(STORAGE_FOLDER, presetName)
-                    )
+                    .readFileSync(path.resolve(STORAGE_FOLDER, presetName))
                     .toString()
             )
 

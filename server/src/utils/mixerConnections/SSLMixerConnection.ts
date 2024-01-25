@@ -10,9 +10,7 @@ import {
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import {
-    storeFaderLevel,
-    storeSetMute,
-    storeTogglePgm,
+FaderActionTypes, FaderActions
 } from '../../../../shared/src/actions/faderActions'
 import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
@@ -20,7 +18,7 @@ import { IChannelReference, IFader } from '../../../../shared/src/reducers/fader
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class SSLMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -94,11 +92,16 @@ export class SSLMixerConnection {
                         thisMixerChannels[channelIndex].outputLevel !== value
 
                     ) {
-                        store.dispatch(
-                            storeFaderLevel(assignedFaderIndex, value)
-                        )
+                        this.dispatch({
+                            type: FaderActionTypes.SET_FADER_LEVEL,
+                            faderIndex: assignedFaderIndex,
+                            level: value,
+                        })
                         if (!state.faders[0].fader[assignedFaderIndex].pgmOn) {
-                            store.dispatch(storeTogglePgm(assignedFaderIndex))
+                            this.dispatch({
+                                type: FaderActionTypes.TOGGLE_PGM,
+                                faderIndex: assignedFaderIndex,
+                            })
                         }
 
                         if (remoteConnections) {
@@ -121,7 +124,11 @@ export class SSLMixerConnection {
                     state.faders[0].fader[assignedFaderIndex].pgmOn ||
                     state.faders[0].fader[assignedFaderIndex].voOn
                 ) {
-                    store.dispatch(storeFaderLevel(assignedFaderIndex, value))
+                    this.dispatch({
+                        type: FaderActionTypes.SET_FADER_LEVEL,
+                        faderIndex: assignedFaderIndex,
+                        level: value,
+                    })
                     state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
                         (item: IChannelReference) => {
                             if (item.mixerIndex === this.mixerIndex) {
@@ -160,7 +167,11 @@ export class SSLMixerConnection {
             )}`
         )
 
-        store.dispatch(storeSetMute(assignedFaderIndex, value))
+        this.dispatch({
+            type: FaderActionTypes.SET_MUTE,
+            faderIndex: assignedFaderIndex,
+            muteOn: value,
+        })
 
         if (remoteConnections) {
             remoteConnections.updateRemoteFaderState(

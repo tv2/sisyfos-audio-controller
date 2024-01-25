@@ -12,13 +12,13 @@ import {
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
-import { storeFaderLevel, storeTogglePgm } from '../../../../shared/src/actions/faderActions'
+import { FaderActionTypes, FaderActions } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class MidiMixerConnection {
-    dispatch: Dispatch<ChannelActions>
+    dispatch: Dispatch<ChannelActions | FaderActions>
     mixerProtocol: any
     mixerIndex: number
     midiInput: any
@@ -87,15 +87,16 @@ export class MidiMixerConnection {
                             .CHANNEL_OUT_GAIN[0].mixerMessage
                     )
                 let faderChannel = this.getAssignedFaderIndex(ch - 1) + 1
-                store.dispatch(
-                    storeFaderLevel(faderChannel - 1, message.data[2])
-                )
+                this.dispatch({
+                    type: FaderActionTypes.SET_FADER_LEVEL,
+                    faderIndex: faderChannel - 1,
+                    level: message.data[2],
+                })
                 if (!state.faders[0].fader[faderChannel - 1].pgmOn) {
-                    store.dispatch(
-                        storeTogglePgm(
-                            faderChannel - 1,
-                        )
-                    )
+                    this.dispatch({
+                        type: FaderActionTypes.TOGGLE_PGM,
+                        faderIndex: faderChannel - 1,
+                    })
                 }
                 if (remoteConnections) {
                     remoteConnections.updateRemoteFaderState(

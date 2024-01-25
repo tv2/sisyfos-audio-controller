@@ -15,11 +15,8 @@ import {
     FairlightInputConfiguration,
 } from 'atem-connection/dist/enums'
 import {
-    storeFaderLevel,
-    storeInputGain,
-    storeSetMute,
-    storeSetPgm,
-    storeSetVo,
+    FaderActionTypes,
+    FaderActions
 } from '../../../../shared/src/actions/faderActions'
 import { ChannelActions, ChannelActionTypes } from '../../../../shared/src/actions/channelActions'
 import { FairlightAudioSource } from 'atem-connection/dist/state/fairlight'
@@ -32,7 +29,7 @@ enum TrackIndex {
 }
 
 export class AtemMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> = store.dispatch
     private _connection: Atem
 
     private _chNoToSource: Record<number, number> = {}
@@ -395,7 +392,11 @@ export class AtemMixerConnection {
         gain: number,
         update: boolean = true
     ): void {
-        store.dispatch(storeInputGain(faderIndex, gain))
+        this.dispatch({
+            type: FaderActionTypes.SET_INPUT_GAIN,
+            faderIndex: faderIndex,
+            level: gain,
+        })
         if (update) global.mainThreadHandler.updatePartialStore(faderIndex)
     }
     private setMute(
@@ -403,7 +404,11 @@ export class AtemMixerConnection {
         muteOn: boolean,
         update: boolean = true
     ): void {
-        store.dispatch(storeSetMute(faderIndex, muteOn))
+        this.dispatch({
+            type: FaderActionTypes.SET_MUTE,
+            faderIndex: faderIndex,
+            muteOn: muteOn,
+        })
         if (update) global.mainThreadHandler.updatePartialStore(faderIndex)
     }
     private setFaderPgm(
@@ -411,11 +416,19 @@ export class AtemMixerConnection {
         pgmOn: boolean,
         update: boolean = true
     ): void {
-        store.dispatch(storeSetPgm(faderIndex, pgmOn))
+        this.dispatch({
+            type: FaderActionTypes.SET_PGM,
+            faderIndex: faderIndex,
+            pgmOn: pgmOn,
+        })
         if (update) global.mainThreadHandler.updatePartialStore(faderIndex)
     }
     private setFaderVo(faderIndex: number, voOn: boolean, update = true): void {
-        store.dispatch(storeSetVo(faderIndex, voOn))
+        this.dispatch({
+            type: FaderActionTypes.SET_VO,
+            faderIndex: faderIndex,
+            voOn: voOn,
+        })
         if (update) global.mainThreadHandler.updatePartialStore(faderIndex)
     }
     private setFaderLevel(
@@ -423,7 +436,11 @@ export class AtemMixerConnection {
         level: number,
         update: boolean = true
     ): void {
-        store.dispatch(storeFaderLevel(faderIndex, level))
+        this.dispatch({
+            type: FaderActionTypes.SET_FADER_LEVEL,
+            faderIndex: faderIndex,
+            level: level,
+        })
         if (update) global.mainThreadHandler.updatePartialStore(faderIndex)
     }
     private setChannelLabel(

@@ -10,7 +10,7 @@ import { checkVersion } from './migrations'
 
 // Redux:
 import {  ChannelActionTypes, ChannelActions } from '../../../shared/src/actions/channelActions'
-import { storeSetCompleteFaderState } from '../../../shared/src/actions/faderActions'
+import { FaderActionTypes, FaderActions } from '../../../shared/src/actions/faderActions'
 import { logger } from './logger'
 import { defaultFadersReducerState } from '../../../shared/src/reducers/fadersReducer'
 import { Dispatch } from '@reduxjs/toolkit'
@@ -84,7 +84,7 @@ export const loadSnapshotState = (
     fileName: string,
     loadAll: boolean
 ) => {
-    const dispatch: Dispatch<ChannelActions> = store.dispatch
+    const dispatch: Dispatch<ChannelActions | FaderActions> = store.dispatch
     try {
         const stateFromFile: IShotStorage = JSON.parse(
             fs.readFileSync(fileName, 'utf8')
@@ -96,21 +96,19 @@ export const loadSnapshotState = (
                 numberOfTypeChannels: numberOfChannels,
                 allState: stateFromFile.channelState as IChannels,
             })
-            store.dispatch(
-                storeSetCompleteFaderState(
-                    stateFromFile.faderState as IFaders,
-                    numberOfFaders
-                )
-            )
+            dispatch({
+                type: FaderActionTypes.SET_COMPLETE_FADER_STATE,
+                numberOfFaders: numberOfFaders,
+                allState: stateFromFile.faderState as IFaders,
+            })
         }
     } catch (error) {
         if (fileName.includes('default.shot')) {
-            store.dispatch(
-                storeSetCompleteFaderState(
-                    defaultFadersReducerState(numberOfFaders, numberOfChannels)[0],
-                    numberOfFaders
-                )
-            )
+            dispatch({
+                type: FaderActionTypes.SET_COMPLETE_FADER_STATE,
+                numberOfFaders: numberOfFaders,
+                allState: defaultFadersReducerState(numberOfFaders, numberOfChannels)[0],
+            })
             dispatch({
                 type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
                 numberOfTypeChannels: numberOfChannels,

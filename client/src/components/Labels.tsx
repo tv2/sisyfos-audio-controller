@@ -5,7 +5,7 @@ import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
     SettingsActionTypes,
-    SettingsActions
+    SettingsActions,
 } from '../../../shared/src/actions/settingsActions'
 import { IFader } from '../../../shared/src/reducers/fadersReducer'
 import {
@@ -14,8 +14,14 @@ import {
 } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import { ICustomPages } from '../../../shared/src/reducers/settingsReducer'
 import { getChannelLabel } from '../utils/labels'
-import { flushExtLabels, updateLabels } from '../../../shared/src/actions/faderActions'
-import { ChannelActionTypes, ChannelActions } from '../../../shared/src/actions/channelActions'
+import {
+    FaderActionTypes,
+    FaderActions,
+} from '../../../shared/src/actions/faderActions'
+import {
+    ChannelActionTypes,
+    ChannelActions,
+} from '../../../shared/src/actions/channelActions'
 import { Dispatch } from '@reduxjs/toolkit'
 
 interface ILabelSettingsInjectProps {
@@ -27,9 +33,10 @@ class LabelSettings extends React.PureComponent<
     ILabelSettingsInjectProps & Store
 > {
     state = {
-        mutations: {} as Record<string, string>
+        mutations: {} as Record<string, string>,
     }
-    dispatch: Dispatch<ChannelActions | SettingsActions> = this.props.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> =
+        this.props.dispatch
 
     constructor(props: any) {
         super(props)
@@ -41,42 +48,61 @@ class LabelSettings extends React.PureComponent<
 
     handleLabel = (event: ChangeEvent<HTMLInputElement>, index: number) => {
         console.log(event.target.value, index)
-        this.setState({ mutations: { ...this.state.mutations, [index]: event.target.value }})
+        this.setState({
+            mutations: { ...this.state.mutations, [index]: event.target.value },
+        })
     }
 
     handleClearLabels() {
         if (window.confirm('Clear all user defined labels?')) {
             const faders = this.props.fader
                 .map((f, i) => ({ label: f.userLabel, i }))
-                .filter(f => f.label)
-                .reduce((a, b) => ({ ...a, [b.i]: '' }), {} as Record<string, string>)
-                
-            this.props.dispatch(updateLabels(faders))
-            this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS})
+                .filter((f) => f.label)
+                .reduce(
+                    (a, b) => ({ ...a, [b.i]: '' }),
+                    {} as Record<string, string>
+                )
+
+            this.dispatch({
+                type: FaderActionTypes.UPDATE_LABEL_LIST,
+                update: faders,
+            })
+            this.dispatch({
+                type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS,
+            })
             window.socketIoClient.emit(SOCKET_SET_LABELS, { update: faders })
         }
     }
 
     handleFlushLabels() {
-        if (window.confirm('Flush all external (automation and channel) labels?')) {
-            this.props.dispatch(flushExtLabels())
+        if (
+            window.confirm(
+                'Flush all external (automation and channel) labels?'
+            )
+        ) {
+            this.dispatch({ type: FaderActionTypes.FLUSH_FADER_LABELS })
             this.dispatch({ type: ChannelActionTypes.FLUSH_CHANNEL_LABELS })
             window.socketIoClient.emit(SOCKET_FLUSH_LABELS)
         }
     }
 
     handleClose = () => {
-        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS})
+        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS })
     }
 
     handleCancel = () => {
-        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS})
+        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS })
     }
 
     handleSave = () => {
-        this.props.dispatch(updateLabels(this.state.mutations))
-        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS})
-        window.socketIoClient.emit(SOCKET_SET_LABELS, { update: this.state.mutations })
+        this.dispatch({
+            type: FaderActionTypes.UPDATE_LABEL_LIST,
+            update: this.state.mutations,
+        })
+        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS })
+        window.socketIoClient.emit(SOCKET_SET_LABELS, {
+            update: this.state.mutations,
+        })
     }
 
     renderLabelList() {
@@ -84,18 +110,23 @@ class LabelSettings extends React.PureComponent<
             <div>
                 {this.props.fader.map((fader: IFader, index: number) => {
                     const faderLabel = fader.label || '-'
-                    const channelLabel = getChannelLabel(window.reduxState, index) || '-'
+                    const channelLabel =
+                        getChannelLabel(window.reduxState, index) || '-'
                     const mutated = this.state.mutations[index]
-                    
+
                     return (
                         <React.Fragment>
                             <label className="settings-input-field">
-                                {`Fader ${index + 1} (${faderLabel}/${channelLabel}) : `}
+                                {`Fader ${
+                                    index + 1
+                                } (${faderLabel}/${channelLabel}) : `}
                                 <input
                                     name="fadeTime"
                                     type="text"
                                     value={mutated ?? fader.userLabel}
-                                    onChange={(ev) => this.handleLabel(ev, index)}
+                                    onChange={(ev) =>
+                                        this.handleLabel(ev, index)
+                                    }
                                 />
                             </label>
                             <br />

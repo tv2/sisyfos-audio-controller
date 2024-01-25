@@ -25,13 +25,13 @@ import {
     ChannelActionTypes,
     ChannelActions,
 } from '../../../shared/src/actions/channelActions'
-import { storeFaderLevel } from '../../../shared/src/actions/faderActions'
+import { FaderActionTypes, FaderActions } from '../../../shared/src/actions/faderActions'
 import { AtemMixerConnection } from './mixerConnections/AtemConnection'
 import { IChannelReference } from '../../../shared/src/reducers/fadersReducer'
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class MixerGenericConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | FaderActions> = store.dispatch
     mixerProtocol: IMixerProtocolGeneric[]
     mixerConnection: any[]
     mixerTimers: {
@@ -165,9 +165,11 @@ export class MixerGenericConnection {
             state.faders[0].fader[channel].faderLevel <=
             state.settings[0].autoResetLevel / 100
         ) {
-            store.dispatch(
-                storeFaderLevel(channel, this.mixerProtocol[0].fader.zero)
-            )
+            this.dispatch({
+                type: FaderActionTypes.SET_FADER_LEVEL,
+                faderIndex: channel,
+                level: this.mixerProtocol[0].fader.zero,
+            })
         }
     }
 

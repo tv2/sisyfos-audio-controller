@@ -1,7 +1,6 @@
 import {
-    storeSetCompleteFaderState,
-    storeSetSingleFaderState,
-    storeVuReductionLevel,
+    FaderActionTypes,
+    FaderActions
 } from '../../../shared/src/actions/faderActions'
 import {
     ChannelActionTypes,
@@ -32,7 +31,7 @@ import { Dispatch } from '@reduxjs/toolkit'
 export const vuMeters: number[][] = []
 
 export const socketClientHandlers = () => {
-    const dispatch: Dispatch<ChannelActions | SettingsActions> = window.storeRedux.dispatch
+    const dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> = window.storeRedux.dispatch
     window.socketIoClient
         .on('connect', () => {
             dispatch({
@@ -75,12 +74,11 @@ export const socketClientHandlers = () => {
                     numberOfTypeChannels: numberOfChannels,
                     allState: payload.channels[0],
                 })
-                window.storeRedux.dispatch(
-                    storeSetCompleteFaderState(
-                        payload.faders[0],
-                        payload.settings[0].numberOfFaders
-                    )
-                )
+                dispatch({
+                    type: FaderActionTypes.SET_COMPLETE_FADER_STATE,
+                    allState: payload.faders[0],
+                    numberOfFaders: payload.settings[0].numberOfFaders,
+                })
                 payload.settings[0].mixers.forEach(
                     (mixer: IMixerSettings, i: number) => {
                         dispatch({
@@ -118,9 +116,11 @@ export const socketClientHandlers = () => {
         })
         .on(SOCKET_SET_STORE_FADER, (payload: any) => {
             if ('faderIndex' in payload && 'state' in payload) {
-                window.storeRedux.dispatch(
-                    storeSetSingleFaderState(payload.faderIndex, payload.state)
-                )
+                dispatch({
+                    type: FaderActionTypes.SET_SINGLE_FADER_STATE,
+                    faderIndex: payload.faderIndex,
+                    state: payload.state,
+                })
             }
         })
         .on(SOCKET_SET_STORE_CHANNEL, (payload: any) => {
@@ -163,9 +163,11 @@ export const socketClientHandlers = () => {
                     window.reduxState.settings[0].showChanStripFull ===
                         faderIndex
                 ) {
-                    window.storeRedux.dispatch(
-                        storeVuReductionLevel(faderIndex, level)
-                    )
+                    dispatch({
+                        type: FaderActionTypes.SET_VU_REDUCTION_LEVEL,
+                        faderIndex: faderIndex,
+                        level: level,
+                    })
                 }
             }
         )

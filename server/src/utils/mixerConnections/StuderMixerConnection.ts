@@ -8,13 +8,13 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
-import { storeFaderLevel } from '../../../../shared/src/actions/faderActions'
+import { FaderActionTypes, FaderActions } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class StuderMixerConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | FaderActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     emberConnection: any
@@ -124,9 +124,12 @@ export class StuderMixerConnection {
                             this.mixerProtocol.channelTypes[typeIndex].fromMixer
                                 .CHANNEL_OUT_GAIN[0].min
                     ) {
-                        store.dispatch(
-                            storeFaderLevel(ch - 1, node.contents.value)
-                        )
+
+                        this.dispatch({
+                            type: FaderActionTypes.SET_FADER_LEVEL,
+                            faderIndex: ch - 1,
+                            level: node.contents.value,
+                        })
                         global.mainThreadHandler.updatePartialStore(ch - 1)
                         if (remoteConnections) {
                             remoteConnections.updateRemoteFaderState(
