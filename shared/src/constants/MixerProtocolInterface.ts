@@ -1,3 +1,5 @@
+import { MixerConnectionTypes } from "./MixerProtocolPresets"
+
 export enum fxParamsList {
     EqGain01,
     EqGain02,
@@ -29,7 +31,7 @@ export enum VuLabelConversionType {
     DecibelMC2 = 'decibelMC2',
 }
 export interface IMixerProtocolGeneric {
-    protocol: string
+    protocol: MixerConnectionTypes
     fxList?: {}
     label: string
     presetFileExtension?: string

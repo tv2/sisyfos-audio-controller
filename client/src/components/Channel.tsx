@@ -16,6 +16,7 @@ import { withTranslation } from 'react-i18next'
 import { VuLabelConversionType } from '../../shared../../../shared/src/constants/MixerProtocolInterface'
 import { getFaderLabel } from '../utils/labels'
 import { Conversions } from '../../../shared/src/actions/utils/dbConversion'
+import { MixerConnectionTypes } from '../../../shared/src/constants/MixerProtocolPresets'
 
 interface IChannelInjectProps {
     t: any
@@ -145,8 +146,8 @@ class Channel extends React.Component<
 
     handleVuMeter() {
         if (
-            window.mixerProtocol.protocol === 'CasparCG' ||
-            window.mixerProtocol.protocol === 'VMIX'
+            window.mixerProtocol.protocol === MixerConnectionTypes.CasparCG ||
+            window.mixerProtocol.protocol === MixerConnectionTypes.vMix
         ) {
             return (
                 <React.Fragment>

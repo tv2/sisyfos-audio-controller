@@ -3,7 +3,7 @@ import { logger } from './logger'
 import { remoteConnections } from '../mainClasses'
 
 //Utils:
-import { MixerConnections, MixerProtocolPresets } from '../../../shared/src/constants/MixerProtocolPresets'
+import { MixerConnectionTypes, MixerProtocolPresets } from '../../../shared/src/constants/MixerProtocolPresets'
 import {
     IMixerProtocol,
     IMixerProtocolGeneric,
@@ -65,68 +65,68 @@ export class MixerGenericConnection {
                 ] || MixerProtocolPresets.sslSystemT
             )
             switch (this.mixerProtocol[index].protocol) {
-                case MixerConnections.OSC: {
+                case MixerConnectionTypes.OSC: {
                     this.mixerConnection[index] = new OscMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case MixerConnections.YamahaQlCl: {
+                case MixerConnectionTypes.YamahaQlCl: {
                     this.mixerConnection[index] = new QlClMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case MixerConnections.GenericMidi: {
+                case MixerConnectionTypes.GenericMidi: {
                     this.mixerConnection[index] = new MidiMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case MixerConnections.CasparCG: {
+                case MixerConnectionTypes.CasparCG: {
                     this.mixerConnection[index] = new CasparCGConnection(
                         this.mixerProtocol[index] as ICasparCGMixerGeometry,
                         index
                     )
                 }
-                case MixerConnections.EMBER: {
+                case MixerConnectionTypes.EMBER: {
                     this.mixerConnection[index] = new EmberMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case MixerConnections.LawoRuby: {
+                case MixerConnectionTypes.LawoRuby: {
                     this.mixerConnection[index] = new LawoRubyMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case MixerConnections.Studer: {
+                case MixerConnectionTypes.Studer: {
                     this.mixerConnection[index] = new StuderMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case MixerConnections.StuderVista: {
+                case MixerConnectionTypes.StuderVista: {
                     this.mixerConnection[index] =
                         new StuderVistaMixerConnection(
                             this.mixerProtocol[index] as IMixerProtocol,
                             index
                         )
                 }
-                case MixerConnections.SSLSystemT: {
+                case MixerConnectionTypes.SSLSystemT: {
                     this.mixerConnection[index] = new SSLMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case MixerConnections.vMix: {
+                case MixerConnectionTypes.vMix: {
                     this.mixerConnection[index] = new VMixMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case MixerConnections.Atem: {
+                case MixerConnectionTypes.Atem: {
                     this.mixerConnection[index] = new AtemMixerConnection(
                         this.mixerProtocol[index],
                         index

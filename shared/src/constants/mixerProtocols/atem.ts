@@ -3,11 +3,11 @@ import {
     fxParamsList,
     VuLabelConversionType,
 } from '../MixerProtocolInterface'
-import { MixerConnections } from '../MixerProtocolPresets'
+import { MixerConnectionTypes } from '../MixerProtocolPresets'
 
 export const Atem: IMixerProtocol = {
     MAX_UPDATES_PER_SECOND: 10,
-    protocol: MixerConnections.Atem,
+    protocol: MixerConnectionTypes.Atem,
     label: 'ATEM Audio Control',
     vuLabelConversionType: VuLabelConversionType.Decibel,
     vuLabelValues: [0, 0.125, 0.25, 0.375, 0.5, 0.75, 1],

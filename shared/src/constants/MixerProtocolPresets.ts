@@ -18,7 +18,7 @@ import { Atem } from './mixerProtocols/atem'
 // Interface:
 import { IMixerProtocolGeneric } from './MixerProtocolInterface'
 
-export enum MixerConnections {
+export enum MixerConnectionTypes {
     'OSC' = 'OSC',
     'EMBER' = 'EMBER',
     'YamahaQlCl' = 'YamahaQlCl',

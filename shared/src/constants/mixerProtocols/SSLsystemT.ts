@@ -1,8 +1,8 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
-import { MixerConnections } from '../MixerProtocolPresets'
+import { MixerConnectionTypes } from '../MixerProtocolPresets'
 
 export const SSLSystemT: IMixerProtocol = {
-    protocol: MixerConnections.SSLSystemT,
+    protocol: MixerConnectionTypes.SSLSystemT,
     label: 'SSL System T',
     presetFileExtension: '',
     loadPresetCommand: [emptyMixerMessage()],

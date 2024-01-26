@@ -1,7 +1,8 @@
 import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
+import { MixerConnectionTypes } from '../MixerProtocolPresets'
 
 export const YamahaQLCL: IMixerProtocol = {
-    protocol: 'QLCL',
+    protocol: MixerConnectionTypes.YamahaQlCl,
     label: 'Yamaha QL/CL',
     presetFileExtension: '',
     loadPresetCommand: [emptyMixerMessage()],
