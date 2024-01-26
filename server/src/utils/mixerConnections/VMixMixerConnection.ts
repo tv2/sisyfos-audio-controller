@@ -9,12 +9,15 @@ import {
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
+    ChannelActions,
     ChannelActionTypes,
 } from '../../../../shared/src/actions/channelActions'
 import {
+    FaderActions,
     FaderActionTypes,
 } from '../../../../shared/src/actions/faderActions'
 import {
+    SettingsActions,
     SettingsActionTypes,
 } from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
@@ -216,7 +219,10 @@ export class VMixMixerConnection {
                 const { inputGain, muteOn, pflOn, pgmOn, voOn } =
                     state.faders[0].fader[assignedFaderIndex]
                 let sendUpdate = false
-                const dispatch = (update: any) => {
+                
+                const dispatchAndSetUpdateState = (
+                    update: FaderActions | ChannelActions | SettingsActions
+                ) => {
                     store.dispatch(update)
                     sendUpdate = true
                 }
@@ -228,12 +234,12 @@ export class VMixMixerConnection {
                             outputLevel > 0 &&
                             Math.abs(outputLevel - input.volume) > 0.01
                         ) {
-                            store.dispatch({
+                            dispatchAndSetUpdateState({
                                 type: FaderActionTypes.SET_FADER_LEVEL,
                                 faderIndex: assignedFaderIndex,
                                 level: input.volume,
                             })
-                            store.dispatch({
+                            dispatchAndSetUpdateState({
                                 type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                                 channel: assignedFaderIndex,
                                 mixerIndex: this.mixerIndex,
@@ -244,19 +250,19 @@ export class VMixMixerConnection {
                             })
                         }
                         if (muteOn) {
-                            store.dispatch({
+                            dispatchAndSetUpdateState({
                                 type: FaderActionTypes.SET_MUTE,
                                 faderIndex: assignedFaderIndex,
                                 muteOn: false,
                             })
                         }
                         if (!fadeActive && !pgmOn && !voOn) {
-                            store.dispatch({
+                            dispatchAndSetUpdateState({
                                 type: FaderActionTypes.SET_PGM,
                                 faderIndex: assignedFaderIndex,
                                 pgmOn: true,
                             })
-                            store.dispatch({
+                            dispatchAndSetUpdateState({
                                 type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                                 channel: assignedFaderIndex,
                                 mixerIndex: this.mixerIndex,
@@ -265,14 +271,14 @@ export class VMixMixerConnection {
                         }
                     } else if (!muteOn) {
                         if (pgmOn) {
-                            store.dispatch({
+                            dispatchAndSetUpdateState({
                                 type: FaderActionTypes.SET_PGM,
                                 faderIndex: assignedFaderIndex,
                                 pgmOn: false,
                             })
                         }
                         if (voOn) {
-                            store.dispatch({
+                            dispatchAndSetUpdateState({
                                 type: FaderActionTypes.SET_VO,
                                 faderIndex: assignedFaderIndex,
                                 voOn: false,
@@ -281,14 +287,14 @@ export class VMixMixerConnection {
                     }
 
                     if (inputGain !== input.gainDb) {
-                        store.dispatch({
+                        dispatchAndSetUpdateState({
                             type: FaderActionTypes.SET_INPUT_GAIN,
                             faderIndex: assignedFaderIndex,
                             level: input.gainDb,
                         })
                     }
                     if (pflOn !== input.solo) {
-                        store.dispatch({
+                        dispatchAndSetUpdateState({
                             type: FaderActionTypes.SET_PFL,
                             faderIndex: assignedFaderIndex,
                             pflOn: input.solo,
