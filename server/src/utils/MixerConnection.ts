@@ -386,7 +386,7 @@ export class MixerGenericConnection {
         setting: string,
         value: string
     ) => {
-        if (this.mixerProtocol[0].protocol === 'CasparCG') {
+        if (this.mixerProtocol[0].protocol === MixerConnectionTypes.CasparCG) {
             this.mixerConnection[0].updateChannelSetting(
                 channelIndex,
                 setting,

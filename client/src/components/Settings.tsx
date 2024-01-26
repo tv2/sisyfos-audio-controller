@@ -14,6 +14,7 @@ import {
     SettingsActionTypes,
     SettingsActions,
 } from '../../../shared/src/actions/settingsActions'
+import { MixerConnectionTypes } from '../../../shared/src/constants/MixerProtocolInterface'
 
 //Set style for Select dropdown component:
 const selectorColorStyles = {
@@ -392,7 +393,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
                                     />
                                 </label>
                                 <br />
-                                {window.mixerProtocol.protocol === 'MIDI'
+                                {window.mixerProtocol.protocol === MixerConnectionTypes.GenericMidi
                                     ? this.renderMixerMidiSettings()
                                     : ''}
                                 <br />
