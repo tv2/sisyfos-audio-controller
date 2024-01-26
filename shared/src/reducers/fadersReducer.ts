@@ -67,6 +67,7 @@ export const defaultFadersReducerState = (
             }
         }
     })
+
     console.log(channels)
 
     for (let index = 0; index < numberOfFaders; index++) {
@@ -110,7 +111,7 @@ export const faders = (
     ]
     // Check if faderIndex is valid:
     // this is a left over from the old code, where faderIndex checked on the action type
-    // The check is probably because of some calls prior to initialisation of the state 
+    // The check is probably because of some calls prior to initialisation of the state
     if (
         //@ts-ignore
         action.faderIndex &&
@@ -133,7 +134,7 @@ export const faders = (
             return nextState
         case FaderActionTypes.SET_COMPLETE_FADER_STATE:
             nextState = defaultFadersReducerState(action.numberOfFaders)
-            action.allState.fader.forEach((fader: any, index: number) => {
+            action.allState.fader?.forEach((fader: any, index: number) => {
                 if (index < nextState[0].fader.length) {
                     nextState[0].fader[index] = fader
                 }

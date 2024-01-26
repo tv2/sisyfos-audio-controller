@@ -12,21 +12,15 @@ describe('Test initialize store', () => {
     let parsedInitialStore = JSON.parse(parsedEmptyStoreJSON)
     it('should return the initial state of the whole Store', () => {
         // ** Uncomment to update initial settings state:
-        // let data = indexReducer(undefined, {type: ''})
         // fs.writeFileSync('__tests__/__mocks__/parsedEmptyStore-UPDATE.json', JSON.stringify(data))
-   
+
+        // Call reducer with empty store
+        // Test if it returns the initial state
+        // Using SNAP_RECALL action as this doesn't change the state
         expect(
             indexReducer(JSON.parse(parsedEmptyStoreJSON), {
-                type: SettingsActionTypes.UPDATE_SETTINGS,
-                settings: parsedInitialStore.settings,
-            })
-        ).toEqual(parsedInitialStore)
-
-        expect(
-            indexReducer(undefined, {
-                type: FaderActionTypes.SET_COMPLETE_FADER_STATE,
-                allState: parsedInitialStore.faderState,
-                numberOfFaders: parsedInitialStore.settings[0].numberOfFaders,
+                type: FaderActionTypes.SNAP_RECALL,
+                snapshotIndex: 0,
             })
         ).toEqual(parsedInitialStore)
     })

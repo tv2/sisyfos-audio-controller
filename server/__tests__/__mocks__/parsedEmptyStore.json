@@ -27,10 +27,20 @@
         {
             "showSettings": false,
             "showChanStrip": -1,
+            "showChanStripFull": -1,
+            "showLabelSettings": false,
             "showOptions": false,
+            "showPagesSetup": false,
             "showMonitorOptions": -1,
             "showStorage": false,
             "numberOfMixers": 1,
+            "numberOfCustomPages": 4,
+            "chanStripFollowsPFL": true,
+            "currentPage": {
+                "type": 0
+            },
+            "customPages": [],
+            "enablePages": true,
             "mixers": [
                 {
                     "mixerProtocol": "sslSystemT",
@@ -56,11 +66,10 @@
             "automationMode": true,
             "offtubeMode": false,
             "fadeTime": 120,
+            "labelType": "automatic",
             "voFadeTime": 280,
             "showPfl": false,
-            "serverOnline": true,
-            "currentPage": "undefined",
-            "customPages": "undefined"
+            "serverOnline": true
         }
     ]
 }
