@@ -22,7 +22,10 @@ import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import { IFader } from '../../../../shared/src/reducers/fadersReducer'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
-import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
+import {
+    SettingsActionTypes,
+    SettingsActions,
+} from '../../../../shared/src/actions/settingsActions'
 import { STORAGE_FOLDER } from '../SettingsStorage'
 import { Dispatch } from '@reduxjs/toolkit'
 
@@ -603,4 +606,12 @@ export class CasparCGConnection {
     injectCommand(command: string[]) {
         this.connection.createCommand(command[0])
     }
+
+    updateAMixState(channelIndex: number, amixOn: boolean) {}
+
+    updateChannelSetting(
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) {}
 }

@@ -947,6 +947,12 @@ export class EmberMixerConnection {
         return true
     }
 
+    updateChannelSetting(
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) {}
+
     private _insertChannelName(command: string, channel: string | number) {
         const pad = (inp: string | number, l: number) =>
             ('   ' + inp).substr(-l)

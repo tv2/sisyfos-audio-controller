@@ -30,7 +30,8 @@ import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class StuderVistaMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> =
+        store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     deviceRoot: any
@@ -672,4 +673,12 @@ export class StuderVistaMixerConnection {
     injectCommand(command: string[]) {
         return true
     }
+
+    updateAMixState(channelIndex: number, amixOn: boolean) {}
+
+    updateChannelSetting(
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) {}
 }

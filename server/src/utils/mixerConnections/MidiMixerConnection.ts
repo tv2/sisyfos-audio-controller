@@ -11,10 +11,19 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
-import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
-import { FaderActionTypes, FaderActions } from '../../../../shared/src/actions/faderActions'
+import {
+    ChannelActionTypes,
+    ChannelActions,
+} from '../../../../shared/src/actions/channelActions'
+import {
+    FaderActionTypes,
+    FaderActions,
+} from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
+import {
+    IChannelReference,
+    IFader,
+} from '../../../../shared/src/reducers/fadersReducer'
 import { Dispatch } from '@reduxjs/toolkit'
 
 export class MidiMixerConnection {
@@ -36,12 +45,14 @@ export class MidiMixerConnection {
                 logger.data(err).error('WebMidi could not be enabled.')
             }
             logger.info(
-                `Connecting Mixer Midi input on port: ${state.settings[0].mixers[this.mixerIndex].mixerMidiInputPort
+                `Connecting Mixer Midi input on port: ${
+                    state.settings[0].mixers[this.mixerIndex].mixerMidiInputPort
                 }`
             )
             logger.info(
-                `Connecting Mixer Midi output on port: ${state.settings[0].mixers[this.mixerIndex]
-                    .mixerMidiOutputPort
+                `Connecting Mixer Midi output on port: ${
+                    state.settings[0].mixers[this.mixerIndex]
+                        .mixerMidiOutputPort
                 }`
             )
             this.midiInput = WebMidi.getInputByName(
@@ -56,9 +67,12 @@ export class MidiMixerConnection {
     }
 
     private getAssignedFaderIndex(channelIndex: number) {
-        return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
-                return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
+        return state.faders[0].fader.findIndex((fader: IFader) =>
+            fader.assignedChannels?.some((assigned: IChannelReference) => {
+                return (
+                    assigned.mixerIndex === this.mixerIndex &&
+                    assigned.channelIndex === channelIndex
+                )
             })
         )
     }
@@ -68,16 +82,16 @@ export class MidiMixerConnection {
             logger.debug(`Received 'controlchange' message (${message.data}).`)
             if (
                 message.data[1] >=
-                parseInt(
-                    this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_OUT_GAIN[0].mixerMessage
-                ) &&
+                    parseInt(
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_OUT_GAIN[0].mixerMessage
+                    ) &&
                 message.data[1] <=
-                parseInt(
-                    this.mixerProtocol.channelTypes[0].fromMixer
-                        .CHANNEL_OUT_GAIN[0].mixerMessage
-                ) +
-                24
+                    parseInt(
+                        this.mixerProtocol.channelTypes[0].fromMixer
+                            .CHANNEL_OUT_GAIN[0].mixerMessage
+                    ) +
+                        24
             ) {
                 let ch =
                     1 +
@@ -105,10 +119,15 @@ export class MidiMixerConnection {
                     )
                 }
                 if (state.faders[0].fader[faderChannel - 1].pgmOn) {
-                    state.faders[0].fader[faderChannel - 1].assignedChannels?.forEach(
+                    state.faders[0].fader[
+                        faderChannel - 1
+                    ].assignedChannels?.forEach(
                         (channel: IChannelReference) => {
                             if (channel.mixerIndex === this.mixerIndex) {
-                                this.updateOutLevel(channel.channelIndex, faderChannel - 1)
+                                this.updateOutLevel(
+                                    channel.channelIndex,
+                                    faderChannel - 1
+                                )
                             }
                         }
                     )
@@ -229,9 +248,17 @@ export class MidiMixerConnection {
         )
     }
 
-    loadMixerPreset(presetName: string) { }
+    loadMixerPreset(presetName: string) {}
 
     injectCommand(command: string[]) {
         return true
     }
+
+    updateAMixState(channelIndex: number, amixOn: boolean) {}
+
+    updateChannelSetting(
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) {}
 }

@@ -42,7 +42,8 @@ interface IOscCommand {
 }
 
 export class OscMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> =
+        store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -215,7 +216,7 @@ export class OscMixerConnection {
                                 type: FaderActionTypes.SET_FADER_LEVEL,
                                 faderIndex: assignedFaderIndex,
                                 level: message.args[0],
-                            })                            
+                            })
                             state.faders[0].fader[
                                 assignedFaderIndex
                             ].assignedChannels?.forEach(
@@ -818,4 +819,12 @@ export class OscMixerConnection {
     injectCommand(command: string[]) {
         return true
     }
+
+    updateAMixState(channelIndex: number, amixOn: boolean) {}
+
+    updateChannelSetting(
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) {}
 }

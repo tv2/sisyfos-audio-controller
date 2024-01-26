@@ -25,7 +25,10 @@ import {
     ChannelActionTypes,
     ChannelActions,
 } from '../../../shared/src/actions/channelActions'
-import { FaderActionTypes, FaderActions } from '../../../shared/src/actions/faderActions'
+import {
+    FaderActionTypes,
+    FaderActions,
+} from '../../../shared/src/actions/faderActions'
 import { AtemMixerConnection } from './mixerConnections/AtemConnection'
 import { IChannelReference } from '../../../shared/src/reducers/fadersReducer'
 import { Dispatch } from '@reduxjs/toolkit'
@@ -33,7 +36,19 @@ import { Dispatch } from '@reduxjs/toolkit'
 export class MixerGenericConnection {
     dispatch: Dispatch<ChannelActions | FaderActions> = store.dispatch
     mixerProtocol: IMixerProtocolGeneric[]
-    mixerConnection: any[]
+    mixerConnection: Array<
+        | OscMixerConnection
+        | QlClMixerConnection
+        | MidiMixerConnection
+        | CasparCGConnection
+        | EmberMixerConnection
+        | LawoRubyMixerConnection
+        | StuderMixerConnection
+        | StuderVistaMixerConnection
+        | SSLMixerConnection
+        | VMixMixerConnection
+        | AtemMixerConnection
+    >
     mixerTimers: {
         chTimer: NodeJS.Timeout[]
         fadeActiveTimer: NodeJS.Timeout[]
@@ -49,62 +64,77 @@ export class MixerGenericConnection {
                     state.settings[0].mixers[index].mixerProtocol
                 ] || MixerProtocolPresets.sslSystemT
             )
-            this.mixerConnection.push({})
-            if (this.mixerProtocol[index].protocol === 'OSC') {
-                this.mixerConnection[index] = new OscMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'QLCL') {
-                this.mixerConnection[index] = new QlClMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'MIDI') {
-                this.mixerConnection[index] = new MidiMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'CasparCG') {
-                this.mixerConnection[index] = new CasparCGConnection(
-                    this.mixerProtocol[index] as ICasparCGMixerGeometry,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'EMBER') {
-                this.mixerConnection[index] = new EmberMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'LAWORUBY') {
-                this.mixerConnection[index] = new LawoRubyMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'STUDER') {
-                this.mixerConnection[index] = new StuderMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'VISTA') {
-                this.mixerConnection[index] = new StuderVistaMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'SSL') {
-                this.mixerConnection[index] = new SSLMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'VMIX') {
-                this.mixerConnection[index] = new VMixMixerConnection(
-                    this.mixerProtocol[index] as IMixerProtocol,
-                    index
-                )
-            } else if (this.mixerProtocol[index].protocol === 'ATEM') {
-                this.mixerConnection[index] = new AtemMixerConnection(
-                    this.mixerProtocol[index],
-                    index
-                )
+            switch (this.mixerProtocol[index].protocol) {
+                case 'OSC': {
+                    this.mixerConnection[index] = new OscMixerConnection(
+                        this.mixerProtocol[index] as IMixerProtocol,
+                        index
+                    )
+                }
+                case 'QLCL': {
+                    this.mixerConnection[index] = new QlClMixerConnection(
+                        this.mixerProtocol[index] as IMixerProtocol,
+                        index
+                    )
+                }
+                case 'MIDI': {
+                    this.mixerConnection[index] = new MidiMixerConnection(
+                        this.mixerProtocol[index] as IMixerProtocol,
+                        index
+                    )
+                }
+                case 'CasparCG': {
+                    this.mixerConnection[index] = new CasparCGConnection(
+                        this.mixerProtocol[index] as ICasparCGMixerGeometry,
+                        index
+                    )
+                }
+                case 'EMBER': {
+                    this.mixerConnection[index] = new EmberMixerConnection(
+                        this.mixerProtocol[index] as IMixerProtocol,
+                        index
+                    )
+                }
+                case 'LAWORUBY': {
+                    this.mixerConnection[index] = new LawoRubyMixerConnection(
+                        this.mixerProtocol[index] as IMixerProtocol,
+                        index
+                    )
+                }
+                case 'STUDER': {
+                    this.mixerConnection[index] = new StuderMixerConnection(
+                        this.mixerProtocol[index] as IMixerProtocol,
+                        index
+                    )
+                }
+                case 'VISTA': {
+                    this.mixerConnection[index] =
+                        new StuderVistaMixerConnection(
+                            this.mixerProtocol[index] as IMixerProtocol,
+                            index
+                        )
+                }
+                case 'SSL': {
+                    this.mixerConnection[index] = new SSLMixerConnection(
+                        this.mixerProtocol[index] as IMixerProtocol,
+                        index
+                    )
+                }
+                case 'VMIX': {
+                    this.mixerConnection[index] = new VMixMixerConnection(
+                        this.mixerProtocol[index] as IMixerProtocol,
+                        index
+                    )
+                }
+                case 'ATEM': {
+                    this.mixerConnection[index] = new AtemMixerConnection(
+                        this.mixerProtocol[index],
+                        index
+                    )
+                }
+                default: {
+                    logger.error("Mixer protocol doesn't exist")
+                }
             }
         })
 
@@ -511,27 +541,3 @@ export class MixerGenericConnection {
     }
 }
 
-export interface MixerConnection {
-    updatePflState: (channelIndex: number) => void
-    updateMuteState: (channelIndex: number, muteOn: boolean) => void
-    updateAMixState: (channelIndex: number, amixOn: boolean) => void
-    updateNextAux: (channelIndex: number, level: number) => void
-    updateFx: (
-        fxParam: fxParamsList,
-        channelIndex: number,
-        level: number
-    ) => void
-    updateAuxLevel: (
-        channelIndex: number,
-        auxSendIndex: number,
-        auxLevel: number
-    ) => void
-    updateChannelName: (channelIndex: number) => void
-    injectCommand: (command: string[]) => void
-    updateChannelSetting: (
-        channelIndex: number,
-        setting: string,
-        value: string
-    ) => void
-    updateFadeIOLevel: (channelIndex: number, level: number) => void
-}

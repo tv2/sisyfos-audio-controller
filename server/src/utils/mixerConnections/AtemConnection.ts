@@ -192,6 +192,8 @@ export class AtemMixerConnection {
         return
     }
 
+    loadMixerPreset(presetName: string) {}
+
     updateChannelSetting(
         channelIndex: number,
         setting: string,

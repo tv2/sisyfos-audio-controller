@@ -693,4 +693,10 @@ export class LawoRubyMixerConnection {
     injectCommand(command: string[]) {
         return true
     }
+
+    updateChannelSetting(
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) {}
 }

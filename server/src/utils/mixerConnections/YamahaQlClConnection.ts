@@ -30,7 +30,8 @@ import {
 import { Dispatch } from 'redux'
 
 export class QlClMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> = store.dispatch
+    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> =
+        store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -482,4 +483,13 @@ export class QlClMixerConnection {
     injectCommand(command: string[]) {
         return true
     }
+
+    updateAMixState(channelIndex: number, amixOn: boolean) {}
+
+
+    updateChannelSetting(
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) {}
 }
