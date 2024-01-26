@@ -22,7 +22,7 @@ const staticPath = path.join(
 logger.data(staticPath).debug('Express static file path:')
 app.use(ROOT_PATH, express.static(staticPath))
 server.listen(SERVER_PORT)
-logger.info(`Server started at http://localhost:${SERVER_PORT}/${ROOT_PATH}`)
+logger.info(`Server started at http://localhost:${SERVER_PORT}${ROOT_PATH}`)
 
 socketServer.on('connection', (socket: any) => {
     logger.info(`Client connected: ${socket.client.id}`)
