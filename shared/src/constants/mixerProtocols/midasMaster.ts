@@ -1,7 +1,8 @@
 import { IMixerProtocol, fxParamsList } from '../MixerProtocolInterface'
+import { MixerConnections } from '../MixerProtocolPresets'
 
 export const MidasMaster: IMixerProtocol = {
-    protocol: 'OSC',
+    protocol: MixerConnections.OSC,
     fxList: fxParamsList,
     label: 'Midas M32 / Behringer X32 Master Mode',
     presetFileExtension: 'X32',

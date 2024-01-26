@@ -3,7 +3,7 @@ import { logger } from './logger'
 import { remoteConnections } from '../mainClasses'
 
 //Utils:
-import { MixerProtocolPresets } from '../../../shared/src/constants/MixerProtocolPresets'
+import { MixerConnections, MixerProtocolPresets } from '../../../shared/src/constants/MixerProtocolPresets'
 import {
     IMixerProtocol,
     IMixerProtocolGeneric,
@@ -65,68 +65,68 @@ export class MixerGenericConnection {
                 ] || MixerProtocolPresets.sslSystemT
             )
             switch (this.mixerProtocol[index].protocol) {
-                case 'OSC': {
+                case MixerConnections.OSC: {
                     this.mixerConnection[index] = new OscMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case 'QLCL': {
+                case MixerConnections.YamahaQlCl: {
                     this.mixerConnection[index] = new QlClMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case 'MIDI': {
+                case MixerConnections.GenericMidi: {
                     this.mixerConnection[index] = new MidiMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case 'CasparCG': {
+                case MixerConnections.CasparCG: {
                     this.mixerConnection[index] = new CasparCGConnection(
                         this.mixerProtocol[index] as ICasparCGMixerGeometry,
                         index
                     )
                 }
-                case 'EMBER': {
+                case MixerConnections.EMBER: {
                     this.mixerConnection[index] = new EmberMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case 'LAWORUBY': {
+                case MixerConnections.LawoRuby: {
                     this.mixerConnection[index] = new LawoRubyMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case 'STUDER': {
+                case MixerConnections.Studer: {
                     this.mixerConnection[index] = new StuderMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case 'VISTA': {
+                case MixerConnections.StuderVista: {
                     this.mixerConnection[index] =
                         new StuderVistaMixerConnection(
                             this.mixerProtocol[index] as IMixerProtocol,
                             index
                         )
                 }
-                case 'SSL': {
+                case MixerConnections.SSLSystemT: {
                     this.mixerConnection[index] = new SSLMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case 'VMIX': {
+                case MixerConnections.vMix: {
                     this.mixerConnection[index] = new VMixMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
                 }
-                case 'ATEM': {
+                case MixerConnections.Atem: {
                     this.mixerConnection[index] = new AtemMixerConnection(
                         this.mixerProtocol[index],
                         index
