@@ -10,16 +10,13 @@ import {
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
     ChannelActionTypes,
-    ChannelActions,
 } from '../../../../shared/src/actions/channelActions'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../../../shared/src/actions/settingsActions'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
@@ -27,11 +24,8 @@ import {
     IChannelReference,
     IFader,
 } from '../../../../shared/src/reducers/fadersReducer'
-import { Dispatch } from 'redux'
 
 export class QlClMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> =
-        store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -42,7 +36,7 @@ export class QlClMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        this.dispatch({
+        store.dispatch({
             type: SettingsActionTypes.SET_MIXER_ONLINE,
             mixerIndex: this.mixerIndex,
             mixerOnline: false,
@@ -96,7 +90,7 @@ export class QlClMixerConnection {
             })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                this.dispatch({
+                store.dispatch({
                     type: SettingsActionTypes.SET_MIXER_ONLINE,
                     mixerIndex: this.mixerIndex,
                     mixerOnline: true,
@@ -156,7 +150,7 @@ export class QlClMixerConnection {
                             ].channel[ch - 1].fadeActive &&
                             faderLevel > this.mixerProtocol.fader.min
                         ) {
-                            this.dispatch({
+                            store.dispatch({
                                 type: FaderActionTypes.SET_FADER_LEVEL,
                                 faderIndex: assignedFader - 1,
                                 level: faderLevel,
@@ -164,7 +158,7 @@ export class QlClMixerConnection {
                             if (
                                 !state.faders[0].fader[assignedFader - 1].pgmOn
                             ) {
-                                this.dispatch({
+                                store.dispatch({
                                     type: FaderActionTypes.TOGGLE_PGM,
                                     faderIndex: assignedFader - 1,
                                 })
@@ -213,7 +207,7 @@ export class QlClMixerConnection {
                         let assignedFaderIndex =
                             this.getAssignedFaderIndex(channelIndex)
 
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_MUTE,
                             faderIndex: assignedFaderIndex,
                             muteOn: value,
@@ -256,7 +250,7 @@ export class QlClMixerConnection {
 
     pingMixerCommand() {
         this.mixerOnlineTimer = setTimeout(() => {
-            this.dispatch({
+            store.dispatch({
                 type: SettingsActionTypes.SET_MIXER_ONLINE,
                 mixerIndex: this.mixerIndex,
                 mixerOnline: false,
@@ -345,7 +339,7 @@ export class QlClMixerConnection {
             ].channelTypeIndex
         let faderIndex = this.getAssignedFaderIndex(channelIndex)
         if (state.faders[0].fader[faderIndex].pgmOn) {
-            this.dispatch({
+            store.dispatch({
                 type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                 mixerIndex: this.mixerIndex,
                 channel: channelIndex,

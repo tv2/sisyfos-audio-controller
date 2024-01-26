@@ -15,7 +15,6 @@ import {
 import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
 import {
     ChannelActionTypes,
-    ChannelActions,
 } from '../../../../shared/src/actions/channelActions'
 import { logger } from '../logger'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
@@ -24,10 +23,8 @@ import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../../../shared/src/actions/settingsActions'
 import { STORAGE_FOLDER } from '../SettingsStorage'
-import { Dispatch } from '@reduxjs/toolkit'
 
 interface CommandChannelMap {
     [key: string]: number
@@ -46,7 +43,6 @@ const OSC_PATH_PRODUCER_CHANNEL_LAYOUT =
     /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/channel_layout/
 
 export class CasparCGConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions> = store.dispatch
     mixerProtocol: ICasparCGMixerGeometry
     mixerIndex: number
     connection: CasparCG
@@ -70,7 +66,7 @@ export class CasparCGConnection {
         logger.info('Trying to connect to CasparCG...')
         this.connection.onConnected = () => {
             logger.info('CasparCG connected')
-            this.dispatch({
+            store.dispatch({
                 type: SettingsActionTypes.SET_MIXER_ONLINE,
                 mixerIndex: this.mixerIndex,
                 mixerOnline: true,
@@ -82,7 +78,7 @@ export class CasparCGConnection {
         this.connection.onDisconnected = () => {
             logger.info('CasparCG disconnected')
 
-            this.dispatch({
+            store.dispatch({
                 type: SettingsActionTypes.SET_MIXER_ONLINE,
                 mixerIndex: this.mixerIndex,
                 mixerOnline: false,
@@ -188,7 +184,7 @@ export class CasparCGConnection {
                                         i.layer === parseInt(m[5])
                                 )
                             if (index >= 0) {
-                                this.dispatch({
+                                store.dispatch({
                                     type: ChannelActionTypes.SET_PRIVATE,
                                     mixerIndex: this.mixerIndex,
                                     channel: index,
@@ -208,7 +204,7 @@ export class CasparCGConnection {
                                         i.layer === parseInt(m[5])
                                 )
                             if (index >= 0) {
-                                this.dispatch({
+                                store.dispatch({
                                     type: ChannelActionTypes.SET_PRIVATE,
                                     mixerIndex: this.mixerIndex,
                                     channel: index,
@@ -232,7 +228,7 @@ export class CasparCGConnection {
                                     typeof message.args[0] === 'string'
                                         ? message.args[0]
                                         : message.args[0].low
-                                this.dispatch({
+                                store.dispatch({
                                     type: ChannelActionTypes.SET_PRIVATE,
                                     mixerIndex: this.mixerIndex,
                                     channel: index,
@@ -266,7 +262,7 @@ export class CasparCGConnection {
         // Set source labels from geometry definition
         if (this.mixerProtocol.channelLabels) {
             this.mixerProtocol.channelLabels.forEach((label, channelIndex) => {
-                this.dispatch({
+                store.dispatch({
                     type: ChannelActionTypes.SET_CHANNEL_LABEL,
                     mixerIndex: this.mixerIndex,
                     channel: channelIndex,

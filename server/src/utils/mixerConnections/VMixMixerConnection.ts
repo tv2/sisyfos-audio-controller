@@ -10,15 +10,12 @@ import {
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
     ChannelActionTypes,
-    ChannelActions,
 } from '../../../../shared/src/actions/channelActions'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../../../shared/src/actions/faderActions'
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
 import { sendVuLevel } from '../vuServer'
@@ -28,11 +25,8 @@ import {
     IChannelReference,
     IFader,
 } from '../../../../shared/src/reducers/fadersReducer'
-import { Dispatch } from 'redux'
 
 export class VMixMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> =
-        store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -47,7 +41,7 @@ export class VMixMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        this.dispatch({
+        store.dispatch({
             type: SettingsActionTypes.SET_MIXER_ONLINE,
             mixerIndex: this.mixerIndex,
             mixerOnline: false,
@@ -88,7 +82,7 @@ export class VMixMixerConnection {
     }
 
     mixerOnline(onLineState: boolean) {
-        this.dispatch({
+        store.dispatch({
             type: SettingsActionTypes.SET_MIXER_ONLINE,
             mixerIndex: this.mixerIndex,
             mixerOnline: onLineState,
@@ -234,12 +228,12 @@ export class VMixMixerConnection {
                             outputLevel > 0 &&
                             Math.abs(outputLevel - input.volume) > 0.01
                         ) {
-                            this.dispatch({
+                            store.dispatch({
                                 type: FaderActionTypes.SET_FADER_LEVEL,
                                 faderIndex: assignedFaderIndex,
                                 level: input.volume,
                             })
-                            this.dispatch({
+                            store.dispatch({
                                 type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                                 channel: assignedFaderIndex,
                                 mixerIndex: this.mixerIndex,
@@ -250,19 +244,19 @@ export class VMixMixerConnection {
                             })
                         }
                         if (muteOn) {
-                            this.dispatch({
+                            store.dispatch({
                                 type: FaderActionTypes.SET_MUTE,
                                 faderIndex: assignedFaderIndex,
                                 muteOn: false,
                             })
                         }
                         if (!fadeActive && !pgmOn && !voOn) {
-                            this.dispatch({
+                            store.dispatch({
                                 type: FaderActionTypes.SET_PGM,
                                 faderIndex: assignedFaderIndex,
                                 pgmOn: true,
                             })
-                            this.dispatch({
+                            store.dispatch({
                                 type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                                 channel: assignedFaderIndex,
                                 mixerIndex: this.mixerIndex,
@@ -271,14 +265,14 @@ export class VMixMixerConnection {
                         }
                     } else if (!muteOn) {
                         if (pgmOn) {
-                            this.dispatch({
+                            store.dispatch({
                                 type: FaderActionTypes.SET_PGM,
                                 faderIndex: assignedFaderIndex,
                                 pgmOn: false,
                             })
                         }
                         if (voOn) {
-                            this.dispatch({
+                            store.dispatch({
                                 type: FaderActionTypes.SET_VO,
                                 faderIndex: assignedFaderIndex,
                                 voOn: false,
@@ -287,14 +281,14 @@ export class VMixMixerConnection {
                     }
 
                     if (inputGain !== input.gainDb) {
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_INPUT_GAIN,
                             faderIndex: assignedFaderIndex,
                             level: input.gainDb,
                         })
                     }
                     if (pflOn !== input.solo) {
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_PFL,
                             faderIndex: assignedFaderIndex,
                             pflOn: input.solo,
@@ -383,7 +377,7 @@ export class VMixMixerConnection {
         })
         global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
-            this.dispatch({
+            store.dispatch({
                 type: SettingsActionTypes.SET_MIXER_ONLINE,
                 mixerIndex: this.mixerIndex,
                 mixerOnline: false,
@@ -411,7 +405,7 @@ export class VMixMixerConnection {
             ) {
                 let ch = message.address.split('/')[this.cmdChannelIndex]
                 const assignedFaderIndex = this.getAssignedFaderIndex(ch - 1)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_FADER_FX,
                     faderIndex: assignedFaderIndex,
                     fxParam: fxParamsList[fxKey],

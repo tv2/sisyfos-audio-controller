@@ -2,7 +2,7 @@ import * as React from 'react'
 import ClassNames from 'classnames'
 import { connect } from 'react-redux'
 import VuMeter from './VuMeter'
-import { Dispatch, Store, compose } from 'redux'
+import { Store, compose } from 'redux'
 import Nouislider from 'nouislider-react'
 import '../assets/css/NoUiSlider.css'
 
@@ -11,7 +11,7 @@ import '../assets/css/Channel.css'
 import * as IO from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import { IChannelReference, IFader } from '../../../shared/src/reducers/fadersReducer'
 import { ISettings } from '../../../shared/src/reducers/settingsReducer'
-import { SettingsActionTypes, SettingsActions } from '../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes } from '../../../shared/src/actions/settingsActions'
 import { withTranslation } from 'react-i18next'
 import { MixerConnectionTypes, VuLabelConversionType } from '../../shared../../../shared/src/constants/MixerProtocolInterface'
 import { getFaderLabel } from '../utils/labels'
@@ -38,7 +38,6 @@ class Channel extends React.Component<
     IChannelProps & IChannelInjectProps & Store
 > {
     faderIndex: number
-    dispatch: Dispatch<SettingsActions> = this.props.dispatch
 
     private _domRef: React.RefObject<HTMLDivElement> = React.createRef()
 
@@ -137,7 +136,7 @@ class Channel extends React.Component<
     }
 
     handleShowChanStrip() {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_CHAN_STRIP,
             channel: this.faderIndex,
         })

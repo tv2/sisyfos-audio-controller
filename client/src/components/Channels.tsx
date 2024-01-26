@@ -4,9 +4,9 @@ import ClassNames from 'classnames'
 
 import Channel from './Channel'
 import '../assets/css/Channels.css'
-import { Dispatch, Store } from 'redux'
+import { Store } from 'redux'
 import {
-    SettingsActionTypes, SettingsActions
+    SettingsActionTypes,
 } from '../../../shared/src/actions/settingsActions'
 import ChannelRouteSettings from './ChannelRouteSettings'
 import ChanStrip from './ChanStrip'
@@ -36,7 +36,6 @@ interface IChannelsInjectProps {
 }
 
 class Channels extends React.Component<IChannelsInjectProps & Store> {
-    dispatch: Dispatch<SettingsActions> = this.props.dispatch
     constructor(props: any) {
         super(props)
         this.props.settings.showMonitorOptions = -1
@@ -86,31 +85,31 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     }
 
     handleShowSettings() {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_SETTINGS
         })
     }
 
     handleShowStorage() {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_STORAGE
         })
     }
 
     handleShowPagesSetting() {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_PAGES_SETUP
         })
     }
 
     handleShowLabelSetting() {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS
         })
     }
 
     handlePages(type: PageType, i: number | string) {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.SET_PAGE,
             pageType: type,
             id: i,

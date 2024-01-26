@@ -1,5 +1,3 @@
-// Dispatch constants:
-
 // Fader Channels:
 export const SOCKET_SET_FADERLEVEL = 'FaderLevel'
 export const SOCKET_SET_INPUT_GAIN = 'InputGain'

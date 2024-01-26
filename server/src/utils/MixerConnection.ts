@@ -24,18 +24,14 @@ import { CasparCGConnection } from './mixerConnections/CasparCGConnection'
 import { IchMixerConnection } from '../../../shared/src/reducers/channelsReducer'
 import {
     ChannelActionTypes,
-    ChannelActions,
 } from '../../../shared/src/actions/channelActions'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../../shared/src/actions/faderActions'
 import { AtemMixerConnection } from './mixerConnections/AtemConnection'
 import { IChannelReference } from '../../../shared/src/reducers/fadersReducer'
-import { Dispatch } from '@reduxjs/toolkit'
 
 export class MixerGenericConnection {
-    dispatch: Dispatch<ChannelActions | FaderActions> = store.dispatch
     mixerProtocol: IMixerProtocolGeneric[]
     mixerConnection: Array<
         | OscMixerConnection
@@ -181,7 +177,7 @@ export class MixerGenericConnection {
     delayedFadeActiveDisable = (mixerIndex: number, channelIndex: number) => {
         this.mixerTimers[mixerIndex].fadeActiveTimer[channelIndex] = setTimeout(
             () => {
-                this.dispatch({
+                store.dispatch({
                     type: ChannelActionTypes.FADE_ACTIVE,
                     mixerIndex: mixerIndex,
                     channel: channelIndex,
@@ -207,7 +203,7 @@ export class MixerGenericConnection {
             state.faders[0].fader[channel].faderLevel <=
             state.settings[0].autoResetLevel / 100
         ) {
-            this.dispatch({
+            store.dispatch({
                 type: FaderActionTypes.SET_FADER_LEVEL,
                 faderIndex: channel,
                 level: this.mixerProtocol[0].fader.zero,
@@ -427,7 +423,7 @@ export class MixerGenericConnection {
             )
             this.clearTimer(mixerIndex, channelIndex)
         }
-        this.dispatch({
+        store.dispatch({
             type: ChannelActionTypes.FADE_ACTIVE,
             mixerIndex: mixerIndex,
             channel: channelIndex,
@@ -515,7 +511,7 @@ export class MixerGenericConnection {
                 endLevel
             )
             this.clearTimer(mixerIndex, channelIndex)
-            this.dispatch({
+            store.dispatch({
                 type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                 mixerIndex: mixerIndex,
                 channel: channelIndex,
@@ -535,7 +531,7 @@ export class MixerGenericConnection {
             currentOutputLevel
         )
 
-        this.dispatch({
+        store.dispatch({
             type: ChannelActionTypes.SET_OUTPUT_LEVEL,
             mixerIndex: mixerIndex,
             channel: channelIndex,

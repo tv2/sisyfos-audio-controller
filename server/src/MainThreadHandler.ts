@@ -10,12 +10,10 @@ import { socketServer } from './expressHandler'
 
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../shared/src/actions/settingsActions'
 import * as IO from '../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../shared/src/actions/faderActions'
 
 import {
@@ -32,7 +30,6 @@ import {
 
 import {
     ChannelActionTypes,
-    ChannelActions,
 } from '../../shared/src/actions/channelActions'
 import { logger } from './utils/logger'
 import { ICustomPages } from '../../shared/src/reducers/settingsReducer'
@@ -40,18 +37,15 @@ import { fxParamsList } from '../../shared/src/constants/MixerProtocolInterface'
 import path from 'path'
 import { IChannel } from '../../shared/src/reducers/channelsReducer'
 import { IChannelReference } from '../../shared/src/reducers/fadersReducer'
-import { Dispatch } from '@reduxjs/toolkit'
 
 export class MainThreadHandlers {
     snapshotHandler: SnapshotHandler
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> =
-        store.dispatch
 
     constructor() {
         logger.info('Setting up MainThreadHandlers')
 
         this.snapshotHandler = new SnapshotHandler()
-        this.dispatch({
+        store.dispatch({
             type: SettingsActionTypes.UPDATE_SETTINGS,
             settings: loadSettings(state),
         })
@@ -99,7 +93,7 @@ export class MainThreadHandlers {
         })
         state.faders[0].fader.forEach((fader, faderIndex) => {
             fader.assignedChannels?.forEach((channel: IChannelReference) => {
-                this.dispatch({
+                store.dispatch({
                     type: ChannelActionTypes.SET_ASSIGNED_FADER,
                     mixerIndex: channel.mixerIndex,
                     channel: channel.channelIndex,
@@ -113,7 +107,7 @@ export class MainThreadHandlers {
         state.faders[0].fader.forEach((fader, faderIndex) => {
             fader.assignedChannels?.forEach((channel: IChannelReference) => {
                 if (state.settings[0].numberOfMixers < channel.mixerIndex + 1) {
-                    this.dispatch({
+                    store.dispatch({
                         type: ChannelActionTypes.SET_ASSIGNED_FADER,
                         mixerIndex: channel.mixerIndex,
                         channel: channel.channelIndex,
@@ -256,7 +250,7 @@ export class MainThreadHandlers {
                         payload.faderAssign
                     }`
                 )
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_ASSIGNED_CHANNEL,
                     faderIndex: payload.faderIndex,
                     mixerIndex: payload.mixerIndex,
@@ -268,14 +262,14 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_REMOVE_ALL_CH_ASSIGNMENTS, () => {
                 logger.trace(`Remove all channel assignments.\n`)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.REMOVE_ALL_ASSIGNED_CHANNELS,
                 })
                 this.reIndexAssignedChannelsRelation()
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_SET_FADER_MONITOR, (payload: any) => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_FADER_MONITOR,
                     faderIndex: payload.faderIndex,
                     auxIndex: payload.auxIndex,
@@ -283,7 +277,7 @@ export class MainThreadHandlers {
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_SHOW_IN_MINI_MONITOR, (payload: any) => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SHOW_IN_MINI_MONITOR,
                     faderIndex: payload.faderIndex,
                     showInMiniMonitor: payload.showInMiniMonitor,
@@ -301,7 +295,7 @@ export class MainThreadHandlers {
                 logger.trace(
                     `Set Auxlevel Channel: ${payload.channel} Auxindex : ${payload.auxIndex} level : ${payload.level}`
                 )
-                this.dispatch({
+                store.dispatch({
                     type: ChannelActionTypes.SET_AUX_LEVEL,
                     mixerIndex: 0,
                     channel: payload.channel,
@@ -319,7 +313,7 @@ export class MainThreadHandlers {
                 logger.trace(
                     `Set ${fxParamsList[payload.fxParam]}: ${payload.channel}`
                 )
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_FADER_FX,
                     fxParam: payload.fxParam,
                     faderIndex: payload.faderIndex,
@@ -332,14 +326,14 @@ export class MainThreadHandlers {
                 this.updatePartialStore(payload.faderIndex)
             })
             .on(IO.SOCKET_NEXT_MIX, () => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.NEXT_MIX,
                 })
                 mixerGenericConnection.updateOutLevels()
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_CLEAR_PST, () => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.CLEAR_PST,
                 })
                 mixerGenericConnection.updateOutLevels()
@@ -347,7 +341,7 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_TOGGLE_PGM, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.TOGGLE_PGM,
                     faderIndex: faderIndex,
                 })
@@ -356,7 +350,7 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_TOGGLE_VO, (faderIndex: any) => {
                 mixerGenericConnection.checkForAutoResetThreshold(faderIndex)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.TOGGLE_VO,
                     faderIndex: faderIndex,
                 })
@@ -364,14 +358,14 @@ export class MainThreadHandlers {
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_SLOW_FADE, (faderIndex: any) => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.TOGGLE_SLOW_FADE,
                     faderIndex: faderIndex,
                 })
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_PST, (faderIndex: any) => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.TOGGLE_PST,
                     faderIndex: faderIndex,
                 })
@@ -379,7 +373,7 @@ export class MainThreadHandlers {
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_PFL, (faderIndex: any) => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.TOGGLE_PFL,
                     faderIndex: faderIndex,
                 })
@@ -387,7 +381,7 @@ export class MainThreadHandlers {
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_MUTE, (faderIndex: any) => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.TOGGLE_MUTE,
                     faderIndex: faderIndex,
                 })
@@ -395,7 +389,7 @@ export class MainThreadHandlers {
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_AMIX, (faderIndex: any) => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.TOGGLE_AMIX,
                     faderIndex: faderIndex,
                 })
@@ -403,7 +397,7 @@ export class MainThreadHandlers {
                 this.updatePartialStore(faderIndex)
             })
             .on(IO.SOCKET_TOGGLE_IGNORE, (faderIndex: any) => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.IGNORE_AUTOMATION,
                     faderIndex: faderIndex,
                 })
@@ -415,7 +409,7 @@ export class MainThreadHandlers {
                         payload.faderIndex + 1
                     }\n  Level: ${payload.level}`
                 )
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_FADER_LEVEL,
                     faderIndex: payload.faderIndex,
                     level: parseFloat(payload.level),
@@ -430,7 +424,7 @@ export class MainThreadHandlers {
                         payload.faderIndex + 1
                     }\n  Level: ${payload.level}`
                 )
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_INPUT_GAIN,
                     faderIndex: payload.faderIndex,
                     level: parseFloat(payload.level),
@@ -445,7 +439,7 @@ export class MainThreadHandlers {
                     }\n  Selected: ${payload.selected}`
                 )
                 logger.debug(payload)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_INPUT_SELECTOR,
                     faderIndex: payload.faderIndex,
                     selected: parseFloat(payload.selected),
@@ -455,13 +449,13 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_TOGGLE_ALL_MANUAL, () => {
                 logger.trace('Toggle manual mode for all')
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.TOGGLE_ALL_MANUAL,
                 })
                 this.updateFullClientStore()
             })
             .on(IO.SOCKET_SET_LABELS, (payload: any) => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.UPDATE_LABEL_LIST,
                     update: payload.update,
                 })
@@ -473,10 +467,10 @@ export class MainThreadHandlers {
                 )
             })
             .on(IO.SOCKET_FLUSH_LABELS, () => {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.FLUSH_FADER_LABELS,
                 })
-                this.dispatch({
+                store.dispatch({
                     type: ChannelActionTypes.FLUSH_CHANNEL_LABELS,
                 })
             })

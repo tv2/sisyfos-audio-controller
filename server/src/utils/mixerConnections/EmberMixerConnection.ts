@@ -11,18 +11,15 @@ import {
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import { LawoMC2 } from '../../../../shared/src/constants/mixerProtocols/LawoMC2'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import {
     ChannelActionTypes,
-    ChannelActions,
 } from '../../../../shared/src/actions/channelActions'
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../../../shared/src/actions/settingsActions'
 import {
     IChannelReference,
@@ -30,10 +27,8 @@ import {
 } from '../../../../shared/src/reducers/fadersReducer'
 import { EmberElement, NumberedTreeNode } from 'emberplus-connection/dist/model'
 import { STORAGE_FOLDER } from '../SettingsStorage'
-import { Dispatch } from '@reduxjs/toolkit'
 
 export class EmberMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     emberConnection: EmberClient
@@ -83,7 +78,7 @@ export class EmberMixerConnection {
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
 
-            this.dispatch({
+            store.dispatch({
                 type: SettingsActionTypes.SET_MIXER_ONLINE,
                 mixerIndex: this.mixerIndex,
                 mixerOnline: false,
@@ -100,7 +95,7 @@ export class EmberMixerConnection {
         this.emberConnection.on('connected', async () => {
             logger.info('Found Ember connection')
 
-            this.dispatch({
+            store.dispatch({
                 type: SettingsActionTypes.SET_MIXER_ONLINE,
                 mixerIndex: this.mixerIndex,
                 mixerOnline: true,
@@ -227,7 +222,7 @@ export class EmberMixerConnection {
                             channelTypeIndex
                         )
                     }
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SHOW_CHANNEL,
                         faderIndex: assignedFaderIndex,
                         showChannel: true,
@@ -237,7 +232,7 @@ export class EmberMixerConnection {
                     )
                 } else {
                     logger.info(`Channel ${ch} offline`)
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SHOW_CHANNEL,
                         faderIndex: assignedFaderIndex,
                         showChannel: false,
@@ -307,12 +302,12 @@ export class EmberMixerConnection {
                 )
 
                 if (!channel.fadeActive && level >= 0 && level <= 1) {
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SET_FADER_LEVEL,
                         faderIndex: assignedFaderIndex,
                         level: level,
                     })
-                    this.dispatch({
+                    store.dispatch({
                         type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                         channel: assignedFaderIndex,
                         mixerIndex: this.mixerIndex,
@@ -321,7 +316,7 @@ export class EmberMixerConnection {
 
                     // toggle pgm based on level
                     logger.trace(`Set Channel ${ch} pgmOn ${level > 0}`)
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SET_PGM,
                         faderIndex: assignedFaderIndex,
                         pgmOn: level > 0,
@@ -362,7 +357,7 @@ export class EmberMixerConnection {
                     logger.trace(
                         `Receiving Label from Ch "${ch}", val: ${node.contents.description}`
                     )
-                    this.dispatch({
+                    store.dispatch({
                         type: ChannelActionTypes.SET_CHANNEL_LABEL,
                         mixerIndex: this.mixerIndex,
                         channel: channelTypeIndex,
@@ -374,7 +369,7 @@ export class EmberMixerConnection {
                             (node.contents as Model.Parameter).value
                         }`
                     )
-                    this.dispatch({
+                    store.dispatch({
                         type: ChannelActionTypes.SET_CHANNEL_LABEL,
                         mixerIndex: this.mixerIndex,
                         channel: channelTypeIndex,
@@ -406,7 +401,7 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value
                     }`
                 )
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_PFL,
                     faderIndex: assignedFaderIndex,
                     pflOn: (node.contents as Model.Parameter).value as boolean,
@@ -447,7 +442,7 @@ export class EmberMixerConnection {
 
                 // assume it is in db now
                 level = this._faderLevelToFloat(Number(level), 0)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_INPUT_GAIN,
                     faderIndex: assignedFaderIndex,
                     level: level,
@@ -490,7 +485,7 @@ export class EmberMixerConnection {
                                 i + 1
                             }`
                         )
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_INPUT_SELECTOR,
                             faderIndex: assignedFaderIndex,
                             selected: Number(i) + 1,
@@ -523,7 +518,7 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value
                     }`
                 )
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_CAPABILITY,
                     faderIndex: assignedFaderIndex,
                     capability: 'hasInputSelector',
@@ -539,14 +534,14 @@ export class EmberMixerConnection {
         const updateState = () => {
             if (llState && !rrState) {
                 logger.trace(`Input selector state: ll`)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_INPUT_SELECTOR,
                     faderIndex: assignedFaderIndex,
                     selected: 2,
                 })
             } else if (rrState && !llState) {
                 logger.trace(`Input selector state: rr`)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_INPUT_SELECTOR,
                     faderIndex: assignedFaderIndex,
                     selected: 3,
@@ -554,7 +549,7 @@ export class EmberMixerConnection {
 
             } else {
                 logger.trace(`Input selector state: lr`)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_INPUT_SELECTOR,
                     faderIndex: assignedFaderIndex,
                     selected: 1,
@@ -619,7 +614,7 @@ export class EmberMixerConnection {
                             (node.contents as Model.Parameter).value
                         }`
                     )
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SET_CAPABILITY,
                         faderIndex: assignedFaderIndex,
                         capability: 'hasAMix',
@@ -647,7 +642,7 @@ export class EmberMixerConnection {
                         (node.contents as Model.Parameter).value
                     }`
                 )
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_AMIX,
                     faderIndex: assignedFaderIndex,
                     state: (node.contents as Model.Parameter).value as boolean,

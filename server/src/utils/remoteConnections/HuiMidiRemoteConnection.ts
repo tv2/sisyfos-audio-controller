@@ -5,7 +5,6 @@ import { mixerGenericConnection } from '../../mainClasses'
 
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../../../shared/src/actions/faderActions'
 
 //Utils:
@@ -16,10 +15,8 @@ import {
 } from '../../../../shared/src/constants/remoteProtocols/HuiRemoteFaderPresets'
 import { MixerProtocolPresets } from '../../../../shared/src/constants/MixerProtocolPresets'
 import { logger } from '../logger'
-import { Dispatch } from 'redux'
 
 export class HuiMidiRemoteConnection {
-    dispatch: Dispatch<FaderActions> = store.dispatch
     remoteProtocol: IRemoteProtocol
     midiReceiveTypes = MidiReceiveTypes
     mixerProtocol: any
@@ -84,7 +81,7 @@ export class HuiMidiRemoteConnection {
                 if (message.data[1] < 9) {
                     //Fader changed:
                     logger.info(`Received Fader message (${message.data}).`)
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SET_FADER_LEVEL,
                         faderIndex: message.data[1],
                         level: this.convertFromRemoteLevel(message.data[2]),
@@ -101,7 +98,7 @@ export class HuiMidiRemoteConnection {
                         this.activeHuiChannel = message.data[2]
                     } else if (message.data[2] && message.data[2] === 65) {
                         //SELECT button - toggle PGM ON/OFF
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.TOGGLE_PGM,
                             faderIndex: this.activeHuiChannel,
                         })
@@ -112,7 +109,7 @@ export class HuiMidiRemoteConnection {
                         this.updateRemotePgmPstPfl(this.activeHuiChannel)
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.TOGGLE_PFL,
                             faderIndex: this.activeHuiChannel,
                         })

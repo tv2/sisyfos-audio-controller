@@ -9,11 +9,10 @@ import { store } from '../reducers/store'
 import { checkVersion } from './migrations'
 
 // Redux:
-import {  ChannelActionTypes, ChannelActions } from '../../../shared/src/actions/channelActions'
-import { FaderActionTypes, FaderActions } from '../../../shared/src/actions/faderActions'
+import {  ChannelActionTypes } from '../../../shared/src/actions/channelActions'
+import { FaderActionTypes } from '../../../shared/src/actions/faderActions'
 import { logger } from './logger'
 import { defaultFadersReducerState } from '../../../shared/src/reducers/fadersReducer'
-import { Dispatch } from '@reduxjs/toolkit'
 
 import {
     IChannels,
@@ -84,19 +83,18 @@ export const loadSnapshotState = (
     fileName: string,
     loadAll: boolean
 ) => {
-    const dispatch: Dispatch<ChannelActions | FaderActions> = store.dispatch
     try {
         const stateFromFile: IShotStorage = JSON.parse(
             fs.readFileSync(fileName, 'utf8')
         )
 
         if (loadAll) {
-            dispatch({
+            store.dispatch({
                 type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
                 numberOfTypeChannels: numberOfChannels,
                 allState: stateFromFile.channelState as IChannels,
             })
-            dispatch({
+            store.dispatch({
                 type: FaderActionTypes.SET_COMPLETE_FADER_STATE,
                 numberOfFaders: numberOfFaders,
                 allState: stateFromFile.faderState as IFaders,
@@ -104,12 +102,12 @@ export const loadSnapshotState = (
         }
     } catch (error) {
         if (fileName.includes('default.shot')) {
-            dispatch({
+            store.dispatch({
                 type: FaderActionTypes.SET_COMPLETE_FADER_STATE,
                 numberOfFaders: numberOfFaders,
                 allState: defaultFadersReducerState(numberOfFaders, numberOfChannels)[0],
             })
-            dispatch({
+            store.dispatch({
                 type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
                 numberOfTypeChannels: numberOfChannels,
                 allState: defaultChannelsReducerState(numberOfChannels)[0],

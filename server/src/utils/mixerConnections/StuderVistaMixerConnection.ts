@@ -11,15 +11,12 @@ import {
 import { logger } from '../logger'
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../../../shared/src/actions/settingsActions'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../../../shared/src/actions/faderActions'
 import {
     ChannelActionTypes,
-    ChannelActions,
 } from '../../../../shared/src/actions/channelActions'
 import { remoteConnections } from '../../mainClasses'
 import {
@@ -27,11 +24,8 @@ import {
     IFader,
 } from '../../../../shared/src/reducers/fadersReducer'
 import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
-import { Dispatch } from '@reduxjs/toolkit'
 
 export class StuderVistaMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> =
-        store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     deviceRoot: any
@@ -216,7 +210,7 @@ export class StuderVistaMixerConnection {
             state.faders[0].fader[assignedFaderIndex].pgmOn ||
             state.faders[0].fader[assignedFaderIndex].voOn
         ) {
-            this.dispatch({
+            store.dispatch({
                 type: FaderActionTypes.SET_FADER_LEVEL,
                 faderIndex: assignedFaderIndex,
                 level: value,
@@ -227,7 +221,7 @@ export class StuderVistaMixerConnection {
                         assignedChannel.mixerIndex === this.mixerIndex &&
                         assignedChannel.channelIndex !== channelArrayIndex
                     ) {
-                        this.dispatch({
+                        store.dispatch({
                             type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                             mixerIndex: this.mixerIndex,
                             channel: assignedChannel.channelIndex,
@@ -239,7 +233,7 @@ export class StuderVistaMixerConnection {
 
             if (!state.faders[0].fader[assignedFaderIndex].pgmOn) {
                 if (value > 0) {
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.TOGGLE_PGM,
                         faderIndex: assignedFaderIndex,
                     })
@@ -273,7 +267,7 @@ export class StuderVistaMixerConnection {
             channelTypeIndex
         )
 
-        this.dispatch({
+        store.dispatch({
             type: ChannelActionTypes.SET_AUX_LEVEL,
             mixerIndex: this.mixerIndex,
             channel: channelArrayIndex,
@@ -305,7 +299,7 @@ export class StuderVistaMixerConnection {
             this.findChannelInArray(channelType, channelTypeIndex)
         )
 
-        this.dispatch({
+        store.dispatch({
             type: FaderActionTypes.SET_MUTE,
             faderIndex: assignedFader,
             muteOn: mute,
@@ -375,7 +369,7 @@ export class StuderVistaMixerConnection {
     }
 
     mixerOnline(onLineState: boolean) {
-        this.dispatch({
+        store.dispatch({
             type: SettingsActionTypes.SET_MIXER_ONLINE,
             mixerIndex: this.mixerIndex,
             mixerOnline: onLineState,

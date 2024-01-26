@@ -2,9 +2,9 @@ import React, { ChangeEvent } from 'react'
 import ClassNames from 'classnames'
 
 import '../assets/css/ChannelMonitorOptions.css'
-import { Dispatch, Store } from 'redux'
+import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { SettingsActionTypes, SettingsActions } from '../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes } from '../../../shared/src/actions/settingsActions'
 import { ISettings } from '../../../shared/src/reducers/settingsReducer'
 import {
     SOCKET_SET_AUX_LEVEL,
@@ -30,7 +30,6 @@ class ChannelMonitorOptions extends React.PureComponent<
     IChannelProps & IMonitorSettingsInjectProps & Store
 > {
     faderIndex: number
-    dispatch: Dispatch<SettingsActions>
 
     constructor(props: any) {
         super(props)
@@ -114,7 +113,7 @@ class ChannelMonitorOptions extends React.PureComponent<
     }
 
     handleClose = () => {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_MONITOR_OPTIONS,
             channel: this.faderIndex,
         })

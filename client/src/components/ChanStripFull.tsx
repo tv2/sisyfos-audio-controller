@@ -2,11 +2,10 @@ import React from 'react'
 import ReactSlider from 'react-slider'
 
 import '../assets/css/ChanStripFull.css'
-import { Dispatch, Store } from 'redux'
+import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../../shared/src/actions/settingsActions'
 import { IFader } from '../../../shared/src/reducers/fadersReducer'
 import {
@@ -42,36 +41,35 @@ const DEL_VALUES = [10, 1, -1, -10]
 class ChanStripFull extends React.PureComponent<
     IChanStripFullProps & IChanStripFullInjectProps & Store
 > {
-    dispatch: Dispatch<SettingsActions> = this.props.dispatch
 
     constructor(props: any) {
         super(props)
     }
 
     handleShowRoutingOptions() {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_OPTION,
             channel: this.props.faderIndex,
         })
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_CHAN_STRIP_FULL,
             channel: -1,
         })
     }
 
     handleShowMonitorOptions() {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_MONITOR_OPTIONS,
             channel: this.props.faderIndex,
         })
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_CHAN_STRIP_FULL,
             channel: -1,
         })
     }
 
     handleClose = () => {
-        this.dispatch({
+        this.props.dispatch({
             type: SettingsActionTypes.TOGGLE_SHOW_CHAN_STRIP_FULL,
             channel: -1,
         })

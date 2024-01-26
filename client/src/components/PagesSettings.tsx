@@ -2,11 +2,10 @@ import React, { ChangeEvent } from 'react'
 import ClassNames from 'classnames'
 
 import '../assets/css/PagesSettings.css'
-import { Dispatch, Store } from 'redux'
+import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
     SettingsActionTypes,
-    SettingsActions
 } from '../../../shared/src/actions/settingsActions'
 import { IFader } from '../../../shared/src/reducers/fadersReducer'
 import Select from 'react-select'
@@ -44,7 +43,6 @@ class PagesSettings extends React.PureComponent<
 > {
     pageList: { label: string; value: number }[]
     state = { pageIndex: 0, label: '' }
-    dispatch: Dispatch<SettingsActions> = window.storeRedux.dispatch
 
     constructor(props: any) {
         super(props)
@@ -86,7 +84,7 @@ class PagesSettings extends React.PureComponent<
                     ),
                     1
                 )
-                this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_PAGES_SETUP})
+                window.storeRedux.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_PAGES_SETUP})
                 window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
             }
         } else {
@@ -105,7 +103,7 @@ class PagesSettings extends React.PureComponent<
                 nextPages[this.state.pageIndex].faders.sort((a, b) => {
                     return a - b
                 })
-                this.dispatch({ type: SettingsActionTypes.SET_PAGES_LIST, customPages: nextPages})
+                window.storeRedux.dispatch({ type: SettingsActionTypes.SET_PAGES_LIST, customPages: nextPages})
                 window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
             }
         }
@@ -117,7 +115,7 @@ class PagesSettings extends React.PureComponent<
         let nextPages: ICustomPages[] = [...this.props.customPages]
         nextPages[this.state.pageIndex].label = event.target.value
 
-        this.dispatch({ type: SettingsActionTypes.SET_PAGES_LIST, customPages: nextPages})
+        window.storeRedux.dispatch({ type: SettingsActionTypes.SET_PAGES_LIST, customPages: nextPages})
         window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
     }
 
@@ -125,14 +123,14 @@ class PagesSettings extends React.PureComponent<
         if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
             let nextPages: ICustomPages[] = [...this.props.customPages]
             nextPages[this.state.pageIndex].faders = []
-            this.dispatch({ type: SettingsActionTypes.SET_PAGES_LIST, customPages: nextPages})
+            window.storeRedux.dispatch({ type: SettingsActionTypes.SET_PAGES_LIST, customPages: nextPages})
             window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
         }
     }
 
     handleClose = () => {
         window.socketIoClient.emit(SOCKET_GET_PAGES_LIST)
-        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_PAGES_SETUP})
+        window.storeRedux.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_PAGES_SETUP})
     }
 
     renderFaderList() {

@@ -15,11 +15,9 @@ import {
 } from '../../../shared/src/actions/faderActions'
 import { getFaderLabel } from './labels'
 import { logger } from './logger'
-import { Dispatch } from 'redux'
 
 const AUTOMATION_OSC_PORT = 5255
 export class AutomationConnection {
-    dispatch: Dispatch<FaderActions> = store.dispatch
     oscConnection: any
     automationProtocol: IAutomationProtocol
 
@@ -103,7 +101,7 @@ export class AutomationConnection {
                         mixerGenericConnection.checkForAutoResetThreshold(
                             ch - 1
                         )
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_PGM,
                             faderIndex: ch - 1,
                             pgmOn: true,
@@ -112,13 +110,13 @@ export class AutomationConnection {
                         mixerGenericConnection.checkForAutoResetThreshold(
                             ch - 1
                         )
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_VO,
                             faderIndex: ch - 1,
                             voOn: true,
                         })
                     } else {
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_PGM,
                             faderIndex: ch - 1,
                             pgmOn: false,
@@ -137,19 +135,19 @@ export class AutomationConnection {
             } else if (check('CHANNEL_PST_ON_OFF')) {
                 wrapChannelCommand((ch) => {
                     if (message.args[0] === 1) {
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_PST,
                             faderIndex: ch - 1,
                             pstOn: true,
                         })
                     } else if (message.args[0] === 2) {
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_PST_VO,
                             faderIndex: ch - 1,
                             pstVoOn: true,
                         })
                     } else {
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_PST,
                             faderIndex: ch - 1,
                             pstOn: false,
@@ -159,7 +157,7 @@ export class AutomationConnection {
                 })
             } else if (check('CHANNEL_MUTE')) {
                 wrapChannelCommand((ch: any) => {
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SET_MUTE,
                         faderIndex: ch - 1,
                         muteOn: message.args[0] === 1,
@@ -168,7 +166,7 @@ export class AutomationConnection {
                 })
             } else if (check('CHANNEL_FADER_LEVEL')) {
                 wrapChannelCommand((ch: any) => {
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SET_FADER_LEVEL,
                         faderIndex: ch - 1,
                         level: message.args[0],
@@ -185,7 +183,7 @@ export class AutomationConnection {
                 })
             } else if (check('INJECT_COMMAND')) {
                 wrapChannelCommand((ch: any) => {
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SET_FADER_LABEL,
                         faderIndex: ch - 1,
                         label: message.args[0],
@@ -196,11 +194,11 @@ export class AutomationConnection {
                 let snapNumber = message.address.split('/')[2]
                 store.dispatch({
                     type: FaderActionTypes.SNAP_RECALL,
-                    snapIndex: snapNumber - 1,
+                    snapshotIndex: snapNumber - 1,
                 })
             } else if (check('SET_LABEL')) {
                 wrapChannelCommand((ch: any) => {
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SET_FADER_LABEL,
                         faderIndex: ch - 1,
                         label: message.args[0],
@@ -208,27 +206,27 @@ export class AutomationConnection {
                     mixerGenericConnection.updateChannelName(ch - 1)
                 })
             } else if (check('X_MIX')) {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.X_MIX,
                 })
                 mixerGenericConnection.updateOutLevels()
                 global.mainThreadHandler.updateFullClientStore()
             } else if (check('CHANNEL_VISIBLE')) {
                 wrapChannelCommand((ch: any) => {
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SHOW_CHANNEL,
                         faderIndex: ch - 1,
                         showChannel: message.args[0] === 1,
                     })
                 })
             } else if (check('FADE_TO_BLACK')) {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.FADE_TO_BLACK,
                 })
                 mixerGenericConnection.updateFadeToBlack()
                 global.mainThreadHandler.updateFullClientStore()
             } else if (check('CLEAR_PST')) {
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.CLEAR_PST,
                 })
                 mixerGenericConnection.updateOutLevels()

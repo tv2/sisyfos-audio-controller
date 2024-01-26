@@ -3,7 +3,7 @@ import net from 'net'
 import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
-import { FaderActionTypes, FaderActions } from '../../../../shared/src/actions/faderActions'
+import { FaderActionTypes } from '../../../../shared/src/actions/faderActions'
 
 //Utils:
 import {
@@ -12,11 +12,9 @@ import {
 } from '../../../../shared/src/constants/remoteProtocols/SkaarhojProtocol'
 import { MixerProtocolPresets } from '../../../../shared/src/constants/MixerProtocolPresets'
 import { logger } from '../logger'
-import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
-import { Dispatch } from 'redux'
+import { ChannelActionTypes } from '../../../../shared/src/actions/channelActions'
 
 export class SkaarhojRemoteConnection {
-    dispatch: Dispatch<ChannelActions | FaderActions> = store.dispatch
     remoteProtocol: IRemoteProtocol
     mixerProtocol: any
     clientList: any[]
@@ -121,7 +119,7 @@ export class SkaarhojRemoteConnection {
             }
             //Fader changed:
             logger.debug(`Received Fader ${faderIndex + 1} Level : ${level}`)
-            this.dispatch({
+            store.dispatch({
                 type: FaderActionTypes.SET_FADER_LEVEL,
                 faderIndex: faderIndex,
                 level: level,
@@ -193,7 +191,7 @@ export class SkaarhojRemoteConnection {
                 chIndex + 1
             } Level: ${level}`
         )
-        this.dispatch({
+        store.dispatch({
             type: ChannelActionTypes.SET_AUX_LEVEL,
             mixerIndex: 0,
             channel: chIndex,

@@ -5,7 +5,6 @@ import { Store } from 'redux'
 import { connect } from 'react-redux'
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../../shared/src/actions/settingsActions'
 import { IFader } from '../../../shared/src/reducers/fadersReducer'
 import {
@@ -16,13 +15,10 @@ import { ICustomPages } from '../../../shared/src/reducers/settingsReducer'
 import { getChannelLabel } from '../utils/labels'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../../shared/src/actions/faderActions'
 import {
     ChannelActionTypes,
-    ChannelActions,
 } from '../../../shared/src/actions/channelActions'
-import { Dispatch } from '@reduxjs/toolkit'
 
 interface ILabelSettingsInjectProps {
     customPages: ICustomPages[]
@@ -35,8 +31,6 @@ class LabelSettings extends React.PureComponent<
     state = {
         mutations: {} as Record<string, string>,
     }
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> =
-        this.props.dispatch
 
     constructor(props: any) {
         super(props)
@@ -63,11 +57,11 @@ class LabelSettings extends React.PureComponent<
                     {} as Record<string, string>
                 )
 
-            this.dispatch({
+            this.props.dispatch({
                 type: FaderActionTypes.UPDATE_LABEL_LIST,
                 update: faders,
             })
-            this.dispatch({
+            this.props.dispatch({
                 type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS,
             })
             window.socketIoClient.emit(SOCKET_SET_LABELS, { update: faders })
@@ -80,26 +74,26 @@ class LabelSettings extends React.PureComponent<
                 'Flush all external (automation and channel) labels?'
             )
         ) {
-            this.dispatch({ type: FaderActionTypes.FLUSH_FADER_LABELS })
-            this.dispatch({ type: ChannelActionTypes.FLUSH_CHANNEL_LABELS })
+            this.props.dispatch({ type: FaderActionTypes.FLUSH_FADER_LABELS })
+            this.props.dispatch({ type: ChannelActionTypes.FLUSH_CHANNEL_LABELS })
             window.socketIoClient.emit(SOCKET_FLUSH_LABELS)
         }
     }
 
     handleClose = () => {
-        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS })
+        this.props.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS })
     }
 
     handleCancel = () => {
-        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS })
+        this.props.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS })
     }
 
     handleSave = () => {
-        this.dispatch({
+        this.props.dispatch({
             type: FaderActionTypes.UPDATE_LABEL_LIST,
             update: this.state.mutations,
         })
-        this.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS })
+        this.props.dispatch({ type: SettingsActionTypes.TOGGLE_SHOW_LABEL_SETTINGS })
         window.socketIoClient.emit(SOCKET_SET_LABELS, {
             update: this.state.mutations,
         })

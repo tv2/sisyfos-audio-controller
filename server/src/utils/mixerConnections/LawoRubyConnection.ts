@@ -9,13 +9,11 @@ import {
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { SettingsActionTypes, SettingsActions } from '../../../../shared/src/actions/settingsActions'
-import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
+import { SettingsActionTypes} from '../../../../shared/src/actions/settingsActions'
+import { ChannelActionTypes } from '../../../../shared/src/actions/channelActions'
 import { EmberElement, NumberedTreeNode } from 'emberplus-connection/dist/model'
-import { Dispatch } from '@reduxjs/toolkit'
 
 // TODO - should these be util functions?
 export function floatToDB(f: number): number {
@@ -49,7 +47,6 @@ export function dbToFloat(d: number): number {
 }
 
 export class LawoRubyMixerConnection {
-    dispatch: Dispatch<ChannelActions | SettingsActions | FaderActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     emberConnection: EmberClient
@@ -68,7 +65,7 @@ export class LawoRubyMixerConnection {
             state.settings[0].mixers[this.mixerIndex].devicePort
         )
 
-        this.dispatch({
+        store.dispatch({
             type: SettingsActionTypes.SET_MIXER_ONLINE,
             mixerIndex: this.mixerIndex,
             mixerOnline: false,
@@ -87,7 +84,7 @@ export class LawoRubyMixerConnection {
         })
         this.emberConnection.on('disconnected', () => {
             logger.error('Lost Ember connection')
-            this.dispatch({
+            store.dispatch({
                 type: SettingsActionTypes.SET_MIXER_ONLINE,
                 mixerIndex: this.mixerIndex,
                 mixerOnline: false,
@@ -96,7 +93,7 @@ export class LawoRubyMixerConnection {
         })
         this.emberConnection.on('connected', () => {
             logger.info('Connected to Ember device')
-            this.dispatch({
+            store.dispatch({
                 type: SettingsActionTypes.SET_MIXER_ONLINE,
                 mixerIndex: this.mixerIndex,
                 mixerOnline: true,
@@ -168,36 +165,36 @@ export class LawoRubyMixerConnection {
                 ) {
                     if (this.faders[channelTypeIndex + 1]) {
                         // enable
-                        this.dispatch({
+                        store.dispatch({
                             type: ChannelActionTypes.SET_CHANNEL_LABEL,
                             mixerIndex: this.mixerIndex,
                             channel: channelTypeIndex,
                             label: this.faders[channelTypeIndex + 1],
                         })
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_CHANNEL_DISABLED,
                             faderIndex: channelTypeIndex,
                             disabled: false,
                         })
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SHOW_CHANNEL,
                             faderIndex: channelTypeIndex,
                             showChannel: true,
                         })
                     } else {
                         // disable
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_CHANNEL_DISABLED,
                             faderIndex: channelTypeIndex,
                             disabled: true,
                         })
-                        this.dispatch({
+                        store.dispatch({
                             type: ChannelActionTypes.SET_CHANNEL_LABEL,
                             mixerIndex: this.mixerIndex,
                             channel: channelTypeIndex,
                             label: '',
                         })
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SHOW_CHANNEL,
                             faderIndex: channelTypeIndex,
                             showChannel: false,
@@ -290,7 +287,7 @@ export class LawoRubyMixerConnection {
                     ) {
                         // update the fader
                         const level = dbToFloat(levelInDecibel)
-                        this.dispatch  ({   
+                        store.dispatch  ({   
                             type: FaderActionTypes.SET_FADER_LEVEL,
                             faderIndex: ch - 1,
                             level: level,
@@ -298,7 +295,7 @@ export class LawoRubyMixerConnection {
 
                         // toggle pgm based on level
                         logger.trace(`Set Channel ${ch} pgmOn ${level > 0}`)
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_PGM,
                             faderIndex: ch - 1,
                             pgmOn: level > 0,
@@ -347,7 +344,7 @@ export class LawoRubyMixerConnection {
                         ((node.contents as Model.Parameter).value as number) >
                         proto.min
                     ) {
-                        this.dispatch({
+                        store.dispatch({
                             type: FaderActionTypes.SET_INPUT_GAIN,
                             faderIndex: ch - 1,
                             level: level,
@@ -378,7 +375,7 @@ export class LawoRubyMixerConnection {
         try {
             const node = await this.emberConnection.getElementByPath(command)
             logger.debug(`set_cap ${ch} hasInputSel true`)
-            this.dispatch({
+            store.dispatch({
                 type: FaderActionTypes.SET_CAPABILITY,
                 faderIndex: ch - 1,
                 capability: 'hasInputSelector',
@@ -401,7 +398,7 @@ export class LawoRubyMixerConnection {
                                 selector.value ===
                                 (node.contents as Model.Parameter).value
                             ) {
-                                this.dispatch({
+                                store.dispatch({
                                     type: FaderActionTypes.SET_INPUT_SELECTOR,
                                     faderIndex: ch - 1,
                                     selected: i + 1,
@@ -417,7 +414,7 @@ export class LawoRubyMixerConnection {
         } catch (e) {
             if (e.message.match(/could not find node/i)) {
                 logger.debug(`set_cap ${ch} hasInputSel false`)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_CAPABILITY,
                     faderIndex: ch - 1,
                     capability: 'hasInputSelector',
@@ -445,7 +442,7 @@ export class LawoRubyMixerConnection {
         try {
             const node = await this.emberConnection.getElementByPath(command)
             logger.debug(`set_cap ${ch - 1} hasAMix true`)
-            this.dispatch({
+            store.dispatch({
                 type: FaderActionTypes.SET_CAPABILITY,
                 faderIndex: ch - 1,
                 capability: 'hasAMix',
@@ -461,7 +458,7 @@ export class LawoRubyMixerConnection {
                 () => {
                     logger.trace(`Receiving AMix state from Ch ${ch}`)
 
-                    this.dispatch({
+                    store.dispatch({
                         type: FaderActionTypes.SET_AMIX,
                         faderIndex: ch - 1,
                         state: (node.contents as Model.Parameter).value === true,
@@ -472,7 +469,7 @@ export class LawoRubyMixerConnection {
         } catch (e) {
             if (e.message.match(/could not find node/i)) {
                 logger.debug(`set_cap ${ch - 1} hasAMix false`)
-                this.dispatch({
+                store.dispatch({
                     type: FaderActionTypes.SET_CAPABILITY,
                     faderIndex: ch - 1,
                     capability: 'hasAMix',

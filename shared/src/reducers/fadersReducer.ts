@@ -113,11 +113,8 @@ export const faders = (
     // this is a left over from the old code, where faderIndex checked on the action type
     // The check is probably because of some calls prior to initialisation of the state
     if (
-        //@ts-ignore
-        action.faderIndex &&
-        //@ts-ignore
+        'faderIndex' in action &&
         (action.faderIndex < 0 ||
-            //@ts-ignore
             action.faderIndex >= nextState[0].fader.length)
     ) {
         return nextState
