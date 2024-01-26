@@ -1,8 +1,8 @@
 import {
     ICasparCGMixerGeometry,
     ICasparCGMixerGeometryFile,
+    MixerConnectionTypes
 } from '../MixerProtocolInterface'
-import { MixerConnectionTypes } from '../MixerProtocolPresets'
 
 // TODO: This is just template data to avoid error if not loading
 // default.caspar.ccg from storage folder

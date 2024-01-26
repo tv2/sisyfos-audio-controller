@@ -18,20 +18,6 @@ import { Atem } from './mixerProtocols/atem'
 // Interface:
 import { IMixerProtocolGeneric } from './MixerProtocolInterface'
 
-export enum MixerConnectionTypes {
-    'OSC' = 'OSC',
-    'EMBER' = 'EMBER',
-    'YamahaQlCl' = 'YamahaQlCl',
-    'GenericMidi' = 'GenericMidi',
-    'LawoRuby' = 'LawoRuby',
-    'CasparCG' = 'CasparCG',
-    'SSLSystemT' = 'SSLSystemT',
-    'Studer' = 'Studer',
-    'StuderVista' = 'StuderVista',
-    'vMix' = 'vMix',
-    'Atem' = 'Atem',
-}
-
 export const MixerProtocolPresets: {
     [key: string]: IMixerProtocolGeneric
 } = Object.assign(

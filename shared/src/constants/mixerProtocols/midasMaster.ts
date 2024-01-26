@@ -1,5 +1,4 @@
-import { IMixerProtocol, fxParamsList } from '../MixerProtocolInterface'
-import { MixerConnectionTypes } from '../MixerProtocolPresets'
+import { IMixerProtocol, fxParamsList, MixerConnectionTypes } from '../MixerProtocolInterface'
 
 export const MidasMaster: IMixerProtocol = {
     protocol: MixerConnectionTypes.OSC,

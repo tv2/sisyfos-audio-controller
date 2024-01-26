@@ -2,8 +2,8 @@ import {
     IMixerProtocol,
     fxParamsList,
     VuLabelConversionType,
+    MixerConnectionTypes
 } from '../MixerProtocolInterface'
-import { MixerConnectionTypes } from '../MixerProtocolPresets'
 
 export const Atem: IMixerProtocol = {
     MAX_UPDATES_PER_SECOND: 10,

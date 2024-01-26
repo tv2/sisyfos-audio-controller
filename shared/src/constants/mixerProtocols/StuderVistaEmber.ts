@@ -1,5 +1,4 @@
-import { IMixerProtocol, emptyMixerMessage } from '../MixerProtocolInterface'
-import { MixerConnectionTypes } from '../MixerProtocolPresets'
+import { IMixerProtocol, emptyMixerMessage, MixerConnectionTypes } from '../MixerProtocolInterface'
 
 export const StuderVistaMaster: IMixerProtocol = {
     protocol: MixerConnectionTypes.StuderVista,

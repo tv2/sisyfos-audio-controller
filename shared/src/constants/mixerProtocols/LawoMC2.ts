@@ -2,8 +2,8 @@ import {
     IMixerProtocol,
     emptyMixerMessage,
     VuLabelConversionType,
+    MixerConnectionTypes
 } from '../MixerProtocolInterface'
-import { MixerConnectionTypes } from '../MixerProtocolPresets'
 
 export const LawoMC2: IMixerProtocol = {
     protocol: MixerConnectionTypes.EMBER,

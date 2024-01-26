@@ -13,10 +13,9 @@ import { IChannelReference, IFader } from '../../../shared/src/reducers/fadersRe
 import { ISettings } from '../../../shared/src/reducers/settingsReducer'
 import { SettingsActionTypes, SettingsActions } from '../../../shared/src/actions/settingsActions'
 import { withTranslation } from 'react-i18next'
-import { VuLabelConversionType } from '../../shared../../../shared/src/constants/MixerProtocolInterface'
+import { MixerConnectionTypes, VuLabelConversionType } from '../../shared../../../shared/src/constants/MixerProtocolInterface'
 import { getFaderLabel } from '../utils/labels'
 import { Conversions } from '../../../shared/src/actions/utils/dbConversion'
-import { MixerConnectionTypes } from '../../../shared/src/constants/MixerProtocolPresets'
 
 interface IChannelInjectProps {
     t: any

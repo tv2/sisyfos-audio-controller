@@ -1,4 +1,17 @@
-import { MixerConnectionTypes } from "./MixerProtocolPresets"
+
+export enum MixerConnectionTypes {
+    'OSC' = 'OSC',
+    'EMBER' = 'EMBER',
+    'YamahaQlCl' = 'YamahaQlCl',
+    'GenericMidi' = 'GenericMidi',
+    'LawoRuby' = 'LawoRuby',
+    'CasparCG' = 'CasparCG',
+    'SSLSystemT' = 'SSLSystemT',
+    'Studer' = 'Studer',
+    'StuderVista' = 'StuderVista',
+    'vMix' = 'vMix',
+    'Atem' = 'Atem',
+}
 
 export enum fxParamsList {
     EqGain01,

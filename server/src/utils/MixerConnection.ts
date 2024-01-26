@@ -3,12 +3,13 @@ import { logger } from './logger'
 import { remoteConnections } from '../mainClasses'
 
 //Utils:
-import { MixerConnectionTypes, MixerProtocolPresets } from '../../../shared/src/constants/MixerProtocolPresets'
+import {  MixerProtocolPresets } from '../../../shared/src/constants/MixerProtocolPresets'
 import {
     IMixerProtocol,
     IMixerProtocolGeneric,
     ICasparCGMixerGeometry,
     fxParamsList,
+    MixerConnectionTypes
 } from '../../../shared/src/constants/MixerProtocolInterface'
 import { OscMixerConnection } from './mixerConnections/OscMixerConnection'
 import { VMixMixerConnection } from './mixerConnections/VMixMixerConnection'

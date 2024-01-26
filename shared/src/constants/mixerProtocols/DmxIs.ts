@@ -1,5 +1,4 @@
-import { IMixerProtocol } from '../MixerProtocolInterface'
-import { MixerConnectionTypes } from '../MixerProtocolPresets'
+import { IMixerProtocol, MixerConnectionTypes } from '../MixerProtocolInterface'
 
 export const DMXIS: IMixerProtocol = {
     protocol: MixerConnectionTypes.OSC,
