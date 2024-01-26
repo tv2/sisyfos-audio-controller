@@ -71,42 +71,49 @@ export class MixerGenericConnection {
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
+                    break
                 }
                 case MixerConnectionTypes.YamahaQlCl: {
                     this.mixerConnection[index] = new QlClMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
+                    break
                 }
                 case MixerConnectionTypes.GenericMidi: {
                     this.mixerConnection[index] = new MidiMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
+                    break
                 }
                 case MixerConnectionTypes.CasparCG: {
                     this.mixerConnection[index] = new CasparCGConnection(
                         this.mixerProtocol[index] as ICasparCGMixerGeometry,
                         index
                     )
+                    break
                 }
                 case MixerConnectionTypes.EMBER: {
                     this.mixerConnection[index] = new EmberMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
+                    break
                 }
                 case MixerConnectionTypes.LawoRuby: {
                     this.mixerConnection[index] = new LawoRubyMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
+                    break
                 }
                 case MixerConnectionTypes.Studer: {
                     this.mixerConnection[index] = new StuderMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
+                    break
                 }
                 case MixerConnectionTypes.StuderVista: {
                     this.mixerConnection[index] =
@@ -114,24 +121,28 @@ export class MixerGenericConnection {
                             this.mixerProtocol[index] as IMixerProtocol,
                             index
                         )
-                }
+                        break
+                    }
                 case MixerConnectionTypes.SSLSystemT: {
                     this.mixerConnection[index] = new SSLMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
+                    break
                 }
                 case MixerConnectionTypes.vMix: {
                     this.mixerConnection[index] = new VMixMixerConnection(
                         this.mixerProtocol[index] as IMixerProtocol,
                         index
                     )
+                    break
                 }
                 case MixerConnectionTypes.Atem: {
                     this.mixerConnection[index] = new AtemMixerConnection(
                         this.mixerProtocol[index],
                         index
                     )
+                    break
                 }
                 default: {
                     logger.error("Mixer protocol doesn't exist")
