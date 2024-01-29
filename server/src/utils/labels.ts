@@ -1,15 +1,15 @@
-import { IStore } from '../../../shared/src/reducers/store'
+import { IchMixerConnection } from '../../../shared/src/reducers/channelsReducer'
 import { state } from '../reducers/store'
 
 export function getChannelLabel(
-    state: IStore,
+    chMixerConnection: IchMixerConnection[],
     faderIndex: number
 ): string | undefined {
-    return state.channels[0].chMixerConnection
+    return chMixerConnection
         .map((conn) =>
-            conn.channel.map((ch) => ({
-                assignedFader: ch.assignedFader,
-                label: ch.label,
+            conn?.channel.map((ch) => ({
+                assignedFader: ch?.assignedFader,
+                label: ch?.label,
             }))
         )
         .reduce((a, b) => [...a, ...b], []) // flatten
@@ -28,7 +28,7 @@ export function getFaderLabel(faderIndex: number, defaultName = 'CH'): string {
         state.faders[0].fader[faderIndex].userLabel !== ''
             ? state.faders[0].fader[faderIndex].userLabel
             : undefined
-    const channelLabel = getChannelLabel(state, faderIndex)
+    const channelLabel = getChannelLabel(state.channels[0].chMixerConnection, faderIndex)
 
     switch (state.settings[0].labelType) {
         case 'automation':
