@@ -16,10 +16,10 @@ import { VMix } from './mixerProtocols/vMix'
 import { Atem } from './mixerProtocols/atem'
 
 // Interface:
-import { IMixerProtocolGeneric } from './MixerProtocolInterface'
+import { MixerProtocolGeneric } from './MixerProtocolInterface'
 
 export const MixerProtocolPresets: {
-    [key: string]: IMixerProtocolGeneric
+    [key: string]: MixerProtocolGeneric
 } = Object.assign(
     {
         ardourMaster: ArdourMaster,

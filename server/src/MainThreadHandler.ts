@@ -32,11 +32,11 @@ import {
     ChannelActionTypes,
 } from '../../shared/src/actions/channelActions'
 import { logger } from './utils/logger'
-import { ICustomPages } from '../../shared/src/reducers/settingsReducer'
+import { CustomPages } from '../../shared/src/reducers/settingsReducer'
 import { fxParamsList } from '../../shared/src/constants/MixerProtocolInterface'
 import path from 'path'
-import { IChannel } from '../../shared/src/reducers/channelsReducer'
-import { IChannelReference } from '../../shared/src/reducers/fadersReducer'
+import { Channel } from '../../shared/src/reducers/channelsReducer'
+import { ChannelReference } from '../../shared/src/reducers/fadersReducer'
 
 export class MainThreadHandlers {
     snapshotHandler: SnapshotHandler
@@ -66,7 +66,7 @@ export class MainThreadHandlers {
             state: state.faders[0].fader[faderIndex],
         })
         state.faders[0].fader[faderIndex].assignedChannels?.forEach(
-            (channel: IChannelReference) => {
+            (channel: ChannelReference) => {
                 socketServer.emit(IO.SOCKET_SET_STORE_CHANNEL, {
                     channelIndex: channel.channelIndex,
                     state: state.channels[0].chMixerConnection[
@@ -87,12 +87,12 @@ export class MainThreadHandlers {
 
     reIndexAssignedChannelsRelation() {
         state.channels[0].chMixerConnection.forEach((mixer: any) => {
-            mixer.channel.forEach((channel: IChannel) => {
+            mixer.channel.forEach((channel: Channel) => {
                 channel.assignedFader = -1
             })
         })
         state.faders[0].fader.forEach((fader, faderIndex) => {
-            fader.assignedChannels?.forEach((channel: IChannelReference) => {
+            fader.assignedChannels?.forEach((channel: ChannelReference) => {
                 store.dispatch({
                     type: ChannelActionTypes.SET_ASSIGNED_FADER,
                     mixerIndex: channel.mixerIndex,
@@ -105,7 +105,7 @@ export class MainThreadHandlers {
 
     cleanUpAssignedChannelsOnFaders() {
         state.faders[0].fader.forEach((fader, faderIndex) => {
-            fader.assignedChannels?.forEach((channel: IChannelReference) => {
+            fader.assignedChannels?.forEach((channel: ChannelReference) => {
                 if (state.settings[0].numberOfMixers < channel.mixerIndex + 1) {
                     store.dispatch({
                         type: ChannelActionTypes.SET_ASSIGNED_FADER,
@@ -197,7 +197,7 @@ export class MainThreadHandlers {
             })
             .on(IO.SOCKET_GET_PAGES_LIST, () => {
                 logger.info('Get custom pages list')
-                let customPages: ICustomPages[] = getCustomPages()
+                let customPages: CustomPages[] = getCustomPages()
                 if (
                     customPages.length === state.settings[0].numberOfCustomPages
                 ) {

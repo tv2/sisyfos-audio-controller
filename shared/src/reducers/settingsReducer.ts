@@ -9,7 +9,7 @@ export enum PageType {
     CustomPage,
 }
 
-export interface ISettings {
+export interface Settings {
     /* Sisyfos Settings Version: */
     sisyfosVersion?: string
 
@@ -27,11 +27,11 @@ export interface ISettings {
         start?: number
         id?: string
     }
-    customPages: Array<ICustomPages>
+    customPages: Array<CustomPages>
 
     /** User config */
     numberOfMixers: number
-    mixers: IMixerSettings[]
+    mixers: MixerSettings[]
     enableRemoteFader: boolean
     remoteFaderMidiInputPort: string
     remoteFaderMidiOutputPort: string
@@ -52,13 +52,13 @@ export interface ISettings {
     serverOnline: boolean
 }
 
-export interface ICustomPages {
+export interface CustomPages {
     id: string
     label: string
     faders: Array<number>
 }
 
-export interface IMixerSettings {
+export interface MixerSettings {
     mixerProtocol: string
     deviceIp: string
     devicePort: number
@@ -73,7 +73,7 @@ export interface IMixerSettings {
     localOscPort: number
 }
 
-const defaultSettingsReducerState: Array<ISettings> = [
+const defaultSettingsReducerState: Array<Settings> = [
     {
         showSettings: false,
         showPagesSetup: false,
@@ -124,7 +124,7 @@ const defaultSettingsReducerState: Array<ISettings> = [
 export const settings = (
     state = defaultSettingsReducerState,
     action: SettingsActions
-): Array<ISettings> => {
+): Array<Settings> => {
     let nextState = [Object.assign({}, state[0])]
 
     switch (action.type) {

@@ -16,13 +16,13 @@ import {
 
 import { I18nextProvider } from 'react-i18next'
 import i18n from './src/utils/i18n'
-import { IMixerProtocol } from '../shared/src/constants/MixerProtocolInterface'
+import { MixerProtocol } from '../shared/src/constants/MixerProtocolInterface'
 
 declare global {
     interface Window {
         storeRedux: any
         reduxState: any
-        mixerProtocol: IMixerProtocol
+        mixerProtocol: MixerProtocol
         mixerProtocolPresets: any
         mixerProtocolList: any
         socketIoClient: any

@@ -1,6 +1,6 @@
-import { IMixerProtocol, emptyMixerMessage, MixerConnectionTypes } from '../MixerProtocolInterface'
+import { MixerProtocol, emptyMixerMessage, MixerConnectionTypes } from '../MixerProtocolInterface'
 
-export const GenericMidi: IMixerProtocol = {
+export const GenericMidi: MixerProtocol = {
     protocol: MixerConnectionTypes.GenericMidi,
     label: 'Generic Midi',
     presetFileExtension: '',

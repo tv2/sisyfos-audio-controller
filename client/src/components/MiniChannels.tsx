@@ -3,25 +3,25 @@ import { connect } from 'react-redux'
 
 import '../assets/css/MiniChannels.css'
 import { Store } from 'redux'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
-import { IChannels } from '../../../shared/src/reducers/channelsReducer'
-import { ISettings } from '../../../shared/src/reducers/settingsReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
+import { Channels as ChannelsInterface } from '../../../shared/src/reducers/channelsReducer'
+import { Settings } from '../../../shared/src/reducers/settingsReducer'
 import MiniChannel from './MiniChannel'
 import MiniChanStrip from './MiniChanStrip'
 
-interface IChannelsInjectProps {
-    channels: IChannels
-    faders: IFader[]
-    settings: ISettings
+interface ChannelsInjectProps {
+    channels: ChannelsInterface
+    faders: Fader[]
+    settings: Settings
 }
 
-class Channels extends React.Component<IChannelsInjectProps & Store> {
+class Channels extends React.Component<ChannelsInjectProps & Store> {
     constructor(props: any) {
         super(props)
         this.props.settings.showMonitorOptions = -1
     }
 
-    public shouldComponentUpdate(nextProps: IChannelsInjectProps) {
+    public shouldComponentUpdate(nextProps: ChannelsInjectProps) {
         return (
             this.props.settings.showOptions !==
                 nextProps.settings.showOptions ||
@@ -38,7 +38,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     render() {
         return (
             <div className="mini-channels-body">
-                {this.props.faders.map((fader: IFader, index: number) => {
+                {this.props.faders.map((fader: Fader, index: number) => {
                     return fader.showInMiniMonitor ? (
                         <MiniChannel faderIndex={index} key={index} />
                     ) : null
@@ -61,7 +61,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     }
 }
 
-const mapStateToProps = (state: any): IChannelsInjectProps => {
+const mapStateToProps = (state: any): ChannelsInjectProps => {
     return {
         channels: state.channels[0].chMixerConnection[0].channel,
         faders: state.faders[0].fader,
@@ -69,6 +69,6 @@ const mapStateToProps = (state: any): IChannelsInjectProps => {
     }
 }
 
-export default connect<IChannelsInjectProps, any, any>(mapStateToProps)(
+export default connect<ChannelsInjectProps, any, any>(mapStateToProps)(
     Channels
 )

@@ -6,16 +6,16 @@ import { vuMeters } from '../utils/SocketClientHandlers'
 import '../assets/css/VuMeter.css'
 //Utils:
 
-export interface IVuMeterInjectedProps {
+export interface VuMeterInjectedProps {
     faderIndex: number
     channel: number
 }
 
-interface IVuMeterProps {
+interface VuMeterProps {
     faderIndex: number
 }
 
-export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
+export class VuMeter extends React.PureComponent<VuMeterInjectedProps> {
     canvas: HTMLCanvasElement | undefined
 
     totalPeak: number = 0
@@ -217,13 +217,13 @@ export class VuMeter extends React.PureComponent<IVuMeterInjectedProps> {
     }
 }
 
-const mapStateToProps = (state: any, props: any): IVuMeterInjectedProps => {
+const mapStateToProps = (state: any, props: any): VuMeterInjectedProps => {
     return {
         faderIndex: props.faderIndex,
         channel: props.channel
     }
 }
 
-export default connect<IVuMeterInjectedProps, any, any>(mapStateToProps)(
+export default connect<VuMeterInjectedProps, any, any>(mapStateToProps)(
     VuMeter
 )

@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import {
     SettingsActionTypes,
 } from '../../../shared/src/actions/settingsActions'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
 import {
     SOCKET_SET_FX,
     SOCKET_SET_AUX_LEVEL,
@@ -17,21 +17,21 @@ import {
 import ReductionMeter from './ReductionMeter'
 import ClassNames from 'classnames'
 import { fxParamsList } from '../../../shared/src/constants/MixerProtocolInterface'
-import { IChannel } from '../../../shared/src/reducers/channelsReducer'
+import { Channel } from '../../../shared/src/reducers/channelsReducer'
 import { getFaderLabel } from '../utils/labels'
 import ChanStripEq from './ChanStripEq'
 
-interface IChanStripFullInjectProps {
+interface ChanStripFullInjectProps {
     label: string
     selectedProtocol: string
     numberOfChannelsInType: Array<number>
-    channel: IChannel[]
-    fader: IFader[]
+    channel: Channel[]
+    fader: Fader[]
     auxSendIndex: number
     offtubeMode: boolean
 }
 
-interface IChanStripFullProps {
+interface ChanStripFullProps {
     faderIndex: number
 }
 
@@ -39,7 +39,7 @@ interface IChanStripFullProps {
 const DEL_VALUES = [10, 1, -1, -10]
 
 class ChanStripFull extends React.PureComponent<
-    IChanStripFullProps & IChanStripFullInjectProps & Store
+    ChanStripFullProps & ChanStripFullInjectProps & Store
 > {
 
     constructor(props: any) {
@@ -523,8 +523,8 @@ class ChanStripFull extends React.PureComponent<
     }
 }
 
-const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
-    let inject: IChanStripFullInjectProps = {
+const mapStateToProps = (state: any, props: any): ChanStripFullInjectProps => {
+    let inject: ChanStripFullInjectProps = {
         label: '',
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
         numberOfChannelsInType:
@@ -549,6 +549,6 @@ const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
     return inject
 }
 
-export default connect<any, IChanStripFullInjectProps>(mapStateToProps)(
+export default connect<any, ChanStripFullInjectProps>(mapStateToProps)(
     ChanStripFull
 ) as any

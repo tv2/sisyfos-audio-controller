@@ -1,13 +1,13 @@
 import { createStore } from 'redux'
-import { IFaders } from './fadersReducer'
-import { IChannels } from './channelsReducer'
+import { Faders } from './fadersReducer'
+import { Channels } from './channelsReducer'
 import indexReducer from './indexReducer'
-import { ISettings } from './settingsReducer'
+import { Settings } from './settingsReducer'
 
-export interface IStore {
-  settings: Array<ISettings>
-  channels: Array<IChannels>
-  faders: Array<IFaders>
+export interface ReduxStore {
+  settings: Array<Settings>
+  channels: Array<Channels>
+  faders: Array<Faders>
 }
 
 export default createStore(indexReducer)

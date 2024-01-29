@@ -15,20 +15,20 @@ import { logger } from './logger'
 import { defaultFadersReducerState } from '../../../shared/src/reducers/fadersReducer'
 
 import {
-    IChannels,
-    InumberOfChannels,
+    Channels,
+    NumberOfChannels,
     defaultChannelsReducerState,
 } from '../../../shared/src/reducers/channelsReducer'
 
 import {
-    ICustomPages,
-    ISettings,
+    CustomPages,
+    Settings,
 } from '../../../shared/src/reducers/settingsReducer'
-import { IFaders } from '../../../shared/src/reducers/fadersReducer'
+import { Faders } from '../../../shared/src/reducers/fadersReducer'
 
-export interface IShotStorage {
-    channelState: IChannels
-    faderState: IFaders
+export interface ShotStorage {
+    channelState: Channels
+    faderState: Faders
 }
 
 // Linux place in "app"/storage to be backward compatible with Docker containers.
@@ -38,7 +38,7 @@ export const STORAGE_FOLDER = (platform === 'linux') ?
     path.resolve(homeDir, 'sisyfos-storage')
 
 
-export const loadSettings = (storeRedux: any): ISettings => {
+export const loadSettings = (storeRedux: any): Settings => {
     let newSettings = storeRedux.settings[0]
     try {
         newSettings = JSON.parse(
@@ -78,13 +78,13 @@ export const saveSettings = (settings: any) => {
 }
 
 export const loadSnapshotState = (
-    numberOfChannels: InumberOfChannels[],
+    numberOfChannels: NumberOfChannels[],
     numberOfFaders: number,
     fileName: string,
     loadAll: boolean
 ) => {
     try {
-        const stateFromFile: IShotStorage = JSON.parse(
+        const stateFromFile: ShotStorage = JSON.parse(
             fs.readFileSync(fileName, 'utf8')
         )
 
@@ -92,12 +92,12 @@ export const loadSnapshotState = (
             store.dispatch({
                 type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
                 numberOfTypeChannels: numberOfChannels,
-                allState: stateFromFile.channelState as IChannels,
+                allState: stateFromFile.channelState as Channels,
             })
             store.dispatch({
                 type: FaderActionTypes.SET_COMPLETE_FADER_STATE,
                 numberOfFaders: numberOfFaders,
-                allState: stateFromFile.faderState as IFaders,
+                allState: stateFromFile.faderState as Faders,
             })
         }
     } catch (error) {
@@ -188,7 +188,7 @@ export const setCcgDefault = (fileName: string) => {
     })
 }
 
-export const getCustomPages = (): ICustomPages[] => {
+export const getCustomPages = (): CustomPages[] => {
     try {
         return JSON.parse(
             fs.readFileSync(path.resolve(STORAGE_FOLDER, 'pages.json'), 'utf8')

@@ -1,6 +1,6 @@
-import { IMixerProtocol, MixerConnectionTypes } from '../MixerProtocolInterface'
+import { MixerProtocol, MixerConnectionTypes } from '../MixerProtocolInterface'
 
-export const ReaperMaster: IMixerProtocol = {
+export const ReaperMaster: MixerProtocol = {
     protocol: MixerConnectionTypes.OSC,
     label: 'Reaper DAW Master mode(reaper.fm)',
     presetFileExtension: '',

@@ -11,12 +11,12 @@ import {
 import ChannelRouteSettings from './ChannelRouteSettings'
 import ChanStrip from './ChanStrip'
 import ChannelMonitorOptions from './ChannelMonitorOptions'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
-import { IChannels } from '../../../shared/src/reducers/channelsReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
+import { Channels as IChannels } from '../../../shared/src/reducers/channelsReducer'
 import {
-    ICustomPages,
-    IMixerSettings,
-    ISettings,
+    CustomPages,
+    MixerSettings,
+    Settings,
     PageType,
 } from '../../../shared/src/reducers/settingsReducer'
 import {
@@ -27,21 +27,21 @@ import {
 } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import ChanStripFull from './ChanStripFull'
 
-interface IChannelsInjectProps {
+interface ChannelsInjectProps {
     channels: IChannels
-    faders: IFader[]
-    settings: ISettings
-    customPages: ICustomPages[]
+    faders: Fader[]
+    settings: Settings
+    customPages: CustomPages[]
     mixersOnline: boolean
 }
 
-class Channels extends React.Component<IChannelsInjectProps & Store> {
+class Channels extends React.Component<ChannelsInjectProps & Store> {
     constructor(props: any) {
         super(props)
         this.props.settings.showMonitorOptions = -1
     }
 
-    public shouldComponentUpdate(nextProps: IChannelsInjectProps) {
+    public shouldComponentUpdate(nextProps: ChannelsInjectProps) {
         return (
             this.props.settings.showOptions !==
                 nextProps.settings.showOptions ||
@@ -201,7 +201,7 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
                 ))
             case PageType.CustomPage:
                 let pageIndex: number = this.props.customPages
-                    .map((item: ICustomPages) => item.id)
+                    .map((item: CustomPages) => item.id)
                     .indexOf(curPage.id || '')
                 return this.props.customPages[pageIndex].faders
                     .filter((value) => {
@@ -358,18 +358,18 @@ class Channels extends React.Component<IChannelsInjectProps & Store> {
     }
 }
 
-const mapStateToProps = (state: any): IChannelsInjectProps => {
+const mapStateToProps = (state: any): ChannelsInjectProps => {
     return {
         channels: state.channels[0].chMixerConnection[0].channel,
         faders: state.faders[0].fader,
         customPages: state.settings[0].customPages,
         settings: state.settings[0],
         mixersOnline: state.settings[0].mixers
-            .map((m: IMixerSettings) => m.mixerOnline)
+            .map((m: MixerSettings) => m.mixerOnline)
             .reduce((a: boolean, b: boolean) => a && b),
     }
 }
 
-export default connect<IChannelsInjectProps, any, any>(mapStateToProps)(
+export default connect<ChannelsInjectProps, any, any>(mapStateToProps)(
     Channels
 )

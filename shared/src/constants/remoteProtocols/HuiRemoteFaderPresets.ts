@@ -1,4 +1,4 @@
-export interface IMidiSendMessage {
+export interface MidiSendMessage {
     message: string
     value: any
     type: MidiSendTypes
@@ -12,7 +12,7 @@ export enum MidiSendTypes {
     sendPitchBend,
 }
 
-export interface IMidiReceiveMessage {
+export interface MidiReceiveMessage {
     message: string
     value: any
     type: MidiReceiveTypes
@@ -25,26 +25,26 @@ export enum MidiReceiveTypes {
     pitchbend,
 }
 
-export interface IRemoteProtocol {
+export interface RemoteProtocol {
     protocol: string
     label: string
     mode: string
     leadingZeros: boolean
-    initializeCommands: [IMidiSendMessage]
+    initializeCommands: [MidiSendMessage]
     fromRemote: {
-        CHANNEL_PGM_ON_OFF: IMidiReceiveMessage
-        CHANNEL_PST_ON_OFF: IMidiReceiveMessage
-        CHANNEL_PFL_ON_OFF: IMidiReceiveMessage
-        CHANNEL_FADER_LEVEL: IMidiReceiveMessage
-        X_MIX: IMidiReceiveMessage
-        FADE_TO_BLACK: IMidiReceiveMessage
-        SNAP_RECALL: IMidiReceiveMessage
+        CHANNEL_PGM_ON_OFF: MidiReceiveMessage
+        CHANNEL_PST_ON_OFF: MidiReceiveMessage
+        CHANNEL_PFL_ON_OFF: MidiReceiveMessage
+        CHANNEL_FADER_LEVEL: MidiReceiveMessage
+        X_MIX: MidiReceiveMessage
+        FADE_TO_BLACK: MidiReceiveMessage
+        SNAP_RECALL: MidiReceiveMessage
     }
     toRemote: {
-        STATE_CHANNEL_PGM: IMidiSendMessage
-        STATE_CHANNEL_PST: IMidiSendMessage
-        STATE_CHANNEL_PFL: IMidiSendMessage
-        STATE_CHANNEL_FADER_LEVEL: Array<IMidiSendMessage>
+        STATE_CHANNEL_PGM: MidiSendMessage
+        STATE_CHANNEL_PST: MidiSendMessage
+        STATE_CHANNEL_PFL: MidiSendMessage
+        STATE_CHANNEL_FADER_LEVEL: Array<MidiSendMessage>
     }
     fader: {
         min: number
@@ -60,7 +60,7 @@ export interface IRemoteProtocol {
     }
 }
 
-export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
+export const RemoteFaderPresets: { [key: string]: RemoteProtocol } = {
     hui: {
         protocol: 'MIDI',
         label: 'Generic HUI Midicontroller',

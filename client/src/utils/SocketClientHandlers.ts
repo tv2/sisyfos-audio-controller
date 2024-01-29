@@ -18,11 +18,11 @@ import {
     SOCKET_RETURN_PAGES_LIST,
 } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import {
-    IchMixerConnection,
-    InumberOfChannels,
+    ChMixerConnection,
+    NumberOfChannels,
 } from '../../../shared/src/reducers/channelsReducer'
 import { VuType } from '../../../shared/src/utils/vu-server-types'
-import { IMixerSettings } from '../../../shared/src/reducers/settingsReducer'
+import { MixerSettings } from '../../../shared/src/reducers/settingsReducer'
 
 export const vuMeters: number[][] = []
 
@@ -52,10 +52,10 @@ export const socketClientHandlers = () => {
         .on(SOCKET_SET_FULL_STORE, (payload: any) => {
             // console.log('STATE RECEIVED :', payload)
             if (window.mixerProtocol) {
-                let numberOfChannels: InumberOfChannels[] = []
+                let numberOfChannels: NumberOfChannels[] = []
                 payload.channels[0].chMixerConnection.forEach(
                     (
-                        chMixerConnection: IchMixerConnection,
+                        chMixerConnection: ChMixerConnection,
                         mixerIndex: number
                     ) => {
                         numberOfChannels.push({ numberOfTypeInCh: [] })
@@ -75,7 +75,7 @@ export const socketClientHandlers = () => {
                     numberOfFaders: payload.settings[0].numberOfFaders,
                 })
                 payload.settings[0].mixers.forEach(
-                    (mixer: IMixerSettings, i: number) => {
+                    (mixer: MixerSettings, i: number) => {
                         window.storeRedux.dispatch({
                             type: SettingsActionTypes.SET_MIXER_ONLINE,
                             mixerIndex: i,

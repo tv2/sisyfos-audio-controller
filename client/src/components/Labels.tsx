@@ -6,12 +6,12 @@ import { connect } from 'react-redux'
 import {
     SettingsActionTypes,
 } from '../../../shared/src/actions/settingsActions'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
 import {
     SOCKET_FLUSH_LABELS,
     SOCKET_SET_LABELS,
 } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
-import { ICustomPages } from '../../../shared/src/reducers/settingsReducer'
+import { CustomPages } from '../../../shared/src/reducers/settingsReducer'
 import { getChannelLabel } from '../utils/labels'
 import {
     FaderActionTypes,
@@ -20,13 +20,13 @@ import {
     ChannelActionTypes,
 } from '../../../shared/src/actions/channelActions'
 
-interface ILabelSettingsInjectProps {
-    customPages: ICustomPages[]
-    fader: IFader[]
+interface LabelSettingsInjectProps {
+    customPages: CustomPages[]
+    fader: Fader[]
 }
 
 class LabelSettings extends React.PureComponent<
-    ILabelSettingsInjectProps & Store
+    LabelSettingsInjectProps & Store
 > {
     state = {
         mutations: {} as Record<string, string>,
@@ -102,7 +102,7 @@ class LabelSettings extends React.PureComponent<
     renderLabelList() {
         return (
             <div>
-                {this.props.fader.map((fader: IFader, index: number) => {
+                {this.props.fader.map((fader: Fader, index: number) => {
                     const faderLabel = fader.label || '-'
                     const channelLabel =
                         getChannelLabel(window.reduxState, index) || '-'
@@ -173,13 +173,13 @@ class LabelSettings extends React.PureComponent<
     }
 }
 
-const mapStateToProps = (state: any, props: any): ILabelSettingsInjectProps => {
+const mapStateToProps = (state: any, props: any): LabelSettingsInjectProps => {
     return {
         customPages: state.settings[0].customPages,
         fader: state.faders[0].fader,
     }
 }
 
-export default connect<any, ILabelSettingsInjectProps>(mapStateToProps)(
+export default connect<any, LabelSettingsInjectProps>(mapStateToProps)(
     LabelSettings
 ) as any

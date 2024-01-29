@@ -1,5 +1,5 @@
 import { fxParamsList } from '../constants/MixerProtocolInterface'
-import { IFader, IFaders } from '../reducers/fadersReducer'
+import { Fader, Faders } from '../reducers/fadersReducer'
 
 // Move all consts to this type
 export enum FaderActionTypes {
@@ -53,12 +53,12 @@ export type FaderActions =
     | {
           type: FaderActionTypes.SET_COMPLETE_FADER_STATE
           numberOfFaders: number
-          allState: IFaders
+          allState: Faders
       }
     | {
           type: FaderActionTypes.SET_SINGLE_FADER_STATE
           faderIndex: number
-          state: IFader
+          state: Fader
       }
     | {
           type: FaderActionTypes.SET_FADER_LEVEL

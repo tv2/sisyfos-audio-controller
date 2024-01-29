@@ -5,10 +5,10 @@ import { mixerGenericConnection } from '../mainClasses'
 
 //Utils:
 import {
-    IAutomationProtocol,
+    AutomationProtocol,
     AutomationPresets,
 } from '../../../shared/src/constants/AutomationPresets'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
 import {
     FaderActionTypes,
     FaderActions,
@@ -19,7 +19,7 @@ import { logger } from './logger'
 const AUTOMATION_OSC_PORT = 5255
 export class AutomationConnection {
     oscConnection: any
-    automationProtocol: IAutomationProtocol
+    automationProtocol: AutomationProtocol
 
     constructor() {
         this.sendOutMessage = this.sendOutMessage.bind(this)
@@ -39,7 +39,7 @@ export class AutomationConnection {
             timetag: number | undefined,
             info: any
         ) => {
-            const check = (key: keyof IAutomationProtocol['fromAutomation']) =>
+            const check = (key: keyof AutomationProtocol['fromAutomation']) =>
                 this.checkOscCommand(
                     message.address,
                     this.automationProtocol.fromAutomation[key]
@@ -245,7 +245,7 @@ export class AutomationConnection {
                                     voOn,
                                     pstOn,
                                     showChannel,
-                                }: IFader,
+                                }: Fader,
                                 index
                             ) => ({
                                 faderLevel,

@@ -7,7 +7,7 @@ import { FaderActionTypes } from '../../../../shared/src/actions/faderActions'
 
 //Utils:
 import {
-    IRemoteProtocol,
+    RemoteProtocol,
     RemoteFaderPresets,
 } from '../../../../shared/src/constants/remoteProtocols/SkaarhojProtocol'
 import { MixerProtocolPresets } from '../../../../shared/src/constants/MixerProtocolPresets'
@@ -15,7 +15,7 @@ import { logger } from '../logger'
 import { ChannelActionTypes } from '../../../../shared/src/actions/channelActions'
 
 export class SkaarhojRemoteConnection {
-    remoteProtocol: IRemoteProtocol
+    remoteProtocol: RemoteProtocol
     mixerProtocol: any
     clientList: any[]
 

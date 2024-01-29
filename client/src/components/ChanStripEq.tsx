@@ -5,23 +5,23 @@ import ReactSlider from 'react-slider'
 import '../assets/css/ChanStripEq.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
-import { IChannel } from '../../../shared/src/reducers/channelsReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
+import { Channel } from '../../../shared/src/reducers/channelsReducer'
 import { SOCKET_SET_FX } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import { fxParamsList } from '../../../shared/src/constants/MixerProtocolInterface'
 import { getFaderLabel } from '../utils/labels'
 
-interface IChanStripFullInjectProps {
+interface ChanStripFullInjectProps {
     label: string
     selectedProtocol: string
     numberOfChannelsInType: Array<number>
-    channel: IChannel[]
-    fader: IFader[]
+    channel: Channel[]
+    fader: Fader[]
     auxSendIndex: number
     offtubeMode: boolean
 }
 
-interface IChanStripFullProps {
+interface ChanStripFullProps {
     faderIndex: number
 }
 
@@ -32,11 +32,11 @@ enum EqColors {
     'rgb(229, 159, 34)',
 }
 
-interface IFreqLabels {
+interface FreqLabels {
     label: string
     posY: number
 }
-const EQ_FREQ_LABELS: IFreqLabels[] = [
+const EQ_FREQ_LABELS: FreqLabels[] = [
     {
         label: '50',
         posY: 340,
@@ -84,7 +84,7 @@ const EQ_Y_SIZE = 0.25
 const EQ_Y_OFFSET = 0.55
 
 class ChanStripEq extends React.PureComponent<
-    IChanStripFullProps & IChanStripFullInjectProps & Store
+    ChanStripFullProps & ChanStripFullInjectProps & Store
 > {
     canvas: HTMLCanvasElement | undefined
 
@@ -93,7 +93,7 @@ class ChanStripEq extends React.PureComponent<
     }
 
     shouldComponentUpdate(
-        nextProps: IChanStripFullInjectProps & IChanStripFullProps
+        nextProps: ChanStripFullInjectProps & ChanStripFullProps
     ) {
         if (nextProps.faderIndex > -1) {
             return true
@@ -195,7 +195,7 @@ class ChanStripEq extends React.PureComponent<
         context.stroke()
         // Freq on zero gain line:
         context.beginPath()
-        EQ_FREQ_LABELS.forEach((freq: IFreqLabels) => {
+        EQ_FREQ_LABELS.forEach((freq: FreqLabels) => {
             context.font = '30px Ariel'
             context.strokeStyle = 'white'
             context.strokeText(
@@ -425,8 +425,8 @@ class ChanStripEq extends React.PureComponent<
     }
 }
 
-const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
-    let inject: IChanStripFullInjectProps = {
+const mapStateToProps = (state: any, props: any): ChanStripFullInjectProps => {
+    let inject: ChanStripFullInjectProps = {
         label: '',
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
         numberOfChannelsInType:
@@ -451,6 +451,6 @@ const mapStateToProps = (state: any, props: any): IChanStripFullInjectProps => {
     return inject
 }
 
-export default connect<any, IChanStripFullInjectProps>(mapStateToProps)(
+export default connect<any, ChanStripFullInjectProps>(mapStateToProps)(
     ChanStripEq
 ) as any

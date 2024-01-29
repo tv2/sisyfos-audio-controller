@@ -9,7 +9,7 @@ import { remoteConnections } from '../../mainClasses'
 import { MixerProtocolPresets } from '../../../../shared/src/constants/MixerProtocolPresets'
 import {
     fxParamsList,
-    IMixerProtocol,
+    MixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
     ChannelActionTypes,
@@ -19,8 +19,8 @@ import {
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
 import {
-    IChannelReference,
-    IFader,
+    ChannelReference,
+    Fader,
 } from '../../../../shared/src/reducers/fadersReducer'
 
 export class MidiMixerConnection {
@@ -29,7 +29,7 @@ export class MidiMixerConnection {
     midiInput: any
     midiOutput: any
 
-    constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
+    constructor(mixerProtocol: MixerProtocol, mixerIndex: number) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
@@ -63,8 +63,8 @@ export class MidiMixerConnection {
     }
 
     private getAssignedFaderIndex(channelIndex: number) {
-        return state.faders[0].fader.findIndex((fader: IFader) =>
-            fader.assignedChannels?.some((assigned: IChannelReference) => {
+        return state.faders[0].fader.findIndex((fader: Fader) =>
+            fader.assignedChannels?.some((assigned: ChannelReference) => {
                 return (
                     assigned.mixerIndex === this.mixerIndex &&
                     assigned.channelIndex === channelIndex
@@ -118,7 +118,7 @@ export class MidiMixerConnection {
                     state.faders[0].fader[
                         faderChannel - 1
                     ].assignedChannels?.forEach(
-                        (channel: IChannelReference) => {
+                        (channel: ChannelReference) => {
                             if (channel.mixerIndex === this.mixerIndex) {
                                 this.updateOutLevel(
                                     channel.channelIndex,

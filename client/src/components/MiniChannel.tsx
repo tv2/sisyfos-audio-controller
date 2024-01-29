@@ -6,27 +6,27 @@ import '../assets/css/NoUiSlider.css'
 
 //assets:
 import '../assets/css/MiniChannel.css'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
-import { IChannels } from '../../../shared/src/reducers/channelsReducer'
-import { ISettings } from '../../../shared/src/reducers/settingsReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
+import { Channels } from '../../../shared/src/reducers/channelsReducer'
+import { Settings } from '../../../shared/src/reducers/settingsReducer'
 import { SettingsActionTypes } from '../../../shared/src/actions/settingsActions'
 import { getFaderLabel } from '../utils/labels'
 
-interface IChannelInjectProps {
-    channels: IChannels
-    fader: IFader
-    settings: ISettings
+interface ChannelInjectProps {
+    channels: Channels
+    fader: Fader
+    settings: Settings
     channelType: number
     channelTypeIndex: number
     label: string
 }
 
-interface IChannelProps {
+interface ChannelProps {
     faderIndex: number
 }
 
 class MiniChannel extends React.Component<
-    IChannelProps & IChannelInjectProps & Store
+    ChannelProps & ChannelInjectProps & Store
 > {
     faderIndex: number
 
@@ -35,7 +35,7 @@ class MiniChannel extends React.Component<
         this.faderIndex = this.props.faderIndex
     }
 
-    public shouldComponentUpdate(nextProps: IChannelInjectProps) {
+    public shouldComponentUpdate(nextProps: ChannelInjectProps) {
         return (
             nextProps.fader.showChannel != this.props.fader.showChannel ||
             nextProps.label != this.props.label ||
@@ -80,7 +80,7 @@ class MiniChannel extends React.Component<
     }
 }
 
-const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
+const mapStateToProps = (state: any, props: any): ChannelInjectProps => {
     return {
         channels: state.channels[0].chMixerConnection[0].channel,
         fader: state.faders[0].fader[props.faderIndex],
@@ -92,6 +92,6 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
     }
 }
 
-export default connect<any, IChannelInjectProps, any>(mapStateToProps)(
+export default connect<any, ChannelInjectProps, any>(mapStateToProps)(
     MiniChannel
 ) as any

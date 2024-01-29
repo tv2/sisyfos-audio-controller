@@ -1,4 +1,4 @@
-import { ICustomPages, PageType } from '../reducers/settingsReducer'
+import { CustomPages, PageType } from '../reducers/settingsReducer'
 
 export enum SettingsActionTypes {
     TOGGLE_SHOW_SETTINGS = 'TOGGLE_SHOW_SETTINGS',
@@ -28,5 +28,5 @@ export type SettingsActions = {type: SettingsActionTypes.TOGGLE_SHOW_SETTINGS} |
     {type: SettingsActionTypes.SET_MIXER_ONLINE, mixerIndex: number, mixerOnline: boolean} |
     {type: SettingsActionTypes.SET_SERVER_ONLINE, serverOnline: boolean} |
     {type: SettingsActionTypes.SET_PAGE, pageType: PageType, id: number | string} |
-    {type: SettingsActionTypes.SET_PAGES_LIST, customPages: ICustomPages[]}
+    {type: SettingsActionTypes.SET_PAGES_LIST, customPages: CustomPages[]}
 

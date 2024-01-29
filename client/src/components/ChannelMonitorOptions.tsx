@@ -5,7 +5,7 @@ import '../assets/css/ChannelMonitorOptions.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
 import { SettingsActionTypes } from '../../../shared/src/actions/settingsActions'
-import { ISettings } from '../../../shared/src/reducers/settingsReducer'
+import { Settings } from '../../../shared/src/reducers/settingsReducer'
 import {
     SOCKET_SET_AUX_LEVEL,
     SOCKET_SET_FADER_MONITOR,
@@ -13,21 +13,21 @@ import {
 } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import { getFaderLabel } from '../utils/labels'
 
-interface IMonitorSettingsInjectProps {
+interface MonitorSettingsInjectProps {
     label: string
     selectedProtocol: string
     numberOfChannelsInType: Array<number>
     channel: Array<any>
     fader: Array<any>
-    settings: ISettings
+    settings: Settings
 }
 
-interface IChannelProps {
+interface ChannelProps {
     faderIndex: number
 }
 
 class ChannelMonitorOptions extends React.PureComponent<
-    IChannelProps & IMonitorSettingsInjectProps & Store
+    ChannelProps & MonitorSettingsInjectProps & Store
 > {
     faderIndex: number
 
@@ -192,7 +192,7 @@ class ChannelMonitorOptions extends React.PureComponent<
 const mapStateToProps = (
     state: any,
     props: any
-): IMonitorSettingsInjectProps => {
+): MonitorSettingsInjectProps => {
     return {
         label: getFaderLabel(props.faderIndex, 'FADER'),
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
@@ -204,6 +204,6 @@ const mapStateToProps = (
     }
 }
 
-export default connect<any, IMonitorSettingsInjectProps>(mapStateToProps)(
+export default connect<any, MonitorSettingsInjectProps>(mapStateToProps)(
     ChannelMonitorOptions
 ) as any

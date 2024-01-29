@@ -1,4 +1,4 @@
-export interface IRawSendMessage {
+export interface RawSendMessage {
     message: string
     value: any
     type: RawSendTypes
@@ -12,7 +12,7 @@ export enum RawSendTypes {
     sendPitchBend,
 }
 
-export interface IRawReceiveMessage {
+export interface RawReceiveMessage {
     message: string
     value: any
     type: RawReceiveTypes
@@ -25,26 +25,26 @@ export enum RawReceiveTypes {
     pitchbend,
 }
 
-export interface IRemoteProtocol {
+export interface RemoteProtocol {
     protocol: string
     label: string
     mode: string
     leadingZeros: boolean
-    initializeCommands: [IRawSendMessage]
+    initializeCommands: [RawSendMessage]
     fromRemote: {
-        CHANNEL_PGM_ON_OFF: IRawReceiveMessage
-        CHANNEL_PST_ON_OFF: IRawReceiveMessage
-        CHANNEL_PFL_ON_OFF: IRawReceiveMessage
-        CHANNEL_FADER_LEVEL: IRawReceiveMessage
-        X_MIX: IRawReceiveMessage
-        FADE_TO_BLACK: IRawReceiveMessage
-        SNAP_RECALL: IRawReceiveMessage
+        CHANNEL_PGM_ON_OFF: RawReceiveMessage
+        CHANNEL_PST_ON_OFF: RawReceiveMessage
+        CHANNEL_PFL_ON_OFF: RawReceiveMessage
+        CHANNEL_FADER_LEVEL: RawReceiveMessage
+        X_MIX: RawReceiveMessage
+        FADE_TO_BLACK: RawReceiveMessage
+        SNAP_RECALL: RawReceiveMessage
     }
     toRemote: {
-        STATE_CHANNEL_PGM: IRawSendMessage
-        STATE_CHANNEL_PST: IRawSendMessage
-        STATE_CHANNEL_PFL: IRawSendMessage
-        STATE_CHANNEL_FADER_LEVEL: Array<IRawSendMessage>
+        STATE_CHANNEL_PGM: RawSendMessage
+        STATE_CHANNEL_PST: RawSendMessage
+        STATE_CHANNEL_PFL: RawSendMessage
+        STATE_CHANNEL_FADER_LEVEL: Array<RawSendMessage>
     }
     fader: {
         min: number
@@ -60,7 +60,7 @@ export interface IRemoteProtocol {
     }
 }
 
-export const RemoteFaderPresets: { [key: string]: IRemoteProtocol } = {
+export const RemoteFaderPresets: { [key: string]: RemoteProtocol } = {
     rawPanel: {
         protocol: 'RAW',
         label: 'Generic Skaarhoj Protocol',

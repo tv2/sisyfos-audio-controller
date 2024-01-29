@@ -1,7 +1,7 @@
 import {
-  IChannel,
-  IChannels,
-  InumberOfChannels,
+  Channel,
+  Channels,
+  NumberOfChannels,
 } from '../reducers/channelsReducer'
 
 export enum ChannelActionTypes {
@@ -25,13 +25,13 @@ export type ChannelActions =
     }
   | {
         type: ChannelActionTypes.SET_COMPLETE_CH_STATE
-        numberOfTypeChannels: InumberOfChannels[]
-        allState: IChannels
+        numberOfTypeChannels: NumberOfChannels[]
+        allState: Channels
     }
   | {
         type: ChannelActionTypes.SET_SINGLE_CH_STATE
         channelIndex: number
-        state: IChannel
+        state: Channel
     }
   | {
         type: ChannelActionTypes.FADE_ACTIVE

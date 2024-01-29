@@ -1,8 +1,8 @@
-import { IchMixerConnection } from '../../../shared/src/reducers/channelsReducer'
+import { ChMixerConnection } from '../../../shared/src/reducers/channelsReducer'
 import { state } from '../reducers/store'
 
 export function getChannelLabel(
-    chMixerConnection: IchMixerConnection[],
+    chMixerConnection: ChMixerConnection[],
     faderIndex: number
 ): string | undefined {
     return chMixerConnection

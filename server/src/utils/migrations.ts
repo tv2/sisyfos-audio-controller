@@ -2,12 +2,12 @@ import fs from 'fs'
 import path from 'path'
 
 import { logger } from './logger'
-import { ISettings } from '../../../shared/src/reducers/settingsReducer'
-import { getSnapShotList, IShotStorage, STORAGE_FOLDER } from './SettingsStorage'
+import { Settings } from '../../../shared/src/reducers/settingsReducer'
+import { getSnapShotList, ShotStorage, STORAGE_FOLDER } from './SettingsStorage'
 
 const version = process.env.npm_package_version
 
-export const checkVersion = (currentSettings: ISettings): ISettings => {
+export const checkVersion = (currentSettings: Settings): Settings => {
     if (
         versionAsNumber(version) >
         versionAsNumber(currentSettings.sisyfosVersion)
@@ -17,7 +17,7 @@ export const checkVersion = (currentSettings: ISettings): ISettings => {
     return currentSettings
 }
 
-const migrateVersion = (currentSettings: ISettings): ISettings => {
+const migrateVersion = (currentSettings: Settings): Settings => {
     logger.info(
         `Migrating VERSION from ${currentSettings.sisyfosVersion} to ${version}`
     )
@@ -28,7 +28,7 @@ const migrateVersion = (currentSettings: ISettings): ISettings => {
     return newSettings
 }
 
-const migrate45to47 = (currentSettings: ISettings): ISettings => {
+const migrate45to47 = (currentSettings: Settings): Settings => {
     let files: string[] = getSnapShotList()
     files.push('default.shot')
 
@@ -50,7 +50,7 @@ const migrate45to47 = (currentSettings: ISettings): ISettings => {
                 ]
                 delete stateFromShot.channelState.channel
             }
-            let migratedShot: IShotStorage = stateFromShot
+            let migratedShot: ShotStorage = stateFromShot
             
             fs.writeFileSync(
                 path.join(STORAGE_FOLDER, fileName),

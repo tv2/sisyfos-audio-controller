@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { IStore } from '../../../shared/src/reducers/store'
+import { ReduxStore } from '../../../shared/src/reducers/store'
 
 import '../assets/css/App.css'
 import Channels from './Channels'
@@ -13,13 +13,13 @@ import { withTranslation } from 'react-i18next'
 import PagesSettings from './PagesSettings'
 import LabelSettings from './Labels'
 
-export interface IAppProps {
-    store: IStore
+export interface AppProps {
+    store: ReduxStore
     t: any
 }
 
-class App extends React.Component<IAppProps> {
-    constructor(props: IAppProps) {
+class App extends React.Component<AppProps> {
+    constructor(props: AppProps) {
         super(props)
     }
 
@@ -38,7 +38,7 @@ class App extends React.Component<IAppProps> {
         this.contextMenuHandler()
     }
 
-    public shouldComponentUpdate(nextProps: IAppProps) {
+    public shouldComponentUpdate(nextProps: AppProps) {
         return (
             nextProps.store.settings[0].showSettings !=
                 this.props.store.settings[0].showSettings ||
@@ -133,7 +133,7 @@ class App extends React.Component<IAppProps> {
     }
 }
 
-const mapStateToProps = (state: any, t: any): IAppProps => {
+const mapStateToProps = (state: any, t: any): AppProps => {
     return {
         store: state,
         t: t,
@@ -141,6 +141,6 @@ const mapStateToProps = (state: any, t: any): IAppProps => {
 }
 
 export default compose(
-    connect<any, IAppProps>(mapStateToProps),
+    connect<any, AppProps>(mapStateToProps),
     withTranslation()
 )(App) as any
