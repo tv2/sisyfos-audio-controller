@@ -1,7 +1,11 @@
-import { IMixerProtocol, fxParamsList } from '../MixerProtocolInterface'
+import {
+    IMixerProtocol,
+    fxParamsList,
+    MixerConnectionTypes,
+} from '../MixerProtocolInterface'
 
 export const VMix: IMixerProtocol = {
-    protocol: 'VMIX',
+    protocol: MixerConnectionTypes.vMix,
     fxList: fxParamsList,
     label: 'VMix Audio Control',
     presetFileExtension: 'vmix',

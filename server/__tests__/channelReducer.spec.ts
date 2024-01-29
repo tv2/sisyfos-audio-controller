@@ -1,9 +1,7 @@
 import indexReducer from '../../shared/src/reducers/indexReducer'
 import {
-    storeFadeActive,
-    storeSetAssignedFader,
-    storeSetCompleteChState,
-    storeSetOutputLevel,
+    ChannelActionTypes,
+    ChannelActions,
 } from '../../shared/src/actions/channelActions'
 import {
     IChannel,
@@ -26,7 +24,12 @@ describe('Test redux channelReducer actions', () => {
         let nextState = JSON.parse(parsedFullStoreJSON)
         nextState.channels[0].chMixerConnection[0].channel[10].outputLevel = 0.5
         expect(
-            indexReducer(parsedFullStore, storeSetOutputLevel(0, 10, 0.5))
+            indexReducer(parsedFullStore, {
+                type: ChannelActionTypes.SET_OUTPUT_LEVEL,
+                mixerIndex: 0,
+                channel: 10,
+                level: 0.5,
+            })
         ).toEqual(nextState)
     })
 
@@ -39,7 +42,12 @@ describe('Test redux channelReducer actions', () => {
         let nextState = JSON.parse(parsedFullStoreJSON)
         nextState.channels[0].chMixerConnection[0].channel[10].assignedFader = 2
         expect(
-            indexReducer(parsedFullStore, storeSetAssignedFader(0, 10, 2))
+            indexReducer(parsedFullStore, {
+                type: ChannelActionTypes.SET_ASSIGNED_FADER,
+                mixerIndex: 0,
+                channel: 10,
+                faderNumber: 2,
+            })
         ).toEqual(nextState)
     })
 
@@ -52,7 +60,12 @@ describe('Test redux channelReducer actions', () => {
         let nextState = JSON.parse(parsedFullStoreJSON)
         nextState.channels[0].chMixerConnection[0].channel[10].fadeActive = true
         expect(
-            indexReducer(parsedFullStore, storeFadeActive(0, 10, true))
+            indexReducer(parsedFullStore, {
+                type: ChannelActionTypes.FADE_ACTIVE,
+                mixerIndex: 0,
+                channel: 10,
+                active: true,
+            })
         ).toEqual(nextState)
     })
 
@@ -82,10 +95,11 @@ describe('Test redux channelReducer actions', () => {
         expect(
             indexReducer(
                 parsedFullStore,
-                storeSetCompleteChState(
-                    { chMixerConnection: [{ channel: channels }] },
-                    numberOfChannels
-                )
+                {
+                    type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
+                    allState: { chMixerConnection: [{ channel: channels }] },
+                    numberOfTypeChannels: numberOfChannels,
+                }
             )
         ).toEqual(nextState)
     })

@@ -9,11 +9,10 @@ import { store } from '../reducers/store'
 import { checkVersion } from './migrations'
 
 // Redux:
-import {  ChannelActionTypes, ChannelActions } from '../../../shared/src/actions/channelActions'
-import { storeSetCompleteFaderState } from '../../../shared/src/actions/faderActions'
+import {  ChannelActionTypes } from '../../../shared/src/actions/channelActions'
+import { FaderActionTypes } from '../../../shared/src/actions/faderActions'
 import { logger } from './logger'
 import { defaultFadersReducerState } from '../../../shared/src/reducers/fadersReducer'
-import { Dispatch } from '@reduxjs/toolkit'
 
 import {
     IChannels,
@@ -85,38 +84,35 @@ export const loadSnapshotState = (
     loadAll: boolean
 ) => {
     try {
-        const dispatch: Dispatch<ChannelActions> = store.dispatch
         const stateFromFile: IShotStorage = JSON.parse(
             fs.readFileSync(fileName, 'utf8')
         )
 
         if (loadAll) {
-            dispatch({
+            store.dispatch({
                 type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
                 numberOfTypeChannels: numberOfChannels,
                 allState: stateFromFile.channelState as IChannels,
             })
-            store.dispatch(
-                storeSetCompleteFaderState(
-                    stateFromFile.faderState as IFaders,
-                    numberOfFaders
-                )
-            )
+            store.dispatch({
+                type: FaderActionTypes.SET_COMPLETE_FADER_STATE,
+                numberOfFaders: numberOfFaders,
+                allState: stateFromFile.faderState as IFaders,
+            })
         }
     } catch (error) {
         if (fileName.includes('default.shot')) {
-            store.dispatch(
-                storeSetCompleteFaderState(
-                    defaultFadersReducerState(numberOfFaders, numberOfChannels)[0],
-                    numberOfFaders
-                )
-            )
-            store.dispatch(
-                storeSetCompleteChState(
-                    defaultChannelsReducerState(numberOfChannels)[0],
-                    numberOfChannels
-                )
-            )
+            store.dispatch({
+                type: FaderActionTypes.SET_COMPLETE_FADER_STATE,
+                numberOfFaders: numberOfFaders,
+                allState: defaultFadersReducerState(numberOfFaders, numberOfChannels)[0],
+            })
+            store.dispatch({
+                type: ChannelActionTypes.SET_COMPLETE_CH_STATE,
+                numberOfTypeChannels: numberOfChannels,
+                allState: defaultChannelsReducerState(numberOfChannels)[0],
+            })
+        
             logger.data(error).error('Initializing empty faders/channels')
         } else {
             logger.data(error).error('Error loading Snapshot')

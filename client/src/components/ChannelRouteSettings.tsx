@@ -4,7 +4,7 @@ import ClassNames from 'classnames'
 import '../assets/css/ChannelRouteSettings.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { storeShowOptions } from '../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes } from '../../../shared/src/actions/settingsActions'
 import { SOCKET_ASSIGN_CH_TO_FADER, SOCKET_REMOVE_ALL_CH_ASSIGNMENTS } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import { IchMixerConnection } from '../../../shared/src/reducers/channelsReducer'
 import { IChannelReference, IFader } from '../../../shared/src/reducers/fadersReducer'
@@ -91,7 +91,10 @@ class ChannelRouteSettings extends React.PureComponent<
     }
 
     handleClose = () => {
-        this.props.dispatch(storeShowOptions(this.faderIndex))
+        this.props.dispatch({
+            type: SettingsActionTypes.TOGGLE_SHOW_OPTION,
+            channel: this.faderIndex,
+        })
     }
 
     getAssignedToFaderIndex = (channel: IChannelReference): number => {
@@ -126,6 +129,7 @@ class ChannelRouteSettings extends React.PureComponent<
                         >
                             {' Channel ' + (index + 1) + ' : '}
                             <input
+                                title='Bind/Unbind Channel'
                                 type="checkbox"
                                 checked={
                                     assignedFaderIndex === this.faderIndex

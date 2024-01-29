@@ -4,9 +4,7 @@ import { store, state } from '../../reducers/store'
 import { mixerGenericConnection } from '../../mainClasses'
 
 import {
-    storeFaderLevel,
-    storeTogglePgm,
-    storeTogglePfl,
+    FaderActionTypes,
 } from '../../../../shared/src/actions/faderActions'
 
 //Utils:
@@ -19,7 +17,6 @@ import { MixerProtocolPresets } from '../../../../shared/src/constants/MixerProt
 import { logger } from '../logger'
 
 export class HuiMidiRemoteConnection {
-    store: any
     remoteProtocol: IRemoteProtocol
     midiReceiveTypes = MidiReceiveTypes
     mixerProtocol: any
@@ -84,12 +81,11 @@ export class HuiMidiRemoteConnection {
                 if (message.data[1] < 9) {
                     //Fader changed:
                     logger.info(`Received Fader message (${message.data}).`)
-                    store.dispatch(
-                        storeFaderLevel(
-                            message.data[1],
-                            this.convertFromRemoteLevel(message.data[2])
-                        )
-                    )
+                    store.dispatch({
+                        type: FaderActionTypes.SET_FADER_LEVEL,
+                        faderIndex: message.data[1],
+                        level: this.convertFromRemoteLevel(message.data[2]),
+                    })
                     mixerGenericConnection.updateOutLevel(message.data[1], -1)
                     this.updateRemoteFaderState(
                         message.data[1],
@@ -102,16 +98,24 @@ export class HuiMidiRemoteConnection {
                         this.activeHuiChannel = message.data[2]
                     } else if (message.data[2] && message.data[2] === 65) {
                         //SELECT button - toggle PGM ON/OFF
-                        store.dispatch(storeTogglePgm(this.activeHuiChannel))
+                        store.dispatch({
+                            type: FaderActionTypes.TOGGLE_PGM,
+                            faderIndex: this.activeHuiChannel,
+                        })
                         mixerGenericConnection.updateOutLevel(
-                            this.activeHuiChannel, -1
+                            this.activeHuiChannel,
+                            -1
                         )
                         this.updateRemotePgmPstPfl(this.activeHuiChannel)
                     } else if (message.data[2] && message.data[2] === 67) {
                         //SOLO button - toggle PFL ON/OFF
-                        store.dispatch(storeTogglePfl(this.activeHuiChannel))
+                        store.dispatch({
+                            type: FaderActionTypes.TOGGLE_PFL,
+                            faderIndex: this.activeHuiChannel,
+                        })
                         mixerGenericConnection.updateOutLevel(
-                            this.activeHuiChannel, -1
+                            this.activeHuiChannel,
+                            -1
                         )
                         this.updateRemotePgmPstPfl(this.activeHuiChannel)
                     }

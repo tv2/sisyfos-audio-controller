@@ -1,347 +1,160 @@
 import { fxParamsList } from '../constants/MixerProtocolInterface'
 import { IFader, IFaders } from '../reducers/fadersReducer'
 
-export const SET_VU_REDUCTION_LEVEL = 'SET_REDUCTION_LEVEL'
-export const SET_COMPLETE_FADER_STATE = 'SET_COMPLETE_FADER_STATE'
-export const SET_SINGLE_FADER_STATE = 'SET_SINGLE_FADER_STATE'
-export const SET_FADER_LEVEL = 'SET_FADER_LEVEL'
-export const SET_INPUT_GAIN = 'SET_INPUT_GAIN'
-export const SET_INPUT_SELECTOR = 'SET_INPUT_SELECTOR'
-export const SET_FADER_LABEL = 'SET_FADER_LABEL'
-export const SET_USER_LABEL = 'SET_USER_LABEL'
-export const SET_FADER_FX = 'SET_FADER_FX'
-export const SET_FADER_MONITOR = 'SET_FADER_MONITOR'
-export const SET_ASSIGNED_CHANNEL = 'SET_ASSIGNED_CHANNEL'
-export const REMOVE_ALL_ASSIGNED_CHANNELS = 'REMOVE_ASSIGNED_CHANNELS'
-export const TOGGLE_PGM = 'TOGGLE_PGM'
-export const SET_PGM = 'SET_PGM'
-export const TOGGLE_VO = 'TOGGLE_VO'
-export const SET_VO = 'SET_VO'
-export const TOGGLE_SLOW_FADE = 'TOGGLE_SLOW_FADE'
-export const TOGGLE_PST = 'TOGGLE_PST'
-export const SET_PST = 'SET_PST'
-export const SET_PST_VO = 'SET_PST_VO'
-export const TOGGLE_PFL = 'TOGGLE_PFL'
-export const SET_PFL = 'SET_PFL'
-export const TOGGLE_MUTE = 'TOGGLE_MUTE'
-export const SET_MUTE = 'SET_MUTE'
-export const SHOW_CHANNEL = 'SHOW_CHANNEL'
-export const SHOW_IN_MINI_MONITOR = 'SHOW_IN_MINI_MONITOR'
-export const IGNORE_AUTOMATION = 'IGNORE_AUTOMATION'
-export const X_MIX = 'X_MIX'
-export const NEXT_MIX = 'NEXT_MIX'
-export const FADE_TO_BLACK = 'FADE_TO_BLACK'
-
-export const UPDATE_LABEL_LIST = 'UPDATE_LABEL_LIST'
-export const FLUSH_FADER_LABELS = 'FLUSH_FADER_LABELS'
-export const CLEAR_PST = 'CLEAR_PST'
-export const SNAP_RECALL = 'SNAP_RECALL'
-export const SET_CHANNEL_DISABLED = 'SET_CHANNEL_DISABLED'
-export const TOGGLE_AMIX = 'TOGGLE_AMIX'
-export const SET_AMIX = 'SET_AMIX'
-export const SET_CAPABILITY = 'SET_CAPABILITY'
-export const TOGGLE_ALL_MANUAL = 'TOGGLE_ALL_MANUAL'
-
-export const storeVuReductionLevel = (faderIndex: number, level: number) => {
-    return {
-        type: SET_VU_REDUCTION_LEVEL,
-        faderIndex: faderIndex,
-        level: level,
-    }
+// Move all consts to this type
+export enum FaderActionTypes {
+    SET_VU_REDUCTION_LEVEL = 'SET_VU_REDUCTION_LEVEL',
+    SET_COMPLETE_FADER_STATE = 'SET_COMPLETE_FADER_STATE',
+    SET_SINGLE_FADER_STATE = 'SET_SINGLE_FADER_STATE',
+    SET_FADER_LEVEL = 'SET_FADER_LEVEL',
+    SET_INPUT_GAIN = 'SET_INPUT_GAIN',
+    SET_INPUT_SELECTOR = 'SET_INPUT_SELECTOR',
+    SET_FADER_LABEL = 'SET_FADER_LABEL',
+    SET_USER_LABEL = 'SET_USER_LABEL',
+    SET_FADER_FX = 'SET_FADER_FX',
+    SET_FADER_MONITOR = 'SET_FADER_MONITOR',
+    SET_ASSIGNED_CHANNEL = 'SET_ASSIGNED_CHANNEL',
+    REMOVE_ALL_ASSIGNED_CHANNELS = 'REMOVE_ALL_ASSIGNED_CHANNELS',
+    TOGGLE_PGM = 'TOGGLE_PGM',
+    SET_PGM = 'SET_PGM',
+    TOGGLE_VO = 'TOGGLE_VO',
+    SET_VO = 'SET_VO',
+    TOGGLE_SLOW_FADE = 'TOGGLE_SLOW_FADE',
+    TOGGLE_PST = 'TOGGLE_PST',
+    SET_PST = 'SET_PST',
+    SET_PST_VO = 'SET_PST_VO',
+    TOGGLE_PFL = 'TOGGLE_PFL',
+    SET_PFL = 'SET_PFL',
+    TOGGLE_MUTE = 'TOGGLE_MUTE',
+    SET_MUTE = 'SET_MUTE',
+    SHOW_CHANNEL = 'SHOW_CHANNEL',
+    SHOW_IN_MINI_MONITOR = 'SHOW_IN_MINI_MONITOR',
+    IGNORE_AUTOMATION = 'IGNORE_AUTOMATION',
+    X_MIX = 'X_MIX',
+    NEXT_MIX = 'NEXT_MIX',
+    FADE_TO_BLACK = 'FADE_TO_BLACK',
+    UPDATE_LABEL_LIST = 'UPDATE_LABEL_LIST',
+    FLUSH_FADER_LABELS = 'FLUSH_FADER_LABELS',
+    CLEAR_PST = 'CLEAR_PST',
+    SNAP_RECALL = 'SNAP_RECALL',
+    SET_CHANNEL_DISABLED = 'SET_CHANNEL_DISABLED',
+    TOGGLE_AMIX = 'TOGGLE_AMIX',
+    SET_AMIX = 'SET_AMIX',
+    SET_CAPABILITY = 'SET_CAPABILITY',
+    TOGGLE_ALL_MANUAL = 'TOGGLE_ALL_MANUAL',
 }
 
-export const storeSetCompleteFaderState = (
-    allState: IFaders,
-    numberOfTypeChannels: number
-) => {
-    return {
-        type: SET_COMPLETE_FADER_STATE,
-        numberOfTypeChannels: numberOfTypeChannels,
-        allState: allState,
-    }
-}
-
-export const storeSetSingleFaderState = (faderIndex: number, state: IFader) => {
-    return {
-        type: SET_SINGLE_FADER_STATE,
-        faderIndex: faderIndex,
-        state: state,
-    }
-}
-
-export const storeFaderLevel = (faderIndex: number, level: number) => {
-    return {
-        type: SET_FADER_LEVEL,
-        faderIndex: faderIndex,
-        level: level,
-    }
-}
-
-export const storeInputGain = (faderIndex: number, level: number) => {
-    return {
-        type: SET_INPUT_GAIN,
-        faderIndex: faderIndex,
-        level: level,
-    }
-}
-
-export const storeInputSelector = (faderIndex: number, selected: number) => {
-    return {
-        type: SET_INPUT_SELECTOR,
-        faderIndex: faderIndex,
-        selected: selected,
-    }
-}
-
-export const storeFaderLabel = (faderIndex: number, label: string) => {
-    return {
-        type: SET_FADER_LABEL,
-        faderIndex: faderIndex,
-        label: label,
-    }
-}
-
-export const storeUserLabel = (faderIndex: number, label: string) => {
-    return {
-        type: SET_USER_LABEL,
-        faderIndex: faderIndex,
-        label: label,
-    }
-}
-
-export const storeFaderFx = (
-    fxParam: fxParamsList,
-    faderIndex: number,
-    level: number
-) => {
-    return {
-        type: SET_FADER_FX,
-        fxParam: fxParam,
-        faderIndex: faderIndex,
-        level: level,
-    }
-}
-
-export const storeFaderMonitor = (faderIndex: number, auxIndex: number) => {
-    return {
-        type: SET_FADER_MONITOR,
-        faderIndex: faderIndex,
-        auxIndex: auxIndex,
-    }
-}
-
-export const storeTogglePgm = (faderIndex: number) => {
-    return {
-        type: TOGGLE_PGM,
-        faderIndex: faderIndex,
-    }
-}
-
-export const storeSetPgm = (faderIndex: number, pgmOn: boolean) => {
-    return {
-        type: SET_PGM,
-        faderIndex: faderIndex,
-        pgmOn: pgmOn,
-    }
-}
-
-export const storeToggleVo = (faderIndex: number) => {
-    return {
-        type: TOGGLE_VO,
-        faderIndex: faderIndex,
-    }
-}
-
-export const storeSetVo = (faderIndex: number, voOn: boolean) => {
-    return {
-        type: SET_VO,
-        faderIndex: faderIndex,
-        voOn: voOn,
-    }
-}
-
-export const storeToggleSlowFade = (faderIndex: number) => {
-    return {
-        type: TOGGLE_SLOW_FADE,
-        faderIndex: faderIndex,
-    }
-}
-
-export const storeTogglePst = (faderIndex: number) => {
-    return {
-        type: TOGGLE_PST,
-        faderIndex: faderIndex,
-    }
-}
-
-export const storeSetPst = (faderIndex: number, pstOn: boolean) => {
-    return {
-        type: SET_PST,
-        faderIndex: faderIndex,
-        pstOn: pstOn,
-    }
-}
-
-export const storeSetPstVo = (faderIndex: number, pstVoOn: boolean) => {
-    return {
-        type: SET_PST_VO,
-        faderIndex: faderIndex,
-        pstVoOn: pstVoOn,
-    }
-}
-
-export const storeTogglePfl = (faderIndex: number) => {
-    return {
-        type: TOGGLE_PFL,
-        faderIndex: faderIndex,
-    }
-}
-
-export const storeSetPfl = (faderIndex: number, pflOn: boolean) => {
-    return {
-        type: SET_PFL,
-        faderIndex: faderIndex,
-        pflOn: pflOn,
-    }
-}
-
-export const storeToggleMute = (faderIndex: number) => {
-    return {
-        type: TOGGLE_MUTE,
-        faderIndex: faderIndex,
-    }
-}
-
-export const storeSetMute = (faderIndex: number, muteOn: boolean) => {
-    return {
-        type: SET_MUTE,
-        faderIndex: faderIndex,
-        muteOn: muteOn,
-    }
-}
-
-export const storeShowChannel = (faderIndex: number, showChannel: boolean) => {
-    return {
-        type: SHOW_CHANNEL,
-        faderIndex: faderIndex,
-        showChannel: showChannel,
-    }
-}
-
-export const storeShowInMiniMonitor = (
-    faderIndex: number,
-    showInMiniMonitor: boolean
-) => {
-    return {
-        type: SHOW_IN_MINI_MONITOR,
-        faderIndex: faderIndex,
-        showInMiniMonitor: showInMiniMonitor,
-    }
-}
-
-export const storeToggleIgnoreAutomation = (faderIndex: number) => {
-    return {
-        type: IGNORE_AUTOMATION,
-        faderIndex: faderIndex,
-    }
-}
-
-export const storeXmix = () => {
-    return {
-        type: X_MIX,
-    }
-}
-
-export const storeNextMix = () => {
-    return {
-        type: NEXT_MIX,
-    }
-}
-
-export const storeFadeToBlack = () => {
-    return {
-        type: FADE_TO_BLACK,
-    }
-}
-
-export const storeClearPst = () => {
-    return {
-        type: CLEAR_PST,
-    }
-}
-
-export const storeChannelDisabled = (faderIndex: number, disabled: boolean) => {
-    return {
-        type: SET_CHANNEL_DISABLED,
-        faderIndex: faderIndex,
-        disabled: disabled,
-    }
-}
-
-export const storeToggleAMix = (faderIndex: number) => {
-    return {
-        type: TOGGLE_AMIX,
-        faderIndex: faderIndex,
-    }
-}
-
-export const storeSetAMix = (faderIndex: number, state: boolean) => {
-    return {
-        type: SET_AMIX,
-        faderIndex: faderIndex,
-        state: state,
-    }
-}
-
-export const removeAllAssignedChannels = () => {
-    return {
-        type: REMOVE_ALL_ASSIGNED_CHANNELS,
-    }
-}
-
-export const storeSetAssignedChannel = (
-    faderIndex: number,
-    mixerIndex: number,
-    channelIndex: number,
-    assigned: boolean
-) => {
-    return {
-        type: SET_ASSIGNED_CHANNEL,
-        faderIndex: faderIndex,
-        mixerIndex: mixerIndex,
-        channelIndex: channelIndex,
-        assigned: assigned,
-    }
-}
-
-export const storeCapability = (
-    faderIndex: number,
-    capability: string,
-    enabled: boolean
-) => {
-    return {
-        type: SET_CAPABILITY,
-        faderIndex: faderIndex,
-        capability: capability,
-        enabled: enabled,
-    }
-}
-
-export const storeAllManual = () => {
-    return {
-        type: TOGGLE_ALL_MANUAL,
-    }
-}
-
-export const updateLabels = (update: Record<number, string>) => {
-    return {
-        type: UPDATE_LABEL_LIST,
-        update,
-    }
-}
-
-export const flushExtLabels = () => {
-    return {
-        type: FLUSH_FADER_LABELS,
-    }
-}
+export type FaderActions =
+    | {
+          type: FaderActionTypes.SET_VU_REDUCTION_LEVEL
+          faderIndex: number
+          level: number
+      }
+    | {
+          type: FaderActionTypes.SET_COMPLETE_FADER_STATE
+          numberOfFaders: number
+          allState: IFaders
+      }
+    | {
+          type: FaderActionTypes.SET_SINGLE_FADER_STATE
+          faderIndex: number
+          state: IFader
+      }
+    | {
+          type: FaderActionTypes.SET_FADER_LEVEL
+          faderIndex: number
+          level: number
+      }
+    | {
+          type: FaderActionTypes.SET_INPUT_GAIN
+          faderIndex: number
+          level: number
+      }
+    | {
+          type: FaderActionTypes.SET_INPUT_SELECTOR
+          faderIndex: number
+          selected: number
+      }
+    | {
+          type: FaderActionTypes.SET_FADER_LABEL
+          faderIndex: number
+          label: string
+      }
+    | {
+          type: FaderActionTypes.SET_USER_LABEL
+          faderIndex: number
+          label: string
+      }
+    | {
+          type: FaderActionTypes.SET_FADER_FX
+          fxParam: fxParamsList
+          faderIndex: number
+          level: number
+      }
+    | {
+          type: FaderActionTypes.SET_FADER_MONITOR
+          faderIndex: number
+          auxIndex: number
+      }
+    | {
+          type: FaderActionTypes.SET_ASSIGNED_CHANNEL
+          faderIndex: number
+          mixerIndex: number
+          channelIndex: number
+          assigned: boolean
+      }
+    | { type: FaderActionTypes.REMOVE_ALL_ASSIGNED_CHANNELS }
+    | { type: FaderActionTypes.TOGGLE_PGM; faderIndex: number }
+    | { type: FaderActionTypes.SET_PGM; faderIndex: number; pgmOn: boolean }
+    | { type: FaderActionTypes.TOGGLE_VO; faderIndex: number }
+    | { type: FaderActionTypes.SET_VO; faderIndex: number; voOn: boolean }
+    | { type: FaderActionTypes.TOGGLE_SLOW_FADE; faderIndex: number }
+    | { type: FaderActionTypes.TOGGLE_PST; faderIndex: number }
+    | { type: FaderActionTypes.SET_PST; faderIndex: number; pstOn: boolean }
+    | {
+          type: FaderActionTypes.SET_PST_VO
+          faderIndex: number
+          pstVoOn: boolean
+      }
+    | { type: FaderActionTypes.TOGGLE_PFL; faderIndex: number }
+    | { type: FaderActionTypes.SET_PFL; faderIndex: number; pflOn: boolean }
+    | { type: FaderActionTypes.TOGGLE_MUTE; faderIndex: number }
+    | { type: FaderActionTypes.SET_MUTE; faderIndex: number; muteOn: boolean }
+    | {
+          type: FaderActionTypes.SHOW_CHANNEL
+          faderIndex: number
+          showChannel: boolean
+      }
+    | {
+          type: FaderActionTypes.SHOW_IN_MINI_MONITOR
+          faderIndex: number
+          showInMiniMonitor: boolean
+      }
+    | { type: FaderActionTypes.IGNORE_AUTOMATION; faderIndex: number }
+    | { type: FaderActionTypes.X_MIX }
+    | { type: FaderActionTypes.NEXT_MIX }
+    | { type: FaderActionTypes.FADE_TO_BLACK }
+    | {
+          type: FaderActionTypes.UPDATE_LABEL_LIST
+          update: Record<number, string>
+      }
+    | { type: FaderActionTypes.FLUSH_FADER_LABELS }
+    | { type: FaderActionTypes.CLEAR_PST }
+    | {
+          type: FaderActionTypes.SNAP_RECALL
+          snapshotIndex: number
+      }
+    | {
+          type: FaderActionTypes.SET_CHANNEL_DISABLED
+          faderIndex: number
+          disabled: boolean
+      }
+    | { type: FaderActionTypes.TOGGLE_AMIX; faderIndex: number }
+    | { type: FaderActionTypes.SET_AMIX; faderIndex: number; state: boolean }
+    | {
+          type: FaderActionTypes.SET_CAPABILITY
+          faderIndex: number
+          capability: string
+          enabled: boolean
+      }
+    | { type: FaderActionTypes.TOGGLE_ALL_MANUAL }

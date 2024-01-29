@@ -10,18 +10,8 @@ import {
 } from '../../../shared/src/constants/AutomationPresets'
 import { IFader } from '../../../shared/src/reducers/fadersReducer'
 import {
-    SNAP_RECALL,
-    storeFaderLevel,
-    storeFaderLabel,
-    storeSetPgm,
-    storeSetVo,
-    storeSetPstVo,
-    storeSetMute,
-    storeSetPst,
-    storeShowChannel,
-    storeXmix,
-    storeFadeToBlack,
-    storeClearPst,
+    FaderActionTypes,
+    FaderActions,
 } from '../../../shared/src/actions/faderActions'
 import { getFaderLabel } from './labels'
 import { logger } from './logger'
@@ -100,7 +90,9 @@ export class AutomationConnection {
                 global.mainThreadHandler.updatePartialStore(ch - 1)
             }
 
-            logger.data(message).debug(`RECIEVED AUTOMATION MESSAGE: ${message.address}`)
+            logger
+                .data(message)
+                .debug(`RECIEVED AUTOMATION MESSAGE: ${message.address}`)
 
             // Set state of Sisyfos:
             if (check('CHANNEL_PGM_ON_OFF')) {
@@ -109,14 +101,26 @@ export class AutomationConnection {
                         mixerGenericConnection.checkForAutoResetThreshold(
                             ch - 1
                         )
-                        store.dispatch(storeSetPgm(ch - 1, true))
+                        store.dispatch({
+                            type: FaderActionTypes.SET_PGM,
+                            faderIndex: ch - 1,
+                            pgmOn: true,
+                        })
                     } else if (message.args[0] === 2) {
                         mixerGenericConnection.checkForAutoResetThreshold(
                             ch - 1
                         )
-                        store.dispatch(storeSetVo(ch - 1, true))
+                        store.dispatch({
+                            type: FaderActionTypes.SET_VO,
+                            faderIndex: ch - 1,
+                            voOn: true,
+                        })
                     } else {
-                        store.dispatch(storeSetPgm(ch - 1, false))
+                        store.dispatch({
+                            type: FaderActionTypes.SET_PGM,
+                            faderIndex: ch - 1,
+                            pgmOn: false,
+                        })
                     }
 
                     if (message.args.length > 1) {
@@ -131,22 +135,42 @@ export class AutomationConnection {
             } else if (check('CHANNEL_PST_ON_OFF')) {
                 wrapChannelCommand((ch) => {
                     if (message.args[0] === 1) {
-                        store.dispatch(storeSetPst(ch - 1, true))
+                        store.dispatch({
+                            type: FaderActionTypes.SET_PST,
+                            faderIndex: ch - 1,
+                            pstOn: true,
+                        })
                     } else if (message.args[0] === 2) {
-                        store.dispatch(storeSetPstVo(ch - 1, true))
+                        store.dispatch({
+                            type: FaderActionTypes.SET_PST_VO,
+                            faderIndex: ch - 1,
+                            pstVoOn: true,
+                        })
                     } else {
-                        store.dispatch(storeSetPst(ch - 1, false))
+                        store.dispatch({
+                            type: FaderActionTypes.SET_PST,
+                            faderIndex: ch - 1,
+                            pstOn: false,
+                        })
                     }
                     mixerGenericConnection.updateNextAux(ch - 1)
                 })
             } else if (check('CHANNEL_MUTE')) {
                 wrapChannelCommand((ch: any) => {
-                    store.dispatch(storeSetMute(ch - 1, message.args[0] === 1))
+                    store.dispatch({
+                        type: FaderActionTypes.SET_MUTE,
+                        faderIndex: ch - 1,
+                        muteOn: message.args[0] === 1,
+                    })
                     mixerGenericConnection.updateMuteState(ch - 1)
                 })
             } else if (check('CHANNEL_FADER_LEVEL')) {
                 wrapChannelCommand((ch: any) => {
-                    store.dispatch(storeFaderLevel(ch - 1, message.args[0]))
+                    store.dispatch({
+                        type: FaderActionTypes.SET_FADER_LEVEL,
+                        faderIndex: ch - 1,
+                        level: message.args[0],
+                    })
                     if (message.args.length > 1) {
                         mixerGenericConnection.updateOutLevel(
                             ch - 1,
@@ -159,36 +183,52 @@ export class AutomationConnection {
                 })
             } else if (check('INJECT_COMMAND')) {
                 wrapChannelCommand((ch: any) => {
-                    store.dispatch(storeFaderLabel(ch - 1, message.args[0]))
+                    store.dispatch({
+                        type: FaderActionTypes.SET_FADER_LABEL,
+                        faderIndex: ch - 1,
+                        label: message.args[0],
+                    })
                     mixerGenericConnection.injectCommand(message.args)
                 })
             } else if (check('SNAP_RECALL')) {
                 let snapNumber = message.address.split('/')[2]
                 store.dispatch({
-                    type: SNAP_RECALL,
-                    snapIndex: snapNumber - 1,
+                    type: FaderActionTypes.SNAP_RECALL,
+                    snapshotIndex: snapNumber - 1,
                 })
             } else if (check('SET_LABEL')) {
                 wrapChannelCommand((ch: any) => {
-                    store.dispatch(storeFaderLabel(ch - 1, message.args[0]))
+                    store.dispatch({
+                        type: FaderActionTypes.SET_FADER_LABEL,
+                        faderIndex: ch - 1,
+                        label: message.args[0],
+                    })
                     mixerGenericConnection.updateChannelName(ch - 1)
                 })
             } else if (check('X_MIX')) {
-                store.dispatch(storeXmix())
+                store.dispatch({
+                    type: FaderActionTypes.X_MIX,
+                })
                 mixerGenericConnection.updateOutLevels()
                 global.mainThreadHandler.updateFullClientStore()
             } else if (check('CHANNEL_VISIBLE')) {
                 wrapChannelCommand((ch: any) => {
-                    store.dispatch(
-                        storeShowChannel(ch - 1, message.args[0] === 1)
-                    )
+                    store.dispatch({
+                        type: FaderActionTypes.SHOW_CHANNEL,
+                        faderIndex: ch - 1,
+                        showChannel: message.args[0] === 1,
+                    })
                 })
             } else if (check('FADE_TO_BLACK')) {
-                store.dispatch(storeFadeToBlack())
+                store.dispatch({
+                    type: FaderActionTypes.FADE_TO_BLACK,
+                })
                 mixerGenericConnection.updateFadeToBlack()
                 global.mainThreadHandler.updateFullClientStore()
             } else if (check('CLEAR_PST')) {
-                store.dispatch(storeClearPst())
+                store.dispatch({
+                    type: FaderActionTypes.CLEAR_PST,
+                })
                 mixerGenericConnection.updateOutLevels()
                 global.mainThreadHandler.updateFullClientStore()
             } else if (check('STATE_FULL')) {

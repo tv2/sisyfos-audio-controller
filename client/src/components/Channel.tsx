@@ -11,9 +11,9 @@ import '../assets/css/Channel.css'
 import * as IO from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import { IChannelReference, IFader } from '../../../shared/src/reducers/fadersReducer'
 import { ISettings } from '../../../shared/src/reducers/settingsReducer'
-import { storeShowChanStrip } from '../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes } from '../../../shared/src/actions/settingsActions'
 import { withTranslation } from 'react-i18next'
-import { VuLabelConversionType } from '../../shared../../../shared/src/constants/MixerProtocolInterface'
+import { MixerConnectionTypes, VuLabelConversionType } from '../../shared../../../shared/src/constants/MixerProtocolInterface'
 import { getFaderLabel } from '../utils/labels'
 import { Conversions } from '../../../shared/src/actions/utils/dbConversion'
 
@@ -136,13 +136,16 @@ class Channel extends React.Component<
     }
 
     handleShowChanStrip() {
-        this.props.dispatch(storeShowChanStrip(this.faderIndex))
+        this.props.dispatch({
+            type: SettingsActionTypes.TOGGLE_SHOW_CHAN_STRIP,
+            channel: this.faderIndex,
+        })
     }
 
     handleVuMeter() {
         if (
-            window.mixerProtocol.protocol === 'CasparCG' ||
-            window.mixerProtocol.protocol === 'VMIX'
+            window.mixerProtocol.protocol === MixerConnectionTypes.CasparCG ||
+            window.mixerProtocol.protocol === MixerConnectionTypes.vMix
         ) {
             return (
                 <React.Fragment>

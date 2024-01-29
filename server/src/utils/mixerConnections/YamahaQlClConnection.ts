@@ -8,21 +8,24 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
-import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import {
-    storeFaderLevel,
-    storeTogglePgm,
-    storeSetMute,
+    ChannelActionTypes,
+} from '../../../../shared/src/actions/channelActions'
+import {
+    FaderActionTypes,
 } from '../../../../shared/src/actions/faderActions'
 import { logger } from '../logger'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import {
+    SettingsActionTypes,
+} from '../../../../shared/src/actions/settingsActions'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
-import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
-import { Dispatch } from 'redux'
+import {
+    IChannelReference,
+    IFader,
+} from '../../../../shared/src/reducers/fadersReducer'
 
 export class QlClMixerConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -33,7 +36,11 @@ export class QlClMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+        store.dispatch({
+            type: SettingsActionTypes.SET_MIXER_ONLINE,
+            mixerIndex: this.mixerIndex,
+            mixerOnline: false,
+        })
 
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
@@ -83,7 +90,11 @@ export class QlClMixerConnection {
             })
             .on('data', (data: any) => {
                 clearTimeout(this.mixerOnlineTimer)
-                store.dispatch(storeSetMixerOnline(this.mixerIndex, true))
+                store.dispatch({
+                    type: SettingsActionTypes.SET_MIXER_ONLINE,
+                    mixerIndex: this.mixerIndex,
+                    mixerOnline: true,
+                })
 
                 let buffers = []
                 let lastIndex = 0
@@ -111,8 +122,7 @@ export class QlClMixerConnection {
                         let mixerValues: string[] = message.split(' ')
                         let ch = parseInt(mixerValues[3])
                         let assignedFader =
-                            1 +
-                            this.getAssignedFaderIndex(ch - 1)
+                            1 + this.getAssignedFaderIndex(ch - 1)
                         let mixerValue = parseInt(mixerValues[6])
                         sendVuLevel(
                             assignedFader,
@@ -140,15 +150,18 @@ export class QlClMixerConnection {
                             ].channel[ch - 1].fadeActive &&
                             faderLevel > this.mixerProtocol.fader.min
                         ) {
-                            store.dispatch(
-                                storeFaderLevel(assignedFader - 1, faderLevel)
-                            )
+                            store.dispatch({
+                                type: FaderActionTypes.SET_FADER_LEVEL,
+                                faderIndex: assignedFader - 1,
+                                level: faderLevel,
+                            })
                             if (
                                 !state.faders[0].fader[assignedFader - 1].pgmOn
                             ) {
-                                store.dispatch(
-                                    storeTogglePgm(assignedFader - 1)
-                                )
+                                store.dispatch({
+                                    type: FaderActionTypes.TOGGLE_PGM,
+                                    faderIndex: assignedFader - 1,
+                                })
                             }
 
                             if (remoteConnections) {
@@ -160,7 +173,9 @@ export class QlClMixerConnection {
                             if (
                                 state.faders[0].fader[assignedFader - 1].pgmOn
                             ) {
-                                state.faders[0].fader[assignedFader - 1].assignedChannels?.forEach(
+                                state.faders[0].fader[
+                                    assignedFader - 1
+                                ].assignedChannels?.forEach(
                                     (ch: IChannelReference) => {
                                         if (ch.mixerIndex === this.mixerIndex) {
                                             this.updateOutLevel(ch.channelIndex)
@@ -184,13 +199,19 @@ export class QlClMixerConnection {
 
                         let value: boolean = message[16] === 0 ? true : false
                         logger.trace(
-                            `Receive Buffer Channel On/off - Channel ${channelIndex + 1
+                            `Receive Buffer Channel On/off - Channel ${
+                                channelIndex + 1
                             } Val :${message[16]}`
                         )
 
-                        let assignedFaderIndex = this.getAssignedFaderIndex(channelIndex)
+                        let assignedFaderIndex =
+                            this.getAssignedFaderIndex(channelIndex)
 
-                        store.dispatch(storeSetMute(assignedFaderIndex, value))
+                        store.dispatch({
+                            type: FaderActionTypes.SET_MUTE,
+                            faderIndex: assignedFaderIndex,
+                            muteOn: value,
+                        })
 
                         if (remoteConnections) {
                             remoteConnections.updateRemoteFaderState(
@@ -198,14 +219,17 @@ export class QlClMixerConnection {
                                 value ? 1 : 0
                             )
                         }
-                        state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
-                            (ch: IChannelReference) => {
-                                if (ch.mixerIndex === this.mixerIndex) {
-                                    this.updateMuteState(ch.channelIndex, state.faders[0].fader[assignedFaderIndex]
-                                        .muteOn)
-                                }
+                        state.faders[0].fader[
+                            assignedFaderIndex
+                        ].assignedChannels?.forEach((ch: IChannelReference) => {
+                            if (ch.mixerIndex === this.mixerIndex) {
+                                this.updateMuteState(
+                                    ch.channelIndex,
+                                    state.faders[0].fader[assignedFaderIndex]
+                                        .muteOn
+                                )
                             }
-                        )
+                        })
                         global.mainThreadHandler.updatePartialStore(
                             assignedFaderIndex
                         )
@@ -226,14 +250,21 @@ export class QlClMixerConnection {
 
     pingMixerCommand() {
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            store.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
         }, this.mixerProtocol.pingTime)
     }
 
     private getAssignedFaderIndex(channelIndex: number) {
-        return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
-                return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
+        return state.faders[0].fader.findIndex((fader: IFader) =>
+            fader.assignedChannels?.some((assigned: IChannelReference) => {
+                return (
+                    assigned.mixerIndex === this.mixerIndex &&
+                    assigned.channelIndex === channelIndex
+                )
             })
         )
     }
@@ -308,7 +339,7 @@ export class QlClMixerConnection {
             ].channelTypeIndex
         let faderIndex = this.getAssignedFaderIndex(channelIndex)
         if (state.faders[0].fader[faderIndex].pgmOn) {
-            this.dispatch({
+            store.dispatch({
                 type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                 mixerIndex: this.mixerIndex,
                 channel: channelIndex,
@@ -441,9 +472,18 @@ export class QlClMixerConnection {
         )
     }
 
-    loadMixerPreset(presetName: string) { }
+    loadMixerPreset(presetName: string) {}
 
     injectCommand(command: string[]) {
         return true
     }
+
+    updateAMixState(channelIndex: number, amixOn: boolean) {}
+
+
+    updateChannelSetting(
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) {}
 }

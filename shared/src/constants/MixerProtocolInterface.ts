@@ -1,3 +1,18 @@
+
+export enum MixerConnectionTypes {
+    'OSC' = 'OSC',
+    'EMBER' = 'EMBER',
+    'YamahaQlCl' = 'YamahaQlCl',
+    'GenericMidi' = 'GenericMidi',
+    'LawoRuby' = 'LawoRuby',
+    'CasparCG' = 'CasparCG',
+    'SSLSystemT' = 'SSLSystemT',
+    'Studer' = 'Studer',
+    'StuderVista' = 'StuderVista',
+    'vMix' = 'vMix',
+    'Atem' = 'Atem',
+}
+
 export enum fxParamsList {
     EqGain01,
     EqGain02,
@@ -29,7 +44,7 @@ export enum VuLabelConversionType {
     DecibelMC2 = 'decibelMC2',
 }
 export interface IMixerProtocolGeneric {
-    protocol: string
+    protocol: MixerConnectionTypes
     fxList?: {}
     label: string
     presetFileExtension?: string

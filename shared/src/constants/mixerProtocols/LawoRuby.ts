@@ -2,10 +2,11 @@ import {
     IMixerProtocol,
     emptyMixerMessage,
     VuLabelConversionType,
+    MixerConnectionTypes
 } from '../MixerProtocolInterface'
 
 export const LawoRuby: IMixerProtocol = {
-    protocol: 'LAWORUBY',
+    protocol: MixerConnectionTypes.LawoRuby,
     label: 'Lawo Ruby',
     presetFileExtension: '',
     loadPresetCommand: [emptyMixerMessage()],

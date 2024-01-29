@@ -8,26 +8,28 @@ import {
     fxParamsList,
     IMixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
-import { ChannelActionTypes, ChannelActions } from '../../../../shared/src/actions/channelActions'
 import {
-    storeFaderLevel,
-    storeFaderFx,
-    storeSetMute,
-    storeInputGain,
-    storeSetPfl,
-    storeSetPgm,
-    storeSetVo,
+    ChannelActions,
+    ChannelActionTypes,
+} from '../../../../shared/src/actions/channelActions'
+import {
+    FaderActions,
+    FaderActionTypes,
 } from '../../../../shared/src/actions/faderActions'
-import { storeSetMixerOnline } from '../../../../shared/src/actions/settingsActions'
+import {
+    SettingsActions,
+    SettingsActionTypes,
+} from '../../../../shared/src/actions/settingsActions'
 import { logger } from '../logger'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import { dbToFloat } from './LawoRubyConnection'
-import { IChannelReference, IFader } from '../../../../shared/src/reducers/fadersReducer'
-import { Dispatch } from 'redux'
+import {
+    IChannelReference,
+    IFader,
+} from '../../../../shared/src/reducers/fadersReducer'
 
 export class VMixMixerConnection {
-    dispatch: Dispatch<ChannelActions> = store.dispatch
     mixerProtocol: IMixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
@@ -42,7 +44,11 @@ export class VMixMixerConnection {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
-        store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+        store.dispatch({
+            type: SettingsActionTypes.SET_MIXER_ONLINE,
+            mixerIndex: this.mixerIndex,
+            mixerOnline: false,
+        })
 
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
@@ -79,14 +85,22 @@ export class VMixMixerConnection {
     }
 
     mixerOnline(onLineState: boolean) {
-        store.dispatch(storeSetMixerOnline(this.mixerIndex, onLineState))
+        store.dispatch({
+            type: SettingsActionTypes.SET_MIXER_ONLINE,
+            mixerIndex: this.mixerIndex,
+            mixerOnline: onLineState,
+        })
+
         global.mainThreadHandler.updateMixerOnline(this.mixerIndex, onLineState)
     }
 
     private getAssignedFaderIndex(channelIndex: number) {
-        return state.faders[0].fader.findIndex(
-            (fader: IFader) => fader.assignedChannels?.some((assigned: IChannelReference) => {
-                return (assigned.mixerIndex === this.mixerIndex && assigned.channelIndex === channelIndex)
+        return state.faders[0].fader.findIndex((fader: IFader) =>
+            fader.assignedChannels?.some((assigned: IChannelReference) => {
+                return (
+                    assigned.mixerIndex === this.mixerIndex &&
+                    assigned.channelIndex === channelIndex
+                )
             })
         )
     }
@@ -196,14 +210,19 @@ export class VMixMixerConnection {
                 const { outputLevel, fadeActive } =
                     state.channels[0].chMixerConnection[this.mixerIndex]
                         .channel[input.number - 1]
-                const assignedFaderIndex = this.getAssignedFaderIndex(input.number - 1)
+                const assignedFaderIndex = this.getAssignedFaderIndex(
+                    input.number - 1
+                )
                 if (!state.faders[0].fader[assignedFaderIndex]) {
                     return
                 }
                 const { inputGain, muteOn, pflOn, pgmOn, voOn } =
                     state.faders[0].fader[assignedFaderIndex]
                 let sendUpdate = false
-                const dispatch = (update: any) => {
+                
+                const dispatchAndSetUpdateState = (
+                    update: FaderActions | ChannelActions | SettingsActions
+                ) => {
                     store.dispatch(update)
                     sendUpdate = true
                 }
@@ -215,10 +234,12 @@ export class VMixMixerConnection {
                             outputLevel > 0 &&
                             Math.abs(outputLevel - input.volume) > 0.01
                         ) {
-                            dispatch(
-                                storeFaderLevel(assignedFaderIndex, input.volume)
-                            )
-                            this.dispatch({
+                            dispatchAndSetUpdateState({
+                                type: FaderActionTypes.SET_FADER_LEVEL,
+                                faderIndex: assignedFaderIndex,
+                                level: input.volume,
+                            })
+                            dispatchAndSetUpdateState({
                                 type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                                 channel: assignedFaderIndex,
                                 mixerIndex: this.mixerIndex,
@@ -229,11 +250,19 @@ export class VMixMixerConnection {
                             })
                         }
                         if (muteOn) {
-                            dispatch(storeSetMute(assignedFaderIndex, false))
+                            dispatchAndSetUpdateState({
+                                type: FaderActionTypes.SET_MUTE,
+                                faderIndex: assignedFaderIndex,
+                                muteOn: false,
+                            })
                         }
                         if (!fadeActive && !pgmOn && !voOn) {
-                            dispatch(storeSetPgm(assignedFaderIndex, true))
-                            this.dispatch({
+                            dispatchAndSetUpdateState({
+                                type: FaderActionTypes.SET_PGM,
+                                faderIndex: assignedFaderIndex,
+                                pgmOn: true,
+                            })
+                            dispatchAndSetUpdateState({
                                 type: ChannelActionTypes.SET_OUTPUT_LEVEL,
                                 channel: assignedFaderIndex,
                                 mixerIndex: this.mixerIndex,
@@ -242,18 +271,34 @@ export class VMixMixerConnection {
                         }
                     } else if (!muteOn) {
                         if (pgmOn) {
-                            dispatch(storeSetPgm(assignedFaderIndex, false))
+                            dispatchAndSetUpdateState({
+                                type: FaderActionTypes.SET_PGM,
+                                faderIndex: assignedFaderIndex,
+                                pgmOn: false,
+                            })
                         }
                         if (voOn) {
-                            dispatch(storeSetVo(assignedFaderIndex, false))
+                            dispatchAndSetUpdateState({
+                                type: FaderActionTypes.SET_VO,
+                                faderIndex: assignedFaderIndex,
+                                voOn: false,
+                            })
                         }
                     }
 
                     if (inputGain !== input.gainDb) {
-                        dispatch(storeInputGain(assignedFaderIndex, input.gainDb))
+                        dispatchAndSetUpdateState({
+                            type: FaderActionTypes.SET_INPUT_GAIN,
+                            faderIndex: assignedFaderIndex,
+                            level: input.gainDb,
+                        })
                     }
                     if (pflOn !== input.solo) {
-                        dispatch(storeSetPfl(assignedFaderIndex, input.solo))
+                        dispatchAndSetUpdateState({
+                            type: FaderActionTypes.SET_PFL,
+                            faderIndex: assignedFaderIndex,
+                            pflOn: input.solo,
+                        })
                     }
                 }
 
@@ -338,7 +383,11 @@ export class VMixMixerConnection {
         })
         global.mainThreadHandler.updateFullClientStore()
         this.mixerOnlineTimer = setTimeout(() => {
-            store.dispatch(storeSetMixerOnline(this.mixerIndex, false))
+            store.dispatch({
+                type: SettingsActionTypes.SET_MIXER_ONLINE,
+                mixerIndex: this.mixerIndex,
+                mixerOnline: false,
+            })
         }, this.mixerProtocol.pingTime)
     }
 
@@ -361,17 +410,14 @@ export class VMixMixerConnection {
                 )
             ) {
                 let ch = message.address.split('/')[this.cmdChannelIndex]
-                const assignedFaderIndex = this.getAssignedFaderIndex(ch-1)
-                store.dispatch(
-                    storeFaderFx(
-                        fxParamsList[fxKey],
-                        assignedFaderIndex,
-                        message.args[0]
-                    )
-                )
-                global.mainThreadHandler.updatePartialStore(
-                    assignedFaderIndex
-                )
+                const assignedFaderIndex = this.getAssignedFaderIndex(ch - 1)
+                store.dispatch({
+                    type: FaderActionTypes.SET_FADER_FX,
+                    faderIndex: assignedFaderIndex,
+                    fxParam: fxParamsList[fxKey],
+                    level: message.args[0],
+                })
+                global.mainThreadHandler.updatePartialStore(assignedFaderIndex)
             }
 
             logger.trace(fxKey)
@@ -715,4 +761,12 @@ export class VMixMixerConnection {
             channelNumber
         ]
     }
+
+    updateAMixState(channelIndex: number, amixOn: boolean) {}
+
+    updateChannelSetting(
+        channelIndex: number,
+        setting: string,
+        value: string
+    ) {}
 }

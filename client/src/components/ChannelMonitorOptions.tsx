@@ -4,7 +4,7 @@ import ClassNames from 'classnames'
 import '../assets/css/ChannelMonitorOptions.css'
 import { Store } from 'redux'
 import { connect } from 'react-redux'
-import { storeShowMonitorOptions } from '../../../shared/src/actions/settingsActions'
+import { SettingsActionTypes } from '../../../shared/src/actions/settingsActions'
 import { ISettings } from '../../../shared/src/reducers/settingsReducer'
 import {
     SOCKET_SET_AUX_LEVEL,
@@ -113,7 +113,10 @@ class ChannelMonitorOptions extends React.PureComponent<
     }
 
     handleClose = () => {
-        this.props.dispatch(storeShowMonitorOptions(this.faderIndex))
+        this.props.dispatch({
+            type: SettingsActionTypes.TOGGLE_SHOW_MONITOR_OPTIONS,
+            channel: this.faderIndex,
+        })
     }
 
     render() {
@@ -139,6 +142,7 @@ class ChannelMonitorOptions extends React.PureComponent<
                 <hr />
                 <label className="input">MONITOR AUX SEND :</label>
                 <input
+                    title='Set the Aux Send for the monitor. Set to -1 to disable monitoring'
                     className="input-field"
                     value={this.props.fader[this.faderIndex].monitor}
                     onChange={(event) => this.handleSetAux(event)}
@@ -146,6 +150,7 @@ class ChannelMonitorOptions extends React.PureComponent<
                 <br />
                 <label className="input">SHOW IN MINI MONITORVIEW :</label>
                 <input
+                    title='Show this channel in the Mini MonitorView'
                     type="checkbox"
                     checked={
                         this.props.fader[this.faderIndex].showInMiniMonitor
@@ -168,6 +173,7 @@ class ChannelMonitorOptions extends React.PureComponent<
                         >
                             {' Channel ' + (index + 1) + ' : '}
                             <input
+                                title='Enable monitoring of this channel'
                                 type="checkbox"
                                 checked={isSelected}
                                 onChange={(event) =>
