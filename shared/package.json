@@ -7,6 +7,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "redux": "^4.2.1"
+    "redux": "^5.0.1"
   }
 }
