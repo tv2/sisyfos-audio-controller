@@ -1,6 +1,6 @@
-import { IMixerProtocol, MixerConnectionTypes } from '../MixerProtocolInterface'
+import { MixerProtocol, MixerConnectionTypes } from '../MixerProtocolInterface'
 
-export const DMXIS: IMixerProtocol = {
+export const DMXIS: MixerProtocol = {
     protocol: MixerConnectionTypes.OSC,
     label: 'DMXIS Light Controller Protocol',
     presetFileExtension: '',

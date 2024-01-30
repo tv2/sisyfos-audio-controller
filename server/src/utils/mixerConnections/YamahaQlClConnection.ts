@@ -6,7 +6,7 @@ import { remoteConnections } from '../../mainClasses'
 //Utils:
 import {
     fxParamsList,
-    IMixerProtocol,
+    MixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import {
     ChannelActionTypes,
@@ -21,18 +21,18 @@ import {
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import {
-    IChannelReference,
-    IFader,
+    ChannelReference,
+    Fader,
 } from '../../../../shared/src/reducers/fadersReducer'
 
 export class QlClMixerConnection {
-    mixerProtocol: IMixerProtocol
+    mixerProtocol: MixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
     midiConnection: any
     mixerOnlineTimer: any
 
-    constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
+    constructor(mixerProtocol: MixerProtocol, mixerIndex: number) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
@@ -176,7 +176,7 @@ export class QlClMixerConnection {
                                 state.faders[0].fader[
                                     assignedFader - 1
                                 ].assignedChannels?.forEach(
-                                    (ch: IChannelReference) => {
+                                    (ch: ChannelReference) => {
                                         if (ch.mixerIndex === this.mixerIndex) {
                                             this.updateOutLevel(ch.channelIndex)
                                         }
@@ -221,7 +221,7 @@ export class QlClMixerConnection {
                         }
                         state.faders[0].fader[
                             assignedFaderIndex
-                        ].assignedChannels?.forEach((ch: IChannelReference) => {
+                        ].assignedChannels?.forEach((ch: ChannelReference) => {
                             if (ch.mixerIndex === this.mixerIndex) {
                                 this.updateMuteState(
                                     ch.channelIndex,
@@ -259,8 +259,8 @@ export class QlClMixerConnection {
     }
 
     private getAssignedFaderIndex(channelIndex: number) {
-        return state.faders[0].fader.findIndex((fader: IFader) =>
-            fader.assignedChannels?.some((assigned: IChannelReference) => {
+        return state.faders[0].fader.findIndex((fader: Fader) =>
+            fader.assignedChannels?.some((assigned: ChannelReference) => {
                 return (
                     assigned.mixerIndex === this.mixerIndex &&
                     assigned.channelIndex === channelIndex

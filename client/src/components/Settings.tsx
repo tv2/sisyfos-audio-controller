@@ -2,17 +2,16 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import Select from 'react-select'
 import WebMidi from 'webmidi'
-import { IAppProps } from './App'
+import { AppProps } from './App'
 
 //Utils:
 import '../assets/css/Settings.css'
-import { ISettings } from '../../../shared/src/reducers/settingsReducer'
+import { Settings as SettingsInterface } from '../../../shared/src/reducers/settingsReducer'
 import { Store } from 'redux'
 import { ChangeEvent } from 'react'
 import { SOCKET_SAVE_SETTINGS } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../../shared/src/actions/settingsActions'
 import { MixerConnectionTypes } from '../../../shared/src/constants/MixerProtocolInterface'
 
@@ -35,11 +34,11 @@ const selectorColorStyles = {
     singleValue: (styles: any) => ({ ...styles, color: 'white' }),
 }
 
-interface IState {
-    settings: ISettings
+interface SettingsState {
+    settings: SettingsInterface
 }
 
-class Settings extends React.PureComponent<IAppProps & Store, IState> {
+class Settings extends React.PureComponent<AppProps & Store, SettingsState> {
     selectedProtocol: any
     midiInputPortList: any
     midiOutputPortList: any
@@ -575,7 +574,7 @@ class Settings extends React.PureComponent<IAppProps & Store, IState> {
     }
 }
 
-const mapStateToProps = (state: any, t: any): IAppProps => {
+const mapStateToProps = (state: any, t: any): AppProps => {
     return {
         store: state,
         t: t,

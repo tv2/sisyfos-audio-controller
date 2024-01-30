@@ -9,7 +9,7 @@ import {
 
 //Utils:
 import {
-    IRemoteProtocol,
+    RemoteProtocol,
     RemoteFaderPresets,
     MidiReceiveTypes,
 } from '../../../../shared/src/constants/remoteProtocols/HuiRemoteFaderPresets'
@@ -17,7 +17,7 @@ import { MixerProtocolPresets } from '../../../../shared/src/constants/MixerProt
 import { logger } from '../logger'
 
 export class HuiMidiRemoteConnection {
-    remoteProtocol: IRemoteProtocol
+    remoteProtocol: RemoteProtocol
     midiReceiveTypes = MidiReceiveTypes
     mixerProtocol: any
     midiInput: any

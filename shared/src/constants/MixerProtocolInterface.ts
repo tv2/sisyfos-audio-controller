@@ -43,12 +43,12 @@ export enum VuLabelConversionType {
     DecibelRuby = 'decibelRuby',
     DecibelMC2 = 'decibelMC2',
 }
-export interface IMixerProtocolGeneric {
+export interface MixerProtocolGeneric {
     protocol: MixerConnectionTypes
     fxList?: {}
     label: string
     presetFileExtension?: string
-    loadPresetCommand?: Array<IMixerMessageProtocol>
+    loadPresetCommand?: Array<MixerMessageProtocol>
     MAX_UPDATES_PER_SECOND: number
     vuLabelConversionType?: VuLabelConversionType
     vuLabelValues?: Array<number>
@@ -64,53 +64,53 @@ export interface IMixerProtocolGeneric {
         zero: number
         test: number
     }
-    channelTypes: Array<IChannelTypes>
+    channelTypes: Array<ChannelTypes>
 }
 
-export interface IMixerProtocol extends IMixerProtocolGeneric {
+export interface MixerProtocol extends MixerProtocolGeneric {
     leadingZeros?: boolean
-    pingCommand?: Array<IMixerMessageProtocol> // Simple command for pinging Audio mixer
-    pingResponseCommand?: Array<IMixerMessageProtocol> // Ping commands that expects responses
+    pingCommand?: Array<MixerMessageProtocol> // Simple command for pinging Audio mixer
+    pingResponseCommand?: Array<MixerMessageProtocol> // Ping commands that expects responses
     pingTime?: number // How often should mixer ping the pingCommands
     mixerTimeout?: number // Max time between responses from AudioMixer
-    initializeCommands?: Array<IMixerMessageProtocol>
+    initializeCommands?: Array<MixerMessageProtocol>
 }
 
-export interface IChannelTypes {
+export interface ChannelTypes {
     channelTypeName: string
     channelTypeColor: string
     fromMixer: {
-        CHANNEL_INPUT_GAIN?: Array<IMixerMessageProtocol>
-        CHANNEL_INPUT_SELECTOR?: Array<IMixerMessageProtocol>
-        CHANNEL_OUT_GAIN?: Array<IMixerMessageProtocol>
-        CHANNEL_VU?: Array<IMixerMessageProtocol>
-        CHANNEL_VU_REDUCTION?: Array<IMixerMessageProtocol>
-        CHANNEL_NAME?: Array<IMixerMessageProtocol>
-        PFL?: Array<IMixerMessageProtocol>
-        NEXT_SEND?: Array<IMixerMessageProtocol>
-        [FX_PARAM: number]: Array<IMixerMessageProtocol>
-        AUX_LEVEL?: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
-        CHANNEL_AMIX?: Array<IMixerMessageProtocol>
+        CHANNEL_INPUT_GAIN?: Array<MixerMessageProtocol>
+        CHANNEL_INPUT_SELECTOR?: Array<MixerMessageProtocol>
+        CHANNEL_OUT_GAIN?: Array<MixerMessageProtocol>
+        CHANNEL_VU?: Array<MixerMessageProtocol>
+        CHANNEL_VU_REDUCTION?: Array<MixerMessageProtocol>
+        CHANNEL_NAME?: Array<MixerMessageProtocol>
+        PFL?: Array<MixerMessageProtocol>
+        NEXT_SEND?: Array<MixerMessageProtocol>
+        [FX_PARAM: number]: Array<MixerMessageProtocol>
+        AUX_LEVEL?: Array<MixerMessageProtocol>
+        CHANNEL_MUTE_ON?: Array<MixerMessageProtocol>
+        CHANNEL_MUTE_OFF?: Array<MixerMessageProtocol>
+        CHANNEL_AMIX?: Array<MixerMessageProtocol>
     }
     toMixer: {
-        CHANNEL_INPUT_GAIN?: Array<IMixerMessageProtocol>
-        CHANNEL_INPUT_SELECTOR?: Array<IMixerMessageProtocol>
-        CHANNEL_OUT_GAIN?: Array<IMixerMessageProtocol>
-        CHANNEL_NAME?: Array<IMixerMessageProtocol>
-        PFL_ON?: Array<IMixerMessageProtocol>
-        PFL_OFF?: Array<IMixerMessageProtocol>
-        NEXT_SEND?: Array<IMixerMessageProtocol>
-        [FX_PARAM: number]: Array<IMixerMessageProtocol>
-        AUX_LEVEL?: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_ON?: Array<IMixerMessageProtocol>
-        CHANNEL_MUTE_OFF?: Array<IMixerMessageProtocol>
-        CHANNEL_AMIX?: Array<IMixerMessageProtocol>
+        CHANNEL_INPUT_GAIN?: Array<MixerMessageProtocol>
+        CHANNEL_INPUT_SELECTOR?: Array<MixerMessageProtocol>
+        CHANNEL_OUT_GAIN?: Array<MixerMessageProtocol>
+        CHANNEL_NAME?: Array<MixerMessageProtocol>
+        PFL_ON?: Array<MixerMessageProtocol>
+        PFL_OFF?: Array<MixerMessageProtocol>
+        NEXT_SEND?: Array<MixerMessageProtocol>
+        [FX_PARAM: number]: Array<MixerMessageProtocol>
+        AUX_LEVEL?: Array<MixerMessageProtocol>
+        CHANNEL_MUTE_ON?: Array<MixerMessageProtocol>
+        CHANNEL_MUTE_OFF?: Array<MixerMessageProtocol>
+        CHANNEL_AMIX?: Array<MixerMessageProtocol>
     }
 }
 
-interface IMixerMessageProtocol {
+interface MixerMessageProtocol {
     mixerMessage: string
     value?: any
     type?: string
@@ -125,12 +125,12 @@ interface IMixerMessageProtocol {
     zeroLabel?: number
 }
 
-export interface IFxProtocol {
+export interface FxProtocol {
     key: fxParamsList
-    params: Array<IMixerMessageProtocol>
+    params: Array<MixerMessageProtocol>
 }
 
-export const emptyMixerMessage = (): IMixerMessageProtocol => {
+export const emptyMixerMessage = (): MixerMessageProtocol => {
     return {
         mixerMessage: 'none',
         value: 0,
@@ -142,26 +142,26 @@ export const emptyMixerMessage = (): IMixerMessageProtocol => {
 }
 
 // CasparCG Specific interfaces:
-export interface ICasparCGChannelLayerPair {
+export interface CasparCGChannelLayerPair {
     channel: number
     layer: number
 }
 
-export interface ICasparCGMixerGeometryFile {
+export interface CasparCGMixerGeometryFile {
     label?: string
     channelLabels?: string[]
     fromMixer: {
         CHANNEL_VU: Array<string[]>
     }
     toMixer: {
-        PGM_CHANNEL_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
-        PFL_AUX_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
-        NEXT_AUX_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
-        CHANNEL_INPUT_SELECTOR?: Array<IMixerMessageProtocol>
+        PGM_CHANNEL_FADER_LEVEL: Array<CasparCGChannelLayerPair[]>
+        PFL_AUX_FADER_LEVEL: Array<CasparCGChannelLayerPair[]>
+        NEXT_AUX_FADER_LEVEL: Array<CasparCGChannelLayerPair[]>
+        CHANNEL_INPUT_SELECTOR?: Array<MixerMessageProtocol>
     }
     sourceOptions?: {
         sources: Array<
-            ICasparCGChannelLayerPair & {
+            CasparCGChannelLayerPair & {
                 producer: string
                 file: string
             }
@@ -175,7 +175,7 @@ export interface ICasparCGMixerGeometryFile {
     }
 }
 
-export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
+export interface CasparCGMixerGeometry extends MixerProtocolGeneric {
     studio: string
     leadingZeros: boolean
     pingTime: number
@@ -185,15 +185,15 @@ export interface ICasparCGMixerGeometry extends IMixerProtocolGeneric {
         CHANNEL_VU: Array<string[]>
     }
     toMixer: {
-        PGM_CHANNEL_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
-        PFL_AUX_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
-        NEXT_AUX_FADER_LEVEL: Array<ICasparCGChannelLayerPair[]>
-        CHANNEL_INPUT_SELECTOR?: Array<IMixerMessageProtocol>
+        PGM_CHANNEL_FADER_LEVEL: Array<CasparCGChannelLayerPair[]>
+        PFL_AUX_FADER_LEVEL: Array<CasparCGChannelLayerPair[]>
+        NEXT_AUX_FADER_LEVEL: Array<CasparCGChannelLayerPair[]>
+        CHANNEL_INPUT_SELECTOR?: Array<MixerMessageProtocol>
     }
     channelLabels?: string[]
     sourceOptions?: {
         sources: Array<
-            ICasparCGChannelLayerPair & {
+            CasparCGChannelLayerPair & {
                 producer: string
                 file: string
             }

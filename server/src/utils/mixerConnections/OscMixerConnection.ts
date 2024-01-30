@@ -9,7 +9,7 @@ import { mixerGenericConnection, remoteConnections } from '../../mainClasses'
 //Utils:
 import {
     fxParamsList,
-    IMixerProtocol,
+    MixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { behringerXrMeter } from './productSpecific/behringerXr'
 import { midasMeter } from './productSpecific/midas'
@@ -26,27 +26,27 @@ import { logger } from '../logger'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import {
-    IChannelReference,
-    IFader,
+    ChannelReference,
+    Fader,
 } from '../../../../shared/src/reducers/fadersReducer'
-import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
+import { Channel } from '../../../../shared/src/reducers/channelsReducer'
 import { STORAGE_FOLDER } from '../SettingsStorage'
 
-interface IOscCommand {
+interface OscCommand {
     address: string
     args?: any[]
 }
 
 export class OscMixerConnection {
-    mixerProtocol: IMixerProtocol
+    mixerProtocol: MixerProtocol
     mixerIndex: number
     cmdChannelIndex: number
     oscConnection: any
     mixerOnlineTimer: NodeJS.Timeout
     timeoutTimer: NodeJS.Timeout
-    commandBuffer: IOscCommand[] = []
+    commandBuffer: OscCommand[] = []
 
-    constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
+    constructor(mixerProtocol: MixerProtocol, mixerIndex: number) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
@@ -105,8 +105,8 @@ export class OscMixerConnection {
     }
 
     private getAssignedFaderIndex(channelIndex: number): number {
-        return state.faders[0].fader.findIndex((fader: IFader) =>
-            fader.assignedChannels?.some((assigned: IChannelReference) => {
+        return state.faders[0].fader.findIndex((fader: Fader) =>
+            fader.assignedChannels?.some((assigned: ChannelReference) => {
                 return (
                     assigned.mixerIndex === this.mixerIndex &&
                     assigned.channelIndex === channelIndex
@@ -214,7 +214,7 @@ export class OscMixerConnection {
                             state.faders[0].fader[
                                 assignedFaderIndex
                             ].assignedChannels?.forEach(
-                                (assignedChannel: IChannelReference) => {
+                                (assignedChannel: ChannelReference) => {
                                     if (
                                         assignedChannel.mixerIndex ===
                                         this.mixerIndex
@@ -255,7 +255,7 @@ export class OscMixerConnection {
                             state.faders[0].fader[
                                 assignedFaderIndex
                             ].assignedChannels?.forEach(
-                                (assignedChannel: IChannelReference) => {
+                                (assignedChannel: ChannelReference) => {
                                     if (
                                         assignedChannel.mixerIndex ===
                                         this.mixerIndex
@@ -416,7 +416,7 @@ export class OscMixerConnection {
                             state.channels[0].chMixerConnection[
                                 this.mixerIndex
                             ].channel.forEach(
-                                (channel: IChannel, index: number) => {
+                                (channel: Channel, index: number) => {
                                     const assignedFaderIndex =
                                         this.getAssignedFaderIndex(index)
                                     if (assignedFaderIndex >= 0) {
@@ -806,7 +806,7 @@ export class OscMixerConnection {
         }
     }
 
-    sendBuffered(command: IOscCommand) {
+    sendBuffered(command: OscCommand) {
         this.commandBuffer.push(JSON.parse(JSON.stringify(command)))
     }
 

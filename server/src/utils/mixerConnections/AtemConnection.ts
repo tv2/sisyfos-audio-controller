@@ -3,15 +3,15 @@ import { Atem, AtemState } from 'atem-connection'
 import { store, state } from '../../reducers/store'
 import {
     fxParamsList,
-    IMixerProtocol,
+    MixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { logger } from '../logger'
 import { SettingsActionTypes } from '../../../../shared/src/actions/settingsActions'
 import {
-    IChannelReference,
-    IFader,
+    ChannelReference,
+    Fader,
 } from '../../../../shared/src/reducers/fadersReducer'
-import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
+import { Channel } from '../../../../shared/src/reducers/channelsReducer'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
 import {
     FairlightAudioMixOption,
@@ -36,7 +36,7 @@ export class AtemMixerConnection {
     private _firstConnection = true
 
     constructor(
-        private mixerProtocol: IMixerProtocol,
+        private mixerProtocol: MixerProtocol,
         public mixerIndex: number
     ) {
         this._connection = new Atem()
@@ -319,10 +319,10 @@ export class AtemMixerConnection {
         }
     }
 
-    private getAssignedFader(channelIndex: number): IFader {
-        return state.faders[0].fader.find((fader: IFader) => {
+    private getAssignedFader(channelIndex: number): Fader {
+        return state.faders[0].fader.find((fader: Fader) => {
             return fader.assignedChannels?.some(
-                (assignedChannel: IChannelReference) => {
+                (assignedChannel: ChannelReference) => {
                     return (
                         assignedChannel.mixerIndex === this.mixerIndex &&
                         assignedChannel.channelIndex === channelIndex
@@ -332,7 +332,7 @@ export class AtemMixerConnection {
         })
     }
 
-    private getChannel(channelIndex: number): IChannel {
+    private getChannel(channelIndex: number): Channel {
         return state.channels[0].chMixerConnection[this.mixerIndex].channel[
             channelIndex
         ]
@@ -340,8 +340,8 @@ export class AtemMixerConnection {
 
     private setPropsFromChannel(
         channelIndex: number,
-        channel: IChannel,
-        fader: IFader,
+        channel: Channel,
+        fader: Fader,
         source: FairlightAudioSource
     ) {
         if ((source.properties.gain + 1200) / 1800 !== fader.inputGain) {

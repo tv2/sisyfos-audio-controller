@@ -1,16 +1,16 @@
 import { FaderActionTypes, FaderActions } from '../actions/faderActions'
-import { InumberOfChannels } from './channelsReducer'
-export interface IFaders {
-    fader: Array<IFader>
-    vuMeters: Array<IVuMeters>
+import { NumberOfChannels } from './channelsReducer'
+export interface Faders {
+    fader: Array<Fader>
+    vuMeters: Array<VuMeters>
 }
 
-export interface IChannelReference {
+export interface ChannelReference {
     mixerIndex: number
     channelIndex: number
 }
 
-export interface IFader {
+export interface Fader {
     faderLevel: number
     inputGain: number
     inputSelector: number
@@ -30,7 +30,7 @@ export interface IFader {
     showInMiniMonitor: boolean
     ignoreAutomation: boolean
     disabled: boolean
-    assignedChannels?: IChannelReference[]
+    assignedChannels?: ChannelReference[]
 
     /**
      * Assuming that the protocol has a "feature", can it be enabled on this fader?
@@ -42,22 +42,22 @@ export interface IFader {
     }
 }
 
-export interface IVuMeters {
+export interface VuMeters {
     reductionVal: number
 }
 
 export const defaultFadersReducerState = (
     numberOfFaders: number,
-    numberOfChannels?: InumberOfChannels[]
-): IFaders[] => {
-    let defaultObj: Array<IFaders> = [
+    numberOfChannels?: NumberOfChannels[]
+): Faders[] => {
+    let defaultObj: Array<Faders> = [
         {
             fader: [],
             vuMeters: [],
         },
     ]
 
-    const channels: IChannelReference[] = []
+    const channels: ChannelReference[] = []
     numberOfChannels?.forEach((mixer, mixerIndex) => {
         let channelIndex = 0
         for (const typeCount of mixer.numberOfTypeInCh) {
@@ -102,7 +102,7 @@ export const defaultFadersReducerState = (
 export const faders = (
     state = defaultFadersReducerState(0),
     action: FaderActions
-): Array<IFaders> => {
+): Array<Faders> => {
     let nextState = [
         {
             vuMeters: [...state[0].vuMeters],
@@ -286,7 +286,7 @@ export const faders = (
             })
             return nextState
         case FaderActionTypes.SET_ASSIGNED_CHANNEL:
-            let newAssignments: IChannelReference[] =
+            let newAssignments: ChannelReference[] =
                 nextState[0].fader[action.faderIndex].assignedChannels || []
 
             if (action.assigned) {
@@ -303,17 +303,17 @@ export const faders = (
                         channelIndex: action.channelIndex,
                     })
                     newAssignments.sort(
-                        (n1: IChannelReference, n2: IChannelReference) =>
+                        (n1: ChannelReference, n2: ChannelReference) =>
                             n1.channelIndex - n2.channelIndex
                     )
                     newAssignments.sort(
-                        (n1: IChannelReference, n2: IChannelReference) =>
+                        (n1: ChannelReference, n2: ChannelReference) =>
                             n1.mixerIndex - n2.mixerIndex
                     )
                 }
             } else {
                 newAssignments = newAssignments.filter(
-                    (channel: IChannelReference) => {
+                    (channel: ChannelReference) => {
                         return !(
                             channel.channelIndex === action.channelIndex &&
                             channel.mixerIndex === action.mixerIndex

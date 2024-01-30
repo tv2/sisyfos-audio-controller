@@ -9,24 +9,24 @@ import '../assets/css/NoUiSlider.css'
 //assets:
 import '../assets/css/Channel.css'
 import * as IO from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
-import { IChannelReference, IFader } from '../../../shared/src/reducers/fadersReducer'
-import { ISettings } from '../../../shared/src/reducers/settingsReducer'
+import { ChannelReference, Fader } from '../../../shared/src/reducers/fadersReducer'
+import { Settings } from '../../../shared/src/reducers/settingsReducer'
 import { SettingsActionTypes } from '../../../shared/src/actions/settingsActions'
 import { withTranslation } from 'react-i18next'
 import { MixerConnectionTypes, VuLabelConversionType } from '../../shared../../../shared/src/constants/MixerProtocolInterface'
 import { getFaderLabel } from '../utils/labels'
 import { Conversions } from '../../../shared/src/actions/utils/dbConversion'
 
-interface IChannelInjectProps {
+interface ChannelInjectProps {
     t: any
-    fader: IFader
-    settings: ISettings
+    fader: Fader
+    settings: Settings
     channelType: number
     channelTypeIndex: number
     label: string
 }
 
-interface IChannelProps {
+interface ChannelProps {
     faderIndex: number
 }
 
@@ -35,7 +35,7 @@ function XOR(a: any, b: any): boolean {
 }
 
 class Channel extends React.Component<
-    IChannelProps & IChannelInjectProps & Store
+    ChannelProps & ChannelInjectProps & Store
 > {
     faderIndex: number
 
@@ -46,7 +46,7 @@ class Channel extends React.Component<
         this.faderIndex = this.props.faderIndex
     }
 
-    public shouldComponentUpdate(nextProps: IChannelInjectProps) {
+    public shouldComponentUpdate(nextProps: ChannelInjectProps) {
         return (
             nextProps.channelTypeIndex !== this.props.channelTypeIndex ||
             nextProps.fader.pgmOn != this.props.fader.pgmOn ||
@@ -161,13 +161,13 @@ class Channel extends React.Component<
                 </React.Fragment>
             )
         } else {
-            let assignedChannels: IChannelReference[] = this.props.fader
+            let assignedChannels: ChannelReference[] = this.props.fader
                 .assignedChannels || [{ mixerIndex: 0, channelIndex: 0 }]
             return (
                 <React.Fragment>
                     {!window.location.search.includes('vu=0') &&
                         assignedChannels?.map(
-                            (assigned: IChannelReference, index) => (
+                            (assigned: ChannelReference, index) => (
                                 <VuMeter
                                     faderIndex={this.faderIndex}
                                     channel={index}
@@ -499,7 +499,7 @@ class Channel extends React.Component<
     }
 }
 
-const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
+const mapStateToProps = (state: any, props: any): ChannelInjectProps => {
     return {
         t: props.t,
         fader: state.faders[0].fader[props.faderIndex],
@@ -512,6 +512,6 @@ const mapStateToProps = (state: any, props: any): IChannelInjectProps => {
 }
 
 export default compose(
-    connect<any, IChannelInjectProps, any>(mapStateToProps),
+    connect<any, ChannelInjectProps, any>(mapStateToProps),
     withTranslation()
 )(Channel) as any

@@ -7,18 +7,18 @@ import { CasparCG } from 'casparcg-connection'
 //Utils:
 import { store, state } from '../../reducers/store'
 import {
-    ICasparCGMixerGeometry,
-    ICasparCGChannelLayerPair,
-    ICasparCGMixerGeometryFile,
+    CasparCGMixerGeometry,
+    CasparCGChannelLayerPair,
+    CasparCGMixerGeometryFile,
     fxParamsList,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
-import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
+import { Channel } from '../../../../shared/src/reducers/channelsReducer'
 import {
     ChannelActionTypes,
 } from '../../../../shared/src/actions/channelActions'
 import { logger } from '../logger'
 import { dbToFloat, floatToDB } from './LawoRubyConnection'
-import { IFader } from '../../../../shared/src/reducers/fadersReducer'
+import { Fader } from '../../../../shared/src/reducers/fadersReducer'
 import { sendVuLevel } from '../vuServer'
 import { VuType } from '../../../../shared/src/utils/vu-server-types'
 import {
@@ -30,11 +30,6 @@ interface CommandChannelMap {
     [key: string]: number
 }
 
-interface ICasparCGChannel extends IChannel {
-    producer?: string
-    source?: string
-}
-
 const OSC_PATH_PRODUCER =
     /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/type/
 const OSC_PATH_PRODUCER_FILE_NAME =
@@ -43,13 +38,13 @@ const OSC_PATH_PRODUCER_CHANNEL_LAYOUT =
     /\/channel\/(\d+)\/stage\/layer\/(\d+)\/producer\/channel_layout/
 
 export class CasparCGConnection {
-    mixerProtocol: ICasparCGMixerGeometry
+    mixerProtocol: CasparCGMixerGeometry
     mixerIndex: number
     connection: CasparCG
     oscClient: any
     oscCommandMap: { [key: string]: CommandChannelMap } = {}
 
-    constructor(mixerProtocol: ICasparCGMixerGeometry, mixerIndex: number) {
+    constructor(mixerProtocol: CasparCGMixerGeometry, mixerIndex: number) {
         this.mixerProtocol = mixerProtocol
         this.mixerIndex = mixerIndex
         this.injectCasparCGSetting()
@@ -100,7 +95,7 @@ export class CasparCGConnection {
             'default-casparcg.ccg'
         )
 
-        let geometry: ICasparCGMixerGeometryFile | undefined
+        let geometry: CasparCGMixerGeometryFile | undefined
         try {
             let inputObj = JSON.parse(
                 fs.readFileSync(geometryFile, {
@@ -252,7 +247,7 @@ export class CasparCGConnection {
 
         // Restore mixer values to the ones we have internally
         state.channels[0].chMixerConnection[this.mixerIndex].channel.forEach(
-            (channel: IChannel, index) => {
+            (channel: Channel, index) => {
                 // const fader =  state.faders[0].fader[channel.assignedFader]
                 this.updateFadeIOLevel(index, channel.outputLevel)
                 this.updatePflState(index)
@@ -388,7 +383,7 @@ export class CasparCGConnection {
             })
     }
 
-    setAllLayers = (pairs: ICasparCGChannelLayerPair[], value: number) => {
+    setAllLayers = (pairs: CasparCGChannelLayerPair[], value: number) => {
         pairs.forEach((i) => {
             this.controlVolume(i.channel, i.layer, value)
         })
@@ -402,16 +397,16 @@ export class CasparCGConnection {
             return
         }
         logger.trace(`Update PFL state for ${channelIndex}`)
-        const channel: IChannel =
+        const channel: Channel =
             state.channels[0].chMixerConnection[this.mixerIndex].channel[
                 channelIndex
             ]
-        const fader: IFader = state.faders[0].fader[channel.assignedFader]
-        const otherFaders: Array<IFader> = state.channels[0].chMixerConnection[
+        const fader: Fader = state.faders[0].fader[channel.assignedFader]
+        const otherFaders: Array<Fader> = state.channels[0].chMixerConnection[
             this.mixerIndex
         ].channel
             .filter((_ch: any, i: number) => i !== channelIndex)
-            .map((ch: IChannel) => state.faders[0].fader[ch.assignedFader])
+            .map((ch: Channel) => state.faders[0].fader[ch.assignedFader])
         if (fader.pflOn === true) {
             // Enable SOLO on this channel on MONITOR
             const pairs =
@@ -425,7 +420,7 @@ export class CasparCGConnection {
             const others = state.channels[0].chMixerConnection[
                 this.mixerIndex
             ].channel
-                .map((ch: IChannel, index: number) =>
+                .map((ch: Channel, index: number) =>
                     state.faders[0].fader[ch.assignedFader].pflOn
                         ? undefined
                         : index
@@ -461,7 +456,7 @@ export class CasparCGConnection {
                 // There are no other SOLO channels, restore PFL to match PGM
                 state.channels[0].chMixerConnection[
                     this.mixerIndex
-                ].channel.forEach((_ch: IChannel, index: number) => {
+                ].channel.forEach((_ch: Channel, index: number) => {
                     if (
                         index >
                         this.mixerProtocol.toMixer.PFL_AUX_FADER_LEVEL.length -
@@ -575,7 +570,7 @@ export class CasparCGConnection {
             this.mixerProtocol.toMixer.PGM_CHANNEL_FADER_LEVEL[channelIndex]
         this.setAllLayers(pgmPairs, outputLevel)
 
-        const anyPflOn = state.faders[0].fader.find((f: IFader) => f.pflOn)
+        const anyPflOn = state.faders[0].fader.find((f: Fader) => f.pflOn)
         // Check if there are no SOLO channels on MONITOR or there are, but this channel is SOLO
         if (!anyPflOn || state.faders[0].fader[faderIndex].pflOn) {
             const pairs =

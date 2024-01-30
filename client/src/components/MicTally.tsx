@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 
 import '../assets/css/MicTally.css'
 import { Store } from 'redux'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
-import { IChannels } from '../../../shared/src/reducers/channelsReducer'
-import { ISettings } from '../../../shared/src/reducers/settingsReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
+import { Channels } from '../../../shared/src/reducers/channelsReducer'
+import { Settings } from '../../../shared/src/reducers/settingsReducer'
 import { getFaderLabel } from '../utils/labels'
 
 import {
@@ -14,17 +14,17 @@ import {
 } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 
 
-interface IMicTallyInjectProps {
-    channels: IChannels
-    faders: IFader[]
-    settings: ISettings
+interface MicTallyInjectProps {
+    channels: Channels
+    faders: Fader[]
+    settings: Settings
 }
 
-interface IMicTallyState {
+interface MicTallyState {
     toggleTargetIndex: number | null
 }
 
-class MicTally extends React.Component<IMicTallyInjectProps & Store, IMicTallyState> {
+class MicTally extends React.Component<MicTallyInjectProps & Store, MicTallyState> {
     constructor(props: any) {
         super(props)
         this.props.settings.showMonitorOptions = -1
@@ -111,7 +111,7 @@ class MicTally extends React.Component<IMicTallyInjectProps & Store, IMicTallySt
     }
 }
 
-const mapStateToProps = (state: any): IMicTallyInjectProps => {
+const mapStateToProps = (state: any): MicTallyInjectProps => {
     return {
         channels: state.channels[0].chMixerConnection[0].channel,
         faders: state.faders[0].fader,
@@ -119,6 +119,6 @@ const mapStateToProps = (state: any): IMicTallyInjectProps => {
     }
 }
 
-export default connect<IMicTallyInjectProps, any, any>(mapStateToProps)(
+export default connect<MicTallyInjectProps, any, any>(mapStateToProps)(
     MicTally
 )

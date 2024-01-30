@@ -1,21 +1,21 @@
 import { combineReducers } from 'redux'
-import { IChannels, channels } from './channelsReducer'
-import { ISettings, settings } from './settingsReducer'
-import { IFaders, faders } from './fadersReducer'
+import { Channels, channels } from './channelsReducer'
+import { Settings, settings } from './settingsReducer'
+import { Faders, faders } from './fadersReducer'
 import { FaderActions } from '../actions/faderActions'
 import { ChannelActions } from '../actions/channelActions'
 import { SettingsActions } from '../actions/settingsActions'
 
 const indexReducer = combineReducers<{
-    faders: (state: IFaders[] | undefined, action: FaderActions) => IFaders[]
+    faders: (state: Faders[] | undefined, action: FaderActions) => Faders[]
     channels: (
-        state: IChannels[] | undefined,
+        state: Channels[] | undefined,
         action: ChannelActions
-    ) => IChannels[]
+    ) => Channels[]
     settings: (
-        state: ISettings[] | undefined,
+        state: Settings[] | undefined,
         action: SettingsActions
-    ) => ISettings[]
+    ) => Settings[]
 }>({
     faders,
     channels,

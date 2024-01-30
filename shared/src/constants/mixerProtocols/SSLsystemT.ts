@@ -1,6 +1,6 @@
-import { IMixerProtocol, emptyMixerMessage, MixerConnectionTypes } from '../MixerProtocolInterface'
+import { MixerProtocol, emptyMixerMessage, MixerConnectionTypes } from '../MixerProtocolInterface'
 
-export const SSLSystemT: IMixerProtocol = {
+export const SSLSystemT: MixerProtocol = {
     protocol: MixerConnectionTypes.SSLSystemT,
     label: 'SSL System T',
     presetFileExtension: '',

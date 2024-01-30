@@ -7,13 +7,13 @@ import { connect } from 'react-redux'
 import {
     SettingsActionTypes,
 } from '../../../shared/src/actions/settingsActions'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
 import Select from 'react-select'
 import {
     SOCKET_GET_PAGES_LIST,
     SOCKET_SET_PAGES_LIST,
 } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
-import { ICustomPages } from '../../../shared/src/reducers/settingsReducer'
+import { CustomPages } from '../../../shared/src/reducers/settingsReducer'
 import { getFaderLabel } from '../utils/labels'
 
 //Set style for Select dropdown component:
@@ -33,13 +33,13 @@ const selectorColorStyles = {
     },
     singleValue: (styles: any) => ({ ...styles, color: 'white' }),
 }
-interface IPagesSettingsInjectProps {
-    customPages: ICustomPages[]
-    fader: IFader[]
+interface PagesSettingsInjectProps {
+    customPages: CustomPages[]
+    fader: Fader[]
 }
 
 class PagesSettings extends React.PureComponent<
-    IPagesSettingsInjectProps & Store
+    PagesSettingsInjectProps & Store
 > {
     pageList: { label: string; value: number }[]
     state = { pageIndex: 0, label: '' }
@@ -48,7 +48,7 @@ class PagesSettings extends React.PureComponent<
         super(props)
 
         this.pageList = this.props.customPages.map(
-            (page: ICustomPages, index: number) => {
+            (page: CustomPages, index: number) => {
                 return { label: page.label, value: index }
             }
         )
@@ -77,7 +77,7 @@ class PagesSettings extends React.PureComponent<
                         String(this.state.pageIndex + 1)
                 )
             ) {
-                let nextPages: ICustomPages[] = [...this.props.customPages]
+                let nextPages: CustomPages[] = [...this.props.customPages]
                 nextPages[this.state.pageIndex].faders.splice(
                     this.props.customPages[this.state.pageIndex].faders.indexOf(
                         fader
@@ -98,7 +98,7 @@ class PagesSettings extends React.PureComponent<
                         '?'
                 )
             ) {
-                let nextPages: ICustomPages[] = [...this.props.customPages]
+                let nextPages: CustomPages[] = [...this.props.customPages]
                 nextPages[this.state.pageIndex].faders.push(fader)
                 nextPages[this.state.pageIndex].faders.sort((a, b) => {
                     return a - b
@@ -112,7 +112,7 @@ class PagesSettings extends React.PureComponent<
     handleLabel = (event: ChangeEvent<HTMLInputElement>) => {
         this.setState({ label: event.target.value })
         this.pageList[this.state.pageIndex].label = event.target.value
-        let nextPages: ICustomPages[] = [...this.props.customPages]
+        let nextPages: CustomPages[] = [...this.props.customPages]
         nextPages[this.state.pageIndex].label = event.target.value
 
         window.storeRedux.dispatch({ type: SettingsActionTypes.SET_PAGES_LIST, customPages: nextPages})
@@ -121,7 +121,7 @@ class PagesSettings extends React.PureComponent<
 
     handleClearRouting() {
         if (window.confirm('REMOVE ALL FADER ASSIGNMENTS????')) {
-            let nextPages: ICustomPages[] = [...this.props.customPages]
+            let nextPages: CustomPages[] = [...this.props.customPages]
             nextPages[this.state.pageIndex].faders = []
             window.storeRedux.dispatch({ type: SettingsActionTypes.SET_PAGES_LIST, customPages: nextPages})
             window.socketIoClient.emit(SOCKET_SET_PAGES_LIST, nextPages)
@@ -136,7 +136,7 @@ class PagesSettings extends React.PureComponent<
     renderFaderList() {
         return (
             <div>
-                {this.props.fader.map((fader: IFader, index: number) => {
+                {this.props.fader.map((fader: Fader, index: number) => {
                     return (
                         <div
                             key={index}
@@ -208,13 +208,13 @@ class PagesSettings extends React.PureComponent<
     }
 }
 
-const mapStateToProps = (state: any, props: any): IPagesSettingsInjectProps => {
+const mapStateToProps = (state: any, props: any): PagesSettingsInjectProps => {
     return {
         customPages: state.settings[0].customPages,
         fader: state.faders[0].fader,
     }
 }
 
-export default connect<any, IPagesSettingsInjectProps>(mapStateToProps)(
+export default connect<any, PagesSettingsInjectProps>(mapStateToProps)(
     PagesSettings
 ) as any

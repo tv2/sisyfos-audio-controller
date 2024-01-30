@@ -5,15 +5,15 @@ import { connect } from 'react-redux'
 import '../assets/css/ReductionMeter.css'
 //Utils:
 
-export interface IReductionMeterInjectedProps {
+export interface ReductionMeterInjectedProps {
     reductionVal: number
 }
 
-interface IVuMeterProps {
+interface VuMeterProps {
     faderIndex: number
 }
 
-export class ReductionMeter extends React.Component<IReductionMeterInjectedProps> {
+export class ReductionMeter extends React.Component<ReductionMeterInjectedProps> {
     canvas: HTMLCanvasElement | undefined
 
     totalPeak: number = 0
@@ -33,7 +33,7 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
         this.meterZero = window.mixerProtocol.meter?.zero || 0.75
     }
 
-    public shouldComponentUpdate(nextProps: IReductionMeterInjectedProps) {
+    public shouldComponentUpdate(nextProps: ReductionMeterInjectedProps) {
         return nextProps.reductionVal != this.props.reductionVal
     }
 
@@ -183,12 +183,12 @@ export class ReductionMeter extends React.Component<IReductionMeterInjectedProps
 const mapStateToProps = (
     state: any,
     props: any
-): IReductionMeterInjectedProps => {
+): ReductionMeterInjectedProps => {
     return {
         reductionVal: state.faders[0].vuMeters[props.faderIndex].reductionVal,
     }
 }
 
-export default connect<IReductionMeterInjectedProps, any, any>(mapStateToProps)(
+export default connect<ReductionMeterInjectedProps, any, any>(mapStateToProps)(
     ReductionMeter
 )

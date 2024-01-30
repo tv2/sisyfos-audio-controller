@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import {
     SettingsActionTypes,
 } from '../../../shared/src/actions/settingsActions'
-import { IFader } from '../../../shared/src/reducers/fadersReducer'
+import { Fader } from '../../../shared/src/reducers/fadersReducer'
 import {
     SOCKET_SET_FX,
     SOCKET_SET_AUX_LEVEL,
@@ -19,17 +19,17 @@ import ClassNames from 'classnames'
 import { fxParamsList } from '../../../shared/src/constants/MixerProtocolInterface'
 import { getFaderLabel } from '../utils/labels'
 
-interface IChanStripInjectProps {
+interface ChanStripInjectProps {
     label: string
     selectedProtocol: string
     numberOfChannelsInType: Array<number>
     channel: Array<any>
-    fader: Array<IFader>
+    fader: Array<Fader>
     auxSendIndex: number
     offtubeMode: boolean
 }
 
-interface IChanStripProps {
+interface ChanStripProps {
     faderIndex: number
 }
 
@@ -37,7 +37,7 @@ interface IChanStripProps {
 const DEL_VALUES = [10, 1, -1, -10]
 
 class ChanStrip extends React.PureComponent<
-    IChanStripProps & IChanStripInjectProps & Store
+    ChanStripProps & ChanStripInjectProps & Store
 > {
     constructor(props: any) {
         super(props)
@@ -514,8 +514,8 @@ class ChanStrip extends React.PureComponent<
     }
 }
 
-const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
-    let inject: IChanStripInjectProps = {
+const mapStateToProps = (state: any, props: any): ChanStripInjectProps => {
+    let inject: ChanStripInjectProps = {
         label: '',
         selectedProtocol: state.settings[0].mixers[0].mixerProtocol,
         numberOfChannelsInType:
@@ -540,6 +540,6 @@ const mapStateToProps = (state: any, props: any): IChanStripInjectProps => {
     return inject
 }
 
-export default connect<any, IChanStripInjectProps>(mapStateToProps)(
+export default connect<any, ChanStripInjectProps>(mapStateToProps)(
     ChanStrip
 ) as any

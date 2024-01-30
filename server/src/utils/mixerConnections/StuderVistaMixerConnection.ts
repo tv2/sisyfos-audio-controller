@@ -6,7 +6,7 @@ import net from 'net'
 //Utils:
 import {
     fxParamsList,
-    IMixerProtocol,
+    MixerProtocol,
 } from '../../../../shared/src/constants/MixerProtocolInterface'
 import { logger } from '../logger'
 import {
@@ -20,19 +20,19 @@ import {
 } from '../../../../shared/src/actions/channelActions'
 import { remoteConnections } from '../../mainClasses'
 import {
-    IChannelReference,
-    IFader,
+    ChannelReference,
+    Fader,
 } from '../../../../shared/src/reducers/fadersReducer'
-import { IChannel } from '../../../../shared/src/reducers/channelsReducer'
+import { Channel } from '../../../../shared/src/reducers/channelsReducer'
 
 export class StuderVistaMixerConnection {
-    mixerProtocol: IMixerProtocol
+    mixerProtocol: MixerProtocol
     mixerIndex: number
     deviceRoot: any
     emberNodeObject: Array<any>
     mixerConnection: any
 
-    constructor(mixerProtocol: IMixerProtocol, mixerIndex: number) {
+    constructor(mixerProtocol: MixerProtocol, mixerIndex: number) {
         this.sendOutMessage = this.sendOutMessage.bind(this)
         this.pingMixerCommand = this.pingMixerCommand.bind(this)
 
@@ -128,7 +128,7 @@ export class StuderVistaMixerConnection {
     findChannelInArray(channelType: number, channelTypeIndex: number): number {
         let channelArrayIndex = 0
         state.channels[0].chMixerConnection[this.mixerIndex].channel.forEach(
-            (channel: IChannel, index: number) => {
+            (channel: Channel, index: number) => {
                 if (
                     channel.channelType === channelType &&
                     channel.channelTypeIndex === channelTypeIndex
@@ -141,8 +141,8 @@ export class StuderVistaMixerConnection {
     }
 
     private getAssignedFaderIndex(channelIndex: number) {
-        return state.faders[0].fader.findIndex((fader: IFader) =>
-            fader.assignedChannels?.some((assigned: IChannelReference) => {
+        return state.faders[0].fader.findIndex((fader: Fader) =>
+            fader.assignedChannels?.some((assigned: ChannelReference) => {
                 return (
                     assigned.mixerIndex === this.mixerIndex &&
                     assigned.channelIndex === channelIndex
@@ -216,7 +216,7 @@ export class StuderVistaMixerConnection {
                 level: value,
             })
             state.faders[0].fader[assignedFaderIndex].assignedChannels?.forEach(
-                (assignedChannel: IChannelReference) => {
+                (assignedChannel: ChannelReference) => {
                     if (
                         assignedChannel.mixerIndex === this.mixerIndex &&
                         assignedChannel.channelIndex !== channelArrayIndex
@@ -395,9 +395,9 @@ export class StuderVistaMixerConnection {
     }
 
     pingChannel(mixerMessage: string) {
-        state.faders[0].fader.forEach((fader: IFader, index: number) => {
+        state.faders[0].fader.forEach((fader: Fader, index: number) => {
             fader.assignedChannels?.forEach(
-                (channelReference: IChannelReference) => {
+                (channelReference: ChannelReference) => {
                     if (channelReference.mixerIndex === this.mixerIndex) {
                         const channel =
                             state.channels[0].chMixerConnection[this.mixerIndex]

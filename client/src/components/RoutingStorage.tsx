@@ -14,11 +14,11 @@ import {
     SOCKET_LOAD_MIXER_PRESET,
 } from '../../../shared/src/constants/SOCKET_IO_DISPATCHERS'
 
-interface IStorageProps {
+interface StorageProps {
     load: any
     save: any
 }
-class Storage extends React.PureComponent<IStorageProps & Store> {
+class Storage extends React.PureComponent<StorageProps & Store> {
     fileList: string[] = []
     loadSnapshot: any
     saveSnapshot: any

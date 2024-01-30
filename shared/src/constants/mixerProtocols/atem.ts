@@ -1,11 +1,11 @@
 import {
-    IMixerProtocol,
+    MixerProtocol,
     fxParamsList,
     VuLabelConversionType,
     MixerConnectionTypes
 } from '../MixerProtocolInterface'
 
-export const Atem: IMixerProtocol = {
+export const Atem: MixerProtocol = {
     MAX_UPDATES_PER_SECOND: 10,
     protocol: MixerConnectionTypes.Atem,
     label: 'ATEM Audio Control',
