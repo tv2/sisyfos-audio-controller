@@ -1,8 +1,7 @@
 import indexReducer from '../../shared/src/reducers/indexReducer'
-import { IFader, IFaders } from '../../shared/src/reducers/fadersReducer'
+import { Fader, Faders } from '../../shared/src/reducers/fadersReducer'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../shared/src/actions/faderActions'
 
 import fs from 'fs'
@@ -368,11 +367,11 @@ describe('Test redux faderReducers actions', () => {
     it('should return the new SET_COMPLETE_FADER_STATE state on faders', () => {
         let parsedFullStore = JSON.parse(parsedFullStoreJSON)
         let newState = JSON.parse(parsedFullStoreJSON)
-        let faders: IFader[] = []
+        let faders: Fader[] = []
         for (let i = 0; i < 24; i++) {
             faders.push(parsedFullStore.faders[0].fader[i])
         }
-        let fullFaderState: IFaders = { fader: faders, vuMeters: [] }
+        let fullFaderState: Faders = { fader: faders, vuMeters: [] }
 
         expect(
             indexReducer(

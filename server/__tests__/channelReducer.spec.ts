@@ -1,11 +1,10 @@
 import indexReducer from '../../shared/src/reducers/indexReducer'
 import {
     ChannelActionTypes,
-    ChannelActions,
 } from '../../shared/src/actions/channelActions'
 import {
-    IChannel,
-    InumberOfChannels,
+    Channel,
+    NumberOfChannels,
 } from '../../shared/src/reducers/channelsReducer'
 
 import fs from 'fs'
@@ -76,8 +75,8 @@ describe('Test redux channelReducer actions', () => {
     it('should return the new COMPLETE_CHANNEL_STATE on channels', () => {
         let parsedFullStore = JSON.parse(parsedFullStoreJSON)
         let nextState = JSON.parse(parsedFullStoreJSON)
-        let channels: IChannel[] = []
-        let numberOfChannels: InumberOfChannels[] = [{ numberOfTypeInCh: [24] }]
+        let channels: Channel[] = []
+        let numberOfChannels: NumberOfChannels[] = [{ numberOfTypeInCh: [24] }]
 
         for (let i = 0; i < 24; i++) {
             channels.push({
