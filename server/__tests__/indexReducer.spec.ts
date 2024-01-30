@@ -1,5 +1,4 @@
 import { FaderActionTypes } from '../../shared/src/actions/faderActions'
-import { SettingsActionTypes } from '../../shared/src/actions/settingsActions'
 import indexReducer from '../../shared/src/reducers/indexReducer'
 
 import fs from 'fs'

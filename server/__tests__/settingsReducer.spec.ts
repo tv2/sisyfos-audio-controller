@@ -1,7 +1,6 @@
 import indexReducer from '../../shared/src/reducers/indexReducer'
 import {
     SettingsActionTypes,
-    SettingsActions,
 } from '../../shared/src/actions/settingsActions'
 
 import fs from 'fs'
