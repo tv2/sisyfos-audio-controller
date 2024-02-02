@@ -1,5 +1,6 @@
 import { logger } from './utils/logger'
 import { socketSubscribeVu, socketUnsubscribeVu } from './utils/vuServer'
+import { socketSubscribeOutputLevel, socketUnsubscribeOutputLevel } from './utils/outputLevelServer'
 
 import express from 'express'
 import path from 'path'
@@ -21,7 +22,7 @@ const staticPath = path.join(
 logger.data(staticPath).debug('Express static file path:')
 app.use(ROOT_PATH, express.static(staticPath))
 server.listen(SERVER_PORT)
-logger.info(`Server started at http://localhost:${SERVER_PORT}/${ROOT_PATH}`)
+logger.info(`Server started at http://localhost:${SERVER_PORT}${ROOT_PATH}`)
 
 socketServer.on('connection', (socket: any) => {
     logger.info(`Client connected: ${socket.client.id}`)
@@ -31,8 +32,13 @@ socketServer.on('connection', (socket: any) => {
         logger.debug('Socket subscribe vu')
         socketSubscribeVu(socket)
     })
+    socket.on('subscribe-output-level', () => {
+        logger.debug('Socket subscribe output')
+        socketSubscribeOutputLevel(socket)
+    })
     socket.on('disconnect', () => {
         socketUnsubscribeVu(socket)
+        socketUnsubscribeOutputLevel(socket)
     })
 })
 

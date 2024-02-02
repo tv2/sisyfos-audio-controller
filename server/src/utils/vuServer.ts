@@ -1,15 +1,16 @@
+import { Socket } from 'socket.io'
 import { VuType } from '../../../shared/src/utils/vu-server-types'
 
-const sockets: Array<any> = []
+const sockets: Array<Socket> = []
 
-export function socketSubscribeVu(socket: any) {
+export function socketSubscribeVu(socket: Socket) {
     const i = sockets.indexOf(socket)
     if (i === -1) {
         sockets.push(socket)
     }
 }
 
-export function socketUnsubscribeVu(socket: any) {
+export function socketUnsubscribeVu(socket: Socket) {
     const i = sockets.indexOf(socket)
     if (i >= 0) {
         sockets.splice(i, 1)
