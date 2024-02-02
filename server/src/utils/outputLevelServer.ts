@@ -14,7 +14,7 @@ export function socketUnsubscribeOutputLevel(socket: any) {
     }
 }
 
-export function sendOutputLevel(
+export function sendChLevelsToOuputServer(
     mixerIndex: number,
     channelIndex: number,
     level: number
