@@ -1,13 +1,15 @@
-const sockets: Array<any> = []
+import { Socket } from 'socket.io'
 
-export function socketSubscribeOutputLevel(socket: any) {
+const sockets: Array<Socket> = []
+
+export function socketSubscribeOutputLevel(socket: Socket) {
     const i = sockets.indexOf(socket)
     if (i === -1) {
         sockets.push(socket)
     }
 }
 
-export function socketUnsubscribeOutputLevel(socket: any) {
+export function socketUnsubscribeOutputLevel(socket: Socket) {
     const i = sockets.indexOf(socket)
     if (i >= 0) {
         sockets.splice(i, 1)
