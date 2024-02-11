@@ -18,6 +18,8 @@ export interface AutomationProtocol {
         CHANNEL_PGM_ON_OFF: string
         CHANNEL_PST_ON_OFF: string
         CHANNEL_FADER_LEVEL: string
+        CHANNEL_INPUT_GAIN: string
+        CHANNEL_INPUT_SELECTOR: string
         INJECT_COMMAND: string
         CHANNEL_VISIBLE: string
         CHANNEL_MUTE: string
@@ -29,6 +31,8 @@ export interface AutomationProtocol {
         STATE_CHANNEL_PGM: string
         STATE_CHANNEL_PST: string
         STATE_CHANNEL_FADER_LEVEL: string
+        STATE_CHANNEL_INPUT_GAIN: string
+        STATE_CHANNEL_INPUT_SELECTOR: string
         STATE_CHANNEL_MUTE: string
         STATE_FULL: string
         PING: string
@@ -37,6 +41,8 @@ export interface AutomationProtocol {
         STATE_CHANNEL_PGM: string
         STATE_CHANNEL_PST: string
         STATE_CHANNEL_FADER_LEVEL: string
+        STATE_CHANNEL_INPUT_GAIN: string
+        STATE_CHANNEL_INPUT_SELECTOR: string
         STATE_CHANNEL_MUTE: string
         STATE_FULL: string
         PONG: string
@@ -72,6 +78,8 @@ export const AutomationPresets: { [key: string]: AutomationProtocol } = {
             CHANNEL_PGM_ON_OFF: '/ch/{value1}/pgm',
             CHANNEL_PST_ON_OFF: '/ch/{value1}/pst',
             CHANNEL_FADER_LEVEL: '/ch/{value1}/faderlevel',
+            CHANNEL_INPUT_GAIN: '/ch/{value1}/inputgain',
+            CHANNEL_INPUT_SELECTOR: '/ch/{value1}/inputselector',
             CHANNEL_VISIBLE: '/ch/{value1}/visible',
             CHANNEL_MUTE: '/ch/{value1}/mute',
             X_MIX: '/take',
@@ -83,6 +91,8 @@ export const AutomationPresets: { [key: string]: AutomationProtocol } = {
             STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
             STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
+            STATE_CHANNEL_INPUT_GAIN: '/state/ch/{value1}/inputgain',
+            STATE_CHANNEL_INPUT_SELECTOR: '/state/ch/{value1}/inputselector',
             STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
             STATE_FULL: '/state/full',
             PING: '/ping/{value1}',
@@ -91,6 +101,8 @@ export const AutomationPresets: { [key: string]: AutomationProtocol } = {
             STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
             STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
+            STATE_CHANNEL_INPUT_GAIN: '/state/ch/{value1}/inputgain',
+            STATE_CHANNEL_INPUT_SELECTOR: '/state/ch/{value1}/inputselector',
             STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
             STATE_FULL: '/state/full',
             PONG: '/pong',
