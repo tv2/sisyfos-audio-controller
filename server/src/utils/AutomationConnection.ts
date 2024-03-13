@@ -182,6 +182,9 @@ export class AutomationConnection {
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                 })
             } else if (check('INJECT_COMMAND')) {
+                /*
+                The INJECT COMMAND is not implemented 
+                It's planned for injecting commands directly from Sisyfos into the Audiomixer.  
                 wrapChannelCommand((ch: any) => {
                     store.dispatch({
                         type: FaderActionTypes.SET_FADER_LABEL,
@@ -190,6 +193,7 @@ export class AutomationConnection {
                     })
                     mixerGenericConnection.injectCommand(message.args)
                 })
+                */
             } else if (check('SNAP_RECALL')) {
                 let snapNumber = message.address.split('/')[2]
                 store.dispatch({
