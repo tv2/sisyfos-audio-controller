@@ -37,12 +37,12 @@ export class AutomationConnection {
         const messageHandler = (
             message: any,
             timetag: number | undefined,
-            info: any
+            info: any,
         ) => {
             const check = (key: keyof AutomationProtocol['fromAutomation']) =>
                 this.checkOscCommand(
                     message.address,
-                    this.automationProtocol.fromAutomation[key]
+                    this.automationProtocol.fromAutomation[key],
                 )
             const wrapChannelCommand = (fn: (ch: any) => void) => {
                 let ch: number
@@ -55,14 +55,14 @@ export class AutomationConnection {
                         .find(
                             (f) =>
                                 f.userLabel === chMessage ||
-                                f.label === chMessage
+                                f.label === chMessage,
                         )
                     const channel = state.channels[0].chMixerConnection
                         .map((conn) =>
                             conn.channel.map((ch) => ({
                                 assignedFader: ch.assignedFader,
                                 label: ch.label,
-                            }))
+                            })),
                         )
                         .map((m) => m.find((ch) => ch.label === chMessage))
                         .find((m) => m)
@@ -73,7 +73,7 @@ export class AutomationConnection {
                         ch = channel.assignedFader + 1
                     } else {
                         logger.error(
-                            `Could not find fader with label: ${chMessage}`
+                            `Could not find fader with label: ${chMessage}`,
                         )
                         return
                     }
@@ -99,7 +99,7 @@ export class AutomationConnection {
                 wrapChannelCommand((ch: any) => {
                     if (message.args[0] === 1) {
                         mixerGenericConnection.checkForAutoResetThreshold(
-                            ch - 1
+                            ch - 1,
                         )
                         store.dispatch({
                             type: FaderActionTypes.SET_PGM,
@@ -108,7 +108,7 @@ export class AutomationConnection {
                         })
                     } else if (message.args[0] === 2) {
                         mixerGenericConnection.checkForAutoResetThreshold(
-                            ch - 1
+                            ch - 1,
                         )
                         store.dispatch({
                             type: FaderActionTypes.SET_VO,
@@ -126,7 +126,7 @@ export class AutomationConnection {
                     if (message.args.length > 1) {
                         mixerGenericConnection.updateOutLevel(
                             ch - 1,
-                            parseFloat(message.args[1])
+                            parseFloat(message.args[1]),
                         )
                     } else {
                         mixerGenericConnection.updateOutLevel(ch - 1, -1)
@@ -174,7 +174,7 @@ export class AutomationConnection {
                     if (message.args.length > 1) {
                         mixerGenericConnection.updateOutLevel(
                             ch - 1,
-                            parseFloat(message.args[1])
+                            parseFloat(message.args[1]),
                         )
                     } else {
                         mixerGenericConnection.updateOutLevel(ch - 1, -1)
@@ -250,7 +250,7 @@ export class AutomationConnection {
                                     pstOn,
                                     showChannel,
                                 }: Fader,
-                                index
+                                index,
                             ) => ({
                                 faderLevel,
                                 pgmOn,
@@ -258,12 +258,33 @@ export class AutomationConnection {
                                 pstOn,
                                 showChannel,
                                 label: getFaderLabel(index),
-                            })
+                            }),
                         ),
                     }),
                     's',
-                    info
+                    info,
                 )
+            } else if (check('STATE_CHANNEL_FULL')) {
+                wrapChannelCommand((ch: any) => {
+                    // Return state of fader to automation:
+                    const currentFader = state.faders[0].fader[ch - 1]
+                    this.sendOutMessage(
+                        this.automationProtocol.toAutomation.STATE_FULL,
+                        ch,
+                        JSON.stringify({
+                            channel: {
+                                faderLevel: currentFader.faderLevel,
+                                pgmOn: currentFader.pgmOn,
+                                currentFader: currentFader.voOn,
+                                pstOn: currentFader.pstOn,
+                                showChannel: currentFader.showChannel,
+                                label: getFaderLabel(ch - 1),
+                            },
+                        }),
+                        's',
+                        info,
+                    )
+                })
             } else if (check('STATE_CHANNEL_PGM')) {
                 wrapChannelCommand((ch: any) => {
                     this.sendOutMessage(
@@ -271,7 +292,7 @@ export class AutomationConnection {
                         ch,
                         state.faders[0].fader[ch - 1].pgmOn,
                         'i',
-                        info
+                        info,
                     )
                 })
             } else if (check('STATE_CHANNEL_PST')) {
@@ -281,7 +302,7 @@ export class AutomationConnection {
                         ch,
                         state.faders[0].fader[ch - 1].pstOn,
                         'i',
-                        info
+                        info,
                     )
                 })
             } else if (check('STATE_CHANNEL_MUTE')) {
@@ -291,7 +312,7 @@ export class AutomationConnection {
                         ch,
                         state.faders[0].fader[ch - 1].muteOn,
                         'i',
-                        info
+                        info,
                     )
                 })
             } else if (check('STATE_CHANNEL_FADER_LEVEL')) {
@@ -302,7 +323,7 @@ export class AutomationConnection {
                         ch,
                         state.faders[0].fader[ch - 1].faderLevel,
                         'f',
-                        info
+                        info,
                     )
                 })
             } else if (check('PING')) {
@@ -315,7 +336,7 @@ export class AutomationConnection {
                     0,
                     pingValue,
                     's',
-                    info
+                    info,
                 )
             }
         }
@@ -358,7 +379,7 @@ export class AutomationConnection {
         channel: number,
         value: string | number | boolean,
         type: string,
-        to: { address: string; port: number }
+        to: { address: string; port: number },
     ) {
         let channelString = this.automationProtocol.leadingZeros
             ? ('0' + channel).slice(-2)
@@ -376,7 +397,7 @@ export class AutomationConnection {
                     ],
                 },
                 to.address,
-                to.port
+                to.port,
             )
         }
     }

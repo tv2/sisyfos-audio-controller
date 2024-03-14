@@ -31,6 +31,7 @@ export interface AutomationProtocol {
         STATE_CHANNEL_FADER_LEVEL: string
         STATE_CHANNEL_MUTE: string
         STATE_FULL: string
+        STATE_CHANNEL_FULL: string
         PING: string
     }
     toAutomation: {
@@ -39,6 +40,7 @@ export interface AutomationProtocol {
         STATE_CHANNEL_FADER_LEVEL: string
         STATE_CHANNEL_MUTE: string
         STATE_FULL: string
+        STATE_CHANNEL_FULL: string
         PONG: string
     }
     fader: {
@@ -85,6 +87,7 @@ export const AutomationPresets: { [key: string]: AutomationProtocol } = {
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
             STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
             STATE_FULL: '/state/full',
+            STATE_CHANNEL_FULL: '/state/ch/{value1}/full',
             PING: '/ping/{value1}',
         },
         toAutomation: {
@@ -93,6 +96,7 @@ export const AutomationPresets: { [key: string]: AutomationProtocol } = {
             STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
             STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
             STATE_FULL: '/state/full',
+            STATE_CHANNEL_FULL: '/state/ch/{value1}/full',
             PONG: '/pong',
         },
         fader: {
