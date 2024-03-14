@@ -264,7 +264,7 @@ export class AutomationConnection {
                     's',
                     info,
                 )
-            } else if (check('STATE_CHANNEL_FULL')) {
+            } else if (check('STATE_CHANNEL')) {
                 wrapChannelCommand((ch: any) => {
                     // Return state of fader to automation:
                     const currentFader = state.faders[0].fader[ch - 1]
