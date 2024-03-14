@@ -258,9 +258,9 @@ Pass a command directly from Automation to Audiomixer
 
 /state/full - returns a json string with an array of channels: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
 
-#### Get full state of one fader:
+#### Get all state of one fader:
 
-/ch/1/full/state - returns a json string with fader 1 settings: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
+/ch/1/state - returns a json string with fader 1 settings: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
 
 #### Get state channel PGM:
 
