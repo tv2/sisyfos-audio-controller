@@ -260,35 +260,35 @@ Pass a command directly from Automation to Audiomixer
 
 #### Get full state of one fader:
 
-/state/ch/1/full - returns a json string with fader 1 settings: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
+/ch/1/full/state - returns a json string with fader 1 settings: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
 
 #### Get state channel PGM:
 
-/state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
+/ch/1/mix/pgm/state - returns pgm state integer { 0 or 1 }
 
 #### get state channel PST:
 
-/state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
+/ch/1/mix/pst/state - returns pgm state integer { 0 or 1 }
 
 #### Get state channel faderlevel:
 
-/state/ch/1/mix/faderlevel - float {between 0 and 1}
+/ch/1/mix/faderlevel/state - float {between 0 and 1}
 
 #### get state channel Mute:
 
-/state/ch/1/mute - returns mute state integer { 0 or 1 }
+/ch/1/mute/state - returns mute state integer { 0 or 1 }
 
 #### Get state group PGM:
 
-/state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
+/ch/1/mix/pgm/state - returns pgm state integer { 0 or 1 }
 
 #### get state group PST:
 
-/state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
+/ch/1/mix/pst/state - returns pgm state integer { 0 or 1 }
 
 #### Get state group faderlevel:
 
-/state/ch/1/mix/faderlevel - float {between 0 and 1}
+/ch/1/mix/faderlevel/state - returns float {between 0 and 1}
 
 ## Check connectivity
 
