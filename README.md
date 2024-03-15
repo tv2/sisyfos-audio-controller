@@ -197,11 +197,11 @@ The monitor sends are the same as those on the Channel Strip.
 
 ## Automation Support:
 
-It´s possible to control the Producers-Audio-Mixer from an automationsystem, for it to act as middleware.
+It´s possible to control Sisyfos from an automationsystem, for it to act as middleware.
 
 ## Set state:
 
-To set the state send these OSC commands from you Automation to ProducersAudioMixer Port: 5255:
+To set the state send these OSC commands from you Automation to Sisyfos Port: 5255:
 
 #### Set channel to PGM (optional: indiviaul fadetime):
 
@@ -277,31 +277,27 @@ channel: {
 
 #### Get state channel PGM:
 
-/ch/1/mix/pgm/state - returns pgm state integer { 0 or 1 }
+/ch/1/pgm/state - returns pgm state integer { 0 or 1 }
 
 #### get state channel PST:
 
-/ch/1/mix/pst/state - returns pgm state integer { 0 or 1 }
+/ch/1/pst/state - returns pgm state integer { 0 or 1 }
 
 #### Get state channel faderlevel:
 
-/ch/1/mix/faderlevel/state - float {between 0 and 1}
+/ch/1/faderlevel/state - float {between 0 and 1}
 
 #### get state channel Mute:
 
 /ch/1/mute/state - returns mute state integer { 0 or 1 }
 
-#### Get state group PGM:
+#### get state InputGain:
 
-/ch/1/mix/pgm/state - returns pgm state integer { 0 or 1 }
+/ch/1/inputgain/state - returns inputgain state float {between 0 and 1}
 
-#### get state group PST:
+#### get state InputSelector:
 
-/ch/1/mix/pst/state - returns pgm state integer { 0 or 1 }
-
-#### Get state group faderlevel:
-
-/ch/1/mix/faderlevel/state - returns float {between 0 and 1}
+/ch/1/inputselector/state - returns inputselector state integer { 0 or 1 }
 
 ## Check connectivity
 
