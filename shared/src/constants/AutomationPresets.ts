@@ -20,6 +20,7 @@ export interface AutomationProtocol {
         CHANNEL_FADER_LEVEL: string
         CHANNEL_INPUT_GAIN: string
         CHANNEL_INPUT_SELECTOR: string
+        SET_CHANNEL_STATE: string
         INJECT_COMMAND: string
         CHANNEL_VISIBLE: string
         CHANNEL_MUTE: string
@@ -95,6 +96,7 @@ export const AutomationPresets: { [key: string]: AutomationProtocol } = {
             CHANNEL_INPUT_GAIN: '/ch/{value1}/inputgain',
             CHANNEL_INPUT_SELECTOR: '/ch/{value1}/inputselector',
             CHANNEL_VISIBLE: '/ch/{value1}/visible',
+            SET_CHANNEL_STATE: '/setchannel/{value1}',
             CHANNEL_MUTE: '/ch/{value1}/mute',
             X_MIX: '/take',
             INJECT_COMMAND: '/inject',

@@ -179,7 +179,6 @@ export class AutomationConnection {
                     } else {
                         mixerGenericConnection.updateOutLevel(ch - 1, -1)
                     }
-                    global.mainThreadHandler.updatePartialStore(ch - 1)
                 })
             } else if (check('CHANNEL_INPUT_GAIN')) {
                 wrapChannelCommand((ch: any) => {
@@ -195,7 +194,6 @@ export class AutomationConnection {
                     } else {
                         mixerGenericConnection.updateInputGain(ch - 1)
                     }
-                    global.mainThreadHandler.updatePartialStore(ch - 1)
                 })
             }  else if (check('CHANNEL_INPUT_SELECTOR')) {
                 wrapChannelCommand((ch: any) => {
@@ -211,7 +209,25 @@ export class AutomationConnection {
                     } else {
                         mixerGenericConnection.updateInputSelector(ch - 1)
                     }
-                    global.mainThreadHandler.updatePartialStore(ch - 1)
+                })
+            }  else if (check('SET_CHANNEL_STATE')) {
+                wrapChannelCommand((ch: any) => {
+                    const apiState: AutomationChannelAPI = JSON.parse(message.args[0])
+                    const channelState: Fader = {... state.faders[0].fader[ch - 1],
+                        faderLevel: apiState.faderLevel,
+                        pgmOn: apiState.pgmOn,
+                        voOn: apiState.voOn,
+                        pstOn: apiState.pstOn,
+                        showChannel: apiState.visible,
+                        muteOn: apiState.muteOn,
+                        inputGain: apiState.inputGain,
+                        inputSelector: apiState.inputSelector,
+                    }
+                    store.dispatch({
+                        type: FaderActionTypes.SET_SINGLE_FADER_STATE,
+                        faderIndex: ch - 1,
+                        state: channelState,                        
+                    })
                 })
             } else if (check('INJECT_COMMAND')) {
                 /*
