@@ -35,6 +35,7 @@ export interface AutomationProtocol {
         STATE_CHANNEL_INPUT_SELECTOR: string
         STATE_CHANNEL_MUTE: string
         STATE_FULL: string
+        STATE_CHANNEL: string
         PING: string
     }
     toAutomation: {
@@ -45,6 +46,7 @@ export interface AutomationProtocol {
         STATE_CHANNEL_INPUT_SELECTOR: string
         STATE_CHANNEL_MUTE: string
         STATE_FULL: string
+        STATE_CHANNEL: string
         PONG: string
     }
     fader: {
@@ -88,23 +90,25 @@ export const AutomationPresets: { [key: string]: AutomationProtocol } = {
             FADE_TO_BLACK: '/fadetoblack',
             CLEAR_PST: '/clearpst',
             SNAP_RECALL: '/snap/{value1}',
-            STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
-            STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
-            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
-            STATE_CHANNEL_INPUT_GAIN: '/state/ch/{value1}/inputgain',
-            STATE_CHANNEL_INPUT_SELECTOR: '/state/ch/{value1}/inputselector',
-            STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
+            STATE_CHANNEL_INPUT_GAIN: '/ch/{value1}/inputgain/state',
+            STATE_CHANNEL_INPUT_SELECTOR: '/ch/{value1}/inputselector/state',
+            STATE_CHANNEL_PGM: '/ch/{value1}/pgm/state',
+            STATE_CHANNEL_PST: '/ch/{value1}/pst/state',
+            STATE_CHANNEL_FADER_LEVEL: '/ch/{value1}/faderlevel/state',
+            STATE_CHANNEL_MUTE: '/ch/{value1}/mute/state',
             STATE_FULL: '/state/full',
+            STATE_CHANNEL: '/ch/{value1}/state',
             PING: '/ping/{value1}',
         },
         toAutomation: {
-            STATE_CHANNEL_PGM: '/state/ch/{value1}/pgm',
-            STATE_CHANNEL_PST: '/state/ch/{value1}/pst',
-            STATE_CHANNEL_FADER_LEVEL: '/state/ch/{value1}/faderlevel',
-            STATE_CHANNEL_INPUT_GAIN: '/state/ch/{value1}/inputgain',
-            STATE_CHANNEL_INPUT_SELECTOR: '/state/ch/{value1}/inputselector',
-            STATE_CHANNEL_MUTE: '/state/ch/{value1}/mute',
+            STATE_CHANNEL_INPUT_GAIN: '/ch/{value1}/inputgain/state',
+            STATE_CHANNEL_INPUT_SELECTOR: '/ch/{value1}/inputselector/state',
+            STATE_CHANNEL_PGM: '/ch/{value1}/pgm/state',
+            STATE_CHANNEL_PST: '/ch/{value1}/pst/state',
+            STATE_CHANNEL_FADER_LEVEL: '/ch/{value1}/faderlevel/state',
+            STATE_CHANNEL_MUTE: '/ch/{value1}/mute/state',
             STATE_FULL: '/state/full',
+            STATE_CHANNEL: '/ch/{value1}/state',
             PONG: '/pong',
         },
         fader: {

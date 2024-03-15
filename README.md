@@ -256,35 +256,52 @@ Pass a command directly from Automation to Audiomixer
 
 #### Get full state of all channels:
 
-/state/full - returns a json string with an array of channels: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
+/state/full - returns a json string with an array of channels with: 
+```
+channel: {
+    faderLevel,
+    pgmOn,
+    voOn,
+    pstOn,
+    showChannel,
+    label,
+    mute,
+    inputGain,
+    inputSelector
+}
+```
+
+#### Get all state of one fader:
+
+/ch/1/state - returns a json in same format as the full state but only for the channel specified in the path
 
 #### Get state channel PGM:
 
-/state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
+/ch/1/mix/pgm/state - returns pgm state integer { 0 or 1 }
 
 #### get state channel PST:
 
-/state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
+/ch/1/mix/pst/state - returns pgm state integer { 0 or 1 }
 
 #### Get state channel faderlevel:
 
-/state/ch/1/mix/faderlevel - float {between 0 and 1}
+/ch/1/mix/faderlevel/state - float {between 0 and 1}
 
 #### get state channel Mute:
 
-/state/ch/1/mute - returns mute state integer { 0 or 1 }
+/ch/1/mute/state - returns mute state integer { 0 or 1 }
 
 #### Get state group PGM:
 
-/state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
+/ch/1/mix/pgm/state - returns pgm state integer { 0 or 1 }
 
 #### get state group PST:
 
-/state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
+/ch/1/mix/pst/state - returns pgm state integer { 0 or 1 }
 
 #### Get state group faderlevel:
 
-/state/ch/1/mix/faderlevel - float {between 0 and 1}
+/ch/1/mix/faderlevel/state - returns float {between 0 and 1}
 
 ## Check connectivity
 
