@@ -181,6 +181,38 @@ export class AutomationConnection {
                     }
                     global.mainThreadHandler.updatePartialStore(ch - 1)
                 })
+            } else if (check('CHANNEL_INPUT_GAIN')) {
+                wrapChannelCommand((ch: any) => {
+                    store.dispatch({
+                        type: FaderActionTypes.SET_INPUT_GAIN,
+                        faderIndex: ch - 1,
+                        level: message.args[0],
+                    })
+                    if (message.args.length > 1) {
+                        mixerGenericConnection.updateInputGain(
+                            ch - 1,
+                        )
+                    } else {
+                        mixerGenericConnection.updateInputGain(ch - 1)
+                    }
+                    global.mainThreadHandler.updatePartialStore(ch - 1)
+                })
+            }  else if (check('CHANNEL_INPUT_SELECTOR')) {
+                wrapChannelCommand((ch: any) => {
+                    store.dispatch({
+                        type: FaderActionTypes.SET_INPUT_SELECTOR,
+                        faderIndex: ch - 1,
+                        selected: message.args[0],
+                    })
+                    if (message.args.length > 1) {
+                        mixerGenericConnection.updateInputSelector(
+                            ch - 1,
+                        )
+                    } else {
+                        mixerGenericConnection.updateInputSelector(ch - 1)
+                    }
+                    global.mainThreadHandler.updatePartialStore(ch - 1)
+                })
             } else if (check('INJECT_COMMAND')) {
                 /*
                 The INJECT COMMAND is not implemented 
@@ -260,6 +292,8 @@ export class AutomationConnection {
                                 voOn,
                                 pstOn,
                                 showChannel,
+                                inputGain,
+                                inputSelector,
                                 label: getFaderLabel(index),
                                 muteOn,
                                 inputGain,
@@ -333,6 +367,28 @@ export class AutomationConnection {
                         state.faders[0].fader[ch - 1].faderLevel,
                         'f',
                         info,
+                    )
+                })
+            } else if (check('STATE_CHANNEL_INPUT_GAIN')) {
+                wrapChannelCommand((ch) => {
+                    this.sendOutMessage(
+                        this.automationProtocol.toAutomation
+                            .STATE_CHANNEL_INPUT_GAIN,
+                        ch,
+                        state.faders[0].fader[ch - 1].inputGain,
+                        'f',
+                        info
+                    )
+                })
+            } else if (check('STATE_CHANNEL_INPUT_SELECTOR')) {
+                wrapChannelCommand((ch) => {
+                    this.sendOutMessage(
+                        this.automationProtocol.toAutomation
+                            .STATE_CHANNEL_INPUT_SELECTOR,
+                        ch,
+                        state.faders[0].fader[ch - 1].inputSelector,
+                        'i',
+                        info
                     )
                 })
             } else if (check('PING')) {
