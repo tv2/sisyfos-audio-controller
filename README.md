@@ -256,11 +256,24 @@ Pass a command directly from Automation to Audiomixer
 
 #### Get full state of all channels:
 
-/state/full - returns a json string with an array of channels: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
+/state/full - returns a json string with an array of channels with: 
+```
+channel: {
+    faderLevel,
+    pgmOn,
+    voOn,
+    pstOn,
+    showChannel,
+    label,
+    mute,
+    inputGain,
+    inputSelector
+}
+```
 
 #### Get all state of one fader:
 
-/ch/1/state - returns a json string with fader 1 settings: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
+/ch/1/state - returns a json in same format as the full state but only for the channel specified in the path
 
 #### Get state channel PGM:
 
