@@ -296,8 +296,6 @@ export class AutomationConnection {
                                 inputSelector,
                                 label: getFaderLabel(index),
                                 muteOn,
-                                inputGain,
-                                inputSelector,
                             }),
                         ),
                     }),
