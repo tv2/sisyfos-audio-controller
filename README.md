@@ -227,6 +227,24 @@ To set the state send these OSC commands from you Automation to Sisyfos Port: 52
 
 /ch/1/label - string {name of channel}
 
+#### Set channel state:
+
+/setchannel/{value1} set the channel state of all settings exposed to automation parsing a json, with this type:
+
+```
+export interface AutomationChannelAPI {
+    faderLevel: number
+    pgmOn: boolean
+    voOn: boolean
+    pstOn: boolean
+    visible: boolean
+    muteOn: boolean
+    inputGain: number
+    inputSelector: number
+    label: string
+}
+```
+
 #### Inject Command: (currently not implemented)
 
 Pass a command directly from Automation to Audiomixer
