@@ -63,6 +63,18 @@ export interface AutomationProtocol {
     }
 }
 
+export interface AutomationChannelAPI {
+    faderLevel: number
+    pgmOn: boolean
+    voOn: boolean
+    pstOn: boolean
+    visible: boolean
+    muteOn: boolean
+    inputGain: number
+    inputSelector: number
+    label: string
+}
+
 export const AutomationPresets: { [key: string]: AutomationProtocol } = {
     sofie: {
         protocol: 'OSC',

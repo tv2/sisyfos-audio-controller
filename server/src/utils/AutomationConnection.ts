@@ -7,11 +7,11 @@ import { mixerGenericConnection } from '../mainClasses'
 import {
     AutomationProtocol,
     AutomationPresets,
+    AutomationChannelAPI,
 } from '../../../shared/src/constants/AutomationPresets'
 import { Fader } from '../../../shared/src/reducers/fadersReducer'
 import {
     FaderActionTypes,
-    FaderActions,
 } from '../../../shared/src/actions/faderActions'
 import { getFaderLabel } from './labels'
 import { logger } from './logger'
@@ -286,12 +286,12 @@ export class AutomationConnection {
                                     inputSelector,                                    
                                 }: Fader,
                                 index,
-                            ) => ({
+                            ): AutomationChannelAPI => ({
                                 faderLevel,
                                 pgmOn,
                                 voOn,
                                 pstOn,
-                                showChannel,
+                                visible: showChannel,
                                 inputGain,
                                 inputSelector,
                                 label: getFaderLabel(index),
@@ -306,21 +306,22 @@ export class AutomationConnection {
                 wrapChannelCommand((ch: any) => {
                     // Return state of fader to automation:
                     const currentFader = state.faders[0].fader[ch - 1]
+                    const channelState: AutomationChannelAPI = {
+                        faderLevel: currentFader.faderLevel,
+                        pgmOn: currentFader.pgmOn,
+                        voOn: currentFader.voOn,
+                        pstOn: currentFader.pstOn,
+                        visible: currentFader.showChannel,
+                        label: getFaderLabel(ch - 1),
+                        muteOn: currentFader.muteOn,
+                        inputGain: currentFader.inputGain,
+                        inputSelector: currentFader.inputSelector,
+                    } 
                     this.sendOutMessage(
                         this.automationProtocol.toAutomation.STATE_FULL,
                         ch,
                         JSON.stringify({
-                            channel: {
-                                faderLevel: currentFader.faderLevel,
-                                pgmOn: currentFader.pgmOn,
-                                voOn: currentFader.voOn,
-                                pstOn: currentFader.pstOn,
-                                showChannel: currentFader.showChannel,
-                                label: getFaderLabel(ch - 1),
-                                mute: currentFader.muteOn,
-                                inputGain: currentFader.inputGain,
-                                inputSelector: currentFader.inputSelector,
-                            },
+                            channel: channelState,
                         }),
                         's',
                         info,

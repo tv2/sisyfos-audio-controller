@@ -227,10 +227,11 @@ To set the state send these OSC commands from you Automation to Sisyfos Port: 52
 
 /ch/1/label - string {name of channel}
 
-#### Inject Command:
+#### Inject Command: (currently not implemented)
 
 Pass a command directly from Automation to Audiomixer
 /inject
+
 
 #### Crossfade between PGM and PST:
 
@@ -258,16 +259,16 @@ Pass a command directly from Automation to Audiomixer
 
 /state/full - returns a json string with an array of channels with: 
 ```
-channel: {
-    faderLevel,
-    pgmOn,
-    voOn,
-    pstOn,
-    showChannel,
-    label,
-    mute,
-    inputGain,
-    inputSelector
+export interface AutomationChannelAPI {
+    faderLevel: number
+    pgmOn: boolean
+    voOn: boolean
+    pstOn: boolean
+    visible: boolean
+    muteOn: boolean
+    inputGain: number
+    inputSelector: number
+    label: string
 }
 ```
 
