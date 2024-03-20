@@ -90,9 +90,7 @@ export class AutomationConnection {
                 global.mainThreadHandler.updatePartialStore(ch - 1)
             }
 
-            logger
-                .data(message)
-                .debug(`RECIEVED AUTOMATION MESSAGE: ${message.address}`)
+                console.log(`RECIEVED AUTOMATION MESSAGE: ${message.address}`)
 
             // Set state of Sisyfos:
             if (check('CHANNEL_PGM_ON_OFF')) {
@@ -214,14 +212,15 @@ export class AutomationConnection {
                 wrapChannelCommand((ch: any) => {
                     const apiState: AutomationChannelAPI = JSON.parse(message.args[0])
                     const channelState: Fader = {... state.faders[0].fader[ch - 1],
-                        faderLevel: apiState.faderLevel,
-                        pgmOn: apiState.pgmOn,
-                        voOn: apiState.voOn,
-                        pstOn: apiState.pstOn,
-                        showChannel: apiState.visible,
-                        muteOn: apiState.muteOn,
-                        inputGain: apiState.inputGain,
-                        inputSelector: apiState.inputSelector,
+                        faderLevel: apiState.faderLevel || state.faders[0].fader[ch - 1].faderLevel,
+                        pgmOn: apiState.pgmOn || state.faders[0].fader[ch - 1].pgmOn,
+                        voOn: apiState.voOn || state.faders[0].fader[ch - 1].voOn,
+                        pstOn: apiState.pstOn   || state.faders[0].fader[ch - 1].pstOn,
+                        showChannel: apiState.visible || state.faders[0].fader[ch - 1].showChannel,
+                        muteOn: apiState.muteOn || state.faders[0].fader[ch - 1].muteOn,
+                        inputGain: apiState.inputGain || state.faders[0].fader[ch - 1].inputGain,
+                        inputSelector: apiState.inputSelector || state.faders[0].fader[ch - 1].inputSelector,
+                        label: apiState.label || state.faders[0].fader[ch - 1].label,
                     }
                     store.dispatch({
                         type: FaderActionTypes.SET_SINGLE_FADER_STATE,
@@ -407,9 +406,10 @@ export class AutomationConnection {
                     )
                 })
             } else if (check('PING')) {
-                let pingValue = state.settings[0].mixers[0].mixerOnline
-                    ? message.address.split('/')[2]
-                    : 'offline'
+                // let pingValue = state.settings[0].mixers[0].mixerOnline
+                //     ? message.address.split('/')[2]
+                //     : 'offline'
+                let pingValue = message.address.split('/')[2]
 
                 this.sendOutMessage(
                     this.automationProtocol.toAutomation.PONG,

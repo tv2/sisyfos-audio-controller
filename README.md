@@ -233,14 +233,14 @@ To set the state send these OSC commands from you Automation to Sisyfos Port: 52
 
 ```
 export interface AutomationChannelAPI {
-    faderLevel: number
-    pgmOn: boolean
-    voOn: boolean
-    pstOn: boolean
-    visible: boolean
-    muteOn: boolean
-    inputGain: number
-    inputSelector: number
+    faderLevel?: number
+    pgmOn?: boolean
+    voOn?: boolean
+    pstOn?: boolean
+    visible?: boolean
+    muteOn?: boolean
+    inputGain?: number
+    inputSelector?: number
     label: string
 }
 ```
