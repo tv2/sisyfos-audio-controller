@@ -333,9 +333,9 @@ export class AutomationConnection {
                         muteOn: currentFader.muteOn,
                         inputGain: currentFader.inputGain,
                         inputSelector: currentFader.inputSelector,
-                    } 
+                    }
                     this.sendOutMessage(
-                        this.automationProtocol.toAutomation.STATE_FULL,
+                        this.automationProtocol.toAutomation.STATE_CHANNEL,
                         ch,
                         JSON.stringify({
                             channel: channelState,
