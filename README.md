@@ -197,11 +197,11 @@ The monitor sends are the same as those on the Channel Strip.
 
 ## Automation Support:
 
-It´s possible to control the Producers-Audio-Mixer from an automationsystem, for it to act as middleware.
+It´s possible to control Sisyfos from an automationsystem, for it to act as middleware.
 
 ## Set state:
 
-To set the state send these OSC commands from you Automation to ProducersAudioMixer Port: 5255:
+To set the state send these OSC commands from you Automation to Sisyfos Port: 5255:
 
 #### Set channel to PGM (optional: indiviaul fadetime):
 
@@ -227,10 +227,29 @@ To set the state send these OSC commands from you Automation to ProducersAudioMi
 
 /ch/1/label - string {name of channel}
 
-#### Inject Command:
+#### Set channel state:
+
+/setchannel/{value1} set the channel state of all settings exposed to automation parsing a json, with this type:
+
+```
+export interface AutomationChannelAPI {
+    faderLevel?: number
+    pgmOn?: boolean
+    voOn?: boolean
+    pstOn?: boolean
+    visible?: boolean
+    muteOn?: boolean
+    inputGain?: number
+    inputSelector?: number
+    label: string
+}
+```
+
+#### Inject Command: (currently not implemented)
 
 Pass a command directly from Automation to Audiomixer
 /inject
+
 
 #### Crossfade between PGM and PST:
 
@@ -256,35 +275,48 @@ Pass a command directly from Automation to Audiomixer
 
 #### Get full state of all channels:
 
-/state/full - returns a json string with an array of channels: { pgmOn: boolean, pstOn: boolean, faderLevel: boolean }
+/state/full - returns a json string with an array of channels with: 
+```
+export interface AutomationChannelAPI {
+    faderLevel: number
+    pgmOn: boolean
+    voOn: boolean
+    pstOn: boolean
+    visible: boolean
+    muteOn: boolean
+    inputGain: number
+    inputSelector: number
+    label: string
+}
+```
+
+#### Get all state of one fader:
+
+/ch/1/state - returns a json in same format as the full state but only for the channel specified in the path
 
 #### Get state channel PGM:
 
-/state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
+/ch/1/pgm/state - returns pgm state integer { 0 or 1 }
 
 #### get state channel PST:
 
-/state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
+/ch/1/pst/state - returns pgm state integer { 0 or 1 }
 
 #### Get state channel faderlevel:
 
-/state/ch/1/mix/faderlevel - float {between 0 and 1}
+/ch/1/faderlevel/state - float {between 0 and 1}
 
 #### get state channel Mute:
 
-/state/ch/1/mute - returns mute state integer { 0 or 1 }
+/ch/1/mute/state - returns mute state integer { 0 or 1 }
 
-#### Get state group PGM:
+#### get state InputGain:
 
-/state/ch/1/mix/pgm - returns pgm state integer { 0 or 1 }
+/ch/1/inputgain/state - returns inputgain state float {between 0 and 1}
 
-#### get state group PST:
+#### get state InputSelector:
 
-/state/ch/1/mix/pst - returns pgm state integer { 0 or 1 }
-
-#### Get state group faderlevel:
-
-/state/ch/1/mix/faderlevel - float {between 0 and 1}
+/ch/1/inputselector/state - returns inputselector state integer { 0 or 1 }
 
 ## Check connectivity
 
