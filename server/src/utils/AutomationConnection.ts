@@ -338,7 +338,7 @@ export class AutomationConnection {
                         this.automationProtocol.toAutomation.STATE_CHANNEL,
                         ch,
                         JSON.stringify({
-                            channel: channelState,
+                            channel: [channelState],
                         }),
                         's',
                         info,
