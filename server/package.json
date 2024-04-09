@@ -23,7 +23,7 @@
         "atem-connection": "^3.4.0",
         "casparcg-connection": "^5.1.0",
         "emberplus-connection": "^0.2.1",
-        "express": "^4.18.2",
+        "express": "^4.19.2",
         "node-emberplus": "^3.0.5",
         "node-vmix": "^1.6.1",
         "osc": "^2.4.4",
