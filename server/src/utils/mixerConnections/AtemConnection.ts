@@ -23,6 +23,7 @@ import { FairlightAudioSource } from 'atem-connection/dist/state/fairlight'
 
 enum TrackIndex {
     Stereo = '-65280',
+    Mono = '-65281',
     Right = '-255',
     Left = '-256',
 }
@@ -278,6 +279,22 @@ export class AtemMixerConnection {
                 }
 
                 this._sourceTracks[channelTypeIndex] = TrackIndex.Right
+                break
+            case 'MONO':
+                this._connection.setFairlightAudioMixerInputProps(
+                    this._chNoToSource[channelIndex],
+                    { activeConfiguration: FairlightInputConfiguration.Mono }
+                )
+                if (pgmOn || pflOn) {
+                    this._connection.setFairlightAudioMixerSourceProps(
+                        this._chNoToSource[channelIndex],
+                        TrackIndex.Mono,
+                        {
+                            mixOption: FairlightAudioMixOption.On,
+                        }
+                    )
+                }
+                this._sourceTracks[channelTypeIndex] = TrackIndex.Mono
                 break
         }
     }
