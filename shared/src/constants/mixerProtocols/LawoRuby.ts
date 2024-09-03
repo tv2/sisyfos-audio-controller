@@ -56,6 +56,13 @@ export const LawoRuby: MixerProtocol = {
                         type: 'int',
                         label: 'RR',
                     },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 2,
+                        type: 'int',
+                        label: 'MONO',
+                    },
                 ],
                 CHANNEL_OUT_GAIN: [
                     {
@@ -118,6 +125,13 @@ export const LawoRuby: MixerProtocol = {
                         value: 1,
                         type: 'int',
                         label: 'RR',
+                    },
+                    {
+                        mixerMessage:
+                            'Ruby.Sources.{channel}.DSP.Input.LR Mode',
+                        value: 2,
+                        type: 'int',
+                        label: 'MONO',
                     },
                 ],
                 CHANNEL_OUT_GAIN: [
