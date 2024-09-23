@@ -210,7 +210,7 @@ To set the state send these OSC commands from you Automation to Sisyfos Port: 52
 /ch/1/mix/pgm - integer: { 0, 1 or 2 } - float { fadetime in ms }
 
 #### Set channel to PST:
-
+If showPFL in setting is enabled, this also sets the state of PFL
 /ch/1/mix/pst - integer: { 0, 1 or 2 } (the integer defines: 0 - Off, 1 - Pgm On, 2 - Voice Over)
 
 #### Mute channel:
