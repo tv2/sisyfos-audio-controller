@@ -229,6 +229,12 @@ export class AutomationConnection {
                         faderIndex: ch - 1,
                         state: channelState,                        
                     })
+                    mixerGenericConnection.updateOutLevel(ch - 1, -1)
+                    mixerGenericConnection.updateInputGain(ch - 1)
+                    mixerGenericConnection.updateInputSelector(ch - 1)
+                    mixerGenericConnection.updateMuteState(ch - 1)
+                    mixerGenericConnection.updateChannelName(ch - 1)
+                    mixerGenericConnection.updateNextAux(ch - 1)
                 })
             } else if (check('INJECT_COMMAND')) {
                 /*
