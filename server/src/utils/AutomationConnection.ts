@@ -153,6 +153,13 @@ export class AutomationConnection {
                             pstOn: false,
                         })
                     }
+                    if ( state.settings[0].showPfl) {
+                        store.dispatch({
+                            type: FaderActionTypes.SET_PFL,
+                            faderIndex: ch - 1,
+                            pflOn: message.args[0] > 0,
+                        })
+                    }
                     mixerGenericConnection.updateNextAux(ch - 1)
                 })
             } else if (check('CHANNEL_MUTE')) {
