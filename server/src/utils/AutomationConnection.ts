@@ -230,11 +230,12 @@ export class AutomationConnection {
                         inputGain: apiState.inputGain ?? state.faders[0].fader[ch - 1].inputGain,
                         inputSelector: apiState.inputSelector ?? state.faders[0].fader[ch - 1].inputSelector,
                         label: apiState.label ?? state.faders[0].fader[ch - 1].label,
+                        pflOn: state.settings[0].showPfl && (apiState.pstOn ?? state.faders[0].fader[ch - 1].pflOn)
                     }
                     store.dispatch({
                         type: FaderActionTypes.SET_SINGLE_FADER_STATE,
                         faderIndex: ch - 1,
-                        state: channelState,                        
+                        state: channelState,                     
                     })
                     mixerGenericConnection.updateOutLevel(ch - 1, -1)
                     mixerGenericConnection.updateInputGain(ch - 1)
