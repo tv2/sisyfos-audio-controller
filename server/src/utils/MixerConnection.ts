@@ -432,6 +432,11 @@ export class MixerGenericConnection {
             channel: channelIndex,
             active: true,
         })
+        // If fadeTime is 0 - jump to level and don't use timer
+        if (fadeTime === 0) {
+            this.jumpToLevel(mixerIndex, channelIndex, faderIndex)
+            return
+        }
         if (
             state.faders[0].fader[faderIndex].pgmOn ||
             state.faders[0].fader[faderIndex].voOn
@@ -440,6 +445,22 @@ export class MixerGenericConnection {
         } else {
             this.fadeDown(mixerIndex, channelIndex, fadeTime)
         }
+    }
+
+    jumpToLevel = (mixerIndex: number, channelIndex: number, faderIndex: number) => {
+        let targetVal = state.faders[0].fader[faderIndex].faderLevel
+        if (state.faders[0].fader[faderIndex].voOn) {
+            targetVal = (targetVal * (100 - state.settings[0].voLevel)) / 100
+        }
+        this.mixerConnection[mixerIndex].updateFadeIOLevel(channelIndex, targetVal)
+        store.dispatch({
+            type: ChannelActionTypes.SET_OUTPUT_LEVEL,
+            mixerIndex: mixerIndex,
+            channel: channelIndex,
+            level: targetVal,
+        })
+        sendChLevelsToOuputServer(mixerIndex, channelIndex, targetVal)
+        this.delayedFadeActiveDisable(mixerIndex, channelIndex)
     }
 
     fadeUp = (
