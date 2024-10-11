@@ -459,6 +459,7 @@ export class MixerGenericConnection {
             channel: channelIndex,
             level: targetVal,
         })
+        this.currentOutputLevel[channelIndex] = targetVal
         sendChLevelsToOuputServer(mixerIndex, channelIndex, targetVal)
         this.delayedFadeActiveDisable(mixerIndex, channelIndex)
     }
