@@ -22,18 +22,18 @@
         "@tv2media/logger": "^2.0.2",
         "atem-connection": "^3.4.0",
         "casparcg-connection": "^5.1.0",
-        "emberplus-connection": "^0.2.1",
+        "emberplus-connection": "0.2.2",
         "express": "^4.18.2",
         "node-emberplus": "^3.0.5",
         "node-vmix": "^1.6.1",
         "osc": "^2.4.4",
         "performance-now": "^2.1.0",
         "redux": "^5.0.1",
+        "shared": "file:../shared",
         "socket.io": "^4.7.4",
         "tslib": "^2.6.2",
         "vmix-js-utils": "^4.0.16",
         "web-midi-api": "^2.2.5",
-        "webmidi": "^2.5.1",
-        "shared": "file:../shared"
+        "webmidi": "^2.5.1"
     }
 }
