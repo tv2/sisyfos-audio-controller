@@ -1,0 +1,2 @@
+## Important! This repository is not actively maintained
+If you are planning to send a PR or open an issue, we suggest sending it to https://github.com/olzzon/sisyfos-audio-controller which is an actively maintained fork of this codebase. We may merge code from that repository at our discretion.
